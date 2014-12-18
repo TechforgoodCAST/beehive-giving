@@ -1,5 +1,6 @@
 class ProfilesController < ApplicationController
   before_filter :load_organisation
+  before_filter :check_organisation_ownership
 
   def new
     @profile = @organisation.profiles.new

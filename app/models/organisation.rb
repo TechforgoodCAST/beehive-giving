@@ -8,6 +8,8 @@ class Organisation < ActiveRecord::Base
 
   before_validation :set_slug, unless: :slug
 
+  has_secure_password
+
   def to_param
     self.slug
   end
