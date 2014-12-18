@@ -14,6 +14,7 @@ class OrganisationsController < ApplicationController
 
   def show
     @organisation = Organisation.find(params[:id])
+    @profiles = @organisation.profiles
   end
 
   private

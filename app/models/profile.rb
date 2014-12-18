@@ -1,4 +1,8 @@
 class Profile < ActiveRecord::Base
+
+  VALID_YEARS = ((Date.today.year-5)..(Date.today.year)).to_a.reverse
+  GENDERS = %w(male female both)
+
   belongs_to :organisation
 
   validates :organisation, presence: true
@@ -11,4 +15,6 @@ class Profile < ActiveRecord::Base
             :units_count, :services_count, :beneficiaries_count,
             numericality: {only_integer: true, greater_than_or_equal_to: 0}
   validates :year, uniqueness: {scope: :organisation_id, message: 'only one is allowed per year'}
+  validates :gender, inclusion: {in: GENDERS}
+  validates :year, inclusion: {in: VALID_YEARS}
 end
