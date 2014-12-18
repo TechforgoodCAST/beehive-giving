@@ -2,6 +2,7 @@
 
 %h2= @organisation.contact_name
 
+%p= link_to 'Edit organisation', edit_organisation_path(@organisation)
 
 %ul
   - @profiles.each do |profile|

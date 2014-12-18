@@ -22,6 +22,14 @@ class OrganisationsController < ApplicationController
     @profiles = @organisation.profiles
   end
 
+  def update
+    if @organisation.update_attributes(organisation_params)
+      redirect_to organisation_path(@organisation)
+    else
+      render :edit
+    end
+  end
+
   private
 
   def organisation_params
