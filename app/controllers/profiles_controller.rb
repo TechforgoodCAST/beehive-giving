@@ -37,6 +37,6 @@ class ProfilesController < ApplicationController
   end
 
   def load_organisation
-    @organisation = Organisation.find(params[:organisation_id])
+    @organisation = Organisation.find_by_slug(params[:organisation_id])
   end
 end

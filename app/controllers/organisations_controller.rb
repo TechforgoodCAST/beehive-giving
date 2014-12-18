@@ -13,7 +13,7 @@ class OrganisationsController < ApplicationController
   end
 
   def show
-    @organisation = Organisation.find(params[:id])
+    @organisation = Organisation.find_by_slug(params[:id])
     @profiles = @organisation.profiles
   end
 
