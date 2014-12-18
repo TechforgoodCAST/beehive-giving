@@ -17,4 +17,7 @@ class Profile < ActiveRecord::Base
   validates :year, uniqueness: {scope: :organisation_id, message: 'only one is allowed per year'}
   validates :gender, inclusion: {in: GENDERS}
   validates :year, inclusion: {in: VALID_YEARS}
+
+  has_and_belongs_to_many :beneficiaries
+  
 end

@@ -17,4 +17,5 @@
   = f.input :units_count
   = f.input :services_count
   = f.input :beneficiaries_count
+  = f.association :beneficiaries, label_method: :label, value_method: :id
   = f.submit
