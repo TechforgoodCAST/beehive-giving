@@ -11,6 +11,7 @@ class OrganisationsController < ApplicationController
     if @organisation.save
       session[:logged_in] = true
       session[:organisation_id] = @organisation.id
+      OrganisationMailer.welcome_email(@organisation).deliver
       redirect_to organisation_path(@organisation)
     else
       render :new
