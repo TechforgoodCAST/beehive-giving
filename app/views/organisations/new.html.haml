@@ -1,10 +1,10 @@
 .uk-grid{"data-uk-grid-margin" => ""}
   .uk-width-medium-3-4
     %h1 Get matched
-    %form.uk-form.uk-margin
+    %form.uk-form.uk-margin-top
       .uk-grid
         %h4
-          Find out how you fit with
+          Find out how you fit with:
           %span
             .uk-button.uk-form-select{"data-uk-form-select" => ""}
               %span Forward Foundation
@@ -12,11 +12,11 @@
               %select
                 %option Forward Foundation
                 %option More coming soon...
-    .uk-form.uk-margin.uk-form-stacked
+    .uk-form.uk-form-stacked
       %fieldset
       = simple_form_for @organisation do |f|
         .uk-grid{"data-uk-grid-margin" => ""}
-          .uk-width-medium-1-2
+          .uk-width-medium-1-2.uk-margin-top
             .uk-form-controls{style: 'position: relative;'}
               = f.input :contact_name, label: false, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
               .uk-form-password-toggle
