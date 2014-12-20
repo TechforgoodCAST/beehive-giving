@@ -12,4 +12,9 @@ class SessionsController < ApplicationController
       redirect_to login_path
     end
   end
+
+  def destroy
+    session[:logged_in] = nil
+    redirect_to login_url
+  end
 end

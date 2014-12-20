@@ -1,10 +1,17 @@
 %h1= @organisation.name
-
-%h2= @organisation.contact_name
-
+%hr
+%h4
+  Logged in as
+  = @organisation.contact_name
+  |
+  = link_to 'Logout', logout_path, method: :delete
 %p= link_to 'Edit organisation', edit_organisation_path(@organisation)
-
 %ul
   - @profiles.each do |profile|
     %li= link_to profile.year, edit_organisation_profile_path(@organisation, profile)
   %li= link_to 'New Profile', new_organisation_profile_path(@organisation)
+%hr
+%h3 Organisations on Beehive
+%ul
+  - @organisations.each do |organisation|
+    %li= organisation.name

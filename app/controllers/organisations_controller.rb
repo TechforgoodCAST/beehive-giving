@@ -19,6 +19,7 @@ class OrganisationsController < ApplicationController
   end
 
   def show
+    @organisations = Organisation.all
     @profiles = @organisation.profiles
   end
 
