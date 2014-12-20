@@ -1,7 +1,15 @@
 en:
   simple_form:
-    "yes": 'Yes'
-    "no": 'No'
+    placeholders:
+      organisation:
+        contact_name: 'Name'
+        contact_role: 'Role'
+        name: 'Organisation'
+        contact_email: 'Email'
+        password: 'Password'
+        password_confirmation: 'Confirm password'
+    # "yes": 'Yes'
+    # "no": 'No'
     required:
       text: 'required'
       mark: '*'
