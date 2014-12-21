@@ -10,9 +10,9 @@
         %a.uk-form-password-toggle{"data-uk-form-password" => "", :href => ""} Show
       .uk-form-row
         = submit_tag 'Login', class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large', style: 'color: #fff; font-size: 16px'
-      -# .uk-form-row.uk-text-small
-      -#   %label.uk-float-left
-      -#     %input{:type => "checkbox"}/
-      -#     Remember Me
+      .uk-form-row.uk-text-small
+        %label.uk-float-left
+          = check_box_tag :remember_me, 1, params[:remember_me]
+          Remember Me
       -#   %a.uk-float-right.uk-link.uk-link-muted{:href => "#"} Forgot Password?
     = link_to 'Sign up', sign_up_path, class: 'uk-button uk-width-1-1'

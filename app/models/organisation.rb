@@ -7,6 +7,7 @@ class Organisation < ActiveRecord::Base
   has_many :profiles
 
   before_validation :set_slug, unless: :slug
+  before_create { generate_token(:auth_token) }
 
   has_secure_password
 
@@ -24,5 +25,11 @@ class Organisation < ActiveRecord::Base
     candidate += "-#{n}" if n > 1
     return candidate unless Organisation.find_by_slug(candidate)
     generate_slug(n+1)
+  end
+
+  def generate_token(column)
+    begin
+      self[column] = SecureRandom.urlsafe_base64
+    end while Organisation.exists?(column => self[column])
   end
 end

@@ -5,16 +5,19 @@ class SessionsController < ApplicationController
   def create
     organisation = Organisation.find_by_contact_email(params[:email])
     if organisation && organisation.authenticate(params[:password])
-      session[:logged_in] = true
-      session[:organisation_id] = organisation.id
-      redirect_to organisation_path(organisation)
+      if params[:remember_me]
+        cookies.permanent[:auth_token] = organisation.auth_token
+      else
+        cookies[:auth_token] = organisation.auth_token
+      end
+      redirect_to organisation_path(organisation), notice: "Logged in!"
     else
       redirect_to login_path
     end
   end
 
   def destroy
-    session[:logged_in] = nil
-    redirect_to login_url
+    cookies.delete(:auth_token)
+    redirect_to login_url, notice: "Logged out!"
   end
 end
