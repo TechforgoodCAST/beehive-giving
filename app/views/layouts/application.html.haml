@@ -12,4 +12,8 @@
         .uk-alert.uk-alert-success{'data-uk-alert' => ''}
           %a.uk-alert-close.uk-close
           %p.flash-notice= flash[:notice]
+      - if flash[:alert]
+        .uk-alert.uk-alert-danger{'data-uk-alert' => ''}
+          %a.uk-alert-close.uk-close
+          %p.flash-notice= flash[:alert]
       = yield

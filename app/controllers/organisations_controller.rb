@@ -9,8 +9,7 @@ class OrganisationsController < ApplicationController
   def create
     @organisation = Organisation.new(organisation_params)
     if @organisation.save
-      session[:logged_in] = true
-      session[:organisation_id] = @organisation.id
+      cookies[:auth_token] = @organisation.auth_token
       OrganisationMailer.welcome_email(@organisation).deliver
       redirect_to organisation_path(@organisation)
     else

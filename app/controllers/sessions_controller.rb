@@ -10,14 +10,14 @@ class SessionsController < ApplicationController
       else
         cookies[:auth_token] = organisation.auth_token
       end
-      redirect_to organisation_path(organisation), notice: "Logged in!"
+      redirect_to organisation_path(organisation), notice: 'Logged in!'
     else
-      redirect_to login_path
+      redirect_to login_path, alert: 'Incorrect Email or Password'
     end
   end
 
   def destroy
     cookies.delete(:auth_token)
-    redirect_to login_url, notice: "Logged out!"
+    redirect_to login_url, notice: 'Logged out!'
   end
 end

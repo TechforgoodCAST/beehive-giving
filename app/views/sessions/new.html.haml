@@ -14,5 +14,6 @@
         %label.uk-float-left
           = check_box_tag :remember_me, 1, params[:remember_me]
           Remember Me
-      -#   %a.uk-float-right.uk-link.uk-link-muted{:href => "#"} Forgot Password?
+        = link_to 'Forgot Password?', new_password_reset_path, class: 'uk-float-right uk-link uk-link-muted'
+        -# %a.uk-float-right.uk-link.uk-link-muted{:href => "#"} Forgot Password?
     = link_to 'Sign up', sign_up_path, class: 'uk-button uk-width-1-1'
