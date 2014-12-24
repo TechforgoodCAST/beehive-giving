@@ -2,7 +2,9 @@ en:
   simple_form:
     placeholders:
       organisation:
-        contact_name: 'Name'
+        contact_name: 'Full name'
+        contact_first_name: 'First name'
+        contact_last_name: 'Last name'
         contact_role: 'Role'
         name: 'Organisation'
         contact_email: 'Email'

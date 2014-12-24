@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141221183721) do
+ActiveRecord::Schema.define(version: 20141224142049) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -29,7 +29,7 @@ ActiveRecord::Schema.define(version: 20141221183721) do
 
   create_table "organisations", force: true do |t|
     t.string   "name"
-    t.string   "contact_name"
+    t.string   "contact_first_name"
     t.string   "contact_role"
     t.string   "contact_email"
     t.string   "contact_number"
@@ -49,7 +49,10 @@ ActiveRecord::Schema.define(version: 20141221183721) do
     t.string   "auth_token"
     t.string   "password_reset_token"
     t.datetime "password_reset_sent_at"
+    t.string   "contact_last_name"
   end
+
+  add_index "organisations", ["slug"], name: "index_organisations_on_slug", unique: true, using: :btree
 
   create_table "profiles", force: true do |t|
     t.integer  "organisation_id"

@@ -16,11 +16,16 @@
       %fieldset
       = simple_form_for @organisation do |f|
         .uk-grid{"data-uk-grid-margin" => ""}
-          .uk-width-medium-1-2.uk-margin-top
+          .uk-width-medium-1-4.uk-margin-top
             .uk-form-controls{style: 'position: relative;'}
-              = f.input :contact_name, label: false, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+              = f.input :contact_first_name, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
               .uk-form-password-toggle
-                = f.error :contact_name, class: 'uk-text-small uk-text-warning'
+                = f.error :contact_first_name, class: 'uk-text-small uk-text-warning'
+          .uk-width-medium-1-4.uk-margin-top
+            .uk-form-controls{style: 'position: relative;'}
+              = f.input :contact_last_name, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+              .uk-form-password-toggle
+                = f.error :contact_last_name, class: 'uk-text-small uk-text-warning'
           .uk-width-medium-1-2.uk-margin-top
             .uk-form-controls{style: 'position: relative;'}
               = f.input :contact_role, label: false, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }

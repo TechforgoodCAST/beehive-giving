@@ -1,5 +1,5 @@
 class Organisation < ActiveRecord::Base
-  validates :name, :contact_name, :contact_role, :contact_email, presence: true
+  validates :name, :contact_first_name, :contact_last_name, :contact_role, :contact_email, presence: true
   validates :contact_email, format: {with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i, message: "please enter a valid email"}
   validates :contact_email, uniqueness: true
   validates :slug, uniqueness: true, presence: true
@@ -10,6 +10,16 @@ class Organisation < ActiveRecord::Base
   before_create { generate_token(:auth_token) }
 
   has_secure_password
+
+  def contact_name
+    [contact_first_name, contact_last_name].join(' ')
+  end
+
+  def contact_name=(name)
+    split = name.split(' ', 2)
+    self.contact_first_name = split.first
+    self.contact_last_name = split.last
+  end
 
   def to_param
     self.slug

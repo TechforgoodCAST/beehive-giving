@@ -33,7 +33,7 @@ class OrganisationsController < ApplicationController
   private
 
   def organisation_params
-    params.require(:organisation).permit(:name, :contact_name, :contact_role, :contact_email, :password, :password_confirmation)
+    params.require(:organisation).permit(:name, :contact_first_name, :contact_last_name, :contact_role, :contact_email, :password, :password_confirmation)
   end
 
   def load_organisation
