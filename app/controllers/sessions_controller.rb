@@ -3,14 +3,14 @@ class SessionsController < ApplicationController
   end
 
   def create
-    organisation = Organisation.find_by_contact_email(params[:email])
-    if organisation && organisation.authenticate(params[:password])
+    user = User.find_by_user_email(params[:email])
+    if user && user.authenticate(params[:password])
       if params[:remember_me]
-        cookies.permanent[:auth_token] = organisation.auth_token
+        cookies.permanent[:auth_token] = user.auth_token
       else
-        cookies[:auth_token] = organisation.auth_token
+        cookies[:auth_token] = user.auth_token
       end
-      redirect_to organisation_path(organisation), notice: 'Logged in!'
+      redirect_to user_path(user), notice: 'Logged in!'
     else
       redirect_to login_path, alert: 'Incorrect Email or Password'
     end

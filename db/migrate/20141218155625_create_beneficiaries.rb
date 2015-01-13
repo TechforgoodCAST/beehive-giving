@@ -3,9 +3,9 @@ class CreateBeneficiaries < ActiveRecord::Migration
     create_table :beneficiaries do |t|
       t.string :label
 
-      t.timestamps
+      t.timestamps null: false
     end
-    
+
     [
       "People who face challenges with their physical health",
       "People who face challenges with their mental health",

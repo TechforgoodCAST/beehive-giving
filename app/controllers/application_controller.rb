@@ -4,16 +4,11 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   # force_ssl
 
-  def logged_in?
-    session[:logged_in]
-  end
-  helper_method :logged_in?
-
-  def current_organisation
-    @current_organisation ||= Organisation.find_by_auth_token!(cookies[:auth_token]) if cookies[:auth_token]
+  def current_user
+    @current_user ||= User.find_by_auth_token!(cookies[:auth_token]) if cookies[:auth_token]
   end
 
-  def check_organisation_ownership
-    redirect_to login_path unless @organisation == current_organisation
+  def check_user_ownership
+    redirect_to login_path unless @user == current_user
   end
 end

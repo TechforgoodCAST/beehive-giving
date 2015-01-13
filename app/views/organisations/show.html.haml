@@ -2,7 +2,7 @@
 %hr
 %h4
   Logged in as
-  = @organisation.contact_name
+  = link_to @user.first_name, user_path(@user)
   |
   = link_to 'Logout', logout_path, method: :delete
 %p= link_to 'Edit organisation', edit_organisation_path(@organisation)

@@ -1,6 +1,7 @@
 class OrganisationsController < ApplicationController
   before_filter :load_organisation, except: [:new, :create]
-  before_filter :check_organisation_ownership, except: [:new, :create]
+  before_filter :load_user
+  # before_filter :check_user_ownership
 
   def new
     @organisation = Organisation.new
@@ -9,9 +10,7 @@ class OrganisationsController < ApplicationController
   def create
     @organisation = Organisation.new(organisation_params)
     if @organisation.save
-      cookies[:auth_token] = @organisation.auth_token
-      OrganisationMailer.welcome_email(@organisation).deliver
-      redirect_to organisation_path(@organisation)
+      redirect_to user_path(@user)
     else
       render :new
     end
@@ -20,23 +19,36 @@ class OrganisationsController < ApplicationController
   def show
     @organisations = Organisation.all
     @profiles = @organisation.profiles
+    # @grants = Grant.all
   end
 
   def update
     if @organisation.update_attributes(organisation_params)
-      redirect_to organisation_path(@organisation)
+      redirect_to user_path(@user)
     else
       render :edit
     end
   end
 
+  def destroy
+    @organisation.destroy
+    flash[:success] = "Organisation deleted"
+    redirect_to user_path(@user)
+  end
+
   private
 
   def organisation_params
-    params.require(:organisation).permit(:name, :contact_first_name, :contact_last_name, :contact_role, :contact_email, :password, :password_confirmation)
+    params.require(:organisation).permit(:name, :contact_number, :website,
+    :street_address, :city, :region, :postal_code, :charity_number,
+    :company_number, :founded_on, :registered_on, :type)
   end
 
   def load_organisation
     @organisation = Organisation.find_by_slug(params[:id])
+  end
+
+  def load_user
+    @user = User.find_by_auth_token!(cookies[:auth_token])
   end
 end

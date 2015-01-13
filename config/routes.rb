@@ -4,10 +4,11 @@ Rails.application.routes.draw do
   post '/login' => 'sessions#create'
   delete 'logout'  => 'sessions#destroy'
 
-  match 'get-matched', to: 'organisations#new', via: :get, as: 'sign_up'
+  match 'get-matched', to: 'users#new', via: :get, as: 'sign_up'
 
   # get '/:id' => 'organisations#show', as: 'organisation'
 
+  resources :users
   resources :organisations do
     resources :profiles
   end

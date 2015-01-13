@@ -11,15 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141224142049) do
+ActiveRecord::Schema.define(version: 20141218155732) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "beneficiaries", force: true do |t|
     t.string   "label"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "beneficiaries_profiles", force: true do |t|
@@ -28,10 +28,8 @@ ActiveRecord::Schema.define(version: 20141224142049) do
   end
 
   create_table "organisations", force: true do |t|
+    t.integer  "user_id"
     t.string   "name"
-    t.string   "contact_first_name"
-    t.string   "contact_role"
-    t.string   "contact_email"
     t.string   "contact_number"
     t.string   "website"
     t.string   "street_address"
@@ -40,16 +38,12 @@ ActiveRecord::Schema.define(version: 20141224142049) do
     t.string   "postal_code"
     t.string   "charity_number"
     t.string   "company_number"
+    t.string   "slug"
+    t.string   "type"
     t.date     "founded_on"
     t.date     "registered_on"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "slug"
-    t.string   "password_digest"
-    t.string   "auth_token"
-    t.string   "password_reset_token"
-    t.datetime "password_reset_sent_at"
-    t.string   "contact_last_name"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   add_index "organisations", ["slug"], name: "index_organisations_on_slug", unique: true, using: :btree
@@ -74,8 +68,22 @@ ActiveRecord::Schema.define(version: 20141224142049) do
     t.integer  "units_count"
     t.integer  "services_count"
     t.integer  "beneficiaries_count"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
+  create_table "users", force: true do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "job_role"
+    t.string   "user_email"
+    t.string   "password_digest"
+    t.string   "auth_token"
+    t.string   "password_reset_token"
+    t.string   "role",                   default: "User"
+    t.datetime "password_reset_sent_at"
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
   end
 
 end

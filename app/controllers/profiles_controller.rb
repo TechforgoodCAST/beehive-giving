@@ -1,6 +1,7 @@
 class ProfilesController < ApplicationController
   before_filter :load_organisation
-  before_filter :check_organisation_ownership
+  before_filter :load_user
+  # before_filter :check_user_ownership
 
   def new
     @profile = @organisation.profiles.new
@@ -37,6 +38,10 @@ class ProfilesController < ApplicationController
     :units_count, :services_count, :beneficiaries_count, beneficiary_ids: [])
   end
 
+  def load_user
+    @user = User.find_by_auth_token!(cookies[:auth_token])
+  end
+  
   def load_organisation
     @organisation = Organisation.find_by_slug(params[:organisation_id])
   end
