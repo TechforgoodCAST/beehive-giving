@@ -14,7 +14,7 @@
                 %option More coming soon...
     .uk-form.uk-form-stacked
       %fieldset
-      = simple_form_for @user do |f|
+      = simple_form_for [@organisation, @user] do |f|
         .uk-grid{"data-uk-grid-margin" => ""}
           .uk-width-medium-1-4.uk-margin-top
             .uk-form-controls{style: 'position: relative;'}

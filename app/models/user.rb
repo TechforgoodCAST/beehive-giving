@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
     message: "please enter a valid email"}
   validates :user_email, uniqueness: true
 
-  has_one :organisation
+  belongs_to :organisation
 
   before_create { generate_token(:auth_token) }
   before_create :build_default_organisation

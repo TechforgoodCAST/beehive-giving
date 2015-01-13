@@ -1,6 +1,7 @@
 class CreateOrganisations < ActiveRecord::Migration
   def change
     create_table :users do |t|
+      t.references :organisation
       t.string :first_name, :last_name, :job_role, :user_email, required: true
       t.string :password_digest, :auth_token, :password_reset_token
       t.string :role, default: 'User'
@@ -10,7 +11,6 @@ class CreateOrganisations < ActiveRecord::Migration
     end
 
     create_table :organisations do |t|
-      t.references :user
       t.string :name, required: true
       t.string :contact_number, :website, :street_address, :city, :region, :postal_code, :charity_number, :company_number, :slug, :type
       t.date :founded_on, :registered_on

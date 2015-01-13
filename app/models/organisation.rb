@@ -1,8 +1,9 @@
 class Organisation < ActiveRecord::Base
   validates :slug, uniqueness: true, presence: true
 
-  belongs_to :user
+  has_many :users
   has_many :profiles
+  has_and_belongs_to_many :grants
 
   before_validation :set_slug, unless: :slug
 

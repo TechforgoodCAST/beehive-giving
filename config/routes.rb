@@ -11,6 +11,7 @@ Rails.application.routes.draw do
   resources :users
   resources :organisations do
     resources :profiles
+    resources :grants
   end
   resources :password_resets
 end

@@ -19,7 +19,8 @@ class OrganisationsController < ApplicationController
   def show
     @organisations = Organisation.all
     @profiles = @organisation.profiles
-    # @grants = Grant.all
+    @users = User.all
+    @grants = Grant.all
   end
 
   def update
@@ -41,7 +42,7 @@ class OrganisationsController < ApplicationController
   def organisation_params
     params.require(:organisation).permit(:name, :contact_number, :website,
     :street_address, :city, :region, :postal_code, :charity_number,
-    :company_number, :founded_on, :registered_on, :type)
+    :company_number, :founded_on, :registered_on, :type, organisation_ids: [])
   end
 
   def load_organisation

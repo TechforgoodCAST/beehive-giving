@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_filter :load_organisation
   before_filter :load_user, except: [:new, :create]
   before_filter :check_user_ownership, except: [:new, :create]
 
@@ -40,5 +41,9 @@ class UsersController < ApplicationController
 
   def load_user
     @user = User.find(params[:id])
+  end
+
+  def load_organisation
+    @organisation = Organisation.find_by_slug(params[:organisation_id])
   end
 end

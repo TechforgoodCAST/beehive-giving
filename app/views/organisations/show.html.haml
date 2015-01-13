@@ -5,13 +5,26 @@
   = link_to @user.first_name, user_path(@user)
   |
   = link_to 'Logout', logout_path, method: :delete
-%p= link_to 'Edit organisation', edit_organisation_path(@organisation)
+%hr
+%h3 Profiles
 %ul
   - @profiles.each do |profile|
     %li= link_to profile.year, edit_organisation_profile_path(@organisation, profile)
   %li= link_to 'New Profile', new_organisation_profile_path(@organisation)
 %hr
-%h3 Organisations on Beehive
+%h3 Grants
+%ul
+  - @grants.each do |grant|
+    %li= link_to grant.amount_awarded, edit_organisation_grant_path(@organisation, grant)
+  %li= link_to 'New Grant', new_organisation_grant_path(@organisation)
+%hr
+%h3 Organisations
 %ul
   - @organisations.each do |organisation|
-    %li= organisation.name
+    %li= link_to organisation.name, edit_organisation_path(@organisation)
+%hr
+%h3 Users
+%ul
+  - @users.each do |user|
+    %li= link_to @user.first_name, user_path(@user)
+    %li= link_to 'New User', new_organisation_grant_path(@organisation)
