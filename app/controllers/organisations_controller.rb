@@ -19,7 +19,7 @@ class OrganisationsController < ApplicationController
   def show
     @organisations = Organisation.all
     @profiles = @organisation.profiles
-    @users = User.all
+    @users = @organisation.users
     @grants = Grant.all
   end
 

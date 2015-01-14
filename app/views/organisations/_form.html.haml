@@ -8,6 +8,6 @@
   = f.input :postal_code
   = f.input :charity_number
   = f.input :company_number
-  = f.input :founded_on
-  = f.input :registered_on
+  = f.date_select :founded_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-100, order: [:day, :month, :year], include_blank: :true, default: nil
+  = f.input :registered_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-100, order: [:day, :month, :year]
   = f.submit

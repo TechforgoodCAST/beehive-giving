@@ -1,9 +1,17 @@
 FactoryGirl.define do
   factory :acme, class: Organisation do
     name "ACME"
-    contact_name "John Doe"
-    contact_role "CEO"
-    contact_email "hello@hello.com"
+    contact_number "01234 567 890"
+    website "www.acme.com"
+    street_address "123 street address"
+    city "City"
+    region "Region"
+    postal_code "A1 B2"
+    charity_number "1AB1C1"
+    company_number "1AB1C1"
+    type "Non-profit"
+    founded_on "01/01/2014"
+    registered_on "01/01/2015"
   end
 
   factory :organisation, class: Organisation do
@@ -11,9 +19,17 @@ FactoryGirl.define do
       n 1
     end
     name { "Random #{n}" }
-    contact_name { "Mr Random #{n}" }
-    contact_role "CEO"
-    contact_email { "#{n}@random.com" }
+    contact_number "01234 567 890"
+    website { "www.random#{n}.com" }
+    street_address "123 street address"
+    city "City"
+    region "Region"
+    postal_code "A1 B2"
+    charity_number "1AB1C1"
+    company_number "1AB1C1"
+    type "Non-profit"
+    founded_on "01/01/2015"
+    registered_on "01/01/2015"
   end
 
   factory :blank_org, class: Organisation do

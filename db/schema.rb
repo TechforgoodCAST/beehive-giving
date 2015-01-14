@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20150113165324) do
   end
 
   create_table "grants", force: true do |t|
+    t.integer  "organisation_id"
     t.string   "funding_stream"
     t.string   "type"
     t.string   "attention_how"
@@ -39,13 +40,8 @@ ActiveRecord::Schema.define(version: 20150113165324) do
     t.date     "end_on"
     t.date     "attention_on"
     t.date     "applied_on"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-  end
-
-  create_table "grants_organisations", force: true do |t|
-    t.integer "grant_id"
-    t.integer "organisation_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   create_table "organisations", force: true do |t|

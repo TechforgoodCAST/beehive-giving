@@ -1,10 +1,10 @@
 class User < ActiveRecord::Base
+  belongs_to :organisation
+
   validates :first_name, :last_name, :job_role, :user_email, :role, presence: true
   validates :user_email, format: {with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i,
     message: "please enter a valid email"}
   validates :user_email, uniqueness: true
-
-  belongs_to :organisation
 
   before_create { generate_token(:auth_token) }
   before_create :build_default_organisation

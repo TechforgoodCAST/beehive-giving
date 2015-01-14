@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :profile do
     year 2014
-    gender 'all'
+    gender 'both'
     currency 'GBP'
     goods_services 'both'
     who_pays 'both'
