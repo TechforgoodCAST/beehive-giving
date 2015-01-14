@@ -21,7 +21,10 @@
 %h3 Organisations
 %ul
   - @organisations.each do |organisation|
-    %li= link_to organisation.name, edit_organisation_path(@organisation)
+    %li
+      = link_to organisation.name, organisation_path(organisation)
+      |
+      = link_to 'Edit', edit_organisation_path(organisation)
 %hr
 %h3 Users
 %ul

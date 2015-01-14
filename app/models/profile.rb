@@ -3,12 +3,12 @@ class Profile < ActiveRecord::Base
 
   VALID_YEARS = ((Date.today.year-5)..(Date.today.year)).to_a.reverse
   GENDERS = %w(male female both)
-  
+
   validates :organisation, presence: true
   validates :year, :gender, :currency, :goods_services, :who_pays, :who_buys,
             :min_age, :max_age, :income, :expenditure, :volunteer_count,
             :staff_count, :job_role_count, :department_count, :goods_count,
-            :units_count, :services_count, :beneficiaries_count, presence: true
+            :units_count, :services_count, :beneficiaries_count, :beneficiaries, presence: true
   validates :min_age, :max_age, :income, :expenditure, :volunteer_count,
             :staff_count, :job_role_count, :department_count, :goods_count,
             :units_count, :services_count, :beneficiaries_count,

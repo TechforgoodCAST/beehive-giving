@@ -2,7 +2,7 @@ class CreateGrants < ActiveRecord::Migration
   def change
     create_table :grants do |t|
       t.references :organisation
-      t.string :funding_stream, :type,  required: true
+      t.string :funding_stream, :grant_type,  required: true
       t.string :attention_how
       t.integer :amount_awarded,  required: true
       t.integer :amount_applied, :installments

@@ -30,7 +30,7 @@ ActiveRecord::Schema.define(version: 20150113165324) do
   create_table "grants", force: true do |t|
     t.integer  "organisation_id"
     t.string   "funding_stream"
-    t.string   "type"
+    t.string   "grant_type"
     t.string   "attention_how"
     t.integer  "amount_awarded"
     t.integer  "amount_applied"
@@ -55,11 +55,11 @@ ActiveRecord::Schema.define(version: 20150113165324) do
     t.string   "charity_number"
     t.string   "company_number"
     t.string   "slug"
-    t.string   "type"
+    t.string   "organisation_type"
     t.date     "founded_on"
     t.date     "registered_on"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   add_index "organisations", ["slug"], name: "index_organisations_on_slug", unique: true, using: :btree

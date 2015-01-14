@@ -6,7 +6,8 @@ class Organisation < ActiveRecord::Base
   validates :name, :contact_number, :website, :street_address, :city, :region,
   :postal_code, :founded_on, presence: true
 
-  validates :registered_on, presence: true, unless: :company_number? || :charity_number?
+  # date_select currently not nil
+  # validates :registered_on, presence: true, unless: :company_number? || :charity_number?
 
   validates :charity_number, presence: true, uniqueness: true, unless: :company_number?
   validates :company_number, presence: true, uniqueness: true, unless: :charity_number?

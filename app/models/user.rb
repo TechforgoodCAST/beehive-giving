@@ -6,6 +6,11 @@ class User < ActiveRecord::Base
     message: "please enter a valid email"}
   validates :user_email, uniqueness: true
 
+  validates :password, presence: true, confirmation: true,
+  length: {:within => 6..40}, on: :create
+  # validates :password, presence: true, confirmation: true,
+  # length: {:within => 6..40}, on: :update
+
   before_create { generate_token(:auth_token) }
   before_create :build_default_organisation
 

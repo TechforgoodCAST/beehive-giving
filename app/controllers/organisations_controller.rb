@@ -20,12 +20,12 @@ class OrganisationsController < ApplicationController
     @organisations = Organisation.all
     @profiles = @organisation.profiles
     @users = @organisation.users
-    @grants = Grant.all
+    @grants = @organisation.grants
   end
 
   def update
     if @organisation.update_attributes(organisation_params)
-      redirect_to user_path(@user)
+      redirect_to organisation_path(@organisation)
     else
       render :edit
     end
@@ -42,7 +42,7 @@ class OrganisationsController < ApplicationController
   def organisation_params
     params.require(:organisation).permit(:name, :contact_number, :website,
     :street_address, :city, :region, :postal_code, :charity_number,
-    :company_number, :founded_on, :registered_on, :type, organisation_ids: [])
+    :company_number, :founded_on, :registered_on, :organisation_type, organisation_ids: [])
   end
 
   def load_organisation

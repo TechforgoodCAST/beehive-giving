@@ -1,6 +1,6 @@
 = simple_form_for [@organisation, @grant] do |f|
   = f.input :funding_stream, collection: Grant::FUNDING_STREAM
-  = f.input :type, collection: Grant::TYPE
+  = f.input :grant_type, collection: Grant::GRANT_TYPE
   = f.input :attention_how, collection: Grant::ATTENTION_HOW
   = f.input :amount_awarded
   = f.input :amount_applied

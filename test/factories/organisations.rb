@@ -9,7 +9,7 @@ FactoryGirl.define do
     postal_code "A1 B2"
     charity_number "1AB1C1"
     company_number "1AB1C1"
-    type "Non-profit"
+    organisation_type "Non-profit"
     founded_on "01/01/2014"
     registered_on "01/01/2015"
   end
@@ -27,7 +27,7 @@ FactoryGirl.define do
     postal_code "A1 B2"
     charity_number "1AB1C1"
     company_number "1AB1C1"
-    type "Non-profit"
+    organisation_type "Non-profit"
     founded_on "01/01/2015"
     registered_on "01/01/2015"
   end
