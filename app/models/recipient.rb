@@ -1,0 +1,3 @@
+class Recipient < Organisation
+
+end

@@ -21,7 +21,7 @@ class SignupController < ApplicationController
   end
 
   def create_organisation
-    @organisation = Organisation.new(organisation_params)
+    @organisation = Recipient.new(organisation_params)
     if @organisation.save
       current_user.update_attribute(:organisation_id, @organisation.id)
       redirect_to signup_profile_path
@@ -46,7 +46,7 @@ class SignupController < ApplicationController
   end
 
   def comparison
-    
+
   end
 
   private
@@ -57,9 +57,9 @@ class SignupController < ApplicationController
   end
 
   def organisation_params
-    params.require(:organisation).permit(:name, :contact_number, :website,
+    params.require(:recipient).permit(:name, :contact_number, :website,
     :street_address, :city, :region, :postal_code, :charity_number,
-    :company_number, :founded_on, :registered_on, :organisation_type, organisation_ids: [])
+    :company_number, :founded_on, :registered_on, organisation_ids: [])
   end
 
   def profile_params

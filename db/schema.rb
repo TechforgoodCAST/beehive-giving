@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150113165324) do
+ActiveRecord::Schema.define(version: 20150116113307) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,11 +55,11 @@ ActiveRecord::Schema.define(version: 20150113165324) do
     t.string   "charity_number"
     t.string   "company_number"
     t.string   "slug"
-    t.string   "organisation_type"
     t.date     "founded_on"
     t.date     "registered_on"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.string   "type"
   end
 
   add_index "organisations", ["slug"], name: "index_organisations_on_slug", unique: true, using: :btree
