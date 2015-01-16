@@ -18,5 +18,9 @@ FactoryGirl.define do
     units_count 0
     services_count 0
     beneficiaries_count 0
+    #Error?
+    after(:create) do |profile|
+      profile.beneficiaries = (create(:beneficiary))
+    end
   end
 end

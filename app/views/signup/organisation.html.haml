@@ -1,0 +1,31 @@
+%h1 Find/Create Organisation
+%hr
+.uk-form.uk-form-stacked
+  %fieldset
+    = form_tag organisations_path, method: 'post' do
+      .uk-width-medium-1-2
+        .uk-form-controls
+          = text_field_tag :search, params[:search]
+          = submit_tag 'Find organisation', class: 'uk-button uk-button-primary', style: 'color: #fff'
+          or
+          = link_to 'Create a new one', new_organisation_path, class: 'uk-button uk-button-primary', style: 'color: #fff'
+
+
+.uk-grid{"data-uk-grid-margin" => ""}
+  .uk-width-medium-3-4
+    %h1
+      New Organisation
+      = simple_form_for [@organisation], url: signup_organisation_path, method: :post do |f|
+        = f.input :name
+        = f.input :contact_number
+        = f.input :website
+        = f.input :street_address
+        = f.input :city
+        = f.input :region
+        = f.input :postal_code
+        = f.input :charity_number
+        = f.input :company_number
+        = f.input :founded_on
+        = f.input :registered_on
+        = f.input :organisation_type
+        = f.submit

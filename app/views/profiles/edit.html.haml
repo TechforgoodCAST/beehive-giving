@@ -1,3 +1,4 @@
 %h1 Edit Profile
-  
-= render partial: 'form'
+
+= simple_form_for [@organisation, @profile] do |f|
+  = render partial: 'form', locals: {f: f}
