@@ -1,6 +1,13 @@
 en:
   simple_form:
     placeholders:
+      user:
+        first_name: 'First name'
+        last_name: 'Last name'
+        job_role: 'Job role'
+        user_email: 'Email'
+        password: 'Password'
+        password_confirmation: 'Password Confirmation'
       organisation:
         contact_name: 'Full name'
         contact_first_name: 'First name'

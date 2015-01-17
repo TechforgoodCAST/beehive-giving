@@ -1,3 +1,38 @@
 // Place all the styles related to the users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+#bg {
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+/* Blocks */
+
+.tm-section, .tm-footer {
+  padding: 50px 0;
+}
+
+/* Tablet and bigger */
+@media (min-width: 768px) {
+  .tm-section, .tm-footer {
+    padding: 90px 0;
+  }
+}
+
+/* Large screen and bigger */
+@media (min-width: 1220px) {
+  .tm-section, .tm-footer {
+    padding: 135px 0;
+  }
+}
+
+/* Sections */
+
+.tm-section-color-1 { background: #dfaf00 url("../assets/bg_teaser.svg") 50% 50% no-repeat; }
+
+.tm-section-colored,
+.tm-section-colored h1,
+.tm-section-colored h2,
+.tm-section-colored a:not([class]) {
+  color: #fff !important;
+}
