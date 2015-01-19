@@ -1,20 +1,98 @@
-= f.input :year, collection: Profile::VALID_YEARS
-= f.input :gender, collection: Profile::GENDERS
-= f.input :currency
-= f.input :goods_services
-= f.input :who_pays
-= f.input :who_buys
-= f.input :min_age
-= f.input :max_age
-= f.input :income
-= f.input :expenditure
-= f.input :volunteer_count
-= f.input :staff_count
-= f.input :job_role_count
-= f.input :department_count
-= f.input :goods_count
-= f.input :units_count
-= f.input :services_count
-= f.input :beneficiaries_count
-= f.association :beneficiaries, label_method: :label, value_method: :id
-= f.submit
+.uk-grid
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :year, collection: Profile::VALID_YEARS, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :year, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :gender, collection: Profile::GENDERS, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :gender, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :currency, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :currency, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :goods_services, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :goods_services, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :who_pays, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :who_pays, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :who_buys, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :who_buys, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :min_age, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :min_age, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :max_age, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :max_age, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :income, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :income, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :expenditure, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :expenditure, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :volunteer_count, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :volunteer_count, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :staff_count, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :staff_count, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :job_role_count, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :job_role_count, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :department_count, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :department_count, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :goods_count, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :goods_count, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :units_count, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :units_count, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :services_count, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :services_count, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :beneficiaries_count, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :beneficiaries_count, class: 'uk-text-small uk-text-warning'
+  .uk-width-1-1.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.association :beneficiaries, error: false, label_method: :label, value_method: :id, input_html: {class: 'chosen-select'}
+      .uk-form-password-toggle
+        = f.error :beneficiaries, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-1.uk-margin-top
+    = f.submit 'Next', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'

@@ -11,9 +11,9 @@ class ApplicationController < ActionController::Base
   def ensure_logged_in
     if current_user.nil?
       redirect_to "/"
-      false
+      @logged_in = false
     else
-      true
+      @logged_in = true
     end
   end
 
