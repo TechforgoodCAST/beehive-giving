@@ -19,6 +19,7 @@ en:
         charity_number: 'Charity/Nonprofit number'
         company_number: 'Company number'
         founded_on: 'Date founded'
+        country: 'Country'
       profile:
         currency: 'Currency'
         goods_services: 'Goods or Services?'

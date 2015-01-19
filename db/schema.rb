@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 20150113165324) do
     t.string   "city"
     t.string   "region"
     t.string   "postal_code"
+    t.string   "country"
     t.string   "charity_number"
     t.string   "company_number"
     t.string   "slug"

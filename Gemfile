@@ -38,6 +38,7 @@ gem 'simple_form'
 gem 'uikit-sass-rails'
 gem 'chosen-rails'
 gem 'jquery-turbolinks'
+gem 'country_select'
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'

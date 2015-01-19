@@ -4,7 +4,7 @@ class Organisation < ActiveRecord::Base
   has_many :grants
 
   validates :name, :contact_number, :website, :street_address, :city, :region,
-  :postal_code, :founded_on, presence: true
+  :postal_code, :country, :founded_on, presence: true
 
   # date_select currently not nil
   # validates :registered_on, presence: true, unless: :company_number? || :charity_number?

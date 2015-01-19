@@ -34,11 +34,10 @@
       = f.input :postal_code, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
       .uk-form-password-toggle
         = f.error :postal_code, class: 'uk-text-small uk-text-warning'
-  -# .uk-width-medium-1-2.uk-margin-top
-  -#   .uk-form-controls{style: 'position: relative;'}
-  -#     = f.input :country, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
-  -#     .uk-form-password-toggle
-  -#       = f.error :country, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-1.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :country, error: false, type: 'text', input_html: { class: 'uk-width-1-1 chosen-select' }, include_blank: 'Select a country...', priority: ['United Kingdom']
+      = f.error :country, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-2.uk-margin-top
     .uk-form-controls{style: 'position: relative;'}
       = f.input :charity_number, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
