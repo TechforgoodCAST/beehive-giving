@@ -1,13 +1,62 @@
-= simple_form_for [@organisation] do |f|
-  = f.input :name
-  = f.input :contact_number
-  = f.input :website
-  = f.input :street_address
-  = f.input :city
-  = f.input :region
-  = f.input :postal_code
-  = f.input :charity_number
-  = f.input :company_number
-  = f.date_select :founded_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-100, order: [:day, :month, :year], include_blank: :true, default: nil
-  = f.input :registered_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-100, order: [:day, :month, :year]
-  = f.submit
+.uk-grid
+  .uk-width-medium-1-1.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :name, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :name, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :website, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :website, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :contact_number, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :contact_number, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :street_address, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :street_address, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :city, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :city, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :region, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :region, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :postal_code, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :postal_code, class: 'uk-text-small uk-text-warning'
+  -# .uk-width-medium-1-2.uk-margin-top
+  -#   .uk-form-controls{style: 'position: relative;'}
+  -#     = f.input :country, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+  -#     .uk-form-password-toggle
+  -#       = f.error :country, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :charity_number, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :charity_number, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :company_number, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :company_number, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.date_select :founded_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-100, order: [:day, :month, :year], include_blank: true, default: nil
+      -# = f.input :founded_on, as: :string, order: [:day, :month, :year], input_html: { class: 'uk-width-1-1', 'data-uk-datepicker' => "{format:'DD/MM/YYYY'}" }
+      = f.error :founded_on, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.date_select :registered_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-100, order: [:day, :month, :year], include_blank: true, default: nil
+      = f.error :registered_on, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-1.uk-margin-top
+    = f.submit 'Next', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'

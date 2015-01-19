@@ -1,30 +1,11 @@
-%h1 Find/Create Organisation
-%hr
-.uk-form.uk-form-stacked
-  %fieldset
-    = form_tag organisations_path, method: 'post' do
-      .uk-width-medium-1-2
-        .uk-form-controls
-          = text_field_tag :search, params[:search]
-          = submit_tag 'Find organisation', class: 'uk-button uk-button-primary', style: 'color: #fff'
-          or
-          = link_to 'Create a new one', new_organisation_path, class: 'uk-button uk-button-primary', style: 'color: #fff'
-
-
-.uk-grid{"data-uk-grid-margin" => ""}
-  .uk-width-medium-3-4
-    %h1
-      New Organisation
-      = simple_form_for [@organisation], url: signup_organisation_path, method: :post do |f|
-        = f.input :name
-        = f.input :contact_number
-        = f.input :website
-        = f.input :street_address
-        = f.input :city
-        = f.input :region
-        = f.input :postal_code
-        = f.input :charity_number
-        = f.input :company_number
-        = f.input :founded_on
-        = f.input :registered_on
-        = f.submit
+.tm-section.tm-section-color-2.tm-section-colored
+  .uk-container.uk-container-center
+    .uk-width-medium-1-2.tm-section.uk-float-right.uk-text-center
+      %h1 Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+      %p.uk-text-large Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.
+    .uk-width-medium-1-2.uk-float-left
+      .uk-form.uk-form-stacked.uk-panel.uk-panel-box
+        %h3.uk-text-bold.uk-text-center New Organisation
+        %fieldset
+        = simple_form_for [@organisation], url: signup_organisation_path, method: :post do |f|
+          = render partial: 'organisations/form', locals: {f: f}

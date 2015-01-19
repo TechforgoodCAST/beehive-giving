@@ -1,12 +1,12 @@
 .uk-grid
   .uk-width-medium-1-2.uk-margin-top
     .uk-form-controls{style: 'position: relative;'}
-      = f.input :year, collection: Profile::VALID_YEARS, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      = f.input :year, collection: Profile::VALID_YEARS, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }, include_blank: 'Year'
       .uk-form-password-toggle
         = f.error :year, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-2.uk-margin-top
     .uk-form-controls{style: 'position: relative;'}
-      = f.input :gender, collection: Profile::GENDERS, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      = f.input :gender, collection: Profile::GENDERS, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }, include_blank: 'Gender'
       .uk-form-password-toggle
         = f.error :gender, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-2.uk-margin-top
