@@ -1,4 +1,10 @@
 .uk-grid
+  .uk-width-1-1.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.association :districts, error: false, label_method: :label, value_method: :id, input_html: {class: 'chosen-select'}
+      .uk-form-password-toggle
+        = f.error :districts, class: 'uk-text-small uk-text-warning'
+
   .uk-width-medium-1-2.uk-margin-top
     .uk-form-controls{style: 'position: relative;'}
       = f.input :year, collection: Profile::VALID_YEARS, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }, include_blank: 'Year'

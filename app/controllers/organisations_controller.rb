@@ -1,4 +1,5 @@
 class OrganisationsController < ApplicationController
+  before_filter :ensure_logged_in
   before_filter :load_organisation, except: [:new, :create]
   before_filter :load_user
   # before_filter :check_user_ownership

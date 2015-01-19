@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150113165324) do
+ActiveRecord::Schema.define(version: 20150119142905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,6 +24,30 @@ ActiveRecord::Schema.define(version: 20150113165324) do
 
   create_table "beneficiaries_profiles", force: true do |t|
     t.integer "beneficiary_id"
+    t.integer "profile_id"
+  end
+
+  create_table "countries", force: true do |t|
+    t.string  "name"
+    t.string  "iso2"
+    t.string  "iso3"
+    t.integer "numcode"
+  end
+
+  create_table "countries_profiles", force: true do |t|
+    t.integer "country_id"
+    t.integer "profile_id"
+  end
+
+  create_table "districts", force: true do |t|
+    t.integer "country_id"
+    t.string  "label"
+    t.string  "district"
+    t.string  "iso"
+  end
+
+  create_table "districts_profiles", force: true do |t|
+    t.integer "district_id"
     t.integer "profile_id"
   end
 

@@ -8,12 +8,12 @@ Rails.application.routes.draw do
 
   match '/welcome', to: 'signup#user', via: :get, as: 'signup_user'
   match '/your-organisation', to: 'signup#organisation', via: :get, as: 'signup_organisation'
-  match '/almost-done', to: 'signup#profile', via: :get, as: 'signup_profile'
-  match '/your-comparison', to: 'signup#comparison', via: :get, as: 'signup_comparison'
+  match '/your-profile', to: 'signup#profile', via: :get, as: 'signup_profile'
+  match '/comparison', to: 'signup#comparison', via: :get, as: 'signup_comparison'
 
   match '/welcome', to: 'signup#create_user', via: :post
   match '/your-organisation', to: 'signup#create_organisation', via: :post
-  match '/almost-done', to: 'signup#create_profile', via: :post
+  match '/your-profile', to: 'signup#create_profile', via: :post
 
   # get '/:id' => 'organisations#show', as: 'organisation'
 
