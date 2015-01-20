@@ -2,7 +2,7 @@ class Profile < ActiveRecord::Base
   belongs_to :organisation
 
   VALID_YEARS = ((Date.today.year-5)..(Date.today.year)).to_a.reverse
-  GENDERS = %w(male female both)
+  GENDERS = ['Only male', 'Only female', 'All genders']
 
   validates :organisation,:beneficiaries, :districts, presence: true
   validates :year, :gender, :currency, :goods_services, :who_pays, :who_buys,
