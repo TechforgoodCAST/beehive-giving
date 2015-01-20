@@ -17,7 +17,11 @@ class SignupController < ApplicationController
   end
 
   def organisation
-    @organisation = Organisation.new
+    if current_user.organisation_id
+      redirect_to root_path
+    else
+      @organisation = Organisation.new
+    end
   end
 
   def create_organisation
@@ -32,7 +36,11 @@ class SignupController < ApplicationController
 
   def profile
     @organisation = current_user.organisation
-    @profile = @organisation.profiles.new
+    if !@organisation || @organisation.profiles.count == 1
+      redirect_to root_path
+    else
+      @profile = @organisation.profiles.new
+    end
   end
 
   def create_profile
@@ -46,7 +54,12 @@ class SignupController < ApplicationController
   end
 
   def comparison
-
+    @organisation = current_user.organisation
+    if @organisation && @organisation.profiles.count == 1
+      render :comparison
+    else
+      redirect_to root_path
+    end
   end
 
   private

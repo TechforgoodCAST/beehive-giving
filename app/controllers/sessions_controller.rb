@@ -34,6 +34,7 @@ class SessionsController < ApplicationController
   def start_path_for_user(user)
     return signup_organisation_path unless user.organisation_id
     return signup_profile_path unless user.organisation.profiles.any?
-    signup_comparison_path
+    return signup_comparison_path if user.organisation.profiles.count == 1
+    organisation_path(current_user.organisation)
   end
 end
