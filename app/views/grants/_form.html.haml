@@ -6,7 +6,7 @@
     -#     = f.association :funder, error: false, type: 'text', input_html: { class: 'uk-width-1-1 chosen-select' }, include_blank: 'Select a funder...', label_method: :name, value_method: :id
     .uk-width-medium-1-1.uk-margin-top
       .uk-form-controls{style: 'position: relative;'}
-        = f.association :organisation, error: false, type: 'text', input_html: { class: 'uk-width-1-1 chosen-select' }, include_blank: 'Select a recipient...', label_method: :name, value_method: :id
+        = f.association :recipient, error: false, type: 'text', input_html: { class: 'uk-width-1-1 chosen-select' }, include_blank: 'Select a recipient...', label_method: :name, value_method: :id
     = f.input :funding_stream, collection: Grant::FUNDING_STREAM
     = f.input :grant_type, collection: Grant::GRANT_TYPE
     = f.input :attention_how, collection: Grant::ATTENTION_HOW

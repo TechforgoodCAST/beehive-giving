@@ -5,9 +5,9 @@ class Grant < ActiveRecord::Base
   ATTENTION_HOW = ['Headhunting', 'Referral', 'Unsolicited application']
 
   belongs_to :funder
-  belongs_to :organisation
+  belongs_to :recipient
 
-  validates :organisation, presence: true
+  validates :funder, :recipient, presence: true
   validates :funding_stream, :grant_type, :attention_how, :amount_awarded,
   :amount_applied, :installments, :approved_on, :start_on, :end_on,
   :attention_on, :applied_on, presence: true

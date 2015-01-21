@@ -1,7 +1,7 @@
 class Organisation < ActiveRecord::Base
   has_many :users
   has_many :profiles
-  has_many :grants
+  # has_many :grants
 
   validates :name, :contact_number, :website, :street_address, :city, :region,
   :postal_code, :country, :founded_on, presence: true

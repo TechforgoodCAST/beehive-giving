@@ -1,32 +1,21 @@
 .uk-container.uk-container-center
   %h1= @organisation.name
   %hr
-  %h4
-    Logged in as
-    = link_to @user.first_name, user_path(@user)
-    |
-    = link_to 'Logout', logout_path, method: :delete
-  %hr
   %h3 Profiles
   %ul
     - @profiles.each do |profile|
       %li= link_to profile.year, edit_organisation_profile_path(@organisation, profile)
     %li= link_to 'New Profile', new_organisation_profile_path(@organisation)
   %hr
-  %h3 Grants
+  %h3 Grants recieved
   %ul
     - @grants.each do |grant|
-      %li= link_to grant.amount_awarded, edit_organisation_grant_path(@organisation, grant)
-    %li= link_to 'New Grant', new_organisation_grant_path(@organisation)
-  %hr
-  %h3 Organisations
-  %ul
-    - @organisations.each do |organisation|
       %li
-        = link_to organisation.name, organisation_path(organisation)
+        = grant.funder.name
         |
-        = link_to 'Edit', edit_organisation_path(organisation)
-  %hr
+        = number_to_currency(grant.amount_awarded)
+    -#   %li= link_to grant.amount_awarded, edit_organisation_grant_path(@organisation, grant)
+    -# %li= link_to 'New Grant', new_organisation_grant_path(@organisation)
   %h3 Users
   %ul
     - @users.each do |user|

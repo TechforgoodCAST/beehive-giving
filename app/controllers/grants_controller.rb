@@ -20,7 +20,7 @@ class GrantsController < ApplicationController
   def grant_params
     params.require(:grant).permit(:funding_stream, :grant_type, :attention_how, :amount_awarded,
     :amount_applied, :installments, :approved_on, :start_on, :end_on, :attention_on, :applied_on,
-    :organisation_id, :funder_id)
+    :recipient_id, :funder_id)
   end
 
   def load_funder

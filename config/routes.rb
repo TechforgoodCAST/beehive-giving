@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   # get '/:id' => 'organisations#show', as: 'organisation'
 
   resources :users
-  resources :organisations, :funders do
+  resources :organisations, :funders, :recipients do
     resources :profiles
     resources :grants
   end
