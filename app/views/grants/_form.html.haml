@@ -1,9 +1,9 @@
 .uk-form.uk-form-stacked.uk-panel.uk-panel-box
   %fieldset
   = simple_form_for [@funder, @grant] do |f|
-    .uk-width-medium-1-1.uk-margin-top
-      .uk-form-controls{style: 'position: relative;'}
-        = f.association :funder, error: false, type: 'text', input_html: { class: 'uk-width-1-1 chosen-select' }, include_blank: 'Select a funder...', label_method: :name, value_method: :id
+    -# .uk-width-medium-1-1.uk-margin-top
+    -#   .uk-form-controls{style: 'position: relative;'}
+    -#     = f.association :funder, error: false, type: 'text', input_html: { class: 'uk-width-1-1 chosen-select' }, include_blank: 'Select a funder...', label_method: :name, value_method: :id
     .uk-width-medium-1-1.uk-margin-top
       .uk-form-controls{style: 'position: relative;'}
         = f.association :organisation, error: false, type: 'text', input_html: { class: 'uk-width-1-1 chosen-select' }, include_blank: 'Select a recipient...', label_method: :name, value_method: :id

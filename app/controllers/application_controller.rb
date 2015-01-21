@@ -17,6 +17,10 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def ensure_funder
+    redirect_to root_path unless current_user.role == 'Funder'
+  end
+
   def check_user_ownership
     redirect_to login_path unless @user == current_user
   end

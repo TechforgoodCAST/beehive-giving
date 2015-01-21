@@ -1,13 +1,10 @@
 class FundersController < ApplicationController
   before_filter :ensure_logged_in
+  before_filter :ensure_funder
   before_filter :load_funder, except: [:new, :create]
 
   def show
-    # @organisations = Funder.all
-    # @profiles = @organisation.profiles
-    # @users = @organisation.users
     @grants = @funder.grants
-    # @recipient = @funder.grants.recipient
   end
 
   private
