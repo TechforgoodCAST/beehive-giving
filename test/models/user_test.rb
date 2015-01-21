@@ -2,8 +2,8 @@ require 'test_helper'
 
 class UserTest < ActiveSupport::TestCase
   setup do
-    @acme = create(:acme)
-    @user = build(:user, organisation: @acme)
+    @recipient = create(:recipient)
+    @user = build(:user, organisation: @recipient)
   end
 
   test "a user belongs to an organisation" do

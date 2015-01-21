@@ -2,11 +2,11 @@ require 'test_helper'
 
 class OrganisationTest < ActiveSupport::TestCase
   setup do
-    @acme = build(:acme)
+    @recipient = build(:recipient)
   end
 
   test "organisation with basic details is valid" do
-    assert @acme.valid?
+    assert @recipient.valid?
   end
 
   test "organisation with false details is invalid" do
@@ -14,24 +14,24 @@ class OrganisationTest < ActiveSupport::TestCase
   end
 
   test "has many users" do
-    @acme.users << build(:user)
-    @acme.users << build(:user)
-    assert 2, @acme.users.size
+    @recipient.users << build(:user)
+    @recipient.users << build(:user)
+    assert 2, @recipient.users.size
   end
 
   test "has many profiles" do
-    @acme.profiles << build(:profile)
-    @acme.profiles << build(:profile)
-    assert 2, @acme.profiles.size
+    @recipient.profiles << build(:profile)
+    @recipient.profiles << build(:profile)
+    assert 2, @recipient.profiles.size
   end
 
   test "has many grants" do
-    @acme.grants << build(:grant)
-    @acme.grants << build(:grant)
-    assert 2, @acme.grants.size
+    @recipient.grants << build(:grant)
+    @recipient.grants << build(:grant)
+    assert 2, @recipient.grants.size
   end
 
   test "founded before being registered" do
-    assert @acme.founded_on < @acme.registered_on
+    assert @recipient.founded_on < @recipient.registered_on
   end
 end

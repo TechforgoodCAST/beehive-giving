@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :grant do
     funding_stream "Main"
     grant_type "Unrestricted"
-    attention_how "Unsolicted applicaiton"
+    attention_how "Headhunting"
     amount_awarded 10000
     amount_applied 10000
     installments 1

@@ -52,6 +52,7 @@ ActiveRecord::Schema.define(version: 20150119142905) do
   end
 
   create_table "grants", force: true do |t|
+    t.integer  "funder_id"
     t.integer  "organisation_id"
     t.string   "funding_stream"
     t.string   "grant_type"

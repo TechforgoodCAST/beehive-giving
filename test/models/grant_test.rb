@@ -2,8 +2,8 @@ require 'test_helper'
 
 class GrantTest < ActiveSupport::TestCase
   setup do
-    @acme = create(:acme)
-    @grant = build(:grant, organisation: @acme)
+    @recipient = create(:recipient)
+    @grant = build(:grant, organisation: @recipient)
   end
 
   test "a grant belongs to an organisation" do

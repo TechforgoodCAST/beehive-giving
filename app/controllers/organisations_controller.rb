@@ -47,7 +47,7 @@ class OrganisationsController < ApplicationController
   end
 
   def load_organisation
-    @organisation = Organisation.find_by_slug(params[:id])
+    @organisation = Recipient.find_by_slug(params[:id])
   end
 
   def load_user

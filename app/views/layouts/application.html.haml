@@ -10,7 +10,7 @@
     %nav.uk-navbar#bg{"data-uk-sticky" => ""}
       .uk-container.uk-container-center
         %a.uk-navbar-brand.uk-hidden-small{:href => root_path}
-          %img.uk-margin.uk-margin-remove{:alt => "Beehive", :height => "30", :src => "assets/logo.png", :title => "Beehive", :width => "90"}/
+          %img.uk-margin.uk-margin-remove{:alt => "Beehive", :height => "30", :src => "../assets/logo.png", :title => "Beehive", :width => "90"}/
         .uk-navbar-flip
           %a.uk-navbar-toggle.uk-visible-small{"data-uk-offcanvas" => "{target:'#offcanvas'}"}
           - if @logged_in
@@ -38,7 +38,7 @@
               %li
                 %a{"data-uk-offcanvas" => "", :href => "#offcanvas"} Sign in
         %a.uk-navbar-brand.uk-visible-small#padding-remove{:href => root_path}
-          %img{:alt => "Beehive", :height => "30", :src => "assets/logo.png", :title => "UIkit", :width => "90"}
+          %img{:alt => "Beehive", :height => "30", :src => "../assets/logo.png", :title => "UIkit", :width => "90"}
 
     .uk-container.uk-container-center
       - if flash[:notice]

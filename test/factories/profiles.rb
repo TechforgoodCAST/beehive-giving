@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :profile do
     year 2014
-    gender 'both'
+    gender 'All genders'
     currency 'GBP'
     goods_services 'both'
     who_pays 'both'
@@ -19,8 +19,8 @@ FactoryGirl.define do
     services_count 0
     beneficiaries_count 0
     #Error?
-    after(:create) do |profile|
-      profile.beneficiaries = (create(:beneficiary))
-    end
+    # after(:create) do |profile|
+    #   profile.beneficiaries = ['option1', 'option2']
+    # end
   end
 end

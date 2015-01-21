@@ -1,0 +1,11 @@
+.tm-section.tm-section-color-2.tm-section-colored
+  .uk-container.uk-container-center
+    -# .uk-width-medium-1-2.tm-section.uk-float-right.uk-text-center
+    -#   %h1 Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+    -#   %p.uk-text-large Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.
+    .uk-width-medium-1-2.uk-float-left
+      .uk-form.uk-form-stacked.uk-panel.uk-panel-box
+        %h3.uk-text-bold.uk-text-center New Funder
+        %fieldset
+        = simple_form_for [@funder], url: new_funder_path, method: :post do |f|
+          = render partial: 'organisations/form', locals: {f: f}

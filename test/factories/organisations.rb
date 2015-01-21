@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :acme, class: Organisation do
+  factory :recipient, class: Recipient do
     name "ACME"
     contact_number "01234 567 890"
     website "www.acme.com"
@@ -7,14 +7,14 @@ FactoryGirl.define do
     city "City"
     region "Region"
     postal_code "A1 B2"
+    country "United Kingdom"
     charity_number "1AB1C1"
     company_number "1AB1C1"
-    organisation_type "Non-profit"
     founded_on "01/01/2014"
     registered_on "01/01/2015"
   end
 
-  factory :organisation, class: Organisation do
+  factory :organisation, class: Recipient do
     transient do
       n 1
     end
@@ -25,13 +25,13 @@ FactoryGirl.define do
     city "City"
     region "Region"
     postal_code "A1 B2"
+    country "United Kingdom"
     charity_number "1AB1C1"
     company_number "1AB1C1"
-    organisation_type "Non-profit"
     founded_on "01/01/2015"
     registered_on "01/01/2015"
   end
 
-  factory :blank_org, class: Organisation do
+  factory :blank_org, class: Recipient do
   end
 end

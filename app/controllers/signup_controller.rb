@@ -10,7 +10,8 @@ class SignupController < ApplicationController
     if @user.save
       cookies[:auth_token] = @user.auth_token
       # OrganisationMailer.welcome_email(@organisation).deliver
-      redirect_to signup_organisation_path
+      redirect_to signup_organisation_path if @user.role == 'User'
+      redirect_to new_funder_path if @user.role == 'Funder'
     else
       render :user
     end
@@ -31,6 +32,20 @@ class SignupController < ApplicationController
       redirect_to signup_profile_path
     else
       render :organisation
+    end
+  end
+
+  def funder
+    @funder = Organisation.new
+  end
+
+  def create_funder
+    @funder = Funder.new(funder_params)
+    if @funder.save
+      current_user.update_attribute(:organisation_id, @funder.id)
+      redirect_to funder_path(current_user.organisation)
+    else
+      render :funder
     end
   end
 
@@ -71,6 +86,12 @@ class SignupController < ApplicationController
   end
 
   def organisation_params
+    params.require(:organisation).permit(:name, :contact_number, :website,
+    :street_address, :city, :region, :postal_code, :country, :charity_number,
+    :company_number, :founded_on, :registered_on, organisation_ids: [])
+  end
+
+  def funder_params
     params.require(:organisation).permit(:name, :contact_number, :website,
     :street_address, :city, :region, :postal_code, :country, :charity_number,
     :company_number, :founded_on, :registered_on, organisation_ids: [])

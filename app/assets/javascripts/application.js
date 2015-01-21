@@ -15,16 +15,7 @@
 //= require jquery_ujs
 //= require uikit
 //= require chosen-jquery
+//= require turbolinks
 //= require raphael
 //= require morris
-//= require turbolinks
 //= require_tree .
-
-// Enable chosen
-$(function() {
-  return $('.chosen-select').chosen({
-    allow_single_deselect: true,
-    no_results_text: 'No results matched',
-    width: '100%'
-  });
-});

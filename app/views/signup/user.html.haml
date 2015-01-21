@@ -15,6 +15,7 @@
             .uk-grid
               .uk-width-medium-1-1
                 .uk-form-controls{style: 'position: relative;'}
+                  = f.input :role
                   = f.input :first_name, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
                   .uk-form-password-toggle
                     = f.error :first_name, class: 'uk-text-small uk-text-warning'
