@@ -54,6 +54,7 @@ class SignupController < ApplicationController
   end
 
   def comparison
+    @grants = Grant.all
     @organisation = current_user.organisation
     if @organisation && @organisation.profiles.count == 1
       render :comparison

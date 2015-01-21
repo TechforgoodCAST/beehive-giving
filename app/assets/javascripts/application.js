@@ -15,9 +15,10 @@
 //= require jquery_ujs
 //= require uikit
 //= require chosen-jquery
+//= require raphael
+//= require morris
 //= require turbolinks
 //= require_tree .
-
 
 // Enable chosen
 $(function() {

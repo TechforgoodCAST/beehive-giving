@@ -1,5 +1,10 @@
 .tm-section.tm-section-color-2.tm-section-colored
   .uk-container.uk-container-center
-    %h1 Comparison
-    %h2 Thanks for completing your profile
-    %a.uk-button.uk-button-large What's next?
+    .uk-width-medium-1-2.tm-section.uk-text-center.uk-responsive-width.uk-float-right
+      %h1 Comparison
+      %h2 Thanks for completing your profile
+      %a.uk-button.uk-button-large What's next?
+    .uk-width-medium-1-2.uk-float-left
+      .uk-panel.uk-panel-box
+        %h3.uk-text-bold.uk-text-center Grants in the last 7 days
+        %p#grants_chart{ data: {grants: grants_chart_data.to_json} }
