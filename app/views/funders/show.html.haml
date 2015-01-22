@@ -1,16 +1,12 @@
 .uk-container.uk-container-center
-  %h1
-    Funder is
-    = @funder.name
-  %hr
-  %p= @recipient
-  %h3 Grants awarded
-  %ul
-    - @grants.each do |grant|
-      %li
-        = link_to number_to_currency(grant.amount_awarded, unit: '£'), edit_funder_grant_path(@funder, grant)
-        for
-        = grant.recipient.name
-        from
-        = grant.funder.name
-    %li= link_to 'New Grant', new_funder_grant_path(@funder)
+  .uk-width-medium-1-2.uk-float-left
+    %h1= @funder.name
+    %p= @recipient
+    %h3 Grants awarded
+    %ul
+      - @grants.each do |grant|
+        %li
+          = link_to number_to_currency(grant.amount_awarded, unit: '£'), edit_funder_grant_path(@funder, grant)
+          for
+          = link_to grant.recipient.name, recipient_path(grant.recipient)
+      %li= link_to 'New Grant', new_funder_grant_path(@funder)

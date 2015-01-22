@@ -176,6 +176,8 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.4)
     tilt (1.4.1)
+    timelineJS-rails (1.1.5)
+      jquery-rails
     timers (4.0.1)
       hitimes
     turbolinks (2.5.3)
@@ -209,6 +211,7 @@ DEPENDENCIES
   sdoc (~> 0.4.0)
   simple_form
   spring
+  timelineJS-rails (~> 1.1.5)
   turbolinks
   uglifier (>= 1.3.0)
   uikit-sass-rails

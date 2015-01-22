@@ -39,6 +39,7 @@ gem 'uikit-sass-rails'
 gem 'chosen-rails'
 gem 'jquery-turbolinks'
 gem 'country_select'
+gem 'timelineJS-rails', '~> 1.1.5'
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'

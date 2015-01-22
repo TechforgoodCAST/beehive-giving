@@ -15,6 +15,19 @@ class GrantsController < ApplicationController
     end
   end
 
+  def edit
+    @grant = @funder.grants.find(params[:id])
+  end
+
+  def update
+    @grant = @funder.grants.find(params[:id])
+    if @grant.update_attributes(grant_params)
+      redirect_to funder_path(current_user.organisation)
+    else
+      render :edit
+    end
+  end
+
   private
 
   def grant_params

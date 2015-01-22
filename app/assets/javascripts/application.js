@@ -16,6 +16,7 @@
 //= require uikit
 //= require chosen-jquery
 //= require turbolinks
+//= require timelineJS/embed
 //= require raphael
 //= require morris
 //= require_tree .
