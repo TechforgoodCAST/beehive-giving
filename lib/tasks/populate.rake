@@ -28,7 +28,7 @@ namespace :db do
         last_name: Faker::Name.last_name,
         job_role: Faker::Name.title,
         user_email: "funder#{n+1}@example.com",
-        password: 'password',
+        password: '123123',
         role: 'Funder'
       )
       user.organisation = Funder.find(n+1)
@@ -55,10 +55,33 @@ namespace :db do
       last_name: Faker::Name.last_name,
       job_role: Faker::Name.title,
       user_email: "org#{n+1}@example.com",
-      password: 'password',
+      password: '123123',
       )
       user.organisation = Recipient.find(n+1+count)
       user.save
+
+      profile = Profile.create(
+        gender: 'All genders',
+        currency: 'GBP',
+        goods_services: 'Goods',
+        who_pays: Faker::Lorem.word,
+        who_buys: Faker::Lorem.word,
+        year: '2014',
+        min_age: rand(0..25),
+        max_age: rand(10..120),
+        income: Faker::Number.number(5),
+        expenditure: Faker::Number.number(5),
+        volunteer_count: rand(0..100),
+        staff_count: rand(0..50),
+        job_role_count: rand(0..25),
+        department_count: rand(0..25),
+        goods_count: rand(0..25),
+        units_count: rand(0..5000),
+        services_count: rand(0..25),
+        beneficiaries_count: rand(0..5000)
+      )
+      profile.organisation = Recipient.find(n+1+count)
+      profile.save
     end
 
     10.times do |n|
