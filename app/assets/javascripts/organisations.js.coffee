@@ -21,6 +21,6 @@ $(document).ready ->
   createStoryJS
     type: "timeline"
     width: "100%"
-    height: "500"
+    height: "400"
     source: $('#time_line').data('grants')
     embed_id: "time_line"

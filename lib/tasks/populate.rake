@@ -1,5 +1,5 @@
 namespace :db do
-  desc "Erase and fill database"
+  desc "Erase and fill database with dummy data"
   task :populate => :environment do
     require 'faker'
 
