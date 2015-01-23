@@ -6,7 +6,8 @@
     %ul
       - @grants.each do |grant|
         %li
-          = link_to number_to_currency(grant.amount_awarded, unit: '£'), edit_funder_grant_path(@funder, grant)
+          = link_to number_to_currency(grant.amount_awarded, unit: '£', precision: 0),
+            edit_funder_grant_path(@funder, grant), class: 'uk-text-bold'
           for
           = link_to grant.recipient.name, recipient_path(grant.recipient)
       %li= link_to 'New Grant', new_funder_grant_path(@funder)

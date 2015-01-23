@@ -22,33 +22,5 @@ $(document).ready ->
     type: "timeline"
     width: "100%"
     height: "500"
-    source: data
+    source: $('#time_line').data('grants')
     embed_id: "time_line"
-
-data = timeline:
-  headline: "Grants recieved"
-  type: "default"
-  text: "<p> </p>"
-  date: [
-    {
-      startDate: "2012,12,10"
-      endDate: "2012,12,11"
-      headline: "Grant 1"
-      text: "£100"
-      tag: "Funder 1"
-    }
-    {
-      startDate: "2013,12,10"
-      endDate: "2013,12,11"
-      headline: "Grant 2"
-      text: "£100"
-      tag: "Funder 2"
-    }
-    {
-      startDate: "2014,12,10"
-      endDate: "2014,12,11"
-      headline: "Grant 3"
-      text: "£100"
-      tag: "Funder 1"
-    }
-  ]

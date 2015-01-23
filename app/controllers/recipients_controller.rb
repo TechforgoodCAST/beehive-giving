@@ -5,12 +5,7 @@ class RecipientsController < ApplicationController
 
   def show
     @grants = @recipient.grants
-    # render :json => @grants
-    
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render :json => @grants }
-    end
+    @funder = current_user.organisation
   end
 
   private

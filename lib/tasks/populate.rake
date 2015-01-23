@@ -93,8 +93,8 @@ namespace :db do
         amount_applied: Faker::Number.number(5),
         installments: Faker::Number.digit,
         approved_on: Faker::Date.between(10.years.ago, Time.now),
-        start_on: Faker::Date.between(10.years.ago, Time.now),
-        end_on: Faker::Date.between(10.years.ago, Time.now),
+        start_on: Faker::Date.between(2.years.ago, 1.years.ago),
+        end_on: Faker::Date.between(1.years.ago, Time.now),
         attention_on: Faker::Date.between(10.years.ago, Time.now),
         applied_on: Faker::Date.between(10.years.ago, Time.now)
       )
@@ -112,8 +112,8 @@ namespace :db do
       amount_applied: Faker::Number.number(5),
       installments: Faker::Number.digit,
       approved_on: Faker::Date.between(10.years.ago, Time.now),
-      start_on: Faker::Date.between(10.years.ago, Time.now),
-      end_on: Faker::Date.between(10.years.ago, Time.now),
+      start_on: Faker::Date.between(2.years.ago, 1.years.ago),
+      end_on: Faker::Date.between(1.years.ago, Time.now),
       attention_on: Faker::Date.between(10.years.ago, Time.now),
       applied_on: Faker::Date.between(10.years.ago, Time.now)
       )
