@@ -35,7 +35,7 @@ namespace :db do
       user.save
     end
 
-    25.times do |n|
+    100.times do |n|
       organisation = Recipient.create(
       name: Faker::Company.name,
       contact_number: Faker::PhoneNumber.phone_number,
@@ -84,7 +84,7 @@ namespace :db do
       profile.save
     end
 
-    10.times do |n|
+    75.times do |n|
       grant = Grant.create(
         funding_stream: 'Main',
         grant_type: 'Unrestricted',
@@ -92,14 +92,52 @@ namespace :db do
         amount_awarded: Faker::Number.number(5),
         amount_applied: Faker::Number.number(5),
         installments: Faker::Number.digit,
-        approved_on: Faker::Date.between(10.years.ago, Time.now),
+        approved_on: Faker::Date.between(3.years.ago, 2.years.ago),
         start_on: Faker::Date.between(2.years.ago, 1.years.ago),
         end_on: Faker::Date.between(1.years.ago, Time.now),
-        attention_on: Faker::Date.between(10.years.ago, Time.now),
-        applied_on: Faker::Date.between(10.years.ago, Time.now)
+        attention_on: Faker::Date.between(5.years.ago, 4.years.ago),
+        applied_on: Faker::Date.between(4.years.ago, 3.years.ago)
       )
       grant.funder = Funder.find(1)
-      grant.recipient = Recipient.find(rand(start..25))
+      grant.recipient = Recipient.find(rand(start..100))
+      grant.save
+    end
+
+    75.times do |n|
+      grant = Grant.create(
+      funding_stream: 'Main',
+      grant_type: 'Unrestricted',
+      attention_how: 'Headhunting',
+      amount_awarded: Faker::Number.number(5),
+      amount_applied: Faker::Number.number(5),
+      installments: Faker::Number.digit,
+      approved_on: Faker::Date.between(3.years.ago, 2.years.ago),
+      start_on: Faker::Date.between(2.years.ago, 1.years.ago),
+      end_on: Faker::Date.between(1.years.ago, Time.now),
+      attention_on: Faker::Date.between(5.years.ago, 4.years.ago),
+      applied_on: Faker::Date.between(4.years.ago, 3.years.ago)
+      )
+      grant.funder = Funder.find(2)
+      grant.recipient = Recipient.find(rand(start..100))
+      grant.save
+    end
+
+    75.times do |n|
+      grant = Grant.create(
+      funding_stream: 'Main',
+      grant_type: 'Unrestricted',
+      attention_how: 'Headhunting',
+      amount_awarded: Faker::Number.number(5),
+      amount_applied: Faker::Number.number(5),
+      installments: Faker::Number.digit,
+      approved_on: Faker::Date.between(3.years.ago, 2.years.ago),
+      start_on: Faker::Date.between(2.years.ago, 1.years.ago),
+      end_on: Faker::Date.between(1.years.ago, Time.now),
+      attention_on: Faker::Date.between(5.years.ago, 4.years.ago),
+      applied_on: Faker::Date.between(4.years.ago, 3.years.ago)
+      )
+      grant.funder = Funder.find(3)
+      grant.recipient = Recipient.find(rand(start..100))
       grant.save
     end
 
@@ -111,14 +149,14 @@ namespace :db do
       amount_awarded: Faker::Number.number(5),
       amount_applied: Faker::Number.number(5),
       installments: Faker::Number.digit,
-      approved_on: Faker::Date.between(10.years.ago, Time.now),
+      approved_on: Faker::Date.between(3.years.ago, 2.years.ago),
       start_on: Faker::Date.between(2.years.ago, 1.years.ago),
       end_on: Faker::Date.between(1.years.ago, Time.now),
-      attention_on: Faker::Date.between(10.years.ago, Time.now),
-      applied_on: Faker::Date.between(10.years.ago, Time.now)
+      attention_on: Faker::Date.between(5.years.ago, 4.years.ago),
+      applied_on: Faker::Date.between(4.years.ago, 3.years.ago)
       )
-      grant.funder = Funder.find(2)
-      grant.recipient = Recipient.find(rand(start..25))
+      grant.funder = Funder.find(4)
+      grant.recipient = Recipient.find(rand(start..100))
       grant.save
     end
 
