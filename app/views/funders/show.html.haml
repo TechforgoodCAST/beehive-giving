@@ -1,13 +1,69 @@
 .uk-container.uk-container-center
-  .uk-width-medium-1-2.uk-float-left
-    %h1= @funder.name
-    %p= @recipient
-    %h3 Grants awarded
-    %ul
-      - @grants.each do |grant|
-        %li
-          = link_to number_to_currency(grant.amount_awarded, unit: '£', precision: 0),
-            edit_funder_grant_path(@funder, grant), class: 'uk-text-bold'
-          for
-          = link_to grant.recipient.name, recipient_path(grant.recipient)
-      %li= link_to 'New Grant', new_funder_grant_path(@funder)
+  .uk-grid
+    .uk-width-1-1.uk-margin
+      %h1= @funder.name
+    .uk-width-medium-1-2
+      %h3.uk-text-bold Grants awarded
+      %a.uk-button.uk-button-primary{ href: new_funder_grant_path(@funder) }
+        %i.uk-icon-plus
+        Add grant
+
+      %ul#padding-remove
+        - @grants.each do |grant|
+          %li.uk-panel.uk-panel-box.uk-margin-bottom
+            .uk-panel-badge.uk-badge
+              = grant.start_on.strftime("%b %Y")
+            %h3.uk-panel-title.uk-margin-remove
+              %a{"data-uk-toggle" => "{target:'#toggle#{grant.id}'}"}
+                = grant.recipient.name
+            .uk-hidden.uk-grid.uk-margin-top{:id => "toggle#{grant.id}", :style => "-webkit-animation-duration: 200ms;"}
+              .uk-width-medium-1-1.uk-margin-bottom
+                %h4 Summary
+                .uk-grid
+                  %dl.uk-description-list.uk-description-list-horizontal.uk-width-medium-1-1
+                    %dt Funding stream
+                    %dd= grant.funding_stream
+                    %dt Grant type
+                    %dd= grant.grant_type
+                    %dt Attention how
+                    %dd= grant.attention_how
+                    %dt Amount awarded
+                    %dd= number_to_currency(grant.amount_awarded, unit: '£', precision: 0)
+                    %dt Amount applied for
+                    %dd= number_to_currency(grant.amount_applied, unit: '£', precision: 0)
+                    %dt Installments
+                    %dd= grant.installments
+                    %dt Attention on
+                    %dd= grant.attention_on.strftime("%d %b %Y")
+                    %dt Applied on
+                    %dd
+                      = grant.applied_on.strftime("%d %b %Y")
+                      = surround '(', ')' do
+                        = ((grant.attention_on - grant.applied_on).to_f / 356).round(1)
+                        years
+                    %dt Approved on
+                    %dd
+                      = grant.approved_on.strftime("%d %b %Y")
+                      = surround '(', ')' do
+                        = ((grant.approved_on - grant.applied_on).to_f / 356).round(1)
+                        years
+                    %dt Start on
+                    %dd
+                      = grant.start_on.strftime("%d %b %Y")
+                      = surround '(', ')' do
+                        = ((grant.start_on - grant.approved_on).to_f / 356).round(1)
+                        years
+                    %dt End on
+                    %dd
+                      = grant.end_on.strftime("%d %b %Y")
+                      = surround '(', ')' do
+                        = ((grant.end_on - grant.start_on).to_f / 356).round(1)
+                        years
+
+              .uk-width-medium-1-2
+                = link_to 'Edit', edit_funder_grant_path(@funder, grant), class: 'uk-button uk-button-small uk-width-1-1'
+              .uk-width-medium-1-2
+                = link_to 'Explore', recipient_path(grant.recipient), class: 'uk-button uk-button-primary uk-button-small uk-width-1-1'
+
+    .uk-width-medium-1-2
+      %h3.uk-text-bold Potential partners
