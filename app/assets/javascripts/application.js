@@ -17,6 +17,7 @@
 //= require chosen-jquery
 //= require turbolinks
 //= require timelineJS/embed
+//= require d3
 //= require raphael
 //= require morris
 //= require_tree .

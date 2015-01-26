@@ -1,10 +1,78 @@
 .tm-section.tm-section-color-2.tm-section-colored
   .uk-container.uk-container-center
-    .uk-width-medium-1-2.tm-section.uk-text-center.uk-responsive-width.uk-float-right
+    .uk-width-medium-1-2.tm-section.uk-text-center.uk-float-right
       %h1 Comparison
       %h2 Thanks for completing your profile
       %a.uk-button.uk-button-large What's next?
     .uk-width-medium-1-2.uk-float-left
       .uk-panel.uk-panel-box
-        %h3.uk-text-bold.uk-text-center Grants recieved
+        %h3.uk-text-bold.uk-text-center
+          Grants recieved by Nonprofit:
+          = @organisation.name
         %p#grants_chart{ data: {grants: @organisation.grants.to_json} }
+    .uk-width-medium-1-2.tm-section.uk-text-center.uk-float-right
+    .uk-width-medium-1-2.uk-float-left.uk-margin-top
+      .uk-panel.uk-panel-box
+        %h3.uk-text-bold.uk-text-center Grant amounts for Funder: Mclaughlin Kulas
+        %p#d3_chart
+        :javascript
+          var getWidth = $('#d3_chart').parent().width();
+
+          var margin = {top: 20, right: 20, bottom: 30, left: 80},
+              width = getWidth - margin.left - margin.right,
+              height = 300 - margin.top - margin.bottom;
+
+          var x = d3.scale.ordinal()
+              .rangeRoundBands([0, width], .2);
+
+          var y = d3.scale.linear()
+              .range([0, height]);
+
+          var xAxis = d3.svg.axis()
+              .scale(x)
+              .orient("bottom");
+
+          var yAxis = d3.svg.axis()
+              .scale(y)
+              .orient("left");
+
+          var svg = d3.select("#d3_chart").append("svg")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+              .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+          var data;
+
+          d3.json("funders/mclaughlin-kulas/grants.json", function(error, json) {
+            if (error) return console.warn(error);
+            data = json;
+
+            x.domain(data.map(function(d) { return d.start_on; }));
+            y.domain(data.map(function(d) { return d.amount_awarded; }));
+
+            svg.append("g")
+                .attr("class", "x axis")
+                .attr("transform", "translate(0," + height + ")")
+                .call(xAxis);
+
+            svg.append("g")
+                .attr("class", "y axis")
+                .call(yAxis)
+              .append("text")
+                .attr("transform", "rotate(-90)")
+                .attr("y", -60)
+                .attr("dy", ".71em")
+                .style("text-anchor", "end")
+                .text("Grant amount (£)");
+
+            svg.selectAll(".bar")
+                .data(data)
+              .enter().append("rect")
+                .attr("class", "bar")
+                .attr("x", function(d) { return x(d.start_on); })
+                .attr("width", x.rangeBand())
+                .attr("y", function(d) { return y(d.amount_awarded); })
+                .attr("height", function(d) { return height - y(d.amount_awarded); });
+
+          });

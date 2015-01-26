@@ -43,6 +43,7 @@ gem 'country_select'
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'rabl'
 gem 'oj'
+gem 'd3-rails'
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'

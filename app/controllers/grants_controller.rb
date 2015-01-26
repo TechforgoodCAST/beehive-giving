@@ -2,6 +2,15 @@ class GrantsController < ApplicationController
   before_filter :ensure_logged_in
   before_filter :load_funder
 
+  def index
+    @grants = @funder.grants
+
+    respond_to do |format|
+      format.html # show.html.erb
+      format.json  { render :json => @grants }
+    end
+  end
+
   def new
     @grant = @funder.grants.new
   end
