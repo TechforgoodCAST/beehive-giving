@@ -4,7 +4,7 @@ class FundersController < ApplicationController
   before_filter :load_funder, except: [:new, :create]
 
   def show
-    @grants = @funder.grants
+    @grants = @funder.grants.paginate(:per_page => 10, :page => params[:page])
   end
 
   private

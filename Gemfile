@@ -44,6 +44,7 @@ gem 'timelineJS-rails', '~> 1.1.5'
 gem 'rabl'
 gem 'oj'
 gem 'd3-rails'
+gem 'will_paginate', '~> 3.0.5'
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
