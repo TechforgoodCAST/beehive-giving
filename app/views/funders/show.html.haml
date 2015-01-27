@@ -21,6 +21,7 @@
             %h3.uk-panel-title.uk-margin-remove
               %a{"data-uk-toggle" => "{target:'#toggle#{grant.id}'}"}
                 = grant.recipient.name
+            %q.uk-text-muted= grant.recipient.mission
             .uk-hidden.uk-grid.uk-margin-top{:id => "toggle#{grant.id}", :style => "-webkit-animation-duration: 200ms;"}
               .uk-width-medium-1-1.uk-margin-bottom
                 %h4 Summary

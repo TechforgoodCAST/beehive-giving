@@ -11,6 +11,7 @@ namespace :db do
     count.times do |n|
       funder = Funder.create(
         name: Faker::Company.name,
+        mission: Faker::Company.catch_phrase,
         contact_number: Faker::PhoneNumber.phone_number,
         website: Faker::Internet.domain_name,
         street_address: Faker::Address.street_address,
@@ -18,6 +19,8 @@ namespace :db do
         region: Faker::Address.street_name,
         postal_code: Faker::Address.postcode,
         country: Faker::Address.country,
+        status: 'Active',
+        registered: true,
         charity_number: Faker::Number.number(8),
         company_number: Faker::Number.number(10),
         founded_on: Faker::Date.between(10.years.ago, 5.years.ago),
@@ -38,6 +41,7 @@ namespace :db do
     100.times do |n|
       organisation = Recipient.create(
       name: Faker::Company.name,
+      mission: Faker::Company.catch_phrase,
       contact_number: Faker::PhoneNumber.phone_number,
       website: Faker::Internet.domain_name,
       street_address: Faker::Address.street_address,
@@ -45,6 +49,8 @@ namespace :db do
       region: Faker::Address.street_name,
       postal_code: Faker::Address.postcode,
       country: Faker::Address.country,
+      status: 'Active',
+      registered: true,
       charity_number: Faker::Number.number(8),
       company_number: Faker::Number.number(10),
       founded_on: Faker::Date.between(10.years.ago, 5.years.ago),

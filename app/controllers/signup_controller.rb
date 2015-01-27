@@ -87,7 +87,7 @@ class SignupController < ApplicationController
   def organisation_params
     params.require(:organisation).permit(:name, :contact_number, :website,
     :street_address, :city, :region, :postal_code, :country, :charity_number,
-    :company_number, :founded_on, :registered_on, organisation_ids: [])
+    :company_number, :founded_on, :registered_on, :mission, :status, :registered, organisation_ids: [])
   end
 
   def funder_params
@@ -100,6 +100,6 @@ class SignupController < ApplicationController
     params.require(:profile).permit(:year, :gender, :currency, :goods_services, :who_pays, :who_buys,
     :min_age, :max_age, :income, :expenditure, :volunteer_count,
     :staff_count, :job_role_count, :department_count, :goods_count,
-    :units_count, :services_count, :beneficiaries_count, beneficiary_ids: [], country_ids: [], district_ids: [])
+    :units_count, :services_count, :beneficiaries_count, beneficiary_ids: [], country_ids: [], district_ids: [], implementation_ids: [])
   end
 end

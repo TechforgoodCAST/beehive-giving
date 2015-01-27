@@ -4,5 +4,10 @@ class CreateBeneficiariesProfiles < ActiveRecord::Migration
       t.references :beneficiary
       t.references :profile
     end
+
+    create_table :implementations_profiles do |t|
+      t.references :implementation
+      t.references :profile
+    end
   end
 end

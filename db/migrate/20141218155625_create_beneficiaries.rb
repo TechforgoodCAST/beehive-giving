@@ -21,9 +21,29 @@ class CreateBeneficiaries < ActiveRecord::Migration
     ].each do |state|
       Beneficiary.create(label:state)
     end
+
+    create_table :implementations do |t|
+      t.string :label
+
+      t.timestamps null: false
+    end
+
+    [
+      "Staff to Beneficiary (A paid member of staff works with a beneficiary)",
+      "Volunteer to Beneficiary (A voluntary member of staff works with a beneficiary)",
+      "Beneficiary to Beneficiary (A beneficiary works with another beneficiary)",
+      "Software to Beneficiary (Software for a beneficiary or workers)",
+      "Goods to Beneficiary (Physical goods for a beneficiary or workers)",
+      "Third party to Beneficiary (A partner agency works with a beneficiary)",
+      "Research (Research that affects a beneficiary)",
+      "Campaign to Beneficiary (A campaign that affects a beneficiary)"
+    ].each do |state|
+      Implementation.create(label:state)
+    end
   end
 
   def down
     drop_table :beneficiaries
+    drop_table :implementations
   end
 end

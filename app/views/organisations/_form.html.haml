@@ -4,6 +4,11 @@
       = f.input :name, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
       .uk-form-password-toggle
         = f.error :name, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-1.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :mission, as: :text, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+      .uk-form-password-toggle
+        = f.error :mission, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-2.uk-margin-top
     .uk-form-controls{style: 'position: relative;'}
       = f.input :website, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
@@ -38,6 +43,16 @@
     .uk-form-controls{style: 'position: relative;'}
       = f.input :country, error: false, type: 'text', input_html: { class: 'uk-width-1-1 chosen-select' }, include_blank: 'Select a country...', priority: ['Ethiopia', 'Kenya', 'Uganda', 'United Kingdom']
       = f.error :country, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :status, collection: Organisation::STATUS, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }, include_blank: 'Active status'
+      .uk-form-password-toggle
+        = f.error :status, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-top
+    .uk-form-controls{style: 'position: relative;'}
+      = f.input :registered, as: :select, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }, include_blank: 'Legally registered?'
+      .uk-form-password-toggle
+        = f.error :registered, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-2.uk-margin-top
     .uk-form-controls{style: 'position: relative;'}
       = f.input :charity_number, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }

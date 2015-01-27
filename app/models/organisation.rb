@@ -1,10 +1,11 @@
 class Organisation < ActiveRecord::Base
   has_many :users
   has_many :profiles
-  # has_many :grants
+
+  STATUS = ['Active', 'Closed', 'Merged']
 
   validates :name, :contact_number, :website, :street_address, :city, :region,
-  :postal_code, :country, :founded_on, presence: true
+  :postal_code, :country, :founded_on, :mission, :status, :registered, presence: true
 
   # date_select currently not nil
   # validates :registered_on, presence: true, unless: :company_number? || :charity_number?
@@ -12,6 +13,7 @@ class Organisation < ActiveRecord::Base
   validates :charity_number, presence: true, uniqueness: true, unless: :company_number?
   validates :company_number, presence: true, uniqueness: true, unless: :charity_number?
   validates :slug, uniqueness: true, presence: true
+  validates :status, inclusion: {in: STATUS}
 
   validate :founded_on_before_registered_on
 

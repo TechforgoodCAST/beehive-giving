@@ -69,6 +69,17 @@ ActiveRecord::Schema.define(version: 20150119142905) do
     t.datetime "updated_at",     null: false
   end
 
+  create_table "implementations", force: true do |t|
+    t.string   "label"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "implementations_profiles", force: true do |t|
+    t.integer "implementation_id"
+    t.integer "profile_id"
+  end
+
   create_table "organisations", force: true do |t|
     t.string   "name"
     t.string   "contact_number"
@@ -82,8 +93,11 @@ ActiveRecord::Schema.define(version: 20150119142905) do
     t.string   "company_number"
     t.string   "slug"
     t.string   "type"
+    t.string   "mission"
+    t.string   "status"
     t.date     "founded_on"
     t.date     "registered_on"
+    t.boolean  "registered"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
   end
