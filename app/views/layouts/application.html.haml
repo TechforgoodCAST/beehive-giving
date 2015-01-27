@@ -7,9 +7,10 @@
       = javascript_include_tag 'application', 'data-turbolinks-track' => true
       = csrf_meta_tags
   %body
-    %nav.uk-navbar#bg{"data-uk-sticky" => ""}
+    %nav.uk-navbar#bg.border{"data-uk-sticky" => ""}
       .uk-container.uk-container-center
         %a.uk-navbar-brand.uk-hidden-small.logo{:href => root_path, title: 'Beehive'}
+          .logo-label Beta
         .uk-navbar-flip
           %a.uk-navbar-toggle.uk-visible-small{"data-uk-offcanvas" => "{target:'#offcanvas'}"}
           - if @logged_in
@@ -37,14 +38,15 @@
               %li
                 %a{"data-uk-offcanvas" => "", :href => "#offcanvas"} Sign in
         %a.uk-navbar-brand.uk-visible-small.logo{:href => root_path}
+          .logo-label Beta
 
     .uk-container.uk-container-center
       - if flash[:notice]
-        .uk-alert.uk-alert-success{'data-uk-alert' => ''}
+        .uk-alert.uk-alert-success.uk-margin-top{'data-uk-alert' => ''}
           %a.uk-alert-close.uk-close
           %p.flash-notice= flash[:notice]
       - if flash[:alert]
-        .uk-alert.uk-alert-danger{'data-uk-alert' => ''}
+        .uk-alert.uk-alert-danger.uk-margin-top{'data-uk-alert' => ''}
           %a.uk-alert-close.uk-close
           %p.flash-notice= flash[:alert]
 

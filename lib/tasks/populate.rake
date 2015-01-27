@@ -3,7 +3,7 @@ namespace :db do
   task :populate => :environment do
     require 'faker'
 
-    Rake::Task['db:reset'].invoke
+    # Rake::Task['db:reset'].invoke
 
     count = 5
     start = count + 1
@@ -68,10 +68,9 @@ namespace :db do
 
       profile = Profile.create(
         gender: 'All genders',
-        currency: 'GBP',
+        currency: 'GBP (£)',
         goods_services: 'Goods',
-        who_pays: Faker::Lorem.word,
-        who_buys: Faker::Lorem.word,
+        who_pays: 'Goods',
         year: '2014',
         min_age: rand(0..25),
         max_age: rand(10..120),
@@ -84,6 +83,7 @@ namespace :db do
         goods_count: rand(0..25),
         units_count: rand(0..5000),
         services_count: rand(0..25),
+        units_count: rand(0..5000),
         beneficiaries_count: rand(0..5000)
       )
       profile.organisation = Recipient.find(n+1+count)

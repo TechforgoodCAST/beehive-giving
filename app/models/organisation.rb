@@ -5,13 +5,17 @@ class Organisation < ActiveRecord::Base
   STATUS = ['Active', 'Closed', 'Merged']
 
   validates :name, :contact_number, :website, :street_address, :city, :region,
-  :postal_code, :country, :founded_on, :mission, :status, :registered, presence: true
+  :postal_code, :country, :founded_on, :mission, :status, presence: true
+  validates :registered, :inclusion => {in: [true, false]}
 
   # date_select currently not nil
   # validates :registered_on, presence: true, unless: :company_number? || :charity_number?
 
-  validates :charity_number, presence: true, uniqueness: true, unless: :company_number?
-  validates :company_number, presence: true, uniqueness: true, unless: :charity_number?
+  validates :charity_number, :company_number, uniqueness: true, if: :registered?, allow_nil: true, allow_blank: true
+  validates :charity_number, presence: true, unless: :company_number?, if: :registered?
+  validates :company_number, presence: true, unless: :charity_number?, if: :registered?
+  validates :registered_on, presence: true, if: :registered?
+
   validates :slug, uniqueness: true, presence: true
   validates :status, inclusion: {in: STATUS}
 

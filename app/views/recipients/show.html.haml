@@ -1,19 +1,34 @@
-.uk-container.uk-container-center.uk-margin-top.uk-margin-large-bottom
-  .uk-width-medium-1-3.uk-float-left
-    %a.uk-button{ href: funder_path(@funder) }
-      %i.uk-icon-arrow-left
-      Back
-    %h1= @recipient.name
-    %q= @recipient.mission
-    %hr
-    %h3 Grants recieved
+.uk-container.uk-container-center
+  .uk-grid.uk-margin.uk-margin-top
+    .uk-width-medium-1-3.uk-float-left
+      %a.uk-button{ href: funder_path(@funder) }
+        %i.uk-icon-arrow-left
+        Back
+      %h1= @recipient.name
+      %q= @recipient.mission
 
-    %ul
-      - @grants.each do |grant|
-        %li
-          = grant.funder.name
-          |
-          = number_to_currency(grant.amount_awarded, unit: '£', precision: 0)
-  .uk-width-medium-2-3.uk-float-right
-    .uk-panel.uk-panel-box
-      #time_line.uk-responsive-width{ data: {grants: render(template: "recipients/show.json.rabl")} }
+      %hr
+
+      %table.uk-table.uk-table-hover
+        %caption Grants recieved
+        %thead
+          %tr
+            %th Funder
+            %th Amount awarded
+            %th Award date
+        %tbody
+        - sum = 0
+        - @grants.each do |grant|
+        - sum += grant.amount_awarded
+          %tr
+            %td= link_to grant.funder.name, funder_path(grant.funder)
+            %td= number_to_currency(grant.amount_awarded, unit: '£', precision: 0)
+            %td= grant.start_on.strftime("%d %b %Y")
+        %tfoot
+          %tr
+            %td Total
+            %td= number_to_currency(sum, unit: '£', precision: 0)
+
+    .uk-width-medium-2-3.uk-float-right
+      .uk-panel.uk-panel-box
+        #time_line.uk-responsive-width{ data: {grants: render(template: "recipients/show.json.rabl")} }

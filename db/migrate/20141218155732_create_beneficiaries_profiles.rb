@@ -9,5 +9,10 @@ class CreateBeneficiariesProfiles < ActiveRecord::Migration
       t.references :implementation
       t.references :profile
     end
+
+    create_table :markets_profiles do |t|
+      t.references :market
+      t.references :profile
+    end
   end
 end
