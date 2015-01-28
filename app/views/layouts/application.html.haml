@@ -12,9 +12,9 @@
         %a.uk-navbar-brand.uk-hidden-small.logo{:href => root_path, title: 'Beehive'}
           .logo-label Beta
         .uk-navbar-flip
-          %a.uk-navbar-toggle.uk-visible-small{"data-uk-offcanvas" => "{target:'#offcanvas'}"}
+          %a.uk-navbar-toggle.uk-visible-small#padding-remove{"data-uk-offcanvas" => "{target:'#offcanvas'}"}
           - if @logged_in
-            .uk-navbar-content.uk-hidden-small
+            .uk-navbar-content.uk-hidden-small#padding-remove
               .uk-button-group
                 %button.uk-button
                   = @current_user.first_name
