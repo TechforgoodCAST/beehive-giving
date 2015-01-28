@@ -21,7 +21,7 @@ class SignupController < ApplicationController
     if current_user.organisation_id
       redirect_to root_path
     else
-      @organisation = Organisation.new
+      @organisation = Recipient.new
     end
   end
 
@@ -36,7 +36,7 @@ class SignupController < ApplicationController
   end
 
   def funder
-    @funder = Organisation.new
+    @funder = Funder.new
   end
 
   def create_funder
@@ -85,15 +85,15 @@ class SignupController < ApplicationController
   end
 
   def organisation_params
-    params.require(:organisation).permit(:name, :contact_number, :website,
+    params.require(:recipient).permit(:name, :contact_number, :website,
     :street_address, :city, :region, :postal_code, :country, :charity_number,
     :company_number, :founded_on, :registered_on, :mission, :status, :registered, organisation_ids: [])
   end
 
   def funder_params
-    params.require(:organisation).permit(:name, :contact_number, :website,
+    params.require(:funder).permit(:name, :contact_number, :website,
     :street_address, :city, :region, :postal_code, :country, :charity_number,
-    :company_number, :founded_on, :registered_on, organisation_ids: [])
+    :company_number, :founded_on, :registered_on, :mission, :status, :registered, organisation_ids: [])
   end
 
   def profile_params

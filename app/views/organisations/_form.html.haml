@@ -65,7 +65,7 @@
       .uk-width-medium-1-1.uk-margin-top
         %label Is your organisation legaly registered
         .uk-form-controls{style: 'position: relative;'}
-          = f.input :registered, as: :select, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+          = f.input :registered, as: :select, error: false, type: 'text', input_html: { class: 'uk-width-1-1', id: 'registered'}
           .uk-form-password-toggle
             = f.error :registered, class: 'uk-text-small uk-text-warning'
 
@@ -89,7 +89,7 @@
     = f.submit 'Next', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'
 
 :javascript
-  $('#organisation_registered').on('change', function(){
+  $('#registered').on('change', function(){
    var option = $(this).find(':selected');
    $('[data-show-for]').hide(); //And maybe reset?
    $('#organisation_registered').trigger("reset");
