@@ -1,97 +1,100 @@
 .uk-grid
   .uk-width-medium-1-1
-    .uk-form-controls{style: 'position: relative;'}
-      %label.uk-form-label Basics
-      = f.input :name, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
-      .uk-form-password-toggle
-        = f.error :name, class: 'uk-text-small uk-text-warning'
+    .uk-form-controls
+      %label.uk-form-label Organisation name
+      = f.input :name, type: 'text', input_html: { class: 'uk-width-1-1' }
+      = f.error :name, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-1.uk-margin-top
-    .uk-form-controls{style: 'position: relative;'}
+    .uk-form-controls
+      %label.uk-form-label Organisation mission
       = f.input :mission, as: :text, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
-      .uk-form-password-toggle
-        = f.error :mission, class: 'uk-text-small uk-text-warning'
+      = f.error :mission, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-2.uk-margin-top
-    .uk-form-controls{style: 'position: relative;'}
-      = f.input :website, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
-      .uk-form-password-toggle
-        = f.error :website, class: 'uk-text-small uk-text-warning'
+    .uk-form-controls
+      %label.uk-form-label Contact number
+      = f.input :contact_number, type: 'text', input_html: { class: 'uk-width-1-1' }
+      = f.error :contact_number, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-2.uk-margin-top
-    .uk-form-controls{style: 'position: relative;'}
-      = f.input :contact_number, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
-      .uk-form-password-toggle
-        = f.error :contact_number, class: 'uk-text-small uk-text-warning'
+    .uk-form-controls
+      %label.uk-form-label Website
+      = f.input :website, type: 'text', input_html: { class: 'uk-width-1-1' }
+      = f.error :website, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-1.uk-margin-top
-    .uk-form-controls{style: 'position: relative;'}
+    .uk-form-controls
       %label.uk-form-label Address
       = f.input :street_address, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
-      .uk-form-password-toggle
-        = f.error :street_address, class: 'uk-text-small uk-text-warning'
+      = f.error :street_address, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-2.uk-margin-top
-    .uk-form-controls{style: 'position: relative;'}
+    .uk-form-controls
       = f.input :city, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
-      .uk-form-password-toggle
-        = f.error :city, class: 'uk-text-small uk-text-warning'
+      = f.error :city, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-2.uk-margin-top
-    .uk-form-controls{style: 'position: relative;'}
+    .uk-form-controls
       = f.input :region, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
-      .uk-form-password-toggle
-        = f.error :region, class: 'uk-text-small uk-text-warning'
+      = f.error :region, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-2.uk-margin-top
-    .uk-form-controls{style: 'position: relative;'}
+    .uk-form-controls
       = f.input :postal_code, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
-      .uk-form-password-toggle
-        = f.error :postal_code, class: 'uk-text-small uk-text-warning'
+      = f.error :postal_code, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-2.uk-margin-top
-    .uk-form-controls{style: 'position: relative;'}
+    .uk-form-controls
       = f.input :country, error: false, type: 'text', input_html: { class: 'uk-width-1-1 chosen-select' }, include_blank: 'Select a country...', priority: ['Ethiopia', 'Kenya', 'Uganda', 'United Kingdom']
       = f.error :country, class: 'uk-text-small uk-text-warning'
+
   .uk-width-medium-1-1.uk-margin-top
-    %label.uk-form-label Other
+    %label.uk-form-label
+      Date founded
+      %a{"data-uk-toggle" => "{target:'#founded_on_hint'}"}
+        %i.uk-icon-question-circle
+    = f.hint :founded_on, class: 'uk-text-small uk-hidden', id: 'founded_on_hint'
+    .uk-form-controls
+      = f.date_select :founded_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-100, order: [:day, :month, :year], include_blank: true, default: nil
+      = f.error :founded_on, class: 'uk-text-small uk-text-warning'
+
+
+  .uk-width-medium-1-1.uk-margin-top
+    %label.uk-form-label
+      Is your organisation currently...
+      %a{"data-uk-toggle" => "{target:'#status_hint'}"}
+        %i.uk-icon-question-circle
+    = f.hint :status, class: 'uk-text-small uk-hidden', id: 'status_hint'
+    .uk-form-controls
+      = f.input :status, collection: Organisation::STATUS, type: 'text', input_html: { class: 'uk-width-1-1' }
+      = f.error :status, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-1.uk-margin-top
+    %label.uk-form-label
+      Is your organisation legaly registered?
+      %a{"data-uk-toggle" => "{target:'#registered_hint'}"}
+        %i.uk-icon-question-circle
+    = f.hint :registered, class: 'uk-text-small uk-hidden', id: 'registered_hint'
+    .uk-form-controls
+      = f.input :registered, as: :select, input_html: { class: 'uk-width-1-1', id: 'registered'}
+      = f.error :registered, class: 'uk-text-small uk-text-warning'
+
+  .uk-width-medium-1-1.uk-margin-top{"data-show-for" => "Yes", style: "display: none;"}
+    %label.uk-form-label
+      Date registered
+      %a{"data-uk-toggle" => "{target:'#registered_on_hint'}"}
+        %i.uk-icon-question-circle
+    = f.hint :registered_on, class: 'uk-text-small uk-hidden', id: 'registered_on_hint'
+    .uk-form-controls
+      = f.date_select :registered_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-100, order: [:day, :month, :year], include_blank: true, default: nil
+      = f.error :registered_on, class: 'uk-text-small uk-text-warning'
     .uk-grid
-      .uk-width-medium-1-1
-        %label Date founded
-        .uk-form-controls{style: 'position: relative;'}
-          = f.date_select :founded_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-100, order: [:day, :month, :year], include_blank: true, default: nil
-          -# = f.input :founded_on, as: :string, order: [:day, :month, :year], input_html: { class: 'uk-width-1-1', 'data-uk-datepicker' => "{format:'DD/MM/YYYY'}" }
-          = f.error :founded_on, class: 'uk-text-small uk-text-warning'
-
-
-      .uk-width-medium-1-1.uk-margin-top
-        %label Is your organisation currently...
-        .uk-form-controls{style: 'position: relative;'}
-          = f.input :status, collection: Organisation::STATUS, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
-          .uk-form-password-toggle
-            = f.error :status, class: 'uk-text-small uk-text-warning'
-      .uk-width-medium-1-1.uk-margin-top
-        %label Is your organisation legaly registered
-        .uk-form-controls{style: 'position: relative;'}
-          = f.input :registered, as: :select, error: false, type: 'text', input_html: { class: 'uk-width-1-1', id: 'registered'}
-          .uk-form-password-toggle
-            = f.error :registered, class: 'uk-text-small uk-text-warning'
-
-      .uk-width-medium-1-1.uk-margin-top{"data-show-for" => "Yes", style: "display: none;"}
-        %label Date registered
-        .uk-form-controls{style: 'position: relative;'}
-          = f.date_select :registered_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-100, order: [:day, :month, :year], include_blank: true, default: nil
-          = f.error :registered_on, class: 'uk-text-small uk-text-warning'
-        .uk-grid
-          .uk-width-medium-1-2.uk-margin-top
-            .uk-form-controls{style: 'position: relative;'}
-              = f.input :charity_number, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
-              .uk-form-password-toggle
-                = f.error :charity_number, class: 'uk-text-small uk-text-warning'
-          .uk-width-medium-1-2.uk-margin-top
-            .uk-form-controls{style: 'position: relative;'}
-              = f.input :company_number, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
-              .uk-form-password-toggle
-                = f.error :company_number, class: 'uk-text-small uk-text-warning'
+      .uk-width-medium-1-2.uk-margin-top
+        .uk-form-controls
+          = f.input :charity_number, type: 'text', input_html: { class: 'uk-width-1-1' }
+          = f.error :charity_number, class: 'uk-text-small uk-text-warning'
+      .uk-width-medium-1-2.uk-margin-top
+        .uk-form-controls
+          = f.input :company_number, type: 'text', input_html: { class: 'uk-width-1-1' }
+          = f.error :company_number, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-1.uk-margin-top
     = f.submit 'Next', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'
 
 :javascript
   $('#registered').on('change', function(){
-   var option = $(this).find(':selected');
-   $('[data-show-for]').hide(); //And maybe reset?
-   $('#organisation_registered').trigger("reset");
-   $('[data-show-for='+ option.text() +']').show()
+    var option = $(this).find(':selected');
+    $('[data-show-for]').hide(); //And maybe reset?
+    $('[data-show-for='+ option.text() +']').show()
   });

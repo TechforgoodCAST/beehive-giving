@@ -1,8 +1,8 @@
-.tm-section-color-2.tm-section-colored
+.tm-section-color-2
   .uk-container.uk-container-center
     .uk-grid.uk-margin-large.uk-margin-large-top
 
-      .uk-width-medium-1-2.uk-float-right
+      .uk-width-medium-1-2.uk-float-right.tm-section-colored
         .uk-vertical-align{:style => "height: 480px;"}
           .uk-vertical-align-middle
             %h1
@@ -12,6 +12,7 @@
             %p.uk-text-large Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna.
       .uk-width-medium-1-2.uk-float-left
         .uk-form.uk-form-stacked.uk-panel.uk-panel-box
+          %h3.uk-text-bold Your organisations 2015 profile
           %fieldset
           = simple_form_for [@organisation, @profile], url: signup_profile_path, method: :post do |f|
             = render partial: 'profiles/form', locals: {f: f}

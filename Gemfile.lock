@@ -73,6 +73,8 @@ GEM
     faker (1.4.3)
       i18n (~> 0.5)
     ffi (1.9.6)
+    fiscali (2.3.0)
+      activesupport
     formatador (0.2.5)
     fssm (0.2.10)
     guard (2.11.1)
@@ -209,6 +211,7 @@ DEPENDENCIES
   d3-rails
   factory_girl_rails
   faker
+  fiscali
   guard-livereload
   haml
   jbuilder (~> 2.0)

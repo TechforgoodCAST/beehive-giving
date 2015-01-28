@@ -2,11 +2,20 @@ class Organisation < ActiveRecord::Base
   has_many :users
   has_many :profiles
 
-  STATUS = ['Active', 'Closed', 'Merged']
+  STATUS = ['Active - currently operational', 'Closed - no longer operational', 'Merged - operating as a different entity']
 
-  validates :name, :contact_number, :website, :street_address, :city, :region,
+  validates :name, :contact_number, :street_address, :city, :region,
   :postal_code, :country, :founded_on, :mission, :status, presence: true
   validates :registered, :inclusion => {in: [true, false]}
+
+  validates :website, format: {
+    with: /^((http:\/\/www\.)|(www\.)|(http:\/\/))[a-zA-Z0-9._-]+\.[a-zA-Z.]{2,5}$/,
+    multiline: true,
+    message: "enter a valid website address e.g. www.example.com"}, if: :website?
+  validates :contact_number, format: {
+    with: /(((\+44)? ?(\(0\))? ?)|(0))( ?[0-9]{3,4}){3}/,
+    multiline: true,
+    message: "enter a valid contact number"}
 
   # date_select currently not nil
   # validates :registered_on, presence: true, unless: :company_number? || :charity_number?

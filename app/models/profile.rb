@@ -13,15 +13,30 @@ class Profile < ActiveRecord::Base
   GOODS_SERVICES = %w[Goods Services Both]
   WHO_PAYS = ['No, we get income from donations, or grants', 'Goods', 'Services', 'Both']
 
-  validates :organisation, presence: true
+  validates :organisation, :districts, :beneficiaries, :implementations, :markets, presence: true
 
   validates :year, :gender, :currency, :goods_services, :who_pays,
             :min_age, :max_age, :income, :expenditure, :volunteer_count,
             :staff_count, :job_role_count, :department_count, :goods_count,
             :services_count, presence: true
-  validates :min_age, :max_age, :income, :expenditure, :volunteer_count,
-            :staff_count, :job_role_count, :department_count, :goods_count,
-            :services_count, numericality: {only_integer: true, greater_than_or_equal_to: 0}
+  validates :income, :expenditure, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
+  validates :min_age, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :max_age,
+    message: 'min. age must be less than max. age' }
+  validates :max_age, numericality: { greater_than_or_equal_to: :min_age,
+    message: 'max. age must be greater than min.age' }
+
+  validates :volunteer_count, numericality: { greater_than: :staff_count,
+    message: 'must have at least one volunteer if no staff' }, unless: :staff_count?
+  validates :staff_count, numericality: { greater_than: :volunteer_count,
+    message: 'must have at least one member of staff if no volunteers' }, unless: :volunteer_count?
+
+  validates :job_role_count, :department_count, numericality: { greater_than: 0, message: 'must be at least one'}
+
+  validates :services_count, numericality: { greater_than: :goods_count,
+    message: 'must provide at least one service if no goods' }, unless: :goods_count?
+  validates :goods_count, numericality: { greater_than: :services_count,
+    message: 'must provide at least one item of goods if no services' }, unless: :services_count?
 
   validates :year, uniqueness: {scope: :organisation_id, message: 'only one is allowed per year'}
 

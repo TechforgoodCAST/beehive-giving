@@ -1,5 +1,14 @@
 en:
   simple_form:
+    hints:
+      recipient:
+        founded_on: 'The date your organisation founded.'
+        status: 'What is the operational status of your organisation.'
+        registered: 'Do you have a company or charity/nonprofit number?'
+        registered_on: 'The date your organisation was legally registered.'
+      profile:
+        districts: 'You can type the name of the location to filter the list.'
+        beneficiaries: 'Think about your typical beneficiaries, which of the following categories applies to them?'
     placeholders:
       user:
         first_name: 'First name'
@@ -8,7 +17,14 @@ en:
         user_email: 'Email'
         password: 'Password'
         password_confirmation: 'Password Confirmation'
-      organisation:
+      recipient:
+        street_address: 'Street address'
+        city: 'City'
+        region: 'Region'
+        postal_code: 'Postal code'
+        charity_number: 'Charity/Nonprofit number'
+        company_number: 'Company number'
+      funder:
         name: 'Organisation name'
         mission: 'Mission'
         contact_number: 'Contact number'
@@ -19,25 +35,6 @@ en:
         postal_code: 'Postal code'
         charity_number: 'Charity/Nonprofit number'
         company_number: 'Company number'
-        founded_on: 'Date founded'
-        country: 'Country'
-      profile:
-        currency: 'Currency'
-        goods_services: 'Goods or Services?'
-        who_pays: 'Who pays'
-        who_buys: 'Who buys'
-        min_age: 'Min. age you target'
-        max_age: 'Max. age you target'
-        income: 'Income'
-        expenditure: 'Expenditure'
-        volunteer_count: 'Volunteer count'
-        staff_count: 'Staff count'
-        job_role_count: 'Job role count'
-        department_count: 'Department count'
-        goods_count: 'Number of goods provided'
-        units_count: 'Units count'
-        services_count: 'Number of services provided'
-        beneficiaries_count: 'Beneficairies count'
     # "yes": 'Yes'
     # "no": 'No'
     required:

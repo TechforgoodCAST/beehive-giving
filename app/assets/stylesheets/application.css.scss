@@ -40,6 +40,10 @@
   padding: 0;
 }
 
+.field_with_errors {
+  border: 1px rgb(220, 141, 153) solid;
+}
+
 .digg_pagination {
   background: white;
   cursor: default;
