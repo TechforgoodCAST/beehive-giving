@@ -3,23 +3,23 @@ namespace :db do
   task :populate => :environment do
     require 'faker'
 
-    # Rake::Task['db:reset'].invoke
+    Rake::Task['db:reset'].invoke
 
     count = 5
     start = count + 1
 
     count.times do |n|
-      funder = Funder.create(
+      Funder.create(
         name: Faker::Company.name,
         mission: Faker::Company.catch_phrase,
-        contact_number: Faker::PhoneNumber.phone_number,
-        website: Faker::Internet.domain_name,
+        contact_number: '01234567890',
+        website: 'www.example.com',
         street_address: Faker::Address.street_address,
         city: Faker::Address.city,
         region: Faker::Address.street_name,
         postal_code: Faker::Address.postcode,
         country: Faker::Address.country,
-        status: 'Active',
+        status: 'Active - currently operational',
         registered: true,
         charity_number: Faker::Number.number(8),
         company_number: Faker::Number.number(10),
@@ -39,29 +39,29 @@ namespace :db do
     end
 
     100.times do |n|
-      organisation = Recipient.create(
-      name: Faker::Company.name,
-      mission: Faker::Company.catch_phrase,
-      contact_number: Faker::PhoneNumber.phone_number,
-      website: Faker::Internet.domain_name,
-      street_address: Faker::Address.street_address,
-      city: Faker::Address.city,
-      region: Faker::Address.street_name,
-      postal_code: Faker::Address.postcode,
-      country: Faker::Address.country,
-      status: 'Active',
-      registered: true,
-      charity_number: Faker::Number.number(8),
-      company_number: Faker::Number.number(10),
-      founded_on: Faker::Date.between(10.years.ago, 5.years.ago),
-      registered_on: Faker::Date.between(5.years.ago, Time.now)
+      Recipient.create(
+        name: Faker::Company.name,
+        mission: Faker::Company.catch_phrase,
+        contact_number: '01234567890',
+        website: 'www.example.com',
+        street_address: Faker::Address.street_address,
+        city: Faker::Address.city,
+        region: Faker::Address.street_name,
+        postal_code: Faker::Address.postcode,
+        country: Faker::Address.country,
+        status: 'Active - currently operational',
+        registered: true,
+        charity_number: Faker::Number.number(8),
+        company_number: Faker::Number.number(10),
+        founded_on: Faker::Date.between(10.years.ago, 5.years.ago),
+        registered_on: Faker::Date.between(5.years.ago, Time.now)
       )
       user = User.create(
-      first_name: Faker::Name.first_name,
-      last_name: Faker::Name.last_name,
-      job_role: Faker::Name.title,
-      user_email: "org#{n+1}@example.com",
-      password: '123123',
+        first_name: Faker::Name.first_name,
+        last_name: Faker::Name.last_name,
+        job_role: Faker::Name.title,
+        user_email: "org#{n+1}@example.com",
+        password: '123123',
       )
       user.organisation = Recipient.find(n+1+count)
       user.save
@@ -83,8 +83,6 @@ namespace :db do
         goods_count: rand(0..25),
         units_count: rand(0..5000),
         services_count: rand(0..25),
-        units_count: rand(0..5000),
-        beneficiaries_count: rand(0..5000)
       )
       profile.organisation = Recipient.find(n+1+count)
       profile.save
