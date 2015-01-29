@@ -3,7 +3,7 @@ namespace :db do
   task :populate => :environment do
     require 'faker'
 
-    Rake::Task['db:reset'].invoke
+    # Rake::Task['db:reset'].invoke
 
     count = 5
     start = count + 1
