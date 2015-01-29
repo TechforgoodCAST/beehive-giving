@@ -109,7 +109,11 @@
       = f.error :implementations, class: 'uk-text-small uk-text-warning'
 
   .uk-width-medium-1-1.uk-margin-bottom
-    %label.uk-form-label Does your organisation provide goods or services?
+    %label.uk-form-label
+      Does your organisation provide goods or services?
+      %a{"data-uk-toggle" => "{target:'#goods_services_hint'}"}
+        %i.uk-icon-question-circle
+    = f.hint :goods_services, class: 'uk-text-small uk-hidden', id: 'goods_services_hint'
     .uk-form-controls
       = f.input :goods_services, collection: Profile::GOODS_SERVICES, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :goods_services, class: 'uk-text-small uk-text-warning'
@@ -126,12 +130,11 @@
       = f.error :goods_count, class: 'uk-text-small uk-text-warning'
 
   .uk-width-medium-1-1.uk-margin-bottom
-    %label.uk-form-label Do people pay for your organisations goods or services?
-    .uk-form-controls
-      = f.input :who_pays, collection: Profile::WHO_PAYS, type: 'text', input_html: { class: 'uk-width-1-1' }
-      = f.error :who_pays, class: 'uk-text-small uk-text-warning'
-  .uk-width-medium-1-1.uk-margin-bottom
-    %label.uk-form-label Who buys the goods or services your organisation supplies?
+    %label.uk-form-label
+      Who pays for the goods or services your organisation supplies?
+      %a{"data-uk-toggle" => "{target:'#markets_hint'}"}
+        %i.uk-icon-question-circle
+    = f.hint :markets, class: 'uk-text-small uk-hidden', id: 'markets_hint'
     .uk-form-controls
       = f.association :markets, label_method: :label, value_method: :id, input_html: {class: 'chosen-select'}
       = f.error :markets, class: 'uk-text-small uk-text-warning'

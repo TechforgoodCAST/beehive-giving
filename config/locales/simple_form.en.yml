@@ -4,11 +4,13 @@ en:
       recipient:
         founded_on: 'The date your organisation founded.'
         status: 'What is the operational status of your organisation.'
-        registered: 'Do you have a company or charity/nonprofit number?'
+        registered: 'Do you have a company and/or charity/nonprofit number?'
         registered_on: 'The date your organisation was legally registered.'
       profile:
-        districts: 'You can type the name of the location to filter the list.'
+        districts: 'Be sure to select all regions where your organisation has benefited people this year. Remember, you can type the name of the location to filter the list.'
         beneficiaries: 'Think about your typical beneficiaries, which of the following categories applies to them?'
+        goods_services: 'Goods (e.g. Medicine), Services (e.g. Training)'
+        markets: 'Think about all of your operating costs, where do you get funding for them?'
     placeholders:
       user:
         first_name: 'First name'

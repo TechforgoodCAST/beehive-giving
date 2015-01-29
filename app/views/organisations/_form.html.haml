@@ -1,4 +1,5 @@
 .uk-grid
+  = f.hidden_field :status, value: 'Active - currently operational'
   .uk-width-medium-1-1
     .uk-form-controls
       %label.uk-form-label Organisation name
@@ -52,15 +53,15 @@
       = f.error :founded_on, class: 'uk-text-small uk-text-warning'
 
 
-  .uk-width-medium-1-1.uk-margin-top
-    %label.uk-form-label
-      Is your organisation currently...
-      %a{"data-uk-toggle" => "{target:'#status_hint'}"}
-        %i.uk-icon-question-circle
-    = f.hint :status, class: 'uk-text-small uk-hidden', id: 'status_hint'
-    .uk-form-controls
-      = f.input :status, collection: Organisation::STATUS, type: 'text', input_html: { class: 'uk-width-1-1' }
-      = f.error :status, class: 'uk-text-small uk-text-warning'
+  -# .uk-width-medium-1-1.uk-margin-top
+  -#   %label.uk-form-label
+  -#     Is your organisation currently...
+  -#     %a{"data-uk-toggle" => "{target:'#status_hint'}"}
+  -#       %i.uk-icon-question-circle
+  -#   = f.hint :status, class: 'uk-text-small uk-hidden', id: 'status_hint'
+  -#   .uk-form-controls
+  -#     = f.input :status, collection: Organisation::STATUS, type: 'text', input_html: { class: 'uk-width-1-1' }
+  -#     = f.error :status, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-1.uk-margin-top
     %label.uk-form-label
       Is your organisation legaly registered?

@@ -29,9 +29,9 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 group :development do
   gem 'spring'
   gem 'guard-livereload'
-  gem 'faker'
 end
 
+gem 'faker'
 
 gem 'factory_girl_rails'
 gem 'haml'

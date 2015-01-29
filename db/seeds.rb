@@ -34,7 +34,9 @@ end
 # Create markets
 Market.destroy_all
 [
-  "We don't trade",
+  "Trusts and Foundations",
+  "Local government",
+  "National government",
   "Beneficiaries we work with",
   "Volunteers we work with",
   "Other organisations",
