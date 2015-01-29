@@ -31,6 +31,7 @@ $(document).ready ->
       ykeys: ['a', 'b']
       labels: ['2013', '2014']
       barColors: ['#ccc', '#F7BA0E']
+      hideHover: true
       resize: true
 
   if $('#grants_stages').length
@@ -44,6 +45,27 @@ $(document).ready ->
       colors: ['#eee', '#ccc', '#F7BA0E']
       resize: true
 
+  if $('#grants_distribution').length
+    Morris.Bar({
+      element: 'grants_distribution'
+      data: [
+        { y: '0k-10k', a: 0, b: 0 },
+        { y: '10k-20k', a: 0, b: 0 },
+        { y: '20k-30k', a: 40, b: 50 },
+        { y: '30k-40k', a: 60, b: 50 },
+        { y: '40k-50k', a: 0, b: 0 },
+        { y: '50k-60k', a: 0, b: 0 },
+        { y: '70k-80k', a: 0, b: 0 },
+        { y: '80k-90k', a: 0, b: 0 },
+        { y: '90k-100k', a: 0, b: 0 }
+      ],
+      xkey: 'y'
+      ykeys: ['a', 'b']
+      labels: ['2014', '2013']
+      barColors: ['#ccc', '#F7BA0E']
+      hideHover: true
+      resize: true
+    });
 
 # $(document).ready ->
 #   if $('#grants_chart').length
