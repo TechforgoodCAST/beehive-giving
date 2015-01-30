@@ -52,12 +52,4 @@ class Organisation < ActiveRecord::Base
     errors.add(:registered_on, "You can't be registered before being founded") if
       !registered_on.blank? and registered_on < founded_on
   end
-
-  def self.search(search)
-    if search
-      find(:all, :conditions => ['name LIKE ?', "%#{search}%"])
-    else
-      find(:all)
-    end
-  end
 end
