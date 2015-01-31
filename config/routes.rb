@@ -11,7 +11,9 @@ Rails.application.routes.draw do
   match '/welcome', to: 'signup#user', via: :get, as: 'signup_user'
   match '/your-organisation', to: 'signup#organisation', via: :get, as: 'signup_organisation'
   match '/your-profile', to: 'signup#profile', via: :get, as: 'signup_profile'
-  match '/comparison', to: 'signup#comparison', via: :get, as: 'signup_comparison'
+  match '/dashboard', to: 'recipients#dashboard', via: :get, as: 'signup_comparison'
+
+  match '/comparison/(:id)', to: 'recipients#comparison', via: :get, as: 'recipient_comparison'
 
   match '/new-funder', to: 'signup#funder', via: :get, as: 'new_funder'
 

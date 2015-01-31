@@ -1,13 +1,14 @@
 .tm-section-color-1
   .uk-container.uk-container-center
-    .uk-grid.uk-margin-large-top.tm-section-colored
+    .uk-grid.uk-margin.uk-margin-large-top.tm-section-colored
       .uk-width-medium-1-1.uk-text-center
         %h1 Reinventing how funding takes place
         %h2 Are you a...
 
-        .uk-button-group.uk-width-1-1.uk-margin-top{"data-uk-switcher" => "{connect:'#switch1, #switch2, #switch3, #switch4, #switch5, #switch6'}"}
-          %a.uk-button.uk-button-large.uk-text-bold.uk-width-1-2.uk-active Non-profit
-          %button.uk-button.uk-button-large.uk-text-bold.uk-width-1-2 Funder
+.uk-width-1-1{"data-uk-sticky" => "{top:42}"}
+  .uk-button-group.uk-width-1-1{"data-uk-switcher" => "{connect:'#switch1, #switch2, #switch3, #switch4, #switch5, #switch6'}"}
+    %a.uk-button.uk-button-large.uk-text-bold.uk-width-1-2.uk-active Non-profit
+    %button.uk-button.uk-button-large.uk-text-bold.uk-width-1-2 Funder
 
 .uk-grid
   .uk-width-medium-1-1

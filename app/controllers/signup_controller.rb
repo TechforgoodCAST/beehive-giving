@@ -71,7 +71,7 @@ class SignupController < ApplicationController
   def comparison
     @organisation = current_user.organisation
     if @organisation && @organisation.profiles.count == 1
-      render :comparison
+      render :dashboard
     else
       redirect_to root_path
     end
