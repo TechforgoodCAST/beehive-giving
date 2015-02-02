@@ -14,7 +14,7 @@ class CreateOrganisations < ActiveRecord::Migration
       t.string :name, required: true
       t.string :contact_number, :website, :street_address, :city, :region, :postal_code, :country, :charity_number, :company_number, :slug, :type, :mission, :status
       t.date :founded_on, :registered_on
-      t.boolean :registered
+      t.boolean :registered, :active_on_beehive
 
       t.timestamps null: false
     end

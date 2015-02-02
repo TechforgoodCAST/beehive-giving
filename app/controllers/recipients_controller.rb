@@ -10,8 +10,6 @@ class RecipientsController < ApplicationController
 
   def dashboard
     @funders = Funder.all
-    @features = @recipient.features
-    @feature = Feature.find_by_recipient_id(params[:id])
   end
 
   def comparison
@@ -19,7 +17,7 @@ class RecipientsController < ApplicationController
   end
 
   def vote
-    vote = @recipient.features.new(data_requested: params[:data_requested], recipient_id: params[:id], funder_id: params[:funder_id])
+    vote = @current_organisation.features.new(data_requested: params[:data_requested], recipient_id: params[:id], funder_id: params[:funder_id])
     if vote.save
       redirect_to :back, notice: "Thanks for requesting this, we're working hard to make it happen."
     else
@@ -30,6 +28,7 @@ class RecipientsController < ApplicationController
   private
 
   def load_recipient
-    @recipient = current_user.organisation
+    @recipient = Recipient.find_by_slug(params[:id])
+    @current_organisation = current_user.organisation
   end
 end

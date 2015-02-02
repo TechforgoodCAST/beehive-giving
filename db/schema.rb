@@ -117,8 +117,9 @@ ActiveRecord::Schema.define(version: 20150131144853) do
     t.date     "founded_on"
     t.date     "registered_on"
     t.boolean  "registered"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.boolean  "active_on_beehive"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   add_index "organisations", ["slug"], name: "index_organisations_on_slug", unique: true, using: :btree
