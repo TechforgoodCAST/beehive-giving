@@ -6,14 +6,13 @@ Rails.application.routes.draw do
 
   # Pages
   match 'tour', to: 'pages#tour', via: :get, as: 'tour'
+  match 'about', to: 'pages#about', via: :get, as: 'about'
 
   # Sign up
   match '/welcome', to: 'signup#user', via: :get, as: 'signup_user'
   match '/your-organisation', to: 'signup#organisation', via: :get, as: 'signup_organisation'
   match '/your-profile', to: 'signup#profile', via: :get, as: 'signup_profile'
   match '/dashboard', to: 'recipients#dashboard', via: :get, as: 'signup_comparison'
-
-  match '/comparison/(:id)', to: 'recipients#comparison', via: :get, as: 'recipient_comparison'
 
   match '/new-funder', to: 'signup#funder', via: :get, as: 'new_funder'
 
@@ -23,8 +22,12 @@ Rails.application.routes.draw do
 
   match '/new-funder', to: 'signup#create_funder', via: :post
 
+  # Dashboard
+  match '/comparison/(:id)', to: 'recipients#comparison', via: :get, as: 'recipient_comparison'
+  
   resources :users
   resources :organisations, :funders, :recipients do
+    member { post :vote }
     resources :profiles
     resources :grants
   end
