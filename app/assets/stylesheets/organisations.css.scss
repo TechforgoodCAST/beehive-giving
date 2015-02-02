@@ -9,11 +9,38 @@
 #org-logo {
   margin: 5px auto;
   text-indent: -9999px;
-  &.ff {
+  &.logo-1 {
     width: 151px;
     height: 60px;
     position: relative;
     background: image-url('ff-logo.png') no-repeat;
+  }
+  &.logo-2 {
+    width: 151px;
+    height: 9px;
+    top: 25px;
+    position: relative;
+    background: image-url('dulverton-logo.png') no-repeat;
+  }
+  &.logo-3 {
+    width: 117px;
+    height: 60px;
+    position: relative;
+    background: image-url('esmee-logo.png') no-repeat;
+  }
+  &.logo-4 {
+    width: 151px;
+    height: 35px;
+    top: 12px;
+    position: relative;
+    background: image-url('nesta-logo.png') no-repeat;
+  }
+  &.logo-5 {
+    width: 151px;
+    height: 21px;
+    top: 20px;
+    position: relative;
+    background: image-url('nominet-logo.png') no-repeat;
   }
 }
 

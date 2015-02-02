@@ -15,8 +15,10 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:password])
       if params[:remember_me]
         cookies.permanent[:auth_token] = user.auth_token
+        sign_in_metrics
       else
         cookies[:auth_token] = user.auth_token
+        sign_in_metrics
       end
       redirect_to start_path_for_user(user), notice: 'Logged in!'
     else
@@ -27,6 +29,11 @@ class SessionsController < ApplicationController
   def destroy
     cookies.delete(:auth_token)
     redirect_to root_path, notice: 'Logged out!'
+  end
+
+  def sign_in_metrics
+    current_user.increment(:sign_in_count)
+    current_user.update_attribute(:last_seen, Time.now)
   end
 
   private

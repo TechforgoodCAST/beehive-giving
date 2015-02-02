@@ -159,6 +159,8 @@ ActiveRecord::Schema.define(version: 20150131144853) do
     t.string   "password_reset_token"
     t.string   "role",                   default: "User"
     t.datetime "password_reset_sent_at"
+    t.datetime "last_seen"
+    t.integer  "sign_in_count"
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
   end

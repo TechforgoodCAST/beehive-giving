@@ -5,7 +5,8 @@ class CreateOrganisations < ActiveRecord::Migration
       t.string :first_name, :last_name, :job_role, :user_email, required: true
       t.string :password_digest, :auth_token, :password_reset_token
       t.string :role, default: 'User'
-      t.datetime :password_reset_sent_at
+      t.datetime :password_reset_sent_at, :last_seen
+      t.integer :sign_in_count
 
       t.timestamps null: false
     end
