@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   # Pages
   match 'tour', to: 'pages#tour', via: :get, as: 'tour'
   match 'about', to: 'pages#about', via: :get, as: 'about'
+  match 'privacy', to: 'pages#privacy', via: :get, as: 'privacy'
+  match 'terms', to: 'pages#terms', via: :get, as: 'terms'
 
   # Sign up
   match '/welcome', to: 'signup#user', via: :get, as: 'signup_user'
@@ -24,7 +26,7 @@ Rails.application.routes.draw do
 
   # Dashboard
   match '/comparison/(:id)', to: 'recipients#comparison', via: :get, as: 'recipient_comparison'
-  
+
   resources :users
   resources :organisations, :funders, :recipients do
     member { post :vote }

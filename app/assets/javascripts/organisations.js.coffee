@@ -67,6 +67,65 @@ $(document).ready ->
       resize: true
     });
 
+  if $('#grants_duration').length
+    Morris.Bar({
+      element: 'grants_duration'
+      data: [
+        { y: 'Jan', a: 0, b: 0 },
+        { y: 'Feb', a: 0, b: 0 },
+        { y: 'Mar', a: 0, b: 0 },
+        { y: 'Apr', a: 0, b: 0 },
+        { y: 'May', a: 0, b: 0 },
+        { y: 'Jun', a: 0, b: 400 },
+        { y: 'Jul', a: 332, b: 0 },
+        { y: 'Aug', a: 0, b: 0 },
+        { y: 'Sep', a: 0, b: 0 },
+        { y: 'Oct', a: 0, b: 0 },
+        { y: 'Nov', a: 364, b: 0 },
+        { y: 'Dec', a: 0, b: 364 }
+      ],
+      xkey: 'y'
+      ykeys: ['a', 'b']
+      labels: ['2014', '2013']
+      barColors: ['#F7BA0E', '#ccc']
+      hideHover: true
+      resize: true
+    });
+
+  if $('#grants_amount_category').length
+    Morris.Line({
+      element: 'grants_amount_category',
+      data: [
+        { y: '2013-06', a: 34850, b: 47322.86, c: 75000 },
+        { y: '2013-12', a: 21863, b: 35411.75, c: 46946 },
+        { y: '2014-07', a: 28064, b: 38662.70, c: 45349.51 },
+        { y: '2014-11', a: 26896, b: 30749, c: 33450 }
+      ],
+      xkey: 'y',
+      ykeys: ['a', 'b', 'c'],
+      labels: ['Min.', 'Avg.', 'Max.'],
+      lineColors: ['#ccc', '#F7BA0E', '#ccc']
+      hideHover: true
+      resize: true
+    });
+
+  if $('#org_age').length
+    Morris.Line({
+      element: 'org_age',
+      data: [
+        { y: '2013-06', a: 1090.00, b: 4281.14, c: 17199.00 },
+        { y: '2013-12', a: 519.00, b: 1382.00, c: 3066.00 },
+        { y: '2014-07', a: 357.00, b: 976.80, c: 1645.00 },
+        { y: '2014-11', a: 397.00, b: 600.33, c: 762.00 }
+      ],
+      xkey: 'y',
+      ykeys: ['a', 'b', 'c'],
+      labels: ['Min.', 'Avg.', 'Max.'],
+      lineColors: ['#ccc', '#F7BA0E', '#ccc']
+      hideHover: true
+      resize: true
+    });
+
 # $(document).ready ->
 #   if $('#grants_chart').length
 #     Morris.Line
