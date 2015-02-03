@@ -10,7 +10,7 @@ en:
         districts: 'Be sure to select all regions where your organisation has benefited people this year. Remember, you can type the name of the location to filter the list.'
         beneficiaries: 'Think about your typical beneficiaries, which of the following categories applies to them?'
         goods_services: 'Goods (e.g. Medicine), Services (e.g. Training)'
-        markets: 'Think about all of your operating costs, where do you get funding for them?'
+        who_pays: "Please select what your organisation sells to sustain it's operation."
     placeholders:
       user:
         first_name: 'First name'

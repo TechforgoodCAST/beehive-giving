@@ -1,180 +1,275 @@
 .uk-container.uk-container-center
-  .uk-grid.uk-margin-large.uk-margin-large-top
-    %h3.uk-margin Summary
-    .uk-width-medium-1-1
-      .uk-grid
-        .uk-width-medium-1-4
-          .uk-panel.uk-panel-box.uk-margin-bottom
-            %ul.uk-nav.uk-nav-side
-              %li.uk-nav-header Organisation
-              %li
-                %a{:href => "#about"}
-                  Location
-                  .uk-text-danger
-                    - @current_organisation.profiles.first.districts.each do |d|
-                      = d.label
-              %li
-                %a{:href => "#beneficiaries"}
-                  Age
-                  .uk-text-success
-                    = @current_organisation.founded_on
-              %li
-                %a{:href => "#income"}
-                  Income
-                  .uk-text-primary
-                    = @current_organisation.profiles.first.income
-        .uk-width-medium-1-4
-          .uk-panel.uk-panel-box.uk-margin-bottom
-            %ul.uk-nav.uk-nav-side
-              %li.uk-nav-header Beneficiaries
-              %li
-                %a{:href => ""}
-                  Age
-                  .uk-grid
-                    .uk-width-1-2
-                      .uk-text-danger
-                        Min. age:
-                        = @current_organisation.profiles.first.min_age
-                    .uk-width-1-2
-                      .uk-text-success
-                        Max. age:
-                        = @current_organisation.profiles.first.max_age
-              %li
-                %a{:href => ""}
-                  Gender
-                  .uk-text-success
-                    = @current_organisation.profiles.first.gender
-              %li
-                %a{:href => ""}
-                  Focus
-                  .uk-text-primary
-                    - @current_organisation.profiles.first.beneficiaries.each do |b|
-                      = b.label
-        .uk-width-medium-1-4
-          .uk-panel.uk-panel-box.uk-margin-bottom
-            %ul.uk-nav.uk-nav-side
-              %li.uk-nav-header Team
-              %li
-                %a{:href => ""}
-                  People
-                  .uk-grid
-                    .uk-width-1-2
-                      .uk-text-danger
-                        Staff:
-                        = @current_organisation.profiles.first.staff_count
-                    .uk-width-1-2
-                      .uk-text-success
-                        Volunteers:
-                        = @current_organisation.profiles.first.volunteer_count
-              %li
-              %li
-                %a{:href => ""}
-                  Job roles
-                  .uk-text-success
-                    = @current_organisation.profiles.first.job_role_count
-              %li
-                %a{:href => ""}
-                  Departments
-                  .uk-text-primary
-                    = @current_organisation.profiles.first.department_count
-        .uk-width-medium-1-4
-          .uk-panel.uk-panel-box.uk-margin-bottom
-            %ul.uk-nav.uk-nav-side
-              %li.uk-nav-header Work
-              %li
-                %a{:href => "#about"}
-                  Goods or services?
-                  .uk-text-danger
-                    = @current_organisation.profiles.first.goods_services
-              %li
-              %li
-                %a{:href => ""}
-                  Implementation approach
-                  .uk-text-success
-                    - @current_organisation.profiles.first.implementations.each do |i|
-                      = i.label
-              %li
-                %a{:href => ""}
-                  Trading target
-                  .uk-text-primary
-                    - @current_organisation.profiles.first.markets.each do |m|
-                      = m.label
+  .uk-grid.uk-margin.uk-margin-top
+    .uk-width-1-1
+
+      - if @current_user.sign_in_count < 10
+        .uk-alert{'data-uk-alert' => ''}
+          %a.uk-alert-close.uk-close
+          %p.uk-text-large Understanding your report
+          %o Some help understanding your report...
+
+      %h2
+        See if you're a good fit for
+        = @funder.name
+
+    -# .uk-width-medium-1-1
+    -#   %h3.uk-margin Summary
+    -#   .uk-grid
+    -#     .uk-width-medium-1-4
+    -#       .uk-panel.uk-panel-box.uk-margin-bottom
+    -#         %ul.uk-nav.uk-nav-side
+    -#           %li.uk-nav-header Organisation
+    -#           %li
+    -#             %a{:href => "#about"}
+    -#               Location
+    -#               .uk-text-danger
+    -#                 - @current_organisation.profiles.first.districts.each do |d|
+    -#                   = d.label
+    -#           %li
+    -#             %a{:href => "#beneficiaries"}
+    -#               Age
+    -#               .uk-text-success
+    -#                 = @current_organisation.founded_on
+    -#           %li
+    -#             %a{:href => "#income"}
+    -#               Income
+    -#               .uk-text-primary
+    -#                 = @current_organisation.profiles.first.income
+    -#     .uk-width-medium-1-4
+    -#       .uk-panel.uk-panel-box.uk-margin-bottom
+    -#         %ul.uk-nav.uk-nav-side
+    -#           %li.uk-nav-header Beneficiaries
+    -#           %li
+    -#             %a{:href => ""}
+    -#               Age
+    -#               .uk-grid
+    -#                 .uk-width-1-2
+    -#                   .uk-text-danger
+    -#                     Min. age:
+    -#                     = @current_organisation.profiles.first.min_age
+    -#                 .uk-width-1-2
+    -#                   .uk-text-success
+    -#                     Max. age:
+    -#                     = @current_organisation.profiles.first.max_age
+    -#           %li
+    -#             %a{:href => ""}
+    -#               Gender
+    -#               .uk-text-success
+    -#                 = @current_organisation.profiles.first.gender
+    -#           %li
+    -#             %a{:href => ""}
+    -#               Focus
+    -#               .uk-text-primary
+    -#                 - @current_organisation.profiles.first.beneficiaries.each do |b|
+    -#                   = b.label
+    -#     .uk-width-medium-1-4
+    -#       .uk-panel.uk-panel-box.uk-margin-bottom
+    -#         %ul.uk-nav.uk-nav-side
+    -#           %li.uk-nav-header Team
+    -#           %li
+    -#             %a{:href => ""}
+    -#               People
+    -#               .uk-grid
+    -#                 .uk-width-1-2
+    -#                   .uk-text-danger
+    -#                     Staff:
+    -#                     = @current_organisation.profiles.first.staff_count
+    -#                 .uk-width-1-2
+    -#                   .uk-text-success
+    -#                     Volunteers:
+    -#                     = @current_organisation.profiles.first.volunteer_count
+    -#           %li
+    -#           %li
+    -#             %a{:href => ""}
+    -#               Job roles
+    -#               .uk-text-success
+    -#                 = @current_organisation.profiles.first.job_role_count
+    -#           %li
+    -#             %a{:href => ""}
+    -#               Departments
+    -#               .uk-text-primary
+    -#                 = @current_organisation.profiles.first.department_count
+    -#     .uk-width-medium-1-4
+    -#       .uk-panel.uk-panel-box.uk-margin-bottom
+    -#         %ul.uk-nav.uk-nav-side
+    -#           %li.uk-nav-header Work
+    -#           %li
+    -#             %a{:href => "#about"}
+    -#               Goods or services?
+    -#               .uk-text-danger
+    -#                 = @current_organisation.profiles.first.goods_services
+    -#           %li
+    -#           %li
+    -#             %a{:href => ""}
+    -#               Implementation approach
+    -#               .uk-text-success
+    -#                 - @current_organisation.profiles.first.implementations.each do |i|
+    -#                   = i.label
+    -#           %li
+    -#             %a{:href => ""}
+    -#               Trading target
+    -#               .uk-text-primary
+    -#                 - @current_organisation.profiles.first.markets.each do |m|
+    -#                   = m.label
+
     .uk-width-medium-3-4.uk-margin.uk-float-left
-      .uk-grid
-        .uk-width-medium-2-3
-          .uk-panel.uk-panel-box.uk-margin-bottom
+      %hr
+      %h2 Organisation
+      .uk-width-medium-1-1.uk-panel.uk-panel-box
+        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
+          .uk-width-medium-2-3
             %h3.uk-text-bold.uk-text-center
-              Number of grants given
-              %a{"data-uk-toggle" => "{target:'#grants_given_data'}"}
-                %i.uk-icon-info-circle
-            %p#grants_given
-            %table.uk-table.uk-table-hover.uk-hidden#grants_given_data
-              %caption Data table
-              %thead
-                %tr
-                  %th Year
-                  %th Average
-                  %th Minimum
-                  %th Maximum
-              %tbody
-                %tr
-                  %th 2014
-                  %td 4 grants
-                  %td 3 grants
-                  %td 5 grants
-                %tr
-                  %th 2013
-                  %td ~8 grants
-                  %td 7 grants
-                  %td 8 grants
-        .uk-width-medium-1-3.uk-margin-bottom
-          .uk-panel.uk-panel-box
+              Location of grants (by country)
+            %p#grants_location
+          .uk-width-medium-1-3
             %h3.uk-text-bold.uk-text-center
-              Nov 2014 grants round
-              %a{"data-uk-toggle" => "{target:'#grants_stages_data'}"}
-                %i.uk-icon-info-circle
-            %p#grants_stages
-            %table.uk-table.uk-table-hover.uk-hidden#grants_stages_data
-              %caption Data table
-              %thead
-                %tr
-                  %th Stage
-                  %th %
-                  %th Count
-              %tbody
-                %tr
-                  %td Grant
-                  %td 5%
-                  %td 3
-                %tr
-                  %td Application
-                  %td 9%
-                  %td 5
-                %tr
-                  %td Enquiry
-                  %td 86%
-                  %td 48
-              %tfoot
-                %tr
-                  %td Total
-                  %td 100%
-                  %td 56
-        .uk-width-medium-2-3
-          .uk-panel.uk-panel-box.uk-margin-bottom
-            %h3.uk-text-bold.uk-text-center Percentage(%) of grants by size
-            %p#grants_distribution
-        .uk-width-medium-2-3
-          .uk-panel.uk-panel-box.uk-margin-bottom
-            %h3.uk-text-bold.uk-text-center Average grant duration (days)
-            %p#grants_duration
-        .uk-width-medium-2-3
-          .uk-panel.uk-panel-box.uk-margin-bottom
-            %h3.uk-text-bold.uk-text-center Grant amount (£)
-            %p#grants_amount_category
-        .uk-width-medium-2-3
-          .uk-panel.uk-panel-box.uk-margin-bottom
-            %h3.uk-text-bold.uk-text-center Age of funded organisations (years)
-            %p#org_age
+              Your location
+            %p You work in the following areas:
+            %ul
+            .uk-scrollable-text{style: 'height:100px;'}
+              - @current_organisation.profiles.first.districts.each do |d|
+                %li.uk-text-small= d.label
+            .uk-alert
+              %o Forward Foundation tends to fund work in Ethiopia, Kenya, Uganda, and London in the United Kingdom.
+
+      .uk-width-medium-1-1.uk-panel.uk-panel-box
+        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
+          .uk-width-medium-2-3
+            %h3.uk-text-bold.uk-text-center
+              Age of funded organisations
+            %p#recipient_age
+          .uk-width-medium-1-3
+            %h3.uk-text-bold.uk-text-center
+              Your age
+            %h2.uk-text-center
+              = ((Date.today - @current_organisation.founded_on).to_f / 356).round(1)
+              years old
+            .uk-alert
+              %o Forward Foundation tends to fund organisations younger than 3 years old.
+
+      .uk-width-medium-1-1.uk-panel.uk-panel-box
+        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
+          .uk-width-medium-2-3
+            %h3.uk-text-bold.uk-text-center
+              Income of funded organisations
+            %p#recipient_income
+          .uk-width-medium-1-3
+            %h3.uk-text-bold.uk-text-center
+              Your income
+            %h2.uk-text-center
+              = number_to_currency(@current_organisation.profiles.first.income, unit: '£', precision: 0)
+            .uk-alert
+              %o Forward Foundation tends to fund organisations with income than £300,000.
+
+      %hr
+      %h2 Beneficiaries
+      .uk-width-medium-1-1.uk-panel.uk-panel-box
+        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
+          .uk-width-medium-2-3
+            %h3.uk-text-bold.uk-text-center
+              Age range targeted by funded organisations
+            %p#beneficiaries_age
+          .uk-width-medium-1-3
+            %h3.uk-text-bold.uk-text-center Your target age range
+            .uk-grid.uk-text-center
+              .uk-width-1-2
+                Min. age
+                %h2= @current_organisation.profiles.first.min_age
+              .uk-width-1-2
+                Max. age
+                %h2= @current_organisation.profiles.first.max_age
+
+      .uk-width-medium-1-1.uk-panel.uk-panel-box
+        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
+          .uk-width-medium-2-3
+            %h3.uk-text-bold.uk-text-center
+              Gender targeted by funded organisations
+            %p#beneficiaries_gender
+          .uk-width-medium-1-3
+            %h3.uk-text-bold.uk-text-center
+              Your target gender
+            %h2.uk-text-center
+              = @current_organisation.profiles.first.gender
+
+      .uk-width-medium-1-1.uk-panel.uk-panel-box
+        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
+          .uk-width-medium-2-3
+            %h3.uk-text-bold.uk-text-center
+              Beneficiary focus of funded organisations
+            %p#beneficiaries_focus
+          .uk-width-medium-1-3
+            %h3.uk-text-bold.uk-text-center
+              Your beneficiary focus
+            %ul
+            .uk-scrollable-text{style: 'height:100px;'}
+              - @current_organisation.profiles.first.beneficiaries.each do |b|
+                %li.uk-text-small= b.label
+            .uk-alert
+              %o Forward Foundation tends to focus on Education, Unemployment, and Income Poverty.
+
+      %hr
+      %h2 Team
+      .uk-width-medium-1-1.uk-panel.uk-panel-box
+        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
+          .uk-width-medium-2-3
+            %h3.uk-text-bold.uk-text-center
+              Number of Staff from funded organisations
+            %p#recipient_staff
+          .uk-width-medium-1-3
+            %h3.uk-text-bold.uk-text-center Your Staff
+            %h2.uk-text-center
+              = @current_organisation.profiles.first.staff_count
+
+      .uk-width-medium-1-1.uk-panel.uk-panel-box
+        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
+          .uk-width-medium-2-3
+            %h3.uk-text-bold.uk-text-center
+              Number of Volunteers from funded organisations
+            %p#recipient_volunteers
+          .uk-width-medium-1-3
+            %h3.uk-text-bold.uk-text-center Your Volunteers
+            %h2.uk-text-center
+              = @current_organisation.profiles.first.volunteer_count
+
+      %hr
+      %h2 Work
+      .uk-width-medium-1-1.uk-panel.uk-panel-box
+        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
+          .uk-width-medium-2-3
+            %h3.uk-text-bold.uk-text-center
+              How funded organisations implement their work
+            %p#recipient_implement
+          .uk-width-medium-1-3
+            %h3.uk-text-bold.uk-text-center How your organisation implements it's work
+            %p You use the following to achieve your missions:
+            %ul
+            .uk-scrollable-text{style: 'height:60px;'}
+              - @current_organisation.profiles.first.implementations.each do |i|
+                %li.uk-text-small= i.label
+            .uk-alert
+              %o Forward Foundation tends to focus on Education, Unemployment, and Income Poverty.
+
+      .uk-width-medium-1-1.uk-panel.uk-panel-box
+        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
+          .uk-width-medium-2-3
+            %h3.uk-text-bold.uk-text-center
+              Funded organisations delivery focus
+            %p#recipient_goods_or_services
+          .uk-width-medium-1-3
+            %h3.uk-text-bold.uk-text-center You deliver
+            %h2.uk-text-center
+              = @current_organisation.profiles.first.goods_services
+
+      .uk-width-medium-1-1.uk-panel.uk-panel-box
+        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
+          .uk-width-medium-2-3
+            %h3.uk-text-bold.uk-text-center
+              What funded organisations sell
+            %p#recipient_sells
+          .uk-width-medium-1-3
+            %h3.uk-text-bold.uk-text-center You sell
+            %h2.uk-text-center
+              = @current_organisation.profiles.first.who_pays
 
     .uk-width-medium-1-4.uk-float-right
       .uk-panel.uk-panel-box{"data-uk-sticky" => "{top:92}"}
@@ -182,25 +277,31 @@
           %h3.uk-panel-title.uk-margin-remove
             #org-logo.logo-1
               = @funder.name
-          -# %h3
-          -#   = @funder.name
-          -#   = @funder.grants.count
           %p.uk-text-muted= @funder.mission
         %ul.uk-nav.uk-nav-side{"data-uk-scrollspy-nav" => "{closest:'li', smoothscroll:true}"}
-          %li.uk-nav-header Contents
+          %li.uk-nav-header Organisation
           %li
-            %a{:href => "#about"} About
+            %a{:href => "#grants_location"} Location
           %li
-            %a{:href => "#beneficiaries"} Beneficiaries
-        -# .uk-grid
-        -#   %dl.uk-description-list.uk-width-medium-1-1
-        -#     %dt.uk-text-small Invitations to next funding round:
-        -#     %dd May 2015
-        -#     %dt.uk-text-small.uk-margin-top Time from enquiry to funding:
-        -#     %dd May 2015
-        -#     %dt.uk-text-small.uk-margin-top Invitations to next funding round:
-        -#     %dd Avg: 24 weeks
-        -#     %dd Min: 14 weeks
-        -#     %dd Max: 38 weeks
-        -#     %dt.uk-text-small.uk-margin-top Funding round frequency
-        -#     %dd Avg: 25 weeks
+            %a{:href => "#recipient_age"} Age
+          %li
+            %a{:href => "#recipient_income"} Income
+          %li.uk-nav-header Beneficiaries
+          %li
+            %a{:href => "#beneficiaries_age"} Age
+          %li
+            %a{:href => "#beneficiaries_gender"} Gender
+          %li
+            %a{:href => "#beneficiaries_focus"} Focus
+          %li.uk-nav-header Team
+          %li
+            %a{:href => "#recipient_staff"} Staff
+          %li
+            %a{:href => "#recipient_volunteers"} Volunteers
+          %li.uk-nav-header Work
+          %li
+            %a{:href => "#recipient_implement"} Delivery Model
+          %li
+            %a{:href => "#recipient_goods_or_services"} Deliverables
+          %li
+            %a{:href => "#recipient_sells"} Business Model

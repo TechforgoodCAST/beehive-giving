@@ -31,21 +31,6 @@ Implementation.destroy_all
   Implementation.create(label:state)
 end
 
-# Create markets
-Market.destroy_all
-[
-  "Trusts and Foundations",
-  "Local government",
-  "National government",
-  "Beneficiaries we work with",
-  "Volunteers we work with",
-  "Other organisations",
-  "Members of the public",
-  "Other"
-].each do |state|
-  Market.create(label:state)
-end
-
 # Create districts
 District.destroy_all
 

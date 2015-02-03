@@ -5,19 +5,19 @@ class Profile < ActiveRecord::Base
   has_and_belongs_to_many :implementations
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
-  has_and_belongs_to_many :markets
 
   VALID_YEARS = ((Date.today.year-5)..(Date.today.year)).to_a.reverse
   GENDERS = ['All genders', 'Only female', 'Only male', 'Only other genders']
   CURRENCY = ['GBP (£)', 'EUR (€)', 'USD ($)']
   GOODS_SERVICES = %w[Goods Services Both]
+  WHO_PAYS = %w[Goods Services Both No]
 
-  validates :organisation, :districts, :beneficiaries, :implementations, :markets, presence: true
+  validates :organisation, :districts, :beneficiaries, :implementations, presence: true
 
   validates :year, :gender, :currency, :goods_services,
             :min_age, :max_age, :income, :expenditure, :volunteer_count,
             :staff_count, :job_role_count, :department_count, :goods_count,
-            :services_count, presence: true
+            :services_count, :who_pays, presence: true
   validates :income, :expenditure, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   validates :min_age, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :max_age,
@@ -43,5 +43,6 @@ class Profile < ActiveRecord::Base
   validates :year, inclusion: {in: VALID_YEARS}
   validates :currency, inclusion: {in: CURRENCY}
   validates :goods_services, inclusion: {in: GOODS_SERVICES}
+  validates :who_pays, inclusion: {in: WHO_PAYS}
 
 end

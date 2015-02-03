@@ -131,13 +131,13 @@
 
   .uk-width-medium-1-1.uk-margin-bottom
     %label.uk-form-label
-      Who pays for the goods or services your organisation supplies?
-      %a{"data-uk-toggle" => "{target:'#markets_hint'}"}
+      Do you sell the goods or services your organisation supplies?
+      %a{"data-uk-toggle" => "{target:'#who_pays_hint'}"}
         %i.uk-icon-question-circle
-    = f.hint :markets, class: 'uk-text-small uk-hidden', id: 'markets_hint'
+    = f.hint :who_pays, class: 'uk-text-small uk-hidden', id: 'who_pays_hint'
     .uk-form-controls
-      = f.association :markets, label_method: :label, value_method: :id, input_html: {class: 'chosen-select'}
-      = f.error :markets, class: 'uk-text-small uk-text-warning'
+      = f.input :who_pays, collection: Profile::WHO_PAYS, type: 'text', input_html: { class: 'uk-width-1-1' }
+      = f.error :who_pays, class: 'uk-text-small uk-text-warning'
 
   .uk-width-medium-1-1
     = f.submit 'Next', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'
