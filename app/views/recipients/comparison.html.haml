@@ -272,12 +272,12 @@
               = @current_organisation.profiles.first.who_pays
 
     .uk-width-medium-1-4.uk-float-right
-      .uk-panel.uk-panel-box{"data-uk-sticky" => "{top:92}"}
+      .uk-panel.uk-panel-box{"data-uk-sticky" => "{top:62}"}
         .uk-text-center
-          %h3.uk-panel-title.uk-margin-remove
-            #org-logo.logo-1
-              = @funder.name
-          %p.uk-text-muted= @funder.mission
+          %h3.uk-panel-title.uk-margin-remove Navigation
+        -#     #org-logo.logo-1
+        -#       = @funder.name
+        -#   %p.uk-text-muted= @funder.mission
         %ul.uk-nav.uk-nav-side{"data-uk-scrollspy-nav" => "{closest:'li', smoothscroll:true}"}
           %li.uk-nav-header Organisation
           %li

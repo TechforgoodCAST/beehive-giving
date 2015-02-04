@@ -5,7 +5,7 @@ namespace :db do
 
     # Rake::Task['db:reset'].invoke
 
-    count = 5
+    count = 20
     start = count + 1
 
     count.times do |n|

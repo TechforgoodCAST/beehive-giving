@@ -75,7 +75,7 @@
             %a{href: "http://www.forwardfoundation.org.uk", target: "_blank"} &copy; Forward Foundation #{Date.today.year}
 
     #offcanvas.uk-offcanvas
-      .uk-offcanvas-bar.uk-offcanvas-bar-flip.uk-offcanvas-bar-show
+      .uk-offcanvas-bar.uk-offcanvas-bar-flip.uk-offcanvas-bar-show{style: 'z-index:1000;'}
         - if @logged_in
           %ul.uk-nav.uk-nav-offcanvas
             %li.uk-nav-header.uk-margin-top.uk-text-center

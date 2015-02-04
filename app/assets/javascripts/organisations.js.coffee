@@ -26,7 +26,6 @@ $(document).ready ->
       xLabels: 'month'
       postUnits: ' grants'
       lineColors: ['#ccc', '#aaa', '#666', '#F7BA0E']
-      hideHover: true
       resize: true
       xLabelFormat: (x) ->
                       options =
@@ -50,7 +49,6 @@ $(document).ready ->
       xLabels: 'month'
       postUnits: ' years'
       lineColors: ['#ccc', '#F7BA0E', '#ccc']
-      hideHover: true
       resize: true
       # goals: ['2']
       # goalLineColors: ['#00a8e6']
@@ -77,7 +75,6 @@ $(document).ready ->
       xLabels: 'month'
       preUnits: '£'
       lineColors: ['#ccc', '#F7BA0E', '#ccc']
-      hideHover: true
       resize: true
       # goals: ['2']
       # goalLineColors: ['#00a8e6']
@@ -103,7 +100,6 @@ $(document).ready ->
       xLabels: 'month'
       postUnits: ' years old'
       lineColors: ['#F7BA0E', '#ccc']
-      hideHover: true
       resize: true
       behaveLikeLine: true
       # goals: ['15']
@@ -131,7 +127,6 @@ $(document).ready ->
       postUnits: '%'
       lineColors: ['#F7BA0E', '#666', '#aaa', '#ccc']
       smooth: false
-      hideHover: true
       resize: true
       # goals: ['15']
       # goalLineColors: ['#00a8e6']
@@ -163,7 +158,6 @@ $(document).ready ->
       labels: ['2014', '2013']
       postUnits: '%'
       barColors: ['#F7BA0E', '#ccc']
-      hideHover: true
       resize: true
       xLabelAngle: 45
     });
@@ -183,7 +177,6 @@ $(document).ready ->
       xLabels: 'month'
       postUnits: ' people'
       lineColors: ['#ccc', '#F7BA0E', '#ccc']
-      hideHover: true
       resize: true
       xLabelFormat: (x) ->
                       options =
@@ -207,7 +200,6 @@ $(document).ready ->
       xLabels: 'month'
       postUnits: ' people'
       lineColors: ['#ccc', '#F7BA0E', '#ccc']
-      hideHover: true
       resize: true
       xLabelFormat: (x) ->
                       options =
@@ -234,7 +226,6 @@ $(document).ready ->
       labels: ['2014', '2013']
       postUnits: '%'
       barColors: ['#F7BA0E', '#ccc']
-      hideHover: true
       resize: true
       xLabelAngle: 45
     });
@@ -255,7 +246,6 @@ $(document).ready ->
       postUnits: '%'
       lineColors: ['#666', '#F7BA0E', '#aaa']
       smooth: false
-      hideHover: true
       resize: true
       # goals: ['15']
       # goalLineColors: ['#00a8e6']
@@ -282,7 +272,6 @@ $(document).ready ->
       postUnits: '%'
       lineColors: ['#666', '#999', '#bbb', '#F7BA0E']
       smooth: false
-      hideHover: true
       resize: true
       # goals: ['15']
       # goalLineColors: ['#00a8e6']
