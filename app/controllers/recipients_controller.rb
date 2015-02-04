@@ -10,10 +10,12 @@ class RecipientsController < ApplicationController
 
   def dashboard
     @funders = Funder.all
+    @feedback = current_user.feedbacks.new
   end
 
   def comparison
     @funder = Funder.find_by_slug(params[:id])
+    @feedback = current_user.feedbacks.new
   end
 
   def vote
@@ -25,10 +27,27 @@ class RecipientsController < ApplicationController
     end
   end
 
+  def feedback
+    @feedback = current_user.feedbacks.new
+  end
+
+  def create_feedback
+    @feedback = current_user.feedbacks.new(feedback_params)
+    if @feedback.save
+      redirect_to :back, notice: "Thanks for your feedback."
+    else
+      redirect_to :back, alert: "Unable to give feedback, please complete questiions 1-3."
+    end
+  end
+
   private
 
   def load_recipient
     @recipient = Recipient.find_by_slug(params[:id])
     @current_organisation = current_user.organisation
+  end
+
+  def feedback_params
+    params.require(:feedback).permit(:nps, :taken_away, :other)
   end
 end

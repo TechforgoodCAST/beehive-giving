@@ -24,6 +24,10 @@ Rails.application.routes.draw do
 
   match '/new-funder', to: 'signup#create_funder', via: :post
 
+  # Feedback
+  match '/feedback', to: 'recipients#feedback', via: :get, as: 'recipients_feedback'
+  match '/feedback', to: 'recipients#create_feedback', via: :post
+
   # Dashboard
   match '/comparison/(:id)', to: 'recipients#comparison', via: :get, as: 'recipient_comparison'
 

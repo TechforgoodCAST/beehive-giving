@@ -8,9 +8,17 @@
   height: 250px;
 }
 
-.org-logo {
-  // margin: 5px 0;
-  text-indent: -9999px;
+.radio {
+  margin: 0 12px;
+  @media (max-width: 1220px) {
+    margin: 0 8px;
+  }
+  @media (max-width: 995px) {
+    margin: 0 3px;
+  }
+  @media (max-width: 767px) {
+    margin: 0 0;
+  }
 }
 
 .morris-hover {

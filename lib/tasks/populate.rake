@@ -5,12 +5,12 @@ namespace :db do
 
     # Rake::Task['db:reset'].invoke
 
-    count = 20
+    count = 19
     start = count + 1
 
     count.times do |n|
       Funder.create(
-        name: Faker::Company.name,
+        name: 'Forward Foundation',
         mission: Faker::Company.catch_phrase,
         contact_number: '01234567890',
         website: 'www.example.com',

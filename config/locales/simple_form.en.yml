@@ -37,6 +37,8 @@ en:
         postal_code: 'Postal code'
         charity_number: 'Charity/Nonprofit number'
         company_number: 'Company number'
+      feedback:
+        other: "We're commited to delivering a service which is useful for non-profits, and we'd love feedback good or bad."
     # "yes": 'Yes'
     # "no": 'No'
     required:

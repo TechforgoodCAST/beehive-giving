@@ -1,8 +1,11 @@
 .uk-container.uk-container-center
   .uk-grid.uk-margin.uk-margin-top
+    - unless @current_user.feedbacks.count >= 1 || @current_user.sign_in_count < 2
+      = render partial: 'recipients/feedback'
+
     .uk-width-1-1.uk-margin
 
-      - if @current_user.sign_in_count < 10
+      - if @current_user.sign_in_count < 3
         .uk-alert{'data-uk-alert' => ''}
           %a.uk-alert-close.uk-close
           %p.uk-text-large Welcome to Beehive!
@@ -24,7 +27,7 @@
                   .uk-width-medium-1-1.uk-margin
                     .uk-text-center.uk-vertical-align{style: 'height: 75px;'}
                       %h3.uk-panel-title.uk-margin-remove.uk-vertical-align-middle
-                        %img{src: "assets/logos/#{funder.slug}-logo.png"}
+                        %img{src: "assets/logos/#{funder.slug}-logo.png", alt: "#{funder.name}"}
                   .uk-width-medium-1-1
                     - if funder.active_on_beehive?
                       %a.uk-button.uk-button-primary.uk-width-1-1{ href: recipient_comparison_path(funder) } See how you compare
