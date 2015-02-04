@@ -21,31 +21,32 @@
         %a.uk-navbar-brand.uk-hidden-small.logo{:href => root_path, title: 'Beehive'}
           .logo-label Beta
         .uk-navbar-flip
-          %a.uk-navbar-toggle.uk-visible-small#padding-remove{"data-uk-offcanvas" => "{target:'#offcanvas'}"}
           - if @logged_in
-            .uk-navbar-content.uk-hidden-small#padding-remove
-              .uk-button-group
-                %button.uk-button
-                  = @current_user.first_name
-                %div{"data-uk-dropdown" => "{mode:'click'}"}
-                  %button.uk-button
-                    %i.uk-icon-caret-down
-                  .uk-dropdown.uk-dropdown-flip.uk-dropdown-width-2
-                    .uk-grid.uk-grid-divider.uk-dropdown-grid
-                      .uk-width-2-3
-                        %ul.uk-nav.uk-nav-dropdown.uk-panel
-                          %li.uk-nav-header
-                            = @current_user.first_name
-                      .uk-width-1-3
-                        %ul.uk-nav.uk-nav-dropdown.uk-panel
-                          %li
-                            = link_to "Sign out", logout_path, method: :delete
+            - if @current_user.organisation
+              - if @current_user.organisation.type == 'Funder'
+                .uk-navbar-content.uk-text-muted.uk-hidden-small
+                  Welcome,
+                  = @current_user.organisation.name
+                %ul.uk-navbar-nav.uk-hidden-small
+                  %li
+                    %a{href: funder_path(@current_user.organisation)} Dashboard
+              - else @current_user.organisation.type == 'Recipient'
+                .uk-navbar-content.uk-text-muted.uk-hidden-small
+                  Welcome,
+                  = @current_user.organisation.name
+                %ul.uk-navbar-nav.uk-hidden-small
+                  %li
+                    %a{href: signup_comparison_path} Dashboard
+            %ul.uk-navbar-nav.uk-hidden-small
+              %li
+                %a{href: logout_path, method: :destroy} Sign out
           - else
             %ul.uk-navbar-nav.uk-hidden-small
               %li
                 %a{ href: tour_path } Find out more
               %li
                 %a{"data-uk-offcanvas" => "", :href => "#offcanvas"} Sign in
+          %a.uk-navbar-toggle.uk-visible-small#padding-remove{"data-uk-offcanvas" => "{target:'#offcanvas'}"}
         %a.uk-navbar-brand.uk-visible-small.logo{:href => root_path}
           .logo-label Beta
 
@@ -77,11 +78,23 @@
     #offcanvas.uk-offcanvas
       .uk-offcanvas-bar.uk-offcanvas-bar-flip.uk-offcanvas-bar-show{style: 'z-index:1000;'}
         - if @logged_in
-          %ul.uk-nav.uk-nav-offcanvas
-            %li.uk-nav-header.uk-margin-top.uk-text-center
-              = @current_user.first_name
-            %li
-              = link_to "Sign out", logout_path, method: :delete
+          - if @current_user.organisation
+            %ul.uk-nav.uk-nav-offcanvas
+              %li.uk-nav-header.uk-margin-top.uk-text-center
+                = @current_user.organisation.name
+              %li
+                - if @current_user.organisation.type == 'Funder'
+                  %a{href: funder_path(@current_user.organisation)} Dashboard
+                - else
+                  %a{href: signup_comparison_path} Dashboard
+              %li
+                %a{href: logout_path, method: :destroy} Sign out
+          - else
+            %ul.uk-nav.uk-nav-offcanvas
+              %li.uk-nav-header.uk-margin-top.uk-text-center
+                Welcome to Beehive
+              %li
+                %a{href: logout_path, method: :destroy} Sign out
         - else
           %ul.uk-nav.uk-nav-offcanvas
             %li.uk-nav-header.uk-margin-top.uk-text-center Sign in

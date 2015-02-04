@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root :to => 'sessions#check'
   get '/login' => 'sessions#new', as: 'login'
   post '/login' => 'sessions#create'
-  delete 'logout'  => 'sessions#destroy'
+  get '/logout'  => 'sessions#destroy'
 
   # Pages
   match 'tour', to: 'pages#tour', via: :get, as: 'tour'
