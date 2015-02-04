@@ -1,6 +1,8 @@
 namespace :db do
   desc "Create Funders"
   task :create_funders => :environment do
+    require 'faker'
+
     Funder.create(
       name: 'Forward Foundation',
       mission: 'We harness the innovation and talent of the tech sector to transform young lives.',
@@ -53,7 +55,7 @@ namespace :db do
         user_email: "org#{n+1}@example.com",
         password: '123123',
       )
-      user.organisation = Recipient.find(n+1+count)
+      user.organisation = Recipient.find(n+1)
       user.save
 
       profile = Profile.create(
@@ -74,7 +76,7 @@ namespace :db do
         units_count: rand(0..5000),
         services_count: rand(0..25),
       )
-      profile.organisation = Recipient.find(n+1+count)
+      profile.organisation = Recipient.find(n+1)
       profile.save
     end
   end
