@@ -159,7 +159,7 @@ ActiveRecord::Schema.define(version: 20150204123743) do
     t.string   "role",                   default: "User"
     t.datetime "password_reset_sent_at"
     t.datetime "last_seen"
-    t.integer  "sign_in_count"
+    t.integer  "sign_in_count",          default: 0
     t.datetime "created_at",                              null: false
     t.datetime "updated_at",                              null: false
   end

@@ -24,7 +24,8 @@ namespace :db do
         charity_number: Faker::Number.number(8),
         company_number: Faker::Number.number(10),
         founded_on: Faker::Date.between(10.years.ago, 5.years.ago),
-        registered_on: Faker::Date.between(5.years.ago, Time.now)
+        registered_on: Faker::Date.between(5.years.ago, Time.now),
+        active_on_beehive: true
       )
       user = User.create(
         first_name: Faker::Name.first_name,
