@@ -9,11 +9,9 @@ class User < ActiveRecord::Base
 
   validates :password, presence: true, confirmation: true,
   length: {:within => 6..40}, on: :create
-  # validates :password, presence: true, confirmation: true,
-  # length: {:within => 6..40}, on: :update
+  # validates :password, format: {with: /\A(?=[^\d_].*?\d)\w(\w|[!@#$%])\z/, message: 'Password must include at least one numeric digit.'}
 
   before_create { generate_token(:auth_token) }
-  before_create :build_default_organisation
 
   has_secure_password
 
@@ -28,14 +26,5 @@ class User < ActiveRecord::Base
     begin
       self[column] = SecureRandom.urlsafe_base64
     end while User.exists?(column => self[column])
-  end
-
-  private
-
-  def build_default_organisation
-    # build default organisation instance. Will use default params.
-    # The foreign key to the owning User model is set automatically
-    build_organisation
-    true
   end
 end
