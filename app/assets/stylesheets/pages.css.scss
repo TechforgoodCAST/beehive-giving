@@ -7,35 +7,74 @@
   min-height: 400px;
   background: #ccc;
   padding: 0 0 0 0;
+  @media (max-width: 1220px) {
+    min-height: 350px;
+  }
+  @media (max-width: 995px) {
+    min-height: 300px;
+  }
   @media (max-width: 767px) {
     width: 100%;
+    min-height: 400px;
+  }
+  @media (max-width: 480px) {
+    width: 100%;
+    min-height: 275px;
   }
 }
 
+#set-height{
+  height: 400px;
+  @media (max-width: 1220px) {
+    height: 350px;
+  }
+  @media (max-width: 995px) {
+    height: 300px;
+  }
+  @media (max-width: 767px) {
+    height: 300px;
+  }
+}
+
+// Non-profit images
 #tour1 {
-  background: url(https://prismic-io.s3.amazonaws.com/luna/ce59d1c7df2984f0bbd2f09da0347378333a3ced_feature1.png) no-repeat;
+  background: image-url('tour/np-problem.png') no-repeat;
+  background-size: cover;
+}
+#tour2 {
+  background: #F7BA0E image-url('tour/np-solution.png') no-repeat;
   background-size: cover;
 }
 #tour3 {
-  background: url(https://prismic-io.s3.amazonaws.com/luna/ce59d1c7df2984f0bbd2f09da0347378333a3ced_feature1.png) no-repeat;
+  background: image-url('tour/np-benefits.png') no-repeat;
+  background-size: cover;
+}
+
+// Funder images
+#tour4 {
+  background: image-url('tour/funder-problem.png') no-repeat;
   background-size: cover;
 }
 #tour5 {
-  background: url(https://prismic-io.s3.amazonaws.com/luna/ce59d1c7df2984f0bbd2f09da0347378333a3ced_feature1.png) no-repeat;
+  background: #F7BA0E image-url('tour/funder-solution.png') no-repeat;
+  background-size: cover;
+}
+#tour6 {
+  background: image-url('tour/funder-benefits.png') no-repeat;
   background-size: cover;
 }
 
 .container-l {
   float: right;
   max-width: 580px;
-  padding: 0 15px 0 33px;
+  padding: 0 80px 0 33px;
   @media (max-width: 1220px) {
     max-width: 490px;
-    padding: 0 15px 0 38px;
+    padding: 0 60px 0 38px;
   }
   @media (max-width: 995px) {
     max-width: auto;
-    padding: 0 15px 0 25px;
+    padding: 0 25px 0 25px;
   }
   @media (max-width: 767px) {
     max-width: 100%;
@@ -46,14 +85,14 @@
 .container-r {
   float: left;
   max-width: 580px;
-  padding: 0 33px 0 15px;
+  padding: 0 33px 0 80px;
   @media (max-width: 1220px) {
     max-width: 490px;
-    padding: 0 38px 0 15px;
+    padding: 0 38px 0 60px;
   }
   @media (max-width: 995px) {
     max-width: auto;
-    padding: 0 25px 0 15px;
+    padding: 0 25px 0 25px;
   }
   @media (max-width: 767px) {
     max-width: 100%;
