@@ -33,7 +33,13 @@
 
 /* Sections */
 
-.tm-section-color-1 { background: #F7BA0E image-url('bg_teaser.svg') 50% 50% no-repeat; }
+.tm-section-color-1 {
+  background: #F7BA0E;
+    @media (min-width: 767px) {
+    background: #F7BA0E image-url('bg_teaser.svg') 50% 50% no-repeat;
+    background-size: cover;
+  }
+}
 .tm-section-color-2 { background: #F7BA0E; }
 .tm-section-color-3 { background: #F7BA0E; }
 
