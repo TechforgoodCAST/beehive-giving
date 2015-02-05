@@ -42,6 +42,10 @@
 }
 .tm-section-color-2 { background: #F7BA0E; }
 .tm-section-color-3 { background: #35b3ee; }
+.tm-section-color-4 {
+  background: #F7BA0E image-url('hexagon_pattern.svg') repeat;
+  background-size: 100px;
+}
 
 .tm-section-colored,
 .tm-section-colored h1,
