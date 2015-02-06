@@ -7,18 +7,16 @@
           = link_to 'Forward Foundation', 'http://www.forwardfoundation.org.uk', target: '_blank'
           in response to their experience of the way funding takes place in the non-profit sector.
 
-        .uk-container.uk-container-center
-          .uk-width-3-4.uk-container-center
-            .uk-grid
-              .uk-width-medium-1-3.uk-margin-top.uk-text-center
-                %h2.uk-text-bold.uk-margin-remove For non-profits
-                .uk-text-large.uk-text-justify Beehive makes it possible to understand their fit with different funders. Meaning more funding for their great work and less wasted time on fundraising.
-              .uk-width-medium-1-3.uk-margin-top.uk-text-center
-                %h2.uk-text-bold.uk-margin-remove For funders
-                .uk-text-large.uk-text-justify Beehive compares suitable non-profits in a simple, scientific way and allows them to compare themselves to other funders. Meaning better and more efficient philanthropy.
-              .uk-width-medium-1-3.uk-margin-top.uk-text-center
-                %h2.uk-text-bold.uk-margin-remove For the sector
-                .uk-text-large.uk-text-justify Beehive paints a picture of the funding landscape, which can be used to identify funding gaps and improve collaboration between organisations.
+        .uk-grid
+          .uk-width-medium-1-3.uk-margin-top.uk-text-center
+            %h2.uk-text-bold.uk-margin-remove For non-profits
+            .uk-text-large.uk-text-justify Beehive makes it possible to understand their fit with different funders. Meaning more funding for their great work and less wasted time on fundraising.
+          .uk-width-medium-1-3.uk-margin-top.uk-text-center
+            %h2.uk-text-bold.uk-margin-remove For funders
+            .uk-text-large.uk-text-justify Beehive compares suitable non-profits in a simple, scientific way and allows them to compare themselves to other funders. Meaning better and more efficient philanthropy.
+          .uk-width-medium-1-3.uk-margin-top.uk-text-center
+            %h2.uk-text-bold.uk-margin-remove For the sector
+            .uk-text-large.uk-text-justify Beehive paints a picture of the funding landscape, which can be used to identify funding gaps and improve collaboration between organisations.
 
 .uk-container.uk-container-center
   .uk-container.uk-container-center
@@ -26,11 +24,12 @@
       %p.uk-text-large.uk-text-bold Michael, the Director explains:
 
       .uk-grid
-        .uk-width-3-4
+        .uk-width-small-1-4.uk-float-right
+          .uk-text-center
+            = image_tag "about/michael-head.svg", width: '100px'
+        .uk-width-small-3-4.uk-float-left
           .uk-panel.uk-panel-box
             %blockquote We quickly realised that the funding game is deeply flawed. We found that the number one challenge our partners face is funding. They don’t know who to approach and get frustrated when their time is wasted applying to organisations unlikely to support them. Meanwhile, our fellow funders were telling us that they struggle to cope with the volume of interest in their funding and find it difficult to compare organisations to support. We made it our mission to find a better way of doing things to help both those looking for funding and those distributing it.
-        .uk-width-1-4
-          = image_tag "about/michael-head.svg", width: '100px', class: 'uk-float-left'
 
       %p.uk-text-large.uk-text-bold
         So, in 2014, the team at
@@ -38,9 +37,10 @@
         HQ put on their thinking caps to reimagine how funding could take place. Suraj, Head of Digital, explains the path they then took:
 
       .uk-grid
-        .uk-width-1-4
-          = image_tag "about/suraj-head.svg", width: '100px', class: 'uk-float-right'
-        .uk-width-3-4
+        .uk-width-small-1-4
+          .uk-text-center
+            = image_tag "about/suraj-head.svg", width: '100px'
+        .uk-width-small-3-4
           .uk-panel.uk-panel-box
             %blockquote We spent time really understanding the problem. We talked to as many non-profits and funders as we could. We created a basic offline solution that responded to the frustrations that we were hearing about funding. The results of our tests were really positive and gave us lots more insight. So we built an online version, named it Beehive and launched in April 2015.
 
@@ -151,7 +151,7 @@
       %li.todo
         %span.text1 June 2015
         %span.bull
-        %span.text Recommendation algorithm developed
+        %span.text Recommendation algorithm
       %li.todo
         %span.text1 December 2015
         %span.bull
