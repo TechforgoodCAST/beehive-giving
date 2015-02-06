@@ -7,6 +7,6 @@ class UserMailer < ActionMailer::Base
 
   def password_reset(user)
     @user = user
-    mail(to: @user.user_email, subject: 'Password Reset - Beehive')
+    mail(to: @user.user_email, subject: 'Reset your password - Beehive')
   end
 end

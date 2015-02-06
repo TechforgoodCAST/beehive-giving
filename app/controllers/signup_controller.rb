@@ -9,7 +9,7 @@ class SignupController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       cookies[:auth_token] = @user.auth_token
-      # OrganisationMailer.welcome_email(@organisation).deliver
+      UserMailer.welcome_email(@user).deliver
       redirect_to signup_organisation_path if @user.role == 'User'
       redirect_to new_funder_path if @user.role == 'Funder'
     else
