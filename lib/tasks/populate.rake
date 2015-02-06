@@ -70,8 +70,8 @@ namespace :db do
       profile = Profile.create(
         gender: 'All genders',
         currency: 'GBP (£)',
-        goods_services: 'Goods',
-        who_pays: 'Goods',
+        goods_services: 'Services',
+        who_pays: 'Services',
         year: '2014',
         min_age: rand(0..25),
         max_age: rand(10..120),

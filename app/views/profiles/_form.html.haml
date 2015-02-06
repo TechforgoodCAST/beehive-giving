@@ -110,7 +110,7 @@
 
   .uk-width-medium-1-1.uk-margin-bottom
     %label.uk-form-label
-      Does your organisation provide goods or services?
+      Does your organisation provide products or services?
       %a{"data-uk-toggle" => "{target:'#goods_services_hint'}"}
         %i.uk-icon-question-circle
     = f.hint :goods_services, class: 'uk-text-small uk-hidden', id: 'goods_services_hint'
@@ -124,14 +124,14 @@
       = f.input :services_count, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :services_count, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-2.uk-margin-bottom
-    %label.uk-form-label Number of goods provided
+    %label.uk-form-label Number of products provided
     .uk-form-controls
       = f.input :goods_count, input_html: { class: 'uk-width-1-1' }
       = f.error :goods_count, class: 'uk-text-small uk-text-warning'
 
   .uk-width-medium-1-1.uk-margin-bottom
     %label.uk-form-label
-      Do you sell the goods or services your organisation supplies?
+      Do you sell the products or services your organisation supplies?
       %a{"data-uk-toggle" => "{target:'#who_pays_hint'}"}
         %i.uk-icon-question-circle
     = f.hint :who_pays, class: 'uk-text-small uk-hidden', id: 'who_pays_hint'

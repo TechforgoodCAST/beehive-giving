@@ -11,6 +11,7 @@ class CreateCountries < ActiveRecord::Migration
     Country.create(:name => 'Ethiopia', :iso3 => 'ETH', :iso2 => 'ET', :numcode => 231)
     Country.create(:name => 'Kenya', :iso3 => 'KEN', :iso2 => 'KE', :numcode => 404)
     Country.create(:name => 'Uganda', :iso3 => 'UGA', :iso2 => 'UG', :numcode => 800)
+    Country.create(:name => 'Other', :iso3 => 'N/A', :iso2 => 'NA', :numcode => 000)
 
     create_table :countries_profiles do |t|
       t.references :country

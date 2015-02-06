@@ -22,7 +22,7 @@
           .logo-label Beta
         .uk-navbar-flip
           - if @logged_in
-            - if @current_user.organisation
+            - unless content_for?(:signup)
               - if @current_user.organisation.type == 'Funder'
                 .uk-navbar-content.uk-text-muted.uk-hidden-small
                   Welcome,
@@ -60,6 +60,7 @@
           %a.uk-alert-close.uk-close
           %p.flash-notice= flash[:alert]
 
+    = yield(:signup) if content_for?(:signup)
     = yield
 
     .uk-grid.uk-margin

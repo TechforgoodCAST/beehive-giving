@@ -9,8 +9,8 @@ class Profile < ActiveRecord::Base
   VALID_YEARS = ((Date.today.year-5)..(Date.today.year)).to_a.reverse
   GENDERS = ['All genders', 'Only female', 'Only male', 'Only other genders']
   CURRENCY = ['GBP (£)', 'EUR (€)', 'USD ($)']
-  GOODS_SERVICES = %w[Goods Services Both]
-  WHO_PAYS = %w[Goods Services Both No]
+  GOODS_SERVICES = %w[Products Services Both]
+  WHO_PAYS = %w[Products Services Both No]
 
   validates :organisation, :districts, :beneficiaries, :implementations, presence: true
 

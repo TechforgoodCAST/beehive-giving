@@ -34,6 +34,8 @@ end
 # Create districts
 District.destroy_all
 
+District.create(country_id: 5, label: 'Other', district: 'Other', iso: 'Other')
+
 District.create(country_id: 1, label: 'United Kingdom - Buckinghamshire', district: 'Buckinghamshire', iso: 'GB-BKM')
 District.create(country_id: 1, label: 'United Kingdom - Cambridgeshire', district: 'Cambridgeshire', iso: 'GB-CAM')
 District.create(country_id: 1, label: 'United Kingdom - Cumbria', district: 'Cumbria', iso: 'GB-CMA')
