@@ -1,1 +1,285 @@
-%h1 Hi, #{@organisation.contact_name} Welcome to Beehive.
+%meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
+  %meta{:content => "width=device-width, initial-scale=1.0", :name => "viewport"}
+    :css
+      @media only screen and (max-width: 480px){
+        body,table,td,p,a,li,blockquote{
+          -webkit-text-size-adjust:none !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        body{
+          width:100% !important;
+          min-width:100% !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        table[class=mcnTextContentContainer]{
+          width:100% !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        table[class=mcnBoxedTextContentContainer]{
+          width:100% !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        table[class=mcpreview-image-uploader]{
+          width:100% !important;
+          display:none !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        img[class=mcnImage]{
+          width:100% !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        table[class=mcnImageGroupContentContainer]{
+          width:100% !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        td[class=mcnImageGroupContent]{
+          padding:9px !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        td[class=mcnImageGroupBlockInner]{
+          padding-bottom:0 !important;
+          padding-top:0 !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        tbody[class=mcnImageGroupBlockOuter]{
+          padding-bottom:9px !important;
+          padding-top:9px !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        table[class=mcnCaptionTopContent],table[class=mcnCaptionBottomContent]{
+          width:100% !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        table[class=mcnCaptionLeftTextContentContainer],table[class=mcnCaptionRightTextContentContainer],table[class=mcnCaptionLeftImageContentContainer],table[class=mcnCaptionRightImageContentContainer],table[class=mcnImageCardLeftTextContentContainer],table[class=mcnImageCardRightTextContentContainer]{
+          width:100% !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        td[class=mcnImageCardLeftImageContent],td[class=mcnImageCardRightImageContent]{
+          padding-right:18px !important;
+          padding-left:18px !important;
+          padding-bottom:0 !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        td[class=mcnImageCardBottomImageContent]{
+          padding-bottom:9px !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        td[class=mcnImageCardTopImageContent]{
+          padding-top:18px !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        td[class=mcnImageCardLeftImageContent],td[class=mcnImageCardRightImageContent]{
+          padding-right:18px !important;
+          padding-left:18px !important;
+          padding-bottom:0 !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        td[class=mcnImageCardBottomImageContent]{
+          padding-bottom:9px !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        td[class=mcnImageCardTopImageContent]{
+          padding-top:18px !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        table[class=mcnCaptionLeftContentOuter] td[class=mcnTextContent],table[class=mcnCaptionRightContentOuter] td[class=mcnTextContent]{
+          padding-top:9px !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        td[class=mcnCaptionBlockInner] table[class=mcnCaptionTopContent]:last-child td[class=mcnTextContent]{
+          padding-top:18px !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        td[class=mcnBoxedTextContentColumn]{
+          padding-left:18px !important;
+          padding-right:18px !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        td[class=mcnTextContent]{
+          padding-right:18px !important;
+          padding-left:18px !important;
+        }
+
+      }	@media only screen and (max-width: 480px){
+        table[class=templateContainer]{
+          max-width:600px !important;
+          width:100% !important;
+        }
+      }	@media only screen and (max-width: 480px){
+        h1{
+          font-size:24px !important;
+          line-height:125% !important;
+        }
+      }	@media only screen and (max-width: 480px){
+        h2{
+          font-size:20px !important;
+          line-height:125% !important;
+        }
+      }	@media only screen and (max-width: 480px){
+        h3{
+          font-size:18px !important;
+          line-height:125% !important;
+        }
+      }	@media only screen and (max-width: 480px){
+        h4{
+          font-size:16px !important;
+          line-height:125% !important;
+        }
+      }	@media only screen and (max-width: 480px){
+        table[class=mcnBoxedTextContentContainer] td[class=mcnTextContent],td[class=mcnBoxedTextContentContainer] td[class=mcnTextContent] p{
+          font-size:18px !important;
+          line-height:125% !important;
+        }
+      }	@media only screen and (max-width: 480px){
+        table[id=templatePreheader]{
+          display:block !important;
+        }
+      }	@media only screen and (max-width: 480px){
+        td[class=preheaderContainer] td[class=mcnTextContent],td[class=preheaderContainer] td[class=mcnTextContent] p{
+          font-size:14px !important;
+          line-height:115% !important;
+        }
+      }	@media only screen and (max-width: 480px){
+        td[class=headerContainer] td[class=mcnTextContent],td[class=headerContainer] td[class=mcnTextContent] p{
+          font-size:18px !important;
+          line-height:125% !important;
+        }
+      }	@media only screen and (max-width: 480px){
+        td[class=bodyContainer] td[class=mcnTextContent],td[class=bodyContainer] td[class=mcnTextContent] p{
+          font-size:18px !important;
+          line-height:125% !important;
+        }
+      }	@media only screen and (max-width: 480px){
+        td[class=footerContainer] td[class=mcnTextContent],td[class=footerContainer] td[class=mcnTextContent] p{
+          font-size:14px !important;
+          line-height:115% !important;
+        }
+      }	@media only screen and (max-width: 480px){
+        td[class=footerContainer] a[class=utilityLink]{
+          display:block !important;
+        }
+      }
+
+%body{:leftmargin => "0", :marginheight => "0", :marginwidth => "0", :offset => "0", :style => "margin: 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #ffffff;height: 100% !important;width: 100% !important;", :topmargin => "0"}
+  %center
+    %table#bodyTable{:align => "center", :border => "0", :cellpadding => "0", :cellspacing => "0", :height => "100%", :style => "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;margin: 0;padding: 0;background-color: #ffffff;height: 100% !important;width: 100% !important;", :width => "100%"}
+      %tr
+        %td#bodyCell{:align => "center", :style => "mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;margin: 0;padding: 0;border-top: 0;height: 100% !important;width: 100% !important;", :valign => "top"}
+          / BEGIN TEMPLATE //
+          %table{:border => "0", :cellpadding => "0", :cellspacing => "0", :style => "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :width => "100%"}
+            %tr
+              %td{:align => "center", :style => "mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :valign => "top"}
+            %tr
+              %td{:align => "center", :style => "mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :valign => "top"}
+                / BEGIN HEADER //
+                %table#templateHeader{:border => "0", :cellpadding => "0", :cellspacing => "0", :style => "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #f7ba0e;border-top: 0;border-bottom: 0;", :width => "100%"}
+                  %tr
+                    %td{:align => "center", :style => "mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :valign => "top"}
+                      %table.templateContainer{:border => "0", :cellpadding => "0", :cellspacing => "0", :style => "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :width => "600"}
+                        %tr
+                          %td.headerContainer{:style => "padding-top: 10px;padding-bottom: 10px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :valign => "top"}
+                            %table.mcnImageBlock{:border => "0", :cellpadding => "0", :cellspacing => "0", :style => "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :width => "100%"}
+                              %tbody.mcnImageBlockOuter
+                                %tr
+                                  %td.mcnImageBlockInner{:style => "padding: 4px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :valign => "top"}
+                                    %table.mcnImageContentContainer{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "0", :style => "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :width => "100%"}
+                                      %tbody
+                                        %tr
+                                          %td.mcnImageContent{:style => "padding-right: 4px;padding-left: 14px;padding-top: 0;padding-bottom: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :valign => "top"}
+                                            = link_to image_tag("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHkAAAARCAYAAAD5XQN+AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA4ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDE0IDc5LjE1Njc5NywgMjAxNC8wOC8yMC0wOTo1MzowMiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDo3MWNhYmYwZC03NzJjLTRkOTMtYWYxZS1lYWZkZmU0ZWRiZjAiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MUM2QjVGRkVBNUZGMTFFNEFEQTdGNjBFNDFCMTVBQzAiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MUM2QjVGRkRBNUZGMTFFNEFEQTdGNjBFNDFCMTVBQzAiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTQgKE1hY2ludG9zaCkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDozNzc1M2JmMS1lYjJhLTRjNjEtODI2OS00MjBiNzU1NTU4M2UiIHN0UmVmOmRvY3VtZW50SUQ9ImFkb2JlOmRvY2lkOnBob3Rvc2hvcDoyODgwZjFlZi1lZTY5LTExNzctOTc1NC05MjRmOTY4NWNhMzIiLz4gPC9yZGY6RGVzY3JpcHRpb24+IDwvcmRmOlJERj4gPC94OnhtcG1ldGE+IDw/eHBhY2tldCBlbmQ9InIiPz65lAFlAAAElUlEQVR42uxZvVLbQBC2CX3kN9DwAlGG9JFn0mMKakRDSkgFnUVHKkEJDdBCYajJjPUAMJgHSGxeANxDRtlNvmOW5e4kE2LDTG5mRyfd7v3s7u19e6oXRVF7zeXn3V1EjzZRQLT9Znr6uPa/PCj1u9vb1NE2JMpJab0xGiyFwWoYu1lBpkOPlpkzyTQm7HCBS5/j1KUs00KpronzxJo0weErcNrhBA0snc3Fs096XJqEkcsKeycvoPlCDctKu0R9f0IGTsoMjJIQ7wEZOp+kkVlJV6iviNATVwxRPd+OV7wD4h2MEgJtysF4qUUugIM+OVRSH7EYJ3fwBCIa8lzmHd11sI6M6P1YvZDO5EJQzECMieqJbDPfRXtE1FfyTJmDt1vGy/hAtPUt/V8QBUpG9tsV32+UbCraLsT3jmW+iUWe31sWXjnnRLcLvlUXH5VZosJCa67+hOw10ZmPZ8pj/7Bkd3UdPKsAUIY3BG/s4M0844eWoyN7oj+viPqJqMeW0LtnAVD83sF65NpWRBRzHhfUtsU8eM0QAXRZJ6PUmah+RLRZr9dn/nYjayPz4F2iCwXIdKjKhBI4RG0QydRlUdTbindLnZ1JyRx1SE8qru1YyUqlytAdGIXjmal1b6h+2o61fakwpy9iLqsjpUH1+g5RATolahAdUhNnE7NcJ+LnmeDjeqNmCaGFJUyFIuyEqr0l2vo6vCvexBEyY0vo43EjfO+4jg5XuEZbyybH49mOKRVS+45+uhY9dMvCquiro+fjCdeHaF8j+g6DNlDf0eGayineG5DhjwtTFZyIva6LEF0TYObem7H7H4VvCVxMyHTx2naiAEsHz5lSWUCU2Y3v1A43c2079GLK9ghz8q1FhutdNhDtxE/0ZJqBAa9Rn7XIf4YcG3uzCrp+K0JKiDDWtBg5GmGB0QjGuBpj/hshvIfKiLHnjO2RA+TgaavjylcycZz4yjmexpjnZPwPJTKn2MW7kF+2GflBDkeLqAlDxw7j9Ea4lMhdChtzXhtUYBtY8IAGbXzGMn6JGLD5gBfGXYUjDSuc4ca43/DcxK7+weGZDUlGX1cybOAb/s7n9iiXITZDtYW3z3tyY/19qUpu/A+NG8OJ9cVFTzxjkcd7L4Cwm/cBBhm0Hrt0ofLpbYce2JCbKnzzjjz/DaD+7FQuR8LAjMKXAcK+oo8C37ksaGC0B/CTol5oIMJ5qiV3jUEmv4wd+eoFQEwE3r4CY6kjr9VAKTNyCnj10X/oAIl9yOocOLTdDWA+Zm2ZBGNiboHoL/UArlTMIagK1J6D+AdF1d9QG+R9KbxyrySVuf+5oH46jMIrx4uRaz+SQ56t05GmOXYAnGLP+A/uk4m/XwIKl3RYFvMeekBY2yX/Eu6uuWwZhYuzKPIAqUCEtJSU8NGj6CrnYw8KtPFeVshNOw7D5ZazcR4OFVS9JMIa56CPMoce+/2671ejAR+56xwFkJhT/Ce2f7q4SZpTFyMnctHYsbFQSK5ulxKlsFz0vSgcYkOejTgPW8pAuec+2txkRcrRDlwgEWMkHucYIC0c+5+yXwIMAJd+P17mNiDwAAAAAElFTkSuQmCC"), "http://www.beehivegiving.org", target: "_blank"
+                / // END HEADER
+            %tr
+              %td{:align => "center", :style => "mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :valign => "top"}
+                / BEGIN BODY //
+                %table#templateBody{:border => "0", :cellpadding => "0", :cellspacing => "0", :style => "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #FFFFFF;border-top: 0;border-bottom: 0;", :width => "100%"}
+                  %tr
+                    %td{:align => "center", :style => "mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :valign => "top"}
+                      %table.templateContainer{:border => "0", :cellpadding => "0", :cellspacing => "0", :style => "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :width => "600"}
+                        %tr
+                          %td.bodyContainer{:style => "padding-top: 10px;padding-bottom: 10px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :valign => "top"}
+                            %table.mcnTextBlock{:border => "0", :cellpadding => "0", :cellspacing => "0", :style => "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :width => "100%"}
+                              %tbody.mcnTextBlockOuter
+                                %tr
+                                  %td.mcnTextBlockInner{:style => "mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :valign => "top"}
+                                    %table.mcnTextContentContainer{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "0", :style => "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :width => "600"}
+                                      %tbody
+                                        %tr
+                                          %td.mcnTextContent{:style => "padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #000000;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;", :valign => "top"}
+                                            %h1{:style => "margin: 0 0 12px -2px;padding: 0;display: block;font-family: Helvetica;font-size: 35px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: -1px;text-align: left;color: #000000 !important;"}
+                                              Thanks for signing up
+                                              = succeed '!' do
+                                                = @user.first_name
+
+                                            %h3{:style => "margin: 0 0 0 -1px;padding: 0;display: block;font-family: Helvetica;font-size: 18px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: -.5px;text-align: left;color: #000000 !important;"}
+                                              Understand how your organisation fits with top funder in three easy steps:
+
+                                            %ol
+                                              %li Register your organisation.
+                                              %li Complete your unique profile.
+                                              %li See how you compare to previously funded organisations.
+
+                                            %button{style: "background-color:#01a8e5; border: none; display:inline-block; cursor:pointer; padding:12px 18px; width: 100%;"}
+                                              = link_to 'Sign in to get started', 'http://www.beehivegiving.org', style: "color:#ffffff; font-family:arial; font-size:17px; text-decoration:none;"
+
+                                            %p{:style => "margin: 1em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #000000;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;"}
+                                              Or drop us a line at
+                                              %a.mc-template-link{:href => "mailto:support@beehivegiving.org", :style => "word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #f7ba0e;font-weight: normal;text-decoration: underline;"}
+                                                support@beehivegiving.org
+                                              and we'll help you get started. And if your curious you can find out more about the
+                                              %a.mc-template-link{:href => "http://www.beehivegiving.org/about", :target => "_blank", :style => "word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #f7ba0e;font-weight: normal;text-decoration: underline;"}
+                                                origins of Beehive.
+
+                                            %p{:style => "margin: 1em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #000000;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;"}
+                                              Suraj
+
+                                            %p{:style => "margin: 1em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #000000;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;"}
+                                              P.S. Beehive is currently in active development, and we'd love your feedback and comments. Just reply to this email with your thoughts.
+                / // END BODY
+            %tr
+              %td{:align => "center", :style => "mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :valign => "top"}
+                / BEGIN FOOTER //
+                %table#templateFooter{:border => "0", :cellpadding => "0", :cellspacing => "0", :style => "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;background-color: #f2f2f2;border-top: 0;border-bottom: 0;", :width => "100%"}
+                  %tr
+                    %td{:align => "center", :style => "mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :valign => "top"}
+                      %table.templateContainer{:border => "0", :cellpadding => "0", :cellspacing => "0", :style => "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :width => "600"}
+                        %tr
+                          %td.footerContainer{:style => "padding-top: 10px;padding-bottom: 10px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :valign => "top"}
+                            %table.mcnTextBlock{:border => "0", :cellpadding => "0", :cellspacing => "0", :style => "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :width => "100%"}
+                              %tbody.mcnTextBlockOuter
+                                %tr
+                                  %td.mcnTextBlockInner{:style => "mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :valign => "top"}
+                                    %table.mcnTextContentContainer{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "0", :style => "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :width => "600"}
+                                      %tbody
+                                        %tr
+                                          %td.mcnTextContent{:style => "padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #888;font-family: Helvetica;font-size: 11px;line-height: 125%;text-align: left;", :valign => "top"}
+                                            %p
+                                              You are recieving this email because you signed up to
+                                              = link_to 'Beehive', 'http://www.beehivegiving.org', target: '_blank', style: "color: #888; text-decoration:none;"
+                                              by
+                                              = link_to 'Forward Foundation','http://www.forwardfoundation.org.uk', target: '_blank', style: "color: #888; text-decoration:none;"
+                                              ©
+                                              = succeed '.' do
+                                                = Date.today.year
+                / // END FOOTER
+          / // END TEMPLATE
