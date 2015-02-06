@@ -215,7 +215,7 @@ $(document).ready ->
         { y: 'Campaigns', a: 0, b: 15 },
         { y: 'Reasearch', a: 17, b: 23 },
         { y: 'Third Party', a: 17, b: 23 },
-        { y: 'Goods', a: 0, b: 8 },
+        { y: 'Products', a: 0, b: 8 },
         { y: 'Software', a: 33, b: 8 },
         { y: 'Beneficiaries', a: 33, b: 54 },
         { y: 'Voluneers', a: 50, b: 46 },
@@ -241,7 +241,7 @@ $(document).ready ->
       ],
       xkey: 'y'
       ykeys: ['a', 'b', 'c']
-      labels: ['Goods', 'Services', 'Both']
+      labels: ['Products', 'Services', 'Both']
       xLabels: 'month'
       postUnits: '%'
       lineColors: ['#666', '#F7BA0E', '#aaa']
@@ -267,7 +267,7 @@ $(document).ready ->
       ],
       xkey: 'y'
       ykeys: ['a', 'b', 'c', 'd']
-      labels: ['Goods', 'Services', 'Both', 'None']
+      labels: ['Products', 'Services', 'Both', 'None']
       xLabels: 'month'
       postUnits: '%'
       lineColors: ['#666', '#999', '#bbb', '#F7BA0E']

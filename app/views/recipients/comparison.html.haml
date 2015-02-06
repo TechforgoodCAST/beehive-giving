@@ -5,11 +5,16 @@
 
     .uk-width-1-1.uk-margin
 
-      - if @current_user.sign_in_count < 2
+      - if @current_user.sign_in_count < 3
         .uk-alert{'data-uk-alert' => ''}
           %a.uk-alert-close.uk-close
-          %p.uk-text-large Understanding your report
-          %o Some help understanding your report...
+          %p.uk-text-large Now that's a lot of data
+          %o On this page you can explore a funders previous giving in detail. You can see charts detailing the different characteristics of previously funded organisations, and contrast them against your own organisation. Some funders will have lots of information available, whilst others will just have the basics. So by using Beehive you're helping to improve the quality of data in the non-profit sector.
+          %p We're currently only able to present this data in a basic way, though we're working hard to build cutting edge technology to make sense of it all and present it in a useful and easy to understand way.
+          %p
+            Remember, just drop us an
+            = link_to 'email', 'mailto:support@beehivegiving.org'
+            if you get stuck or have any feedback.
 
       %h2
         See if you're a good fit for
