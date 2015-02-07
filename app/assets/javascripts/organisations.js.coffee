@@ -9,6 +9,10 @@ $(document).ready ->
     placeholder_text_multiple: 'Select as many as appropriate'
     width: '100%'
 
+$(document).on 'uk.switcher.show', '[data-uk-tab]', ->
+  $(window).trigger 'resize'
+  return
+
 $(document).ready ->
   if $('#grants_location').length
     Morris.Line
@@ -27,6 +31,7 @@ $(document).ready ->
       postUnits: ' grants'
       lineColors: ['#ccc', '#aaa', '#666', '#F7BA0E']
       resize: true
+      hideHover: 'auto'
       xLabelFormat: (x) ->
                       options =
                         year: '2-digit'
@@ -43,15 +48,13 @@ $(document).ready ->
         { y: '2014-11', a: 1.1, b: 1.6, c: 2.1 }
       ],
       xkey: 'y'
-      # ymax: 13
       ykeys: ['a', 'b', 'c']
       labels: ['Min.', 'Avg.', 'Max.']
       xLabels: 'month'
       postUnits: ' years'
       lineColors: ['#ccc', '#F7BA0E', '#ccc']
       resize: true
-      # goals: ['2']
-      # goalLineColors: ['#00a8e6']
+      hideHover: 'auto'
       xLabelFormat: (x) ->
                       options =
                         year: '2-digit'
@@ -76,8 +79,7 @@ $(document).ready ->
       preUnits: '£'
       lineColors: ['#ccc', '#F7BA0E', '#ccc']
       resize: true
-      # goals: ['2']
-      # goalLineColors: ['#00a8e6']
+      hideHover: 'auto'
       xLabelFormat: (x) ->
                       options =
                         year: '2-digit'
@@ -101,9 +103,8 @@ $(document).ready ->
       postUnits: ' years old'
       lineColors: ['#F7BA0E', '#ccc']
       resize: true
+      hideHover: 'auto'
       behaveLikeLine: true
-      # goals: ['15']
-      # goalLineColors: ['#00a8e6']
       xLabelFormat: (x) ->
                       options =
                         year: '2-digit'
@@ -128,8 +129,7 @@ $(document).ready ->
       lineColors: ['#F7BA0E', '#666', '#aaa', '#ccc']
       smooth: false
       resize: true
-      # goals: ['15']
-      # goalLineColors: ['#00a8e6']
+      hideHover: 'auto'
       xLabelFormat: (x) ->
                       options =
                         year: '2-digit'
@@ -159,7 +159,7 @@ $(document).ready ->
       postUnits: '%'
       barColors: ['#F7BA0E', '#ccc']
       resize: true
-      xLabelAngle: 45
+      hideHover: 'auto'
     });
 
   if $('#recipient_staff').length
@@ -178,6 +178,7 @@ $(document).ready ->
       postUnits: ' people'
       lineColors: ['#ccc', '#F7BA0E', '#ccc']
       resize: true
+      hideHover: 'auto'
       xLabelFormat: (x) ->
                       options =
                         year: '2-digit'
@@ -201,6 +202,7 @@ $(document).ready ->
       postUnits: ' people'
       lineColors: ['#ccc', '#F7BA0E', '#ccc']
       resize: true
+      hideHover: 'auto'
       xLabelFormat: (x) ->
                       options =
                         year: '2-digit'
@@ -227,7 +229,7 @@ $(document).ready ->
       postUnits: '%'
       barColors: ['#F7BA0E', '#ccc']
       resize: true
-      xLabelAngle: 45
+      hideHover: 'auto'
     });
 
   if $('#recipient_goods_or_services').length
@@ -247,8 +249,7 @@ $(document).ready ->
       lineColors: ['#666', '#F7BA0E', '#aaa']
       smooth: false
       resize: true
-      # goals: ['15']
-      # goalLineColors: ['#00a8e6']
+      hideHover: 'auto'
       xLabelFormat: (x) ->
                       options =
                         year: '2-digit'
@@ -273,16 +274,13 @@ $(document).ready ->
       lineColors: ['#666', '#999', '#bbb', '#F7BA0E']
       smooth: false
       resize: true
-      # goals: ['15']
-      # goalLineColors: ['#00a8e6']
+      hideHover: 'auto'
       xLabelFormat: (x) ->
                       options =
                         year: '2-digit'
                         month: 'short'
                       x.toLocaleString 'en-gb', options
     });
-
-
 
 $(document).ready ->
   createStoryJS

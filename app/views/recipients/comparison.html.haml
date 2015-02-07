@@ -1,11 +1,10 @@
 .uk-container.uk-container-center
-  .uk-grid.uk-margin.uk-margin-top
+  .uk-grid
     - unless @current_user.feedbacks.count >= 1 || @current_user.sign_in_count < 2
       = render partial: 'recipients/feedback'
 
-    .uk-width-1-1.uk-margin
-
-      - if @current_user.sign_in_count < 3
+    .uk-width-1-1
+      - if @current_user.sign_in_count < 0
         .uk-alert{'data-uk-alert' => ''}
           %a.uk-alert-close.uk-close
           %p.uk-text-large Now that's a lot of data
@@ -16,300 +15,170 @@
             = link_to 'email', 'mailto:support@beehivegiving.org'
             if you get stuck or have any feedback.
 
-      %h2
-        See if you're a good fit for
-        = @funder.name
+%nav#bg{"data-uk-sticky" => "{top:42}", style: 'border-bottom: solid #dddddd 1px; height: 37px;'}
+  .uk-container.uk-container-center
+    .uk-grid
+      .uk-width-2-3
+        %ul.uk-tab.uk-text-center{"data-uk-tab" => "{connect:'#tab-content'}"}
+          -# %li.uk-width-medium-1-5.uk-active
+          -#   %a{:href => ""} Overview
+          %li.uk-width-medium-1-5.uk-active
+            %a{:href => ""} Organisation
+          %li.uk-width-medium-1-5
+            %a{:href => ""} Beneficiaries
+          %li.uk-width-medium-1-5
+            %a{:href => ""} Team
+          %li.uk-width-medium-1-5
+            %a{:href => ""} Work
+          %li.uk-tab-responsive.uk-active.uk-hidden
+            %a Tab
+            .uk-dropdown.uk-dropdown-small
+              %ul.uk-nav.uk-nav-dropdown
+      .uk-width-1-3.uk-text-right{style: 'border-bottom: solid #dddddd 1px'}
+        .uk-vertical-align{:style => "height: 36px;"}
+          .uk-vertical-align-middle
+            .uk-text-muted.uk-text-truncate
+              Viewing:
+              = @funder.name
 
-    -# .uk-width-medium-1-1
-    -#   %h3.uk-margin Summary
+.uk-container.uk-container-center
+  .uk-width-1-1#tab-content.uk-switcher
+
+    -# .uk-width-medium-1-1.uk-animation-fade.uk-active
     -#   .uk-grid
-    -#     .uk-width-medium-1-4
-    -#       .uk-panel.uk-panel-box.uk-margin-bottom
-    -#         %ul.uk-nav.uk-nav-side
-    -#           %li.uk-nav-header Organisation
-    -#           %li
-    -#             %a{:href => "#about"}
-    -#               Location
-    -#               .uk-text-danger
-    -#                 - @current_organisation.profiles.first.districts.each do |d|
-    -#                   = d.label
-    -#           %li
-    -#             %a{:href => "#beneficiaries"}
-    -#               Age
-    -#               .uk-text-success
-    -#                 = @current_organisation.founded_on
-    -#           %li
-    -#             %a{:href => "#income"}
-    -#               Income
-    -#               .uk-text-primary
-    -#                 = @current_organisation.profiles.first.income
-    -#     .uk-width-medium-1-4
-    -#       .uk-panel.uk-panel-box.uk-margin-bottom
-    -#         %ul.uk-nav.uk-nav-side
-    -#           %li.uk-nav-header Beneficiaries
-    -#           %li
-    -#             %a{:href => ""}
-    -#               Age
-    -#               .uk-grid
-    -#                 .uk-width-1-2
-    -#                   .uk-text-danger
-    -#                     Min. age:
-    -#                     = @current_organisation.profiles.first.min_age
-    -#                 .uk-width-1-2
-    -#                   .uk-text-success
-    -#                     Max. age:
-    -#                     = @current_organisation.profiles.first.max_age
-    -#           %li
-    -#             %a{:href => ""}
-    -#               Gender
-    -#               .uk-text-success
-    -#                 = @current_organisation.profiles.first.gender
-    -#           %li
-    -#             %a{:href => ""}
-    -#               Focus
-    -#               .uk-text-primary
-    -#                 - @current_organisation.profiles.first.beneficiaries.each do |b|
-    -#                   = b.label
-    -#     .uk-width-medium-1-4
-    -#       .uk-panel.uk-panel-box.uk-margin-bottom
-    -#         %ul.uk-nav.uk-nav-side
-    -#           %li.uk-nav-header Team
-    -#           %li
-    -#             %a{:href => ""}
-    -#               People
-    -#               .uk-grid
-    -#                 .uk-width-1-2
-    -#                   .uk-text-danger
-    -#                     Staff:
-    -#                     = @current_organisation.profiles.first.staff_count
-    -#                 .uk-width-1-2
-    -#                   .uk-text-success
-    -#                     Volunteers:
-    -#                     = @current_organisation.profiles.first.volunteer_count
-    -#           %li
-    -#           %li
-    -#             %a{:href => ""}
-    -#               Job roles
-    -#               .uk-text-success
-    -#                 = @current_organisation.profiles.first.job_role_count
-    -#           %li
-    -#             %a{:href => ""}
-    -#               Departments
-    -#               .uk-text-primary
-    -#                 = @current_organisation.profiles.first.department_count
-    -#     .uk-width-medium-1-4
-    -#       .uk-panel.uk-panel-box.uk-margin-bottom
-    -#         %ul.uk-nav.uk-nav-side
-    -#           %li.uk-nav-header Work
-    -#           %li
-    -#             %a{:href => "#about"}
-    -#               Goods or services?
-    -#               .uk-text-danger
-    -#                 = @current_organisation.profiles.first.goods_services
-    -#           %li
-    -#           %li
-    -#             %a{:href => ""}
-    -#               Implementation approach
-    -#               .uk-text-success
-    -#                 - @current_organisation.profiles.first.implementations.each do |i|
-    -#                   = i.label
-    -#           %li
-    -#             %a{:href => ""}
-    -#               Trading target
-    -#               .uk-text-primary
-    -#                 - @current_organisation.profiles.first.markets.each do |m|
-    -#                   = m.label
+    -#     .uk-width-medium-1-2
+    -#       .uk-panel.uk-margin-bottom
+    -#         %h1 Overview
+    -#     .uk-width-medium-1-2
+    -#       .uk-panel.uk-margin-bottom
+    -#         %h1 Overview
 
-    .uk-width-medium-3-4.uk-margin.uk-float-left
-      %hr
-      %h2 Organisation
-      .uk-width-medium-1-1.uk-panel.uk-panel-box
-        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
-          .uk-width-medium-2-3
-            %h3.uk-text-bold.uk-text-center
-              Location of grants (by country)
-            %p#grants_location
-          .uk-width-medium-1-3
-            %h3.uk-text-bold.uk-text-center
-              Your location
+    .uk-width-medium-1-1.uk-animation-fade.uk-active
+      .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
+        .uk-width-large-1-3.uk-margin-top
+          .uk-panel
+            .uk-panel-title
+              %h4 Location of funded organisations
+            #grants_location
             %p You work in the following areas:
             %ul
-            .uk-scrollable-text{style: 'height:100px;'}
+            .uk-scrollable-text{style: 'height:41px;'}
               - @current_organisation.profiles.first.districts.each do |d|
-                %li.uk-text-small= d.label
+                %li= d.label
             .uk-alert
               %o Forward Foundation tends to fund work in Ethiopia, Kenya, Uganda, and London in the United Kingdom.
-
-      .uk-width-medium-1-1.uk-panel.uk-panel-box
-        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
-          .uk-width-medium-2-3
-            %h3.uk-text-bold.uk-text-center
-              Age of funded organisations
-            %p#recipient_age
-          .uk-width-medium-1-3
-            %h3.uk-text-bold.uk-text-center
-              Your age
-            %h2.uk-text-center
+        .uk-width-large-1-3.uk-margin
+          .uk-panel
+            .uk-panel-title
+              %h4 Age of funded organisations
+            #recipient_age
+            %p Your age:
+            %h2.uk-text-center{ class: ('uk-text-danger' if ((Date.today - @current_organisation.founded_on).to_f / 356).round(1) > 3) }
               = ((Date.today - @current_organisation.founded_on).to_f / 356).round(1)
               years old
             .uk-alert
               %o Forward Foundation tends to fund organisations younger than 3 years old.
-
-      .uk-width-medium-1-1.uk-panel.uk-panel-box
-        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
-          .uk-width-medium-2-3
-            %h3.uk-text-bold.uk-text-center
-              Income of funded organisations
-            %p#recipient_income
-          .uk-width-medium-1-3
-            %h3.uk-text-bold.uk-text-center
-              Your income
-            %h2.uk-text-center
+        .uk-width-large-1-3.uk-margin
+          .uk-panel
+            .uk-panel-title
+              %h4 Income of funded organisations
+            #recipient_income
+            %p Your income:
+            %h2.uk-text-center{ class: ('uk-text-danger' if @current_organisation.profiles.first.income > 250000) }
               = number_to_currency(@current_organisation.profiles.first.income, unit: '£', precision: 0)
             .uk-alert
-              %o Forward Foundation tends to fund organisations with income than £300,000.
+              %o Forward Foundation tends to fund organisations with income less than £250,000.
 
-      %hr
-      %h2 Beneficiaries
-      .uk-width-medium-1-1.uk-panel.uk-panel-box
+    .uk-width-medium-1-1.uk-animation-fade
+      .uk-grid
+        .uk-width-medium-2-3.uk-margin-top
+          .uk-panel-title
+            %h4 Beneficiary category of funded organisations
+          #beneficiaries_focus
+        .uk-width-medium-1-3.uk-margin
+          %p You target:
+          %ul
+          .uk-scrollable-text{style: 'height:100px;'}
+            - @current_organisation.profiles.first.beneficiaries.each do |b|
+              %li= b.label
+          .uk-alert
+            %o Forward Foundation tends to focus on Education, Unemployment, and Income Poverty.
+      %hr.uk-grid-divider.uk-margin-remove
         .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
-          .uk-width-medium-2-3
-            %h3.uk-text-bold.uk-text-center
-              Age range targeted by funded organisations
-            %p#beneficiaries_age
-          .uk-width-medium-1-3
-            %h3.uk-text-bold.uk-text-center Your target age range
+          .uk-width-medium-1-2.uk-margin-top
+            .uk-panel-title
+              %h4 Age range targeted by funded organisations
+            #beneficiaries_age
+            %p Your target age range:
             .uk-grid.uk-text-center
               .uk-width-1-2
-                Min. age
-                %h2= @current_organisation.profiles.first.min_age
+                %h2.uk-text-center.uk-margin-remove
+                  = @current_organisation.profiles.first.min_age
+                  .your-data.age
+                    Min. age:
               .uk-width-1-2
-                Max. age
-                %h2= @current_organisation.profiles.first.max_age
-
-      .uk-width-medium-1-1.uk-panel.uk-panel-box
-        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
-          .uk-width-medium-2-3
-            %h3.uk-text-bold.uk-text-center
-              Gender targeted by funded organisations
-            %p#beneficiaries_gender
-          .uk-width-medium-1-3
-            %h3.uk-text-bold.uk-text-center
-              Your target gender
-            %h2.uk-text-center
+                %h2.uk-text-center.uk-margin-remove
+                  = @current_organisation.profiles.first.max_age
+                  .your-data.age
+                    Max. age:
+          .uk-width-medium-1-2.uk-margin
+            .uk-panel-title
+              %h4 Gender targeted by funded organisations
+            #beneficiaries_gender
+            %p Your target gender:
+            %h2.uk-text-center.uk-margin-remove
               = @current_organisation.profiles.first.gender
 
-      .uk-width-medium-1-1.uk-panel.uk-panel-box
-        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
-          .uk-width-medium-2-3
-            %h3.uk-text-bold.uk-text-center
-              Beneficiary focus of funded organisations
-            %p#beneficiaries_focus
-          .uk-width-medium-1-3
-            %h3.uk-text-bold.uk-text-center
-              Your beneficiary focus
-            %ul
-            .uk-scrollable-text{style: 'height:100px;'}
-              - @current_organisation.profiles.first.beneficiaries.each do |b|
-                %li.uk-text-small= b.label
-            .uk-alert
-              %o Forward Foundation tends to focus on Education, Unemployment, and Income Poverty.
+    .uk-width-medium-1-1.uk-animation-fade
+      .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
+        .uk-width-medium-1-2.uk-margin-top
+          .uk-panel-title
+            %h4 Number of staff from funded organisations
+          #recipient_staff
+          %h2.uk-text-center.uk-margin-remove
+            = pluralize(@current_organisation.profiles.first.staff_count, 'person')
+            .your-data.staff
+              Your staff:
+          .uk-alert
+            %o Forward Foundation tends to fund teams with less than 17 paid members of staff.
+        .uk-width-medium-1-2.uk-margin
+          .uk-panel-title
+            %h4 Number of volunteers from funded organisations
+          #recipient_volunteers
+          %h2.uk-text-center.uk-margin-remove
+            = pluralize(@current_organisation.profiles.first.volunteer_count, 'person')
+            .your-data.volunteers
+              Your volunteers:
+          .uk-alert
+            %o Forward Foundation tends to fund teams with less than 6 volunteers.
 
-      %hr
-      %h2 Team
-      .uk-width-medium-1-1.uk-panel.uk-panel-box
+    .uk-width-medium-1-1.uk-animation-fade
+      .uk-grid
+        .uk-width-medium-2-3.uk-margin-top
+          .uk-panel-title
+            %h4 How funded organisations implement their work
+          #recipient_implement
+        .uk-width-medium-1-3.uk-margin
+          %p You implement your work with:
+          %ul
+          .uk-scrollable-text{style: 'height:100px;'}
+            - @current_organisation.profiles.first.implementations.each do |i|
+              %li= i.label
+      %hr.uk-grid-divider.uk-margin-remove
         .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
-          .uk-width-medium-2-3
-            %h3.uk-text-bold.uk-text-center
-              Number of Staff from funded organisations
-            %p#recipient_staff
-          .uk-width-medium-1-3
-            %h3.uk-text-bold.uk-text-center Your Staff
-            %h2.uk-text-center
-              = @current_organisation.profiles.first.staff_count
-
-      .uk-width-medium-1-1.uk-panel.uk-panel-box
-        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
-          .uk-width-medium-2-3
-            %h3.uk-text-bold.uk-text-center
-              Number of Volunteers from funded organisations
-            %p#recipient_volunteers
-          .uk-width-medium-1-3
-            %h3.uk-text-bold.uk-text-center Your Volunteers
-            %h2.uk-text-center
-              = @current_organisation.profiles.first.volunteer_count
-
-      %hr
-      %h2 Work
-      .uk-width-medium-1-1.uk-panel.uk-panel-box
-        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
-          .uk-width-medium-2-3
-            %h3.uk-text-bold.uk-text-center
-              How funded organisations implement their work
-            %p#recipient_implement
-          .uk-width-medium-1-3
-            %h3.uk-text-bold.uk-text-center How your organisation implements it's work
-            %p You use the following to achieve your missions:
-            %ul
-            .uk-scrollable-text{style: 'height:60px;'}
-              - @current_organisation.profiles.first.implementations.each do |i|
-                %li.uk-text-small= i.label
-            .uk-alert
-              %o Forward Foundation tends to focus on Education, Unemployment, and Income Poverty.
-
-      .uk-width-medium-1-1.uk-panel.uk-panel-box
-        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
-          .uk-width-medium-2-3
-            %h3.uk-text-bold.uk-text-center
-              Funded organisations delivery focus
-            %p#recipient_goods_or_services
-          .uk-width-medium-1-3
-            %h3.uk-text-bold.uk-text-center You deliver
-            %h2.uk-text-center
+          .uk-width-medium-1-2.uk-margin-top
+            .uk-panel-title
+              %h4 Funded organisations delivery focus
+            #recipient_goods_or_services
+            %h2.uk-text-center.uk-margin-remove
               = @current_organisation.profiles.first.goods_services
-
-      .uk-width-medium-1-1.uk-panel.uk-panel-box
-        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
-          .uk-width-medium-2-3
-            %h3.uk-text-bold.uk-text-center
-              What funded organisations sell
-            %p#recipient_sells
-          .uk-width-medium-1-3
-            %h3.uk-text-bold.uk-text-center You sell
-            %h2.uk-text-center
+              .your-data.deliver
+                You deliver:
+          .uk-width-medium-1-2.uk-margin
+            .uk-panel-title
+              %h4 What funded organisations sell
+            #recipient_sells
+            %h2.uk-text-center.uk-margin-remove
               = @current_organisation.profiles.first.who_pays
-
-    .uk-width-medium-1-4.uk-float-right
-      .uk-panel.uk-panel-box{"data-uk-sticky" => "{top:62}"}
-        .uk-text-center
-          %h3.uk-panel-title.uk-margin-remove Navigation
-        -#     #org-logo.logo-1
-        -#       = @funder.name
-        -#   %p.uk-text-muted= @funder.mission
-        %ul.uk-nav.uk-nav-side{"data-uk-scrollspy-nav" => "{closest:'li', smoothscroll:true}"}
-          %li.uk-nav-header Organisation
-          %li
-            %a{:href => "#grants_location"} Location
-          %li
-            %a{:href => "#recipient_age"} Age
-          %li
-            %a{:href => "#recipient_income"} Income
-          %li.uk-nav-header Beneficiaries
-          %li
-            %a{:href => "#beneficiaries_age"} Age
-          %li
-            %a{:href => "#beneficiaries_gender"} Gender
-          %li
-            %a{:href => "#beneficiaries_focus"} Focus
-          %li.uk-nav-header Team
-          %li
-            %a{:href => "#recipient_staff"} Staff
-          %li
-            %a{:href => "#recipient_volunteers"} Volunteers
-          %li.uk-nav-header Work
-          %li
-            %a{:href => "#recipient_implement"} Delivery Model
-          %li
-            %a{:href => "#recipient_goods_or_services"} Deliverables
-          %li
-            %a{:href => "#recipient_sells"} Business Model
+              .your-data.sell
+                You sell:

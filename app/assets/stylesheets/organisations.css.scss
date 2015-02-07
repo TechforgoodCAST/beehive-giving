@@ -5,7 +5,7 @@
 #grants_location, #recipient_age, #recipient_income, #beneficiaries_age, #beneficiaries_gender,
 #beneficiaries_focus, #recipient_staff, #recipient_volunteers, #recipient_implement,
 #recipient_goods_or_services, #recipient_sells {
-  height: 250px;
+  height: 200px;
 }
 
 .radio {
@@ -18,6 +18,33 @@
   }
   @media (max-width: 767px) {
     margin: 0 0;
+  }
+}
+
+.uk-tab > li.uk-active > a {
+  border-top-color: transparent !important;
+}
+
+.your-data {
+  position: relative;
+  bottom: 11px;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 0;
+  &.age {
+    left: -50px;
+  }
+  &.staff {
+    left: -90px;
+  }
+  &.volunteers {
+    left: -110px;
+  }
+  &.deliver {
+    left: -90px;
+  }
+  &.sell {
+    left: -80px;
   }
 }
 

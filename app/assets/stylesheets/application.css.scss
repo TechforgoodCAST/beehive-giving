@@ -20,17 +20,16 @@
 
 .logo {
   position: relative;
-  top: 11px;
   width: 95px;
   height: 17px;
   background: image-url('logo.svg') no-repeat;
-  background-size: 95px 17px;
+  background-size: 95px 40px;
 }
 
 .logo-label {
   position: relative;
   left: 82px;
-  top: -40px;
+  top: -29px;
   font-size: 12px;
   font-weight: bold;
   color: #F7BA0E;
