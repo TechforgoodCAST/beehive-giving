@@ -8,5 +8,6 @@ ActiveAdmin.register Feature do
       link_to feature.recipient.name, [:admin, feature.recipient]
     end
     column "at", :created_at
+    actions
   end
 end
