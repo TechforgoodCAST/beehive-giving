@@ -5,10 +5,8 @@
     .uk-width-medium-1-2
       %h3.uk-text-bold Grants awarded
 
-      .digg_pagination.uk-margin
-        .page_info
-          = page_entries_info @grants
-        = will_paginate @grants
+      = paginate @grants
+
       %a.uk-button.uk-button-primary{ href: new_funder_grant_path(@funder) }
         %i.uk-icon-plus
         Add grant

@@ -13,7 +13,7 @@ class FundersController < ApplicationController
   end
 
   def show
-    @grants = @funder.grants.paginate(:per_page => 10, :page => params[:page])
+    @grants = @funder.grants.order("created_at").page(params[:page]).per(10)
   end
 
   private
