@@ -16,7 +16,8 @@ ActiveAdmin.register Recipient do
       link_to recipient.name, [:admin, recipient]
     end
     column :country
-    column ("Grants Count"){|r| r.grants.count }
+    column ("Grants"){|f| f.grants.count }
+    column ("Requests"){|f| f.features.count }
     actions
   end
 end

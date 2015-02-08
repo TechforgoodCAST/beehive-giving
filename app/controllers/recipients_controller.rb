@@ -48,6 +48,6 @@ class RecipientsController < ApplicationController
   end
 
   def feedback_params
-    params.require(:feedback).permit(:nps, :taken_away, :other)
+    params.require(:feedback).permit(:nps, :taken_away, :informs_decision, :other)
   end
 end

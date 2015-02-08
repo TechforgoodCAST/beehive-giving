@@ -1,4 +1,4 @@
-ActiveAdmin.register_page "User Growth"  do
+ActiveAdmin.register_page "User Activation"  do
 
   content do
     @metric = Recipient.group_by_week(:created_at).count

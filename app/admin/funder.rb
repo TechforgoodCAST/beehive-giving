@@ -16,7 +16,8 @@ ActiveAdmin.register Funder do
       link_to funder.name, [:admin, funder]
     end
     column :active_on_beehive
-    column ("Grants Count"){|f| f.grants.count }
+    column ("Grants"){|f| f.grants.count }
+    column ("Requests"){|f| f.features.count }
     actions
   end
 end

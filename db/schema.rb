@@ -96,7 +96,7 @@ ActiveRecord::Schema.define(version: 20150207200146) do
     t.integer  "user_id"
     t.integer  "nps"
     t.integer  "taken_away"
-    t.integer  "decision_control"
+    t.integer  "informs_decision"
     t.string   "other"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false

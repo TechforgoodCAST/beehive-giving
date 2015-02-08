@@ -23,6 +23,16 @@ ActiveAdmin.register_page "Dashboard" do
         h3 'Grants'
         h1 Grant.all.count
       end
+
+      span class: "blank_slate" do
+        h3 'Feedback'
+        h1 Feedback.all.count
+      end
+
+      span class: "blank_slate" do
+        h3 'Requests'
+        h1 Feature.all.count
+      end
     end
 
     section "Recent Non-profits" do
@@ -30,6 +40,7 @@ ActiveAdmin.register_page "Dashboard" do
         column :name do |recipient|
           link_to recipient.name, [:admin, recipient]
         end
+        column :country
         column :created_at
       end
     end

@@ -20,7 +20,7 @@ class SessionsController < ApplicationController
         cookies[:auth_token] = user.auth_token
         sign_in_metrics
       end
-      redirect_to start_path_for_user(user), notice: 'Logged in!'
+      redirect_to start_path_for_user(user), notice: 'Signed in!'
     else
       redirect_to root_path, alert: 'Incorrect Email or Password'
     end
@@ -28,7 +28,7 @@ class SessionsController < ApplicationController
 
   def destroy
     cookies.delete(:auth_token)
-    redirect_to root_path, notice: 'Logged out!'
+    redirect_to root_path, notice: 'Signed out!'
   end
 
   def sign_in_metrics
