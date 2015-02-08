@@ -14,6 +14,78 @@ $(document).on 'uk.switcher.show', '[data-uk-tab]', ->
   return
 
 $(document).ready ->
+  if $('#funder_time').length
+    Morris.Line({
+      element: 'funder_time'
+      data: [
+        { y: '2013-06', a: 21, b: 55, c: 103 },
+        { y: '2013-12', a: 14, b: 43, c: 106 },
+        { y: '2014-07', a: 21, b: 43, c: 72 },
+        { y: '2014-11', a: 13, b: 21, c: 34 }
+      ],
+      xkey: 'y'
+      ymax: 110
+      ykeys: ['a', 'b', 'c']
+      labels: ['Min.', 'Avg.', 'Max.']
+      xLabels: 'month'
+      postUnits: ' weeks'
+      lineColors: ['#ccc', '#F7BA0E', '#ccc']
+      resize: true
+      hideHover: 'auto'
+      xLabelFormat: (x) ->
+                      options =
+                        year: '2-digit'
+                        month: 'short'
+                      x.toLocaleString 'en-gb', options
+    });
+
+  if $('#funder_stages').length
+    Morris.Line({
+      element: 'funder_stages'
+      data: [
+        { y: '2013-06', a: 52, b: 33, c: 12, d: 7 },
+        { y: '2013-12', a: 50, b: 28, c: 12, d: 8 },
+        { y: '2014-07', a: 44, b: 21, c: 8, d: 5 },
+        { y: '2014-11', a: 45, b: 0, c: 5, d: 3 }
+      ],
+      xkey: 'y'
+      ykeys: ['a', 'b', 'c', 'd']
+      labels: ['Enquiries', 'Concept Notes', 'Applications', 'Grants' ]
+      xLabels: 'month'
+      lineColors: ['#ccc', '#bbb', '#aaa', '#F7BA0E']
+      resize: true
+      hideHover: 'auto'
+      xLabelFormat: (x) ->
+                      options =
+                        year: '2-digit'
+                        month: 'short'
+                      x.toLocaleString 'en-gb', options
+    });
+
+  if $('#grants_size').length
+    Morris.Line({
+      element: 'grants_size'
+      data: [
+        { y: '2013-06', a: 34850, b: 47323, c: 75000 },
+        { y: '2013-12', a: 21863, b: 35412, c: 46946 },
+        { y: '2014-07', a: 28064, b: 38663, c: 45350 },
+        { y: '2014-11', a: 26896, b: 30749, c: 33450 }
+      ],
+      xkey: 'y'
+      ykeys: ['a', 'b', 'c']
+      labels: ['Min.', 'Avg.', 'Max.']
+      xLabels: 'month'
+      preUnits: '£ '
+      lineColors: ['#ccc', '#F7BA0E', '#ccc']
+      resize: true
+      hideHover: 'auto'
+      xLabelFormat: (x) ->
+                      options =
+                        year: '2-digit'
+                        month: 'short'
+                      x.toLocaleString 'en-gb', options
+    });
+
   if $('#grants_location').length
     Morris.Line
       element: "grants_location"

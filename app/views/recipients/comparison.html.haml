@@ -20,9 +20,9 @@
     .uk-grid
       .uk-width-2-3
         %ul.uk-tab.uk-text-center{"data-uk-tab" => "{connect:'#tab-content'}"}
-          -# %li.uk-width-medium-1-5.uk-active
-          -#   %a{:href => ""} Overview
           %li.uk-width-medium-1-5.uk-active
+            %a{:href => ""} Overview
+          %li.uk-width-medium-1-5
             %a{:href => ""} Organisation
           %li.uk-width-medium-1-5
             %a{:href => ""} Beneficiaries
@@ -44,16 +44,57 @@
 .uk-container.uk-container-center
   .uk-width-1-1#tab-content.uk-switcher
 
-    -# .uk-width-medium-1-1.uk-animation-fade.uk-active
-    -#   .uk-grid
-    -#     .uk-width-medium-1-2
-    -#       .uk-panel.uk-margin-bottom
-    -#         %h1 Overview
-    -#     .uk-width-medium-1-2
-    -#       .uk-panel.uk-margin-bottom
-    -#         %h1 Overview
-
     .uk-width-medium-1-1.uk-animation-fade.uk-active
+      .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
+        .uk-width-large-1-3.uk-margin-top
+          .uk-panel
+            .uk-panel-title
+              %h4 Time from enquiry to funding
+            #funder_time
+            %dl.uk-description-list-line
+              %dt Application process
+              %dd.uk-text-large.uk-text-primary Invite only
+              %dt Next application deadline
+              %dd.uk-text-large.uk-text-primary May 2015
+              %dt Funding round frequency
+              %dd.uk-text-large.uk-text-primary Every 6 months
+              %dt Number of funding streams
+              %dd.uk-text-large.uk-text-primary 1 funding stream
+        .uk-width-large-1-3.uk-margin-top
+          .uk-panel
+            .uk-panel-title
+              %h4 Success rates
+            #funder_stages
+            %dl.uk-description-list-line
+              %dt % of Enquiries funded in 2014
+              %dd
+                .uk-progress.uk-progress-small
+                  .uk-progress-bar.uk-text-small{:style => "width: 12%;"}
+                    .uk-text-small{:style => "position: relative; bottom: 1px;"} 12%
+              %dt % of Concept Notes funded in 2014
+              %dd
+                .uk-progress.uk-progress-small
+                  .uk-progress-bar{:style => "width: 28%;"}
+                    .uk-text-small{:style => "position: relative; bottom: 1px;"} 28%
+              %dt % of Applications funded in 2014
+              %dd
+                .uk-progress.uk-progress-small
+                  .uk-progress-bar{:style => "width: 62%;"}
+                    .uk-text-small{:style => "position: relative; bottom: 1px;"} 62%
+        .uk-width-large-1-3.uk-margin-top
+          .uk-panel
+            .uk-panel-title
+              %h4 Size of grants
+            #grants_size
+            %dl.uk-description-list-line
+              %dt Type of grants
+              %dd.uk-text-large.uk-text-primary Unrestricted
+              %dt Average grant duration 2014
+              %dd.uk-text-large.uk-text-primary 11 months 19 days
+              %dt Average grant duration 2013
+              %dd.uk-text-large.uk-text-primary 1 year 21 days
+
+    .uk-width-medium-1-1.uk-animation-fade
       .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
         .uk-width-large-1-3.uk-margin-top
           .uk-panel
