@@ -15,15 +15,10 @@
             = link_to 'email', 'mailto:support@beehivegiving.org'
             if you get stuck or have any feedback.
 
-      %h2 See if you're a good fit for...
+      %h2.uk-margin-top See if you're a good fit for...
 
       .uk-grid
         .uk-width-medium-3-4
-          -# .uk-grid
-            -# .uk-width-3-4
-            -#   %h2 See if you're a good match for...
-            -# .uk-width-1-4
-            -#   .uk-button.uk-float-right Sort
           .uk-grid
             - @funders.order('id asc').each do |funder|
               .uk-width-medium-1-3
@@ -44,7 +39,7 @@
 
             .uk-width-medium-1-3
               .uk-panel.uk-panel-box.uk-margin-bottom
-                .uk-width-medium-1-1.uk-text-center.uk-vertical-align{:style => "height: 105px;"}
+                .uk-width-medium-1-1.uk-text-center.uk-vertical-align{:style => "height: 120px;"}
                   .uk-vertical-align-middle
                     %h3.uk-panel-title.uk-margin-remove.uk-text-muted
                       More coming soon...
