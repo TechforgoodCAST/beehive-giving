@@ -3,14 +3,34 @@ namespace :db do
   task :populate => :environment do
     require 'faker'
 
-    # Rake::Task['db:reset'].invoke
-
     count = 19
     start = count + 1
 
+    funder_names = [
+      'Forward Foundation',
+      'Dulverton Trust',
+      'Esmee Fairbairn Foundation',
+      'Nesta',
+      'Nominet Trust',
+      'Arts Council England',
+      'Arts Council Wales',
+      'Big Lottery Fund',
+      'Creative Scotland',
+      'DSDNI',
+      'Heritage Lottery Fund',
+      'Indigo Trust',
+      'Lloyds Bank Foundation',
+      'Northern Rock Foundation',
+      'Paul Hamlyn Foundation',
+      'Sport England',
+      'Sport Northern Ireland',
+      'Sport Wales',
+      'Wellcome Trust'
+    ]
+
     count.times do |n|
       Funder.create(
-        name: 'Forward Foundation',
+        name: funder_names[n],
         mission: Faker::Company.catch_phrase,
         contact_number: '01234567890',
         website: 'www.example.com',
@@ -25,7 +45,7 @@ namespace :db do
         company_number: Faker::Number.number(10),
         founded_on: Faker::Date.between(10.years.ago, 5.years.ago),
         registered_on: Faker::Date.between(5.years.ago, Time.now),
-        active_on_beehive: true
+        active_on_beehive: false
       )
       user = User.create(
         first_name: Faker::Name.first_name,

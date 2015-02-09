@@ -15,6 +15,13 @@
             = link_to 'email', 'mailto:support@beehivegiving.org'
             if you get stuck or have any feedback.
 
+      .uk-alert.uk-animation-slide-top{'data-uk-alert' => ''}
+        %a.uk-alert-close.uk-close
+        %p
+          Tip: Hover over the points to find out more about each
+          = @funder.name
+          grants round.
+
 %nav#bg{"data-uk-sticky" => "{top:42}", style: 'border-bottom: solid #dddddd 1px; height: 36px'}
   .uk-container.uk-container-center
     .uk-grid

@@ -46,7 +46,11 @@
     %hr.uk-width-1-1
     %h4.uk-text-bold Team
   .uk-width-medium-1-2.uk-margin-bottom
-    %label.uk-form-label Number of voluntary staff
+    %label.uk-form-label
+      Number of voluntary staff
+      %a{"data-uk-toggle" => "{target:'#voluntary_staff_hint'}"}
+        %i.uk-icon-question-circle
+    = f.hint :volunteer_count, class: 'uk-text-small uk-hidden', id: 'voluntary_staff_hint'
     .uk-form-controls
       = f.input :volunteer_count, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :volunteer_count, class: 'uk-text-small uk-text-warning'
@@ -80,10 +84,8 @@
     %label.uk-form-label
       Income
     .uk-text-small
-      F/Y
-      = succeed ' -' do
-        = Date.today.beginning_of_financial_year.strftime("%Y")
-      = Date.today.end_of_financial_year.strftime("%y")
+      = Date.today.year
+      (Actual or Predicted)
     .uk-form-controls
       = f.input :income, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :income, class: 'uk-text-small uk-text-warning'
@@ -91,10 +93,8 @@
     %label.uk-form-label
       Expenditure
     .uk-text-small
-      F/Y
-      = succeed ' -' do
-        = Date.today.beginning_of_financial_year.strftime("%Y")
-      = Date.today.end_of_financial_year.strftime("%y")
+      = Date.today.year
+      (Actual or Predicted)
     .uk-form-controls
       = f.input :expenditure, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :expenditure, class: 'uk-text-small uk-text-warning'

@@ -63,18 +63,20 @@
     = yield(:signup) if content_for?(:signup)
     = yield
 
-    .uk-grid.uk-margin
-      .uk-width-medium-1-1
-        .uk-text-center
-          %p
-            %a.uk-button.uk-button-mini{:href => about_path} About
-            -# %a.uk-button.uk-button-mini{:href => "#"} FAQ
-            -# %a.uk-button.uk-button-mini{:href => "#"} Pricing
-            -# %a.uk-button.uk-button-mini{:href => terms_path} Terms
-            %a.uk-button.uk-button-mini{:href => privacy_path} Privacy
-            %a.uk-button.uk-button-mini{:href => "mailto:support@beehivegiving.org"} Contact
-          %small
-            %a{href: "http://www.forwardfoundation.org.uk", target: "_blank"} &copy; Forward Foundation #{Date.today.year}
+    .uk-container.uk-container-center
+      .uk-grid.uk-margin-top
+        .uk-width-1-2
+          .uk-text-left
+            %p
+              %a.uk-button.uk-button-mini{:href => about_path} About
+              %a.uk-button.uk-button-mini{:href => privacy_path} Privacy
+              %a.uk-button.uk-button-mini{:href => "mailto:support@beehivegiving.org"} Contact
+              %small
+                %a.yellow{href: "http://www.forwardfoundation.org.uk/?utm_source=Beehive&utm_medium=Link&utm_campaign=Beehive%2Bto%2BFoundation", target: "_blank"} &copy; #{Date.today.year}
+        .uk-width-1-2
+          .uk-text-right
+            = link_to image_tag("ff-logo-light.png", size: "100"), "http://www.forwardfoundation.org.uk/?utm_source=Beehive&utm_medium=Link&utm_campaign=Beehive%2Bto%2BFoundation", target: "_blank"
+            .powered-by Powered by
 
     #offcanvas.uk-offcanvas
       .uk-offcanvas-bar.uk-offcanvas-bar-flip.uk-offcanvas-bar-show{style: 'z-index:1000;'}

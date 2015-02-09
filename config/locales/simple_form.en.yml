@@ -9,8 +9,9 @@ en:
       profile:
         districts: "Be sure to select all regions where your organisation has benefited people this year. Remember, you can type the name of the location to filter the list. If your country is not listed, please select 'Other' - we'll be adding more supported locations soon."
         beneficiaries: 'Think about your typical beneficiaries, which of the following categories applies to them?'
-        goods_services: 'Products (e.g. Medicine), Services (e.g. Training)'
+        goods_services: 'Products are tangible (e.g. Medicine), Services are intangible (e.g. Training)'
         who_pays: "Please select what your organisation sells to sustain it's operation."
+        volunteer_count: 'Not including trustees.'
     placeholders:
       user:
         first_name: 'First name'

@@ -4,11 +4,11 @@
       .uk-width-medium-1-1.uk-text-center
         %h1 Reinventing how non-profit funding takes place
         %h2 Are you a...
-
-.uk-width-1-1{"data-uk-sticky" => "{top:42}"}
-  .uk-button-group.uk-width-1-1{"data-uk-switcher" => "{connect:'#switch1, #switch2, #switch3, #switch4, #switch5, #switch6, #switch7'}"}
-    %button.uk-button.uk-button-primary.uk-button-large.uk-text-bold.uk-width-1-2.uk-active Non-profit
-    %button.uk-button.uk-button-primary.uk-button-large.uk-text-bold.uk-width-1-2 Funder
+        .uk-width-1-1{"data-uk-sticky" => "{top:42}"}
+          .uk-button-group{"data-uk-switcher" => "{connect:'#switch1, #switch2, #switch3, #switch4, #switch5, #switch6, #switch7'}"}
+            %button.uk-button.uk-button-primary.uk-button-large.uk-text-bold.wuk0.uk-active Non-profit
+            %button.uk-button.uk-button-large{:disabled => ""} or
+            %button.uk-button.uk-button-primary.uk-button-large.uk-text-bold &nbsp;&nbsp Funder &nbsp;&nbsp;
 
 .uk-grid
   .uk-width-medium-1-1
@@ -20,11 +20,13 @@
               .uk-animation-slide-left.uk-active
                 %h1 The problem
                 %p.uk-text-large Fundraising is hard! We know you spend a lot of time trying to find organisations that might support your work. And when you have finally found them you don’t have reliable data to decide which ones to approach.
+              .null
               .uk-animation-slide-left
                 %h1 The problem
                 %p.uk-text-large Funding done well takes time and is difficult. For some of you, there’s a lot of demand for your limited funds. For others, it can be difficult to find the right organisation that you want to support. For all of you, it’s difficult to compare one organisation to another in a simple, scientific way.
     #switch4.uk-switcher
       .uk-width-medium-1-2.uk-float-right#tour1.uk-animation-slide-right.uk-active
+      .null
       .uk-width-medium-1-2.uk-float-right#tour4.uk-animation-slide-right
 
 .uk-grid.uk-margin-top-remove
@@ -37,11 +39,13 @@
               .uk-animation-slide-right.uk-active
                 %h1 Our solution
                 %p.uk-text-large Beehive takes your organisation’s fingerprint – key information that identifies you as you. Beehive then compares you to funders, providing information to help you understand your fit with them, and promotes you to those that are the most appropriate.
+              .null
               .uk-animation-slide-right
                 %h1 Our solution
                 %p.uk-text-large Beehive presents you with organisations that are a good match with your funding priorities. Beehive helps you to compare different non-profits so you can make the best investment decisions.
     #switch5.uk-switcher
       .uk-width-medium-1-2.uk-float-right#tour2.uk-animation-slide-left.uk-active
+      .null
       .uk-width-medium-1-2.uk-float-right#tour5.uk-animation-slide-left
 
 .uk-grid.uk-margin-top-remove
@@ -54,17 +58,20 @@
               .uk-animation-slide-left.uk-active
                 %h1 Your benefits
                 %p.uk-text-large You will be able to understand which funders are most likely to support your work. So you’ll be able to start applying to the right funders and stop writing applications that were doomed to fail.
+              .null
               .uk-animation-slide-left
                 %h1 Your benefits
-                %p.uk-text-large You will have more suitable and less ineligible non-profits applying for funding. You will have data that helps you choose which non-profits to support. And you will be able to see how your funding compares to others’, helping you to improve your philanthropy and collaborate with the right funders.
+                %p.uk-text-large You will have more suitable and less ineligible non-profits applying for funding. You will have data that helps you choose which non-profits to support. And you will be able to see how your funding compares to others, helping you to improve your philanthropy and collaborate with the right funders.
     #switch6.uk-switcher
       .uk-width-medium-1-2.uk-float-right#tour3.uk-animation-slide-right.uk-active
+      .null
       .uk-width-medium-1-2.uk-float-right#tour6.uk-animation-slide-right
 
 #switch7.uk-switcher
   %a.uk-button.uk-button-primary.uk-button-large.uk-width-1-1.uk-vertical-align.uk-animation-fade.uk-active{ href: root_path, style: 'height: 60px;'}
     .uk-vertical-align-middle{style: 'font-size: 20px;'}
       Sign up today
+  .null
   %a.uk-button.uk-button-primary.uk-button-large.uk-width-1-1.uk-vertical-align.uk-animation-fade.uk-active{ href: 'mailto:support@beehivegiving.org', style: 'height: 60px;'}
     .uk-vertical-align-middle{style: 'font-size: 20px;'}
       Get in touch
