@@ -1,4 +1,6 @@
 ActiveAdmin.register Feedback do
+  config.sort_order = 'created_at_asc'
+
   index do
     column "Organisation", :user do |feedback|
       link_to feedback.user.organisation.name, [:admin, feedback.user.organisation]

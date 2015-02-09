@@ -3,7 +3,7 @@
   .uk-width-1-1
     %hr.uk-width-1-1.uk-margin-top-remove
     %h4.uk-text-bold Location
-  .uk-width-1-1
+  .uk-width-1-1.uk-margin-top
     %label.uk-form-label
       Where does your organisation benefit people?
       %a{"data-uk-toggle" => "{target:'#districts_hint'}"}
@@ -16,7 +16,7 @@
   .uk-width-1-1.uk-margin-top
     %hr.uk-width-1-1
     %h4.uk-text-bold Beneficiaries
-  .uk-width-1-1
+  .uk-width-1-1.uk-margin-top
     %label.uk-form-label
       Who does your organisation target?
       %a{"data-uk-toggle" => "{target:'#beneficiaries_hint'}"}
@@ -45,7 +45,7 @@
   .uk-width-1-1.uk-margin-top
     %hr.uk-width-1-1
     %h4.uk-text-bold Team
-  .uk-width-medium-1-2.uk-margin-bottom
+  .uk-width-medium-1-2.uk-margin-top
     %label.uk-form-label
       Number of voluntary staff
       %a{"data-uk-toggle" => "{target:'#voluntary_staff_hint'}"}
@@ -70,39 +70,55 @@
       = f.input :department_count, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :department_count, class: 'uk-text-small uk-text-warning'
 
-  .uk-width-1-1
+  .uk-width-1-1.uk-margin-top
     %hr.uk-width-1-1
     %h4.uk-text-bold Finance
-  .uk-width-medium-1-3.uk-margin-bottom
+  .uk-width-medium-1-1.uk-margin-top
     %label.uk-form-label Currency
     .uk-text-small
-      Select a currency
+      Select a currency for the following figures
     .uk-form-controls
       = f.input :currency, collection: Profile::CURRENCY, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :currency, class: 'uk-text-small uk-text-warning'
-  .uk-width-medium-1-3.uk-margin-bottom
+  .uk-width-medium-1-2.uk-margin-bottom
     %label.uk-form-label
       Income
-    .uk-text-small
-      = Date.today.year
-      (Actual or Predicted)
+      = surround '(', ')' do
+        = Date.today.year
     .uk-form-controls
       = f.input :income, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :income, class: 'uk-text-small uk-text-warning'
-  .uk-width-medium-1-3.uk-margin-bottom
+  .uk-width-medium-1-2.uk-margin-bottom
+    %label.uk-form-label
+      Actual figures?
+      %a{"data-uk-toggle" => "{target:'#income_actual_hint'}"}
+        %i.uk-icon-question-circle
+    = f.hint :income_actual, class: 'uk-text-small uk-hidden', id: 'income_actual_hint'
+    .uk-form-controls
+      = f.input :income_actual, as: :select, input_html: { class: 'uk-width-1-1' }
+      = f.error :income_actual, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-bottom
     %label.uk-form-label
       Expenditure
-    .uk-text-small
-      = Date.today.year
-      (Actual or Predicted)
+      = surround '(', ')' do
+        = Date.today.year
     .uk-form-controls
       = f.input :expenditure, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :expenditure, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-2.uk-margin-bottom
+    %label.uk-form-label
+      Actual figures?
+      %a{"data-uk-toggle" => "{target:'#expenditure_actual_hint'}"}
+        %i.uk-icon-question-circle
+    = f.hint :expenditure_actual, class: 'uk-text-small uk-hidden', id: 'expenditure_actual_hint'
+    .uk-form-controls
+      = f.input :expenditure_actual, as: :select, input_html: { class: 'uk-width-1-1' }
+      = f.error :expenditure_actual, class: 'uk-text-small uk-text-warning'
 
   .uk-width-1-1
-    %hr.uk-width-1-1
+    %hr.uk-width-1-1.uk-margin-top
     %h4.uk-text-bold Work
-  .uk-width-1-1.uk-margin-bottom
+  .uk-width-1-1.uk-margin-top
     %label.uk-form-label How do you implement your work?
     .uk-form-controls
       = f.association :implementations, label_method: :label, value_method: :id, input_html: {class: 'chosen-select'}
@@ -138,6 +154,48 @@
     .uk-form-controls
       = f.input :who_pays, collection: Profile::WHO_PAYS, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :who_pays, class: 'uk-text-small uk-text-warning'
+
+  .uk-width-medium-2-3.uk-margin-bottom
+    %label.uk-form-label
+      How many people did your service(s) benefit in
+      = succeed '?' do
+        = Date.today.year
+      %a{"data-uk-toggle" => "{target:'#beneficiaries_count_hint'}"}
+        %i.uk-icon-question-circle
+    = f.hint :beneficiaries_count, class: 'uk-text-small uk-hidden', id: 'beneficiaries_count_hint'
+    .uk-form-controls
+      = f.input :beneficiaries_count, input_html: { class: 'uk-width-1-1' }
+      = f.error :beneficiaries_count, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-3.uk-margin-bottom
+    %label.uk-form-label
+      Actual figures?
+      %a{"data-uk-toggle" => "{target:'#beneficiaries_count_actual_hint'}"}
+        %i.uk-icon-question-circle
+    = f.hint :beneficiaries_count_actual, class: 'uk-text-small uk-hidden', id: 'beneficiaries_count_actual_hint'
+    .uk-form-controls
+      = f.input :beneficiaries_count_actual, as: :select, input_html: { class: 'uk-width-1-1' }
+      = f.error :beneficiaries_count_actual, class: 'uk-text-small uk-text-warning'
+
+  .uk-width-medium-2-3.uk-margin-bottom
+    %label.uk-form-label
+      How many product(s) did you deliver in
+      = succeed '?' do
+        = Date.today.year
+      %a{"data-uk-toggle" => "{target:'#units_count_hint'}"}
+        %i.uk-icon-question-circle
+    = f.hint :units_count, class: 'uk-text-small uk-hidden', id: 'units_count_hint'
+    .uk-form-controls
+      = f.input :units_count, input_html: { class: 'uk-width-1-1' }
+      = f.error :units_count, class: 'uk-text-small uk-text-warning'
+  .uk-width-medium-1-3.uk-margin-bottom
+    %label.uk-form-label
+      Actual figures?
+      %a{"data-uk-toggle" => "{target:'#units_count_actual_hint'}"}
+        %i.uk-icon-question-circle
+    = f.hint :units_count_actual, class: 'uk-text-small uk-hidden', id: 'units_count_actual_hint'
+    .uk-form-controls
+      = f.input :units_count_actual, as: :select, input_html: { class: 'uk-width-1-1' }
+      = f.error :units_count_actual, class: 'uk-text-small uk-text-warning'
 
   .uk-width-medium-1-1
     = f.submit 'Next', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'

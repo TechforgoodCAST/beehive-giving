@@ -1,4 +1,6 @@
 ActiveAdmin.register Feature do
+  config.sort_order = 'created_at_asc'
+
   index do
     column :data_requested
     column "for", :funder do |feature|

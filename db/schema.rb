@@ -176,8 +176,12 @@ ActiveRecord::Schema.define(version: 20150207200146) do
     t.integer  "units_count"
     t.integer  "services_count"
     t.integer  "beneficiaries_count"
-    t.datetime "created_at",          null: false
-    t.datetime "updated_at",          null: false
+    t.boolean  "income_actual"
+    t.boolean  "expenditure_actual"
+    t.boolean  "beneficiaries_count_actual"
+    t.boolean  "units_count_actual"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   create_table "users", force: true do |t|

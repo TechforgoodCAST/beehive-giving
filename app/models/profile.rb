@@ -17,8 +17,8 @@ class Profile < ActiveRecord::Base
   validates :year, :gender, :currency, :goods_services,
             :min_age, :max_age, :income, :expenditure, :volunteer_count,
             :staff_count, :job_role_count, :department_count, :goods_count,
-            :services_count, :who_pays, presence: true
-  validates :income, :expenditure, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+            :services_count, :who_pays, :beneficiaries_count, :units_count, presence: true
+  validates :income, :expenditure, :beneficiaries_count, :units_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   validates :min_age, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :max_age,
     message: 'min. age must be less than max. age' }
@@ -44,5 +44,6 @@ class Profile < ActiveRecord::Base
   validates :currency, inclusion: {in: CURRENCY}
   validates :goods_services, inclusion: {in: GOODS_SERVICES}
   validates :who_pays, inclusion: {in: WHO_PAYS}
-
+  validates :beneficiaries_count_actual, :units_count_actual, :income_actual, :expenditure_actual,
+            inclusion: {in: [true, false]}
 end

@@ -12,6 +12,12 @@ en:
         goods_services: 'Products are tangible (e.g. Medicine), Services are intangible (e.g. Training)'
         who_pays: "Please select what your organisation sells to sustain it's operation."
         volunteer_count: 'Not including trustees.'
+        beneficiaries_count: 'Number of beneficiaries of your service(s).'
+        units_count: 'Number of units sold.'
+        beneficiaries_count_actual: "Select 'No' if figures are predicted."
+        units_count_actual: "Select 'No' if figures are predicted."
+        income_actual: "Select 'No' if figures are predicted."
+        expenditure_actual: "Select 'No' if figures are predicted."
     placeholders:
       user:
         first_name: 'First name'
@@ -30,6 +36,8 @@ en:
         income: '0'
         expenditure: '0'
         services_count: '1'
+        beneficiaries_count: '1'
+        units_count: '1'
         goods_count: '1'
       recipient:
         street_address: 'Street address'
