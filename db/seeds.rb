@@ -1,6 +1,7 @@
 # Create beneficiaries
 Beneficiary.destroy_all
 [
+  "People with disabilities",
   "People who face challenges with their physical health",
   "People who face challenges with their mental health",
   "People in education",
