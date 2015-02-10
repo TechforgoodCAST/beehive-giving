@@ -5,7 +5,7 @@ en:
         founded_on: 'The date your organisation founded.'
         status: 'What is the operational status of your organisation.'
         registered: 'Do you have a company and/or charity/nonprofit number?'
-        registered_on: 'The date your organisation was legally registered.'
+        registered_on: 'The date your organisation was legally registered. Leave blank if you are unregistered. '
       profile:
         districts: "Be sure to select all regions where your organisation has benefited people this year. Remember, you can type the name of the location to filter the list. If your country is not listed, please select 'Other' - we'll be adding more supported locations soon."
         beneficiaries: 'Think about your typical beneficiaries, which of the following categories applies to them?'
