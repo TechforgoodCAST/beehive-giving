@@ -10,9 +10,9 @@ ActiveAdmin.register User do
     column :user_email
     column :job_role
     column :role
-    column "Organisation", :user do |user|
-      link_to user.organisation.name, [:admin, user.organisation]
-    end
+    # column "Organisation", :user do |user|
+    #   link_to user.organisation.name, [:admin, user.organisation]
+    # end
     actions
   end
 
