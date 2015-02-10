@@ -62,6 +62,7 @@ class SignupController < ApplicationController
     @organisation = current_user.organisation
     @profile = @organisation.profiles.new(profile_params)
     if @profile.save
+      UserMailer.notify_funder(@profile).deliver
       redirect_to signup_comparison_path
     else
       render :profile

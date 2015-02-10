@@ -1,0 +1,120 @@
+%h2
+  = @profile.organisation.name
+  has sumbitted a profile
+
+:css
+  table {
+    border: 1px solid black;
+    width: 100%;
+  }
+  th, td {
+    border: 1px solid black;
+    width: 50%
+  }
+
+%table
+  %tbody
+    %tr
+      %td
+        %strong Enquiring organisation
+      %td= @profile.organisation.name
+    %tr
+      %td
+        %strong Year of profile
+      %td= @profile.year
+    %tr
+      %td
+        %strong Location
+      %td
+        - @profile.districts.each do |d|
+          %ul
+            %li= d.label
+    %tr
+      %td
+        %strong Age (years)
+      %td
+        = ((Date.today - @profile.organisation.founded_on).to_f / 356).round(1)
+    %tr
+      %td
+        %strong Currency
+      %td= @profile.currency
+    %tr
+      %td
+        %strong Income
+      %td= number_to_currency(@profile.income, unit: '£', precision: 0)
+    %tr
+      %td
+        %strong Income actual
+      %td= @profile.income_actual
+    %tr
+      %td
+        %strong Expenditure
+      %td= number_to_currency(@profile.expenditure, unit: '£', precision: 0)
+    %tr
+      %td
+        %strong Expenditure actual
+      %td= @profile.expenditure_actual
+%hr
+%table
+  %tbody
+    %tr
+      %td
+        %strong Beneficiaries
+      %td
+        - @profile.beneficiaries.each do |b|
+          %ul
+            %li= b.label
+    %tr
+      %td
+        %strong Min. age of beneficiaries
+      %td= @profile.min_age
+    %tr
+      %td
+        %strong Max. age of beneficiaries
+      %td= @profile.max_age
+    %tr
+      %td
+        %strong Gender focus of beneficiaries
+      %td= @profile.gender
+%hr
+%table
+  %tbody
+    %tr
+      %td
+        %strong Number of staff
+      %td= @profile.staff_count
+    %tr
+      %td
+        %strong Number of volunteers
+      %td= @profile.volunteer_count
+    %tr
+      %td
+        %strong Implementation approach
+      %td
+        - @profile.implementations.each do |i|
+          %ul
+            %li= i.label
+    %tr
+      %td
+        %strong Delivery focus
+      %td= @profile.goods_services
+    %tr
+      %td
+        %strong Sales focus
+      %td= @profile.who_pays
+    %tr
+      %td
+        %strong Beneficiaries impacted
+      %td= @profile.beneficiaries_count
+    %tr
+      %td
+        %strong Beneficiaries impacted actual
+      %td= @profile.beneficiaries_count_actual
+    %tr
+      %td
+        %strong Units delivered
+      %td= @profile.units_count
+    %tr
+      %td
+        %strong Units delivered actual
+      %td= @profile.units_count_actual

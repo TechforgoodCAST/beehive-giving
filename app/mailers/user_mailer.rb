@@ -9,4 +9,9 @@ class UserMailer < ActionMailer::Base
     @user = user
     mail(to: @user.user_email, subject: 'Reset your password - Beehive')
   end
+
+  def notify_funder(profile)
+    @profile = profile
+    mail(to: 'anna@forwardfoundation.org.uk, suraj@forwardfoundation.org.uk', subject: "#{@profile.organisation.name} has just submitted a profile")
+  end
 end
