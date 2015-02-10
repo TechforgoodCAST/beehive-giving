@@ -35,13 +35,15 @@ class ProfilesController < ApplicationController
     params.require(:profile).permit(:year, :gender, :currency, :goods_services, :who_pays, :who_buys,
     :min_age, :max_age, :income, :expenditure, :volunteer_count,
     :staff_count, :job_role_count, :department_count, :goods_count,
-    :units_count, :services_count, :beneficiaries_count, beneficiary_ids: [])
+    :who_pays, :services_count, :beneficiaries_count, :units_count,
+    :beneficiaries_count_actual, :units_count_actual, :income_actual, :expenditure_actual,
+    beneficiary_ids: [], country_ids: [], district_ids: [], implementation_ids: [])
   end
 
   def load_user
     @user = User.find_by_auth_token!(cookies[:auth_token])
   end
-  
+
   def load_organisation
     @organisation = Organisation.find_by_slug(params[:organisation_id])
   end
