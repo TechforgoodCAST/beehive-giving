@@ -3,7 +3,7 @@ class SessionsController < ApplicationController
   end
 
   def check
-    if current_user
+    if logged_in?
       redirect_to start_path_for_user(current_user)
     else
       redirect_to signup_user_path

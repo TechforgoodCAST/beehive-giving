@@ -52,6 +52,7 @@ gem 'devise'
 gem 'groupdate'
 gem 'chartkick'
 gem 'newrelic_rpm'
+gem 'capybara'
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'

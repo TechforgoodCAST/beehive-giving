@@ -4,16 +4,20 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   def current_user
-    @current_user ||= User.find_by_auth_token!(cookies[:auth_token]) if cookies[:auth_token]
+    @current_user ||= User.find_by_auth_token(cookies[:auth_token])
+  end
+
+  def logged_in?
+    @logged_in ||= (cookies[:auth_token].present? and current_user.present?)
   end
 
   def ensure_logged_in
-    if current_user.nil?
-      redirect_to "/"
-      @logged_in = false
-    else
-      @logged_in = true
-    end
+    puts "LUKE111"
+    puts cookies[:auth_token]
+    puts current_user.inspect
+    puts User.all.inspect
+    puts
+    redirect_to "/" unless logged_in?
   end
 
   def ensure_funder

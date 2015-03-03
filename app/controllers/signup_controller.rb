@@ -19,7 +19,7 @@ class SignupController < ApplicationController
 
   def organisation
     if current_user.organisation_id
-      redirect_to root_path
+      redirect_to signup_comparison_path
     else
       @organisation = Recipient.new
     end
