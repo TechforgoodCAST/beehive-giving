@@ -12,11 +12,6 @@ class ApplicationController < ActionController::Base
   end
 
   def ensure_logged_in
-    puts "LUKE111"
-    puts cookies[:auth_token]
-    puts current_user.inspect
-    puts User.all.inspect
-    puts
     redirect_to "/" unless logged_in?
   end
 

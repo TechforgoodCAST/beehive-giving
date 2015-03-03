@@ -238,6 +238,8 @@ GEM
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
     shellany (0.0.1)
+    show_me_the_cookies (2.6.0)
+      capybara (~> 2.0)
     simple_form (3.1.0)
       actionpack (~> 4.0)
       activemodel (~> 4.0)
@@ -305,6 +307,7 @@ DEPENDENCIES
   ransack
   sass-rails (~> 4.0.3)
   sdoc (~> 0.4.0)
+  show_me_the_cookies
   simple_form
   spring
   timelineJS-rails (~> 1.1.5)

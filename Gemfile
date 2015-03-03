@@ -52,7 +52,11 @@ gem 'devise'
 gem 'groupdate'
 gem 'chartkick'
 gem 'newrelic_rpm'
-gem 'capybara'
+
+group :test do
+  gem 'capybara'
+  gem "show_me_the_cookies"
+end
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'

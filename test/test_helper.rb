@@ -18,4 +18,5 @@ class ActionDispatch::IntegrationTest
   fixtures :all
   include FactoryGirl::Syntax::Methods
   include Capybara::DSL
+  include ShowMeTheCookies
 end
