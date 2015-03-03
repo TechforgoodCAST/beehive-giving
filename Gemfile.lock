@@ -167,6 +167,7 @@ GEM
     minitest (5.5.0)
     multi_json (1.10.1)
     nenv (0.1.1)
+    newrelic_rpm (3.9.6.257)
     notiffany (0.0.3)
       nenv (~> 0.1)
       shellany (~> 0.0)
@@ -283,6 +284,7 @@ DEPENDENCIES
   jquery-rails
   jquery-turbolinks
   kaminari
+  newrelic_rpm
   oj
   pg
   rabl
