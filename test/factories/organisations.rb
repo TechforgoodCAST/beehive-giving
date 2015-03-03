@@ -9,7 +9,7 @@ FactoryGirl.define do
     region "Region"
     postal_code "A1 B2"
     country "United Kingdom"
-    status "Active"
+    status Organisation::STATUS.first
     registered true
     charity_number "1AB1C1"
     company_number "1AB1C1"
