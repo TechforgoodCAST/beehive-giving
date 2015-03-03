@@ -354,7 +354,31 @@ $(document).ready ->
                       x.toLocaleString 'en-gb', options
     });
 
+OrganisationForm = ((w, d) ->
+
+  triggerRegisteredToggle = (state)->
+    target = $('.js-registered-toggle-target')
+    if state == 'true'
+      target.removeClass 'uk-hidden'
+    else
+      target.addClass 'uk-hidden'
+
+
+  bindRegistrationToggle = ->
+    selector = '.js-registered-toggle'
+    elem     = $(selector)
+    return unless elem.length > 0
+    triggerRegisteredToggle(elem.val())
+    $(document).on 'change', selector, ->
+      triggerRegisteredToggle(elem.val())
+
+
+  { bindRegistrationToggle: bindRegistrationToggle }
+)(window, document)
+
 $(document).ready ->
+  OrganisationForm.bindRegistrationToggle()
+
   createStoryJS
     type: "timeline"
     width: "100%"

@@ -54,15 +54,15 @@
 
   .uk-width-medium-1-1.uk-margin-top
     %label.uk-form-label
-      Is your organisation legaly registered?
+      Is your organisation legally registered?
       %a{"data-uk-toggle" => "{target:'#registered_hint'}"}
         %i.uk-icon-question-circle
     = f.hint :registered, class: 'uk-text-small uk-hidden', id: 'registered_hint'
     .uk-form-controls
-      = f.input :registered, as: :select, input_html: { class: 'uk-width-1-1', id: 'registered'}
+      = f.input :registered, as: :select, input_html: { class: 'uk-width-1-1 js-registered-toggle', id: 'registered'}
       = f.error :registered, class: 'uk-text-small uk-text-warning'
 
-  .uk-width-medium-1-1.uk-margin-top
+  .uk-width-medium-1-1.uk-margin-top.js-registered-toggle-target.uk-hidden
     %label.uk-form-label
       Date registered
       %a{"data-uk-toggle" => "{target:'#registered_on_hint'}"}

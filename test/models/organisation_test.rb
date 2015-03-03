@@ -31,7 +31,50 @@ class OrganisationTest < ActiveSupport::TestCase
     assert 2, @recipient.grants.size
   end
 
-  test "founded before being registered" do
-    assert @recipient.founded_on < @recipient.registered_on
+  test "validation for founded_on < registered_on works when registered" do
+    @recipient.registered = true
+    @recipient.founded_on = Date.today - 2.months
+    @recipient.registered_on = Date.today - 1.month
+    assert @recipient.valid?, true
+
+    @recipient.founded_on = Date.today - 1.day
+    @recipient.registered_on = Date.today - 1.month
+    assert_not @recipient.valid?
+  end
+
+  test "validation for founded_on < registered is ignored when not registered" do
+    @recipient.registered = false
+
+    @recipient.founded_on = Date.today - 1.day
+    @recipient.registered_on = nil
+    assert @recipient.valid?
+  end
+
+  test "validation charity number or company number exists if registered" do
+    @recipient.registered = true
+
+    @recipient.company_number = 123
+    @recipient.charity_number = 123
+    assert @recipient.valid?
+
+    @recipient.company_number = nil
+    @recipient.charity_number = 123
+    assert @recipient.valid?
+
+    @recipient.company_number = 123
+    @recipient.charity_number = nil
+    assert @recipient.valid?
+
+    @recipient.company_number = nil
+    @recipient.charity_number = nil
+    assert_not @recipient.valid?
+  end
+
+  test "validation charity number or company number does not exists if not registered" do
+    @recipient.registered = false
+
+    @recipient.company_number = nil
+    @recipient.charity_number = nil
+    assert @recipient.valid?
   end
 end

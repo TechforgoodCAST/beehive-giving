@@ -17,18 +17,14 @@ class Organisation < ActiveRecord::Base
     multiline: true,
     message: "enter a valid contact number"}
 
-  # date_select currently not nil
-  # validates :registered_on, presence: true, unless: :company_number? || :charity_number?
-
-  validates :charity_number, :company_number, uniqueness: true, if: :registered?, allow_nil: true, allow_blank: true
-  validates :charity_number, presence: true, unless: :company_number?, if: :registered?
-  validates :company_number, presence: true, unless: :charity_number?, if: :registered?
-  validates :registered_on, presence: true, if: :registered?
-
   validates :slug, uniqueness: true, presence: true
   validates :status, inclusion: {in: STATUS}
 
-  validate :founded_on_before_registered_on
+  validates :charity_number, :company_number, uniqueness: true, if: :registered?, allow_nil: true, allow_blank: true
+  validates :registered_on, presence: true, if: :registered?
+
+  validate :founded_on_before_registered_on, if: :registered?
+  validate :charity_or_company_number_exists, if: :registered?
 
   before_validation :set_slug, unless: :slug
 
@@ -48,8 +44,14 @@ class Organisation < ActiveRecord::Base
     generate_slug(n+1)
   end
 
+  private
+
   def founded_on_before_registered_on
-    errors.add(:registered_on, "You can't be registered before being founded") if
-      !registered_on.blank? and registered_on < founded_on
+    errors.add(:registered_on, "You can't be registered before being founded") if registered_on and registered_on < founded_on
   end
+
+  def charity_or_company_number_exists
+    errors.add(:charity_number) if charity_number.nil? and company_number.nil?
+  end
+
 end

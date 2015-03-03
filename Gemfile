@@ -55,7 +55,8 @@ gem 'newrelic_rpm'
 
 group :test do
   gem 'capybara'
-  gem "show_me_the_cookies"
+  gem 'show_me_the_cookies'
+  gem 'selenium-webdriver'
 end
 
 # Use ActiveModel has_secure_password

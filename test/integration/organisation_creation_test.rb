@@ -73,6 +73,4 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
     assert_equal '/your-organisation', current_path
     assert page.has_content?("can't be blank")
   end
-
-
 end
