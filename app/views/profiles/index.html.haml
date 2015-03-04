@@ -1,0 +1,13 @@
+.uk-container.uk-container-center
+  .uk-grid.uk-margin-large.uk-margin-large-top
+    %a.uk-button{:href => new_recipient_profile_path} New profile
+    - if @profiles.any?
+      %ul
+      - @profiles.each do |profile|
+        %li
+          = link_to "Edit #{profile.year}", edit_recipient_profile_path(current_user.organisation, profile)
+          \|
+          = link_to 'Delete', recipient_profile_path(current_user.organisation, profile), method: :delete
+
+    - else
+      You need to make a profile

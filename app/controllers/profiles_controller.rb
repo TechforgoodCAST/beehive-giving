@@ -1,29 +1,40 @@
 class ProfilesController < ApplicationController
-  before_filter :load_organisation
-  before_filter :load_user
-  # before_filter :check_user_ownership
+  before_filter :load_recipient
+  before_filter :load_profile, :only => [:edit, :update, :destroy]
 
   def new
-    @profile = @organisation.profiles.new
-  end
-
-  def create
-    @profile = @organisation.profiles.new(profile_params)
-    if @profile.save
-      redirect_to organisation_path(@organisation)
+    if !@recipient || @recipient.profiles.count == 1
+      redirect_to root_path
     else
-      render :new
+      @profile = @recipient.profiles.new
     end
   end
 
+  def create
+    @profile = @recipient.profiles.new(profile_params)
+    if @profile.save
+      UserMailer.notify_funder(@profile).deliver
+      redirect_to signup_comparison_path
+    else
+      render :profile
+    end
+  end
+
+  def index
+    @profiles = @recipient.profiles
+  end
+
   def edit
-    @profile = @organisation.profiles.find(params[:id])
+  end
+
+  def destroy
+    @profile.destroy
+    redirect_to recipient_profiles_path(@recipient)
   end
 
   def update
-    @profile = @organisation.profiles.find(params[:id])
     if @profile.update_attributes(profile_params)
-      redirect_to organisation_path(@organisation)
+      redirect_to recipient_profiles_path(@recipient)
     else
       render :edit
     end
@@ -40,11 +51,11 @@ class ProfilesController < ApplicationController
     beneficiary_ids: [], country_ids: [], district_ids: [], implementation_ids: [])
   end
 
-  def load_user
-    @user = User.find_by_auth_token!(cookies[:auth_token])
+  def load_recipient
+    @recipient = current_user.organisation
   end
 
-  def load_organisation
-    @organisation = Organisation.find_by_slug(params[:organisation_id])
+  def load_profile
+    @profile = @recipient.profiles.find(params[:id])
   end
 end

@@ -24,10 +24,14 @@ class Recipient < Organisation
     unlocked_funder_ids.any? ? Funder.where('id NOT IN (?)', unlocked_funder_ids) : Funder.all
   end
 
-  def unlock_funder!(funder_id)
+  def locked_funder?(funder)
+    !unlocked_funder_ids.include?(funder.id)
+  end
+
+  def unlock_funder!(funder)
     RecipientFunderAccess.find_or_create_by({
         :recipient_id => self.id,
-        :funder_id => funder_id
+        :funder_id => funder.id
     })
   end
 

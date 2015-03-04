@@ -32,6 +32,7 @@ Rails.application.routes.draw do
 
   # Dashboard
   match '/comparison/(:id)/gateway', to: 'recipients#gateway', via: :get, as: 'recipient_comparison_gateway'
+  match '/comparison/(:id)/unlock_funder', to: 'recipients#unlock_funder', via: :post, as: 'recipient_unlock_funder'
   match '/comparison/(:id)', to: 'recipients#comparison', via: :get, as: 'recipient_comparison'
 
   resources :users

@@ -21,7 +21,7 @@
         %a.uk-navbar-brand.uk-hidden-small.logo{:href => root_path, title: 'Beehive'}
           .logo-label Beta
         .uk-navbar-flip
-          - if @logged_in
+          - if logged_in?
             - unless content_for?(:signup)
               - if @current_user.organisation.type == 'Funder'
                 .uk-navbar-content.uk-text-muted.uk-hidden-small
@@ -34,12 +34,22 @@
                 .uk-navbar-content.uk-text-muted.uk-hidden-small
                   Welcome,
                   = @current_user.organisation.name
-                %ul.uk-navbar-nav.uk-hidden-small
-                  %li
-                    %a{href: signup_comparison_path} Dashboard
-            %ul.uk-navbar-nav.uk-hidden-small
-              %li
-                %a{href: logout_path, method: :destroy} Sign out
+
+                .uk-button-group
+                  %a.uk-button{href: signup_comparison_path} Dashboard
+                  %div{"data-uk-dropdown" => "{mode:'click'}"}
+                    %button.uk-button
+                      %i.uk-icon-caret-down
+                    .uk-dropdown
+                      %ul.uk-nav.uk-nav-dropdown.uk-panel
+                        %li
+                          %a{:href => recipient_profiles_path(current_user.organisation)} Edit profiles
+                        -# %li
+                        -#   %a{:href => "#"} Edit organisation
+                        %li.uk-nav-divider
+                        %li
+                          %a{href: logout_path, method: :destroy} Sign out
+
           - else
             %ul.uk-navbar-nav.uk-hidden-small
               %li

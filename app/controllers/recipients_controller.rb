@@ -12,6 +12,7 @@ class RecipientsController < ApplicationController
   def dashboard
     @funders = Funder.all
     @feedback = current_user.feedbacks.new
+    @recipient = @current_organisation
   end
 
   def gateway
@@ -20,9 +21,19 @@ class RecipientsController < ApplicationController
     @feedback  = current_user.feedbacks.new
   end
 
+  def unlock_funder
+    @funder    = Funder.find_by_slug(params[:id])
+    @recipient = @current_organisation
+    @recipient.unlock_funder!(@funder) if @recipient.locked_funder?(@funder)
+    redirect_to recipient_comparison_path(@funder)
+  end
+
   def comparison
-    @funder = Funder.find_by_slug(params[:id])
-    @feedback = current_user.feedbacks.new
+    @recipient = @current_organisation
+    @funder    = Funder.find_by_slug(params[:id])
+    @feedback  = current_user.feedbacks.new
+
+    redirect_to recipient_comparison_gateway_path(@funder) if @recipient.locked_funder?(@funder)
   end
 
   def vote
