@@ -49,26 +49,6 @@ class SignupController < ApplicationController
     end
   end
 
-  def profile
-    @organisation = current_user.organisation
-    if !@organisation || @organisation.profiles.count == 1
-      redirect_to root_path
-    else
-      @profile = @organisation.profiles.new
-    end
-  end
-
-  def create_profile
-    @organisation = current_user.organisation
-    @profile = @organisation.profiles.new(profile_params)
-    if @profile.save
-      UserMailer.notify_funder(@profile).deliver
-      redirect_to recipient_dashboard_path
-    else
-      render :profile
-    end
-  end
-
   def comparison
     @organisation = current_user.organisation
     if @organisation && @organisation.profiles.count == 1

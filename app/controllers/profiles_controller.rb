@@ -3,7 +3,8 @@ class ProfilesController < ApplicationController
   before_filter :load_profile, :only => [:edit, :update, :destroy]
 
   def new
-    if !@recipient || @recipient.profiles.count == 1
+    @redirect_to_funder = params[:redirect_to_funder]
+    if !@recipient
       redirect_to root_path
     else
       @profile = @recipient.profiles.new
@@ -11,12 +12,17 @@ class ProfilesController < ApplicationController
   end
 
   def create
+    @redirect_to_funder = params[:profile].delete(:redirect_to_funder)
     @profile = @recipient.profiles.new(profile_params)
     if @profile.save
       UserMailer.notify_funder(@profile).deliver
-      redirect_to recipient_dashboard_path
+      if @redirect_to_funder
+        redirect_to recipient_comparison_path(Funder.find(@redirect_to_funder))
+      else
+        redirect_to recipient_dashboard_path
+      end
     else
-      render :profile
+      render :new
     end
   end
 
