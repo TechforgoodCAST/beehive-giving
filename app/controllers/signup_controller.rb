@@ -19,7 +19,7 @@ class SignupController < ApplicationController
 
   def organisation
     if current_user.organisation_id
-      redirect_to signup_comparison_path
+      redirect_to recipient_dashboard_path
     else
       @organisation = Recipient.new
     end
@@ -29,7 +29,7 @@ class SignupController < ApplicationController
     @organisation = Recipient.new(organisation_params)
     if @organisation.save
       current_user.update_attribute(:organisation_id, @organisation.id)
-      redirect_to signup_comparison_path
+      redirect_to recipient_dashboard_path
     else
       render :organisation
     end
@@ -63,7 +63,7 @@ class SignupController < ApplicationController
     @profile = @organisation.profiles.new(profile_params)
     if @profile.save
       UserMailer.notify_funder(@profile).deliver
-      redirect_to signup_comparison_path
+      redirect_to recipient_dashboard_path
     else
       render :profile
     end

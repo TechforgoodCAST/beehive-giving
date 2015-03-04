@@ -27,16 +27,22 @@
                 .uk-navbar-content.uk-text-muted.uk-hidden-small
                   Welcome,
                   = @current_user.organisation.name
-                %ul.uk-navbar-nav.uk-hidden-small
-                  %li
-                    %a{href: funder_path(@current_user.organisation)} Dashboard
+                .uk-button-group.bh-button-group
+                  %a.uk-button{href: recipient_dashboard_path} Dashboard
+                  %div{"data-uk-dropdown" => "{mode:'click'}"}
+                    %button.uk-button
+                      %i.uk-icon-caret-down
+                    .uk-dropdown
+                      %ul.uk-nav.uk-nav-dropdown.uk-panel
+                        %li
+                          %a{href: logout_path, method: :destroy} Sign out
+                          
               - else @current_user.organisation.type == 'Recipient'
                 .uk-navbar-content.uk-text-muted.uk-hidden-small
                   Welcome,
                   = @current_user.organisation.name
-
-                .uk-button-group
-                  %a.uk-button{href: signup_comparison_path} Dashboard
+                .uk-button-group.bh-button-group
+                  %a.uk-button{href: recipient_dashboard_path} Dashboard
                   %div{"data-uk-dropdown" => "{mode:'click'}"}
                     %button.uk-button
                       %i.uk-icon-caret-down
@@ -99,7 +105,7 @@
                 - if @current_user.organisation.type == 'Funder'
                   %a{href: funder_path(@current_user.organisation)} Dashboard
                 - else
-                  %a{href: signup_comparison_path} Dashboard
+                  %a{href: recipient_dashboard_path} Dashboard
               %li
                 %a{href: logout_path, method: :destroy} Sign out
           - else

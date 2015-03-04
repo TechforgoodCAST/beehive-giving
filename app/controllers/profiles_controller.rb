@@ -14,7 +14,7 @@ class ProfilesController < ApplicationController
     @profile = @recipient.profiles.new(profile_params)
     if @profile.save
       UserMailer.notify_funder(@profile).deliver
-      redirect_to signup_comparison_path
+      redirect_to recipient_dashboard_path
     else
       render :profile
     end
