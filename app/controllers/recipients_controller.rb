@@ -8,6 +8,10 @@ class RecipientsController < ApplicationController
     @funder = current_user.organisation
   end
 
+  def gateway
+
+  end
+
   def dashboard
     @funders = Funder.all
     @feedback = current_user.feedbacks.new

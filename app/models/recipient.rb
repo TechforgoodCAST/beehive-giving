@@ -5,4 +5,24 @@ class Recipient < Organisation
   def can_request_funder?(funder)
     features.build(data_requested: true, funder: funder).valid?
   end
+
+  def unlocked_funder_ids
+    RecipientFunderAccess.where(:recipient_id => self.id).map(&:funder_id)
+  end
+
+  def unlocked_funders
+    Funder.where(:id => unlocked_funder_ids)
+  end
+
+  def locked_funders
+    unlocked_funder_ids.any? ? Funder.where('id NOT IN (?)', unlocked_funder_ids) : Funder.all
+  end
+
+  def unlock_funder!(funder_id)
+    RecipientFunderAccess.find_or_create_by({
+        :recipient_id => self.id,
+        :funder_id => funder_id
+    })
+  end
+
 end
