@@ -2,6 +2,12 @@ class Recipient < Organisation
   has_many :grants
   has_many :features, dependent: :destroy
 
+  PROFILE_MAX_FREE_LIMIT = 3
+
+  def can_unlock_funder?(funder)
+    profiles.count < PROFILE_MAX_FREE_LIMIT && profiles.count > unlocked_funders.size
+  end
+
   def can_request_funder?(funder)
     features.build(data_requested: true, funder: funder).valid?
   end

@@ -1,20 +1,23 @@
 class RecipientsController < ApplicationController
   before_filter :ensure_logged_in
   # before_filter :ensure_funder
-  before_filter :load_recipient
+  before_filter :load_current_organisation
 
   def show
+    @recipient = Recipient.find_by_slug(params[:id])
     @grants = @recipient.grants
     @funder = current_user.organisation
-  end
-
-  def gateway
-
   end
 
   def dashboard
     @funders = Funder.all
     @feedback = current_user.feedbacks.new
+  end
+
+  def gateway
+    @funder    = Funder.find_by_slug(params[:id])
+    @recipient = @current_organisation
+    @feedback  = current_user.feedbacks.new
   end
 
   def comparison
@@ -46,8 +49,7 @@ class RecipientsController < ApplicationController
 
   private
 
-  def load_recipient
-    @recipient = Recipient.find_by_slug(params[:id])
+  def load_current_organisation
     @current_organisation = current_user.organisation
   end
 

@@ -31,6 +31,7 @@ Rails.application.routes.draw do
   match '/feedback', to: 'recipients#create_feedback', via: :post
 
   # Dashboard
+  match '/comparison/(:id)/gateway', to: 'recipients#gateway', via: :get, as: 'recipient_comparison_gateway'
   match '/comparison/(:id)', to: 'recipients#comparison', via: :get, as: 'recipient_comparison'
 
   resources :users
