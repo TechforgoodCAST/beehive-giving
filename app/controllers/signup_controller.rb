@@ -29,7 +29,7 @@ class SignupController < ApplicationController
     @organisation = Recipient.new(organisation_params)
     if @organisation.save
       current_user.update_attribute(:organisation_id, @organisation.id)
-      redirect_to signup_profile_path
+      redirect_to signup_comparison_path
     else
       render :organisation
     end

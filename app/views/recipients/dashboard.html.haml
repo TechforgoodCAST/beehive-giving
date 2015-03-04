@@ -29,7 +29,10 @@
                         = image_tag "logos/#{funder.slug}-logo.png", alt: "#{funder.name}"
                   .uk-width-medium-1-1
                     - if funder.active_on_beehive?
-                      %a.uk-button.uk-button-primary.uk-width-1-1{ href: recipient_comparison_path(funder) } See how you compare
+                      %a.uk-button.uk-button-primary.uk-width-1-1{ href: recipient_comparison_path(funder) }
+                        See how you compare
+                        %span.uk-text-small (Locked)
+                        %i.uk-icon-lock
                     - else
                       - if @current_organisation.can_request_funder?(funder)
                         = link_to 'Request', vote_recipient_path(@current_organisation, data_requested: true, funder_id: funder.id), method: 'post', class: 'uk-button uk-width-1-1'
