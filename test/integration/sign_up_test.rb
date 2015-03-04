@@ -16,9 +16,9 @@ class SignUpTest < ActionDispatch::IntegrationTest
     visit '/'
     within("#new_user") do
       fill_in("user_first_name", :with => "Joe")
-      fill_in("user_last_name", :with => "Bloggs2")
+      fill_in("user_last_name", :with => "Bloggs")
       fill_in("user_job_role", :with => "Founder")
-      fill_in("user_user_email", :with => "test@te3st.com")
+      fill_in("user_user_email", :with => "test@test.com")
       fill_in("user_password", :with => "password111")
       fill_in("user_password_confirmation", :with => "password111")
     end
