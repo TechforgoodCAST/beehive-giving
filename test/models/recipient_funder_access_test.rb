@@ -18,7 +18,7 @@ class RecipientFunderAccessTest < ActiveSupport::TestCase
     assert @recipient.unlocked_funders.empty?
     assert @recipient.locked_funders.include?(@funder)
 
-    @recipient.unlock_funder!(@funder.id)
+    @recipient.unlock_funder!(@funder)
 
     puts "AFTER"
     puts @recipient.unlocked_funders.inspect
