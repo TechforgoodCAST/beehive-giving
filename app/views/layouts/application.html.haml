@@ -23,10 +23,10 @@
         .uk-navbar-flip
           - if logged_in?
             - unless content_for?(:signup)
-              - if @current_user.organisation.type == 'Funder'
+              - if current_user.organisation.type == 'Funder'
                 .uk-navbar-content.uk-text-muted.uk-hidden-small
                   Welcome,
-                  = @current_user.organisation.name
+                  = current_user.organisation.name
                 .uk-button-group.bh-button-group
                   %a.uk-button{href: recipient_dashboard_path} Dashboard
                   %div{"data-uk-dropdown" => "{mode:'click'}"}
@@ -36,11 +36,11 @@
                       %ul.uk-nav.uk-nav-dropdown.uk-panel
                         %li
                           %a{href: logout_path, method: :destroy} Sign out
-                          
-              - else @current_user.organisation.type == 'Recipient'
+
+              - else current_user.organisation.type == 'Recipient'
                 .uk-navbar-content.uk-text-muted.uk-hidden-small
                   Welcome,
-                  = @current_user.organisation.name
+                  = current_user.organisation.name
                 .uk-button-group.bh-button-group
                   %a.uk-button{href: recipient_dashboard_path} Dashboard
                   %div{"data-uk-dropdown" => "{mode:'click'}"}
@@ -96,14 +96,14 @@
 
     #offcanvas.uk-offcanvas
       .uk-offcanvas-bar.uk-offcanvas-bar-flip.uk-offcanvas-bar-show{style: 'z-index:1000;'}
-        - if @logged_in
-          - if @current_user.organisation
+        - if logged_in?
+          - if current_user.organisation
             %ul.uk-nav.uk-nav-offcanvas
               %li.uk-nav-header.uk-margin-top.uk-text-center
-                = @current_user.organisation.name
+                = current_user.organisation.name
               %li
-                - if @current_user.organisation.type == 'Funder'
-                  %a{href: funder_path(@current_user.organisation)} Dashboard
+                - if current_user.organisation.type == 'Funder'
+                  %a{href: funder_path(current_user.organisation)} Dashboard
                 - else
                   %a{href: recipient_dashboard_path} Dashboard
               %li

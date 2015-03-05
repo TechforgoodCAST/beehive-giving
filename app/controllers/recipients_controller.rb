@@ -1,7 +1,7 @@
 class RecipientsController < ApplicationController
   before_filter :ensure_logged_in
   before_filter :load_recipient
-  before_filter :load_feedback, :only => [:dashboard, :gateway, :comparision]
+  before_filter :load_feedback, :only => [:dashboard, :gateway, :comparison]
 
   def show
     @recipient = Recipient.find_by_slug(params[:id])
