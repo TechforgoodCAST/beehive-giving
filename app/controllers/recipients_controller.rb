@@ -1,30 +1,22 @@
 class RecipientsController < ApplicationController
   before_filter :ensure_logged_in
   before_filter :load_recipient
+  before_filter :load_funder, :only => [:gateway, :unlock_funder, :comparison]
   before_filter :load_feedback, :only => [:dashboard, :gateway, :comparison]
-
-  def show
-    @recipient = Recipient.find_by_slug(params[:id])
-    @grants = @recipient.grants
-    @funder = current_user.organisation
-  end
 
   def dashboard
     @funders = Funder.all
   end
 
   def gateway
-    @funder = Funder.find_by_slug(params[:id])
   end
 
   def unlock_funder
-    @funder = Funder.find_by_slug(params[:id])
     @recipient.unlock_funder!(@funder) if @recipient.locked_funder?(@funder)
     redirect_to recipient_comparison_path(@funder)
   end
 
   def comparison
-    @funder    = Funder.find_by_slug(params[:id])
     redirect_to recipient_comparison_gateway_path(@funder) if @recipient.locked_funder?(@funder)
   end
 
@@ -41,6 +33,10 @@ class RecipientsController < ApplicationController
 
   def load_recipient
     @recipient = current_user.organisation
+  end
+
+  def load_funder
+    @funder = Funder.find_by_slug(params[:id])
   end
 
   def load_feedback
