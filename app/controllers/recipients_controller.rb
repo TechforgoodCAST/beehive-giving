@@ -5,7 +5,8 @@ class RecipientsController < ApplicationController
   before_filter :load_feedback, :only => [:dashboard, :gateway, :comparison]
 
   def dashboard
-    @funders = Funder.all
+    @search = Funder.search(params[:q])
+    @funders = @search.result
   end
 
   def gateway

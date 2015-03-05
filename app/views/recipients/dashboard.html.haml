@@ -17,6 +17,11 @@
 
       %h2.uk-margin-top See if you're a good fit for...
 
+      %button.uk-button{:'data-uk-toggle' => "{target: '.js-dashboard-search-form'}"} Filter/Sort
+
+      .uk-panel.uk-panel-box.uk-margin.js-dashboard-search-form{:class => ('uk-hidden' unless params[:q]) }
+        = render :partial => 'recipients/filter'
+
       .uk-grid
         .uk-width-medium-3-4
           .uk-grid
