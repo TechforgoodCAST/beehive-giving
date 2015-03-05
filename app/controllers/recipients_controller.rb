@@ -6,7 +6,7 @@ class RecipientsController < ApplicationController
 
   def dashboard
     @search = Funder.search(params[:q])
-    @funders = @search.result
+    @funders = @search.result(distinct: true)
   end
 
   def gateway

@@ -1,8 +1,17 @@
 = search_form_for @search, url: recipient_dashboard_path do |f|
-  %span Name:
-  = f.text_field :name_cont, :placeholder => "name contains..."
+  = f.label "Name"
+  = f.input :name_cont, :placeholder => "name contains..."
   %br/
+  = f.label "Application Process"
+  = f.input :funder_attributes_application_process_eq, :as => :select, :collection => FunderAttributes.application_processes.keys.to_a, :include_blank => true
+  %br/
+  = f.label "Funding Type"
+  = f.input :funder_attributes_funding_type_eq, :as => :select, :collection => FunderAttributes.funding_types.keys.to_a, :include_blank => true
   %br/
   = f.submit "Filter", :class => "uk-button uk-button-primary"
   %h4 Sort By:
   = sort_link @search, :name, 'Name', default_order: :desc
+  \|
+  = sort_link @search, :funder_attributes_application_process
+  \|
+  = sort_link @search, :funder_attributes_funding_type
