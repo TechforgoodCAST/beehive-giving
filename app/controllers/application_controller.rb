@@ -6,6 +6,8 @@ class ApplicationController < ActionController::Base
   helper_method :logged_in?
   helper_method :current_user
 
+  before_filter :load_feedback, :if => Proc.new { logged_in? }
+
   def current_user
     current_user ||= User.find_by_auth_token(cookies[:auth_token])
   end
@@ -29,4 +31,9 @@ class ApplicationController < ActionController::Base
   def check_user_ownership
     redirect_to login_path unless @user == current_user
   end
+
+  def load_feedback
+    @feedback = current_user.feedbacks.new
+  end
+
 end

@@ -1,7 +1,6 @@
 .uk-container.uk-container-center
   .uk-grid.uk-margin
-    - unless current_user.feedbacks.count >= 1 || current_user.sign_in_count < 2
-      = render partial: 'recipients/feedback'
+    
 
     .uk-width-1-1.uk-margin
 
