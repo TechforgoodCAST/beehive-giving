@@ -26,10 +26,6 @@ Rails.application.routes.draw do
 
   match '/new-funder', to: 'signup#create_funder', via: :post
 
-  # Feedback
-  match '/feedback', to: 'recipients#feedback', via: :get, as: 'recipients_feedback'
-  match '/feedback', to: 'recipients#create_feedback', via: :post
-
   # Dashboard
   match '/comparison/(:id)/gateway', to: 'recipients#gateway', via: :get, as: 'recipient_comparison_gateway'
   match '/comparison/(:id)/unlock_funder', to: 'recipients#unlock_funder', via: :post, as: 'recipient_unlock_funder'
@@ -41,5 +37,6 @@ Rails.application.routes.draw do
     resources :profiles
     resources :grants
   end
+  resources :feedback, :only => [:create]
   resources :password_resets
 end

@@ -3,7 +3,7 @@
     %a.uk-alert-close.uk-close
     %h3 Let us know what you think...
     %fieldset
-    = simple_form_for [@current_user, @feedback], url: recipients_feedback_path, method: :post do |f|
+    = simple_form_for @feedback, :url => feedback_index_path do |f|
       .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
         .uk-width-medium-1-2.uk-margin-bottom
           %label.uk-form-label

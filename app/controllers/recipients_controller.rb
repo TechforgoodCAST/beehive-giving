@@ -1,7 +1,7 @@
 class RecipientsController < ApplicationController
   before_filter :ensure_logged_in
-  # before_filter :ensure_funder
-  before_filter :load_current_organisation
+  before_filter :load_recipient
+  before_filter :load_feedback, :only => [:dashboard, :gateway, :comparision]
 
   def show
     @recipient = Recipient.find_by_slug(params[:id])
@@ -11,33 +11,25 @@ class RecipientsController < ApplicationController
 
   def dashboard
     @funders = Funder.all
-    @feedback = current_user.feedbacks.new
-    @recipient = @current_organisation
   end
 
   def gateway
-    @funder    = Funder.find_by_slug(params[:id])
-    @recipient = @current_organisation
-    @feedback  = current_user.feedbacks.new
+    @funder = Funder.find_by_slug(params[:id])
   end
 
   def unlock_funder
-    @funder    = Funder.find_by_slug(params[:id])
-    @recipient = @current_organisation
+    @funder = Funder.find_by_slug(params[:id])
     @recipient.unlock_funder!(@funder) if @recipient.locked_funder?(@funder)
     redirect_to recipient_comparison_path(@funder)
   end
 
   def comparison
-    @recipient = @current_organisation
     @funder    = Funder.find_by_slug(params[:id])
-    @feedback  = current_user.feedbacks.new
-
     redirect_to recipient_comparison_gateway_path(@funder) if @recipient.locked_funder?(@funder)
   end
 
   def vote
-    vote = @current_organisation.features.new(data_requested: params[:data_requested], recipient_id: params[:id], funder_id: params[:funder_id])
+    vote = @recipient.features.new(data_requested: params[:data_requested], recipient_id: params[:id], funder_id: params[:funder_id])
     if vote.save
       redirect_to :back, notice: "Thanks for requesting this, we're working hard to make it happen."
     else
@@ -45,26 +37,14 @@ class RecipientsController < ApplicationController
     end
   end
 
-  def feedback
+  private
+
+  def load_recipient
+    @recipient = current_user.organisation
+  end
+
+  def load_feedback
     @feedback = current_user.feedbacks.new
   end
 
-  def create_feedback
-    @feedback = current_user.feedbacks.new(feedback_params)
-    if @feedback.save
-      redirect_to :back, notice: "Thanks for your feedback."
-    else
-      redirect_to :back, alert: "Unable to give feedback, please complete questiions 1-3."
-    end
-  end
-
-  private
-
-  def load_current_organisation
-    @current_organisation = current_user.organisation
-  end
-
-  def feedback_params
-    params.require(:feedback).permit(:nps, :taken_away, :informs_decision, :other)
-  end
 end
