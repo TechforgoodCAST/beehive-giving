@@ -12,6 +12,12 @@ class FundersController < ApplicationController
     respond_with @funders
   end
 
+  def explore
+    @recipient = Recipient.find_by_slug(params[:id])
+    @grants = @recipient.grants
+    @funder = current_user.organisation
+  end
+  
   def show
     @grants = @funder.grants.order("created_at").page(params[:page]).per(10)
   end

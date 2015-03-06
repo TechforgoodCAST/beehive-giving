@@ -21,25 +21,44 @@
         %a.uk-navbar-brand.uk-hidden-small.logo{:href => root_path, title: 'Beehive'}
           .logo-label Beta
         .uk-navbar-flip
-          - if @logged_in
+          - if logged_in?
             - unless content_for?(:signup)
-              - if @current_user.organisation.type == 'Funder'
+              - if current_user.organisation.type == 'Funder'
                 .uk-navbar-content.uk-text-muted.uk-hidden-small
                   Welcome,
-                  = @current_user.organisation.name
-                %ul.uk-navbar-nav.uk-hidden-small
-                  %li
-                    %a{href: funder_path(@current_user.organisation)} Dashboard
-              - else @current_user.organisation.type == 'Recipient'
+                  = current_user.organisation.name
+                .uk-button-group.bh-button-group
+                  %a.uk-button{href: recipient_dashboard_path} Dashboard
+                  %div{"data-uk-dropdown" => "{mode:'click'}"}
+                    %button.uk-button
+                      %i.uk-icon-caret-down
+                    .uk-dropdown
+                      %ul.uk-nav.uk-nav-dropdown.uk-panel
+                        %li
+                          %a{href: logout_path, method: :destroy} Sign out
+
+              - else current_user.organisation.type == 'Recipient'
+                - if current_user_should_render_feedback?
+                  .uk-navbar-content
+                    = link_to 'Feedback', '#', class: 'uk-text-primary', :'data-uk-toggle' => "{target:'.js-feedback-form'}"
                 .uk-navbar-content.uk-text-muted.uk-hidden-small
                   Welcome,
-                  = @current_user.organisation.name
-                %ul.uk-navbar-nav.uk-hidden-small
-                  %li
-                    %a{href: signup_comparison_path} Dashboard
-            %ul.uk-navbar-nav.uk-hidden-small
-              %li
-                %a{href: logout_path, method: :destroy} Sign out
+                  = current_user.organisation.name
+                .uk-button-group.bh-button-group
+                  %a.uk-button{href: recipient_dashboard_path} Dashboard
+                  %div{"data-uk-dropdown" => "{mode:'click'}"}
+                    %button.uk-button
+                      %i.uk-icon-caret-down
+                    .uk-dropdown
+                      %ul.uk-nav.uk-nav-dropdown.uk-panel
+                        %li
+                          %a{:href => recipient_profiles_path(current_user.organisation)} Edit profiles
+                        -# %li
+                        -#   %a{:href => "#"} Edit organisation
+                        %li.uk-nav-divider
+                        %li
+                          %a{href: logout_path, method: :destroy} Sign out
+
           - else
             %ul.uk-navbar-nav.uk-hidden-small
               %li
@@ -51,6 +70,10 @@
           .logo-label Beta
 
     .uk-container.uk-container-center
+      - if current_user_should_render_feedback?
+        .js-feedback-form{:class => ('uk-hidden' if current_user_has_closed_feedback?) }
+          = render partial: 'recipients/feedback'
+
       - if flash[:notice]
         .uk-alert.uk-alert-success.uk-margin-top{'data-uk-alert' => ''}
           %a.uk-alert-close.uk-close
@@ -80,16 +103,16 @@
 
     #offcanvas.uk-offcanvas
       .uk-offcanvas-bar.uk-offcanvas-bar-flip.uk-offcanvas-bar-show{style: 'z-index:1000;'}
-        - if @logged_in
-          - if @current_user.organisation
+        - if logged_in?
+          - if current_user.organisation
             %ul.uk-nav.uk-nav-offcanvas
               %li.uk-nav-header.uk-margin-top.uk-text-center
-                = @current_user.organisation.name
+                = current_user.organisation.name
               %li
-                - if @current_user.organisation.type == 'Funder'
-                  %a{href: funder_path(@current_user.organisation)} Dashboard
+                - if current_user.organisation.type == 'Funder'
+                  %a{href: funder_path(current_user.organisation)} Dashboard
                 - else
-                  %a{href: signup_comparison_path} Dashboard
+                  %a{href: recipient_dashboard_path} Dashboard
               %li
                 %a{href: logout_path, method: :destroy} Sign out
           - else

@@ -134,6 +134,9 @@ GEM
       em-websocket (~> 0.5)
       guard (~> 2.8)
       multi_json (~> 1.8)
+    guard-rake (1.0.0)
+      guard
+      rake
     haml (4.0.5)
       tilt
     has_scope (0.6.0.rc)
@@ -302,6 +305,7 @@ DEPENDENCIES
   fiscali
   groupdate
   guard-livereload
+  guard-rake
   haml
   jbuilder (~> 2.0)
   jquery-rails

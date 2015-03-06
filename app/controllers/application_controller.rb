@@ -3,8 +3,13 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  helper_method :logged_in?
+  helper_method :current_user
+
+  before_filter :load_feedback, :if => Proc.new { logged_in? }
+
   def current_user
-    @current_user ||= User.find_by_auth_token(cookies[:auth_token])
+    current_user ||= User.find_by_auth_token(cookies[:auth_token])
   end
 
   def logged_in?
@@ -26,4 +31,9 @@ class ApplicationController < ActionController::Base
   def check_user_ownership
     redirect_to login_path unless @user == current_user
   end
+
+  def load_feedback
+    @feedback = current_user.feedbacks.new
+  end
+
 end

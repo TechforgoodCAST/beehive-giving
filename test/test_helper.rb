@@ -17,4 +17,13 @@ class ActionDispatch::IntegrationTest
   include FactoryGirl::Syntax::Methods
   include Capybara::DSL
   include ShowMeTheCookies
+
+  setup do
+    expire_cookies
+  end
+
+  def create_and_auth_user!(opts = {})
+    @user = create(:user, opts)
+    create_cookie(:auth_token, @user.auth_token)
+  end
 end

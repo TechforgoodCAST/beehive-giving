@@ -1,10 +1,8 @@
 .uk-container.uk-container-center
   .uk-grid
-    - unless @current_user.feedbacks.count >= 1 || @current_user.sign_in_count < 2
-      = render partial: 'recipients/feedback'
 
     .uk-width-1-1
-      - if @current_user.sign_in_count < 2
+      - if current_user.sign_in_count < 2
         .uk-alert{'data-uk-alert' => ''}
           %a.uk-alert-close.uk-close
           %p.uk-text-large Now that's a lot of data
@@ -111,7 +109,7 @@
             %p You work in the following areas:
             %ul
             .uk-scrollable-text{style: 'height:41px;'}
-              - @current_organisation.profiles.first.districts.each do |d|
+              - @recipient.profiles.first.districts.each do |d|
                 %li= d.label
             .uk-alert
               %o Forward Foundation tends to fund work in Ethiopia, Kenya, Uganda, and London in the United Kingdom.
@@ -121,8 +119,8 @@
               %h4 Age of funded organisations
             #recipient_age
             %p Your age:
-            %h2.uk-text-center{ class: ('uk-text-danger' if ((Date.today - @current_organisation.founded_on).to_f / 356).round(1) > 3) }
-              = ((Date.today - @current_organisation.founded_on).to_f / 356).round(1)
+            %h2.uk-text-center{ class: ('uk-text-danger' if ((Date.today - @recipient.founded_on).to_f / 356).round(1) > 3) }
+              = ((Date.today - @recipient.founded_on).to_f / 356).round(1)
               years old
             .uk-alert
               %o Forward Foundation tends to fund organisations younger than 3 years old.
@@ -132,8 +130,8 @@
               %h4 Income of funded organisations
             #recipient_income
             %p Your income:
-            %h2.uk-text-center{ class: ('uk-text-danger' if @current_organisation.profiles.first.income > 250000) }
-              = number_to_currency(@current_organisation.profiles.first.income, unit: '£', precision: 0)
+            %h2.uk-text-center{ class: ('uk-text-danger' if @recipient.profiles.first.income > 250000) }
+              = number_to_currency(@recipient.profiles.first.income, unit: '£', precision: 0)
             .uk-alert
               %o Forward Foundation tends to fund organisations with income less than £250,000.
 
@@ -147,7 +145,7 @@
           %p You target:
           %ul
           .uk-scrollable-text{style: 'height:100px;'}
-            - @current_organisation.profiles.first.beneficiaries.each do |b|
+            - @recipient.profiles.first.beneficiaries.each do |b|
               %li= b.label
           .uk-alert
             %o Forward Foundation tends to focus on Education, Unemployment, and Income Poverty.
@@ -161,12 +159,12 @@
             .uk-grid.uk-text-center
               .uk-width-1-2
                 %h2.uk-text-center.uk-margin-remove
-                  = @current_organisation.profiles.first.min_age
+                  = @recipient.profiles.first.min_age
                   .your-data.age
                     Min. age:
               .uk-width-1-2
                 %h2.uk-text-center.uk-margin-remove
-                  = @current_organisation.profiles.first.max_age
+                  = @recipient.profiles.first.max_age
                   .your-data.age
                     Max. age:
           .uk-width-medium-1-2.uk-margin
@@ -175,7 +173,7 @@
             #beneficiaries_gender
             %p Your target gender:
             %h2.uk-text-center.uk-margin-remove
-              = @current_organisation.profiles.first.gender
+              = @recipient.profiles.first.gender
 
     .uk-width-medium-1-1.uk-animation-fade
       .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
@@ -184,7 +182,7 @@
             %h4 Number of staff from funded organisations
           #recipient_staff
           %h2.uk-text-center.uk-margin-remove
-            = pluralize(@current_organisation.profiles.first.staff_count, 'person')
+            = pluralize(@recipient.profiles.first.staff_count, 'person')
             .your-data.staff
               Your staff:
           .uk-alert
@@ -194,7 +192,7 @@
             %h4 Number of volunteers from funded organisations
           #recipient_volunteers
           %h2.uk-text-center.uk-margin-remove
-            = pluralize(@current_organisation.profiles.first.volunteer_count, 'person')
+            = pluralize(@recipient.profiles.first.volunteer_count, 'person')
             .your-data.volunteers
               Your volunteers:
           .uk-alert
@@ -210,7 +208,7 @@
           %p You implement your work with:
           %ul
           .uk-scrollable-text{style: 'height:100px;'}
-            - @current_organisation.profiles.first.implementations.each do |i|
+            - @recipient.profiles.first.implementations.each do |i|
               %li= i.label
       %hr.uk-grid-divider.uk-margin-remove
         .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
@@ -219,7 +217,7 @@
               %h4 Funded organisations delivery focus
             #recipient_goods_or_services
             %h2.uk-text-center.uk-margin-remove
-              = @current_organisation.profiles.first.goods_services
+              = @recipient.profiles.first.goods_services
               .your-data.deliver
                 You deliver:
           .uk-width-medium-1-2.uk-margin
@@ -227,6 +225,6 @@
               %h4 What funded organisations sell
             #recipient_sells
             %h2.uk-text-center.uk-margin-remove
-              = @current_organisation.profiles.first.who_pays
+              = @recipient.profiles.first.who_pays
               .your-data.sell
                 You sell:

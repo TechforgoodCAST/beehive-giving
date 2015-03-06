@@ -1,16 +1,6 @@
 require 'test_helper'
 
 class OrganisationCreationTest < ActionDispatch::IntegrationTest
-
-  setup do
-    expire_cookies
-  end
-
-  def create_and_auth_user!(opts = {})
-    @user = create(:user, opts)
-    create_cookie(:auth_token, @user.auth_token)
-  end
-
   test 'You get redirected when visiting the page when not signed in' do
     visit '/your-organisation'
     assert_equal current_path, '/welcome'
@@ -56,8 +46,8 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
       select(@recipient.registered_on.strftime("%Y"), :from => "recipient_registered_on_1i")
     end
     click_button('Next')
-    assert_equal '/your-profile', current_path
-    assert page.has_content?("2015 profile")
+    assert_equal '/dashboard', current_path
+    assert page.has_content?("See if you're a good fit for")
   end
 
   test 'filling form incorrectly causes validation to trigger' do

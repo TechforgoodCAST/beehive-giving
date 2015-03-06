@@ -16,28 +16,36 @@ Rails.application.routes.draw do
   match '/welcome', to: 'signup#user', via: :get, as: 'signup_user'
   match '/your-organisation', to: 'signup#organisation', via: :get, as: 'signup_organisation'
   match '/your-profile', to: 'signup#profile', via: :get, as: 'signup_profile'
-  match '/dashboard', to: 'recipients#dashboard', via: :get, as: 'signup_comparison'
-
-  match '/new-funder', to: 'signup#funder', via: :get, as: 'new_funder'
 
   match '/welcome', to: 'signup#create_user', via: :post
   match '/your-organisation', to: 'signup#create_organisation', via: :post
   match '/your-profile', to: 'signup#create_profile', via: :post
 
+  match '/new-funder', to: 'signup#funder', via: :get, as: 'new_funder'
   match '/new-funder', to: 'signup#create_funder', via: :post
 
-  # Feedback
-  match '/feedback', to: 'recipients#feedback', via: :get, as: 'recipients_feedback'
-  match '/feedback', to: 'recipients#create_feedback', via: :post
-
-  # Dashboard
+  # RecipientDashboard
+  match '/dashboard', to: 'recipients#dashboard', via: :get, as: 'recipient_dashboard'
+  match '/comparison/(:id)/gateway', to: 'recipients#gateway', via: :get, as: 'recipient_comparison_gateway'
+  match '/comparison/(:id)/unlock_funder', to: 'recipients#unlock_funder', via: :post, as: 'recipient_unlock_funder'
   match '/comparison/(:id)', to: 'recipients#comparison', via: :get, as: 'recipient_comparison'
 
   resources :users
-  resources :organisations, :funders, :recipients do
-    member { post :vote }
+
+  resources :recipients do
+    member do
+      post :vote
+    end
     resources :profiles
+  end
+
+  resources :funders do
+    member do
+      get :explore
+    end
     resources :grants
   end
+
+  resources :feedback, :only => [:create]
   resources :password_resets
 end
