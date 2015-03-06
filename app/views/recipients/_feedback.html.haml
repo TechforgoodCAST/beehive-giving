@@ -1,7 +1,8 @@
 .uk-width-1-1
   .uk-alert.uk-form.uk-form-stacked{'data-uk-alert' => ''}
-    %a.uk-alert-close.uk-close
-    %h3 Let us know what you think...
+    %a.uk-float-right.uk-close-alert.js-record-feedback-close{:href => '#', :'data-uk-toggle' => "{target: '.js-feedback-form'}"}
+      %i.uk-icon-close
+    %h3.uk-margin-top-remove Let us know what you think...
     %fieldset
     = simple_form_for @feedback, :url => feedback_index_path do |f|
       .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}

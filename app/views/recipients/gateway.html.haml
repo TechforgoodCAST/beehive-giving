@@ -7,19 +7,107 @@
       .uk-text-center
         = @funder.mission
 
-    .uk-width-medium-1-3.uk-margin-bottom
+    .uk-width-medium-2-3.uk-margin-bottom
       .uk-panel.uk-panel-box
-        .uk-panel-title
-          See how you fit
         - if @recipient.can_unlock_funder?(@funder)
+          %p Now that you have completed a profile you can click below to see more tabs with information about this funder.
           = link_to "Unlock Funder", recipient_unlock_funder_path(@funder), class: 'uk-button uk-button-primary uk-width-1-1', method: :post
         - elsif @recipient.profiles.count <= Recipient::PROFILE_MAX_FREE_LIMIT
+          %p In order to unlock a funder to view more tabs, please click below to complete a profile
           = link_to "Complete Profile", new_recipient_profile_path(@recipient, :redirect_to_funder => @funder.id), class: 'uk-button uk-button-primary uk-width-1-1'
         - else
           You can only unlock 3 funders on the free plan
 
-    .uk-width-medium-1-3.uk-margin-bottom
-      .uk-panel.uk-panel-box.uk-panel-box-primary
-        .uk-panel-title
-          £10 a year for unlimited access
-        %button.uk-button.uk-width-1-1{:disabled => "", :type => "button"} Coming soon
+    -# .uk-width-medium-1-3.uk-margin-bottom
+    -#   .uk-panel.uk-panel-box.uk-panel-box-primary
+    -#     .uk-panel-title
+    -#       £10 a year for unlimited access
+    -#     %button.uk-button.uk-width-1-1{:disabled => "", :type => "button"} Coming soon
+
+
+%nav#bg{style: 'border-bottom: solid #dddddd 1px; height: 36px'}
+  .uk-container.uk-container-center
+    .uk-grid
+      .uk-width-2-3
+        %ul.uk-tab.uk-text-center{"data-uk-tab" => "{connect:'#tab-content'}"}
+          %li.uk-width-medium-1-5.uk-active.gateway-first-tab
+            %a{:href => ""} Overview
+          %li.uk-width-medium-1-5.uk-disabled
+            %a{:href => ""}
+              Organisation
+              %i.uk-icon-lock
+          %li.uk-width-medium-1-5.uk-disabled
+            %a{:href => ""}
+              Beneficiaries
+              %i.uk-icon-lock
+          %li.uk-width-medium-1-5.uk-disabled
+            %a{:href => ""}
+              Team
+              %i.uk-icon-lock
+          %li.uk-width-medium-1-5.uk-disabled
+            %a{:href => ""}
+              Work
+              %i.uk-icon-lock
+          %li.uk-tab-responsive.uk-active.uk-hidden
+            %a Tab
+            .uk-dropdown.uk-dropdown-small
+              %ul.uk-nav.uk-nav-dropdown
+      .uk-width-1-3.uk-text-right
+        .uk-vertical-align{:style => "height: 36px;"}
+          .uk-vertical-align-middle
+            .uk-text-muted.uk-text-truncate
+              Viewing:
+              = @funder.name
+
+.uk-container.uk-container-center.uk-margin
+  .uk-width-1-1#tab-content.uk-switcher
+
+    .uk-width-medium-1-1.uk-animation-fade.uk-active
+      .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
+        .uk-width-large-1-3.uk-margin-top
+          .uk-panel
+            .uk-panel-title
+              %h4 Time from enquiry to funding
+            #funder_time
+            %dl.uk-description-list-line
+              %dt Application process
+              %dd.uk-text-large.uk-text-primary Invite only
+              %dt Next application deadline
+              %dd.uk-text-large.uk-text-primary May 2015
+              %dt Funding round frequency
+              %dd.uk-text-large.uk-text-primary Every 6 months
+              %dt Number of funding streams
+              %dd.uk-text-large.uk-text-primary 1 funding stream
+        .uk-width-large-1-3.uk-margin-top
+          .uk-panel
+            .uk-panel-title
+              %h4 Success rates
+            #funder_stages
+            %dl.uk-description-list-line
+              %dt % of Enquiries funded in 2014
+              %dd
+                .uk-progress.uk-progress-small
+                  .uk-progress-bar.uk-text-small{:style => "width: 12%;"}
+                    .uk-text-small{:style => "position: relative; bottom: 2px;"} 12%
+              %dt % of Concept Notes funded in 2014
+              %dd
+                .uk-progress.uk-progress-small
+                  .uk-progress-bar{:style => "width: 28%;"}
+                    .uk-text-small{:style => "position: relative; bottom: 2px;"} 28%
+              %dt % of Applications funded in 2014
+              %dd
+                .uk-progress.uk-progress-small
+                  .uk-progress-bar{:style => "width: 62%;"}
+                    .uk-text-small{:style => "position: relative; bottom: 2px;"} 62%
+        .uk-width-large-1-3.uk-margin-top
+          .uk-panel
+            .uk-panel-title
+              %h4 Size of grants
+            #grants_size
+            %dl.uk-description-list-line
+              %dt Type of grants
+              %dd.uk-text-large.uk-text-primary Unrestricted
+              %dt Average grant duration 2014
+              %dd.uk-text-large.uk-text-primary 11 months 19 days
+              %dt Average grant duration 2013
+              %dd.uk-text-large.uk-text-primary 1 year 21 days

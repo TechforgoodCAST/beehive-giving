@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :recipient, class: Recipient do
     transient do
-      n  { rand(100) }
+      n  { rand(1000) }
     end
     name "ACME"
     mission "mission"

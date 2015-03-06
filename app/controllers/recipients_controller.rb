@@ -10,6 +10,7 @@ class RecipientsController < ApplicationController
   end
 
   def gateway
+    redirect_to recipient_comparison_path(@funder) unless @recipient.locked_funder?(@funder)
   end
 
   def unlock_funder

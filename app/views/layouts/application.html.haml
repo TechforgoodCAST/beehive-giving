@@ -38,6 +38,9 @@
                           %a{href: logout_path, method: :destroy} Sign out
 
               - else current_user.organisation.type == 'Recipient'
+                - if current_user_should_render_feedback?
+                  .uk-navbar-content
+                    = link_to 'Feedback', '#', class: 'uk-text-primary', :'data-uk-toggle' => "{target:'.js-feedback-form'}"
                 .uk-navbar-content.uk-text-muted.uk-hidden-small
                   Welcome,
                   = current_user.organisation.name
@@ -67,6 +70,10 @@
           .logo-label Beta
 
     .uk-container.uk-container-center
+      - if current_user_should_render_feedback?
+        .js-feedback-form{:class => ('uk-hidden' if current_user_has_closed_feedback?) }
+          = render partial: 'recipients/feedback'
+
       - if flash[:notice]
         .uk-alert.uk-alert-success.uk-margin-top{'data-uk-alert' => ''}
           %a.uk-alert-close.uk-close

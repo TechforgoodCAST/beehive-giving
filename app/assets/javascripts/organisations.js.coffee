@@ -373,8 +373,10 @@ OrganisationForm = ((w, d) ->
       triggerRegisteredToggle(elem.val())
 
 
-  { bindRegistrationToggle: bindRegistrationToggle }
+  return { bindRegistrationToggle: bindRegistrationToggle }
 )(window, document)
+
+
 
 $(document).ready ->
   OrganisationForm.bindRegistrationToggle()

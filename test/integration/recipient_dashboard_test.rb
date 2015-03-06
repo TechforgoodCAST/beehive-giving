@@ -19,7 +19,6 @@ class RecipientDashboardTest < ActionDispatch::IntegrationTest
     find_link('See how you compare (Locked)').click
     assert page.has_content?(@funder.name)
     assert page.has_link?('Complete Profile')
-    assert page.has_content?('Coming soon')
   end
 
   test 'that clicking the comparison link with a profile gives an unlock button' do
@@ -43,7 +42,6 @@ class RecipientDashboardTest < ActionDispatch::IntegrationTest
     puts page.body
     assert_not page.has_link?('Complete Profile')
     assert_not page.has_link?('Unlock Funder')
-    assert page.has_content?('Coming soon')
   end
 
   test "recipient can unlock a funder" do
@@ -86,7 +84,7 @@ class RecipientDashboardTest < ActionDispatch::IntegrationTest
     @recipient = create(:recipient)
     @funders   = []
     4.times { @funders << create(:funder, :active_on_beehive => true) }
-    5.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i ) }
+    4.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i ) }
     create_and_auth_user!(:organisation => @recipient)
 
     @recipient.unlock_funder!(@funders[0])

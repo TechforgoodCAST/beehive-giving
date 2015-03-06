@@ -33,11 +33,6 @@ class ProfilesController < ApplicationController
   def edit
   end
 
-  def destroy
-    @profile.destroy
-    redirect_to recipient_profiles_path(@recipient)
-  end
-
   def update
     if @profile.update_attributes(profile_params)
       redirect_to recipient_profiles_path(@recipient)
