@@ -35,4 +35,8 @@ class Recipient < Organisation
     })
   end
 
+  def valid_profile_years
+    Profile::VALID_YEARS - profiles.map(&:year)
+  end
+
 end

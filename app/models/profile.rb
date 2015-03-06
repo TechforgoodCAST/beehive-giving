@@ -6,7 +6,7 @@ class Profile < ActiveRecord::Base
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
 
-  VALID_YEARS = ((Date.today.year-5)..(Date.today.year)).to_a.reverse
+  VALID_YEARS = ((Date.today.year-2)..(Date.today.year)).to_a.reverse
   GENDERS = ['All genders', 'Only female', 'Only male', 'Only other genders']
   CURRENCY = ['GBP (£)', 'EUR (€)', 'USD ($)']
   GOODS_SERVICES = %w[Products Services Both]
