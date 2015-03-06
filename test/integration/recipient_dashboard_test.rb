@@ -86,7 +86,7 @@ class RecipientDashboardTest < ActionDispatch::IntegrationTest
     @recipient = create(:recipient)
     @funders   = []
     4.times { @funders << create(:funder, :active_on_beehive => true) }
-    5.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i ) }
+    4.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i ) }
     create_and_auth_user!(:organisation => @recipient)
 
     @recipient.unlock_funder!(@funders[0])

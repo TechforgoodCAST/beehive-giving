@@ -6,4 +6,8 @@ module ApplicationHelper
   def current_user_has_closed_feedback?
     cookies['_BHfeedbackClose'].present?
   end
+
+  def curent_user_should_show_profile_prompt?
+        
+  end
 end

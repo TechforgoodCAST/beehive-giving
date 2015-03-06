@@ -1,7 +1,5 @@
 .uk-container.uk-container-center
   .uk-grid.uk-margin
-    
-
     .uk-width-1-1.uk-margin
 
       - if current_user.sign_in_count < 3
@@ -18,6 +16,12 @@
 
       .uk-grid
         .uk-width-medium-3-4
+          - if @recipient.profiles.count < 1
+            .uk-alert.uk-alert-warning{'data-uk-alert' => ''}
+              %a.uk-alert-close.uk-close
+              %o In order to unlock funders you need to complete at least profile. We'll use the information you provide to construct a unique digital fingerprint for your organisation, enabling us to give you personalised funding recommendations.
+              = link_to 'Click here', recipient_profiles_path(@recipient)
+              to edit your profiles.
           .uk-grid
             - @funders.order('id asc').each do |funder|
               .uk-width-medium-1-3
