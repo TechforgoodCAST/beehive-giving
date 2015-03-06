@@ -13,9 +13,9 @@
                 Please provide accurate and complete information.
                 .uk-text-large We'll use the information you provide to construct a unique digital fingerprint for your organisation, enabling us to give you personalised funding recommendations.
             .uk-width-medium-1-4.uk-hidden-small
-              = image_tag 'signup/fingerprint.png'
+              = image_tag 'signup/fingerprint_b.png'
 
     .uk-width-medium-1-2.uk-float-left.uk-animation-slide-left
       .uk-form.uk-form-stacked.uk-panel.uk-panel-box
-        = simple_form_for [@recipient, @profile], method: :post do |f|
+        = simple_form_for [@recipient, @profile], method: :patch do |f|
           = render partial: 'profiles/form', locals: {f: f, mode: :edit}

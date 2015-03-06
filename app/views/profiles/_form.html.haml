@@ -1,11 +1,13 @@
 .uk-grid
   - if mode == :new
     .uk-width-1-1
-      %label.uk-form-label
+      %h4.uk-text-bold
         Year of profile
-        = f.input :year, as: :select, :collection => @recipient.valid_profile_years, :include_blank => false
+      .uk-form-controls
+        = f.input :year, as: :select, :collection => @recipient.valid_profile_years, :include_blank => false, input_html: { class: 'uk-width-1-1' }
+        = f.error :year, class: 'uk-text-small uk-text-warning'
     .uk-width-1-1.uk-margin-top
-      %hr.uk-width-1-1.uk-margin-top-remove
+      %hr.uk-width-1-1.uk-margin-top-remove.uk-margin-bottom
   .uk-width-1-1
     %h4.uk-text-bold Location
   .uk-width-1-1.uk-margin-top
@@ -59,17 +61,17 @@
     .uk-form-controls
       = f.input :volunteer_count, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :volunteer_count, class: 'uk-text-small uk-text-warning'
-  .uk-width-medium-1-2.uk-margin-bottom
+  .uk-width-medium-1-2.uk-margin-top
     %label.uk-form-label Number of paid staff
     .uk-form-controls
       = f.input :staff_count, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :staff_count, class: 'uk-text-small uk-text-warning'
-  .uk-width-medium-1-2.uk-margin-bottom
+  .uk-width-medium-1-2.uk-margin-top
     %label.uk-form-label Number of job roles
     .uk-form-controls
       = f.input :job_role_count, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :job_role_count, class: 'uk-text-small uk-text-warning'
-  .uk-width-medium-1-2
+  .uk-width-medium-1-2.uk-margin-top
     %label.uk-form-label Number of departments
     .uk-form-controls
       = f.input :department_count, type: 'text', input_html: { class: 'uk-width-1-1' }
@@ -78,7 +80,7 @@
   .uk-width-1-1.uk-margin-top
     %hr.uk-width-1-1
     %h4.uk-text-bold Finance
-  .uk-width-medium-1-1.uk-margin-top
+  .uk-width-medium-1-1.uk-margin-top.uk-margin-bottom
     %label.uk-form-label Currency
     .uk-text-small
       Select a currency for the following figures
@@ -123,7 +125,7 @@
   .uk-width-1-1
     %hr.uk-width-1-1.uk-margin-top
     %h4.uk-text-bold Work
-  .uk-width-1-1.uk-margin-top
+  .uk-width-1-1.uk-margin-top.uk-margin-bottom
     %label.uk-form-label How do you implement your work?
     .uk-form-controls
       = f.association :implementations, label_method: :label, value_method: :id, input_html: {class: 'chosen-select'}
