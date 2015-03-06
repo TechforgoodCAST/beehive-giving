@@ -10,5 +10,12 @@ class FunderAttributes < ActiveRecord::Base
     "every #{funding_round_frequency} months"
   end
 
+  def self.application_process_options_for_select
+    application_processes.map { |k,v| [k.humanize,v] }
+  end
+
+  def self.funding_type_options_for_select
+    funding_types.map { |k,v| [k.humanize, v] }
+  end
 
 end

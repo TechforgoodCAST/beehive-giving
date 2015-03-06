@@ -3,10 +3,10 @@
   = f.input :name_cont, :placeholder => "name contains..."
   %br/
   = f.label "Application Process"
-  = f.input :funder_attributes_application_process_eq, :as => :select, :collection => FunderAttributes.application_processes.keys, :include_blank => true
+  = f.input :funder_attributes_application_process_eq, :as => :select, :collection => FunderAttributes.application_process_options_for_select, :include_blank => true
   %br/
   = f.label "Funding Type"
-  = f.input :funder_attributes_funding_type_eq, :as => :select, :collection => FunderAttributes.funding_types.keys.to_a, :include_blank => true
+  = f.input :funder_attributes_funding_type_eq, :as => :select, :collection => FunderAttributes.funding_type_options_for_select, :include_blank => true
   %br/
   = f.submit "Filter", :class => "uk-button uk-button-primary"
   %h4 Sort By:

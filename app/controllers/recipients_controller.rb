@@ -6,6 +6,7 @@ class RecipientsController < ApplicationController
 
   def dashboard
     @search = Funder.ransack(params[:q])
+    @search.sorts = 'id asc' if @search.sorts.empty?
     @funders = @search.result.includes(:funder_attributes)
   end
 
