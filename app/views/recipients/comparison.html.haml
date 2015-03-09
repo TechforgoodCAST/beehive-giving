@@ -112,7 +112,7 @@
               - @recipient.profiles.first.districts.each do |d|
                 %li= d.label
             .uk-alert
-              %o Forward Foundation tends to fund work in Ethiopia, Kenya, Uganda, and London in the United Kingdom.
+              %o The Foundation tends to fund work in Ethiopia, Kenya, Uganda, and London in the United Kingdom.
         .uk-width-large-1-3.uk-margin
           .uk-panel
             .uk-panel-title
@@ -123,7 +123,7 @@
               = ((Date.today - @recipient.founded_on).to_f / 356).round(1)
               years old
             .uk-alert
-              %o Forward Foundation tends to fund organisations younger than 3 years old.
+              %o The Foundation tends to fund organisations younger than 3 years old.
         .uk-width-large-1-3.uk-margin
           .uk-panel
             .uk-panel-title
@@ -133,7 +133,7 @@
             %h2.uk-text-center{ class: ('uk-text-danger' if @recipient.profiles.first.income > 250000) }
               = number_to_currency(@recipient.profiles.first.income, unit: '£', precision: 0)
             .uk-alert
-              %o Forward Foundation tends to fund organisations with income less than £250,000.
+              %o The Foundation tends to fund organisations with income less than £250,000.
 
     .uk-width-medium-1-1.uk-animation-fade
       .uk-grid
@@ -148,7 +148,7 @@
             - @recipient.profiles.first.beneficiaries.each do |b|
               %li= b.label
           .uk-alert
-            %o Forward Foundation tends to focus on Education, Unemployment, and Income Poverty.
+            %o The Foundation tends to focus on Education, Unemployment, and Income Poverty.
       %hr.uk-grid-divider.uk-margin-remove
         .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
           .uk-width-medium-1-2.uk-margin-top
@@ -186,7 +186,7 @@
             .your-data.staff
               Your staff:
           .uk-alert
-            %o Forward Foundation tends to fund teams with less than 17 paid members of staff.
+            %o The Foundation tends to fund teams with less than 17 paid members of staff.
         .uk-width-medium-1-2.uk-margin
           .uk-panel-title
             %h4 Number of volunteers from funded organisations
@@ -196,7 +196,7 @@
             .your-data.volunteers
               Your volunteers:
           .uk-alert
-            %o Forward Foundation tends to fund teams with less than 6 volunteers.
+            %o The Foundation tends to fund teams with less than 6 volunteers.
 
     .uk-width-medium-1-1.uk-animation-fade
       .uk-grid

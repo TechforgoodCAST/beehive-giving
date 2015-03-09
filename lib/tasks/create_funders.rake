@@ -4,7 +4,7 @@ namespace :db do
     require 'faker'
 
     Funder.create(
-      name: 'Forward Foundation',
+      name: 'The Foundation',
       mission: 'We harness the innovation and talent of the tech sector to transform young lives.',
       contact_number: '+4420 3021 0630',
       website: 'www.forwardfoundation.org.uk',

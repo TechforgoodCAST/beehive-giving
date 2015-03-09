@@ -7,7 +7,7 @@ namespace :db do
     start = count + 1
 
     funder_names = [
-      'Forward Foundation',
+      'The Foundation',
       'Dulverton Trust',
       'Esmee Fairbairn Foundation',
       'Nesta',
