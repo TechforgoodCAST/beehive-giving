@@ -7,10 +7,14 @@ ActiveAdmin.register Grant do
 
   index do
     column "Organisation", :recipient do |grant|
-      link_to grant.recipient.name, [:admin, grant.recipient]
+      if grant.recipient
+        link_to grant.recipient.name, [:admin, grant.recipient]
+      end
     end
     column "Funder", :funder do |grant|
-      link_to grant.funder.name, [:admin, grant.funder]
+      if grant.funder
+        link_to grant.funder.name, [:admin, grant.funder]
+      end
     end
     column :amount_awarded
     actions
