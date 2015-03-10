@@ -1,11 +1,13 @@
 ActiveAdmin.register Grant do
   config.sort_order = 'created_at_asc'
+  config.per_page = 1000
 
   permit_params :funding_stream, :grant_type, :attention_how, :amount_awarded,
   :amount_applied, :installments, :approved_on, :start_on, :end_on, :attention_on, :applied_on,
   :recipient_id, :funder_id
 
   index do
+    selectable_column
     column "Organisation", :recipient do |grant|
       if grant.recipient
         link_to grant.recipient.name, [:admin, grant.recipient]
