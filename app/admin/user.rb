@@ -10,11 +10,18 @@ ActiveAdmin.register User do
         link_to user.organisation.name, [:admin, user.organisation]
       end
     end
+    column "Profiles" do |user|
+      if user.organisation
+        user.organisation.profiles.count
+      end
+    end
     column :first_name
     column :last_name
     column :user_email
     column :job_role
     column :role
+    column :sign_in_count
+    column :last_seen
     actions
   end
 
