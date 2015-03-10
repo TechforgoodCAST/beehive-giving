@@ -7,35 +7,37 @@ ActiveAdmin.register_page "Dashboard" do
       div style: "float:left; width: 20%;" do
         span class: "blank_slate" do
           h3 'Users'
-          h1 User.all.count
+          h5 'Non-profits'
+          h1 User.where("role = ?", "User").count
+          h5 'Funders'
+          h1 User.where("role = ?", "Funder").count
         end
       end
 
-      div style: "float:left; width: 50%;" do
+      div style: "float:left; width: 40%;" do
         span class: "blank_slate" do
           h3 'Non-profits'
+          h5 'Recipients'
           h1 Recipient.all.count
-        end
-
-        span class: "blank_slate" do
-          h3 'Profiles'
+          h5 'Profiles'
           h1 Profile.all.count
         end
 
         span class: "blank_slate" do
-          h3 'Feedback'
+          h3 'Other'
+          h5 'Feedback'
           h1 Feedback.all.count
-        end
-
-        span class: "blank_slate" do
-          h3 'Requests'
+          h5 'Requests'
           h1 Feature.all.count
         end
       end
 
-      div style: "float:left; width: 30%;" do
+      div style: "float:left; width: 40%;" do
         span class: "blank_slate" do
           h3 'Funders'
+          h5 'Active'
+          h1 Funder.where("active_on_beehive = ?", true).count
+          h5 'Total'
           h1 Funder.all.count
         end
 
