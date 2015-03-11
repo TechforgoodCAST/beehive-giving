@@ -1,5 +1,6 @@
 ActiveAdmin.register Recipient do
   config.sort_order = 'created_at_asc'
+  config.per_page = 1000
 
   permit_params :name, :contact_number, :website,
   :street_address, :city, :region, :postal_code, :country, :charity_number,
@@ -15,8 +16,10 @@ ActiveAdmin.register Recipient do
   filter :country
   filter :registered
   filter :founded_on
+  filter :created_at
 
   index do
+    selectable_column
     column "Organisation", :name do |recipient|
       link_to recipient.name, [:admin, recipient]
     end

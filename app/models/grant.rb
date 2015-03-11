@@ -7,16 +7,31 @@ class Grant < ActiveRecord::Base
   belongs_to :funder
   belongs_to :recipient
 
+  attr_accessor :skip_validation
+
   validates :funder, :recipient, presence: true
+
   validates :funding_stream, :grant_type, :attention_how, :amount_awarded,
   :amount_applied, :installments, :approved_on, :start_on, :end_on,
-  :attention_on, :applied_on, presence: true
-  validates :amount_awarded, :amount_applied,
+  :attention_on, :applied_on, presence: true,
+  unless: :skip_validation
+
+  validates :amount_applied,
+  numericality: {only_integer: true, greater_than_or_equal_to: 0},
+  unless: :skip_validation
+
+  validates :funding_stream, inclusion: {in: FUNDING_STREAM},
+  unless: :skip_validation
+
+  validates :grant_type, inclusion: {in: GRANT_TYPE},
+  unless: :skip_validation
+
+  validate :attention_how, inclusion: {in: ATTENTION_HOW},
+  unless: :skip_validation
+
+  validates :amount_awarded,
   numericality: {only_integer: true, greater_than_or_equal_to: 0}
   validates :installments,
   numericality: {only_integer: true, greater_than_or_equal_to: 1}
-  validates :funding_stream, inclusion: {in: FUNDING_STREAM}
-  validates :grant_type, inclusion: {in: GRANT_TYPE}
-  validate :attention_how, inclusion: {in: ATTENTION_HOW}
 
 end

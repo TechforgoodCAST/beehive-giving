@@ -1,27 +1,38 @@
 class Organisation < ActiveRecord::Base
-  has_many :users, dependent: :destroy
-  has_many :profiles, dependent: :destroy
 
   STATUS = ['Active - currently operational', 'Closed - no longer operational', 'Merged - operating as a different entity']
 
+  has_many :users, dependent: :destroy
+  has_many :profiles, dependent: :destroy
+
+  attr_accessor :skip_validation
+
   validates :name, :contact_number, :street_address, :city, :region,
-  :postal_code, :country, :founded_on, :mission, :status, presence: true
+  :postal_code, :country, :founded_on, :mission, :status, presence: true,
+  unless: :skip_validation
+
+  validates :registered_on, presence: true, if: :registered?,
+  unless: :skip_validation
+
   validates :registered, :inclusion => {in: [true, false]}
 
+  validates :status, inclusion: {in: STATUS},
+  unless: :skip_validation
+
   validates :website, format: {
-    with: /^((http:\/\/www\.)|(www\.)|(http:\/\/))[a-zA-Z0-9._-]+\.[a-zA-Z.]{2,5}$/,
+    with: /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/,
     multiline: true,
     message: "enter a valid website address e.g. www.example.com"}, if: :website?
+
   validates :contact_number, format: {
     with: /(((\+44)? ?(\(0\))? ?)|(0))( ?[0-9]{3,4}){3}/,
     multiline: true,
-    message: "enter a valid contact number"}
+    message: "enter a valid contact number"},
+    unless: :skip_validation
 
   validates :slug, uniqueness: true, presence: true
-  validates :status, inclusion: {in: STATUS}
 
   validates :charity_number, :company_number, uniqueness: true, if: :registered?, allow_nil: true, allow_blank: true
-  validates :registered_on, presence: true, if: :registered?
 
   validate :founded_on_before_registered_on, if: :registered?
   validate :charity_or_company_number_exists, if: :registered?
