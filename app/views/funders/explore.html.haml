@@ -15,7 +15,7 @@
           %tr
             %th Funder
             %th Amount awarded
-            %th Award date
+            %th Approval date
         %tbody
         - sum = 0
         - @grants.each do |grant|
@@ -23,7 +23,7 @@
           %tr
             %td= link_to grant.funder.name, funder_path(grant.funder)
             %td= number_to_currency(grant.amount_awarded, unit: '£', precision: 0)
-            %td= grant.start_on.strftime("%d %b %Y")
+            %td= grant.approved_on.strftime("%d %b %Y")
         %tfoot
           %tr
             %td Total
