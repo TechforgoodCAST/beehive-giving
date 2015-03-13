@@ -39,12 +39,12 @@
 
               - else current_user.organisation.type == 'Recipient'
                 - if current_user_should_render_feedback?
-                  .uk-navbar-content
+                  .uk-navbar-content.uk-hidden-small
                     = link_to 'Feedback', '#', class: 'uk-text-primary', :'data-uk-toggle' => "{target:'.js-feedback-form'}"
                 .uk-navbar-content.uk-text-muted.uk-hidden-small
                   Welcome,
                   = current_user.organisation.name
-                .uk-button-group.bh-button-group
+                .uk-button-group.bh-button-group.uk-hidden-small
                   %a.uk-button{href: recipient_dashboard_path} Dashboard
                   %div{"data-uk-dropdown" => "{mode:'click'}"}
                     %button.uk-button
@@ -58,6 +58,10 @@
                         %li.uk-nav-divider
                         %li
                           %a{href: logout_path, method: :destroy} Sign out
+            - else
+              %ul.uk-navbar-nav.uk-hidden-small
+                %li
+                  %a{href: logout_path, method: :destroy} Sign out
 
           - else
             %ul.uk-navbar-nav.uk-hidden-small
@@ -107,12 +111,15 @@
           - if current_user.organisation
             %ul.uk-nav.uk-nav-offcanvas
               %li.uk-nav-header.uk-margin-top.uk-text-center
+                Welcome,
                 = current_user.organisation.name
               %li
                 - if current_user.organisation.type == 'Funder'
                   %a{href: funder_path(current_user.organisation)} Dashboard
                 - else
                   %a{href: recipient_dashboard_path} Dashboard
+                  %a{:href => recipient_profiles_path(current_user.organisation)} Edit profiles
+                  = link_to 'Feedback', '#', class: 'uk-offcanvas-close', :'data-uk-toggle' => "{target:'.js-feedback-form'}"
               %li
                 %a{href: logout_path, method: :destroy} Sign out
           - else
@@ -131,9 +138,12 @@
                 = password_field_tag :password, nil, placeholder: 'Password', type: 'password', class: 'form-password uk-width-1-1'
                 %a.uk-form-password-toggle{"data-uk-form-password" => "", :href => ""} Show
               .uk-form-row
-                = submit_tag 'Sign in', class: 'uk-width-1-1 uk-button uk-button-primary', style: 'color: #fff; font-size: 16px'
+                = submit_tag 'Sign in', class: 'uk-width-1-1 uk-button uk-button-primary', style: 'color: #fff; font-size: 16px;'
               .uk-form-row.uk-text-small
                 %label.uk-float-left
                   = check_box_tag :remember_me, 1, params[:remember_me]
                   Remember Me
                 = link_to 'Forgot Password?', new_password_reset_path, class: 'uk-float-right uk-link'
+            %li.uk-nav-header.uk-margin-top.uk-text-center Or
+            .uk-panel
+              %a.uk-button.uk-width-1-1{ href: tour_path, style: 'font-size: 16px;'} Find out more

@@ -3,7 +3,9 @@ ActiveAdmin.register Feedback do
 
   index do
     column "Organisation", :user do |feedback|
-      link_to feedback.user.organisation.name, [:admin, feedback.user.organisation]
+      if feedback.user.organisation
+        link_to feedback.user.organisation.name, [:admin, feedback.user.organisation]
+      end
     end
     column "Contact", :user do |feedback|
       feedback.user.user_email
