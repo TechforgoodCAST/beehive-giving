@@ -14,22 +14,27 @@ $(document).on 'uk.switcher.show', '[data-uk-tab]', ->
   return
 
 $(document).ready ->
-  Morris.Line
-    element: 'grants_amount'
-    data: $('#grants_amount').data('grants')
-    xkey: 'approved_on'
-    ykeys: ['average', 'minimum', 'maximum']
-    labels: ['Amount awarded']
-    smooth: false
-    lineColors: ['#F7BA0E', '#ccc', '#ccc']
-    # dateFormat: (x) ->
-    #               x.format 'dddd, MMMM Do YYYY'
-    hoverCallback: (index, options, content, row) ->
-                    return '<div class="morris-hover-row-label">' + row.approved_on + '</div><div>Grant size</div><span>Max: </span><b style="color: ' + options.lineColors[2] + '">' + '£' + row.maximum.toLocaleString() + ' </b></br><span>Avg: </span><b style="color: ' + options.lineColors[0] + '">' + '£' + row.average.toLocaleString() + ' </b></br><span>Min: </span><b style="color: ' + options.lineColors[1] + '">' + '£' + row.minimum.toLocaleString() + " </b>"
-    xLabelFormat: (x) ->
-                    x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
-    yLabelFormat: (y) ->
-                    return '£' + y.toLocaleString()
+  if $('#grants_amount').length
+    Morris.Line
+      element: 'grants_amount'
+      data: $('#grants_amount').data('grants')
+      xkey: 'approved_on'
+      ykeys: ['average', 'minimum', 'maximum']
+      labels: ['Amount awarded']
+      smooth: false
+      resize: true
+      lineColors: ['#F7BA0E', '#bbb', '#bbb']
+      dateFormat: (x) ->
+                      indexToMonth = ['Jan', 'Feb','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] # refactor?
+                      month = indexToMonth[new Date(x).getMonth()]
+                      year = new Date(x).getFullYear()
+                      return month + ' ' + year
+      hoverCallback: (index, options, content, row) ->
+                      return '<div class="morris-hover-row-label">' + 'Grants given in ' + options.dateFormat(row.approved_on) + '</div><div>Grant size</div><span>Max: </span><b style="color: ' + options.lineColors[2] + '">' + '£' + row.maximum.toLocaleString() + ' </b></br><span>Avg: </span><b style="color: ' + options.lineColors[0] + '">' + '£' + row.average.toLocaleString() + ' </b></br><span>Min: </span><b style="color: ' + options.lineColors[1] + '">' + '£' + row.minimum.toLocaleString() + ' </b></br><span>No. of grants: </span>' + row.count
+      xLabelFormat: (x) ->
+                      return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
+      yLabelFormat: (y) ->
+                      return '£' + y.toLocaleString()
 
 $(document).ready ->
   if $('#funder_time').length
