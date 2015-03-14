@@ -111,3 +111,11 @@
               %dd.uk-text-large.uk-text-primary 11 months 19 days
               %dt Average grant duration 2013
               %dd.uk-text-large.uk-text-primary 1 year 21 days
+
+  .uk-width-1-1
+    #grants_amount{ data: {grants: grant_size_data(@funder).to_json} }
+    -# - @metric = @funder.grants.group_by_month(:approved_on).count
+    -# = javascript_include_tag "//www.google.com/jsapi", "chartkick"
+    -# = line_chart @metric
+    -# = geo_chart Recipient.group(:country).count
+    -# = column_chart Grant.group_by_month(:approved_on).count
