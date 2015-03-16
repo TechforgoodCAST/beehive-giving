@@ -7,7 +7,7 @@ module OrganisationsHelper
     maximum = group_grants_by(funder, :maximum, years_ago)
     count = group_grants_by(funder, :count, years_ago)
 
-    merge = [average, minimum, maximum].flat_map(&:keys).uniq
+    merge = [average, minimum, maximum, count].flat_map(&:keys).uniq
     merge = merge.map { |v| {
       approved_on: v.strftime("%Y-%m"),
       average: average[v].to_i,
@@ -22,6 +22,26 @@ module OrganisationsHelper
       :minimum, v[:minimum],
       :maximum, v[:maximum],
       :count, v[:count]
+    ] }
+  end
+
+  def compare_funder(funder, funder2, years_ago)
+    years_ago = years_ago
+
+    funder1 = group_grants_by(funder, :count, years_ago)
+    funder2 = group_grants_by(funder2, :count, years_ago)
+
+    merge = [funder1, funder2].flat_map(&:keys).uniq
+    merge = merge.map { |v| {
+      approved_on: v.strftime("%Y-%m"),
+      funder1: funder1[v] || 0,
+      funder2: funder2[v] || 0
+    } }
+
+    merge.map { |v| Hash[
+      :approved_on, v[:approved_on],
+      :funder1, v[:funder1],
+      :funder2, v[:funder2]
     ] }
   end
 

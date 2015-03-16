@@ -114,8 +114,8 @@
 
   .uk-width-1-1
     #grants_amount{ data: {grants: grant_size_data(@funder, 3).to_json} }
-    -# - @metric = @funder.grants.group_by_month(:approved_on).count
-    -# = javascript_include_tag "//www.google.com/jsapi", "chartkick"
-    -# = line_chart @metric
-    -# = geo_chart Recipient.group(:country).count
-    -# = column_chart Grant.group_by_month(:approved_on).count
+    #compare_funder{ data: {grants: compare_funder(@funder, Funder.find_by_id(1), 3).to_json} }
+
+:javascript
+  window.funderName1 = '#{j @funder.name}';
+  window.funderName2 = '#{Funder.find_by_id(1).name}';

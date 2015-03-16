@@ -14,29 +14,6 @@ $(document).on 'uk.switcher.show', '[data-uk-tab]', ->
   return
 
 $(document).ready ->
-  if $('#grants_amount').length
-    Morris.Line
-      element: 'grants_amount'
-      data: $('#grants_amount').data('grants')
-      xkey: 'approved_on'
-      ykeys: ['average', 'minimum', 'maximum']
-      labels: ['Amount awarded']
-      smooth: false
-      resize: true
-      lineColors: ['#F7BA0E', '#bbb', '#bbb']
-      dateFormat: (x) ->
-                      indexToMonth = ['Jan', 'Feb','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] # refactor?
-                      month = indexToMonth[new Date(x).getMonth()]
-                      year = new Date(x).getFullYear()
-                      return month + ' ' + year
-      hoverCallback: (index, options, content, row) ->
-                      return '<div class="morris-hover-row-label">' + 'Grants given in ' + options.dateFormat(row.approved_on) + '</div><div>Grant size</div><span>Max: </span><b style="color: ' + options.lineColors[2] + '">' + '£' + row.maximum.toLocaleString() + ' </b></br><span>Avg: </span><b style="color: ' + options.lineColors[0] + '">' + '£' + row.average.toLocaleString() + ' </b></br><span>Min: </span><b style="color: ' + options.lineColors[1] + '">' + '£' + row.minimum.toLocaleString() + ' </b></br><span>No. of grants: </span>' + row.count
-      xLabelFormat: (x) ->
-                      return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
-      yLabelFormat: (y) ->
-                      return '£' + y.toLocaleString()
-
-$(document).ready ->
   if $('#funder_time').length
     Morris.Line({
       element: 'funder_time'
@@ -377,6 +354,51 @@ $(document).ready ->
                       x.toLocaleString 'en-gb', options
     });
 
+$(document).ready ->
+  if $('#grants_amount').length
+    Morris.Line
+      element: 'grants_amount'
+      data: $('#grants_amount').data('grants')
+      xkey: 'approved_on'
+      ykeys: ['average', 'minimum', 'maximum']
+      labels: ['Amount awarded']
+      smooth: false
+      resize: true
+      lineColors: ['#F7BA0E', '#bbb', '#bbb']
+      dateFormat: (x) ->
+                      indexToMonth = ['Jan', 'Feb','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] # refactor?
+                      month = indexToMonth[new Date(x).getMonth()]
+                      year = new Date(x).getFullYear()
+                      return month + ' ' + year
+      hoverCallback: (index, options, content, row) ->
+                      return '<div class="morris-hover-row-label">' + 'Grants given in ' + options.dateFormat(row.approved_on) + '</div><div>Grant size</div><span>Max: </span><b style="color: ' + options.lineColors[2] + '">' + '£' + row.maximum.toLocaleString() + ' </b></br><span>Avg: </span><b style="color: ' + options.lineColors[0] + '">' + '£' + row.average.toLocaleString() + ' </b></br><span>Min: </span><b style="color: ' + options.lineColors[1] + '">' + '£' + row.minimum.toLocaleString() + ' </b></br><span>No. of grants: </span>' + row.count
+      xLabelFormat: (x) ->
+                      return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
+      yLabelFormat: (y) ->
+                      return '£' + y.toLocaleString()
+
+$(document).ready ->
+  if $('#compare_funder').length
+    Morris.Line
+      element: 'compare_funder'
+      data: $('#compare_funder').data('grants')
+      xkey: 'approved_on'
+      ykeys: ['funder1', 'funder2']
+      labels: [funderName1, funderName2]
+      smooth: false
+      resize: true
+      postUnits: ' grants'
+      lineColors: ['#F7BA0E', '#bbb', '#bbb']
+      dateFormat: (x) ->
+                      indexToMonth = ['Jan', 'Feb','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] # refactor?
+                      month = indexToMonth[new Date(x).getMonth()]
+                      year = new Date(x).getFullYear()
+                      return month + ' ' + year
+      # hoverCallback: (index, options, content, row) ->
+      #                 return '<div class="morris-hover-row-label">' + options.dateFormat(row.approved_on) + '</div><div>No. of grants</div><span>' + options.labels[0] + ': </span><b style="color: ' + options.lineColors[0] + '">' + row.funder1 + ' grants</b></br><span>' + options.labels[1] + ': </span><b style="color: ' + options.lineColors[1] + '">' + row.funder2 + ' grants</b>'
+      xLabelFormat: (x) ->
+                      return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
+
 OrganisationForm = ((w, d) ->
 
   triggerRegisteredToggle = (state)->
@@ -395,11 +417,8 @@ OrganisationForm = ((w, d) ->
     $(document).on 'change', selector, ->
       triggerRegisteredToggle(elem.val())
 
-
   return { bindRegistrationToggle: bindRegistrationToggle }
 )(window, document)
-
-
 
 $(document).ready ->
   OrganisationForm.bindRegistrationToggle()
