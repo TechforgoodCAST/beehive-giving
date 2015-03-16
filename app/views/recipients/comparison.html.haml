@@ -50,6 +50,9 @@
   .uk-width-1-1#tab-content.uk-switcher
 
     .uk-width-medium-1-1.uk-animation-fade.uk-active
+      = link_to '1 year', params.merge(:years_ago => 1)
+      = link_to '2 years', params.merge(:years_ago => 2)
+      = link_to '3 years', params.merge(:years_ago => 3)
       .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
         .uk-width-large-1-3.uk-margin-top
           .uk-panel
@@ -90,7 +93,7 @@
           .uk-panel
             .uk-panel-title
               %h4 Size of grants
-            #grants_size
+            #grants_size{ data: {grants: grant_size_data(@funder, @years_ago).to_json} }
             %dl.uk-description-list-line
               %dt Type of grants
               %dd.uk-text-large.uk-text-primary Unrestricted

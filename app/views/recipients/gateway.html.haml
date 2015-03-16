@@ -103,7 +103,7 @@
           .uk-panel
             .uk-panel-title
               %h4 Size of grants
-            #grants_size
+            #grants_size{ data: {grants: grant_size_data(@funder, @years_ago).to_json} }
             %dl.uk-description-list-line
               %dt Type of grants
               %dd.uk-text-large.uk-text-primary Unrestricted
@@ -113,8 +113,11 @@
               %dd.uk-text-large.uk-text-primary 1 year 21 days
 
   .uk-width-1-1
-    #grants_amount{ data: {grants: grant_size_data(@funder, 3).to_json} }
-    #compare_funder{ data: {grants: compare_funder(@funder, Funder.find_by_id(1), 3).to_json} }
+    %hr
+    = link_to '1 year', params.merge(:years_ago => 1)
+    = link_to '2 years', params.merge(:years_ago => 2)
+    = link_to '3 years', params.merge(:years_ago => 3)
+    #compare_funder{ data: {grants: compare_funder(@funder, Funder.find_by_id(1), @years_ago).to_json} }
 
 :javascript
   window.funderName1 = '#{j @funder.name}';

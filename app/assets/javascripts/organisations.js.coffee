@@ -1,7 +1,3 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
-
 $(document).ready ->
   return $('.chosen-select').chosen
     allow_single_deselect: true
@@ -53,30 +49,6 @@ $(document).ready ->
       labels: ['Enquiries', 'Concept Notes', 'Applications', 'Grants' ]
       xLabels: 'month'
       lineColors: ['#ccc', '#bbb', '#aaa', '#F7BA0E']
-      resize: true
-      hideHover: 'auto'
-      xLabelFormat: (x) ->
-                      options =
-                        year: '2-digit'
-                        month: 'short'
-                      x.toLocaleString 'en-gb', options
-    });
-
-  if $('#grants_size').length
-    Morris.Line({
-      element: 'grants_size'
-      data: [
-        { y: '2013-06', a: 34850, b: 47323, c: 75000 },
-        { y: '2013-12', a: 21863, b: 35412, c: 46946 },
-        { y: '2014-07', a: 28064, b: 38663, c: 45350 },
-        { y: '2014-11', a: 26896, b: 30749, c: 33450 }
-      ],
-      xkey: 'y'
-      ykeys: ['a', 'b', 'c']
-      labels: ['Min.', 'Avg.', 'Max.']
-      xLabels: 'month'
-      preUnits: '£ '
-      lineColors: ['#ccc', '#F7BA0E', '#ccc']
       resize: true
       hideHover: 'auto'
       xLabelFormat: (x) ->
@@ -355,15 +327,16 @@ $(document).ready ->
     });
 
 $(document).ready ->
-  if $('#grants_amount').length
+  if $('#grants_size').length
     Morris.Line
-      element: 'grants_amount'
-      data: $('#grants_amount').data('grants')
+      element: 'grants_size'
+      data: $('#grants_size').data('grants')
       xkey: 'approved_on'
       ykeys: ['average', 'minimum', 'maximum']
       labels: ['Amount awarded']
       smooth: false
       resize: true
+      hideHover: 'auto'
       lineColors: ['#F7BA0E', '#bbb', '#bbb']
       dateFormat: (x) ->
                       indexToMonth = ['Jan', 'Feb','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] # refactor?

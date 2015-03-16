@@ -1,6 +1,5 @@
 class RecipientsController < ApplicationController
-  before_filter :ensure_logged_in
-  before_filter :load_recipient
+  before_filter :ensure_logged_in, :load_recipient, :years_ago
   before_filter :load_funder, :only => [:gateway, :unlock_funder, :comparison]
   before_filter :load_feedback, :only => [:dashboard, :gateway, :comparison]
 
@@ -44,6 +43,14 @@ class RecipientsController < ApplicationController
 
   def load_feedback
     @feedback = current_user.feedbacks.new
+  end
+
+  def years_ago
+    if params[:years_ago].present?
+      @years_ago = params[:years_ago].to_i
+    else
+      @years_ago = 2
+    end
   end
 
 end
