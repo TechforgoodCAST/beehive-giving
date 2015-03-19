@@ -27,6 +27,7 @@ $(document).ready ->
       postUnits: ' weeks'
       lineColors: ['#ccc', '#F7BA0E', '#ccc']
       resize: true
+      smooth: false
       hideHover: 'auto'
       xLabelFormat: (x) ->
                       options =
@@ -50,6 +51,7 @@ $(document).ready ->
       xLabels: 'month'
       lineColors: ['#ccc', '#bbb', '#aaa', '#F7BA0E']
       resize: true
+      smooth: false
       hideHover: 'auto'
       xLabelFormat: (x) ->
                       options =
@@ -344,7 +346,7 @@ $(document).ready ->
                       year = new Date(x).getFullYear()
                       return month + ' ' + year
       hoverCallback: (index, options, content, row) ->
-                      return '<div class="morris-hover-row-label">' + 'Grants given in ' + options.dateFormat(row.approved_on) + '</div><div>Grant size</div><span>Max: </span><b style="color: ' + options.lineColors[2] + '">' + '£' + row.maximum.toLocaleString() + ' </b></br><span>Avg: </span><b style="color: ' + options.lineColors[0] + '">' + '£' + row.average.toLocaleString() + ' </b></br><span>Min: </span><b style="color: ' + options.lineColors[1] + '">' + '£' + row.minimum.toLocaleString() + ' </b></br><span>No. of grants: </span>' + row.count
+                      return '<div class="morris-hover-row-label">' + 'Funding given in ' + options.dateFormat(row.approved_on) + '</div><div>Funding size</div><span>Max: </span><b style="color: ' + options.lineColors[2] + '">' + '£' + row.maximum.toLocaleString() + ' </b></br><span>Avg: </span><b style="color: ' + options.lineColors[0] + '">' + '£' + row.average.toLocaleString() + ' </b></br><span>Min: </span><b style="color: ' + options.lineColors[1] + '">' + '£' + row.minimum.toLocaleString() + ' </b></br><span>No. of awards: </span>' + row.count
       xLabelFormat: (x) ->
                       return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
       yLabelFormat: (y) ->
@@ -371,6 +373,22 @@ $(document).ready ->
       #                 return '<div class="morris-hover-row-label">' + options.dateFormat(row.approved_on) + '</div><div>No. of grants</div><span>' + options.labels[0] + ': </span><b style="color: ' + options.lineColors[0] + '">' + row.funder1 + ' grants</b></br><span>' + options.labels[1] + ': </span><b style="color: ' + options.lineColors[1] + '">' + row.funder2 + ' grants</b>'
       xLabelFormat: (x) ->
                       return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
+
+$(document).ready ->
+  if $('#success_rate').length
+    Morris.Bar
+      element: 'success_rate'
+      data: [
+        { y: 'Grants', a: 6 },
+        { y: 'Applications', a: 15 },
+        { y: 'Enquiries', a: 56 }
+      ]
+      xkey: 'y'
+      ykeys: ['a']
+      labels: ['']
+      barColors: ['#00a8e6']
+      resize: true
+      hideHover: 'auto'
 
 OrganisationForm = ((w, d) ->
 
