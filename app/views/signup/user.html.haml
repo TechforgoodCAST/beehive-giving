@@ -9,6 +9,10 @@
         %p.uk-text-large A new way for nonprofits and funders to make funding decisions using data.
         %a.uk-button.uk-button-large.uk-width-1-2{ href: tour_path }
           Find out more
+          :javascript
+            mixpanel.track_links("a uk-button-large uk-width-1-2", "Clicked 'Find out more' link", {
+                "Page name": "Home page"
+            });
 
       .uk-width-medium-1-3.uk-animation-slide-right
         .uk-form.uk-form-stacked.uk-panel.uk-panel-box
