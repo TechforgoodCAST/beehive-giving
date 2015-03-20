@@ -353,6 +353,30 @@ $(document).ready ->
                       return '£' + y.toLocaleString()
 
 $(document).ready ->
+  if $('#grants_duration').length
+    Morris.Line
+      element: 'grants_duration'
+      data: $('#grants_duration').data('grants')
+      xkey: 'approved_on'
+      ykeys: ['average', 'minimum', 'maximum']
+      labels: ['Avg.', 'Min.', 'Max.']
+      smooth: false
+      resize: true
+      hideHover: 'auto'
+      lineColors: ['#F7BA0E', '#bbb', '#bbb']
+      # dateFormat: (x) ->
+      #                 indexToMonth = ['Jan', 'Feb','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] # refactor?
+      #                 month = indexToMonth[new Date(x).getMonth()]
+      #                 year = new Date(x).getFullYear()
+      #                 return month + ' ' + year
+      # hoverCallback: (index, options, content, row) ->
+      #                 return '<div class="morris-hover-row-label">' + 'Funding given in ' + options.dateFormat(row.approved_on) + '</div><div>Funding size</div><span>Max: </span><b style="color: ' + options.lineColors[2] + '">' + '£' + row.maximum.toLocaleString() + ' </b></br><span>Avg: </span><b style="color: ' + options.lineColors[0] + '">' + '£' + row.average.toLocaleString() + ' </b></br><span>Min: </span><b style="color: ' + options.lineColors[1] + '">' + '£' + row.minimum.toLocaleString() + ' </b></br><span>No. of awards: </span>' + row.count
+      # xLabelFormat: (x) ->
+      #                 return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
+      # yLabelFormat: (y) ->
+      #                 return '£' + y.toLocaleString()
+
+$(document).ready ->
   if $('#compare_funder').length
     Morris.Line
       element: 'compare_funder'

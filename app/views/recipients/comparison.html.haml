@@ -130,7 +130,7 @@
         .uk-grid
 
           .uk-width-medium-1-3.uk-float-right
-            .uk-panel.uk-panel-box.uk-panel-box-secondary
+            .uk-panel.uk-panel-box
               .uk-width-1-1.uk-margin
                 .uk-text-bold Mission
                 = @funder.mission
@@ -169,13 +169,13 @@
           .uk-width-medium-2-3.uk-float-left.uk-margin
             %h2.chart-responsive-margin.uk-margin-bottom-remove Overview
             .uk-panel.chart-responsive-margin.uk-margin
-              .uk-panel-title Size of funding
+              .uk-panel-title Funding size
               #grants_size{ data: {grants: grant_size_data(@funder, @years_ago).to_json} }
 
           .uk-width-medium-2-3.uk-float-left
             .uk-panel.chart-responsive-margin
               .uk-panel-title Funding duration
-              #funder_time
+              #grants_duration{ data: {grants: grant_duration_data(@funder, @years_ago).to_json} }
 
           -# .uk-width-medium-2-3.uk-float-left
           -#   .uk-panel.chart-responsive-margin
