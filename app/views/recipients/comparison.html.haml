@@ -108,8 +108,6 @@
               %span.uk-text-bold Work
               %div How funded organisations implement their work.
 
-        -# #success_rate
-
         .uk-text-bold View data for:
         .uk-button-group.uk-width-1-1{"data-uk-button-radio" => ""}
           = link_to '1 year', params.merge(:years_ago => 1), class: @years_ago == 1 ? 'uk-button uk-active uk-width-1-3' : 'uk-button uk-width-1-3'
@@ -130,7 +128,7 @@
         .uk-grid
 
           .uk-width-medium-1-3.uk-float-right
-            .uk-panel.uk-panel-box
+            .uk-panel.uk-panel-box.uk-panel-box-primary
               .uk-width-1-1.uk-margin
                 .uk-text-bold Mission
                 = @funder.mission
@@ -177,10 +175,35 @@
               .uk-panel-title Funding duration
               #grants_duration{ data: {grants: grant_duration_data(@funder, @years_ago).to_json} }
 
+      .uk-width-1-1.uk-animation-fade
+        .uk-grid
+
+          .uk-width-medium-1-3.uk-float-right
+            .uk-panel.uk-panel-box
+              .uk-width-1-1
+                .uk-text-bold Your location
+                %h3.uk-text-primary LOCATION
+                .uk-text-bold Your age
+                %h3.uk-text-primary AGE
+                .uk-text-bold Your age
+                %h3.uk-text-primary INCOME
+
+          .uk-width-medium-2-3.uk-float-left.uk-margin
+            %h2.chart-responsive-margin.uk-margin-bottom-remove Organisation
+            .uk-panel.chart-responsive-margin.uk-margin
+              .uk-panel-title Funding location
+              - years_ago_result = Date.today.year - @years_ago
+              = geo_chart @funder.grants.where("extract(year FROM approved_on) >= ? AND extract(year from approved_on) <= ?", years_ago_result, Date.today.year).group(:country).count, colors: ["#F7BA0E"]
+
           -# .uk-width-medium-2-3.uk-float-left
           -#   .uk-panel.chart-responsive-margin
-          -#     .uk-panel-title Number of grants given
-          -#     #funder_stages
+          -#     .uk-panel-title Funding duration
+          -#     #grants_duration{ data: {grants: grant_duration_data(@funder, @years_ago).to_json} }
+          -#
+          -# .uk-width-medium-2-3
+          -#   .uk-panel.uk-panel-box{style: 'background: #fff;'}
+          -#     .uk-panel-title Grant duration
+          -#     #grants_location
 
           -# .uk-width-medium-1-3
           -#   .uk-panel.uk-panel-box.uk-panel-box-primary
@@ -193,25 +216,6 @@
           -#       %dd.uk-text-large.uk-text-primary Every 6 months
           -#       %dt Number of funding streams
           -#       %dd.uk-text-large.uk-text-primary 1 funding stream
-
-      .uk-width-1-1.uk-animation-fade
-        .uk-grid
-
-          .uk-width-medium-2-3
-            .uk-panel.uk-panel-box{style: 'background: #fff;'}
-              .uk-panel-title Grant duration
-              #grants_location
-          .uk-width-medium-1-3
-            .uk-panel.uk-panel-box.uk-panel-box-primary
-              %dl.uk-description-list-line
-                %dt Application process
-                %dd.uk-text-large.uk-text-primary Invite only
-                %dt Next application deadline
-                %dd.uk-text-large.uk-text-primary May 2015
-                %dt Funding round frequency
-                %dd.uk-text-large.uk-text-primary Every 6 months
-                %dt Number of funding streams
-                %dd.uk-text-large.uk-text-primary 1 funding stream
 
 .uk-container.uk-container-center
   .uk-width-1-1#tab-content.uk-switcher

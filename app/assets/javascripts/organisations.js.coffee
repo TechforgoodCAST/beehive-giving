@@ -60,30 +60,6 @@ $(document).ready ->
                       x.toLocaleString 'en-gb', options
     });
 
-  if $('#grants_location').length
-    Morris.Line
-      element: "grants_location"
-      data: [
-        { y: '2013-06', a: 0, b: 2, c: 1, d: 4 },
-        { y: '2013-12', a: 0, b: 1, c: 2, d: 5 },
-        { y: '2014-07', a: 1, b: 1, c: 1, d: 2 },
-        { y: '2014-11', a: 1, b: 1, c: 0, d: 1 }
-      ]
-      xkey: 'y'
-      ymax: 6
-      ykeys: ['a', 'b', 'c', 'd']
-      labels: ['Ethiopia', 'Kenya', 'Uganda', 'United Kingdom']
-      xLabels: 'month'
-      postUnits: ' grants'
-      lineColors: ['#ccc', '#aaa', '#666', '#F7BA0E']
-      resize: true
-      hideHover: 'auto'
-      xLabelFormat: (x) ->
-                      options =
-                        year: '2-digit'
-                        month: 'short'
-                      x.toLocaleString 'en-gb', options
-
   if $('#recipient_age').length
     Morris.Line({
       element: 'recipient_age'

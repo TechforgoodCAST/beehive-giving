@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150320133105) do
+ActiveRecord::Schema.define(version: 20150320201834) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,6 +133,7 @@ ActiveRecord::Schema.define(version: 20150320133105) do
     t.integer  "days_from_applied_to_approved"
     t.integer  "days_form_approval_to_start"
     t.integer  "days_from_start_to_end"
+    t.string   "country"
   end
 
   create_table "implementations", force: true do |t|

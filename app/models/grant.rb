@@ -21,7 +21,7 @@ class Grant < ActiveRecord::Base
 
   validates :funding_stream, :grant_type, :attention_how, :amount_awarded,
   :amount_applied, :installments, :approved_on, :start_on, :end_on,
-  :attention_on, :applied_on, presence: true,
+  :attention_on, :applied_on, :country, presence: true,
   unless: :skip_validation
 
   validates :amount_applied,

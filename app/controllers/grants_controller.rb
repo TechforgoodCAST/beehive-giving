@@ -43,7 +43,7 @@ class GrantsController < ApplicationController
     params.require(:grant).permit(:funding_stream, :grant_type, :attention_how, :amount_awarded,
     :amount_applied, :installments, :approved_on, :start_on, :end_on, :attention_on, :applied_on,
     :recipient_id, :funder_id, :days_from_attention_to_applied, :days_from_applied_to_approved,
-    :days_form_approval_to_start. :days_from_start_to_end)
+    :days_form_approval_to_start. :days_from_start_to_end, :country)
   end
 
   def load_funder
