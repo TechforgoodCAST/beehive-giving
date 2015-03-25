@@ -51,7 +51,7 @@ module OrganisationsHelper
       :approved_on, v[:approved_on],
       :average, v[:average],
       :minimum, v[:minimum],
-      :maximum, v[:maximum],
+      :maximum, v[:maximum]
     ] }
   end
 

@@ -117,8 +117,8 @@
     = link_to '1 year', params.merge(:years_ago => 1)
     = link_to '2 years', params.merge(:years_ago => 2)
     = link_to '3 years', params.merge(:years_ago => 3)
-    #compare_funder{ data: {grants: compare_funder(@funder, Funder.find_by_id(1), @years_ago).to_json} }
-
-:javascript
-  window.funderName1 = '#{j @funder.name}';
-  window.funderName2 = '#{Funder.find_by_id(1).name}';
+-#     #compare_funder{ data: {grants: compare_funder(@funder, Funder.find_by_id(1), @years_ago).to_json} }
+-#
+-# :javascript
+-#   window.funderName1 = '#{j @funder.name}';
+-#   window.funderName2 = '#{Funder.find_by_id(1).name}';

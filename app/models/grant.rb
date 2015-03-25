@@ -39,7 +39,7 @@ class Grant < ActiveRecord::Base
 
   validates :amount_awarded, :days_from_attention_to_applied, :days_from_applied_to_approved,
   :days_form_approval_to_start, :days_from_start_to_end,
-  numericality: {only_integer: true, greater_than_or_equal_to: 0}
+  numericality: {only_integer: true, greater_than_or_equal_to: 0}, unless: :skip_validation
   validates :installments,
   numericality: {only_integer: true, greater_than_or_equal_to: 1}
 
