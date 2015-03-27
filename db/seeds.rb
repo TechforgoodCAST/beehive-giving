@@ -1,3 +1,46 @@
+# Create application processes
+ApplicationProcess.destroy_all
+[
+  "Eligibility form",
+  "Enquiry form",
+  "Email enquiry",
+  "Phone enquiry",
+  "Inital call",
+  "Initial meeting",
+  "Concept note",
+  "Stage 1 application",
+  "Stage 2 application",
+  "Stage 3 application",
+  "Interview",
+  "Site visit",
+  "Pitch",
+  "Public vote",
+  "Panel vote",
+  "Follow on questions"
+].each do |state|
+  ApplicationProcess.create(label:state)
+end
+
+# Create appliation supports
+ApplicationSupport.destroy_all
+[
+  "Email",
+  "Contact number",
+  "Guidance document"
+].each do |state|
+  ApplicationSupport.create(label:state)
+end
+
+# Create reporting requirements
+ReportingRequirement.destroy_all
+[
+  "End of funding",
+  "Mid-point",
+  "Annually"
+].each do |state|
+  ReportingRequirement.create(label:state)
+end
+
 # Create beneficiaries
 Beneficiary.destroy_all
 [

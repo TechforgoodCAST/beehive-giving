@@ -350,6 +350,18 @@ $(document).ready ->
                       return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
 
 $(document).ready ->
+  if $('#success_rate').length
+    Morris.Bar
+      element: 'success_rate'
+      data: $('#success_rate').data('grants')
+      xkey: 'year'
+      ykeys: ['grant_count', 'application_count', 'enquiry_count']
+      labels: ['Grants', 'Applications', 'Enquiries']
+      barColors: ['#F7BA0E', '#777', '#bbb']
+      resize: true
+      hideHover: 'auto'
+
+$(document).ready ->
   if $('#compare_funder').length
     Morris.Line
       element: 'compare_funder'
@@ -370,22 +382,6 @@ $(document).ready ->
       #                 return '<div class="morris-hover-row-label">' + options.dateFormat(row.approved_on) + '</div><div>No. of grants</div><span>' + options.labels[0] + ': </span><b style="color: ' + options.lineColors[0] + '">' + row.funder1 + ' grants</b></br><span>' + options.labels[1] + ': </span><b style="color: ' + options.lineColors[1] + '">' + row.funder2 + ' grants</b>'
       xLabelFormat: (x) ->
                       return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
-
-$(document).ready ->
-  if $('#success_rate').length
-    Morris.Bar
-      element: 'success_rate'
-      data: [
-        { y: 'Grants', a: 6 },
-        { y: 'Applications', a: 15 },
-        { y: 'Enquiries', a: 56 }
-      ]
-      xkey: 'y'
-      ykeys: ['a']
-      labels: ['']
-      barColors: ['#00a8e6']
-      resize: true
-      hideHover: 'auto'
 
 OrganisationForm = ((w, d) ->
 

@@ -37,41 +37,57 @@
 
         %ul.uk-nav.uk-nav-side{"data-uk-tab" => "{connect:'#tab-content'}"}
           %li
-            %a{:href => "#"}
+            %a
               %span.uk-text-bold Overview
               %div
                 Summery details of
                 = @funder.name.pluralize
                 funding.
           %li
-            %a{:href => "#"}
+            %a
               %span.uk-text-bold Organisation
               %div Location, age, and income of funded organisations.
           %li
-            %a{:href => "#"}
+            %a
               %span.uk-text-bold Beneficiaries
               %div Age range, gender, and state of the people funded organisations support.
           %li
-            %a{:href => "#"}
+            %a
               %span.uk-text-bold Team
               %div Number of volunteers, staff, and departments of funded organisations.
           %li
-            %a{:href => "#"}
+            %a
               %span.uk-text-bold Work
               %div How funded organisations implement their work.
 
         .uk-text-bold View data for:
-        .uk-button-group.uk-width-1-1{"data-uk-button-radio" => ""}
+        .uk-button-group.uk-width-1-1.uk-margin{"data-uk-button-radio" => ""}
           = link_to '1 year', params.merge(:years_ago => 1), class: @years_ago == 1 ? 'uk-button uk-active uk-width-1-3' : 'uk-button uk-width-1-3'
           = link_to '2 years', params.merge(:years_ago => 2), class: @years_ago == 2 ? 'uk-button uk-active uk-width-1-3' : 'uk-button uk-width-1-3'
           = link_to '3 years', params.merge(:years_ago => 3), class: @years_ago == 3 ? 'uk-button uk-active uk-width-1-3' : 'uk-button uk-width-1-3'
+        .uk-text-bold Viewing funding stream:
+        %ul.uk-nav.uk-nav-side
+          %li.uk-parent{"data-uk-dropdown" => "{mode:'click'}"}
+            .uk-dropdown{style: 'top: 50%; left: 100%; padding-bottom: 0; padding-top: 0;'}
+              %ul.uk-nav.uk-nav-side#padding-remove
+                %li
+                  %li
+                    = link_to 'All', params.merge(:funding_stream => nil), style: 'padding: 7px 15px;'
+                - Grant.where('funder_id = ?', @funder).uniq.pluck(:funding_stream).each do |stream|
+                  %li
+                    = link_to stream, params.merge(:funding_stream => stream), style: 'padding: 7px 15px;'
+            %a
+              - unless @funding_stream.nil?
+                = @funding_stream
+              - else
+                All
 
       .uk-alert{'data-uk-alert' => ''}
         %p
           %span.uk-text-bold Tip:
-          Hover over the charts to find out more about each
+          Hover over the charts to find out more about each of
           = @funder.name.pluralize
-          grants round.
+          funding rounds.
 
   .uk-width-small-1-1.uk-medium-1-1.uk-width-large-3-4
     #tab-content.uk-switcher
@@ -84,82 +100,169 @@
               .uk-width-1-1.uk-margin
                 .uk-text-bold Mission
                 = @funder.mission
-              .uk-text-bold Success rate
-              #success_rate
-              .uk-width-1-1.uk-margin
-                .uk-text-bold Type of funding
-                .uk-button.uk-button-primary.uk-button-mini Unrestricted
-                .uk-button.uk-button-primary.uk-button-mini Investment
-              .uk-width-1-1.uk-margin
-                .uk-text-bold Funding streams
-                .uk-button.uk-button-primary.uk-button-mini Main
-              .uk-width-1-1.uk-margin
-                .uk-text-bold Funding frequency
-                %span.uk-text-primary.uk-text-bold 2
-                times a year
-              .uk-width-1-1.uk-margin
-                .uk-text-bold Application process
-                .uk-button.uk-button-primary.uk-button-mini Invite only
-              .uk-width-1-1.uk-margin
-                .uk-text-bold Application support
-                .uk-button.uk-button-primary.uk-button-mini Email
-                .uk-button.uk-button-primary.uk-button-mini Contact Number
-                .uk-button.uk-button-primary.uk-button-mini Guidance documents
-              .uk-width-1-1.uk-margin
-                .uk-text-bold Level of non-financial support
-                .uk-button.uk-button-primary.uk-button-mini None
-                .uk-button.uk-button-primary.uk-button-mini A little
-                .uk-button.uk-button-primary.uk-button-mini A lot
-              .uk-width-1-1.uk-margin
-                .uk-text-bold Level of reporting
-                .uk-button.uk-button-primary.uk-button-mini End of funding
-                .uk-button.uk-button-primary.uk-button-mini Mid-point
-                .uk-button.uk-button-primary.uk-button-mini Annualy
+              - if @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).any?
+                .uk-text-bold Number of grants
+                #success_rate{ data: {grants: @funder.attributes.where('year = ?', (Date.today.year - @years_ago)).all.to_json }}
+              - if Grant.where('funder_id = ?', @funder).uniq.pluck(:grant_type).any?
+                .uk-width-1-1.uk-margin
+                  .uk-text-bold Type of funding
+                  - Grant.where('funder_id = ?', @funder).uniq.pluck(:grant_type).each do |type|
+                    .uk-button.uk-button-primary.uk-button-mini= type
+              - if Grant.where('funder_id = ?', @funder).uniq.pluck(:funding_stream).any?
+                .uk-width-1-1.uk-margin
+                  .uk-text-bold
+                    Funding streams
+                    %span.uk-text-small
+                      = surround '(', ')' do
+                        = link_to 'All', params.merge(:funding_stream => nil)
+                  - Grant.where('funder_id = ?', @funder).uniq.pluck(:funding_stream).each do |stream|
+                    = link_to stream, params.merge(:funding_stream => stream), class: 'uk-button uk-button-primary uk-button-mini'
+              - if Grant.where('funder_id = ?', @funder).any?
+                .uk-width-1-1.uk-margin
+                  .uk-text-bold Funding frequency
+                  %span.uk-text-primary.uk-text-bold= funding_frequency(@funder, @years_ago, @funding_stream)
+                  times, in
+                  = Date.today.year - @years_ago
+              - if @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).any?
+                .uk-width-1-1.uk-margin
+                  .uk-text-bold Application process
+                  - @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).first.application_processes.each do |p|
+                    .uk-button.uk-button-primary.uk-button-mini= p.label
+              - if @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).any?
+                .uk-width-1-1.uk-margin
+                  .uk-text-bold Application support
+                  - @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).first.application_supports.each do |s|
+                    .uk-button.uk-button-primary.uk-button-mini= s.label
+              - if @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).any?
+                .uk-width-1-1.uk-margin
+                  .uk-text-bold Level of non-financial support
+                  .uk-button.uk-button-primary.uk-button-mini
+                    = @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).first.non_financial_support
+              - if @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).any?
+                .uk-width-1-1.uk-margin
+                  .uk-text-bold Reporting requirements
+                  - @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).first.reporting_requirements.each do |s|
+                    .uk-button.uk-button-primary.uk-button-mini= s.label
 
           .uk-width-medium-2-3.uk-float-left.uk-margin
             %h2.chart-responsive-margin.uk-margin-bottom-remove Overview
             .uk-panel.chart-responsive-margin.uk-margin
-              .uk-panel-title Funding size
-              #grants_size{ data: {grants: grant_size_data(@funder, @years_ago).to_json} }
-
-          .uk-width-medium-2-3.uk-float-left
-            .uk-panel.chart-responsive-margin
-              .uk-panel-title Funding duration
-              - if @funder.grants.pluck(:start_on)[0].blank?
+              - if @funder.grants.pluck(:amount_awarded).any?
+                .uk-panel-badge.uk-badge
+                  - unless @funding_stream.nil?
+                    = @funding_stream
+                  - else
+                    All funding
+              .uk-panel-title
+                Funding size
+                -# %span
+                -#   %a
+                -#     %i.uk-icon-question-circle
+                - if @funder.grants.pluck(:amount_awarded).any?
+                  .uk-text-small
+                    = Date.today.year - @years_ago
+                    to
+                    = @funder.grants.order("approved_on").pluck(:approved_on).last.year
+              - if @funder.grants.pluck(:amount_awarded).any?
+                #grants_size{ data: {grants: grant_size_data(@funder, @funding_stream, @years_ago).to_json} }
+              - else
                 .uk-alert.uk-alert-danger
                   %p
                     Sorry we don't have this information from
                     = succeed '.' do
                       = @funder.name
+
+          .uk-width-medium-2-3.uk-float-left
+            .uk-panel.chart-responsive-margin
+              - if @funder.grants.pluck(:start_on).any?
+                .uk-panel-badge.uk-badge
+                  - unless @funding_stream.nil?
+                    = @funding_stream
+                  - else
+                    All funding
+              .uk-panel-title
+                Funding duration
+                - if @funder.grants.pluck(:start_on).any?
+                  %span
+                  .uk-text-small
+                    = Date.today.year - @years_ago
+                    to
+                    = @funder.grants.order("approved_on").pluck(:approved_on).last.year
+              - if @funder.grants.pluck(:start_on).any?
+                #grants_duration{ data: {grants: grant_duration_data(@funder, @funding_stream, @years_ago).to_json} }
               - else
-                #grants_duration{ data: {grants: grant_duration_data(@funder, @years_ago).to_json} }
+                .uk-alert.uk-alert-danger
+                  %p
+                    Sorry we don't have this information from
+                    = succeed '.' do
+                      = @funder.name
 
       .uk-width-1-1.uk-animation-fade
         .uk-grid
 
           .uk-width-medium-1-3.uk-float-right
-            .uk-panel.uk-panel-box
-              .uk-width-1-1
-                .uk-text-bold Your location
-                %h3.uk-text-primary LOCATION
-                .uk-text-bold Your age
-                %h3.uk-text-primary AGE
-                .uk-text-bold Your age
-                %h3.uk-text-primary INCOME
+            .uk-panel.uk-panel-box.uk-panel-box-primary
+              - if @recipient.profiles.pluck(:year).include?(Date.today.year - @years_ago)
+                .uk-width-1-1.uk-margin
+                  .uk-text-bold Your location
+                  .uk-text-primary
+                    - @recipient.profiles.where('year = ?', (Date.today.year - @years_ago)).first.districts.each do |d|
+                      .uk-button.uk-button-primary.uk-button-mini= d.label
+                .uk-width-1-1.uk-margin
+                  .uk-text-bold Your age
+                  .uk-text-primary
+                    %span.uk-text-bold= ((Date.today - @recipient.founded_on) / 365).to_f.round(1)
+                    years from founding
+                  - if @recipient.registered_on?
+                    .uk-text-primary
+                      %span.uk-text-bold= ((Date.today - @recipient.registered_on) / 365).to_f.round(1)
+                      years from registration
+                .uk-width-1-1.uk-margin
+                  .uk-text-bold Your income
+                  .uk-text-primary
+                    %span.uk-text-bold= number_to_currency(@recipient.profiles.where('year = ?', (Date.today.year - @years_ago)).first.income, unit: '£', precision: 0)
+                    in
+                    = Date.today.year - @years_ago
+              - else
+                Hey! You don't have a profile for
+                = succeed '.' do
+                  = Date.today.year - @years_ago
+                Why not complete one
+                %span.uk-text-bold
+                  = link_to 'here', new_recipient_profile_path(@recipient)
 
           .uk-width-medium-2-3.uk-float-left.uk-margin
             %h2.chart-responsive-margin.uk-margin-bottom-remove Organisation
             .uk-panel.chart-responsive-margin.uk-margin
-              .uk-panel-title Funding location
-              - if @funder.grants.pluck(:country)[0].blank?
+              .uk-panel-title
+                Funding location by country
+                - if @funder.grants.pluck(:country).any?
+                  .uk-text-small
+                    = Date.today.year - @years_ago
+                    to
+                    = @funder.grants.order("approved_on").pluck(:approved_on).last.year
+              - if @funder.grants.pluck(:country).any?
+                - years_ago_result = Date.today.year - @years_ago
+                = geo_chart @funder.grants.where("extract(year FROM approved_on) >= ? AND extract(year from approved_on) <= ?", years_ago_result, Date.today.year).group(:country).count, colors: ["#F7BA0E"], height: "375px"
+                .uk-width-1-1
+                  %table.uk-table.uk-table-hover
+                    %caption= Date.today.year - @years_ago
+                    %thead
+                      %tr
+                        %th Country
+                        %th Number of grants
+                    - @funder.grants.where("extract(year FROM approved_on) = ?", years_ago_result).group(:country).count.each do |k, v|
+                      %tbody
+                        %tr
+                          %td= k
+                          %td= v
+              - else
                 .uk-alert.uk-alert-danger
                   %p
                     Sorry we don't have this information from
                     = succeed '.' do
                       = @funder.name
-              - else
-                - years_ago_result = Date.today.year - @years_ago
-                = geo_chart @funder.grants.where("extract(year FROM approved_on) >= ? AND extract(year from approved_on) <= ?", years_ago_result, Date.today.year).group(:country).count, colors: ["#F7BA0E"]
+
 
           -# .uk-width-medium-2-3.uk-float-left
           -#   .uk-panel.chart-responsive-margin

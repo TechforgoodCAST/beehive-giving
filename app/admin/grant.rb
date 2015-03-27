@@ -64,5 +64,6 @@ ActiveAdmin.register Grant do
       f.input :start_on
       f.input :end_on
     end
+    f.actions
   end
 end

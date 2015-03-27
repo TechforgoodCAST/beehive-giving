@@ -20,6 +20,7 @@ class RecipientsController < ApplicationController
 
   def comparison
     redirect_to recipient_comparison_gateway_path(@funder) if @recipient.locked_funder?(@funder)
+    @funding_stream = params[:funding_stream]
   end
 
   def vote

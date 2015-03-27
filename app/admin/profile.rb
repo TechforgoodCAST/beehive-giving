@@ -78,4 +78,34 @@ ActiveAdmin.register Profile do
     end
   end
 
+  form do |f|
+    f.inputs do
+      f.input :year, as: :select, collection: Profile::VALID_YEARS.map { |label| label }
+      f.input :districts, as: :select, :input_html => {:multiple => true}, member_label: :label, label: 'Where does your organisation benefit people?'
+      f.input :beneficiaries, as: :select, :input_html => {:multiple => true}, member_label: :label, label: 'Who does your organisation target?'
+      f.input :gender, collection: Profile::GENDERS.map { |label| label }
+      f.input :min_age
+      f.input :max_age
+      f.input :volunteer_count
+      f.input :staff_count
+      f.input :department_count
+      f.input :job_role_count
+      f.input :currency, collection: Profile::CURRENCY.map { |label| label }
+      f.input :income
+      f.input :income_actual
+      f.input :expenditure
+      f.input :expenditure_actual
+      f.input :implementations, as: :select, :input_html => {:multiple => true}, member_label: :label, label: 'How fo you implement your work?'
+      f.input :goods_services, collection: Profile::GOODS_SERVICES.map { |label| label }
+      f.input :services_count
+      f.input :goods_count
+      f.input :who_pays, collection: Profile::WHO_PAYS.map { |label| label }
+      f.input :beneficiaries_count
+      f.input :beneficiaries_count_actual
+      f.input :units_count
+      f.input :units_count_actual
+    end
+    f.actions
+  end
+
 end
