@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150325133342) do
+ActiveRecord::Schema.define(version: 20150327165154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -110,8 +110,11 @@ ActiveRecord::Schema.define(version: 20150325133342) do
     t.integer  "funder_id"
     t.integer  "recipient_id"
     t.boolean  "data_requested"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.boolean  "request_amount_awarded"
+    t.boolean  "request_funding_dates"
+    t.boolean  "request_funding_countries"
   end
 
   create_table "feedbacks", force: true do |t|

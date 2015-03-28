@@ -60,55 +60,6 @@ $(document).ready ->
                       x.toLocaleString 'en-gb', options
     });
 
-  if $('#recipient_age').length
-    Morris.Line({
-      element: 'recipient_age'
-      data: [
-        { y: '2013-06', a: 3, b: 11.7, c: 47.1 },
-        { y: '2013-12', a: 1.4, b: 3.8, c: 8.4 },
-        { y: '2014-07', a: 1, b: 2.7, c: 4.5 },
-        { y: '2014-11', a: 1.1, b: 1.6, c: 2.1 }
-      ],
-      xkey: 'y'
-      ykeys: ['a', 'b', 'c']
-      labels: ['Min.', 'Avg.', 'Max.']
-      xLabels: 'month'
-      postUnits: ' years'
-      lineColors: ['#ccc', '#F7BA0E', '#ccc']
-      resize: true
-      hideHover: 'auto'
-      xLabelFormat: (x) ->
-                      options =
-                        year: '2-digit'
-                        month: 'short'
-                      x.toLocaleString 'en-gb', options
-    });
-
-  if $('#recipient_income').length
-    Morris.Line({
-      element: 'recipient_income'
-      data: [
-        { y: '2013-06', a: 53561, b: 403504.40, c: 1130797 },
-        { y: '2013-12', a: 0, b: 90074.25, c: 249527 },
-        { y: '2014-07', a: 40900, b: 63738.72, c: 120000 },
-        { y: '2014-11', a: 10210.46, b: 22322.72, c: 34434.97 }
-      ],
-      xkey: 'y'
-      ymax: 1200000
-      ykeys: ['a', 'b', 'c']
-      labels: ['Min.', 'Avg.', 'Max.']
-      xLabels: 'month'
-      preUnits: '£'
-      lineColors: ['#ccc', '#F7BA0E', '#ccc']
-      resize: true
-      hideHover: 'auto'
-      xLabelFormat: (x) ->
-                      options =
-                        year: '2-digit'
-                        month: 'short'
-                      x.toLocaleString 'en-gb', options
-    });
-
   if $('#beneficiaries_age').length
     Morris.Area({
       element: 'beneficiaries_age'
@@ -360,6 +311,54 @@ $(document).ready ->
       barColors: ['#F7BA0E', '#777', '#bbb']
       resize: true
       hideHover: 'auto'
+
+$(document).ready ->
+  if $('#recipient_age').length
+    Morris.Line
+      element: 'recipient_age'
+      data: $('#recipient_age').data('grants')
+      xkey: 'approved_on'
+      ykeys: ['max', 'avg', 'min']
+      labels: ['Max', 'Avg', 'Min']
+      xLabels: 'month'
+      postUnits: ' years'
+      lineColors: ['#bbb', '#F7BA0E', '#bbb']
+      resize: true
+      smooth: false
+      hideHover: 'auto'
+      goals: [age]
+      goalLineColors: ['#00a8e6']
+      dateFormat: (x) ->
+                      indexToMonth = ['Jan', 'Feb','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] # refactor?
+                      month = indexToMonth[new Date(x).getMonth()]
+                      year = new Date(x).getFullYear()
+                      return month + ' ' + year
+      xLabelFormat: (x) ->
+                      return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
+
+$(document).ready ->
+  if $('#recipient_income').length
+    Morris.Line
+      element: 'recipient_income'
+      data: $('#recipient_income').data('grants')
+      xkey: 'approved_on'
+      ykeys: ['max', 'avg', 'min']
+      labels: ['Max', 'Avg', 'Min']
+      xLabels: 'month'
+      preUnits: '£'
+      lineColors: ['#bbb', '#F7BA0E', '#bbb']
+      resize: true
+      smooth: false
+      hideHover: 'auto'
+      goals: [income]
+      goalLineColors: ['#00a8e6']
+      dateFormat: (x) ->
+                      indexToMonth = ['Jan', 'Feb','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] # refactor?
+                      month = indexToMonth[new Date(x).getMonth()]
+                      year = new Date(x).getFullYear()
+                      return month + ' ' + year
+      xLabelFormat: (x) ->
+                      return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
 
 $(document).ready ->
   if $('#compare_funder').length

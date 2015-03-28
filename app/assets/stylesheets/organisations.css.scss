@@ -2,13 +2,13 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#grants_location, #recipient_age, #recipient_income, #beneficiaries_age, #beneficiaries_gender,
+#grants_location, #beneficiaries_age, #beneficiaries_gender,
 #beneficiaries_focus, #recipient_staff, #recipient_volunteers, #recipient_implement,
 #recipient_goods_or_services, #recipient_sells {
   height: 200px;
 }
 
-#funder_time, #grants_size {
+#funder_time, #grants_size, #recipient_age, #recipient_income {
   height: 300px;
 }
 

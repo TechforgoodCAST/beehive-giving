@@ -20,6 +20,12 @@
  *= require timelineJS/themes/font/BreeSerif-OpenSans
  */
 
+.uk-grid.uk-grid-collapse,
+.uk-grid.uk-grid-collapse > [class*='uk-width-'] {
+  margin: 0;
+  padding: 0;
+}
+
 .bh-button-group {
   top: 5px;
 }

@@ -24,7 +24,15 @@ class RecipientsController < ApplicationController
   end
 
   def vote
-    vote = @recipient.features.new(data_requested: params[:data_requested], recipient_id: params[:id], funder_id: params[:funder_id])
+    vote = Feature.find_or_initialize_by(recipient_id: params[:recipient_id], funder_id: params[:funder_id])
+
+    vote.update_attributes(
+      data_requested: vote.data_requested || params[:data_requested],
+      request_amount_awarded: vote.request_amount_awarded || params[:request_amount_awarded],
+      request_funding_dates: vote.request_funding_dates || params[:request_funding_dates],
+      request_funding_countries: vote.request_funding_countries || params[:request_funding_countries]
+    )
+
     if vote.save
       redirect_to :back, notice: "Thanks for requesting this, we're working hard to make it happen."
     else
