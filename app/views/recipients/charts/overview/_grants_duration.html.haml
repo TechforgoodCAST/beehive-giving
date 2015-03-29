@@ -1,0 +1,11 @@
+.uk-panel.chart-responsive-margin
+  .uk-panel-title
+    Funding duration
+    .uk-text-small= funding_period if @funder.grants.any?
+
+  - if @funder.grants.pluck(:start_on).any?
+    .uk-panel-badge.uk-badge= funding_stream_label
+    #grants_duration{ data: {grants: grant_duration_data(@funder, @funding_stream, @years_ago).to_json} }
+
+  - else
+    = data_not_available('request_funding_dates')

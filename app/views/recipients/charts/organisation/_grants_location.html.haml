@@ -1,0 +1,11 @@
+.uk-panel.chart-responsive-margin.uk-margin
+  .uk-panel-title
+    Location of funded organisations (by country)
+    .uk-text-small= funding_period if @funder.grants.any?
+
+  - if @funder.grants.pluck(:country).any?
+    .uk-panel-badge.uk-badge= funding_stream_label
+    = geo_chart grants_location(@funder, @funding_stream), colors: ["#F7BA0E"], height: "350px"
+
+  - else
+    = data_not_available('request_funding_countries')

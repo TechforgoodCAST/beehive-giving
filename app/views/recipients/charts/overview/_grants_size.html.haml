@@ -1,0 +1,14 @@
+.uk-panel.chart-responsive-margin.uk-margin
+  .uk-panel-title
+    Funding size
+    -# %span
+    -#   %a
+    -#     %i.uk-icon-question-circle
+    .uk-text-small= funding_period if @funder.grants.any?
+
+  - if @funder.grants.pluck(:amount_awarded).any?
+    .uk-panel-badge.uk-badge= funding_stream_label
+    #grants_size{ data: {grants: grant_size_data(@funder, @funding_stream, @years_ago).to_json} }
+
+  - else
+    = data_not_available('request_amount_awarded')

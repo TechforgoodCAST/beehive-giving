@@ -79,6 +79,21 @@ module OrganisationsHelper
     funding_frequency = funding_frequency.count
   end
 
+  def grants_location(funder, funding_stream)
+    years_ago_result = Date.today.year - @years_ago
+
+    if funding_stream.nil?
+      funder.grants
+        .where("extract(year FROM approved_on) >= ? AND extract(year from approved_on) <= ?", years_ago_result, Date.today.year)
+        .group(:country).count
+    else
+      funder.grants
+        .where("extract(year FROM approved_on) >= ? AND extract(year from approved_on) <= ?", years_ago_result, Date.today.year)
+        .where("funding_stream = ?", funding_stream)
+        .group(:country).count
+    end
+  end
+
   def static_recipient_age_data(years_ago)
     years_ago_result = Date.today.year - years_ago
     data = []
@@ -115,6 +130,63 @@ module OrganisationsHelper
       :funder1, v[:funder1],
       :funder2, v[:funder2]
     ] }
+  end
+
+  def funding_period
+    "#{(Date.today.year - @years_ago)}" +
+    " to " +
+    "#{@funder.grants.order("approved_on").pluck(:approved_on).last.year}"
+  end
+
+  def funding_stream_label
+    unless @funding_stream.nil?
+      @funding_stream
+    else
+      'All funding'
+    end
+  end
+
+  def data_not_available(request)
+    if @recipient.can_request_funder?(@funder, "#{request}")
+      content_tag(:div, class: 'uk-alert uk-alert-warning') do
+        content_tag(:span, "Oh snap!", :class => 'uk-text-bold') +
+        content_tag(:br, "We don't have this information from " + @funder.name + ". To help us demonstrate the demand for this information, why not hit request...") +
+        content_tag(:p, link_to('Request', vote_recipient_path("#{request}" => true, funder_id: @funder.id, recipient_id: @recipient.id), method: 'post', class: 'uk-button uk-width-1-1'))
+      end
+    else
+      content_tag(:button, class: 'uk-button uk-width-1-1', disabled: "") do
+        content_tag(:i, " Requested", class: 'uk-icon-check')
+      end
+    end
+  end
+
+  def data_progress(funder)
+    years_ago_result = Date.today.year - @years_ago
+    array = []
+
+    grants = Grant.where('funder_id = ?', funder.id)
+      .where("extract(year FROM approved_on) = ?", years_ago_result)
+
+    grants.each do |grant|
+      array << grant.recipient.profiles.any?
+    end
+
+    grant_total = grants.uniq.pluck(:recipient_id).count
+    profile_count = array.count(true)
+
+    if grant_total == 0
+      percentage = 0
+    else
+      percentage = ((profile_count.to_f / grant_total.to_f) * 100).round(0)
+    end
+
+    content_tag(:div, class: 'uk-alert uk-alert-warning') do
+      content_tag(:span, "Whoa! This information seems to be missing", :class => 'uk-text-bold') +
+      content_tag(:br, "We're working hard to collect the 'fingerprints' of these previously funded organistions, and you can see our progress below:") +
+      content_tag(:div, class: 'uk-progress uk-progress-warning') do
+        content_tag(:span, "#{percentage}%", class: 'uk-progress-bar', style: "width: #{percentage}%;")
+      end
+    end
   end
 
 end

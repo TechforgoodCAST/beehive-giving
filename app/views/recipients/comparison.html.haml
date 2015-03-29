@@ -146,72 +146,10 @@
 
           .uk-width-medium-2-3.uk-float-left.uk-margin
             %h2.chart-responsive-margin.uk-margin-bottom-remove Overview
-            .uk-panel.chart-responsive-margin.uk-margin
-              - if @funder.grants.pluck(:amount_awarded).any?
-                .uk-panel-badge.uk-badge
-                  - unless @funding_stream.nil?
-                    = @funding_stream
-                  - else
-                    All funding
-              .uk-panel-title
-                Funding size
-                -# %span
-                -#   %a
-                -#     %i.uk-icon-question-circle
-                - if @funder.grants.pluck(:amount_awarded).any?
-                  .uk-text-small
-                    = Date.today.year - @years_ago
-                    to
-                    = @funder.grants.order("approved_on").pluck(:approved_on).last.year
-              - if @funder.grants.pluck(:amount_awarded).any?
-                #grants_size{ data: {grants: grant_size_data(@funder, @funding_stream, @years_ago).to_json} }
-              - else
-                - if @recipient.can_request_funder?(@funder, 'request_amount_awarded')
-                  .uk-alert.uk-alert-warning
-                    .uk-text-bold
-                      Oh snap!
-                    We don't have this information from
-                    = succeed '.' do
-                      = @funder.name
-                    To help us demonstrate the demand for this information, why not hit request...
-                    %p
-                      = link_to 'Request', vote_recipient_path(request_amount_awarded: true, funder_id: @funder.id, recipient_id: @recipient.id), method: 'post', class: 'uk-button uk-width-1-1'
-                - else
-                  %button.uk-button.uk-button-primary.uk-width-1-1{:disabled => "", :type => "button"}
-                    %i.uk-icon-check Requested
+            = render partial: 'recipients/charts/overview/grants_size'
 
           .uk-width-medium-2-3.uk-float-left
-            .uk-panel.chart-responsive-margin
-              - if @funder.grants.pluck(:start_on).any?
-                .uk-panel-badge.uk-badge
-                  - unless @funding_stream.nil?
-                    = @funding_stream
-                  - else
-                    All funding
-              .uk-panel-title
-                Funding duration
-                - if @funder.grants.pluck(:start_on).any?
-                  %span
-                  .uk-text-small
-                    = Date.today.year - @years_ago
-                    to
-                    = @funder.grants.order("approved_on").pluck(:approved_on).last.year
-              - if @funder.grants.pluck(:start_on).any?
-                #grants_duration{ data: {grants: grant_duration_data(@funder, @funding_stream, @years_ago).to_json} }
-              - else
-                - if @recipient.can_request_funder?(@funder, 'request_funding_dates')
-                  .uk-alert.uk-alert-warning
-                    .uk-text-bold
-                      Oh snap!
-                    We don't have this information from
-                    = succeed '.' do
-                      = @funder.name
-                    To help us demonstrate the demand for this information, why not hit request...
-                    %p
-                      = link_to 'Request', vote_recipient_path(request_funding_dates: true, funder_id: @funder.id, recipient_id: @recipient.id), method: 'post', class: 'uk-button uk-width-1-1'
-                - else
-                  %button.uk-button.uk-button-primary.uk-width-1-1{:disabled => "", :type => "button"}
-                    %i.uk-icon-check Requested
+            = render partial: 'recipients/charts/overview/grants_duration'
 
       .uk-width-1-1.uk-animation-fade
         .uk-grid
@@ -225,17 +163,18 @@
                     - @recipient.profiles.where('year = ?', (Date.today.year - @years_ago)).first.districts.each do |d|
                       .uk-button.uk-button-primary.uk-button-mini= d.label
                   - years_ago_result = Date.today.year - @years_ago
-                  %table.uk-table.uk-table-condensed
-                    %caption= Date.today.year - @years_ago
-                    %thead
-                      %tr
-                        %th Country
-                        %th Grants
-                    - @funder.grants.where("extract(year FROM approved_on) = ?", years_ago_result).group(:country).count.each do |k, v|
-                      %tbody
+                  - if @funder.grants.pluck(:country).any?
+                    %table.uk-table.uk-table-condensed
+                      %caption= Date.today.year - @years_ago
+                      %thead
                         %tr
-                          %td= k
-                          %td= v
+                          %th Country
+                          %th Grants
+                      - grants_location(@funder, @funding_stream).each do |k, v|
+                        %tbody
+                          %tr
+                            %td= k
+                            %td= v
               - else
                 Hey! You don't have a profile for
                 = succeed '.' do
@@ -246,31 +185,7 @@
 
           .uk-width-medium-2-3.uk-float-left.uk-margin
             %h2.chart-responsive-margin.uk-margin-bottom-remove Organisation
-            .uk-panel.chart-responsive-margin.uk-margin
-              .uk-panel-title
-                Location of funded organisations (by country)
-                - if @funder.grants.pluck(:country).any?
-                  .uk-text-small
-                    = Date.today.year - @years_ago
-                    to
-                    = @funder.grants.order("approved_on").pluck(:approved_on).last.year
-              - if @funder.grants.pluck(:country).any?
-                - years_ago_result = Date.today.year - @years_ago
-                = geo_chart @funder.grants.where("extract(year FROM approved_on) >= ? AND extract(year from approved_on) <= ?", years_ago_result, Date.today.year).group(:country).count, colors: ["#F7BA0E"], height: "350px"
-              - else
-                - if @recipient.can_request_funder?(@funder, 'request_funding_countries')
-                  .uk-alert.uk-alert-warning
-                    .uk-text-bold
-                      Oh snap!
-                    We don't have this information from
-                    = succeed '.' do
-                      = @funder.name
-                    To help us demonstrate the demand for this information, why not hit request...
-                    %p
-                      = link_to 'Request', vote_recipient_path(request_funding_countries: true, funder_id: @funder.id, recipient_id: @recipient.id), method: 'post', class: 'uk-button uk-width-1-1'
-                - else
-                  %button.uk-button.uk-button-primary.uk-width-1-1{:disabled => "", :type => "button"}
-                    %i.uk-icon-check Requested
+            = render partial: 'recipients/charts/organisation/grants_location'
 
           .uk-width-1-1
             .uk-grid
@@ -292,29 +207,7 @@
                           years from registration
 
               .uk-width-medium-2-3.uk-float-left
-                .uk-panel.chart-responsive-margin
-                  - if @funder.name == 'The Foundation'
-                    .uk-panel-badge.uk-badge
-                      - unless @funding_stream.nil?
-                        = @funding_stream
-                      - else
-                        All funding
-                  .uk-panel-title
-                    Age of funded organisations
-                    - if @funder.name == 'The Foundation'
-                      %span
-                      .uk-text-small
-                        = Date.today.year - @years_ago
-                        to
-                        = @funder.grants.order("approved_on").pluck(:approved_on).last.year
-                  - if @funder.name == 'The Foundation' && Date.today.year - @years_ago != 2012
-                    #recipient_age{ data: {grants: static_recipient_age_data(@years_ago).to_json} }
-                  - else
-                    .uk-alert.uk-alert-warning
-                      .uk-text-bold Whoa! This information seems to be missing
-                      We're working hard to collect the 'fingerprints' of these previously funded organistions, and you can see our progress below:
-                      .uk-progress.uk-progress-warning
-                        .uk-progress-bar{:style => "width: 0%;"} 0%
+                = render partial: 'recipients/charts/organisation/recipient_age'
 
           .uk-width-1-1.uk-margin-top
             .uk-grid
@@ -331,27 +224,6 @@
                         %span.uk-text-bold= number_to_currency(@recipient.profiles.where('year = ?', (Date.today.year - @years_ago)).first.income, unit: '£', precision: 0)
                         in
                         = Date.today.year - @years_ago
+
               .uk-width-medium-2-3.uk-float-left
-                .uk-panel.chart-responsive-margin
-                  - if @funder.name == 'The Foundation'
-                    .uk-panel-badge.uk-badge
-                      - unless @funding_stream.nil?
-                        = @funding_stream
-                      - else
-                        All funding
-                  .uk-panel-title
-                    Income of funded organisations
-                    - if @funder.name == 'The Foundation'
-                      %span
-                      .uk-text-small
-                        = Date.today.year - @years_ago
-                        to
-                        = @funder.grants.order("approved_on").pluck(:approved_on).last.year
-                  - if @funder.name == 'The Foundation' && Date.today.year - @years_ago != 2012
-                    #recipient_income{ data: {grants: static_recipient_income_data(@years_ago).to_json} }
-                  - else
-                    .uk-alert.uk-alert-warning
-                      .uk-text-bold Whoa! This information seems to be missing
-                      We're working hard to collect the 'fingerprints' of these previously funded organistions, and you can see our progress below:
-                      .uk-progress.uk-progress-warning
-                        .uk-progress-bar{:style => "width: 0%;"} 0%
+                = render partial: 'recipients/charts/organisation/recipient_income'

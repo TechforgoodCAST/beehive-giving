@@ -1,10 +1,12 @@
 ActiveAdmin.register Profile do
   config.sort_order = 'created_at_asc'
 
-  permit_params :year, :gender, :currency, :goods_services, :who_pays, :who_buys,
-  :min_age, :max_age, :income, :expenditure, :volunteer_count,
-  :staff_count, :job_role_count, :department_count, :goods_count,
-  :who_pays, :services_count, beneficiary_ids: [], country_ids: [], district_ids: [], implementation_ids: []
+  permit_params :organisation_id, :year, :gender, :currency, :goods_services, :who_pays,
+  :who_buys, :min_age, :max_age, :income, :income_actual, :expenditure, :expenditure_actual,
+  :volunteer_count, :staff_count, :job_role_count, :department_count, :goods_count,
+  :beneficiaries_count, :beneficiaries_count_actual, :units_count, :units_count_actual,
+  :who_pays, :services_count,
+  beneficiary_ids: [], country_ids: [],district_ids: [],implementation_ids: []
 
   index do
     column "Organisation" do |profile|
@@ -17,7 +19,9 @@ ActiveAdmin.register Profile do
       end
     end
     column "Age (years)" do |user|
-      ((Date.today - user.organisation.founded_on).to_f / 356).round(1)
+      if user.organisation.founded_on
+        ((Date.today - user.organisation.founded_on).to_f / 356).round(1)
+      end
     end
     column :income do |profile|
       number_to_currency(profile.income, unit: '£', precision: 0)
@@ -43,7 +47,9 @@ ActiveAdmin.register Profile do
         end
       end
       row "Age (years)" do |user|
-        ((Date.today - user.organisation.founded_on).to_f / 356).round(1)
+        if user.organisation.founded_on
+          ((Date.today - user.organisation.founded_on).to_f / 356).round(1)
+        end
       end
       row :currency
       row :income do |profile|
@@ -80,6 +86,7 @@ ActiveAdmin.register Profile do
 
   form do |f|
     f.inputs do
+      f.input :organisation
       f.input :year, as: :select, collection: Profile::VALID_YEARS.map { |label| label }
       f.input :districts, as: :select, :input_html => {:multiple => true}, member_label: :label, label: 'Where does your organisation benefit people?'
       f.input :beneficiaries, as: :select, :input_html => {:multiple => true}, member_label: :label, label: 'Who does your organisation target?'

@@ -1,0 +1,11 @@
+.uk-panel.chart-responsive-margin
+  .uk-panel-title
+    Age of funded organisations
+    .uk-text-small= funding_period if @funder.grants.any?
+
+  - if @funder.name == 'The Foundation' && Date.today.year - @years_ago != 2012
+    .uk-panel-badge.uk-badge= funding_stream_label
+    #recipient_age{ data: {grants: static_recipient_age_data(@years_ago).to_json} }
+
+  - else
+    = data_progress(@funder)
