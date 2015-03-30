@@ -114,6 +114,40 @@ module OrganisationsHelper
     data
   end
 
+  def static_beneficiary_target_data(years_ago)
+    years_ago_result = Date.today.year - years_ago
+    data = []
+    data << { 'target' => 'Disability', '2014' => 50, '2013' => 15 }
+    data << { 'target' => 'Physical Health', '2014' => 33, '2013' => 23 }
+    data << { 'target' => 'Mental Health', '2014' => 17, '2013' => 31 }
+    data << { 'target' => 'Education', '2014' => 100, '2013' => 54 }
+    data << { 'target' => 'Unemployment', '2014' => 67, '2013' => 92 }
+    data << { 'target' => 'Income Poverty', '2014' => 83, '2013' => 92 }
+    data << { 'target' => 'Ethnic Groups', '2014' => 17, '2013' => 23 }
+    data << { 'target' => 'Criminal Activities', '2014' => 17, '2013' => 31 }
+    data << { 'target' => 'Housing Issues', '2014' => 17, '2013' => 46 }
+    data << { 'target' => 'Family Issues', '2014' => 33, '2013' => 62 }
+    data << { 'target' => 'Other Organisations', '2014' => 50, '2013' => 54 }
+    data
+  end
+
+  def static_beneficiary_age_data(years_ago)
+    years_ago_result = Date.today.year - years_ago
+    data = []
+    data << { 'target' => 'Disability', '2014' => 50, '2013' => 15 }
+    data << { 'target' => 'Physical Health', '2014' => 33, '2013' => 23 }
+    data << { 'target' => 'Mental Health', '2014' => 17, '2013' => 31 }
+    data << { 'target' => 'Education', '2014' => 100, '2013' => 54 }
+    data << { 'target' => 'Unemployment', '2014' => 67, '2013' => 92 }
+    data << { 'target' => 'Income Poverty', '2014' => 83, '2013' => 92 }
+    data << { 'target' => 'Ethnic Groups', '2014' => 17, '2013' => 23 }
+    data << { 'target' => 'Criminal Activities', '2014' => 17, '2013' => 31 }
+    data << { 'target' => 'Housing Issues', '2014' => 17, '2013' => 46 }
+    data << { 'target' => 'Family Issues', '2014' => 33, '2013' => 62 }
+    data << { 'target' => 'Other Organisations', '2014' => 50, '2013' => 54 }
+    data
+  end
+
   def compare_funder(funder, funder2, years_ago)
     funder1 = group_grants_by(funder, :count, years_ago)
     funder2 = group_grants_by(funder2, :count, years_ago)
@@ -158,6 +192,15 @@ module OrganisationsHelper
         content_tag(:i, " Requested", class: 'uk-icon-check')
       end
     end
+  end
+
+  def has_profile_for_year?
+    @recipient.profiles.pluck(:year).include?(Date.today.year - @years_ago)
+  end
+
+  def profile_missing
+    content_tag(:span, "Hey! You don't have a profile for " + "#{(Date.today.year - @years_ago)}" + ". Why not complete one ") +
+    content_tag(:b, link_to('here', new_recipient_profile_path(@recipient)))
   end
 
   def data_progress(funder)

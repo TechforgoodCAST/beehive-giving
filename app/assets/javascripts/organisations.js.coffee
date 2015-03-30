@@ -60,201 +60,6 @@ $(document).ready ->
                       x.toLocaleString 'en-gb', options
     });
 
-  if $('#beneficiaries_age').length
-    Morris.Area({
-      element: 'beneficiaries_age'
-      data: [
-        { y: '2013-06', a: 14, b: 47 },
-        { y: '2013-12', a: 14, b: 45 },
-        { y: '2014-07', a: 13, b: 25 },
-        { y: '2014-11', a: 12, b: 22 }
-      ],
-      xkey: 'y'
-      ykeys: ['b', 'a']
-      labels: ['Max.', 'Min.']
-      xLabels: 'month'
-      postUnits: ' years old'
-      lineColors: ['#F7BA0E', '#ccc']
-      resize: true
-      hideHover: 'auto'
-      behaveLikeLine: true
-      xLabelFormat: (x) ->
-                      options =
-                        year: '2-digit'
-                        month: 'short'
-                      x.toLocaleString 'en-gb', options
-    });
-
-  if $('#beneficiaries_gender').length
-    Morris.Area({
-      element: 'beneficiaries_gender'
-      data: [
-        { y: '2013-06', a: 83, b: 17, c: 0, d: 0 },
-        { y: '2013-12', a: 86, b: 14, c: 0, d: 0 },
-        { y: '2014-07', a: 100, b: 0, c: 0, d: 0 },
-        { y: '2014-11', a: 100, b: 0, c: 0, d: 0 }
-      ],
-      xkey: 'y'
-      ykeys: ['a', 'b', 'c', 'd']
-      labels: ['All genders', 'Only female', 'Only male', 'Only other genders']
-      xLabels: 'month'
-      postUnits: '%'
-      lineColors: ['#F7BA0E', '#666', '#aaa', '#ccc']
-      smooth: false
-      resize: true
-      hideHover: 'auto'
-      xLabelFormat: (x) ->
-                      options =
-                        year: '2-digit'
-                        month: 'short'
-                      x.toLocaleString 'en-gb', options
-    });
-
-  if $('#beneficiaries_focus').length
-    Morris.Bar({
-      element: 'beneficiaries_focus'
-      data: [
-        { y: 'Disability', a: 50, b: 15 },
-        { y: 'Physical Health', a: 33, b: 23 },
-        { y: 'Mental Health', a: 17, b: 31 },
-        { y: 'Education', a: 100, b: 54 },
-        { y: 'Unemployment', a: 67, b: 92 },
-        { y: 'Income Poverty', a: 83, b: 92 },
-        { y: 'Ethnic Groups', a: 17, b: 23 },
-        { y: 'Criminal Activities', a: 17, b: 31 },
-        { y: 'Housing Issues', a: 17, b: 46 },
-        { y: 'Family Issues', a: 33, b: 62 },
-        { y: 'Other Organisations', a: 50, b: 54 }
-      ],
-      xkey: 'y'
-      ykeys: ['a', 'b']
-      labels: ['2014', '2013']
-      postUnits: '%'
-      barColors: ['#F7BA0E', '#ccc']
-      resize: true
-      hideHover: 'auto'
-    });
-
-  if $('#recipient_staff').length
-    Morris.Line({
-      element: 'recipient_staff'
-      data: [
-        { y: '2013-06', a: 1, b: 20, c: 63 },
-        { y: '2013-12', a: 0, b: 6, c: 17 },
-        { y: '2014-07', a: 2, b: 4, c: 6 },
-        { y: '2014-11', a: 1, b: 4, c: 6 }
-      ],
-      xkey: 'y'
-      ykeys: ['a', 'b', 'c']
-      labels: ['Min.', 'Avg.', 'Max.']
-      xLabels: 'month'
-      postUnits: ' people'
-      lineColors: ['#ccc', '#F7BA0E', '#ccc']
-      resize: true
-      hideHover: 'auto'
-      xLabelFormat: (x) ->
-                      options =
-                        year: '2-digit'
-                        month: 'short'
-                      x.toLocaleString 'en-gb', options
-    });
-
-  if $('#recipient_volunteers').length
-    Morris.Line({
-      element: 'recipient_volunteers'
-      data: [
-        { y: '2013-06', a: 0, b: 71, c: 400 },
-        { y: '2013-12', a: 0, b: 3, c: 6 },
-        { y: '2014-07', a: 0, b: 2, c: 6 },
-        { y: '2014-11', a: 3, b: 3, c: 4 }
-      ],
-      xkey: 'y'
-      ykeys: ['a', 'b', 'c']
-      labels: ['Min.', 'Avg.', 'Max.']
-      xLabels: 'month'
-      postUnits: ' people'
-      lineColors: ['#ccc', '#F7BA0E', '#ccc']
-      resize: true
-      hideHover: 'auto'
-      xLabelFormat: (x) ->
-                      options =
-                        year: '2-digit'
-                        month: 'short'
-                      x.toLocaleString 'en-gb', options
-    });
-
-  if $('#recipient_implement').length
-    Morris.Bar({
-      element: 'recipient_implement'
-      data: [
-        { y: 'Campaigns', a: 0, b: 15 },
-        { y: 'Reasearch', a: 17, b: 23 },
-        { y: 'Third Party', a: 17, b: 23 },
-        { y: 'Products', a: 0, b: 8 },
-        { y: 'Software', a: 33, b: 8 },
-        { y: 'Beneficiaries', a: 33, b: 54 },
-        { y: 'Voluneers', a: 50, b: 46 },
-        { y: 'Staff', a: 67, b: 77 }
-      ],
-      xkey: 'y'
-      ykeys: ['a', 'b']
-      labels: ['2014', '2013']
-      postUnits: '%'
-      barColors: ['#F7BA0E', '#ccc']
-      resize: true
-      hideHover: 'auto'
-    });
-
-  if $('#recipient_goods_or_services').length
-    Morris.Area({
-      element: 'recipient_goods_or_services'
-      data: [
-        { y: '2013-06', a: 0, b: 67, c: 33 },
-        { y: '2013-12', a: 0, b: 57, c: 43 },
-        { y: '2014-07', a: 0, b: 100, c: 0 },
-        { y: '2014-11', a: 0, b: 100, c: 0 }
-      ],
-      xkey: 'y'
-      ykeys: ['a', 'b', 'c']
-      labels: ['Products', 'Services', 'Both']
-      xLabels: 'month'
-      postUnits: '%'
-      lineColors: ['#666', '#F7BA0E', '#aaa']
-      smooth: false
-      resize: true
-      hideHover: 'auto'
-      xLabelFormat: (x) ->
-                      options =
-                        year: '2-digit'
-                        month: 'short'
-                      x.toLocaleString 'en-gb', options
-    });
-
-  if $('#recipient_sells').length
-    Morris.Area({
-      element: 'recipient_sells'
-      data: [
-        { y: '2013-06', a: 0, b: 33, c: 17, d: 50 },
-        { y: '2013-12', a: 14, b: 29, c: 14, d: 43},
-        { y: '2014-07', a: 0, b: 25, c: 0, d: 75 },
-        { y: '2014-11', a: 0, b: 50, c: 0, d: 50 }
-      ],
-      xkey: 'y'
-      ykeys: ['a', 'b', 'c', 'd']
-      labels: ['Products', 'Services', 'Both', 'None']
-      xLabels: 'month'
-      postUnits: '%'
-      lineColors: ['#666', '#999', '#bbb', '#F7BA0E']
-      smooth: false
-      resize: true
-      hideHover: 'auto'
-      xLabelFormat: (x) ->
-                      options =
-                        year: '2-digit'
-                        month: 'short'
-                      x.toLocaleString 'en-gb', options
-    });
-
 $(document).ready ->
   if $('#grants_size').length
     Morris.Line
@@ -352,6 +157,211 @@ $(document).ready ->
       hideHover: 'auto'
       goals: [income]
       goalLineColors: ['#00a8e6']
+      dateFormat: (x) ->
+                      indexToMonth = ['Jan', 'Feb','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] # refactor?
+                      month = indexToMonth[new Date(x).getMonth()]
+                      year = new Date(x).getFullYear()
+                      return month + ' ' + year
+      xLabelFormat: (x) ->
+                      return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
+
+$(document).ready ->
+  if $('#beneficiary_target').length
+    Morris.Bar
+      element: 'beneficiary_target'
+      data: $('#beneficiary_target').data('grants')
+      xkey: 'target'
+      ykeys: ['2014', '2013']
+      labels: ['2014', '2013']
+      postUnits: '%'
+      barColors: ['#F7BA0E', '#bbb']
+      resize: true
+      hideHover: 'auto'
+      hoverCallback: (index, options, content, row) ->
+                      return '<div class="morris-hover-row-label">' + 'Funding given in ' + options.dateFormat(row.target) + '</div><div>Funding size</div><span>Max: </span><b style="color: ' + options.lineColors[2] + '">' + '£' + row.maximum.toLocaleString() + ' </b></br><span>Avg: </span><b style="color: ' + options.lineColors[0] + '">' + '£' + row.average.toLocaleString() + ' </b></br><span>Min: </span><b style="color: ' + options.lineColors[1] + '">' + '£' + row.minimum.toLocaleString() + ' </b></br><span>No. of awards: </span>' + row.count
+
+$(document).ready ->
+  if $('#beneficiary_age').length
+    Morris.Line
+      element: 'beneficiary_age'
+      data: [
+        { y: '2013-06', a: 14, b: 47 },
+        { y: '2013-12', a: 14, b: 45 },
+        { y: '2014-07', a: 13, b: 25 },
+        { y: '2014-11', a: 12, b: 22 }
+      ],
+      xkey: 'y'
+      ykeys: ['b', 'a']
+      labels: ['Max.', 'Min.']
+      xLabels: 'month'
+      postUnits: ' years old'
+      lineColors: ['#F7BA0E', '#ccc']
+      smooth: false
+      resize: true
+      hideHover: 'auto'
+      goals: [beneficiary_min_age, beneficiary_max_age]
+      goalLineColors: ['#00a8e6', '#35b3ee']
+      dateFormat: (x) ->
+                      indexToMonth = ['Jan', 'Feb','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] # refactor?
+                      month = indexToMonth[new Date(x).getMonth()]
+                      year = new Date(x).getFullYear()
+                      return month + ' ' + year
+      xLabelFormat: (x) ->
+                      return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
+
+$(document).ready ->
+  if $('#beneficiary_gender').length
+    Morris.Area
+      element: 'beneficiary_gender'
+      data: [
+        { y: '2013-06', a: 83, b: 17, c: 0, d: 0 },
+        { y: '2013-12', a: 86, b: 14, c: 0, d: 0 },
+        { y: '2014-07', a: 100, b: 0, c: 0, d: 0 },
+        { y: '2014-11', a: 100, b: 0, c: 0, d: 0 }
+      ],
+      xkey: 'y'
+      ykeys: ['a', 'b', 'c', 'd']
+      labels: ['All genders', 'Only female', 'Only male', 'Only other genders']
+      xLabels: 'month'
+      postUnits: '%'
+      lineColors: ['#F7BA0E', '#666', '#aaa', '#ccc']
+      smooth: false
+      resize: true
+      hideHover: 'auto'
+      dateFormat: (x) ->
+                      indexToMonth = ['Jan', 'Feb','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] # refactor?
+                      month = indexToMonth[new Date(x).getMonth()]
+                      year = new Date(x).getFullYear()
+                      return month + ' ' + year
+      xLabelFormat: (x) ->
+                      return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
+
+$(document).ready ->
+  if $('#recipient_staff').length
+    Morris.Line
+      element: 'recipient_staff'
+      data: [
+        { y: '2013-06', a: 1, b: 20, c: 63 },
+        { y: '2013-12', a: 0, b: 6, c: 17 },
+        { y: '2014-07', a: 2, b: 4, c: 6 },
+        { y: '2014-11', a: 1, b: 4, c: 6 }
+      ],
+      xkey: 'y'
+      ykeys: ['a', 'b', 'c']
+      labels: ['Min.', 'Avg.', 'Max.']
+      xLabels: 'month'
+      postUnits: ' people'
+      lineColors: ['#bbb', '#F7BA0E', '#bbb']
+      smooth: false
+      resize: true
+      hideHover: 'auto'
+      goals: [recipient_staff]
+      goalLineColors: ['#00a8e6']
+      dateFormat: (x) ->
+                      indexToMonth = ['Jan', 'Feb','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] # refactor?
+                      month = indexToMonth[new Date(x).getMonth()]
+                      year = new Date(x).getFullYear()
+                      return month + ' ' + year
+      xLabelFormat: (x) ->
+                      return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
+
+$(document).ready ->
+  if $('#recipient_volunteers').length
+    Morris.Line
+      element: 'recipient_volunteers'
+      data: [
+        { y: '2013-06', a: 0, b: 71, c: 400 },
+        { y: '2013-12', a: 0, b: 3, c: 6 },
+        { y: '2014-07', a: 0, b: 2, c: 6 },
+        { y: '2014-11', a: 3, b: 3, c: 4 }
+      ],
+      xkey: 'y'
+      ykeys: ['a', 'b', 'c']
+      labels: ['Min.', 'Avg.', 'Max.']
+      xLabels: 'month'
+      postUnits: ' people'
+      lineColors: ['#bbb', '#F7BA0E', '#bbb']
+      smooth: false
+      resize: true
+      hideHover: 'auto'
+      goals: [recipient_volunteers]
+      goalLineColors: ['#00a8e6']
+      dateFormat: (x) ->
+                      indexToMonth = ['Jan', 'Feb','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] # refactor?
+                      month = indexToMonth[new Date(x).getMonth()]
+                      year = new Date(x).getFullYear()
+                      return month + ' ' + year
+      xLabelFormat: (x) ->
+                      return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
+
+$(document).ready ->
+  if $('#recipient_implement').length
+    Morris.Bar
+      element: 'recipient_implement'
+      data: [
+        { y: 'Campaigns', a: 0, b: 15 },
+        { y: 'Reasearch', a: 17, b: 23 },
+        { y: 'Third Party', a: 17, b: 23 },
+        { y: 'Products', a: 0, b: 8 },
+        { y: 'Software', a: 33, b: 8 },
+        { y: 'Beneficiaries', a: 33, b: 54 },
+        { y: 'Voluneers', a: 50, b: 46 },
+        { y: 'Staff', a: 67, b: 77 }
+      ],
+      xkey: 'y'
+      ykeys: ['a', 'b']
+      labels: ['2014', '2013']
+      postUnits: '%'
+      barColors: ['#F7BA0E', '#bbb']
+      resize: true
+      hideHover: 'auto'
+
+$(document).ready ->
+  if $('#recipient_goods_or_services').length
+    Morris.Area
+      element: 'recipient_goods_or_services'
+      data: [
+        { y: '2013-06', a: 0, b: 67, c: 33 },
+        { y: '2013-12', a: 0, b: 57, c: 43 },
+        { y: '2014-07', a: 0, b: 100, c: 0 },
+        { y: '2014-11', a: 0, b: 100, c: 0 }
+      ],
+      xkey: 'y'
+      ykeys: ['a', 'b', 'c']
+      labels: ['Products', 'Services', 'Both']
+      xLabels: 'month'
+      postUnits: '%'
+      lineColors: ['#666', '#F7BA0E', '#aaa']
+      smooth: false
+      resize: true
+      hideHover: 'auto'
+      dateFormat: (x) ->
+                      indexToMonth = ['Jan', 'Feb','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] # refactor?
+                      month = indexToMonth[new Date(x).getMonth()]
+                      year = new Date(x).getFullYear()
+                      return month + ' ' + year
+      xLabelFormat: (x) ->
+                      return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
+
+$(document).ready ->
+  if $('#recipient_sells').length
+    Morris.Area
+      element: 'recipient_sells'
+      data: [
+        { y: '2013-06', a: 0, b: 33, c: 17, d: 50 },
+        { y: '2013-12', a: 14, b: 29, c: 14, d: 43},
+        { y: '2014-07', a: 0, b: 25, c: 0, d: 75 },
+        { y: '2014-11', a: 0, b: 50, c: 0, d: 50 }
+      ],
+      xkey: 'y'
+      ykeys: ['a', 'b', 'c', 'd']
+      labels: ['Products', 'Services', 'Both', 'None']
+      xLabels: 'month'
+      postUnits: '%'
+      lineColors: ['#666', '#999', '#bbb', '#F7BA0E']
+      smooth: false
+      resize: true
+      hideHover: 'auto'
       dateFormat: (x) ->
                       indexToMonth = ['Jan', 'Feb','Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'] # refactor?
                       month = indexToMonth[new Date(x).getMonth()]

@@ -1,0 +1,11 @@
+.uk-panel.chart-responsive-margin.uk-margin
+  .uk-panel-title
+    How funded organisations implement their work
+    .uk-text-small= funding_period if @funder.grants.any?
+
+  - if @funder.name == 'The Foundation' && Date.today.year - @years_ago != 2012
+    .uk-panel-badge.uk-badge= funding_stream_label
+    #recipient_implement
+
+  - else
+    = data_progress(@funder)

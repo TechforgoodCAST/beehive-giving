@@ -60,7 +60,7 @@
               %span.uk-text-bold Work
               %div How funded organisations implement their work.
 
-        .uk-text-bold View data for:
+        .uk-text-bold.uk-margin-top View data for:
         .uk-button-group.uk-width-1-1.uk-margin{"data-uk-button-radio" => ""}
           = link_to '1 year', params.merge(:years_ago => 1), class: @years_ago == 1 ? 'uk-button uk-active uk-width-1-3' : 'uk-button uk-width-1-3'
           = link_to '2 years', params.merge(:years_ago => 2), class: @years_ago == 2 ? 'uk-button uk-active uk-width-1-3' : 'uk-button uk-width-1-3'
@@ -93,137 +93,16 @@
     #tab-content.uk-switcher
 
       .uk-width-1-1.uk-animation-fade
-        .uk-grid
-
-          .uk-width-medium-1-3.uk-float-right
-            .uk-panel.uk-panel-box.uk-panel-box-primary
-              .uk-width-1-1.uk-margin
-                .uk-text-bold Mission
-                = @funder.mission
-              - if @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).any?
-                .uk-text-bold Number of grants
-                #success_rate{ data: {grants: @funder.attributes.where('year = ?', (Date.today.year - @years_ago)).all.to_json }}
-              - if Grant.where('funder_id = ?', @funder).uniq.pluck(:grant_type).any?
-                .uk-width-1-1.uk-margin
-                  .uk-text-bold Type of funding
-                  - Grant.where('funder_id = ?', @funder).uniq.pluck(:grant_type).each do |type|
-                    .uk-button.uk-button-primary.uk-button-mini= type
-              - if Grant.where('funder_id = ?', @funder).uniq.pluck(:funding_stream).any?
-                .uk-width-1-1.uk-margin
-                  .uk-text-bold
-                    Funding streams
-                    %span.uk-text-small
-                      = surround '(', ')' do
-                        = link_to 'All', params.merge(:funding_stream => nil)
-                  - Grant.where('funder_id = ?', @funder).uniq.pluck(:funding_stream).each do |stream|
-                    = link_to stream, params.merge(:funding_stream => stream), class: 'uk-button uk-button-primary uk-button-mini'
-              - if Grant.where('funder_id = ?', @funder).any?
-                .uk-width-1-1.uk-margin
-                  .uk-text-bold Funding frequency
-                  %span.uk-text-primary.uk-text-bold= funding_frequency(@funder, @years_ago, @funding_stream)
-                  times, in
-                  = Date.today.year - @years_ago
-              - if @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).any?
-                .uk-width-1-1.uk-margin
-                  .uk-text-bold Application process
-                  - @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).first.application_processes.each do |p|
-                    .uk-button.uk-button-primary.uk-button-mini= p.label
-              - if @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).any?
-                .uk-width-1-1.uk-margin
-                  .uk-text-bold Application support
-                  - @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).first.application_supports.each do |s|
-                    .uk-button.uk-button-primary.uk-button-mini= s.label
-              - if @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).any?
-                .uk-width-1-1.uk-margin
-                  .uk-text-bold Level of non-financial support
-                  .uk-button.uk-button-primary.uk-button-mini
-                    = @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).first.non_financial_support
-              - if @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).any?
-                .uk-width-1-1.uk-margin
-                  .uk-text-bold Reporting requirements
-                  - @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).first.reporting_requirements.each do |s|
-                    .uk-button.uk-button-primary.uk-button-mini= s.label
-
-          .uk-width-medium-2-3.uk-float-left.uk-margin
-            %h2.chart-responsive-margin.uk-margin-bottom-remove Overview
-            = render partial: 'recipients/charts/overview/grants_size'
-
-          .uk-width-medium-2-3.uk-float-left
-            = render partial: 'recipients/charts/overview/grants_duration'
+        = render partial: 'recipients/tabs/overview'
 
       .uk-width-1-1.uk-animation-fade
-        .uk-grid
+        = render partial: 'recipients/tabs/organisation'
 
-          .uk-width-medium-1-3.uk-float-right
-            .uk-panel.uk-panel-box.uk-panel-box-primary
-              - if @recipient.profiles.pluck(:year).include?(Date.today.year - @years_ago)
-                .uk-width-1-1.uk-margin
-                  .uk-text-bold Your location
-                  .uk-text-primary
-                    - @recipient.profiles.where('year = ?', (Date.today.year - @years_ago)).first.districts.each do |d|
-                      .uk-button.uk-button-primary.uk-button-mini= d.label
-                  - years_ago_result = Date.today.year - @years_ago
-                  - if @funder.grants.pluck(:country).any?
-                    %table.uk-table.uk-table-condensed
-                      %caption= Date.today.year - @years_ago
-                      %thead
-                        %tr
-                          %th Country
-                          %th Grants
-                      - grants_location(@funder, @funding_stream).each do |k, v|
-                        %tbody
-                          %tr
-                            %td= k
-                            %td= v
-              - else
-                Hey! You don't have a profile for
-                = succeed '.' do
-                  = Date.today.year - @years_ago
-                Why not complete one
-                %span.uk-text-bold
-                  = link_to 'here', new_recipient_profile_path(@recipient)
+      .uk-width-1-1.uk-animation-fade
+        = render partial: 'recipients/tabs/beneficiaries'
 
-          .uk-width-medium-2-3.uk-float-left.uk-margin
-            %h2.chart-responsive-margin.uk-margin-bottom-remove Organisation
-            = render partial: 'recipients/charts/organisation/grants_location'
+      .uk-width-1-1.uk-animation-fade
+        = render partial: 'recipients/tabs/team'
 
-          .uk-width-1-1
-            .uk-grid
-
-              .uk-width-medium-1-3.uk-float-right
-                - if @recipient.profiles.pluck(:year).include?(Date.today.year - @years_ago)
-                  .uk-panel.uk-panel-box.uk-panel-box-primary
-                    .uk-width-1-1.uk-margin
-                      .uk-text-bold Your age
-                      - age = ((Date.today - @recipient.founded_on) / 365).to_f.round(1)
-                      :javascript
-                        window.age = '#{age}';
-                      .uk-text-primary
-                        %span.uk-text-bold= age
-                        years from founding
-                      - if @recipient.registered_on?
-                        .uk-text-primary
-                          %span.uk-text-bold= ((Date.today - @recipient.registered_on) / 365).to_f.round(1)
-                          years from registration
-
-              .uk-width-medium-2-3.uk-float-left
-                = render partial: 'recipients/charts/organisation/recipient_age'
-
-          .uk-width-1-1.uk-margin-top
-            .uk-grid
-
-              .uk-width-medium-1-3.uk-float-right
-                - if @recipient.profiles.pluck(:year).include?(Date.today.year - @years_ago)
-                  .uk-panel.uk-panel-box.uk-panel-box-primary
-                    .uk-width-1-1.uk-margin
-                      .uk-text-bold Your income
-                      - income = @recipient.profiles.where('year = ?', (Date.today.year - @years_ago)).first.income
-                      :javascript
-                        window.income = '#{income}';
-                      .uk-text-primary
-                        %span.uk-text-bold= number_to_currency(@recipient.profiles.where('year = ?', (Date.today.year - @years_ago)).first.income, unit: '£', precision: 0)
-                        in
-                        = Date.today.year - @years_ago
-
-              .uk-width-medium-2-3.uk-float-left
-                = render partial: 'recipients/charts/organisation/recipient_income'
+      .uk-width-1-1.uk-animation-fade
+        = render partial: 'recipients/tabs/work'
