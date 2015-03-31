@@ -1,17 +1,28 @@
 = search_form_for @search, url: recipient_dashboard_path do |f|
-  = f.label "Name"
-  = f.input :name_cont, :placeholder => "name contains..."
+  %strong= f.label "Funder name"
+  = f.input :name_cont, :placeholder => "e.g. Big Lottery Fund"
   %br/
-  = f.label "Application Process"
-  = f.input :funder_attributes_application_process_eq, :as => :select, :collection => FunderAttributes.application_process_options_for_select, :include_blank => true
+  -# = f.label "Application Process"
+  -# = f.input :funder_attributes_application_process_eq, :as => :select, :collection => FunderAttributes.application_process_options_for_select, :include_blank => true
+  -# %br/
+  -# = f.label "Funding Type"
+  = f.hidden_field :funder_attributes_year_eq, :value => "2014"
+  %strong Level of non-financial support
+  = f.input :funder_attributes_non_financial_support_eq, :as => :select, :collection => FunderAttribute::NON_FINANCIAL_SUPPORT, :include_blank => true
   %br/
-  = f.label "Funding Type"
-  = f.input :funder_attributes_funding_type_eq, :as => :select, :collection => FunderAttributes.funding_type_options_for_select, :include_blank => true
+  %strong Number of grants given a year
+  %br/
+  = f.label "FROM"
+  = f.input :funder_attributes_grant_count_gt, :placeholder => "e.g. 0"
+  = f.label "TO"
+  = f.input :funder_attributes_grant_count_lt, :placeholder => "e.g. 200"
   %br/
   = f.submit "Filter", :class => "uk-button uk-button-primary"
-  %h4 Sort By:
+  %br/
+  %br/
+  %strong Sort By:
   = sort_link @search, :name, 'Name', default_order: :desc
   \|
-  = sort_link @search, :funder_attributes_application_process
-  \|
-  = sort_link @search, :funder_attributes_funding_type
+  = sort_link @search, :funder_attributes_grant_count
+  -# \|
+  -# = sort_link @search, :funder_attributes_funding_type

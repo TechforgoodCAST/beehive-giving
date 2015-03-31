@@ -178,7 +178,7 @@ $(document).ready ->
       resize: true
       hideHover: 'auto'
       hoverCallback: (index, options, content, row) ->
-                      return '<div class="morris-hover-row-label">' + 'Funding given in ' + options.dateFormat(row.target) + '</div><div>Funding size</div><span>Max: </span><b style="color: ' + options.lineColors[2] + '">' + '£' + row.maximum.toLocaleString() + ' </b></br><span>Avg: </span><b style="color: ' + options.lineColors[0] + '">' + '£' + row.average.toLocaleString() + ' </b></br><span>Min: </span><b style="color: ' + options.lineColors[1] + '">' + '£' + row.minimum.toLocaleString() + ' </b></br><span>No. of awards: </span>' + row.count
+                      return '<div class="morris-hover-row-label">' + row.target + '</div><span>2014: </span><b style="color: ' + options.barColors[0] + '">' + row["2014"] + '%</b> of funded organisations</br><span>2013: </span><b style="color: ' + options.barColors[1] + '">' + row["2013"] + '%</b> of funded organisations</br>'
 
 $(document).ready ->
   if $('#beneficiary_age').length
@@ -192,7 +192,7 @@ $(document).ready ->
       ],
       xkey: 'y'
       ykeys: ['b', 'a']
-      labels: ['Max.', 'Min.']
+      labels: ['Max', 'Min']
       xLabels: 'month'
       postUnits: ' years old'
       lineColors: ['#F7BA0E', '#ccc']
@@ -248,7 +248,7 @@ $(document).ready ->
       ],
       xkey: 'y'
       ykeys: ['a', 'b', 'c']
-      labels: ['Min.', 'Avg.', 'Max.']
+      labels: ['Min', 'Avg', 'Max']
       xLabels: 'month'
       postUnits: ' people'
       lineColors: ['#bbb', '#F7BA0E', '#bbb']
@@ -277,7 +277,7 @@ $(document).ready ->
       ],
       xkey: 'y'
       ykeys: ['a', 'b', 'c']
-      labels: ['Min.', 'Avg.', 'Max.']
+      labels: ['Min', 'Avg', 'Max']
       xLabels: 'month'
       postUnits: ' people'
       lineColors: ['#bbb', '#F7BA0E', '#bbb']

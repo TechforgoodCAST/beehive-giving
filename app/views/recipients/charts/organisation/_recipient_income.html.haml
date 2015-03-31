@@ -5,7 +5,11 @@
 
   - if @funder.name == 'The Foundation' && Date.today.year - @years_ago != 2012
     .uk-panel-badge.uk-badge= funding_stream_label
-    #recipient_income{ data: {grants: static_recipient_income_data(@years_ago).to_json} }
+    - if has_profile_for_year?
+      #recipient_income{ data: {grants: static_recipient_income_data(@years_ago).to_json} }
+    - else
+      .uk-panel.uk-panel-box
+        = profile_missing
 
   - else
     = data_progress(@funder)

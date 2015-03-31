@@ -4,8 +4,8 @@
     .uk-grid
 
       .uk-width-medium-1-3.uk-float-right
-        .uk-panel.uk-panel-box.uk-panel-box-primary
-          - if has_profile_for_year?
+        - if has_profile_for_year?
+          .uk-panel.uk-panel-box.uk-panel-box-primary
             :javascript
               window.recipient_staff = '#{@recipient.profiles.where('year = ?', (Date.today.year - @years_ago)).first.staff_count}';
             .uk-width-1-1
@@ -14,8 +14,6 @@
                 %span.uk-text-bold= @recipient.profiles.where('year = ?', (Date.today.year - @years_ago)).first.staff_count
                 in
                 = Date.today.year - @years_ago
-          - else
-            = profile_missing
 
       .uk-width-medium-2-3.uk-float-left.uk-margin
         %h2.chart-responsive-margin.uk-margin-bottom-remove Team
@@ -25,8 +23,8 @@
     .uk-grid
 
       .uk-width-medium-1-3.uk-float-right
-        .uk-panel.uk-panel-box.uk-panel-box-primary
-          - if has_profile_for_year?
+        - if has_profile_for_year?
+          .uk-panel.uk-panel-box.uk-panel-box-primary
             :javascript
               window.recipient_volunteers = '#{@recipient.profiles.where('year = ?', (Date.today.year - @years_ago)).first.volunteer_count}';
             .uk-width-1-1
@@ -35,8 +33,6 @@
                 %span.uk-text-bold= @recipient.profiles.where('year = ?', (Date.today.year - @years_ago)).first.volunteer_count
                 in
                 = Date.today.year - @years_ago
-          - else
-            = profile_missing
 
       .uk-width-medium-2-3.uk-float-left.uk-margin
         = render partial: 'recipients/charts/team/recipient_volunteers'

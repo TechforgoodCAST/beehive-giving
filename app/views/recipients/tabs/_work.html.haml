@@ -4,15 +4,13 @@
     .uk-grid
 
       .uk-width-medium-1-3.uk-float-right
-        .uk-panel.uk-panel-box.uk-panel-box-primary
-          - if has_profile_for_year?
+        - if has_profile_for_year?
+          .uk-panel.uk-panel-box.uk-panel-box-primary
             .uk-width-1-1.uk-margin
               .uk-text-bold How you implement your work
               .uk-text-primary
                 - @recipient.profiles.where('year = ?', (Date.today.year - @years_ago)).first.implementations.each do |i|
                   .uk-button.uk-button-primary.uk-button-mini= i.label
-          - else
-            = profile_missing
 
       .uk-width-medium-2-3.uk-float-left.uk-margin
         %h2.chart-responsive-margin.uk-margin-bottom-remove Work
@@ -22,16 +20,14 @@
     .uk-grid
 
       .uk-width-medium-1-3.uk-float-right
-        .uk-panel.uk-panel-box.uk-panel-box-primary
-          - if has_profile_for_year?
+        - if has_profile_for_year?
+          .uk-panel.uk-panel-box.uk-panel-box-primary
             .uk-width-1-1.uk-margin
               .uk-text-bold What you deliver
               .uk-text-primary
                 %span.uk-text-bold= @recipient.profiles.where('year = ?', (Date.today.year - @years_ago)).first.goods_services
                 in
                 = Date.today.year - @years_ago
-          - else
-            = profile_missing
 
       .uk-width-medium-2-3.uk-float-left.uk-margin
         = render partial: 'recipients/charts/work/recipient_goods_or_services'
@@ -40,16 +36,14 @@
     .uk-grid
 
       .uk-width-medium-1-3.uk-float-right
-        .uk-panel.uk-panel-box.uk-panel-box-primary
-          - if has_profile_for_year?
+        - if has_profile_for_year?
+          .uk-panel.uk-panel-box.uk-panel-box-primary
             .uk-width-1-1.uk-margin
               .uk-text-bold What you sell
               .uk-text-primary
                 %span.uk-text-bold= @recipient.profiles.where('year = ?', (Date.today.year - @years_ago)).first.who_pays
                 in
                 = Date.today.year - @years_ago
-          - else
-            = profile_missing
 
       .uk-width-medium-2-3.uk-float-left.uk-margin
         = render partial: 'recipients/charts/work/recipient_sells'

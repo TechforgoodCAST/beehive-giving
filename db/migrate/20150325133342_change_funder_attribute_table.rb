@@ -10,6 +10,7 @@ class ChangeFunderAttributeTable < ActiveRecord::Migration
     remove_column :funder_attributes, :next_deadline
     remove_column :funder_attributes, :application_process
     remove_column :funder_attributes, :funding_round_frequency
+    remove_column :funder_attributes, :funding_streams
 
     create_table :application_processes do |t|
       t.string :label
@@ -56,6 +57,7 @@ class ChangeFunderAttributeTable < ActiveRecord::Migration
     add_column :funder_attributes, :next_deadline, :date
     add_column :funder_attributes, :application_process, :integer
     add_column :funder_attributes, :funding_round_frequency, :integer
+    add_column :funder_attributes, :funding_streams, :integer
 
     drop_table :application_processes
     drop_table :application_supports

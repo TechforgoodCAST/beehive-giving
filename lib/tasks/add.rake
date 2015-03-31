@@ -61,7 +61,7 @@ namespace :import do
         :end_on => row['end_on'],
         :attention_on => row['attention_on'],
         :applied_on => row['applied_on'],
-        :country => row['grant_country']
+        :country => row['grant_country_label']
       }
 
       grant = Grant.new(grant_values)

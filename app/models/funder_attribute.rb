@@ -13,7 +13,7 @@ class FunderAttribute < ActiveRecord::Base
   validates :funder_id, :year, :grant_count, :non_financial_support,
   :application_processes, :application_supports, :reporting_requirements, presence: true
   validates :grant_count, :application_count, :enquiry_count, numericality: { allow_blank: true, only_integer: true, greater_than_or_equal_to: 0 }
-  validates :year, uniqueness: true
+  validates :year, uniqueness: {scope: :funder_id, message: 'only one is allowed per year'}
 
   def grant_count
     self.grant_count = self.funder.grants.where("extract(year FROM approved_on) = ?", self.year).count if self.funder

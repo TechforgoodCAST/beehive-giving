@@ -45,6 +45,7 @@ ActiveAdmin.register Grant do
       row :approved_on
       row :start_on
       row :end_on
+      row :country
     end
   end
 
@@ -63,6 +64,7 @@ ActiveAdmin.register Grant do
       f.input :approved_on
       f.input :start_on
       f.input :end_on
+      f.input :country
     end
     f.actions
   end

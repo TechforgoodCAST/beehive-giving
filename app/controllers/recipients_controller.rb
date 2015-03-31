@@ -58,7 +58,7 @@ class RecipientsController < ApplicationController
     if params[:years_ago].present?
       @years_ago = params[:years_ago].to_i
     else
-      @years_ago = 2
+      @years_ago = 1
     end
   end
 
