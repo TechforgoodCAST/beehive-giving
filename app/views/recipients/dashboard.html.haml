@@ -2,7 +2,7 @@
   .uk-grid.uk-margin
     .uk-width-1-1.uk-margin
 
-      - if current_user.sign_in_count < 3
+      - if current_user.sign_in_count == 1
         .uk-alert{'data-uk-alert' => ''}
           %a.uk-alert-close.uk-close
           %p.uk-text-large Welcome to Beehive!

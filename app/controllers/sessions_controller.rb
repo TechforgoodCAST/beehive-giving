@@ -32,7 +32,7 @@ class SessionsController < ApplicationController
   end
 
   def sign_in_metrics
-    current_user.increment(:sign_in_count)
+    current_user.increment!(:sign_in_count)
     current_user.update_attribute(:last_seen, Time.now)
   end
 
