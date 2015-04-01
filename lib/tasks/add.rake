@@ -6,13 +6,14 @@ namespace :import do
   desc "Import grants data from file"
   task :add => :environment do
 
+    require 'open-uri'
     require 'csv'
 
     @messages = []
     @filename = ENV['FILE']
     @skip_validation = ENV['SKIP_VALIDATION']
 
-    CSV.foreach(@filename, :headers => true, encoding:'iso-8859-1:utf-8') do |row|
+    CSV.parse(open(@filename).read, :headers => true, encoding:'iso-8859-1:utf-8') do |row|
       @find_funder = Funder.where(:name => row['funder']).first
 
       recipient_values = {
