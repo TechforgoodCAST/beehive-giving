@@ -25,6 +25,7 @@ class Profile < ActiveRecord::Base
   validates :max_age, numericality: { greater_than_or_equal_to: :min_age,
     message: 'max. age must be greater than min.age' }
 
+  # refactor
   validates :volunteer_count, numericality: { greater_than: :staff_count,
     message: 'must have at least one volunteer if no staff' }, unless: :staff_count?
   validates :staff_count, numericality: { greater_than: :volunteer_count,
@@ -32,6 +33,7 @@ class Profile < ActiveRecord::Base
 
   validates :job_role_count, :department_count, numericality: { greater_than: 0, message: 'must be at least one'}
 
+  # refactor
   validates :services_count, numericality: { greater_than: :goods_count,
     message: 'must provide at least one service if no goods' }, unless: :goods_count?
   validates :goods_count, numericality: { greater_than: :services_count,

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150312091012) do
+ActiveRecord::Schema.define(version: 20150327165154) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,28 @@ ActiveRecord::Schema.define(version: 20150312091012) do
 
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "application_processes", force: true do |t|
+    t.string   "label"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "application_processes_funder_attributes", force: true do |t|
+    t.integer "funder_attribute_id"
+    t.integer "application_process_id"
+  end
+
+  create_table "application_supports", force: true do |t|
+    t.string   "label"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "application_supports_funder_attributes", force: true do |t|
+    t.integer "funder_attribute_id"
+    t.integer "application_support_id"
+  end
 
   create_table "beneficiaries", force: true do |t|
     t.string   "label"
@@ -88,8 +110,11 @@ ActiveRecord::Schema.define(version: 20150312091012) do
     t.integer  "funder_id"
     t.integer  "recipient_id"
     t.boolean  "data_requested"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.boolean  "request_amount_awarded"
+    t.boolean  "request_funding_dates"
+    t.boolean  "request_funding_countries"
   end
 
   create_table "feedbacks", force: true do |t|
@@ -103,14 +128,19 @@ ActiveRecord::Schema.define(version: 20150312091012) do
   end
 
   create_table "funder_attributes", force: true do |t|
-    t.integer  "application_process"
-    t.date     "next_deadline"
-    t.integer  "funding_round_frequency"
-    t.integer  "funding_streams"
-    t.integer  "funding_type"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "funder_id"
+    t.integer  "year"
+    t.integer  "grant_count"
+    t.integer  "application_count"
+    t.integer  "enquiry_count"
+    t.string   "non_financial_support"
+  end
+
+  create_table "funder_attributes_reporting_requirements", force: true do |t|
+    t.integer "funder_attribute_id"
+    t.integer "reporting_requirement_id"
   end
 
   create_table "grants", force: true do |t|
@@ -127,8 +157,13 @@ ActiveRecord::Schema.define(version: 20150312091012) do
     t.date     "end_on"
     t.date     "attention_on"
     t.date     "applied_on"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+    t.integer  "days_from_attention_to_applied"
+    t.integer  "days_from_applied_to_approved"
+    t.integer  "days_form_approval_to_start"
+    t.integer  "days_from_start_to_end"
+    t.string   "country"
   end
 
   create_table "implementations", force: true do |t|
@@ -200,6 +235,12 @@ ActiveRecord::Schema.define(version: 20150312091012) do
     t.integer  "funder_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "reporting_requirements", force: true do |t|
+    t.string   "label"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: true do |t|

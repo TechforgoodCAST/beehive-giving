@@ -1,0 +1,70 @@
+.uk-grid
+
+  .uk-width-medium-1-3.uk-float-right
+    .uk-panel.uk-panel-box.uk-panel-box-primary
+      - if has_profile_for_year?
+        .uk-width-1-1.uk-margin
+          .uk-text-bold Your location
+          .uk-text-primary
+            - @recipient.profiles.where('year = ?', (Date.today.year - @years_ago)).first.districts.each do |d|
+              .uk-button.uk-button-primary.uk-button-mini= d.label
+          - years_ago_result = Date.today.year - @years_ago
+          - if @funder.grants.pluck(:country).any?
+            %table.uk-table.uk-table-condensed
+              %caption= Date.today.year - @years_ago
+              %thead
+                %tr
+                  %th Country
+                  %th Grants
+              - grants_location(@funder, @funding_stream).each do |k, v|
+                %tbody
+                  %tr
+                    %td= k
+                    %td= v
+      - else
+        = profile_missing
+
+  .uk-width-medium-2-3.uk-float-left.uk-margin
+    %h2.chart-responsive-margin.uk-margin-bottom-remove Organisation
+    = render partial: 'recipients/charts/organisation/grants_location'
+
+  .uk-width-1-1
+    .uk-grid
+
+      .uk-width-medium-1-3.uk-float-right
+        - if has_profile_for_year?
+          .uk-panel.uk-panel-box.uk-panel-box-primary
+            .uk-width-1-1.uk-margin
+              .uk-text-bold Your age
+              - age = ((Date.today - @recipient.founded_on) / 365).to_f.round(1)
+              :javascript
+                window.age = '#{age}';
+              .uk-text-primary
+                %span.uk-text-bold= age
+                years from founding
+              - if @recipient.registered_on?
+                .uk-text-primary
+                  %span.uk-text-bold= ((Date.today - @recipient.registered_on) / 365).to_f.round(1)
+                  years from registration
+
+      .uk-width-medium-2-3.uk-float-left
+        = render partial: 'recipients/charts/organisation/recipient_age'
+
+  .uk-width-1-1.uk-margin-top
+    .uk-grid
+
+      .uk-width-medium-1-3.uk-float-right
+        - if has_profile_for_year?
+          .uk-panel.uk-panel-box.uk-panel-box-primary
+            .uk-width-1-1.uk-margin
+              .uk-text-bold Your income
+              - income = @recipient.profiles.where('year = ?', (Date.today.year - @years_ago)).first.income
+              :javascript
+                window.income = '#{income}';
+              .uk-text-primary
+                %span.uk-text-bold= number_to_currency(@recipient.profiles.where('year = ?', (Date.today.year - @years_ago)).first.income, unit: '£', precision: 0)
+                in
+                = Date.today.year - @years_ago
+
+      .uk-width-medium-2-3.uk-float-left
+        = render partial: 'recipients/charts/organisation/recipient_income'

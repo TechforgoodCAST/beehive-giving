@@ -90,8 +90,6 @@
   .uk-width-medium-1-2.uk-margin-bottom
     %label.uk-form-label
       Income
-      = surround '(', ')' do
-        = Date.today.year
     .uk-form-controls
       = f.input :income, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :income, class: 'uk-text-small uk-text-warning'
@@ -107,8 +105,6 @@
   .uk-width-medium-1-2.uk-margin-bottom
     %label.uk-form-label
       Expenditure
-      = surround '(', ')' do
-        = Date.today.year
     .uk-form-controls
       = f.input :expenditure, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :expenditure, class: 'uk-text-small uk-text-warning'
@@ -164,9 +160,7 @@
 
   .uk-width-medium-2-3.uk-margin-bottom
     %label.uk-form-label
-      How many people did your service(s) benefit in
-      = succeed '?' do
-        = Date.today.year
+      How many people did your service(s) benefit?
       %a{"data-uk-toggle" => "{target:'#beneficiaries_count_hint'}"}
         %i.uk-icon-question-circle
     = f.hint :beneficiaries_count, class: 'uk-text-small uk-hidden', id: 'beneficiaries_count_hint'
@@ -185,9 +179,7 @@
 
   .uk-width-medium-2-3.uk-margin-bottom
     %label.uk-form-label
-      How many product(s) did you deliver in
-      = succeed '?' do
-        = Date.today.year
+      How many product(s) did you deliver?
       %a{"data-uk-toggle" => "{target:'#units_count_hint'}"}
         %i.uk-icon-question-circle
     = f.hint :units_count, class: 'uk-text-small uk-hidden', id: 'units_count_hint'

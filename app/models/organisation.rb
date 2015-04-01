@@ -32,10 +32,10 @@ class Organisation < ActiveRecord::Base
 
   validates :slug, uniqueness: true, presence: true
 
-  validates :charity_number, :company_number, uniqueness: true, if: :registered?, allow_nil: true, allow_blank: true
+  validates :charity_number, :company_number, uniqueness: {:on => [:create]}, if: :registered?, allow_nil: true, allow_blank: true
 
-  validate :founded_on_before_registered_on, if: :registered?
-  validate :charity_or_company_number_exists, if: :registered?
+  validate :founded_on_before_registered_on, if: :registered?, unless: :skip_validation
+  validate :charity_or_company_number_exists, if: :registered?, unless: :skip_validation
 
   before_validation :set_slug, unless: :slug
 

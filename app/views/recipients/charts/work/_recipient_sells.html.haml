@@ -1,0 +1,15 @@
+.uk-panel.chart-responsive-margin
+  .uk-panel-title
+    What funded organisations sell
+    .uk-text-small= funding_period if @funder.grants.any?
+
+  - if @funder.name == 'The Foundation' && Date.today.year - @years_ago != 2012
+    .uk-panel-badge.uk-badge= funding_stream_label
+    - if has_profile_for_year?
+      #recipient_sells
+    - else
+      .uk-panel.uk-panel-box
+        = profile_missing
+
+  - else
+    = data_progress(@funder)

@@ -2,10 +2,22 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
-#funder_time, #funder_stages, #grants_size, #grants_location, #recipient_age, #recipient_income, #beneficiaries_age, #beneficiaries_gender,
-#beneficiaries_focus, #recipient_staff, #recipient_volunteers, #recipient_implement,
-#recipient_goods_or_services, #recipient_sells {
+#funder_time, #grants_size,
+#recipient_age, #recipient_income,
+#beneficiary_target, #beneficiary_age, #beneficiary_gender,
+#recipient_staff, #recipient_volunteers,
+#recipient_implement, #recipient_goods_or_services, #recipient_sells {
+  height: 300px;
+}
+
+#success_rate {
   height: 200px;
+}
+
+.chart-responsive-margin {
+  @media (max-width: 959px) {
+    margin: 0 10px;
+  }
 }
 
 .radio {

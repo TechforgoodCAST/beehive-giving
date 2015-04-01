@@ -1,230 +1,108 @@
-.uk-container.uk-container-center
-  .uk-grid
+.uk-width-1-1.uk-hidden-large
+  %ul.uk-tab{"data-uk-tab" => "{connect:'#tab-content'}", "data-uk-sticky" => "{top:42}"}
+    %li.uk-width-1-1
+      %a{:href => ""} Overview
+    %li
+      %a{:href => ""} Organisation
+    %li
+      %a{:href => ""} Beneficiaries
+    %li
+      %a{:href => ""} Team
+    %li
+      %a{:href => ""} Work
+    %li.uk-tab-responsive.uk-active.uk-hidden
+      .uk-dropdown
+        %ul.uk-nav.uk-nav-dropdown
 
-    .uk-width-1-1
-      - if current_user.sign_in_count < 2
-        .uk-alert{'data-uk-alert' => ''}
-          %a.uk-alert-close.uk-close
-          %p.uk-text-large Now that's a lot of data
-          %o On this page you can explore a funders previous giving in detail. You can see charts detailing the different characteristics of previously funded organisations, and contrast them against your own organisation. Some funders will have lots of information available, whilst others will just have the basics. So by using Beehive you're helping to improve the quality of data in the non-profit sector.
-          %p We're currently only able to present this data in a basic way, though we're working hard to build cutting edge technology to make sense of it all and present it in a useful and easy to understand way.
-          %p
-            Remember, just drop us an
-            = link_to 'email', 'mailto:support@beehivegiving.org'
-            if you get stuck or have any feedback.
+.uk-grid.uk-grid-small
+  .uk-width-1-4.uk-hidden-small.uk-hidden-medium
+    .uk-width-1-1{"data-uk-sticky" => "{top:42}"}
+      .uk-panel.uk-panel-box{style: "padding-top: 0;"}
+        %ul.uk-nav.uk-nav-side
 
-      .uk-alert.uk-animation-slide-top{'data-uk-alert' => ''}
-        %a.uk-alert-close.uk-close
+          %li.uk-parent{"data-uk-dropdown" => "{mode:'click'}"}
+            .uk-dropdown{style: 'top: -5px; left: 100%; padding-bottom: 0;'}
+              %ul.uk-nav.uk-nav-side#padding-remove
+                %li.uk-nav-header
+                  Unlocked funders
+                - @recipient.unlocked_funders.each do |funder|
+                  %li
+                    = link_to funder.name, recipient_comparison_path(funder), style: 'padding: 7px 15px;'
+                -# %a.uk-button.uk-button-large.uk-button-primary.uk-width-1-1{style: 'color: #fff;'}
+                -#   %i.uk-icon-lock
+                -#     Unlock more...
+            %a.uk-text-center.uk-vertical-align{style: 'height: 75px;'}
+              .uk-vertical-align-middle
+                = image_tag "logos/#{@funder.slug}-logo.png", alt: "#{@funder.name}"
+
+        %ul.uk-nav.uk-nav-side{"data-uk-tab" => "{connect:'#tab-content'}"}
+          %li
+            %a
+              %span.uk-text-bold Overview
+              %div
+                Summery details of
+                = @funder.name.pluralize
+                funding.
+          %li
+            %a
+              %span.uk-text-bold Organisation
+              %div Location, age, and income of funded organisations.
+          %li
+            %a
+              %span.uk-text-bold Beneficiaries
+              %div Age range, gender, and state of the people funded organisations support.
+          %li
+            %a
+              %span.uk-text-bold Team
+              %div Number of volunteers, staff, and departments of funded organisations.
+          %li
+            %a
+              %span.uk-text-bold Work
+              %div How funded organisations implement their work.
+
+        .uk-text-bold.uk-margin-top View data for:
+        .uk-button-group.uk-width-1-1.uk-margin{"data-uk-button-radio" => ""}
+          = link_to '1 year', params.merge(:years_ago => 1), class: @years_ago == 1 ? 'uk-button uk-active uk-width-1-3' : 'uk-button uk-width-1-3'
+          = link_to '2 years', params.merge(:years_ago => 2), class: @years_ago == 2 ? 'uk-button uk-active uk-width-1-3' : 'uk-button uk-width-1-3'
+          = link_to '3 years', params.merge(:years_ago => 3), class: @years_ago == 3 ? 'uk-button uk-active uk-width-1-3' : 'uk-button uk-width-1-3'
+        .uk-text-bold Viewing funding stream:
+        %ul.uk-nav.uk-nav-side
+          %li.uk-parent{"data-uk-dropdown" => "{mode:'click'}"}
+            .uk-dropdown{style: 'top: 50%; left: 100%; padding-bottom: 0; padding-top: 0;'}
+              %ul.uk-nav.uk-nav-side#padding-remove
+                %li
+                  %li
+                    = link_to 'All', params.merge(:funding_stream => nil), style: 'padding: 7px 15px;'
+                - Grant.where('funder_id = ?', @funder).uniq.pluck(:funding_stream).each do |stream|
+                  %li
+                    = link_to stream, params.merge(:funding_stream => stream), style: 'padding: 7px 15px;'
+            %a
+              - unless @funding_stream.nil?
+                = @funding_stream
+              - else
+                All
+
+      .uk-alert{'data-uk-alert' => ''}
         %p
-          Tip: Hover over the points to find out more about each
-          = @funder.name
-          grants round.
+          %span.uk-text-bold Tip:
+          Hover over the charts to find out more about each of
+          = @funder.name.pluralize
+          funding rounds.
 
-%nav#bg{"data-uk-sticky" => "{top:42}", style: 'border-bottom: solid #dddddd 1px; height: 36px'}
-  .uk-container.uk-container-center
-    .uk-grid
-      .uk-width-2-3
-        %ul.uk-tab.uk-text-center{"data-uk-tab" => "{connect:'#tab-content'}"}
-          %li.uk-width-medium-1-5.uk-active
-            %a{:href => ""} Overview
-          %li.uk-width-medium-1-5
-            %a{:href => ""} Organisation
-          %li.uk-width-medium-1-5
-            %a{:href => ""} Beneficiaries
-          %li.uk-width-medium-1-5
-            %a{:href => ""} Team
-          %li.uk-width-medium-1-5
-            %a{:href => ""} Work
-          %li.uk-tab-responsive.uk-active.uk-hidden
-            %a Tab
-            .uk-dropdown.uk-dropdown-small
-              %ul.uk-nav.uk-nav-dropdown
-      .uk-width-1-3.uk-text-right
-        .uk-vertical-align{:style => "height: 36px;"}
-          .uk-vertical-align-middle
-            .uk-text-muted.uk-text-truncate
-              Viewing:
-              = @funder.name
+  .uk-width-small-1-1.uk-medium-1-1.uk-width-large-3-4
+    #tab-content.uk-switcher
 
-.uk-container.uk-container-center
-  .uk-width-1-1#tab-content.uk-switcher
+      .uk-width-1-1.uk-animation-fade
+        = render partial: 'recipients/tabs/overview'
 
-    .uk-width-medium-1-1.uk-animation-fade.uk-active
-      .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
-        .uk-width-large-1-3.uk-margin-top
-          .uk-panel
-            .uk-panel-title
-              %h4 Time from enquiry to funding
-            #funder_time
-            %dl.uk-description-list-line
-              %dt Application process
-              %dd.uk-text-large.uk-text-primary Invite only
-              %dt Next application deadline
-              %dd.uk-text-large.uk-text-primary May 2015
-              %dt Funding round frequency
-              %dd.uk-text-large.uk-text-primary Every 6 months
-              %dt Number of funding streams
-              %dd.uk-text-large.uk-text-primary 1 funding stream
-        .uk-width-large-1-3.uk-margin-top
-          .uk-panel
-            .uk-panel-title
-              %h4 Success rates
-            #funder_stages
-            %dl.uk-description-list-line
-              %dt % of Enquiries funded in 2014
-              %dd
-                .uk-progress.uk-progress-small
-                  .uk-progress-bar.uk-text-small{:style => "width: 12%;"}
-                    .uk-text-small{:style => "position: relative; bottom: 2px;"} 12%
-              %dt % of Concept Notes funded in 2014
-              %dd
-                .uk-progress.uk-progress-small
-                  .uk-progress-bar{:style => "width: 28%;"}
-                    .uk-text-small{:style => "position: relative; bottom: 2px;"} 28%
-              %dt % of Applications funded in 2014
-              %dd
-                .uk-progress.uk-progress-small
-                  .uk-progress-bar{:style => "width: 62%;"}
-                    .uk-text-small{:style => "position: relative; bottom: 2px;"} 62%
-        .uk-width-large-1-3.uk-margin-top
-          .uk-panel
-            .uk-panel-title
-              %h4 Size of grants
-            #grants_size
-            %dl.uk-description-list-line
-              %dt Type of grants
-              %dd.uk-text-large.uk-text-primary Unrestricted
-              %dt Average grant duration 2014
-              %dd.uk-text-large.uk-text-primary 11 months 19 days
-              %dt Average grant duration 2013
-              %dd.uk-text-large.uk-text-primary 1 year 21 days
+      .uk-width-1-1.uk-animation-fade
+        = render partial: 'recipients/tabs/organisation'
 
-    .uk-width-medium-1-1.uk-animation-fade
-      .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
-        .uk-width-large-1-3.uk-margin-top
-          .uk-panel
-            .uk-panel-title
-              %h4 Location of funded organisations
-            #grants_location
-            %p You work in the following areas:
-            %ul
-            .uk-scrollable-text{style: 'height:41px;'}
-              - @recipient.profiles.first.districts.each do |d|
-                %li= d.label
-            .uk-alert
-              %o The Foundation tends to fund work in Ethiopia, Kenya, Uganda, and London in the United Kingdom.
-        .uk-width-large-1-3.uk-margin
-          .uk-panel
-            .uk-panel-title
-              %h4 Age of funded organisations
-            #recipient_age
-            %p Your age:
-            %h2.uk-text-center{ class: ('uk-text-danger' if ((Date.today - @recipient.founded_on).to_f / 356).round(1) > 3) }
-              = ((Date.today - @recipient.founded_on).to_f / 356).round(1)
-              years old
-            .uk-alert
-              %o The Foundation tends to fund organisations younger than 3 years old.
-        .uk-width-large-1-3.uk-margin
-          .uk-panel
-            .uk-panel-title
-              %h4 Income of funded organisations
-            #recipient_income
-            %p Your income:
-            %h2.uk-text-center{ class: ('uk-text-danger' if @recipient.profiles.first.income > 250000) }
-              = number_to_currency(@recipient.profiles.first.income, unit: '£', precision: 0)
-            .uk-alert
-              %o The Foundation tends to fund organisations with income less than £250,000.
+      .uk-width-1-1.uk-animation-fade
+        = render partial: 'recipients/tabs/beneficiaries'
 
-    .uk-width-medium-1-1.uk-animation-fade
-      .uk-grid
-        .uk-width-medium-2-3.uk-margin-top
-          .uk-panel-title
-            %h4 Beneficiary category of funded organisations
-          #beneficiaries_focus
-        .uk-width-medium-1-3.uk-margin
-          %p You target:
-          %ul
-          .uk-scrollable-text{style: 'height:100px;'}
-            - @recipient.profiles.first.beneficiaries.each do |b|
-              %li= b.label
-          .uk-alert
-            %o The Foundation tends to focus on Education, Unemployment, and Income Poverty.
-      %hr.uk-grid-divider.uk-margin-remove
-        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
-          .uk-width-medium-1-2.uk-margin-top
-            .uk-panel-title
-              %h4 Age range targeted by funded organisations
-            #beneficiaries_age
-            %p Your target age range:
-            .uk-grid.uk-text-center
-              .uk-width-1-2
-                %h2.uk-text-center.uk-margin-remove
-                  = @recipient.profiles.first.min_age
-                  .your-data.age
-                    Min. age:
-              .uk-width-1-2
-                %h2.uk-text-center.uk-margin-remove
-                  = @recipient.profiles.first.max_age
-                  .your-data.age
-                    Max. age:
-          .uk-width-medium-1-2.uk-margin
-            .uk-panel-title
-              %h4 Gender targeted by funded organisations
-            #beneficiaries_gender
-            %p Your target gender:
-            %h2.uk-text-center.uk-margin-remove
-              = @recipient.profiles.first.gender
+      .uk-width-1-1.uk-animation-fade
+        = render partial: 'recipients/tabs/team'
 
-    .uk-width-medium-1-1.uk-animation-fade
-      .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
-        .uk-width-medium-1-2.uk-margin-top
-          .uk-panel-title
-            %h4 Number of staff from funded organisations
-          #recipient_staff
-          %h2.uk-text-center.uk-margin-remove
-            = pluralize(@recipient.profiles.first.staff_count, 'person')
-            .your-data.staff
-              Your staff:
-          .uk-alert
-            %o The Foundation tends to fund teams with less than 17 paid members of staff.
-        .uk-width-medium-1-2.uk-margin
-          .uk-panel-title
-            %h4 Number of volunteers from funded organisations
-          #recipient_volunteers
-          %h2.uk-text-center.uk-margin-remove
-            = pluralize(@recipient.profiles.first.volunteer_count, 'person')
-            .your-data.volunteers
-              Your volunteers:
-          .uk-alert
-            %o The Foundation tends to fund teams with less than 6 volunteers.
-
-    .uk-width-medium-1-1.uk-animation-fade
-      .uk-grid
-        .uk-width-medium-2-3.uk-margin-top
-          .uk-panel-title
-            %h4 How funded organisations implement their work
-          #recipient_implement
-        .uk-width-medium-1-3.uk-margin
-          %p You implement your work with:
-          %ul
-          .uk-scrollable-text{style: 'height:100px;'}
-            - @recipient.profiles.first.implementations.each do |i|
-              %li= i.label
-      %hr.uk-grid-divider.uk-margin-remove
-        .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
-          .uk-width-medium-1-2.uk-margin-top
-            .uk-panel-title
-              %h4 Funded organisations delivery focus
-            #recipient_goods_or_services
-            %h2.uk-text-center.uk-margin-remove
-              = @recipient.profiles.first.goods_services
-              .your-data.deliver
-                You deliver:
-          .uk-width-medium-1-2.uk-margin
-            .uk-panel-title
-              %h4 What funded organisations sell
-            #recipient_sells
-            %h2.uk-text-center.uk-margin-remove
-              = @recipient.profiles.first.who_pays
-              .your-data.sell
-                You sell:
+      .uk-width-1-1.uk-animation-fade
+        = render partial: 'recipients/tabs/work'

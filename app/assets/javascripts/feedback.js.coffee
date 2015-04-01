@@ -4,8 +4,10 @@ Feedback = ((w,d) ->
 
   bindFormClose = ->
     $(document).on 'click', '.js-record-feedback-close', ->
-      d.cookie = _cookieName + "=true";
-      
+      if d.cookie.indexOf(_cookieName) == -1
+        return d.cookie = _cookieName + '=true'
+      return
+
   return { bindFormClose: bindFormClose }
 )(window, document)
 

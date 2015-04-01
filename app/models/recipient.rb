@@ -8,8 +8,8 @@ class Recipient < Organisation
     profiles.count < PROFILE_MAX_FREE_LIMIT && profiles.count > unlocked_funders.size
   end
 
-  def can_request_funder?(funder)
-    features.build(data_requested: true, funder: funder).valid?
+  def can_request_funder?(funder, request)
+    features.build("#{request}" => true, :funder => funder).valid?
   end
 
   def unlocked_funder_ids

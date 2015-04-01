@@ -1,0 +1,15 @@
+.uk-panel.chart-responsive-margin.uk-margin
+  .uk-panel-title
+    Beneficiary target of funded organisations
+    .uk-text-small= funding_period if @funder.grants.any?
+
+  - if @funder.name == 'The Foundation' && Date.today.year - @years_ago != 2012
+    .uk-panel-badge.uk-badge= funding_stream_label
+    - if has_profile_for_year?
+      #beneficiary_target{ data: {grants: static_beneficiary_target_data(@years_ago).to_json} }
+    - else
+      .uk-panel.uk-panel-box
+        = profile_missing
+
+  - else
+    = data_progress(@funder)
