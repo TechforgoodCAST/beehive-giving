@@ -6,7 +6,7 @@ module ApplicationHelper
   end
 
   def current_user_has_closed_feedback?
-    if current_user.sign_in_count < 3
+    if current_user.sign_in_count < 2
       true
     else
       cookies['_BHfeedbackClose'].present?

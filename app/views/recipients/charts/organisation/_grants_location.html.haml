@@ -5,7 +5,11 @@
 
   - if @funder.grants.pluck(:country).any?
     .uk-panel-badge.uk-badge= funding_stream_label
-    = geo_chart grants_location(@funder, @funding_stream), colors: ["#F7BA0E"], height: "350px"
+    - if has_profile_for_year?
+      = geo_chart grants_location(@funder, @funding_stream), colors: ["#F7BA0E"], height: "350px"
+    - else
+      .uk-panel.uk-panel-box
+        = profile_missing
 
   - else
     = data_not_available('request_funding_countries')

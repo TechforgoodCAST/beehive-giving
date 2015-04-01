@@ -1,50 +1,29 @@
-.uk-float-right{ class: (current_page?('/dashboard') ? 'uk-width-1-1' : 'uk-width-large-3-4') }
-  .uk-alert.uk-form.uk-form-stacked{'data-uk-alert' => ''}
-    %a.uk-float-right.uk-close-alert.js-record-feedback-close{:href => '#', :'data-uk-toggle' => "{target: '.js-feedback-form'}"}
-      %i.uk-icon-close
-    %h3.uk-margin-top-remove Let us know what you think...
-    %fieldset
+#feedback.uk-modal
+  .uk-modal-dialog
+    %a.uk-modal-close.uk-close.js-record-feedback-close
+    .uk-modal-header
+      %h2 Let us know what you think
     = simple_form_for @feedback, :url => feedback_index_path do |f|
-      .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
-        .uk-width-medium-1-2.uk-margin-bottom
+      .uk-form.uk-form-stacked
+        .uk-width-1-1.uk-margin-bottom
           %label.uk-form-label
             1. How likely is it that you would recommend Beehive to a friend or colleague?
-          .uk-grid
-            .uk-width-1-3.uk-text-left.uk-text-danger
-              Not likely at all
-            .uk-width-1-3.uk-text-center.uk-text-warning
-              Neutral
-            .uk-width-1-3.uk-text-right.uk-text-success
-              Extremely likely
-            .uk-width-1-1.uk-form-controls.uk-text-center
-              = f.input :nps, collection: (1..10), as: :radio_buttons
-        .uk-width-medium-1-2.uk-margin-bottom
+          = f.input :nps, as: :select, collection: (0..10).to_a.reverse, :label_method => lambda { |n| "#{n} #{Feedback::NPS[n]}" }, input_html: {class: 'uk-width-1-1'}
+
+        .uk-width-1-1.uk-margin-bottom
           %label.uk-form-label
             2. How would you feel if this service was taken away?
-          .uk-grid
-            .uk-width-1-3.uk-text-left.uk-text-danger
-              Very satisfied
-            .uk-width-1-3.uk-text-center.uk-text-warning
-              Neutral
-            .uk-width-1-3.uk-text-right.uk-text-success
-              Very dissatisfied
-            .uk-width-1-1.uk-form-controls.uk-text-center
-              = f.input :taken_away, collection: (1..10), as: :radio_buttons
-      .uk-grid.uk-margin-top-remove.uk-grid-divider{"data-uk-grid-match" => ""}
-        .uk-width-medium-1-2.uk-margin-bottom
+          = f.input :taken_away, as: :select, collection: (0..10).to_a.reverse, :label_method => lambda { |n| "#{n} #{Feedback::TAKEN_AWAY[n]}" }, input_html: {class: 'uk-width-1-1'}
+
+        .uk-width-1-1.uk-margin-bottom
           %label.uk-form-label
             3. Beehive informs the decisions I make around fundraising
-          .uk-grid
-            .uk-width-1-3.uk-text-left.uk-text-danger
-              Strongly disagree
-            .uk-width-1-3.uk-text-center.uk-text-warning
-              Neutral
-            .uk-width-1-3.uk-text-right.uk-text-success
-              Strongly agree
-            .uk-width-1-1.uk-form-controls.uk-text-center
-              = f.input :informs_decision, collection: (1..10), as: :radio_buttons
-        .uk-width-medium-1-2.uk-margin-bottom
+          = f.input :informs_decision, as: :select, collection: (0..10).to_a.reverse, :label_method => lambda { |n| "#{n} #{Feedback::INFORMS_DECISION[n]}" }, input_html: {class: 'uk-width-1-1'}
+
+        .uk-width-1-1.uk-margin-bottom
           %label.uk-form-label
             4. Any other feedback?
           = f.input :other, as: :text, input_html: {class: 'uk-width-1-1'}
-      = f.submit 'Submit Feedback', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'
+
+      .uk-modal-footer.uk-text-right
+        = f.submit 'Submit feedback', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'
