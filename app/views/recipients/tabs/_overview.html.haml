@@ -31,8 +31,8 @@
       - if @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).any?
         .uk-width-1-1.uk-margin
           .uk-text-bold Application process
-          - @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).first.application_processes.each do |p|
-            .uk-button.uk-button-primary.uk-button-mini= p.label
+          = application_process
+
       - if @funder.attributes.where("year = ?", (Date.today.year - @years_ago)).any?
         .uk-width-1-1.uk-margin
           .uk-text-bold Application support

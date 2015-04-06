@@ -3,7 +3,6 @@ class FunderAttribute < ActiveRecord::Base
 
   belongs_to :funder
 
-  has_and_belongs_to_many :application_processes
   has_and_belongs_to_many :application_supports
   has_and_belongs_to_many :reporting_requirements
 
@@ -11,7 +10,7 @@ class FunderAttribute < ActiveRecord::Base
   NON_FINANCIAL_SUPPORT = ['None', 'A little', 'A lot']
 
   validates :funder_id, :year, :grant_count, :non_financial_support,
-  :application_processes, :application_supports, :reporting_requirements, presence: true
+  :application_supports, :reporting_requirements, presence: true
   validates :grant_count, :application_count, :enquiry_count, numericality: { allow_blank: true, only_integer: true, greater_than_or_equal_to: 0 }
   validates :year, uniqueness: {scope: :funder_id, message: 'only one is allowed per year'}
 

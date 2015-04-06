@@ -232,4 +232,12 @@ module OrganisationsHelper
     end
   end
 
+  def application_process
+    if @funder.grants.where('open_call = ?', false).count > @funder.grants.where('open_call = ?', true).count
+      content_tag(:div, 'Invite only', class: 'uk-button uk-button-primary uk-button-mini')
+    else
+      content_tag(:div, 'Open application', class: 'uk-button uk-button-primary uk-button-mini')
+    end
+  end
+
 end
