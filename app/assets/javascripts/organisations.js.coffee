@@ -415,10 +415,3 @@ OrganisationForm = ((w, d) ->
 
 $(document).ready ->
   OrganisationForm.bindRegistrationToggle()
-
-  createStoryJS
-    type: "timeline"
-    width: "100%"
-    height: "400"
-    source: $('#time_line').data('grants')
-    embed_id: "time_line"

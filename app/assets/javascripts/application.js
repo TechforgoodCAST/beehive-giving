@@ -13,10 +13,10 @@
 //= require jquery
 //= require jquery.turbolinks
 //= require jquery_ujs
+//= require timelineJS/embed
 //= require uikit
 //= require chosen-jquery
 //= require turbolinks
-//= require timelineJS/embed
 //= require raphael
 //= require morris
 //= require_tree .
