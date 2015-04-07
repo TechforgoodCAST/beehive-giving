@@ -12,7 +12,7 @@ class Profile < ActiveRecord::Base
   GOODS_SERVICES = %w[Products Services Both]
   WHO_PAYS = %w[Products Services Both No]
 
-  validates :organisation, :districts, :beneficiaries, :implementations, presence: true
+  validates :organisation, :countries, :districts, :beneficiaries, :implementations, presence: true
 
   validates :year, :gender, :currency, :goods_services,
             :min_age, :max_age, :income, :expenditure, :volunteer_count,

@@ -12,12 +12,19 @@
     %h4.uk-text-bold Location
   .uk-width-1-1.uk-margin-top
     %label.uk-form-label
-      Where does your organisation benefit people?
+      In which countries does your organisation benefit people?
       %a{"data-uk-toggle" => "{target:'#districts_hint'}"}
         %i.uk-icon-question-circle
     = f.hint :districts, class: 'uk-text-small uk-hidden', id: 'districts_hint'
     .uk-form-controls
-      = f.association :districts, label_method: :label, value_method: :id, input_html: {class: 'chosen-select'}
+      = f.association :countries, input_html: {class: 'chosen-select'}
+      = f.error :countries, class: 'uk-text-small uk-text-warning'
+
+  .uk-width-1-1.uk-margin-top
+    %label.uk-form-label
+      In which districts does your organisation benefit people?
+    .uk-form-controls
+      = f.association :districts, collection: Country.all, as: :grouped_select, group_method: :districts, label_method: :label, value_method: :id, input_html: {multiple: true, class: 'chosen-select'}
       = f.error :districts, class: 'uk-text-small uk-text-warning'
 
   .uk-width-1-1.uk-margin-top
