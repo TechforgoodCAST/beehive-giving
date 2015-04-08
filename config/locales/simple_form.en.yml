@@ -6,18 +6,6 @@ en:
         status: 'What is the operational status of your organisation.'
         registered: 'Do you have a company and/or charity/nonprofit number?'
         registered_on: 'The date your organisation was legally registered. Leave blank if you are unregistered. '
-      profile:
-        districts: "Be sure to select all regions where your organisation has benefited people this year. Remember, you can type the name of the location to filter the list. If your country is not listed, please select 'Other' - we'll be adding more supported locations soon."
-        beneficiaries: 'Think about your typical beneficiaries, which of the following categories applies to them?'
-        goods_services: 'Products are tangible (e.g. Medicine), Services are intangible (e.g. Training)'
-        who_pays: "Please select what your organisation sells to sustain it's operation."
-        volunteer_count: 'Not including trustees.'
-        beneficiaries_count: 'Number of beneficiaries of your service(s).'
-        units_count: 'Number of units sold.'
-        beneficiaries_count_actual: "Select 'No' if figures are predicted."
-        units_count_actual: "Select 'No' if figures are predicted."
-        income_actual: "Select 'No' if figures are predicted."
-        expenditure_actual: "Select 'No' if figures are predicted."
     placeholders:
       user:
         first_name: 'First name'
@@ -27,8 +15,8 @@ en:
         password: 'Password'
         password_confirmation: 'Password Confirmation'
       profile:
-        min_age: '0'
-        max_age: '120'
+        min_age: 'e.g. 0'
+        max_age: 'e.g. 120'
         volunteer_count: '1'
         staff_count: '1'
         job_role_count: '1'

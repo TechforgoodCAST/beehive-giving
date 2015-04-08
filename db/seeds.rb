@@ -40,21 +40,40 @@ ReportingRequirement.destroy_all
 ].each do |state|
   ReportingRequirement.create(label:state)
 end
+
+# Create implementors
+Implementor.destroy_all
+[
+  "Paid staff",
+  "Volunteers",
+  "Beneficiaries",
+  "Third parties",
+  "Other"
+].each do |state|
+  Implementor.create(label:state)
+end
 #
 # # Create beneficiaries
 # Beneficiary.destroy_all
 # [
 #   "People with disabilities",
-#   "People who face challenges with their physical health",
-#   "People who face challenges with their mental health",
+#   "People with physical diseases or disorders",
+#   "People with mental diseases or disorders",
 #   "People in education",
 #   "Unemployed people",
-#   "People who face income poverty",
+#   "People with income poverty",
 #   "People from a particular ethnic background",
 #   "People affected by or involved with criminal activities",
-#   "People who face challenges with housing",
-#   "People who face challenges within their family or relationships",
-#   "Other organisations",
+#   "People with housing/shelter challenges",
+#   "People with family or relationship challenges",
+#   "People with a specific sexual orientation",
+#   "People with specific religious or spiritual beliefs",
+#   "People affected by disasters",
+#   "People with water/sanitation access challenges",
+#   "People with food access challenges",
+#   "Animals/Wildlife",
+#   "The environment",
+#   "Organisations",
 #   "Other"
 # ].each do |state|
 #   Beneficiary.create(label:state)
@@ -63,18 +82,29 @@ end
 # # Create implementations
 # Implementation.destroy_all
 # [
-#   "Staff to Beneficiary (A paid member of staff works with a beneficiary)",
-#   "Volunteer to Beneficiary (A voluntary member of staff works with a beneficiary)",
-#   "Beneficiary to Beneficiary (A beneficiary works with another beneficiary)",
-#   "Software to Beneficiary (Software for a beneficiary or workers)",
-#   "Goods to Beneficiary (Physical goods for a beneficiary or workers)",
-#   "Third party to Beneficiary (A partner agency works with a beneficiary)",
-#   "Research (Research that affects a beneficiary)",
-#   "Campaign to Beneficiary (A campaign that affects a beneficiary)"
+#   "Buildings/Facilities to Beneficiary",
+#   "Campaign to Beneficiary",
+#   "Finance to Beneficiary",
+#   "Membership to Beneficiary",
+#   "Product to Beneficiary",
+#   "Research to Beneficiary",
+#   "Service to Beneficiary",
+#   "Software to Beneficiary",
+#   "Other"
 # ].each do |state|
 #   Implementation.create(label:state)
 # end
 #
+
+# Create countries
+Country.destroy_all
+
+Country.create(:name => 'United Kingdom', :iso3 => 'GBR', :iso2 => 'GB', :numcode => 826)
+Country.create(:name => 'Ethiopia', :iso3 => 'ETH', :iso2 => 'ET', :numcode => 231)
+Country.create(:name => 'Kenya', :iso3 => 'KEN', :iso2 => 'KE', :numcode => 404)
+Country.create(:name => 'Uganda', :iso3 => 'UGA', :iso2 => 'UG', :numcode => 800)
+Country.create(:name => 'Other', :iso3 => 'N/A', :iso2 => 'NA', :numcode => 000)
+
 # # Create districts
 # District.destroy_all
 #

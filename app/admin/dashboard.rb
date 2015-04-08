@@ -62,7 +62,7 @@ ActiveAdmin.register_page "Dashboard" do
 
     div style: "float:left; width: 50%; padding: 0 20px; box-sizing: border-box;" do
       section "User Activation by week" do
-        @metric = Recipient.group_by_week(:created_at).count
+        @metric = User.group_by_week(:created_at).count
         render :partial => 'metrics/line_chart', :locals => {:metric => @metric}
       end
     end

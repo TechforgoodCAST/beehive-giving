@@ -20,34 +20,31 @@ FactoryGirl.define do
     label 'Something'
   end
 
+  factory :implementor do
+    label 'Something'
+  end
+
   factory :profile do
     year 2014
     gender 'All genders'
-    currency 'GBP (£)'
-    goods_services 'Products'
-    who_pays 'Both'
     min_age 14
     max_age 28
-    income 1
-    expenditure 1
     volunteer_count 1
     staff_count 1
-    job_role_count 1
-    department_count 1
-    goods_count 1
-    units_count 1
-    services_count 1
+    does_sell true
     beneficiaries_count 1
+    beneficiaries_count_actual true
+    income 1
+    expenditure 1
     income_actual true
     expenditure_actual true
-    beneficiaries_count_actual true
-    units_count_actual true
 
     before(:create) do |object|
-      object.update :districts => FactoryGirl.create_list(:district, 2)
-      object.update :implementations => FactoryGirl.create_list(:implementation, 2)
       object.update :countries => FactoryGirl.create_list(:country, 2)
       object.update :beneficiaries => FactoryGirl.create_list(:beneficiary, 2)
+      object.update :districts => FactoryGirl.create_list(:district, 2)
+      object.update :implementors => FactoryGirl.create_list(:implementor, 2)
+      object.update :implementations => FactoryGirl.create_list(:implementation, 2)
     end
   end
 end

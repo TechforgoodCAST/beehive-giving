@@ -68,5 +68,36 @@
 }
 
 .field_with_errors {
-  border: 1px rgb(220, 141, 153) solid;
+  border: 1px #e28327 solid;
+  border-radius: 4px;
+}
+
+#bg-color {
+  background-color: #FAFAFA;
+}
+
+#panel {
+  background: #fff;
+  border: solid 1px #EAEAEA;
+  border-bottom: solid 3px #EAEAEA;
+}
+.remove-left-padding {
+  @media (min-width: 767px) {
+    padding-left: 0 !important;
+  }
+}
+.input .integer, .input .text {
+  border-radius: 4px !important;
+}
+
+.chosen-choices {
+  border: 1px solid #ddd !important;
+  border-radius: 4px !important;
+}
+.chosen-container-multi .chosen-choices li.search-choice {
+  border: none !important;
+}
+.chosen-container-active {
+  border: 1px solid #99baca !important;
+  border-radius: 3px !important;
 }

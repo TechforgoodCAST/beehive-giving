@@ -1,12 +1,11 @@
 ActiveAdmin.register Profile do
   config.sort_order = 'created_at_asc'
 
-  permit_params :organisation_id, :year, :gender, :currency, :goods_services, :who_pays,
-  :who_buys, :min_age, :max_age, :income, :income_actual, :expenditure, :expenditure_actual,
-  :volunteer_count, :staff_count, :job_role_count, :department_count, :goods_count,
-  :beneficiaries_count, :beneficiaries_count_actual, :units_count, :units_count_actual,
-  :who_pays, :services_count,
-  beneficiary_ids: [], country_ids: [],district_ids: [],implementation_ids: []
+  permit_params :organisation_id, :year, :gender, :min_age, :max_age,
+  :income, :expenditure, :volunteer_count, :staff_count, :does_sell,
+  :beneficiaries_count, :beneficiaries_count_actual, :income_actual,
+  :expenditure_actual, beneficiary_ids: [], country_ids: [], district_ids: [],
+  implementation_ids: [], implementor_ids: []
 
   index do
     column "Organisation" do |profile|
@@ -28,10 +27,13 @@ ActiveAdmin.register Profile do
     end
     column :income_actual
     column :created_at
+    column :currency
   end
 
   filter :organisation
-  filter :districts, label: "Location", member_label: :label
+  filter :year, as: :select
+  filter :countries, label: "Country", member_label: :name
+  filter :districts, label: "District", member_label: :label
   filter :income
   filter :created_at
 
@@ -41,46 +43,52 @@ ActiveAdmin.register Profile do
       row "Organisation" do |user|
         link_to user.organisation.name, [:admin, user.organisation]
       end
-      row "Locations" do |profile|
+      row "In which countries does your organisation benefit people?" do |profile|
+        profile.countries.each do |c|
+          li c.name
+        end
+      end
+      row "In which districts does your organisation benefit people?" do |profile|
         profile.districts.each do |d|
           li d.label
         end
       end
-      row "Age (years)" do |user|
-        if user.organisation.founded_on
-          ((Date.today - user.organisation.founded_on).to_f / 356).round(1)
-        end
-      end
-      row :currency
-      row :income do |profile|
-        number_to_currency(profile.income, unit: '£', precision: 0)
-      end
-      row :income_actual
-      row :expenditure do |profile|
-        number_to_currency(profile.expenditure, unit: '£', precision: 0)
-      end
-      row :expenditure_actual
-      row "Beneficiary focus" do |profile|
+      row "Who/what does your organisation target?" do |profile|
         profile.beneficiaries.each do |b|
           li b.label
         end
       end
+      row("Which gender does your organisation target?") { |profile| profile.gender }
       row("Min. age targeted") { |profile| profile.min_age }
       row("Max. age targeted") { |profile| profile.max_age }
-      row("Gender focus") { |profile| profile.gender }
       row :staff_count
       row :volunteer_count
+      row "Who delivers your work?" do |profile|
+        profile.implementors.each do |i|
+          li i.label
+        end
+      end
       row "Implementation approach" do |profile|
         profile.implementations.each do |i|
           li i.label
         end
       end
-      row("Delivery focus") { |profile| profile.goods_services }
-      row("Sales focus") { |profile| profile.who_pays }
+      row("Do you recieve financial payment for your work?") { status_tag(profile.does_sell) }
       row("Beneficiaries impacted") { |profile| profile.beneficiaries_count }
-      row :benediciaties_count_actual
-      row("Units deliverd") { |profile| profile.units_count }
-      row :units_count_actual
+      row(:beneficiaries_count_actual) { status_tag(profile.beneficiaries_count_actual) }
+      row :income do |profile|
+        number_to_currency(profile.income, unit: '£', precision: 0)
+      end
+      row(:income_actual) { status_tag(profile.income_actual) }
+      row :expenditure do |profile|
+        number_to_currency(profile.expenditure, unit: '£', precision: 0)
+      end
+      row(:expenditure_actual) { status_tag(profile.expenditure_actual) }
+      row "Age from founding (years)" do |user|
+        if user.organisation.founded_on
+          ((Date.today - user.organisation.founded_on).to_f / 356).round(1)
+        end
+      end
     end
   end
 
@@ -88,29 +96,23 @@ ActiveAdmin.register Profile do
     f.inputs do
       f.input :organisation
       f.input :year, as: :select, collection: Profile::VALID_YEARS.map { |label| label }
-      f.input :districts, as: :select, :input_html => {:multiple => true}, member_label: :label, label: 'Where does your organisation benefit people?'
-      f.input :beneficiaries, as: :select, :input_html => {:multiple => true}, member_label: :label, label: 'Who does your organisation target?'
+      f.input :countries, input_html: {multiple: true}, member_label: :name, label: 'In which countries does your organisation benefit people?'
+      f.input :districts, input_html: {multiple: true}, member_label: :label, label: 'In which districts does your organisation benefit people?'
+      f.input :beneficiaries, input_html: {multiple: true}, member_label: :label, label: 'Who/what does your organisation target?'
       f.input :gender, collection: Profile::GENDERS.map { |label| label }
       f.input :min_age
       f.input :max_age
       f.input :volunteer_count
       f.input :staff_count
-      f.input :department_count
-      f.input :job_role_count
-      f.input :currency, collection: Profile::CURRENCY.map { |label| label }
+      f.input :implementors, input_html: {multiple: true}, member_label: :label, label: 'Who delivers your work?'
+      f.input :implementations, input_html: {multiple: true}, member_label: :label, label: 'How fo you implement your work?'
+      f.input :does_sell, label: 'Do you recieve financial payment for your work?'
+      f.input :beneficiaries_count
+      f.input :beneficiaries_count_actual
       f.input :income
       f.input :income_actual
       f.input :expenditure
       f.input :expenditure_actual
-      f.input :implementations, as: :select, :input_html => {:multiple => true}, member_label: :label, label: 'How fo you implement your work?'
-      f.input :goods_services, collection: Profile::GOODS_SERVICES.map { |label| label }
-      f.input :services_count
-      f.input :goods_count
-      f.input :who_pays, collection: Profile::WHO_PAYS.map { |label| label }
-      f.input :beneficiaries_count
-      f.input :beneficiaries_count_actual
-      f.input :units_count
-      f.input :units_count_actual
     end
     f.actions
   end

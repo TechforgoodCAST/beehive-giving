@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150401155525) do
+ActiveRecord::Schema.define(version: 20150407154620) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -167,6 +167,17 @@ ActiveRecord::Schema.define(version: 20150401155525) do
     t.integer "profile_id"
   end
 
+  create_table "implementors", force: true do |t|
+    t.string   "label"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "implementors_profiles", force: true do |t|
+    t.integer "implementor_id"
+    t.integer "profile_id"
+  end
+
   create_table "organisations", force: true do |t|
     t.string   "name"
     t.string   "contact_number"
@@ -196,9 +207,6 @@ ActiveRecord::Schema.define(version: 20150401155525) do
     t.integer  "organisation_id"
     t.string   "gender"
     t.string   "currency"
-    t.string   "goods_services"
-    t.string   "who_pays"
-    t.string   "who_buys"
     t.integer  "year"
     t.integer  "min_age"
     t.integer  "max_age"
@@ -218,6 +226,7 @@ ActiveRecord::Schema.define(version: 20150401155525) do
     t.boolean  "units_count_actual"
     t.datetime "created_at",                 null: false
     t.datetime "updated_at",                 null: false
+    t.boolean  "does_sell"
   end
 
   create_table "recipient_funder_accesses", force: true do |t|
