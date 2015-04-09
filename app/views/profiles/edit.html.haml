@@ -1,21 +1,10 @@
 #bg-color
   .uk-container.uk-container-center
     .uk-grid.uk-margin-large.uk-margin-top
-
-      -# .uk-width-medium-1-2.uk-float-right.uk-animation-slide-right
-      -#   .uk-vertical-align{:style => "height: 480px;"}
-      -#     .uk-vertical-align-middle
-      -#       %h1
-      -#         Edit your profile for
-      -#         = @profile.year
-      -#       .uk-grid
-      -#         .uk-width-medium-3-4
-      -#           %p.uk-text-large.uk-text-bold
-      -#             Please provide accurate and complete information.
-      -#             .uk-text-large We'll use the information you provide to construct a unique digital fingerprint for your organisation, enabling us to give you personalised funding recommendations.
-      -#         .uk-width-medium-1-4.uk-hidden-small
-      -#           = image_tag 'signup/fingerprint_b.png'
-
-      .uk-width-medium-1-1.uk-float-left.uk-animation-slide-left
+      .uk-width-medium-1-1.uk-float-left.uk-animation-fade
         = simple_form_for [@recipient, @profile], method: :patch do |f|
+          .uk-grid
+            .uk-width-medium-2-3.uk-margin
+              %h2 Update your profile
+
           = render partial: 'profiles/form', locals: {f: f, mode: :edit}

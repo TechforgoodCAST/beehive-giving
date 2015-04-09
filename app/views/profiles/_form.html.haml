@@ -1,16 +1,19 @@
-- if mode == :new
-  .uk-grid.uk-margin.uk-margin-top-remove
-    .uk-width-medium-1-3.uk-float-right.remove-left-padding
-      .uk-form.uk-panel#panel
-        .uk-grid
-          .uk-width-1-2
-            .uk-vertical-align.uk-text-center{:style => "height: 30px;"}
-              .uk-vertical-align-middle.uk-text-bold
-                Year of profile
-          .uk-width-1-2
-            .uk-form-controls
-              = f.input :year, as: :select, :collection => @recipient.valid_profile_years, :include_blank => false, input_html: { class: 'uk-width-1-1 uk-form-blank' }
-              = f.error :year, class: 'uk-text-small uk-text-warning'
+.uk-width-medium-1-3.uk-margin.uk-margin-top-remove
+  .uk-form.uk-panel#panel
+    .uk-grid
+      .uk-width-1-2
+        .uk-vertical-align.uk-text-center{:style => "height: 30px;"}
+          .uk-vertical-align-middle.uk-text-bold
+            Year of profile
+      .uk-width-1-2
+        .uk-form-controls
+          - if @profile.year.present?
+            .uk-vertical-align{:style => "height: 30px;"}
+              .uk-vertical-align-middle
+                = @profile.year
+          - else
+            = f.input :year, as: :select, :collection => @recipient.valid_profile_years, :include_blank => false, input_html: { class: 'uk-width-1-1 uk-form-blank' }
+            = f.error :year, class: 'uk-text-small uk-text-warning'
 
 .uk-grid.uk-margin.uk-margin-top-remove{"data-uk-grid-match" => "{target:'.uk-panel'}"}
   .uk-width-medium-2-3
@@ -29,10 +32,10 @@
   .uk-width-medium-1-3.remove-left-padding
     .uk-panel.uk-panel-box.uk-panel-box-secondary
       .uk-panel-title
-        Tip
-      .uk-panel-badge.uk-badge.uk-badge-warning.uk-badge-notification
-        %i.uk-icon-question
-      Be sure to select all regions where your organisation has benefited people for the year of the profile. Remember, you can type the name of the location to filter the list. If your country is not listed, please select 'Other' - we'll be adding more supported locations soon.
+        Where you work
+      .uk-panel-badge
+        %i.uk-icon-globe.uk-icon-large
+      Be sure to select all regions where your organisation has benefited people for the year of the profile. Remember, you can type the name of the location to filter the list.
 
 .uk-grid.uk-margin.uk-margin-top-remove{"data-uk-grid-match" => "{target:'.uk-panel'}"}
   .uk-width-medium-2-3
@@ -62,10 +65,11 @@
   .uk-width-medium-1-3.remove-left-padding
     .uk-panel.uk-panel-box.uk-panel-box-secondary
       .uk-panel-title
-        Tip
-      .uk-panel-badge.uk-badge.uk-badge-warning.uk-badge-notification
-        %i.uk-icon-question
-      Think about your typical beneficiaries, which of the following categories applies to them?
+        Describe your beneficiaries
+      .uk-panel-badge
+        %i.uk-icon-child.uk-icon-large
+      %p Think about your typical beneficiaries, which of the following categories applies to them?
+      %p Rather
 
 .uk-grid.uk-margin.uk-margin-top-remove{"data-uk-grid-match" => "{target:'.uk-panel'}"}
   .uk-width-medium-2-3
@@ -90,10 +94,10 @@
   .uk-width-medium-1-3.remove-left-padding
     .uk-panel.uk-panel-box.uk-panel-box-secondary
       .uk-panel-title
-        Tip
-      .uk-panel-badge.uk-badge.uk-badge-warning.uk-badge-notification
-        %i.uk-icon-question
-      %br Not including trustees.
+        Describe your team
+      .uk-panel-badge
+        %i.uk-icon-users.uk-icon-large
+      Not including trustees.
       %br Products are tangible (e.g. Medicine), Services are intangible (e.g. Training)
       %br How many full time staff (or equivalent) does your organisation employ? Please give your best estimate of the number of full time equivalent workers employed on a permanent or contractual basis by your organisation.
 
@@ -125,10 +129,10 @@
   .uk-width-medium-1-3.remove-left-padding
     .uk-panel.uk-panel-box.uk-panel-box-secondary
       .uk-panel-title
-        Tip
-      .uk-panel-badge.uk-badge.uk-badge-warning.uk-badge-notification
-        %i.uk-icon-question
-      %br Number of beneficiaries of your service(s).
+        Describe your work
+      .uk-panel-badge
+        %i.uk-icon-briefcase.uk-icon-large
+      Number of beneficiaries of your service(s).
 
 .uk-grid.uk-margin.uk-margin-top-remove{"data-uk-grid-match" => "{target:'.uk-panel'}"}
   .uk-width-medium-2-3
@@ -162,9 +166,9 @@
   .uk-width-medium-1-3.remove-left-padding
     .uk-panel.uk-panel-box.uk-panel-box-secondary
       .uk-panel-title
-        Tip
-      .uk-panel-badge.uk-badge.uk-badge-warning.uk-badge-notification
-        %i.uk-icon-question
+        Your finances
+      .uk-panel-badge
+        %i.uk-icon-bank.uk-icon-large
 
   - if @redirect_to_funder
     = f.hidden_field :redirect_to_funder, value: @redirect_to_funder
