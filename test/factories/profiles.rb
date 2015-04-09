@@ -1,19 +1,18 @@
 FactoryGirl.define do
-  factory :district do
-    label 'Other'
-    district 'Other'
-    iso 'Other'
-  end
-
   factory :beneficiary do
     label 'Other'
   end
 
   factory :country do
     name "Other"
-    iso2 "Other"
-    iso3 "Other"
-    numcode 1
+    alpha2 "Other"
+  end
+
+  factory :district do
+    association :country, :factory => :country
+    label 'Other'
+    district 'Other'
+    subdivision 'Other'
   end
 
   factory :implementation do

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150407154620) do
+ActiveRecord::Schema.define(version: 20150408125142) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,10 +72,8 @@ ActiveRecord::Schema.define(version: 20150407154620) do
   end
 
   create_table "countries", force: true do |t|
-    t.string  "name"
-    t.string  "iso2"
-    t.string  "iso3"
-    t.integer "numcode"
+    t.string "name"
+    t.string "alpha2"
   end
 
   create_table "countries_profiles", force: true do |t|
@@ -87,7 +85,7 @@ ActiveRecord::Schema.define(version: 20150407154620) do
     t.integer "country_id"
     t.string  "label"
     t.string  "district"
-    t.string  "iso"
+    t.string  "subdivision"
   end
 
   create_table "districts_profiles", force: true do |t|
