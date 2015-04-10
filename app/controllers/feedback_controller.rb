@@ -5,7 +5,7 @@ class FeedbackController < ApplicationController
     if @feedback.save
       redirect_to :back, notice: "Thanks for your feedback."
     else
-      redirect_to :back, alert: "Unable to give feedback, please complete questiions 1-3."
+      redirect_to :back, alert: "Unable to give feedback, please complete questions 1-3."
     end
   end
 

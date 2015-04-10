@@ -19,7 +19,7 @@ class ProfilesController < ApplicationController
       if @redirect_to_funder
         redirect_to recipient_comparison_path(Funder.find(@redirect_to_funder))
       else
-        redirect_to recipient_profiles_path(@recipient), notice: 'Profile created.'
+        redirect_to recipient_profiles_path(@recipient), notice: 'Profile created'
       end
     else
       render :new
@@ -35,7 +35,7 @@ class ProfilesController < ApplicationController
 
   def update
     if @profile.update_attributes(profile_params)
-      redirect_to recipient_profiles_path(@recipient), notice: 'Profile saved.'
+      redirect_to recipient_profiles_path(@recipient), notice: 'Profile saved'
     else
       render :edit
     end

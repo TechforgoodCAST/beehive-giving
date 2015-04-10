@@ -22,7 +22,7 @@ class SessionsController < ApplicationController
       end
       redirect_to start_path_for_user(user), notice: 'Signed in!'
     else
-      redirect_to root_path, alert: 'Incorrect Email or Password'
+      redirect_to root_path, alert: 'Incorrect email or password, please try again'
     end
   end
 

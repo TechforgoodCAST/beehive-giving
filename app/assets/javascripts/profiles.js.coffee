@@ -15,3 +15,9 @@ $(document).ready ->
       options.push($(districts).filter("optgroup[label='#{$(value).text()}']").html())
       return
     $('#profile_district_ids').html(options).trigger("chosen:updated")
+
+$(document).ready ->
+  $('.year').html($('#profile_year').val())
+  $('#profile_year').change ->
+    $('.year').html($('#profile_year').val())
+    return

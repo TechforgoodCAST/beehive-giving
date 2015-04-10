@@ -34,9 +34,9 @@ class RecipientsController < ApplicationController
     )
 
     if vote.save
-      redirect_to :back, notice: "Thanks for requesting this, we're working hard to make it happen."
+      redirect_to :back, notice: "Thanks for requesting this, your interest helps us decide what to focus on - watch this space..."
     else
-      redirect_to :back, alert: "Unable to vote, perhaps you already did."
+      redirect_to :back, alert: "Unable to vote, perhaps you already did?"
     end
   end
 

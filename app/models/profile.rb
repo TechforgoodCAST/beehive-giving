@@ -13,21 +13,34 @@ class Profile < ActiveRecord::Base
   validates :organisation, :countries, :districts, :beneficiaries,
             :implementations, :implementors, presence: true
 
-  validates :year, :gender,
-            :min_age, :max_age, :income, :expenditure, :volunteer_count,
-            :staff_count, :beneficiaries_count, presence: true
-  validates :income, :expenditure, :volunteer_count, :staff_count, :beneficiaries_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :year, :gender, :min_age, :max_age, :income, :expenditure,
+            :volunteer_count, :staff_count, :beneficiaries_count,
+            presence: true
 
-  validates :min_age, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: :max_age,
-    message: 'min. age must be less than max. age' }
-  validates :max_age, numericality: { greater_than_or_equal_to: :min_age,
-    message: 'max. age must be greater than min.age' }
+  validates :min_age, :max_age, :volunteer_count, :staff_count, :income,
+            :expenditure, :beneficiaries_count,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
-  # refactor
-  # validates :volunteer_count, numericality: { greater_than: :staff_count,
-  #   message: 'must have at least one volunteer if no staff' }, unless: :staff_count?
-  # validates :staff_count, numericality: { greater_than: :volunteer_count,
-  #   message: 'must have at least one member of staff if no volunteers' }, unless: :volunteer_count?
+  validates :min_age, numericality: { less_than_or_equal_to: :max_age,
+            message: 'minimum age must be less than maximum age',
+            unless: Proc.new { |profile| profile.min_age.nil? || profile.max_age.nil? } }
+  validates :max_age, numericality: { greater_than_or_equal_to: :min_age || 0,
+            message: 'maximum age must be greater than minimum age',
+            unless: Proc.new { |profile| profile.min_age.nil? || profile.max_age.nil? } }
+
+  # validates :volunteer_count, numericality: { greater_than: 0,
+  #           message: 'Boom!',
+  #           if: :volunteer_implementor_selected }
+  # validates :staff_count, numericality: { greater_than: 0,
+  #           message: 'must have at least one staff if selected below',
+  #           if: :staff_implementor_selected }
+
+  validates :volunteer_count, numericality: { greater_than: 0,
+            message: 'must have at least one volunteer if no staff',
+            if: Proc.new { |profile| profile.staff_count.nil? || profile.staff_count == 0 } }
+  validates :staff_count, numericality: { greater_than: 0,
+            message: 'must have at least one member of staff if no volunteers',
+            if: Proc.new { |profile| profile.volunteer_count.nil? || profile.volunteer_count == 0 } }
 
   validates :year, uniqueness: {scope: :organisation_id, message: 'only one is allowed per year'}
 
@@ -35,4 +48,25 @@ class Profile < ActiveRecord::Base
   validates :year, inclusion: {in: VALID_YEARS}
   validates :beneficiaries_count_actual, :income_actual, :expenditure_actual,
             :does_sell, inclusion: {in: [true, false]}
+
+  # def find_implementor(label)
+  #   Proc.new { |profile|
+  #     result = false
+  #     profile.implementors.each { |i|
+  #       if i.label == "#{label}"
+  #         result = true
+  #       end
+  #     }
+  #     result unless profile.implementors.nil?
+  #   }
+  # end
+  #
+  # def staff_implementor_selected
+  #   find_implementor('Paid staff')
+  # end
+  #
+  # def volunteer_implementor_selected
+  #   find_implementor('Volunteers')
+  # end
+
 end

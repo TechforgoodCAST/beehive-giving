@@ -20,6 +20,11 @@
  *= require timelineJS/themes/font/BreeSerif-OpenSans
  */
 
+/* $base-body-font-family: "Times New Roman", Georgia, Serif !default; */
+/* h1, h2, h3, h4, h5, h6, .uk-panel-title, .uk-text-large {
+  font-family: "Times New Roman", Georgia, Serif !important;
+} */
+
 .uk-grid.uk-grid-collapse,
 .uk-grid.uk-grid-collapse > [class*='uk-width-'] {
   margin: 0;
