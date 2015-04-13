@@ -91,7 +91,7 @@
             });
           });
         #notice
-      - if flash[:alert]
+      - elsif flash[:alert]
         :javascript
           $(document).ready(function() {
             return $('#notice').ready(function() {

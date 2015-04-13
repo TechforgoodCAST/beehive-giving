@@ -12,7 +12,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
     assert page.has_css?("form#new_user")
   end
 
-  test 'Filling in landing page form with correct info redirects to organisation page' do
+  test 'Filling in landing page form with correct info redirects to find page' do
     visit '/'
     within("#new_user") do
       fill_in("user_first_name", :with => "Joe")
@@ -23,8 +23,8 @@ class SignUpTest < ActionDispatch::IntegrationTest
       fill_in("user_password_confirmation", :with => "password111")
     end
     click_button('Sign up')
-    assert_equal current_path, '/your-organisation'
-    assert page.has_content?("Organisation")
+    assert_equal current_path, '/find'
+    assert page.has_content?("England")
   end
 
   test 'Filling in landing page form with incorrect info should not submit' do

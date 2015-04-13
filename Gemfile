@@ -52,6 +52,8 @@ gem 'devise'
 gem 'groupdate'
 gem 'chartkick'
 gem 'newrelic_rpm'
+gem 'httparty'
+gem 'nokogiri'
 
 group :test do
   gem 'capybara'

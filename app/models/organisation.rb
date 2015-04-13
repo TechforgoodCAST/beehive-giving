@@ -34,8 +34,13 @@ class Organisation < ActiveRecord::Base
 
   validates :charity_number, :company_number, uniqueness: {:on => [:create]}, if: :registered?, allow_nil: true, allow_blank: true
 
-  validate :founded_on_before_registered_on, if: :registered?, unless: :skip_validation
-  validate :charity_or_company_number_exists, if: :registered?, unless: :skip_validation
+  validate  :founded_on_before_registered_on, if: :registered?,
+            unless: Proc.new { |organisation| organisation.founded_on.nil? }
+  validates :charity_number, :company_number,
+            presence: { message: "charity number of company required if registered" },
+            if: Proc.new { |o|
+              o.registered == true && (o.charity_number.blank? && o.company_number.blank?)
+            }
 
   before_validation :set_slug, unless: :slug
 
@@ -59,10 +64,6 @@ class Organisation < ActiveRecord::Base
 
   def founded_on_before_registered_on
     errors.add(:registered_on, "You can't be registered before being founded") if registered_on and registered_on < founded_on
-  end
-
-  def charity_or_company_number_exists
-    errors.add(:charity_number) if charity_number.nil? and company_number.nil?
   end
 
 end

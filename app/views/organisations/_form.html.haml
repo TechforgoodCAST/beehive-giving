@@ -72,11 +72,11 @@
       = f.date_select :registered_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-100, order: [:day, :month, :year], include_blank: true, default: nil
       = f.error :registered_on, class: 'uk-text-small uk-text-warning'
     .uk-grid
-      .uk-width-medium-1-2.uk-margin-top
+      .uk-width-large-1-2.uk-margin-top
         .uk-form-controls
           = f.input :charity_number, type: 'text', input_html: { class: 'uk-width-1-1' }
           = f.error :charity_number, class: 'uk-text-small uk-text-warning'
-      .uk-width-medium-1-2.uk-margin-top
+      .uk-width-large-1-2.uk-margin-top
         .uk-form-controls
           = f.input :company_number, type: 'text', input_html: { class: 'uk-width-1-1' }
           = f.error :company_number, class: 'uk-text-small uk-text-warning'
