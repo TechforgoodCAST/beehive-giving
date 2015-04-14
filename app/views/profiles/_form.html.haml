@@ -21,7 +21,7 @@
       .uk-panel-title Location
       .uk-width-1-1
         %label.uk-form-label
-          In which countries did your organisation benefit people in
+          In which countries did your organisation affect beneficiaries in
           = succeed '?' do
             = get_year
         .uk-form-controls
@@ -29,7 +29,7 @@
           = f.error :countries, class: 'uk-text-small uk-text-warning'
       .uk-width-1-1.uk-margin-top
         %label.uk-form-label
-          In which districts did your organisation benefit people in
+          In which districts did your organisation affect beneficiaries in
           = succeed '?' do
             = get_year
         .uk-form-controls
@@ -42,10 +42,10 @@
       .uk-panel-badge
         %i.uk-icon-globe.uk-icon-large
       %p
-        Be sure to select all regions where your organisation has benefited people in
+        Be sure to select all regions where your organisation has affected people in
         = succeed '.' do
           = get_year
-        Start by selecting all the countries, to populate the list of districts to choose from. Remember, you can type the name of the location to filter the list.
+        Remember the locations where beneficiaries have been affected, may be different from the locations you target. Start by selecting all the countries, to populate the list of districts to choose from. You can type the name of the location to filter the list.
 
 .uk-grid.uk-margin.uk-margin-top-remove{"data-uk-grid-match" => "{target:'.uk-panel'}"}
   .uk-width-medium-2-3
@@ -53,7 +53,7 @@
       .uk-panel-title Beneficiaries
       .uk-width-1-1
         %label.uk-form-label
-          Who/what did your organisation target in
+          Who/what did your organisation affect in
           = succeed '?' do
             = get_year
         .uk-form-controls
