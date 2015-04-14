@@ -41,17 +41,17 @@ ReportingRequirement.destroy_all
   ReportingRequirement.create(label:state)
 end
 
-# Create implementors
-Implementor.destroy_all
-[
-  "Paid staff",
-  "Volunteers",
-  "Beneficiaries",
-  "Third parties",
-  "Other"
-].each do |state|
-  Implementor.create(label:state)
-end
+# # Create implementors
+# Implementor.destroy_all
+# [
+#   "Paid staff",
+#   "Volunteers",
+#   "Beneficiaries",
+#   "Third parties",
+#   "Other"
+# ].each do |state|
+#   Implementor.create(label:state)
+# end
 #
 # # Create beneficiaries
 # Beneficiary.destroy_all
@@ -66,15 +66,15 @@ end
 #   "People affected by or involved with criminal activities",
 #   "People with housing/shelter challenges",
 #   "People with family or relationship challenges",
+#   "Organisations",
+#   "Other",
 #   "People with a specific sexual orientation",
 #   "People with specific religious or spiritual beliefs",
 #   "People affected by disasters",
 #   "People with water/sanitation access challenges",
 #   "People with food access challenges",
 #   "Animals/Wildlife",
-#   "The environment",
-#   "Organisations",
-#   "Other"
+#   "The environment"
 # ].each do |state|
 #   Beneficiary.create(label:state)
 # end

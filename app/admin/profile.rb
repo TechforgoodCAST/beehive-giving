@@ -96,16 +96,16 @@ ActiveAdmin.register Profile do
     f.inputs do
       f.input :organisation
       f.input :year, as: :select, collection: Profile::VALID_YEARS.map { |label| label }
-      f.input :countries, input_html: {multiple: true, class: 'chosen-select'}, member_label: :name, label: 'In which countries does your organisation benefit people?'
-      f.input :districts, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: 'In which districts does your organisation benefit people?'
-      f.input :beneficiaries, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: 'Who/what does your organisation target?'
+      f.input :countries, collection: Country.order('name ASC'), input_html: {multiple: true, class: 'chosen-select'}, member_label: :name, label: 'In which countries does your organisation benefit people?'
+      f.input :districts, collection: District.order('label ASC'), input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: 'In which districts does your organisation benefit people?'
+      f.input :beneficiaries, collection: Beneficiary.order('label ASC'), input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: 'Who/what does your organisation target?'
       f.input :gender, collection: Profile::GENDERS.map { |label| label }
       f.input :min_age
       f.input :max_age
       f.input :volunteer_count
       f.input :staff_count
-      f.input :implementors, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: 'Who delivers your work?'
-      f.input :implementations, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: 'How fo you implement your work?'
+      f.input :implementors, collection: Implementor.order('label ASC'), input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: 'Who delivers your work?'
+      f.input :implementations, collection: Implementation.order('label ASC'), input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: 'How fo you implement your work?'
       f.input :does_sell, label: 'Do you recieve financial payment for your work?'
       f.input :beneficiaries_count
       f.input :beneficiaries_count_actual
