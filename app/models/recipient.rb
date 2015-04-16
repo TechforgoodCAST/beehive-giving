@@ -36,7 +36,16 @@ class Recipient < Organisation
   end
 
   def valid_profile_years
-    Profile::VALID_YEARS - profiles.map(&:year)
+    if profiles.last.year.present?
+      a = Profile::VALID_YEARS - profiles.map(&:year)
+      a.unshift(profiles.last.year)
+    else
+      Profile::VALID_YEARS - profiles.map(&:year)
+    end
+  end
+
+  def can_create_profile?
+    profiles.count <= Date.today.year - self.founded_on.year unless profiles.count == 4
   end
 
 end

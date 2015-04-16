@@ -2,7 +2,8 @@
   .uk-grid.uk-margin-.uk-margin-top
     %h2.uk-margin-top Your profiles
   .uk-width-1-1.uk-margin
-    = link_to 'New profile', new_recipient_profile_path(current_user.organisation), class: 'uk-button uk-button-success'
+    - if @recipient.can_create_profile?
+      = link_to 'New profile', new_recipient_profile_path(current_user.organisation), class: 'uk-button uk-button-success'
   - if @profiles.any?
     .uk-grid
       - @profiles.each do |profile|

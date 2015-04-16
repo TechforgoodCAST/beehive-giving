@@ -10,10 +10,9 @@ class GrantTest < ActiveSupport::TestCase
     assert_equal 'ACME', @grant.funder.name
   end
 
-  # # Association?
-  # test "a valid profile" do
-  #   assert @grant.valid?
-  # end
+  test "a valid grant" do
+    assert @grant.valid?
+  end
 
   test "only positive numbers are allowed" do
     @grant.amount_awarded = -10

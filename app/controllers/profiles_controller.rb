@@ -4,7 +4,8 @@ class ProfilesController < ApplicationController
 
   def new
     @redirect_to_funder = params[:redirect_to_funder]
-    if !@recipient
+    if !@recipient || !@recipient.can_create_profile?
+      flash[:alert] = "Sorry you can't create a profile"
       redirect_to root_path
     else
       @profile = @recipient.profiles.new

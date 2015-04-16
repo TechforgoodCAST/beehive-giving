@@ -33,7 +33,7 @@ class RecipientDashboardTest < ActionDispatch::IntegrationTest
   end
 
   test 'recipient with 3 profiles can only pay' do
-    @recipient = create(:recipient)
+    @recipient = create(:recipient, founded_on: "01/01/2005")
     @funder = create(:funder, :active_on_beehive => true)
     4.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i ) }
     create_and_auth_user!(:organisation => @recipient)
@@ -81,7 +81,7 @@ class RecipientDashboardTest < ActionDispatch::IntegrationTest
   end
 
   test "recipient can only unlock 3 funders" do
-    @recipient = create(:recipient)
+    @recipient = create(:recipient, founded_on: "01/01/2005")
     @funders   = []
     4.times { @funders << create(:funder, :active_on_beehive => true) }
     4.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i ) }

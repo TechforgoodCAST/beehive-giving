@@ -1,4 +1,5 @@
 class Organisation < ActiveRecord::Base
+  before_save :clear_registration_numbers_if_not_registered
 
   STATUS = ['Active - currently operational', 'Closed - no longer operational', 'Merged - operating as a different entity']
 
@@ -63,7 +64,15 @@ class Organisation < ActiveRecord::Base
   private
 
   def founded_on_before_registered_on
-    errors.add(:registered_on, "You can't be registered before being founded") if registered_on and registered_on < founded_on
+    errors.add(:registered_on, "you can't be registered before being founded") if registered_on and registered_on < founded_on
+  end
+
+  def clear_registration_numbers_if_not_registered
+    if self.registered? == false
+      self.registered_on = nil
+      self.charity_number = nil
+      self.company_number = nil
+    end
   end
 
 end

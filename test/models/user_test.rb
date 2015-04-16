@@ -15,7 +15,7 @@ class UserTest < ActiveSupport::TestCase
     assert_not build(:user).valid?
   end
 
-  test "a valid profile" do
+  test "a valid user" do
     assert @user.valid?
   end
 end

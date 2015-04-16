@@ -5,52 +5,51 @@ class OrganisationTest < ActiveSupport::TestCase
     @recipient = build(:recipient)
   end
 
-  test "organisation with basic details is valid" do
+  test "recipient with basic details is valid" do
     assert @recipient.valid?
   end
 
-  test "organisation with false details is invalid" do
+  test "recipient with false details is invalid" do
     assert_not build(:blank_org).valid?
   end
 
-  test "has many users" do
+  test "recipient has many users" do
     @recipient.users << build(:user)
     @recipient.users << build(:user)
     assert 2, @recipient.users.size
   end
 
-  test "has many profiles" do
+  test "recipient has many profiles" do
     @recipient.profiles << build(:profile)
     @recipient.profiles << build(:profile)
     assert 2, @recipient.profiles.size
   end
 
-  test "has many grants" do
+  test "recipient has many grants" do
     @recipient.grants << build(:grant)
     @recipient.grants << build(:grant)
     assert 2, @recipient.grants.size
   end
 
-  test "validation for founded_on < registered_on works when registered" do
+  test "founded_on before registered_on checked when registered" do
     @recipient.registered = true
     @recipient.founded_on = Date.today - 2.months
     @recipient.registered_on = Date.today - 1.month
-    assert @recipient.valid?, true
+    assert @recipient.valid?
 
-    @recipient.founded_on = Date.today - 1.day
-    @recipient.registered_on = Date.today - 1.month
+    @recipient.founded_on = Date.today - 1.month
+    @recipient.registered_on = Date.today - 2.months
     assert_not @recipient.valid?
   end
 
-  test "validation for founded_on < registered is ignored when not registered" do
+  test "founded_on befire registered_on is ignored when not registered" do
     @recipient.registered = false
-
     @recipient.founded_on = Date.today - 1.day
-    @recipient.registered_on = nil
+    @recipient.registered_on = Date.today - 7.days
     assert @recipient.valid?
   end
 
-  test "validation charity number or company number exists if registered" do
+  test "charity number or company number does exist if registered" do
     @recipient.registered = true
 
     @recipient.company_number = 123
@@ -70,11 +69,12 @@ class OrganisationTest < ActiveSupport::TestCase
     assert_not @recipient.valid?
   end
 
-  test "validation charity number or company number does not exists if not registered" do
+  test "charity number or company number does not exists if not registered" do
     @recipient.registered = false
+    @recipient.save
 
-    @recipient.company_number = nil
-    @recipient.charity_number = nil
-    assert @recipient.valid?
+    assert_equal nil, @recipient.registered_on
+    assert_equal nil, @recipient.charity_number
+    assert_equal nil, @recipient.company_number
   end
 end

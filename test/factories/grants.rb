@@ -1,5 +1,7 @@
 FactoryGirl.define do
   factory :grant do
+    association :funder, :factory => :funder
+    association :recipient, :factory => :recipient
     funding_stream "Main"
     grant_type "Unrestricted"
     attention_how "Headhunting"
@@ -11,5 +13,10 @@ FactoryGirl.define do
     end_on Date.new(2015, 1, 1)
     attention_on Date.new(2015, 1, 1)
     applied_on Date.new(2015, 1, 1)
+    country "GB"
+    open_call true
+    after(:build) do |object|
+      object.default_values
+    end
   end
 end

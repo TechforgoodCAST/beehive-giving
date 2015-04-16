@@ -1,4 +1,6 @@
 class Profile < ActiveRecord::Base
+  before_validation :allowed_years, unless: Proc.new { |profile| profile.year.nil? }
+
   belongs_to :organisation
 
   has_and_belongs_to_many :beneficiaries
@@ -28,13 +30,6 @@ class Profile < ActiveRecord::Base
             message: 'maximum age must be greater than minimum age',
             unless: Proc.new { |profile| profile.min_age.nil? || profile.max_age.nil? } }
 
-  # validates :volunteer_count, numericality: { greater_than: 0,
-  #           message: 'Boom!',
-  #           if: :volunteer_implementor_selected }
-  # validates :staff_count, numericality: { greater_than: 0,
-  #           message: 'must have at least one staff if selected below',
-  #           if: :staff_implementor_selected }
-
   validates :volunteer_count, numericality: { greater_than: 0,
             message: 'must have at least one volunteer if no staff',
             if: Proc.new { |profile| profile.staff_count.nil? || profile.staff_count == 0 } }
@@ -48,6 +43,12 @@ class Profile < ActiveRecord::Base
   validates :year, inclusion: {in: VALID_YEARS}
   validates :beneficiaries_count_actual, :income_actual, :expenditure_actual,
             :does_sell, inclusion: {in: [true, false]}
+
+  def allowed_years
+    if organisation.founded_on.year.to_i > year
+      errors.add(:year, "you can't make a profile before #{organisation.founded_on.year} because that's when your organisation was founded")
+    end
+  end
 
   # def find_implementor(label)
   #   Proc.new { |profile|
