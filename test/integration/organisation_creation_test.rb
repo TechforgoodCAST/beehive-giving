@@ -47,7 +47,7 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
     end
     click_button('Next')
     assert_equal '/dashboard', current_path
-    assert page.has_content?("See if you're a good fit for")
+    assert page.has_content?("From here you can start to discover")
   end
 
   test 'filling form incorrectly causes validation to trigger' do

@@ -2,65 +2,39 @@ require 'test_helper'
 
 class RecipientDashboardTest < ActionDispatch::IntegrationTest
 
-  test 'dashboard is locked for user with no profiles' do
+  setup do
     @recipient = create(:recipient)
-    3.times { create(:funder, :active_on_beehive => true) }
-    create_and_auth_user!(:organisation => @recipient)
-    visit '/dashboard'
-    assert page.has_content?("See how you compare (Locked)")
-    assert_equal all(".uk-icon-lock").length, 3
   end
 
-  test 'that clicking the comparison link takes you a page with options to unlock' do
-    @recipient = create(:recipient)
-    @funder = create(:funder, :active_on_beehive => true)
-    create_and_auth_user!(:organisation => @recipient)
-    visit '/dashboard'
-    find_link('See how you compare (Locked)').click
-    assert page.has_content?(@funder.name)
-    assert page.has_link?('Complete Profile')
+  test 'public cannot see organisation profile' do
+    visit "/organisation/#{@recipient.slug}"
+    assert_equal '/welcome', current_path
   end
 
-  test 'that clicking the comparison link with a profile gives an unlock button' do
-    @recipient = create(:recipient)
-    @funder = create(:funder, :active_on_beehive => true)
-    @profile = create(:profile, :organisation => @recipient)
+  test 'only recipient can see organisation profile' do
+    @recipient2 = create(:organisation)
     create_and_auth_user!(:organisation => @recipient)
-    visit '/dashboard'
-    find_link('See how you compare (Locked)').click
-    assert page.has_content?(@funder.name)
-    assert page.has_link?('Unlock Funder')
+
+    visit "/organisation/#{@recipient.slug}"
+    assert_equal "/organisation/#{@recipient.slug}", current_path
+
+    visit "/organisation/#{@recipient2.slug}"
+    assert_equal '/dashboard', current_path
   end
 
-  test 'recipient with 3 profiles can only pay' do
-    @recipient = create(:recipient, founded_on: "01/01/2005")
-    @funder = create(:funder, :active_on_beehive => true)
-    4.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i ) }
-    create_and_auth_user!(:organisation => @recipient)
-    visit '/dashboard'
-    find_link('See how you compare (Locked)').click
-    puts page.body
-    assert_not page.has_link?('Complete Profile')
-    assert_not page.has_link?('Unlock Funder')
-  end
+  test 'funders can see all organisation profiles' do
+    @recipient2 = create(:organisation)
+    @funder = create(:funder)
+    create_and_auth_user!(:organisation => @funder, :role => 'Funder')
 
-  test "recipient can unlock a funder" do
-    @recipient = create(:recipient)
-    @funder = create(:funder, :active_on_beehive => true)
-    @profile = create(:profile, :organisation => @recipient)
-    create_and_auth_user!(:organisation => @recipient)
+    visit "/organisation/acme"
+    assert_equal "/organisation/acme", current_path
 
-    visit '/dashboard'
-    find_link('See how you compare (Locked)').click
-
-    assert_equal "/comparison/#{@funder.slug}/gateway", current_path
-    find_link('Unlock Funder').click
-
-    assert_equal "/comparison/#{@funder.slug}", current_path
+    visit "/organisation/#{@recipient2.slug}"
+    assert_equal "/organisation/#{@recipient2.slug}", current_path
   end
 
   test "recipient is directed to gateway for locked funders" do
-    @recipient = create(:recipient)
     @funder = create(:funder, :active_on_beehive => true)
     @profile = create(:profile, :organisation => @recipient)
     create_and_auth_user!(:organisation => @recipient)
@@ -70,7 +44,6 @@ class RecipientDashboardTest < ActionDispatch::IntegrationTest
   end
 
   test "recipient can see unlocked link on dashboard for an unlocked funder" do
-    @recipient = create(:recipient)
     @funder = create(:funder, :active_on_beehive => true)
     @profile = create(:profile, :organisation => @recipient)
     create_and_auth_user!(:organisation => @recipient)

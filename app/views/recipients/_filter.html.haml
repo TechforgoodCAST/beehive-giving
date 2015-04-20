@@ -1,28 +1,36 @@
-= search_form_for @search, url: recipient_dashboard_path do |f|
-  %strong= f.label "Funder name"
-  = f.input :name_cont, :placeholder => "e.g. Big Lottery Fund"
-  %br/
-  -# = f.label "Application Process"
-  -# = f.input :funder_attributes_application_process_eq, :as => :select, :collection => FunderAttributes.application_process_options_for_select, :include_blank => true
-  -# %br/
-  -# = f.label "Funding Type"
-  = f.hidden_field :funder_attributes_year_eq, :value => "2014"
-  %strong Level of non-financial support
-  = f.input :funder_attributes_non_financial_support_eq, :as => :select, :collection => FunderAttribute::NON_FINANCIAL_SUPPORT, :include_blank => true
-  %br/
-  %strong Number of grants given a year
-  %br/
-  = f.label "FROM"
-  = f.input :funder_attributes_grant_count_gt, :placeholder => "e.g. 0"
-  = f.label "TO"
-  = f.input :funder_attributes_grant_count_lt, :placeholder => "e.g. 200"
-  %br/
-  = f.submit "Filter", :class => "uk-button uk-button-primary"
-  %br/
-  %br/
-  %strong Sort By:
-  = sort_link @search, :name, 'Name', default_order: :desc
-  \|
-  = sort_link @search, :funder_attributes_grant_count
-  -# \|
-  -# = sort_link @search, :funder_attributes_funding_type
+.js-dashboard-search-form{:class => ('uk-hidden' unless params[:q]) }
+  .uk-width-1-1.uk-margin-top.uk-margin-bottom
+    %label.uk-form-label
+      = f.label "Country where funding has been given"
+    .uk-form-controls
+      = f.input :grants_country_cont, input_html: { class: 'uk-width-1-1 chosen-select' }
+
+  .uk-grid.uk-margin-top-remove
+    .uk-width-large-1-2.uk-margin-bottom
+      %label.uk-form-label
+        = f.label "Given funding greater than"
+      .uk-form-controls
+        = f.input :grants_amount_awarded_gt, input_html: { class: 'uk-width-1-1' }, placeholder: 'e.g. 10000'
+    .uk-width-large-1-2.uk-margin-bottom
+      %label.uk-form-label
+        = f.label "Given funding less than"
+      .uk-form-controls
+        = f.input :grants_amount_awarded_lt, input_html: { class: 'uk-width-1-1' }, placeholder: 'e.g. 75000'
+
+  .uk-grid.uk-margin-top-remove
+    .uk-width-large-1-2.uk-margin-bottom
+      %label.uk-form-label
+        = f.label "Funding duration greater than (months)"
+      .uk-form-controls
+        = f.input :grants_months_from_start_to_end_gt, input_html: { class: 'uk-width-1-1' }, placeholder: 'e.g. 6'
+    .uk-width-large-1-2.uk-margin-bottom
+      %label.uk-form-label
+        = f.label "Funding duration less than (months)"
+      .uk-form-controls
+        = f.input :grants_months_from_start_to_end_lt, input_html: { class: 'uk-width-1-1' }, placeholder: 'e.g. 12'
+
+  .uk-width-1-1
+    %label.uk-form-label
+      = f.label "Type of funding given"
+    .uk-form-controls
+      = f.input :grants_grant_type_cont, collection: Grant::GRANT_TYPE, as: :select, input_html: { class: 'uk-width-1-1' }

@@ -43,4 +43,8 @@ class Grant < ActiveRecord::Base
   validates :installments,
   numericality: {only_integer: true, greater_than_or_equal_to: 1}
 
+  ransacker :months_from_start_to_end, formatter: proc {|v| v.to_i * 30.4368 } do |parent|
+    parent.table[:days_from_start_to_end]
+  end
+
 end

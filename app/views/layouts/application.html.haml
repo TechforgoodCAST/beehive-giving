@@ -42,26 +42,29 @@
 
               - else current_user.organisation.type == 'Recipient'
                 - if current_user_should_render_feedback?
-                  .uk-navbar-content.uk-hidden-small
+                  .uk-navbar-content.uk-hidden-small{style: 'padding-top: 2px'}
                     %a.uk-text-primary{"data-uk-modal" => "{target:'#feedback'}"} Feedback
+                .uk-navbar-flip.uk-hidden-small
+                  %ul.uk-navbar-nav
+                    %li
+                      %a{href: funders_path} Funders
+                    %li
+                      %a{href: recipient_dashboard_path}
+                        Dashboard
+                        -# %span.uk-badge.uk-badge-notification 1
+                    %li.uk-parent{"data-uk-dropdown" => "{mode:'click'}"}
+                      %a
+                        %i.uk-icon-user.uk-icon-small
+                      .uk-dropdown.uk-dropdown-navbar.uk-dropdown-flip#panel
+                        %ul.uk-nav.uk-nav-navbar
+                          %li
+                            %a{:href => recipient_profiles_path(current_user.organisation)} Edit profiles
+                          -# %li
+                          -#   %a{:href => "#"} Edit organisation
+                          %li.uk-nav-divider
+                          %li
+                            %a{href: logout_path, method: :destroy} Sign out
 
-                .uk-navbar-content.uk-text-muted.uk-hidden-small
-                  Welcome,
-                  = current_user.organisation.name
-                .uk-button-group.bh-button-group.uk-hidden-small
-                  %a.uk-button{href: recipient_dashboard_path} Dashboard
-                  %div{"data-uk-dropdown" => "{mode:'click'}"}
-                    %button.uk-button
-                      %i.uk-icon-caret-down
-                    .uk-dropdown
-                      %ul.uk-nav.uk-nav-dropdown.uk-panel
-                        %li
-                          %a{:href => recipient_profiles_path(current_user.organisation)} Edit profiles
-                        -# %li
-                        -#   %a{:href => "#"} Edit organisation
-                        %li.uk-nav-divider
-                        %li
-                          %a{href: logout_path, method: :destroy} Sign out
             - else
               %ul.uk-navbar-nav.uk-hidden-small
                 %li
@@ -129,15 +132,14 @@
           - if current_user.organisation
             %ul.uk-nav.uk-nav-offcanvas
               %li.uk-nav-header.uk-margin-top.uk-text-center
-                Welcome,
-                = current_user.organisation.name
+                %i.uk-icon-user.uk-icon-small
               %li
                 - if current_user.organisation.type == 'Funder'
                   %a{href: funder_path(current_user.organisation)} Dashboard
                 - else
                   %a{href: recipient_dashboard_path} Dashboard
                   %a{:href => recipient_profiles_path(current_user.organisation)} Edit profiles
-                  = link_to 'Feedback', '#', class: 'uk-offcanvas-close', :'data-uk-toggle' => "{target:'.js-feedback-form'}"
+                  %a{"data-uk-modal" => "{target:'#feedback'}"} Feedback
               %li
                 %a{href: logout_path, method: :destroy} Sign out
           - else
@@ -168,13 +170,3 @@
 
     - if current_user_should_render_feedback?
       = render partial: 'recipients/feedback'
-
-      - unless current_user_has_closed_feedback?
-        :javascript
-          var modal = $.UIkit.modal("#feedback");
-
-          if ( modal.isActive() ) {
-            modal.show();
-          } else {
-            modal.show();
-          }

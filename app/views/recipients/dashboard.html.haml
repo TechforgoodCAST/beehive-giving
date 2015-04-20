@@ -1,72 +1,110 @@
-.uk-container.uk-container-center
-  .uk-grid.uk-margin
-    .uk-width-1-1.uk-margin
+#bg-color{style: 'min-height: 550px'}
+  .uk-container.uk-container-center.uk-animation-fade
+    .uk-grid.uk-margin
+      .uk-width-1-1.uk-margin
 
-      - if current_user.sign_in_count == 0
-        .uk-alert{'data-uk-alert' => ''}
-          %a.uk-alert-close.uk-close
-          %p.uk-text-large Welcome to Beehive!
-          %o This is your Dashboard. From here you will be able to discover and compare which funders are best for your non-profit. Right now it's a little basic, but we'll be adding more funders, and features in the coming months. Importantly, by signing up you've provided us with vital information to help us develop advanced recommendation features.
-          %p
-            Finally, just drop us an
-            = link_to 'email', 'mailto:support@beehivegiving.org'
-            if you get stuck or have any feedback.
+        %h2.uk-margin-top
+          Dashboard
+          %a.uk-text-small{"data-uk-modal" => "{target:'#about-dashboard'}"} What's this?
 
-      %h2.uk-margin-top See if you're a good fit for...
+        .uk-grid.uk-margin-top-remove
+          .uk-width-medium-1-3
+            - unless @recipient.unlocked_funders.any?
+              .uk-panel.uk-panel-box#panel.uk-margin-top-remove
+                .uk-panel-title Get started
+                %ul.uk-nav.uk-nav-side
+                  %li
+                    %a{href: recipient_comparison_gateway_path(Funder.find_by_name('The Foundation'))}
+                      %i.uk-icon-info-circle
+                        See how you with The Foundation
 
-      -# %button.uk-button.uk-margin-bottom{:'data-uk-toggle' => "{target: '.js-dashboard-search-form'}"} Filter/Sort
-      -#
-      -# .uk-panel.uk-panel-box.uk-margin-bottom.js-dashboard-search-form{:class => ('uk-hidden' unless params[:q]) }
-      -#   = render :partial => 'recipients/filter'
+            .uk-panel.uk-panel-box.uk-overlay-panel#panel.uk-margin-top
+              %h3 Your recommended funders
+            .uk-width-1-1.uk-button.uk-margin-bottom{"data-uk-modal" => "{target:'#about-recommendation'}"} Find out more
 
-      .uk-grid
-        .uk-width-medium-3-4
-          - if @recipient.profiles.count < 1
-            .uk-alert.uk-alert-warning{'data-uk-alert' => ''}
-              %o In order to unlock funders you need to complete at least profile. We'll use the information you provide to construct a unique digital fingerprint for your organisation, enabling us to give you personalised funding recommendations.
-              = link_to 'Click here', new_recipient_profile_path(@recipient)
-              to create a profile.
-          .uk-grid
-            - @funders.each do |funder|
-              .uk-width-medium-1-3
-                .uk-panel.uk-panel-box.uk-margin-bottom
-                  .uk-width-medium-1-1.uk-margin
-                    .uk-text-center.uk-vertical-align{style: 'height: 75px;'}
-                      %h3.uk-panel-title.uk-margin-remove.uk-vertical-align-middle
-                        = image_tag "logos/#{funder.slug}-logo.png", alt: "#{funder.name}"
-                  - if funder.attributes
-                    =# render :partial => 'funder_attributes', :locals => { :funder => funder }
-                  .uk-width-medium-1-1
-                    - if funder.active_on_beehive?
-                      %a.uk-button.uk-button-primary.uk-width-1-1{ href: recipient_comparison_path(funder) }
-                        See how you compare
-                        - if @recipient.locked_funder?(funder)
-                          %span.uk-text-small (Locked)
-                          %i.uk-icon-lock
-                    - else
-                      - if @recipient.can_request_funder?(funder, 'data_requested')
-                        = link_to 'Request', vote_recipient_path(@recipient.id,  data_requested: true, funder_id: funder.id, recipient_id: @recipient.id), method: 'post', class: 'uk-button uk-width-1-1'
+            -#     %li
+            -#       %a.uk-text-muted
+            -#         %i.uk-icon-check-circle-o.uk-icon-small.uk-text-muted
+            -#           Add problem
+            -#     %li
+            -#       %a
+            -#         %i.uk-icon-circle-o.uk-icon-small
+            -#           Add solution
+            -#     %li
+            -#       %a
+            -#         %i.uk-icon-circle-o.uk-icon-small
+            -#           Complete a profile for 2013
+            -#     %li
+            -#       %a
+            -#         %i.uk-icon-circle-o.uk-icon-small
+            -#           Get your first endorsment
+            -# .uk-margin-bottom
+            -#   = link_to 'Your profile', recipient_public_path(@recipient), class: 'uk-button uk-button-primary uk-width-1-1'
 
-                        -# (request_amount_awarded: true, funder_id: @funder.id, recipient_id: @recipient.id), method: 'post', class: 'uk-button uk-width-1-1'
+            -# .uk-panel.uk-panel-box#panel
+            -#   .uk-panel-title Notifications
+            -#   %ul.uk-nav.uk-nav-side
+            -#     %li
+            -#       %a.uk-text-success
+            -#         %i.uk-icon-check-circle.uk-icon-small
+            -#           A funder likes you
+            -#         %div Paul Hamlyn Foundation thinks your a good fit
+            -#     %li
+            -#       %a.uk-text-warning
+            -#         %i.uk-icon-exclamation-circle.uk-icon-small
+            -#           Funding opportunity
+            -#         %div The Foundation is looking for organisations like yours
+            -#     %li
+            -#       %a.uk-text-primary
+            -#         %i.uk-icon-info-circle.uk-icon-small
+            -#           You're getting noticed
+            -#         %div Big Lottery Fund has viewed your enquiry
 
-                      - else
-                        %button.uk-button.uk-button-primary.uk-width-1-1{:disabled => "", :type => "button"}
-                          %i.uk-icon-check Requested
+          .uk-width-medium-2-3.uk-margin-bottom
+            -# .uk-width-1-1.uk-margin-bottom
+            -#   .uk-panel.uk-panel-box.uk-overlay-panel#panel
+            -#     %h3 Your recommended funders
+            -#   .uk-width-1-1.uk-button{"data-uk-modal" => "{target:'#about-recommendation'}"} Find out more
 
-            .uk-width-medium-1-3
-              .uk-panel.uk-panel-box.uk-margin-bottom
-                .uk-width-medium-1-1.uk-text-center.uk-vertical-align{:style => "height: 120px;"}
-                  .uk-vertical-align-middle
-                    %h3.uk-panel-title.uk-margin-remove.uk-text-muted
-                      More coming soon...
-        .uk-width-medium-1-4.uk-float-right
-          .uk-panel.uk-panel-box{"data-uk-sticky" => "{top:60}"}
-            -# %form.uk-search
-            -#   %input.uk-search-field{:placeholder => "search...", :type => "search"}
-            %ul.uk-nav.uk-nav-side
-              %li.uk-nav-header Recommended funders
-              %li
-                %a.uk-text-muted{:href => ""} Coming soon...
-              %li.uk-nav-header Your enquiries
-              %li
-                %a.uk-text-muted{:href => ""} Coming soon...
+            = search_form_for @search, url: funders_path do |f|
+              .uk-width-1-1.uk-margin-bottom
+                .uk-panel.uk-panel-box#panel.uk-margin-top-remove
+                  .uk-panel-title
+                    Find funders
+                    %a.uk-text-small{:'data-uk-toggle' => "{target: '.js-dashboard-search-form'}"} More options
+                  .uk-grid.uk-margin-top-remove
+                    .uk-width-1-1
+                      .uk-form.uk-form-stacked
+                        .uk-width-1-1
+                          %label.uk-form-label
+                            = f.label "Funder name"
+                          .uk-form-controls
+                            = f.input :name_cont, input_html: { class: 'uk-width-1-1' }
+                        = render :partial => 'recipients/filter', locals: {f: f}
+                .uk-grid
+                  .uk-width-2-3
+                    = f.submit 'Find funders', class: "uk-width-1-1 uk-button uk-button-primary", style: 'color: #fff;'
+                  .uk-width-1-3{style: 'padding-left: 0;'}
+                    = link_to "Clear", request.path, class: "uk-width-1-1 uk-button"
+
+#about-dashboard.uk-modal
+  .uk-modal-dialog
+    %a.uk-modal-close.uk-close.js-record-feedback-close
+    .uk-modal-header
+      %h2 Your Dashboard
+    %o From here you can start to discover and compare which funders are best for your organisation. Right now it's a little basic, but we'll be adding more funders, and features in the coming months. Importantly, by signing up you've provided us with vital information to help us develop advanced recommendation features, so watch this space...
+    %p
+      Drop us a
+      = link_to 'line', 'mailto:support@beehivegiving.org', target: '_blank'
+      if you have any questions.
+      - if current_user_should_render_feedback?
+        Or give us some
+        = succeed '.' do
+          %a{"data-uk-modal" => "{target:'#feedback'}"} feedback
+
+#about-recommendation.uk-modal
+  .uk-modal-dialog
+    %a.uk-modal-close.uk-close.js-record-feedback-close
+    .uk-modal-header
+      %h2 Recommended funders
+    %o From here you can start to discover and compare which funders are best for your organisation. Right now it's a little basic, but we'll be adding more funders, and features in the coming months. Importantly, by signing up you've provided us with vital information to help us develop advanced recommendation features, so watch this space...

@@ -95,6 +95,46 @@
   border-radius: 4px !important;
 }
 
+
+.chosen-container {
+  .chosen-single {
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+    background-image: none !important;
+  }
+}
+.chosen-container {
+  .chosen-single {
+    height: 30px !important;
+    line-height: 30px !important;
+  }
+}
+.chosen-container-single .chosen-single abbr {
+  top: 8px !important;
+}
+.chosen-container-single .chosen-single div b {
+  margin-top: 3px
+}
+.chosen-with-drop {
+  .chosen-single {
+    border-top: 1px solid #99baca !important;
+    border-right: 1px solid #99baca !important;
+    border-left: 1px solid #99baca !important;
+    background: #f5fbfe !important;
+    height: 30px !important;
+  }
+}
+.chosen-with-drop {
+  .chosen-drop {
+    border-right: 1px solid #99baca !important;
+    border-bottom: 1px solid #99baca !important;
+    border-left: 1px solid #99baca !important;
+    background: #f5fbfe !important;
+    box-shadow: none !important;
+    z-index: 1 !important;
+  }
+}
+
 .chosen-choices {
   border: 1px solid #ddd !important;
   border-radius: 4px !important;

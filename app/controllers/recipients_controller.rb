@@ -1,12 +1,11 @@
 class RecipientsController < ApplicationController
+  before_filter :check_organisation_ownership_or_funder, :only => [:show]
   before_filter :ensure_logged_in, :load_recipient, :years_ago
   before_filter :load_funder, :only => [:gateway, :unlock_funder, :comparison]
-  before_filter :load_feedback, :only => [:dashboard, :gateway, :comparison]
+  before_filter :load_feedback, :only => [:dashboard, :gateway, :comparison, :show]
 
   def dashboard
     @search = Funder.ransack(params[:q])
-    @search.sorts = 'id asc' if @search.sorts.empty?
-    @funders = @search.result.includes(:funder_attributes)
   end
 
   def gateway
@@ -40,10 +39,14 @@ class RecipientsController < ApplicationController
     end
   end
 
+  def show
+    @recipient = Recipient.find_by_slug(params[:id])
+  end
+
   private
 
   def load_recipient
-    @recipient = current_user.organisation
+    @recipient = current_user.organisation if logged_in?
   end
 
   def load_funder
@@ -51,7 +54,7 @@ class RecipientsController < ApplicationController
   end
 
   def load_feedback
-    @feedback = current_user.feedbacks.new
+    @feedback = current_user.feedbacks.new if logged_in?
   end
 
   def years_ago

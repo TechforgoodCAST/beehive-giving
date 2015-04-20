@@ -21,11 +21,19 @@ class ApplicationController < ActionController::Base
   end
 
   def ensure_funder
-    redirect_to root_path, alert: "Sorry, you don't have access to that" unless current_user.role == 'Funder'
+    redirect_to root_path, alert: "Sorry, you don't have access to that" unless
+      current_user.role == 'Funder'
   end
 
   def check_organisation_ownership
-    redirect_to root_path, alert: "Sorry, you don't have access to that" unless current_user.organisation_id == @organisation.id
+    redirect_to root_path, alert: "Sorry, you don't have access to that" unless
+      current_user.organisation == Recipient.find_by_slug(params[:id])
+  end
+
+  def check_organisation_ownership_or_funder
+    redirect_to root_path, alert: "Sorry, you don't have access to that" unless
+      logged_in? && current_user.organisation == Recipient.find_by_slug(params[:id]) ||
+      logged_in? && current_user.role == 'Funder'
   end
 
   def check_user_ownership

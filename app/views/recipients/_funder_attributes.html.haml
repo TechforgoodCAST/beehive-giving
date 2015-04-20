@@ -1,18 +1,19 @@
-.uk-width-medium-1-1.uk-text-small
-  %h4 Attributes
-  %ul
-    %li
-      %strong Next Deadline:
-      = funder.attributes.next_deadline
-    %li
-      %strong Application Process:
-      = funder.attributes.application_process.humanize
-    %li
-      %strong Funding Streams:
-      = funder.attributes.funding_streams
-    %li
-      %strong Funding Round Frequency:
-      = funder.attributes.funding_frequency_label
-    %li
-      %strong Funding Type:
-      = funder.attributes.funding_type.humanize
+.uk-width-medium-1-1
+  = funder.mission
+  -# %h4 Attributes
+  -# %ul
+  -#   %li
+  -#     %strong Next Deadline:
+    -#   = funder.attributes.next_deadline
+    -# %li
+    -#   %strong Application Process:
+    -#   = funder.attributes.application_process.humanize
+    -# %li
+    -#   %strong Funding Streams:
+    -#   = funder.attributes.funding_streams
+    -# %li
+    -#   %strong Funding Round Frequency:
+    -#   = funder.attributes.funding_frequency_label
+    -# %li
+    -#   %strong Funding Type:
+    -#   = funder.attributes.funding_type.humanize

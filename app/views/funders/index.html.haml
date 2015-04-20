@@ -1,21 +1,100 @@
-.uk-container.uk-container-center
-  .uk-grid.uk-margin.uk-margin-top
-    .uk-width-1-1.uk-margin
-      .uk-form.uk-form-stacked.uk-panel.uk-panel-box
-        = search_form_for @search do |f|
-          %fieldset
-            %legend Funder
-            %ul
-              %li
-                = f.label :name_cont
-                = f.text_field :name_cont
-              = f.submit
+#bg-color{style: 'min-height: 550px'}
+  .uk-container.uk-container-center
+    .uk-grid.uk-margin
+      .uk-width-1-1.uk-margin
 
-      %table.uk-table.uk-table-hover
-        %thead
-          %tr
-            %th= sort_link @search, :name, "Funder"
-        %tbody
-        - @funders.each do |funder|
-          %tr
-            %td= funder.name
+        %h2.uk-margin-top
+          Funders
+          -# %a.uk-text-small{"data-uk-modal" => "{target:'#about-dashboard'}"} What's this?
+        .uk-grid.uk-margin-top-remove
+          .uk-width-medium-1-1.uk-width-large-1-3
+            = search_form_for @search, url: funders_path do |f|
+              .uk-width-1-1.uk-margin-bottom
+                .uk-panel.uk-panel-box#panel.uk-margin-top-remove
+                  .uk-panel-title
+                    Find funders
+                    -# .uk-text-small
+                    -#   Sort:
+                    -#   = sort_link @search, :name, 'Funder name', default_order: :asc
+                    -#   |
+                    -#   = sort_link @search, :funder_grants_grant_type, 'Funding type', default_order: :asc
+                  .uk-grid.uk-margin-top-remove
+                    .uk-width-1-1
+                      .uk-form.uk-form-stacked
+                        .uk-width-1-1
+                          %label.uk-form-label
+                            = f.label "Funder name"
+                          .uk-form-controls
+                            = f.input :name_cont, input_html: { class: 'uk-width-1-1' }
+                        .uk-width-1-1.uk-margin-top.uk-margin-bottom
+                          %label.uk-form-label
+                            = f.label "Country where funding has been given"
+                          .uk-form-controls
+                            = f.input :grants_country_cont, input_html: { class: 'uk-width-1-1 chosen-select' }
+                        .uk-grid.uk-margin-top-remove
+                          .uk-width-small-1-2.uk-width-medium-1-2.uk-width-large-1-1.uk-margin-bottom
+                            %label.uk-form-label
+                              = f.label "Given funding greater than"
+                            .uk-form-controls
+                              = f.input :grants_amount_awarded_gt, input_html: { class: 'uk-width-1-1' }, placeholder: 'e.g. 10000'
+                          .uk-width-small-1-2.uk-width-medium-1-2.uk-width-large-1-1.uk-margin-bottom
+                            %label.uk-form-label
+                              = f.label "Given funding less than"
+                            .uk-form-controls
+                              = f.input :grants_amount_awarded_lt, input_html: { class: 'uk-width-1-1' }, placeholder: 'e.g. 75000'
+                        .uk-grid.uk-margin-top-remove
+                          .uk-width-small-1-2.uk-width-medium-1-2.uk-width-large-1-1.uk-margin-bottom
+                            %label.uk-form-label
+                              = f.label "Funding duration greater than (months)"
+                            .uk-form-controls
+                              = f.input :grants_months_from_start_to_end_gt, input_html: { class: 'uk-width-1-1' }, placeholder: 'e.g. 6'
+                          .uk-width-small-1-2.uk-width-medium-1-2.uk-width-large-1-1.uk-margin-bottom
+                            %label.uk-form-label
+                              = f.label "Funding duration less than (months)"
+                            .uk-form-controls
+                              = f.input :grants_months_from_start_to_end_lt, input_html: { class: 'uk-width-1-1' }, placeholder: 'e.g. 12'
+                        .uk-width-1-1
+                          %label.uk-form-label
+                            = f.label "Type of funding given"
+                          .uk-form-controls
+                            = f.input :grants_grant_type_cont, collection: Grant.pluck(:grant_type).uniq, as: :select, input_html: { class: 'uk-width-1-1' }
+                .uk-grid
+                  .uk-width-2-3
+                    = f.submit 'Find funders', class: "uk-width-1-1 uk-button uk-button-primary", style: 'color: #fff;'
+                  .uk-width-1-3{style: 'padding-left: 0;'}
+                    = link_to "Clear", request.path, class: "uk-width-1-1 uk-button"
+
+          .uk-width-medium-1-1.uk-width-large-2-3.uk-margin-bottom
+            - if @recipient.profiles.count < 1
+              .uk-alert.uk-alert-warning{'data-uk-alert' => ''}
+                %o In order to unlock funders you need to complete at least profile. We'll use the information you provide to construct a unique digital fingerprint for your organisation, enabling us to give you personalised funding recommendations.
+                = link_to 'Click here', new_recipient_profile_path(@recipient)
+                to create a profile.
+            .uk-grid.uk-margin-top-remove.uk-animation-fade{"data-uk-grid-match" => ""}
+              - @funders.to_a.uniq.each do |funder|
+                .uk-width-medium-1-2.uk-margin-bottom
+                  .uk-width-1-1.uk-panel#panel.uk-overlay
+                    .uk-panel-teaser.uk-text-center.uk-vertical-align{style: 'height: 100px;'}
+                      .uk-vertical-align-middle
+                        = image_tag "logos/#{funder.slug}-logo.png", alt: "#{funder.name}"
+                    - if params[:q]
+                      .uk-panel-box.uk-text-center
+                        = percentage_of_grants(funder)
+                        of funding meets your search criteria
+                    .uk-overlay-area
+                      .uk-overlay-area-content
+                        - if funder.active_on_beehive?
+                          %a.uk-button.uk-button-primary.uk-button-large.uk-width-1-1{ href: recipient_comparison_path(funder) }
+                            See how you compare
+                            - if @recipient.locked_funder?(funder)
+                              %span.uk-text-small (Locked)
+                              %i.uk-icon-lock
+                        - else
+                          - if @recipient.can_request_funder?(funder, 'data_requested')
+                            = link_to 'Request', vote_recipient_path(@recipient.id,  data_requested: true, funder_id: funder.id, recipient_id: @recipient.id), method: 'post', class: 'uk-button uk-button-large uk-width-1-1'
+                          - else
+                            %button.uk-button.uk-button-primary.uk-button-large.uk-width-1-1{:disabled => "", :type => "button"}
+                              %i.uk-icon-check Requested
+                    -# - if funder.attributes
+                    -#   .uk-panel-box
+                    -#     = render :partial => 'recipients/funder_attributes', :locals => { :funder => funder }
