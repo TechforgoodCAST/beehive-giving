@@ -30,7 +30,7 @@
                           %label.uk-form-label
                             = f.label "Country where funding has been given"
                           .uk-form-controls
-                            = f.input :grants_country_cont, input_html: { class: 'uk-width-1-1 chosen-select' }
+                            = f.input :grants_country_eq, input_html: { class: 'uk-width-1-1 chosen-select' }
                         .uk-grid.uk-margin-top-remove
                           .uk-width-small-1-2.uk-width-medium-1-2.uk-width-large-1-1.uk-margin-bottom
                             %label.uk-form-label
@@ -58,6 +58,15 @@
                             = f.label "Type of funding given"
                           .uk-form-controls
                             = f.input :grants_grant_type_cont, collection: Grant.pluck(:grant_type).uniq, as: :select, input_html: { class: 'uk-width-1-1' }
+
+                        -# .uk-width-1-1.uk-margin-top
+                        -#   %label.uk-form-label
+                        -#     = f.label "Who/what affected"
+                        -#   .uk-form-controls
+                        -#     = f.input :profiles_beneficiaries_id_eq, collection: Beneficiary.order(:label), input_html: { class: 'uk-width-1-1 chosen-select' }, label_method: :label, value_method: :id
+                        -#
+                        -#   = @funders.to_a.count
+
                 .uk-grid
                   .uk-width-2-3
                     = f.submit 'Find funders', class: "uk-width-1-1 uk-button uk-button-primary", style: 'color: #fff;'

@@ -1,10 +1,10 @@
 module FundersHelper
 
   def percentage_of_grants(funder)
-    if @funders.where('name = ?', funder.name).to_a.count == 1
+    if @funders.to_a.count == Funder.all.count
       val = 0
     else
-      val = @funders.where('name = ?', funder.name).to_a.count
+      val = @funders.to_a.count
     end
 
     if funder.grants.count == 0
