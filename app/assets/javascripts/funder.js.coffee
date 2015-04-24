@@ -6,3 +6,12 @@ $(document).ready ->
       height: "400"
       source: $('#time_line').data('grants')
       embed_id: "time_line"
+
+# $ ->
+#   chart = c3.generate(
+#     bindto: '#chart'
+#     data: {
+#         json:
+#           amount_awarded: $('#chart').data('grants')
+#       }
+#   )

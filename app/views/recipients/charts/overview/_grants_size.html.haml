@@ -1,4 +1,4 @@
-.uk-panel.chart-responsive-margin.uk-margin
+.uk-panel.uk-panel-box#panel.chart-responsive-margin.uk-margin
   .uk-panel-title
     Funding size
     -# %span
@@ -8,6 +8,7 @@
 
   - if @funder.grants.pluck(:amount_awarded).any?
     .uk-panel-badge.uk-badge= funding_stream_label
+    -# #chart{ data: {grants: @funder.grants.where('approved_on > ?', Date.today - 365).pluck(:amount_awarded).to_json} }
     #grants_size{ data: {grants: grant_size_data(@funder, @funding_stream, @years_ago).to_json} }
 
   - else

@@ -31,7 +31,7 @@ group :development do
   gem 'guard-rake'
   gem 'guard-livereload'
 end
-
+gem 'google-webfonts-rails'
 gem 'faker'
 
 gem 'factory_girl_rails'
@@ -51,6 +51,8 @@ gem 'activeadmin', github: 'activeadmin'
 gem 'devise'
 gem 'groupdate'
 gem 'chartkick'
+gem 'd3_rails'
+gem 'c3-rails'
 gem 'newrelic_rpm'
 gem 'httparty'
 gem 'nokogiri'

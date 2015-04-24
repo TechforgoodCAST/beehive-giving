@@ -171,14 +171,14 @@ $(document).ready ->
       element: 'beneficiary_target'
       data: $('#beneficiary_target').data('grants')
       xkey: 'target'
-      ykeys: ['2014', '2013']
-      labels: ['2014', '2013']
+      ykeys: ['2014']
+      labels: ['2014']
       postUnits: '%'
-      barColors: ['#F7BA0E', '#bbb']
+      barColors: ['#F7BA0E']
       resize: true
       hideHover: 'auto'
       hoverCallback: (index, options, content, row) ->
-                      return '<div class="morris-hover-row-label">' + row.target + '</div><span>2014: </span><b style="color: ' + options.barColors[0] + '">' + row["2014"] + '%</b> of funded organisations</br><span>2013: </span><b style="color: ' + options.barColors[1] + '">' + row["2013"] + '%</b> of funded organisations</br>'
+                      return '<div class="morris-hover-row-label">' + row.target + '</div><b style="color: ' + options.barColors[0] + '">' + row["2014"] + '%</b> of funded organisations</br>'
 
 $(document).ready ->
   if $('#beneficiary_age').length

@@ -117,17 +117,23 @@ module OrganisationsHelper
   def static_beneficiary_target_data(years_ago)
     years_ago_result = Date.today.year - years_ago
     data = []
-    data << { 'target' => 'Disability', '2014' => 50, '2013' => 15 }
-    data << { 'target' => 'Physical Health', '2014' => 33, '2013' => 23 }
-    data << { 'target' => 'Mental Health', '2014' => 17, '2013' => 31 }
-    data << { 'target' => 'Education', '2014' => 100, '2013' => 54 }
-    data << { 'target' => 'Unemployment', '2014' => 67, '2013' => 92 }
-    data << { 'target' => 'Income Poverty', '2014' => 83, '2013' => 92 }
-    data << { 'target' => 'Ethnic Groups', '2014' => 17, '2013' => 23 }
-    data << { 'target' => 'Criminal Activities', '2014' => 17, '2013' => 31 }
-    data << { 'target' => 'Housing Issues', '2014' => 17, '2013' => 46 }
-    data << { 'target' => 'Family Issues', '2014' => 33, '2013' => 62 }
-    data << { 'target' => 'Other Organisations', '2014' => 50, '2013' => 54 }
+    data << { 'target' => 'People in education', '2014' => 100 }
+    data << { 'target' => 'People who face income poverty', '2014' => 83 }
+    data << { 'target' => 'Unemployed people', '2014' => 67 }
+    data << { 'target' => 'People with disabilities', '2014' => 50 }
+    data << { 'target' => 'Other Organisations', '2014' => 50 }
+    data << { 'target' => 'People with physical diseases or disorders', '2014' => 33 }
+    data << { 'target' => 'People with family or relationship challenges', '2014' => 33 }
+    data << { 'target' => 'People with mental diseases or disorders', '2014' => 17 }
+    data << { 'target' => 'People from a particular ethnic background', '2014' => 17 }
+    data << { 'target' => 'People affected by or involved with criminal activities', '2014' => 17 }
+    data << { 'target' => 'People with housing/shelter challenges', '2014' => 17 }
+    data << { 'target' => 'Animals/Wildlife', '2014' => 0 }
+    data << { 'target' => 'Other', '2014' => 0 }
+    data << { 'target' => 'People affected by disasters', '2014' => 0 }
+    data << { 'target' => 'People with specific religious or spiritual beliefs', '2014' => 0 }
+    data << { 'target' => 'People with water/sanitation access challenges', '2014' => 0 }
+    data << { 'target' => 'The environment', '2014' => 0 }
     data
   end
 

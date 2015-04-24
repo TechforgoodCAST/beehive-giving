@@ -17,6 +17,8 @@
 //= require uikit
 //= require chosen-jquery
 //= require turbolinks
+//= require d3
+//= require c3
 //= require raphael
 //= require morris
 //= require_tree .

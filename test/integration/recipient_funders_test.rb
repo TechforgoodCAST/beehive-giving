@@ -22,7 +22,6 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     create_and_auth_user!(:organisation => @recipient)
     visit '/funders'
     find_link('See how you compare (Locked)').click
-    assert page.has_content?(@funder.name)
     assert page.has_link?('Complete Profile')
   end
 
@@ -33,7 +32,6 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     create_and_auth_user!(:organisation => @recipient)
     visit '/funders'
     find_link('See how you compare (Locked)').click
-    assert page.has_content?(@funder.name)
     assert page.has_link?('Unlock Funder')
   end
 
