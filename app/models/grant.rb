@@ -34,7 +34,7 @@ class Grant < ActiveRecord::Base
   validates :grant_type, inclusion: {in: GRANT_TYPE},
   unless: :skip_validation
 
-  validate :attention_how, inclusion: {in: ATTENTION_HOW},
+  validates :attention_how, inclusion: {in: ATTENTION_HOW},
   unless: :skip_validation
 
   validates :amount_awarded, :days_from_attention_to_applied, :days_from_applied_to_approved,

@@ -11,18 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150408125142) do
+ActiveRecord::Schema.define(version: 20150425095909) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "active_admin_comments", force: true do |t|
-    t.string   "namespace"
+  create_table "active_admin_comments", force: :cascade do |t|
+    t.string   "namespace",     limit: 255
     t.text     "body"
-    t.string   "resource_id",   null: false
-    t.string   "resource_type", null: false
+    t.string   "resource_id",   limit: 255, null: false
+    t.string   "resource_type", limit: 255, null: false
     t.integer  "author_id"
-    t.string   "author_type"
+    t.string   "author_type",   limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -31,13 +31,13 @@ ActiveRecord::Schema.define(version: 20150408125142) do
   add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
   add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
 
-  create_table "admin_users", force: true do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
-    t.string   "reset_password_token"
+  create_table "admin_users", force: :cascade do |t|
+    t.string   "email",                  limit: 255, default: "", null: false
+    t.string   "encrypted_password",     limit: 255, default: "", null: false
+    t.string   "reset_password_token",   limit: 255
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",                      default: 0,  null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
@@ -49,51 +49,60 @@ ActiveRecord::Schema.define(version: 20150408125142) do
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
 
-  create_table "application_supports", force: true do |t|
-    t.string   "label"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "application_supports", force: :cascade do |t|
+    t.string   "label",      limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
-  create_table "application_supports_funder_attributes", force: true do |t|
+  create_table "application_supports_funder_attributes", force: :cascade do |t|
     t.integer "funder_attribute_id"
     t.integer "application_support_id"
   end
 
-  create_table "beneficiaries", force: true do |t|
-    t.string   "label"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "approval_months", force: :cascade do |t|
+    t.string "month"
   end
 
-  create_table "beneficiaries_profiles", force: true do |t|
+  create_table "approval_months_funder_attributes", force: :cascade do |t|
+    t.integer "funder_attribute_id"
+    t.integer "approval_month_id"
+  end
+
+  create_table "beneficiaries", force: :cascade do |t|
+    t.string   "label",      limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
+  end
+
+  create_table "beneficiaries_profiles", force: :cascade do |t|
     t.integer "beneficiary_id"
     t.integer "profile_id"
   end
 
-  create_table "countries", force: true do |t|
-    t.string "name"
-    t.string "alpha2"
+  create_table "countries", force: :cascade do |t|
+    t.string "name",   limit: 255
+    t.string "alpha2", limit: 255
   end
 
-  create_table "countries_profiles", force: true do |t|
+  create_table "countries_profiles", force: :cascade do |t|
     t.integer "country_id"
     t.integer "profile_id"
   end
 
-  create_table "districts", force: true do |t|
+  create_table "districts", force: :cascade do |t|
     t.integer "country_id"
-    t.string  "label"
-    t.string  "district"
-    t.string  "subdivision"
+    t.string  "label",       limit: 255
+    t.string  "district",    limit: 255
+    t.string  "subdivision", limit: 255
   end
 
-  create_table "districts_profiles", force: true do |t|
+  create_table "districts_profiles", force: :cascade do |t|
     t.integer "district_id"
     t.integer "profile_id"
   end
 
-  create_table "features", force: true do |t|
+  create_table "features", force: :cascade do |t|
     t.integer  "funder_id"
     t.integer  "recipient_id"
     t.boolean  "data_requested"
@@ -104,38 +113,63 @@ ActiveRecord::Schema.define(version: 20150408125142) do
     t.boolean  "request_funding_countries"
   end
 
-  create_table "feedbacks", force: true do |t|
+  create_table "feedbacks", force: :cascade do |t|
     t.integer  "user_id"
     t.integer  "nps"
     t.integer  "taken_away"
     t.integer  "informs_decision"
-    t.string   "other"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.string   "other",            limit: 255
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
   end
 
-  create_table "funder_attributes", force: true do |t|
+  create_table "funder_attributes", force: :cascade do |t|
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "funder_id"
-    t.integer  "year"
+    t.string   "period"
     t.integer  "grant_count"
     t.integer  "application_count"
     t.integer  "enquiry_count"
-    t.string   "non_financial_support"
+    t.string   "non_financial_support",     limit: 255
+    t.integer  "funding_stream_id"
+    t.decimal  "funding_size_average"
+    t.decimal  "funding_size_min"
+    t.decimal  "funding_size_max"
+    t.decimal  "funding_duration_average"
+    t.decimal  "funding_duration_min"
+    t.decimal  "funding_duration_max"
+    t.decimal  "funded_average_age"
+    t.decimal  "funded_average_income"
+    t.decimal  "funded_average_paid_staff"
   end
 
-  create_table "funder_attributes_reporting_requirements", force: true do |t|
+  add_index "funder_attributes", ["funding_stream_id"], name: "index_funder_attributes_on_funding_stream_id", using: :btree
+
+  create_table "funder_attributes_funding_types", force: :cascade do |t|
+    t.integer "funder_attribute_id"
+    t.integer "funding_type_id"
+  end
+
+  create_table "funder_attributes_reporting_requirements", force: :cascade do |t|
     t.integer "funder_attribute_id"
     t.integer "reporting_requirement_id"
   end
 
-  create_table "grants", force: true do |t|
+  create_table "funding_streams", force: :cascade do |t|
+    t.string "label"
+  end
+
+  create_table "funding_types", force: :cascade do |t|
+    t.string "label"
+  end
+
+  create_table "grants", force: :cascade do |t|
     t.integer  "funder_id"
     t.integer  "recipient_id"
-    t.string   "funding_stream"
-    t.string   "grant_type"
-    t.string   "attention_how"
+    t.string   "funding_stream",                 limit: 255
+    t.string   "grant_type",                     limit: 255
+    t.string   "attention_how",                  limit: 255
     t.integer  "amount_awarded"
     t.integer  "amount_applied"
     t.integer  "installments"
@@ -144,67 +178,67 @@ ActiveRecord::Schema.define(version: 20150408125142) do
     t.date     "end_on"
     t.date     "attention_on"
     t.date     "applied_on"
-    t.datetime "created_at",                     null: false
-    t.datetime "updated_at",                     null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
     t.integer  "days_from_attention_to_applied"
     t.integer  "days_from_applied_to_approved"
     t.integer  "days_form_approval_to_start"
     t.integer  "days_from_start_to_end"
-    t.string   "country"
+    t.string   "country",                        limit: 255
     t.boolean  "open_call"
   end
 
-  create_table "implementations", force: true do |t|
-    t.string   "label"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "implementations", force: :cascade do |t|
+    t.string   "label",      limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
-  create_table "implementations_profiles", force: true do |t|
+  create_table "implementations_profiles", force: :cascade do |t|
     t.integer "implementation_id"
     t.integer "profile_id"
   end
 
-  create_table "implementors", force: true do |t|
-    t.string   "label"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "implementors", force: :cascade do |t|
+    t.string   "label",      limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
-  create_table "implementors_profiles", force: true do |t|
+  create_table "implementors_profiles", force: :cascade do |t|
     t.integer "implementor_id"
     t.integer "profile_id"
   end
 
-  create_table "organisations", force: true do |t|
-    t.string   "name"
-    t.string   "contact_number"
-    t.string   "website"
-    t.string   "street_address"
-    t.string   "city"
-    t.string   "region"
-    t.string   "postal_code"
-    t.string   "country"
-    t.string   "charity_number"
-    t.string   "company_number"
-    t.string   "slug"
-    t.string   "type"
+  create_table "organisations", force: :cascade do |t|
+    t.string   "name",              limit: 255
+    t.string   "contact_number",    limit: 255
+    t.string   "website",           limit: 255
+    t.string   "street_address",    limit: 255
+    t.string   "city",              limit: 255
+    t.string   "region",            limit: 255
+    t.string   "postal_code",       limit: 255
+    t.string   "country",           limit: 255
+    t.string   "charity_number",    limit: 255
+    t.string   "company_number",    limit: 255
+    t.string   "slug",              limit: 255
+    t.string   "type",              limit: 255
     t.text     "mission"
-    t.string   "status"
+    t.string   "status",            limit: 255
     t.date     "founded_on"
     t.date     "registered_on"
     t.boolean  "registered"
     t.boolean  "active_on_beehive"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
   add_index "organisations", ["slug"], name: "index_organisations_on_slug", unique: true, using: :btree
 
-  create_table "profiles", force: true do |t|
+  create_table "profiles", force: :cascade do |t|
     t.integer  "organisation_id"
-    t.string   "gender"
-    t.string   "currency"
+    t.string   "gender",                     limit: 255
+    t.string   "currency",                   limit: 255
     t.integer  "year"
     t.integer  "min_age"
     t.integer  "max_age"
@@ -222,39 +256,39 @@ ActiveRecord::Schema.define(version: 20150408125142) do
     t.boolean  "expenditure_actual"
     t.boolean  "beneficiaries_count_actual"
     t.boolean  "units_count_actual"
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
     t.boolean  "does_sell"
   end
 
-  create_table "recipient_funder_accesses", force: true do |t|
+  create_table "recipient_funder_accesses", force: :cascade do |t|
     t.integer  "recipient_id"
     t.integer  "funder_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  create_table "reporting_requirements", force: true do |t|
-    t.string   "label"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "reporting_requirements", force: :cascade do |t|
+    t.string   "label",      limit: 255
+    t.datetime "created_at",             null: false
+    t.datetime "updated_at",             null: false
   end
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.integer  "organisation_id"
-    t.string   "first_name"
-    t.string   "last_name"
-    t.string   "job_role"
-    t.string   "user_email"
-    t.string   "password_digest"
-    t.string   "auth_token"
-    t.string   "password_reset_token"
-    t.string   "role",                   default: "User"
+    t.string   "first_name",             limit: 255
+    t.string   "last_name",              limit: 255
+    t.string   "job_role",               limit: 255
+    t.string   "user_email",             limit: 255
+    t.string   "password_digest",        limit: 255
+    t.string   "auth_token",             limit: 255
+    t.string   "password_reset_token",   limit: 255
+    t.string   "role",                   limit: 255, default: "User"
     t.datetime "password_reset_sent_at"
     t.datetime "last_seen"
-    t.integer  "sign_in_count",          default: 0
-    t.datetime "created_at",                              null: false
-    t.datetime "updated_at",                              null: false
+    t.integer  "sign_in_count",                      default: 0
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
   end
 
 end

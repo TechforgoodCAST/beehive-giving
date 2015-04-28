@@ -7,7 +7,7 @@
           Dashboard
           %a.uk-text-small{"data-uk-modal" => "{target:'#about-dashboard'}"} What's this?
 
-        .uk-grid.uk-margin-top-remove
+        .uk-grid.uk-margin-top-remove.uk-margin-bottom
           .uk-width-medium-1-3
             - unless @recipient.unlocked_funders.any?
               .uk-panel.uk-panel-box#panel.uk-margin-top-remove
@@ -18,8 +18,11 @@
                       %i.uk-icon-info-circle
                         See how you with The Foundation
 
-            .uk-panel.uk-panel-box.uk-overlay-panel#panel.uk-margin-top
+            .uk-panel.uk-panel-box.uk-overlay-panel#panel
               %h3 Your recommended funders
+              .uk-panel.uk-text-center.uk-vertical-align{style: 'border: 3px #ddd dashed; height: 110px;'}
+                .uk-vertical-align-middle
+                  %h3.uk-margin-top.uk-text-muted Coming soon...
             .uk-width-1-1.uk-button.uk-margin-bottom{"data-uk-modal" => "{target:'#about-recommendation'}"} Find out more
 
             -#     %li

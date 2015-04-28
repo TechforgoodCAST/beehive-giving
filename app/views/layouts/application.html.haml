@@ -47,9 +47,9 @@
                     %a.uk-text-primary{"data-uk-modal" => "{target:'#feedback'}"} Feedback
                 .uk-navbar-flip.uk-hidden-small
                   %ul.uk-navbar-nav
-                    %li
+                    %li{class: ('uk-active' if current_page?(funders_path))}
                       %a{href: funders_path} Funders
-                    %li
+                    %li{class: ('uk-active' if current_page?(recipient_dashboard_path))}
                       %a{href: recipient_dashboard_path}
                         Dashboard
                         -# %span.uk-badge.uk-badge-notification 1

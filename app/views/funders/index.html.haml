@@ -9,7 +9,7 @@
         .uk-grid.uk-margin-top-remove
           .uk-width-medium-1-1.uk-width-large-1-3
             = search_form_for @search, url: funders_path do |f|
-              .uk-width-1-1.uk-margin-bottom
+              .uk-width-1-1.uk-margin-bottom{"data-uk-sticky" => "{top:60, media: 959}"}
                 .uk-panel.uk-panel-box#panel.uk-margin-top-remove
                   .uk-panel-title
                     Find funders
