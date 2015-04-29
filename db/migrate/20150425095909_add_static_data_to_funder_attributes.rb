@@ -54,8 +54,6 @@ class AddStaticDataToFunderAttributes < ActiveRecord::Migration
     add_column :funder_attributes, :funded_average_age, :decimal
     add_column :funder_attributes, :funded_average_income, :decimal
     add_column :funder_attributes, :funded_average_paid_staff, :decimal
-
-    remove_column :funder_attributes, :non_financial_support
   end
 
   def down
@@ -82,7 +80,5 @@ class AddStaticDataToFunderAttributes < ActiveRecord::Migration
     remove_column :funder_attributes, :funded_average_age
     remove_column :funder_attributes, :funded_average_income
     remove_column :funder_attributes, :funded_average_paid_staff
-
-    add_column :funder_attributes, :non_financial_support, :string
   end
 end
