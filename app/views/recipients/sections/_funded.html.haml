@@ -1,0 +1,60 @@
+.uk-container.uk-container-center.uk-margin-large.uk-margin-large-bottom#funded
+  %h2.uk-text-center.upcase Funded organisations
+  .uk-grid.uk-margin-bottom{"data-uk-grid-match" => "{target:'.uk-panel'}"}
+    .uk-width-medium-1-3.uk-margin-bottom
+      .uk-panel.uk-panel-box#panel
+        %h3.uk-text-center Age
+        .uk-text-center
+          - if @funder.attributes.count < 1 || @funder.attributes.first.funded_average_age.nil?
+            = data_progress(@funder)
+          - else
+            %h6.uk-text-bold.upcase Average
+            %h1.uk-margin-top-remove.stat-big
+              = (@funder.attributes.first.funded_average_age / 365).round(1)
+              %span.uk-text-small year(s) old
+          %hr
+          %h6.uk-margin-top-remove.uk-text-bold.upcase Your age
+          %h2.uk-margin-top-remove.uk-margin-bottom-remove.stat-normal.yellow
+            = ((Date.today - @recipient.founded_on).to_f / 365).round(1)
+            %span.uk-text-small year(s) old
+    .uk-width-medium-1-3.uk-margin-bottom
+      .uk-panel.uk-panel-box#panel
+        %h3.uk-text-center Income
+        .uk-text-center
+          - if @funder.attributes.count < 1 || @funder.attributes.first.funded_average_income.nil?
+            = data_progress(@funder)
+          - else
+            %h6.uk-text-bold.upcase Average
+            %h1.uk-margin-top-remove.stat-big
+              = number_to_currency(@funder.attributes.where('funding_stream_id = ?', @funding_stream).first.funded_average_income, unit: '£', precision: 0)
+          %hr
+          %h6.uk-margin-top-remove.uk-text-bold.upcase Your income
+          %h2.uk-margin-top-remove.uk-margin-bottom-remove.stat-normal.yellow
+            - if @recipient.profiles.where('year = ? OR year = ?', Date.today.year, Date.today.year - 365).any?
+              = number_to_currency(@recipient.profiles.where('year = ? OR year = ?', Date.today.year, Date.today.year - 365).first.income, unit: '£', precision: 0)
+    .uk-width-medium-1-3.uk-margin-bottom
+      .uk-panel.uk-panel-box#panel
+        %h3.uk-text-center Paid staff
+        .uk-text-center
+          - if @funder.attributes.count < 1 || @funder.attributes.first.funded_average_paid_staff.nil?
+            = data_progress(@funder)
+          - else
+            %h6.uk-text-bold.upcase Average
+            %h1.uk-margin-top-remove.stat-big
+              = @funder.attributes.where('funding_stream_id = ?', @funding_stream).first.funded_average_paid_staff
+              %span.uk-text-small Full time eqivalent
+          %hr
+          %h6.uk-margin-top-remove.uk-text-bold.upcase Your paid staff
+          %h2.uk-margin-top-remove.uk-margin-bottom-remove.stat-normal.yellow
+            - if @recipient.profiles.where('year = ? OR year = ?', Date.today.year, Date.today.year - 365).any?
+              = @recipient.profiles.where('year = ? OR year = ?', Date.today.year, Date.today.year - 365).first.staff_count
+            %span.uk-text-small Full time eqivalent
+
+  .uk-width-large-1-1
+    = render partial: 'recipients/charts/beneficiaries/beneficiary_target'
+    %hr
+      .uk-text-center
+        %h6.uk-text-bold.upcase Who/what you affect
+        - if @recipient.profiles.where('year = ? OR year = ?', Date.today.year, Date.today.year - 365).any?
+          - @recipient.profiles.where('year = ? OR year = ?', Date.today.year, Date.today.year - 365).first.beneficiaries.pluck(:label).each do |b|
+            .uk-button.uk-button-small= b

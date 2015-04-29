@@ -68,7 +68,7 @@ class RecipientDashboardTest < ActionDispatch::IntegrationTest
     visit "/comparison/#{@funders[4].slug}"
 
     assert_equal "/comparison/#{@funders[4].slug}/gateway", current_path
-    assert page.has_content?("You can only unlock 4 funders on the free plan")
+    assert page.has_content?("You can only unlock 4 funders at the moment...")
   end
 
 end
