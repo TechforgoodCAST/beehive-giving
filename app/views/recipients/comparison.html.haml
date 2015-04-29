@@ -16,8 +16,11 @@
           -#   .uk-button.uk-button-small Employment
           %h6.uk-text-muted.uk-text-bold.upcase.uk-margin-bottom-remove.uk-margin-top-remove Countries targeted
           .uk-width-1-1.uk-margin-small-top
-            - @funder.grants.where('approved_on > ?', Date.today - 365).pluck(:country).uniq.each do |stream|
-              = link_to "#{Country.find_by_alpha2(stream).name}", funders_path(:'q[grants_country_eq]' => "#{stream}"), class: 'uk-button uk-button-small', style: 'margin-bottom: 3px;'
+            - if @funder.attributes.count < 1
+              %h2.uk-text-primary Missing
+            - else
+              - @funder.attributes.where('funding_stream_id = ?', 1).first.countries.each do |country|
+                = link_to country.name, funders_path(:'q[grants_country_eq]' => "#{country.alpha2}"), class: 'uk-button uk-button-small', style: 'margin-bottom: 3px;'
 
       .uk-width-medium-1-1.uk-width-large-1-4.uk-vertical-align.uk-text-center{style: 'height: 220px;'}
         .uk-vertical-align-middle
@@ -43,6 +46,12 @@
     %hr
     %h2.uk-text-center.upcase.white
       Funding overview
+    %p.white
+      - if params[:funding_stream]
+        Funding stream:
+        %span.uk-button-group
+          = link_to "#{FundingStream.where('id = ?', params[:funding_stream]).first.label} &#10006;".html_safe, params.merge(:funding_stream => nil), class: 'uk-button uk-button-mini'
+
       -# .uk-button.uk-button-mini.roboto Compare
     .uk-grid.uk-margin-bottom{"data-uk-grid-match" => "{target:'.uk-panel'}"}
       .uk-width-medium-1-3.uk-margin-bottom
@@ -52,74 +61,113 @@
           .uk-panel-title.uk-text-center Funded organisations
           .uk-text-center
             %h6.uk-text-bold.upcase Funded
-            %h1.uk-margin-top-remove.stat-big= @funder.grants.where('approved_on > ?', Date.today - 365).count
+            - if @funder.attributes.count < 1 || @funder.attributes.first.grant_count.nil?
+              = simple_data_not_available('request_grant_count')
+            - else
+              %h1.uk-margin-top-remove.stat-big
+                = @funder.attributes.first.grant_count
           %hr
           .uk-grid.uk-text-center
             .uk-width-1-2
               %h6.uk-text-bold.upcase Applications
-              %h2.uk-margin-top-remove.stat-normal 17
+              - if @funder.attributes.count < 1 || @funder.attributes.first.application_count.nil?
+                = simple_data_not_available('request_applications_count')
+              - else
+                %h2.uk-margin-top-remove.stat-normal
+                  = @funder.attributes.first.application_count
             .uk-width-1-2
               %h6.uk-text-bold.upcase Enquiries
-              %h2.uk-margin-top-remove.stat-normal 104
+              - if @funder.attributes.count < 1 || @funder.attributes.first.enquiry_count.nil?
+                = simple_data_not_available('request_enquiry_count')
+              - else
+                %h2.uk-margin-top-remove.stat-normal
+                  = @funder.attributes.first.enquiry_count
 
       .uk-width-medium-1-3.uk-margin-bottom
         .uk-panel.uk-panel-box#panel
           %h3.uk-text-center Funding size
           .uk-text-center
-            %h6.uk-text-bold.upcase Average
-            %h1.uk-margin-top-remove.stat-big= number_to_currency(@funder.grants.where('approved_on > ?', Date.today - 365).calculate(:average, :amount_awarded), unit: '£', precision: 0)
-          %hr
+            - if @funder.attributes.count < 1 || @funder.attributes.first.funding_size_average.nil?
+              = data_not_available('request_amount_awarded')
+            - else
+              %h6.uk-text-bold.upcase Average
+              %h1.uk-margin-top-remove.stat-big
+                = number_to_currency(@funder.attributes.first.funding_size_average, unit: '£', precision: 0)
+              %hr
           .uk-grid.uk-text-center
             .uk-width-1-2
-              %h6.uk-text-bold.upcase Min
-              %h2.uk-margin-top-remove.stat-normal= number_to_currency(@funder.grants.where('approved_on > ?', Date.today - 365).calculate(:minimum, :amount_awarded), unit: '£', precision: 0)
+              - unless @funder.attributes.count < 1 || @funder.attributes.first.funding_size_min.nil?
+                %h6.uk-text-bold.upcase Min
+                %h2.uk-margin-top-remove.stat-normal
+                  = number_to_currency(@funder.attributes.first.funding_size_min, unit: '£', precision: 0)
             .uk-width-1-2
-              %h6.uk-text-bold.upcase Max
-              %h2.uk-margin-top-remove.stat-normal= number_to_currency(@funder.grants.where('approved_on > ?', Date.today - 365).calculate(:maximum, :amount_awarded), unit: '£', precision: 0)
+              - unless @funder.attributes.count < 1 || @funder.attributes.first.funding_size_max.nil?
+                %h6.uk-text-bold.upcase Max
+                %h2.uk-margin-top-remove.stat-normal
+                  = number_to_currency(@funder.attributes.first.funding_size_max, unit: '£', precision: 0)
 
       .uk-width-medium-1-3.uk-margin-bottom
         .uk-panel.uk-panel-box#panel
           %h3.uk-text-center Funding duration
           .uk-text-center
-            %h6.uk-text-bold.upcase Average
-            %h1.uk-margin-top-remove.stat-big
-              - if @funder.grants.where('approved_on > ?', Date.today - 365).pluck(:days_from_start_to_end).any?
-                = (@funder.grants.where('approved_on > ?', Date.today - 365).calculate(:average, :days_from_start_to_end) / 365).round(2)
+            - if @funder.attributes.count < 1 || @funder.attributes.first.funding_duration_average.nil?
+              = data_not_available('request_funding_dates')
+            - else
+              %h6.uk-text-bold.upcase Average
+              %h1.uk-margin-top-remove.stat-big
+                = (@funder.attributes.first.funding_duration_average / 365).round(2)
                 %span.uk-text-small year(s)
-          %hr
+              %hr
           .uk-grid.uk-text-center
             .uk-width-1-2
-              %h6.uk-text-bold.upcase Min
-              %h2.uk-margin-top-remove.stat-normal
-                = (@funder.grants.where('approved_on > ?', Date.today - 365).calculate(:minimum, :days_from_start_to_end).to_f / 365).round(2)
-                %span.uk-text-small year(s)
+              - unless @funder.attributes.count < 1 || @funder.attributes.first.funding_duration_min.nil?
+                %h6.uk-text-bold.upcase Min
+                %h2.uk-margin-top-remove.stat-normal
+                  = (@funder.attributes.first.funding_duration_min / 365).round(2)
+                  %span.uk-text-small year(s)
             .uk-width-1-2
-              %h6.uk-text-bold.upcase Max
-              %h2.uk-margin-top-remove.stat-normal
-                = (@funder.grants.where('approved_on > ?', Date.today - 365).calculate(:maximum, :days_from_start_to_end).to_f / 365).round(2)
-                %span.uk-text-small year(s)
+              - unless @funder.attributes.count < 1 || @funder.attributes.first.funding_duration_max.nil?
+                %h6.uk-text-bold.upcase Max
+                %h2.uk-margin-top-remove.stat-normal
+                  = (@funder.attributes.first.funding_duration_max / 365).round(2)
+                  %span.uk-text-small year(s)
 
       .uk-width-medium-1-3.uk-margin-bottom
         .uk-panel.uk-panel-box#panel.uk-text-center
-          %h1.stat-big= @funder.grants.where('approved_on > ?', Date.today - 365).pluck(:grant_type).uniq.count
+          - unless @funder.attributes.count < 1 || @funder.attributes.first.funding_types.count < 1
+            %h1.stat-big
+              = @funder.attributes.first.funding_types.count
           %h5.uk-text-bold.upcase.uk-margin-bottom-remove Type(s) of funding
           %hr
-            - @funder.grants.where('approved_on > ?', Date.today - 365).pluck(:grant_type).uniq.each do |type|
-              .uk-button.uk-button-small{style: 'margin-bottom: 3px;'}= type
+            - if @funder.attributes.count < 1 || @funder.attributes.first.funding_types.count < 1
+              = data_not_available('request_funding_types')
+            - else
+              - @funder.attributes.first.funding_types.pluck(:label).uniq.each do |type|
+                .uk-button.uk-button-small{style: 'margin-bottom: 3px;'}= type
       .uk-width-medium-1-3.uk-margin-bottom
         .uk-panel.uk-panel-box#panel.uk-text-center
-          %h1.stat-big= @funder.grants.pluck(:funding_stream).uniq.count
+          - unless @funder.attributes.count < 1 || @funder.attributes.count < 1
+            %h1.stat-big
+              = @funder.attributes.count
           %h5.uk-text-bold.upcase Funding stream(s)
           %hr
-            - @funder.grants.where('approved_on > ?', Date.today - 365).pluck(:funding_stream).uniq.each do |stream|
-              .uk-button.uk-button-small{style: 'margin-bottom: 3px;'}= stream
+            - if @funder.attributes.count < 1 || @funder.attributes.count < 1
+              = data_not_available('request_funding_streams')
+            - else
+              - @funder.attributes.each do |attr|
+                = link_to attr.funding_stream.label, params.merge(:funding_stream => "#{attr.funding_stream.id}"), class: 'uk-button uk-button-small', style: 'margin-bottom: 3px;'
       .uk-width-medium-1-3.uk-margin-bottom
         .uk-panel.uk-panel-box#panel.uk-text-center
-          %h1.stat-big= @funder.grants.where('approved_on > ?', Date.today - 365).pluck(:approved_on).uniq.count
+          - unless @funder.attributes.count < 1 || @funder.attributes.first.approval_months.count < 1
+            %h1.stat-big
+              = @funder.attributes.first.approval_months.count
           %h5.uk-text-bold.upcase Approval month(s)
           %hr
-            - @funder.grants.where('approved_on > ?', Date.today - 365).pluck(:approved_on).uniq.each do |date|
-              .uk-button.uk-button-small{style: 'margin-bottom: 3px;'}= date.strftime("%B %y'")
+            - if @funder.attributes.count < 1 || @funder.attributes.first.approval_months.count < 1
+              = data_not_available('request_approval_months')
+            - else
+              - @funder.attributes.first.approval_months.pluck(:month).uniq.each do |month|
+                .uk-button.uk-button-small{style: 'margin-bottom: 3px;'}= month
 
 .uk-container.uk-container-center.uk-margin-large.uk-margin-large-bottom#beneficiaries
   %h2.uk-text-center.upcase Funded organisations
@@ -128,10 +176,13 @@
       .uk-panel.uk-panel-box#panel
         %h3.uk-text-center Age
         .uk-text-center
-          %h6.uk-text-bold.upcase Average
-          %h1.uk-margin-top-remove.stat-big
-            1.6
-            %span.uk-text-small year(s) old
+          - if @funder.attributes.count < 1 || @funder.attributes.first.funded_average_age.nil?
+            = data_progress(@funder)
+          - else
+            %h6.uk-text-bold.upcase Average
+            %h1.uk-margin-top-remove.stat-big
+              = (@funder.attributes.first.funded_average_age / 365).round(1)
+              %span.uk-text-small year(s) old
           %hr
           %h6.uk-margin-top-remove.uk-text-bold.upcase Your age
           %h2.uk-margin-top-remove.uk-margin-bottom-remove.stat-normal.yellow
@@ -141,8 +192,12 @@
       .uk-panel.uk-panel-box#panel
         %h3.uk-text-center Income
         .uk-text-center
-          %h6.uk-text-bold.upcase Average
-          %h1.uk-margin-top-remove.stat-big= number_to_currency(22322, unit: '£', precision: 0)
+          - if @funder.attributes.count < 1 || @funder.attributes.first.funded_average_income.nil?
+            = data_progress(@funder)
+          - else
+            %h6.uk-text-bold.upcase Average
+            %h1.uk-margin-top-remove.stat-big
+              = number_to_currency(@funder.attributes.where('funding_stream_id = ?', @funding_stream).first.funded_average_income, unit: '£', precision: 0)
           %hr
           %h6.uk-margin-top-remove.uk-text-bold.upcase Your income
           %h2.uk-margin-top-remove.uk-margin-bottom-remove.stat-normal.yellow
@@ -152,10 +207,13 @@
       .uk-panel.uk-panel-box#panel
         %h3.uk-text-center Paid staff
         .uk-text-center
-          %h6.uk-text-bold.upcase Average
-          %h1.uk-margin-top-remove.stat-big
-            4
-            %span.uk-text-small Full time eqivalent
+          - if @funder.attributes.count < 1 || @funder.attributes.first.funded_average_paid_staff.nil?
+            = data_progress(@funder)
+          - else
+            %h6.uk-text-bold.upcase Average
+            %h1.uk-margin-top-remove.stat-big
+              = @funder.attributes.where('funding_stream_id = ?', @funding_stream).first.funded_average_paid_staff
+              %span.uk-text-small Full time eqivalent
           %hr
           %h6.uk-margin-top-remove.uk-text-bold.upcase Your paid staff
           %h2.uk-margin-top-remove.uk-margin-bottom-remove.stat-normal.yellow

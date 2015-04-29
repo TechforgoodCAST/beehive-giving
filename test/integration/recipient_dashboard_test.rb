@@ -53,21 +53,22 @@ class RecipientDashboardTest < ActionDispatch::IntegrationTest
     assert_not page.has_content?('See how you compare (Locked)')
   end
 
-  test "recipient can only unlock 3 funders" do
+  test "recipient can only unlock 4 funders" do
     @recipient = create(:recipient, founded_on: "01/01/2005")
     @funders   = []
-    4.times { @funders << create(:funder, :active_on_beehive => true) }
+    5.times { @funders << create(:funder, :active_on_beehive => true) }
     4.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i ) }
     create_and_auth_user!(:organisation => @recipient)
 
     @recipient.unlock_funder!(@funders[0])
     @recipient.unlock_funder!(@funders[1])
     @recipient.unlock_funder!(@funders[2])
+    @recipient.unlock_funder!(@funders[3])
 
-    visit "/comparison/#{@funders[3].slug}"
+    visit "/comparison/#{@funders[4].slug}"
 
-    assert_equal "/comparison/#{@funders[3].slug}/gateway", current_path
-    assert page.has_content?("You can only unlock 3 funders on the free plan")
+    assert_equal "/comparison/#{@funders[4].slug}/gateway", current_path
+    assert page.has_content?("You can only unlock 4 funders on the free plan")
   end
 
 end

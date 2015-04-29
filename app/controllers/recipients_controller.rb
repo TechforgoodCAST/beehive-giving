@@ -19,7 +19,7 @@ class RecipientsController < ApplicationController
 
   def comparison
     redirect_to recipient_comparison_gateway_path(@funder) if @recipient.locked_funder?(@funder)
-    @funding_stream = params[:funding_stream]
+    @funding_stream = params[:funding_stream] || 1
   end
 
   def vote
@@ -29,13 +29,19 @@ class RecipientsController < ApplicationController
       data_requested: vote.data_requested || params[:data_requested],
       request_amount_awarded: vote.request_amount_awarded || params[:request_amount_awarded],
       request_funding_dates: vote.request_funding_dates || params[:request_funding_dates],
-      request_funding_countries: vote.request_funding_countries || params[:request_funding_countries]
+      request_funding_countries: vote.request_funding_countries || params[:request_funding_countries],
+      request_grant_count: vote.request_grant_count || params[:request_grant_count],
+      request_applications_count: vote.request_applications_count || params[:request_applications_count],
+      request_enquiry_count: vote.request_enquiry_count || params[:request_enquiry_count],
+      request_funding_types: vote.request_funding_types || params[:request_funding_types],
+      request_funding_streams: vote.request_funding_streams || params[:request_funding_streams],
+      request_approval_months: vote.request_approval_months || params[:request_approval_months]
     )
 
     if vote.save
-      redirect_to :back, notice: "Thanks for requesting this, your interest helps us decide what to focus on - watch this space..."
+      redirect_to :back, notice: "Requested!"
     else
-      redirect_to :back, alert: "Unable to vote, perhaps you already did?"
+      redirect_to :back, alert: "Unable to request, perhaps you already did?"
     end
   end
 

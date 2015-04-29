@@ -166,6 +166,20 @@ $(document).ready ->
                       return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
 
 $(document).ready ->
+  if $('#beneficiary_target_static').length
+    Morris.Bar
+      element: 'beneficiary_target_static'
+      data: $('#beneficiary_target_static').data('grants')
+      xkey: 'target'
+      ykeys: ['2014']
+      labels: ['2014']
+      postUnits: '%'
+      barColors: ['#F7BA0E']
+      resize: true
+      hideHover: true
+      axes: false
+
+$(document).ready ->
   if $('#beneficiary_target').length
     Morris.Bar
       element: 'beneficiary_target'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150425095909) do
+ActiveRecord::Schema.define(version: 20150429101710) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,11 @@ ActiveRecord::Schema.define(version: 20150425095909) do
     t.string "alpha2", limit: 255
   end
 
+  create_table "countries_funder_attributes", force: :cascade do |t|
+    t.integer "funder_attribute_id"
+    t.integer "country_id"
+  end
+
   create_table "countries_profiles", force: :cascade do |t|
     t.integer "country_id"
     t.integer "profile_id"
@@ -106,11 +111,17 @@ ActiveRecord::Schema.define(version: 20150425095909) do
     t.integer  "funder_id"
     t.integer  "recipient_id"
     t.boolean  "data_requested"
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
     t.boolean  "request_amount_awarded"
     t.boolean  "request_funding_dates"
     t.boolean  "request_funding_countries"
+    t.boolean  "request_grant_count"
+    t.boolean  "request_applications_count"
+    t.boolean  "request_enquiry_count"
+    t.boolean  "request_funding_types"
+    t.boolean  "request_funding_streams"
+    t.boolean  "request_approval_months"
   end
 
   create_table "feedbacks", force: :cascade do |t|
@@ -131,7 +142,6 @@ ActiveRecord::Schema.define(version: 20150425095909) do
     t.integer  "grant_count"
     t.integer  "application_count"
     t.integer  "enquiry_count"
-    t.string   "non_financial_support",     limit: 255
     t.integer  "funding_stream_id"
     t.decimal  "funding_size_average"
     t.decimal  "funding_size_min"

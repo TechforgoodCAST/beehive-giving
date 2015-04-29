@@ -35,14 +35,21 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     assert page.has_link?('Unlock Funder')
   end
 
-  test 'recipient with 3 profiles can only pay' do
+  test 'recipient with 4 profiles can only pay' do
     @recipient = create(:recipient, founded_on: "01/01/2005")
-    @funder = create(:funder, :active_on_beehive => true)
+    @funders   = []
+    5.times { @funders << create(:funder, :active_on_beehive => true) }
     4.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i ) }
+
+    @recipient.unlock_funder!(@funders[0])
+    @recipient.unlock_funder!(@funders[1])
+    @recipient.unlock_funder!(@funders[2])
+    @recipient.unlock_funder!(@funders[3])
+
     create_and_auth_user!(:organisation => @recipient)
     visit '/funders'
     find_link('See how you compare (Locked)').click
-    puts page.body
+
     assert_not page.has_link?('Complete Profile')
     assert_not page.has_link?('Unlock Funder')
   end

@@ -1,26 +1,36 @@
 class FunderAttribute < ActiveRecord::Base
-  before_validation       :grant_count_from_grants, :approval_months_from_grants, :funding_type_from_grants,
-                          :funding_size_and_duration_from_grants, :funded_organisation_age,
-                          :funded_organisation_income_and_staff
+  before_validation       :grant_count_from_grants, :countries_from_grants, :approval_months_from_grants,
+                          :funding_type_from_grants,:funding_size_and_duration_from_grants,
+                          :funded_organisation_age, :funded_organisation_income_and_staff
 
   belongs_to              :funder
   has_and_belongs_to_many :application_supports
   has_and_belongs_to_many :reporting_requirements
 
   belongs_to              :funding_stream
+  has_and_belongs_to_many :countries
   has_and_belongs_to_many :funding_types
   has_and_belongs_to_many :approval_months
 
   VALID_YEARS = ((Date.today.year-3)..(Date.today.year)).to_a.reverse
   NON_FINANCIAL_SUPPORT = ['None', 'A little', 'A lot']
 
-  validates :funder_id, presence: true
+  validates :funder_id, :countries, :funding_stream, presence: true
   # validates :grant_count, :application_count, :enquiry_count, numericality: { allow_blank: true, only_integer: true, greater_than_or_equal_to: 0 }
+  validates :funding_stream, uniqueness: {scope: :funder_id, message: 'only one funding stream of each kind per funder'}
   # validates :year, uniqueness: {scope: :funder_id, message: 'only one is allowed per year'}
 
   def grant_count_from_grants
     if self.funder && self.funder.grants.count > 0
       self.grant_count = funder.grants.where('approved_on > ?', Date.today - 365).count
+    end
+  end
+
+  def countries_from_grants
+    if self.funder && self.countries.empty?
+      self.funder.grants.where('approved_on > ?', Date.today - 365).pluck(:country).uniq.each do |c|
+        self.countries << Country.find_by_alpha2(c)
+      end
     end
   end
 

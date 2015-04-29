@@ -1,5 +1,10 @@
 class AddStaticDataToFunderAttributes < ActiveRecord::Migration
   def up
+    create_table :countries_funder_attributes do |t|
+      t.references :funder_attribute
+      t.references :country
+    end
+
     create_table :funding_types do |t|
       t.string :label
     end
@@ -17,7 +22,7 @@ class AddStaticDataToFunderAttributes < ActiveRecord::Migration
       t.string :label
     end
 
-    %w[Main].each do |state|
+    %w[All Main].each do |state|
       FundingStream.create(label:state)
     end
 
@@ -49,9 +54,12 @@ class AddStaticDataToFunderAttributes < ActiveRecord::Migration
     add_column :funder_attributes, :funded_average_age, :decimal
     add_column :funder_attributes, :funded_average_income, :decimal
     add_column :funder_attributes, :funded_average_paid_staff, :decimal
+
+    remove_column :funder_attributes, :non_financial_support
   end
 
   def down
+    drop_table :countries_funder_attributes
     drop_table :funding_types
     drop_table :funder_attributes_funding_types
     drop_table :funding_streams
@@ -75,6 +83,6 @@ class AddStaticDataToFunderAttributes < ActiveRecord::Migration
     remove_column :funder_attributes, :funded_average_income
     remove_column :funder_attributes, :funded_average_paid_staff
 
-    remove_column :funder_attributes, :non_financial_support
+    add_column :funder_attributes, :non_financial_support, :string
   end
 end
