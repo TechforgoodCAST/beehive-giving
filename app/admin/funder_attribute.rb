@@ -2,7 +2,7 @@ ActiveAdmin.register FunderAttribute do
   config.sort_order = 'created_at_asc'
 
   permit_params :funder_id, :year, :grant_count, :application_count, :enquiry_count, :non_financial_support,
-  :funding_stream_id,  :funding_size_average, :funding_size_min, :funding_size_max, :funding_duration_average,
+  :funding_stream,  :funding_size_average, :funding_size_min, :funding_size_max, :funding_duration_average,
   :funding_duration_min, :funding_duration_max, :funded_average_age, :funded_average_income,
   :funded_average_paid_staff, country_ids: [], approval_month_ids: [], funding_type_ids: [], beneficiary_ids: [],
   application_support_ids: [], reporting_requirement_ids: []
@@ -12,9 +12,7 @@ ActiveAdmin.register FunderAttribute do
     column "Funder" do |attribute|
       link_to attribute.funder.name, [:admin, attribute.funder]
     end
-    column "Funding Stream" do |attribute|
-      attribute.funding_stream.label
-    end
+    column :funding_stream
     column :grant_count
     column :application_count
     column :enquiry_count
@@ -30,9 +28,7 @@ ActiveAdmin.register FunderAttribute do
       row "Funder" do |attribute|
         attribute.funder
       end
-      row "Funding Stream" do |attribute|
-        attribute.funding_stream.label
-      end
+      row :funding_stream
       row :grant_count
       row :application_count
       row :enquiry_count
@@ -60,8 +56,8 @@ ActiveAdmin.register FunderAttribute do
 
   form do |f|
     f.inputs do
-      f.input :funder
-      f.input :funding_stream, member_label: :label
+      f.input :funder, input_html: {class: 'chosen-select'}
+      f.input :funding_stream, collection: Grant.pluck(:funding_stream).uniq << 'All', input_html: {class: 'chosen-select'}
       f.input :countries, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :name, label: "Countries"
       f.input :grant_count
       f.input :application_count

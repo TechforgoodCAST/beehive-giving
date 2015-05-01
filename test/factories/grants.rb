@@ -2,7 +2,7 @@ FactoryGirl.define do
   factory :grant do
     association :funder, :factory => :funder
     association :recipient, :factory => :recipient
-    funding_stream "Main"
+    funding_stream "All"
     grant_type "Unrestricted"
     attention_how "Headhunting"
     amount_awarded 10000
@@ -19,4 +19,31 @@ FactoryGirl.define do
       object.default_values
     end
   end
+
+  factory :grants, class: Grant do
+    transient do
+      n { rand(0..9) }
+      s { rand(0..1) }
+      c { rand(0..3) }
+    end
+    association :funder, :factory => :funder
+    association :recipient, :factory => :recipient
+    funding_stream { ["All", "Main"][s] }
+    grant_type "Unrestricted"
+    attention_how "Headhunting"
+    amount_awarded { "1000#{n}" }
+    amount_applied { "1000#{n}" }
+    installments 1
+    approved_on Date.new(2015, 1, 1)
+    start_on Date.new(2015, 1, 1)
+    end_on Date.new(2015, 1, 1)
+    attention_on Date.new(2015, 1, 1)
+    applied_on Date.new(2015, 1, 1)
+    country { ['GB', 'KE', 'UG', 'ET'][c] }
+    open_call [true, false].sample
+    after(:build) do |object|
+      object.default_values
+    end
+  end
+
 end

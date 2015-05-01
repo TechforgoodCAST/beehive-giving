@@ -1,16 +1,17 @@
-#overview{style: 'background: #454545; padding-top: 30px;'}
+#overview.overview-offset{style: 'background: #454545'}
+%div{style: 'background: #454545; padding-top: 30px;'}
   %h3.uk-text-center{style: 'color: #eee;'} In the past 12 months...
   .uk-margin-top
     %ul.uk-subnav.uk-subnav-pill.uk-text-center.uk-margin-bottom-remove{"data-uk-scrollspy-nav" => "{closest:'li', topoffset:-350}", "data-uk-sticky" => "{top:40}"}
       %li
-        %a{:href => "#top", "data-uk-smooth-scroll" => "{offset: 40}"}
+        %a{:href => "#top", "data-uk-smooth-scroll" => ""}
           %i.uk-icon-arrow-up
       %li
-        %a{:href => "#overview", "data-uk-smooth-scroll" => "{offset: 40}"} Funding overview
+        %a{:href => "#overview", "data-uk-smooth-scroll" => ""} Funding overview
       %li
-        %a{:href => "#funded", "data-uk-smooth-scroll" => "{offset: 92}"} Funded organisations
+        %a{:href => "#funded", "data-uk-smooth-scroll" => ""} Funded organisations
       %li
-        %a{:href => "#similar", "data-uk-smooth-scroll" => ""} Similar funders
+        %a{:href => "#similar", "data-uk-smooth-scroll" => "{offset: 92}"} Similar funders
 
   .uk-container.uk-container-center.uk-animation-fade
     %hr
@@ -20,7 +21,7 @@
       - if params[:funding_stream]
         Funding stream:
         %span.uk-button-group
-          = link_to "#{FundingStream.where('id = ?', params[:funding_stream]).first.label} &#10006;".html_safe, params.merge(:funding_stream => nil), class: 'uk-button uk-button-mini'
+          = link_to "#{@funding_stream} &#10006;".html_safe, recipient_comparison_path(@funder, :funding_stream => nil, :anchor => 'overview'), class: 'uk-button uk-button-mini'
 
       -# .uk-button.uk-button-mini.roboto Compare
     .uk-grid.uk-margin-bottom{"data-uk-grid-match" => "{target:'.uk-panel'}"}
@@ -36,7 +37,7 @@
               = simple_data_not_available('request_grant_count')
             - else
               %h1.uk-margin-top-remove.stat-big
-                = @funder.attributes.first.grant_count
+                = @funder.attributes.where('funding_stream = ?', @funding_stream).first.grant_count
           %hr
           .uk-grid.uk-text-center
             .uk-width-1-2
@@ -45,14 +46,14 @@
                 = simple_data_not_available('request_applications_count')
               - else
                 %h2.uk-margin-top-remove.stat-normal
-                  = @funder.attributes.first.application_count
+                  = @funder.attributes.where('funding_stream = ?', @funding_stream).first.application_count
             .uk-width-1-2
               %h6.uk-text-bold.upcase Enquiries
-              - if @funder.attributes.count < 1 || @funder.attributes.first.enquiry_count.nil?
+              - if @funder.attributes.count < 1 || @funder.attributes.where('funding_stream = ?', @funding_stream).first.enquiry_count.nil?
                 = simple_data_not_available('request_enquiry_count')
               - else
                 %h2.uk-margin-top-remove.stat-normal
-                  = @funder.attributes.first.enquiry_count
+                  = @funder.attributes.where('funding_stream = ?', @funding_stream).first.enquiry_count
 
       .uk-width-medium-1-3.uk-margin-bottom
         .uk-panel.uk-panel-box#panel
@@ -66,19 +67,19 @@
             - else
               %h6.uk-text-bold.upcase Average
               %h1.uk-margin-top-remove.stat-big
-                = number_to_currency(@funder.attributes.first.funding_size_average, unit: '£', precision: 0)
+                = number_to_currency(@funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_size_average, unit: '£', precision: 0)
               %hr
           .uk-grid.uk-text-center
             .uk-width-1-2
               - unless @funder.attributes.count < 1 || @funder.attributes.first.funding_size_min.nil?
                 %h6.uk-text-bold.upcase Min
                 %h2.uk-margin-top-remove.stat-normal
-                  = number_to_currency(@funder.attributes.first.funding_size_min, unit: '£', precision: 0)
+                  = number_to_currency(@funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_size_min, unit: '£', precision: 0)
             .uk-width-1-2
               - unless @funder.attributes.count < 1 || @funder.attributes.first.funding_size_max.nil?
                 %h6.uk-text-bold.upcase Max
                 %h2.uk-margin-top-remove.stat-normal
-                  = number_to_currency(@funder.attributes.first.funding_size_max, unit: '£', precision: 0)
+                  = number_to_currency(@funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_size_max, unit: '£', precision: 0)
 
       .uk-width-medium-1-3.uk-margin-bottom
         .uk-panel.uk-panel-box#panel
@@ -122,23 +123,24 @@
             - if @funder.attributes.count < 1 || @funder.attributes.first.funding_types.count < 1
               = data_not_available('request_funding_types')
             - else
-              - @funder.attributes.first.funding_types.pluck(:label).uniq.each do |type|
+              - @funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_types.pluck(:label).uniq.each do |type|
                 .uk-button.uk-button-small{style: 'margin-bottom: 3px;'}= type
       .uk-width-medium-1-3.uk-margin-bottom
         .uk-panel.uk-panel-box#panel.uk-text-center
           - if @funder.grants.count > 0
             .uk-panel-badge
               %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360 Giving."}
-          - unless @funder.attributes.count < 1 || @funder.attributes.count < 1
+          - unless @funder.attributes.count < 1 || @funder.attributes.where('funding_stream != ?', 'All').count == 0
             %h1.uk-margin-top-remove.stat-big
-              = @funder.attributes.count
+              = @funder.attributes.count - 1
           %h5.uk-text-bold.upcase Funding stream(s)
           %hr
-            - if @funder.attributes.count < 1 || @funder.attributes.count < 1
+            - if @funder.attributes.count < 1 || @funder.attributes.where('funding_stream != ?', 'All').count == 0
               = data_not_available('request_funding_streams')
             - else
-              - @funder.attributes.each do |attr|
-                = link_to attr.funding_stream.label, params.merge(:funding_stream => "#{attr.funding_stream.id}"), class: 'uk-button uk-button-small', style: 'margin-bottom: 3px;'
+              - @funder.attributes.order('funding_stream asc').each do |attr|
+                - unless attr.funding_stream == 'All'
+                  = link_to attr.funding_stream, recipient_comparison_path(@funder, :anchor => 'overview', :funding_stream => "#{attr.funding_stream}", :anchor => 'overview'), class: 'uk-button uk-button-small', style: 'margin-bottom: 3px;'
       .uk-width-medium-1-3.uk-margin-bottom
         .uk-panel.uk-panel-box#panel.uk-text-center
           - if @funder.grants.count > 0
@@ -146,11 +148,11 @@
               %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360 Giving."}
           - unless @funder.attributes.count < 1 || @funder.attributes.first.approval_months.count < 1
             %h1.uk-margin-top-remove.stat-big
-              = @funder.attributes.first.approval_months.count
+              = @funder.attributes.where('funding_stream = ?', @funding_stream).first.approval_months.count
           %h5.uk-text-bold.upcase Approval month(s)
           %hr
             - if @funder.attributes.count < 1 || @funder.attributes.first.approval_months.count < 1
               = data_not_available('request_approval_months')
             - else
-              - @funder.attributes.first.approval_months.pluck(:month).uniq.each do |month|
+              - @funder.attributes.where('funding_stream = ?', @funding_stream).first.approval_months.pluck(:month).uniq.each do |month|
                 .uk-button.uk-button-small{style: 'margin-bottom: 3px;'}= month

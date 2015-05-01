@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150429101710) do
+ActiveRecord::Schema.define(version: 20150429192153) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -142,7 +142,6 @@ ActiveRecord::Schema.define(version: 20150429101710) do
     t.integer  "grant_count"
     t.integer  "application_count"
     t.integer  "enquiry_count"
-    t.integer  "funding_stream_id"
     t.decimal  "funding_size_average"
     t.decimal  "funding_size_min"
     t.decimal  "funding_size_max"
@@ -152,9 +151,8 @@ ActiveRecord::Schema.define(version: 20150429101710) do
     t.decimal  "funded_average_age"
     t.decimal  "funded_average_income"
     t.decimal  "funded_average_paid_staff"
+    t.string   "funding_stream"
   end
-
-  add_index "funder_attributes", ["funding_stream_id"], name: "index_funder_attributes_on_funding_stream_id", using: :btree
 
   create_table "funder_attributes_funding_types", force: :cascade do |t|
     t.integer "funder_attribute_id"
@@ -164,10 +162,6 @@ ActiveRecord::Schema.define(version: 20150429101710) do
   create_table "funder_attributes_reporting_requirements", force: :cascade do |t|
     t.integer "funder_attribute_id"
     t.integer "reporting_requirement_id"
-  end
-
-  create_table "funding_streams", force: :cascade do |t|
-    t.string "label"
   end
 
   create_table "funding_types", force: :cascade do |t|

@@ -8,7 +8,7 @@ class Grant < ActiveRecord::Base
     self.days_from_start_to_end = (self.end_on - self.start_on).to_i if self.end_on && self.start_on
   end
 
-  FUNDING_STREAM = ['Main', 'Theme 1', 'Theme 2']
+  FUNDING_STREAM = ['All', 'Main', 'Theme 1', 'Theme 2']
   GRANT_TYPE = ['Unrestricted', 'Core costs', 'Project costs']
   ATTENTION_HOW = ['Headhunting', 'Referral', 'Unsolicited application']
 

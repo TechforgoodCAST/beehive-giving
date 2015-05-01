@@ -22,6 +22,18 @@
   background-color: rgba(0,0,0,0.5); /*dim the background*/
 }
 
+.overview-offset, .funded-offset{
+  display: block;
+  position: relative;
+  visibility: hidden;
+}
+.overview-offset {
+  top: 20px;
+}
+.funded-offset {
+  top: -40px;
+}
+
 #funder_time, #grants_size,
 #recipient_age, #recipient_income,
 #beneficiary_target, #beneficiary_age, #beneficiary_gender,

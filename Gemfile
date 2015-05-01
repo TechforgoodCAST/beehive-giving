@@ -56,6 +56,7 @@ gem 'c3-rails'
 gem 'newrelic_rpm'
 gem 'httparty'
 gem 'nokogiri'
+gem 'intercom-rails'
 
 group :test do
   gem 'capybara'

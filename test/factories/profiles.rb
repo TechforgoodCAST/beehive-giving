@@ -1,5 +1,5 @@
 FactoryGirl.define do
-  factory :country do
+  factory :country, class: Country do
     name "Other"
     alpha2 "Other"
   end

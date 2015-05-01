@@ -7,7 +7,6 @@ class FunderAttribute < ActiveRecord::Base
   has_and_belongs_to_many :application_supports
   has_and_belongs_to_many :reporting_requirements
 
-  belongs_to              :funding_stream
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :funding_types
   has_and_belongs_to_many :approval_months
@@ -22,63 +21,112 @@ class FunderAttribute < ActiveRecord::Base
 
   def grant_count_from_grants
     if self.funder && self.funder.grants.count > 0
-      self.grant_count = funder.grants.where('approved_on > ?', Date.today - 365).count
+      if self.funding_stream == 'All'
+        self.grant_count = funder.grants.where('approved_on > ?', Date.today - 365).count
+      else
+        self.grant_count = funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).count
+      end
     end
   end
 
   def countries_from_grants
     if self.funder && self.countries.empty?
-      self.funder.grants.where('approved_on > ?', Date.today - 365).pluck(:country).uniq.each do |c|
-        self.countries << Country.find_by_alpha2(c)
+      if self.funding_stream == 'All'
+        self.funder.grants.where('approved_on > ?', Date.today - 365).pluck(:country).uniq.each do |c|
+          self.countries << Country.find_by_alpha2(c)
+        end
+      else
+        self.funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).pluck(:country).uniq.each do |c|
+          self.countries << Country.find_by_alpha2(c)
+        end
       end
     end
   end
 
   def approval_months_from_grants
     if self.funder && self.approval_months.empty?
-      self.funder.grants.where('approved_on > ?', Date.today - 365).pluck(:approved_on).uniq.each do |d|
-        self.approval_months << ApprovalMonth.find_by_month(d.strftime("%b"))
+      if self.funding_stream == 'All'
+        self.funder.grants.where('approved_on > ?', Date.today - 365).pluck(:approved_on).uniq.each do |d|
+          self.approval_months << ApprovalMonth.find_by_month(d.strftime("%b"))
+        end
+      else
+        self.funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).pluck(:approved_on).uniq.each do |d|
+          self.approval_months << ApprovalMonth.find_by_month(d.strftime("%b"))
+        end
       end
     end
   end
 
   def funding_type_from_grants
     if self.funder && self.funding_types.empty?
-      self.funder.grants.where('approved_on > ?', Date.today - 365).pluck(:grant_type).uniq.each do |t|
-        self.funding_types << FundingType.find_by_label(t)
+      if self.funding_stream == 'All'
+        self.funder.grants.where('approved_on > ?', Date.today - 365).pluck(:grant_type).uniq.each do |t|
+          self.funding_types << FundingType.find_by_label(t)
+        end
+      else
+        self.funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).pluck(:grant_type).uniq.each do |t|
+          self.funding_types << FundingType.find_by_label(t)
+        end
       end
     end
   end
 
   def funding_size_and_duration_from_grants
     if self.funder
-      self.funding_size_average = self.funder.grants.where('approved_on > ?', Date.today - 365).calculate(:average, :amount_awarded) if self.funding_size_average.nil?
-      self.funding_size_min = self.funder.grants.where('approved_on > ?', Date.today - 365).calculate(:minimum, :amount_awarded) if self.funding_size_min.nil?
-      self.funding_size_max = self.funder.grants.where('approved_on > ?', Date.today - 365).calculate(:maximum, :amount_awarded) if self.funding_size_max.nil?
+      if self.funding_stream == 'All'
+        self.funding_size_average = self.funder.grants.where('approved_on > ?', Date.today - 365).calculate(:average, :amount_awarded) if self.funding_size_average.nil?
+        self.funding_size_min = self.funder.grants.where('approved_on > ?', Date.today - 365).calculate(:minimum, :amount_awarded) if self.funding_size_min.nil?
+        self.funding_size_max = self.funder.grants.where('approved_on > ?', Date.today - 365).calculate(:maximum, :amount_awarded) if self.funding_size_max.nil?
 
-      self.funding_duration_average = self.funder.grants.where('approved_on > ?', Date.today - 365).calculate(:average, :days_from_start_to_end) if self.funding_duration_average.nil?
-      self.funding_duration_min = self.funder.grants.where('approved_on > ?', Date.today - 365).calculate(:minimum, :days_from_start_to_end) if self.funding_duration_min.nil?
-      self.funding_duration_max = self.funder.grants.where('approved_on > ?', Date.today - 365).calculate(:maximum, :days_from_start_to_end) if self.funding_duration_max.nil?
+        self.funding_duration_average = self.funder.grants.where('approved_on > ?', Date.today - 365).calculate(:average, :days_from_start_to_end) if self.funding_duration_average.nil?
+        self.funding_duration_min = self.funder.grants.where('approved_on > ?', Date.today - 365).calculate(:minimum, :days_from_start_to_end) if self.funding_duration_min.nil?
+        self.funding_duration_max = self.funder.grants.where('approved_on > ?', Date.today - 365).calculate(:maximum, :days_from_start_to_end) if self.funding_duration_max.nil?
+      else
+        self.funding_size_average = self.funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).calculate(:average, :amount_awarded) if self.funding_size_average.nil?
+        self.funding_size_min = self.funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).calculate(:minimum, :amount_awarded) if self.funding_size_min.nil?
+        self.funding_size_max = self.funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).calculate(:maximum, :amount_awarded) if self.funding_size_max.nil?
+
+        self.funding_duration_average = self.funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).calculate(:average, :days_from_start_to_end) if self.funding_duration_average.nil?
+        self.funding_duration_min = self.funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).calculate(:minimum, :days_from_start_to_end) if self.funding_duration_min.nil?
+        self.funding_duration_max = self.funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).calculate(:maximum, :days_from_start_to_end) if self.funding_duration_max.nil?
+      end
     end
   end
 
   def funded_organisation_age
-    if self.funder && self.funder.grants.count != 0
-      count = 0
-      sum = 0.0
-      self.funder.recipients.where('approved_on > ?', Date.today - 365).pluck(:founded_on).uniq.each do |d|
-        count += 1
-        sum += (Date.today - d) unless d.nil?
+    if self.funder && self.funder.recipients.where('approved_on > ?', Date.today - 365).count < self.funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).count
+      if self.funding_stream == 'All'
+        count = 0
+        sum = 0.0
+        self.funder.recipients.where('approved_on > ?', Date.today - 365).pluck(:founded_on).uniq.each do |d|
+          count += 1
+          sum += (Date.today - d) unless d.nil?
+        end
+        self.funded_average_age = (sum / count).round(1) if self.funded_average_age.nil?
+      else
+        count = 0
+        sum = 0.0
+        self.funder.recipients.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).pluck(:founded_on).uniq.each do |d|
+          count += 1
+          sum += (Date.today - d) unless d.nil?
+        end
+        self.funded_average_age = (sum / count).round(1) if self.funded_average_age.nil?
       end
-      self.funded_average_age = (sum / count).round(1) if self.funded_average_age.nil?
     end
   end
 
   def funded_organisation_income_and_staff
-    if self.funder && self.funder.grants.count != 0
-      unless self.funder.profiles.count < self.funder.grants.count
-        self.funded_average_income = self.funder.profiles.where('approved_on > ?', Date.today - 365).calculate(:average, :income) if self.funded_average_income.nil?
-        self.funded_average_paid_staff = self.funder.profiles.where('approved_on > ?', Date.today - 365).calculate(:average, :staff_count) if self.funded_average_paid_staff.nil?
+    if self.funder && self.funder.profiles.where('approved_on > ?', Date.today - 365).count < self.funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).count
+      if self.funding_stream == 'All'
+        unless self.funder.profiles.count < self.funder.grants.count
+          self.funded_average_income = self.funder.profiles.where('approved_on > ?', Date.today - 365).calculate(:average, :income) if self.funded_average_income.nil?
+          self.funded_average_paid_staff = self.funder.profiles.where('approved_on > ?', Date.today - 365).calculate(:average, :staff_count) if self.funded_average_paid_staff.nil?
+        end
+      else
+        unless self.funder.profiles.where('approved_on > ?', Date.today - 365).count < self.funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).count
+          self.funded_average_income = self.funder.profiles.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).calculate(:average, :income) if self.funded_average_income.nil?
+          self.funded_average_paid_staff = self.funder.profiles.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).calculate(:average, :staff_count) if self.funded_average_paid_staff.nil?
+        end
       end
     end
   end
