@@ -7,7 +7,6 @@ class FunderAttribute < ActiveRecord::Base
   has_and_belongs_to_many :application_supports
   has_and_belongs_to_many :reporting_requirements
 
-  belongs_to              :funding_stream
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :funding_types
   has_and_belongs_to_many :approval_months
