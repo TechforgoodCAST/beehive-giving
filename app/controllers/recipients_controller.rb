@@ -10,6 +10,7 @@ class RecipientsController < ApplicationController
 
   def gateway
     redirect_to recipient_comparison_path(@funder) unless @recipient.locked_funder?(@funder)
+    @funding_stream = params[:funding_stream] || 'All'
   end
 
   def unlock_funder

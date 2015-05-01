@@ -31,7 +31,7 @@ class RecipientComparisonTest < ActionDispatch::IntegrationTest
 
     puts page.body
     assert_not page.has_content?("Oh snap")
-    assert page.has_css?('.uk-alert-warning', count: 4)
+    assert page.has_css?('.uk-alert-warning', count: 3) # recipient age also shows
     # Test chart
   end
 
@@ -100,7 +100,7 @@ class RecipientComparisonTest < ActionDispatch::IntegrationTest
     create_and_auth_user!(:organisation => @recipient)
     visit "/comparison/#{@funder.slug}"
 
-    assert page.has_content?("Whoa!", count: 4)
+    assert page.has_content?("Whoa!", count: 3) # recipient age also shows
   end
 
   test 'Recipients current Profile data shown' do

@@ -94,23 +94,27 @@ class FunderAttribute < ActiveRecord::Base
   end
 
   def funded_organisation_age
-    if self.funder && self.funder.recipients.where('approved_on > ?', Date.today - 365).count < self.funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).count
-      if self.funding_stream == 'All'
-        count = 0
-        sum = 0.0
-        self.funder.recipients.where('approved_on > ?', Date.today - 365).pluck(:founded_on).uniq.each do |d|
-          count += 1
-          sum += (Date.today - d) unless d.nil?
+    if self.funder && self.funder.recipients.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).count == self.funder.recipients.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).pluck(:founded_on).count
+      if self.funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).count > 0
+        if self.funding_stream == 'All'
+          count = 0
+          sum = 0.0
+          self.funder.recipients.where('approved_on > ?', Date.today - 365).pluck(:founded_on).uniq.each do |d|
+            count += 1
+            sum += (Date.today - d) unless d.nil?
+          end
+          self.funded_average_age = (sum / count).round(1) if self.funded_average_age.nil?
         end
-        self.funded_average_age = (sum / count).round(1) if self.funded_average_age.nil?
       else
-        count = 0
-        sum = 0.0
-        self.funder.recipients.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).pluck(:founded_on).uniq.each do |d|
-          count += 1
-          sum += (Date.today - d) unless d.nil?
+        if self.funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).count > 0
+          count = 0
+          sum = 0.0
+          self.funder.recipients.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).pluck(:founded_on).uniq.each do |d|
+            count += 1
+            sum += (Date.today - d) unless d.nil?
+          end
+          self.funded_average_age = (sum / count).round(1) if self.funded_average_age.nil?
         end
-        self.funded_average_age = (sum / count).round(1) if self.funded_average_age.nil?
       end
     end
   end
