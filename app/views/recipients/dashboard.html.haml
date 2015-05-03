@@ -1,8 +1,6 @@
 :javascript
   mixpanel.track("Page View", {"Page Name": "Recipient Dashboard"});
   mixpanel.track_forms("#funder_search", "Find Funders Form");
-  mixpanel.track_links("#mp-whats-this", "Clicked 'Whats this?' Link");
-  mixpanel.track_links("#mp-find-out-more", "Clicked 'Find out more' Link");
   mixpanel.track_links("#mp-the-foundation", "Clicked 'The Foundation' Link");
 
 #bg-color{style: 'min-height: 550px'}
@@ -12,7 +10,7 @@
 
         %h2.uk-margin-top
           Dashboard
-          %a.uk-text-small#mp-whats-this{"data-uk-modal" => "{target:'#about-dashboard'}"} What's this?
+          %a.uk-text-small{"data-uk-modal" => "{target:'#about-dashboard'}"} What's this?
 
         .uk-grid.uk-margin-top-remove.uk-margin-bottom
           .uk-width-medium-1-3
@@ -21,7 +19,7 @@
                 .uk-panel-title Get started
                 %ul.uk-nav.uk-nav-side
                   %li
-                    %a#mp-the-foundation{href: recipient_comparison_gateway_path(Funder.find_by_name('The Foundation'))}
+                    %a{href: recipient_comparison_gateway_path(Funder.find_by_name('The Foundation'))}
                       %i.uk-icon-info-circle
                         See how you with The Foundation
 
@@ -99,7 +97,7 @@
 
 #about-dashboard.uk-modal
   .uk-modal-dialog
-    %a.uk-modal-close.uk-close.js-record-feedback-close
+    %a.uk-modal-close.uk-close
     .uk-modal-header
       %h2 Your Dashboard
     %o From here you can start to discover and compare which funders are best for your organisation. Right now it's a little basic, but we'll be adding more funders, and features in the coming months. Importantly, by signing up you've provided us with vital information to help us develop advanced recommendation features, so watch this space...
@@ -114,7 +112,7 @@
 
 #about-recommendation.uk-modal
   .uk-modal-dialog
-    %a.uk-modal-close.uk-close.js-record-feedback-close
+    %a.uk-modal-close.uk-close
     .uk-modal-header
       %h2 Recommended funders
     %o From here you can start to discover and compare which funders are best for your organisation. Right now it's a little basic, but we'll be adding more funders, and features in the coming months. Importantly, by signing up you've provided us with vital information to help us develop advanced recommendation features, so watch this space...
