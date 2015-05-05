@@ -1,0 +1,23 @@
+#bg-color
+  .uk-container.uk-container-center.uk-animation-fade
+    .uk-panel.uk-panel-box#panel.uk-margin-large.uk-margin-large-top
+      %h2 Let's see if you're eligible first...
+      .uk-form.uk-form-stacked
+        = simple_form_for [@funder, @eligibility] do |f|
+          - @funder.restrictions.order(:created_at).each_with_index do |r, i|
+            .uk-width-1-1.uk-margin-bottom
+              %label.uk-form-label
+                Are you seeking funding for
+                = succeed '?' do
+                  = r.details
+              = f.input :"restriction#{i+1}", as: :select, input_html: { class: 'uk-width-1-1' }
+              = f.error :"restriction#{i+1}", class: 'uk-text-small uk-text-warning'
+          .uk-grid
+            - if @eligibility.valid?
+              .uk-width-1-1
+                = f.submit 'Next', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'
+            - else
+              .uk-width-1-2
+                = link_to 'Back', recipient_comparison_path(@funder), class: 'uk-button uk-width-1-1'
+              .uk-width-1-2
+                = f.submit 'Next', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'

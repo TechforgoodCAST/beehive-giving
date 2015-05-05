@@ -24,6 +24,15 @@
 
       .uk-width-medium-1-1.uk-width-large-1-4.uk-vertical-align.uk-text-center{style: 'height: 220px;'}
         .uk-vertical-align-middle
+          .uk-panel.uk-panel-box#panel
+            %p
+              Think your organisation is a good fit for
+              = succeed '?' do
+                = @funder.name
+            - if @funder.restrictions.any?
+              = link_to 'Send a funding enquiry', new_funder_eligibility_path(@funder), class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
+            - else
+              %a.uk-button.uk-button-primary.uk-button-large Direct to 'seeking'
           -# %h1.stat-big 19%
           -# %h6.uk-text-bold.upcase Of funded organisations are similar to yours
           -# .uk-button.uk-button-primary.uk-button-large Send enquiry

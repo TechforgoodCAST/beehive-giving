@@ -47,6 +47,7 @@ Rails.application.routes.draw do
       get :explore
     end
     resources :grants
+    resources :eligibilities, :path => "eligibility", :only => [:new, :create]
   end
 
   resources :feedback, :only => [:create]
