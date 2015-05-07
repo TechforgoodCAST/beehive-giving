@@ -2,6 +2,7 @@ class Funder < Organisation
   has_many :grants
   has_many :features
   has_many :restrictions
+  has_many :enquiries
   has_many :funder_attributes, dependent: :destroy
 
   has_many :recipients, :through => :grants

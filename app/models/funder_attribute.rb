@@ -20,11 +20,13 @@ class FunderAttribute < ActiveRecord::Base
   # validates :year, uniqueness: {scope: :funder_id, message: 'only one is allowed per year'}
 
   def grant_count_from_grants
-    if self.funder && self.funder.grants.count > 0
-      if self.funding_stream == 'All'
-        self.grant_count = funder.grants.where('approved_on > ?', Date.today - 365).count
-      else
-        self.grant_count = funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).count
+    if self.funder.grants.where('approved_on > ?', Date.today - 365).count > 0
+      if self.funder && self.funder.grants.count > 0
+        if self.funding_stream == 'All'
+          self.grant_count = funder.grants.where('approved_on > ?', Date.today - 365).count
+        else
+          self.grant_count = funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).count
+        end
       end
     end
   end
@@ -46,13 +48,17 @@ class FunderAttribute < ActiveRecord::Base
   def approval_months_from_grants
     if self.funder && self.approval_months.empty?
       if self.funding_stream == 'All'
+        array = []
         self.funder.grants.where('approved_on > ?', Date.today - 365).pluck(:approved_on).uniq.each do |d|
-          self.approval_months << ApprovalMonth.find_by_month(d.strftime("%b"))
+          array << ApprovalMonth.find_by_month(d.strftime("%b"))
         end
+        self.approval_months << array.uniq
       else
+        array = []
         self.funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).pluck(:approved_on).uniq.each do |d|
-          self.approval_months << ApprovalMonth.find_by_month(d.strftime("%b"))
+          array << ApprovalMonth.find_by_month(d.strftime("%b"))
         end
+        self.approval_months << array.uniq
       end
     end
   end

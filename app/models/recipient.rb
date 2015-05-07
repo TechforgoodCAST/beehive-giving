@@ -1,6 +1,7 @@
 class Recipient < Organisation
   has_many :grants
   has_many :features, dependent: :destroy
+  has_many :enquiries
 
   PROFILE_MAX_FREE_LIMIT = 4
 

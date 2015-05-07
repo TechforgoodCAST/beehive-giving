@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150504124024) do
+ActiveRecord::Schema.define(version: 20150505143846) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -85,6 +85,11 @@ ActiveRecord::Schema.define(version: 20150504124024) do
     t.string "alpha2", limit: 255
   end
 
+  create_table "countries_enquiries", force: :cascade do |t|
+    t.integer "enquiry_id"
+    t.integer "country_id"
+  end
+
   create_table "countries_funder_attributes", force: :cascade do |t|
     t.integer "funder_attribute_id"
     t.integer "country_id"
@@ -102,9 +107,25 @@ ActiveRecord::Schema.define(version: 20150504124024) do
     t.string  "subdivision", limit: 255
   end
 
+  create_table "districts_enquiries", force: :cascade do |t|
+    t.integer "enquiry_id"
+    t.integer "district_id"
+  end
+
   create_table "districts_profiles", force: :cascade do |t|
     t.integer "district_id"
     t.integer "profile_id"
+  end
+
+  create_table "enquiries", force: :cascade do |t|
+    t.integer  "recipient_id"
+    t.integer  "funder_id"
+    t.boolean  "new_project"
+    t.boolean  "new_location"
+    t.integer  "amount_seeking"
+    t.integer  "duration_seeking"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   create_table "features", force: :cascade do |t|

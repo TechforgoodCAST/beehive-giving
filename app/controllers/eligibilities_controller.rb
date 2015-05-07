@@ -9,8 +9,7 @@ class EligibilitiesController < ApplicationController
   def create
     @eligibility = Eligibility.new(eligibility_params)
     if @eligibility.valid?
-      redirect_to recipient_comparison_path(@funder)
-      flash[:notice] = "Success"
+      redirect_to new_funder_enquiry_path(@funder)
     else
       render :new
     end
