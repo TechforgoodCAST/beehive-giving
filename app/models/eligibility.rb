@@ -1,14 +1,11 @@
-class Eligibility
+class Eligibility < ActiveRecord::Base
 
-  include ActiveAttr::Model
+  belongs_to :recipient
+  belongs_to :restriction
 
-  10.times do |n|
-    attribute :"restriction#{n+1}",
-              unless: Proc.new { |eligibility| eligibility["restriction#{n+1}"].nil? }
-    validates :"restriction#{n+1}", presence: true,
-              unless: Proc.new { |eligibility| eligibility["restriction#{n+1}"].nil? }
-    validates :"restriction#{n+1}", inclusion: {:in => ['false'], :message => 'you are not eligible, please try another funder'},
-              unless: Proc.new { |eligibility| eligibility["restriction#{n+1}"].nil? }
-  end
+  validates :eligible, presence: true, unless: Proc.new { |eligibility| eligibility.eligible == false }
+  validates :recipient_id, :restriction_id, presence: true
+  validates :eligible, inclusion: {:in => [true, false], :message => 'please select from the list'}
+  validates_uniqueness_of :eligible, scope: [:recipient_id, :restriction_id], :message => 'only one per funder', if: :eligible?
 
 end

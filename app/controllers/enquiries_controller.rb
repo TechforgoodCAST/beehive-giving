@@ -3,7 +3,15 @@ class EnquiriesController < ApplicationController
   before_filter :load_funder, :load_recipient
 
   def new
-    @enquiry = Enquiry.new
+    if @recipient.eligible?(@funder)
+      @enquiry = Enquiry.new
+    elsif @recipient.eligibility_count(@funder) < @funder.restrictions.count
+      flash[:alert] = "Sorry you're ineligible"
+      redirect_to recipient_eligibility_path(@funder)
+    else
+      flash[:alert] = "Sorry you're ineligible"
+      redirect_to recipient_comparison_path(@funder)
+    end
   end
 
   def create

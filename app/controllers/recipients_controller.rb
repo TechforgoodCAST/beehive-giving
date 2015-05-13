@@ -2,7 +2,7 @@ class RecipientsController < ApplicationController
   before_filter :check_organisation_ownership_or_funder, :only => [:show]
   before_filter :ensure_logged_in, :load_recipient, :years_ago
   before_filter :load_funder, :only => [:gateway, :unlock_funder, :comparison]
-  before_filter :load_feedback, :only => [:dashboard, :gateway, :comparison, :show]
+  before_filter :load_feedback, :only => [:dashboard, :gateway, :comparison, :show, :eligibility, :update_eligibility]
 
   def dashboard
     @search = Funder.ransack(params[:q])
@@ -50,6 +50,37 @@ class RecipientsController < ApplicationController
     @recipient = Recipient.find_by_slug(params[:id])
   end
 
+  def eligibility
+    @funder = Funder.find_by_slug(params[:funder_id])
+    @restrictions = @funder.restrictions
+
+    if @recipient.eligible?(@funder)
+      redirect_to new_funder_enquiry_path(@funder)
+    elsif @recipient.eligibility_count(@funder) == @restrictions.count
+      flash[:alert] = "Sorry you're ineligible"
+      redirect_to recipient_comparison_path(@funder)
+    else
+      @eligibility =  1.times { @restrictions.each { |r| @recipient.eligibilities.new(restriction_id: r.id) unless @recipient.eligibilities.where('restriction_id = ?', r.id).count > 0 } }
+    end
+  end
+
+  def update_eligibility
+    @funder = Funder.find_by_slug(params[:funder_id])
+    @restrictions = @funder.restrictions
+
+    if @recipient.update_attributes(eligibility_params)
+      if @recipient.eligible?(@funder)
+        flash[:notice] = "You're eligible"
+        redirect_to new_funder_enquiry_path(@funder)
+      else
+        flash[:alert] = "Sorry you're ineligible"
+        redirect_to recipient_comparison_path(@funder)
+      end
+    else
+      render :eligibility
+    end
+  end
+
   private
 
   def load_recipient
@@ -70,6 +101,10 @@ class RecipientsController < ApplicationController
     else
       @years_ago = 1
     end
+  end
+
+  def eligibility_params
+    params.require(:recipient).permit(:eligibilities_attributes => [:id, :eligible, :restriction_id, :recipient_id])
   end
 
 end

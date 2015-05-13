@@ -33,6 +33,10 @@ Rails.application.routes.draw do
   match '/comparison/(:id)', to: 'recipients#comparison', via: :get, as: 'recipient_comparison'
   match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
 
+  # Eligibility
+  match '/(:funder_id)/eligibility', to: 'recipients#eligibility', via: :get, as: 'recipient_eligibility'
+  match '/(:funder_id)/eligibility', to: 'recipients#update_eligibility', via: :patch
+
   resources :users
 
   resources :recipients do
@@ -47,7 +51,6 @@ Rails.application.routes.draw do
       get :explore
     end
     resources :grants
-    resources :eligibilities, :path => "eligibility", :only => [:new, :create]
     resources :enquiries, :only => [:new, :create]
   end
 

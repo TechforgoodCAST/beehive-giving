@@ -1,5 +1,7 @@
 class Restriction < ActiveRecord::Base
-  belongs_to :funder
+  has_and_belongs_to_many :funders
+  has_many :eligibilities
+  has_many :recipients, :through => :eligibilities
 
-  validates :funder, :details, presence: true
+  validates :funders, :details, presence: true
 end

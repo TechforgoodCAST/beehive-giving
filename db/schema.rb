@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150505143846) do
+ActiveRecord::Schema.define(version: 20150507155337) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -115,6 +115,14 @@ ActiveRecord::Schema.define(version: 20150505143846) do
   create_table "districts_profiles", force: :cascade do |t|
     t.integer "district_id"
     t.integer "profile_id"
+  end
+
+  create_table "eligibilities", force: :cascade do |t|
+    t.integer  "recipient_id"
+    t.integer  "restriction_id"
+    t.boolean  "eligible"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
   end
 
   create_table "enquiries", force: :cascade do |t|
@@ -260,6 +268,13 @@ ActiveRecord::Schema.define(version: 20150505143846) do
 
   add_index "organisations", ["slug"], name: "index_organisations_on_slug", unique: true, using: :btree
 
+  create_table "organisations_restrictions", force: :cascade do |t|
+    t.integer  "funder_id"
+    t.integer  "restriction_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
   create_table "profiles", force: :cascade do |t|
     t.integer  "organisation_id"
     t.string   "gender",                     limit: 255
@@ -300,11 +315,9 @@ ActiveRecord::Schema.define(version: 20150505143846) do
   end
 
   create_table "restrictions", force: :cascade do |t|
-    t.integer  "funder_id"
-    t.boolean  "restriction"
     t.string   "details"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

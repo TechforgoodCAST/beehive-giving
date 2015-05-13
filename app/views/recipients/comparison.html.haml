@@ -11,7 +11,12 @@
               = @funder.name
               is recommended for your organisation.
             - if @funder.restrictions.any?
-              = link_to 'Are you a good fit?', new_funder_eligibility_path(@funder), class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
+              - if @recipient.eligible?(@funder) || @recipient.eligibility_count(@funder) < @funder.restrictions.count
+                = link_to 'Are you a good fit?', recipient_eligibility_path(@funder), class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
+              - else
+                %button.uk-button.uk-button-large.uk-width-1-1{:disabled => "", style: "background: #d32c46; color: #fff;"}
+                  %i.uk-icon-ban
+                    Ineligible
             - else
               %a.uk-button.uk-button-primary.uk-button-large If no eligbility?
           -# %h1.stat-big 19%

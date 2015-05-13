@@ -2,6 +2,9 @@ class Recipient < Organisation
   has_many :grants
   has_many :features, dependent: :destroy
   has_many :enquiries
+  has_many :eligibilities
+  has_many :restrictions, :through => :eligibilities
+  accepts_nested_attributes_for :eligibilities
 
   PROFILE_MAX_FREE_LIMIT = 4
 
@@ -47,6 +50,30 @@ class Recipient < Organisation
 
   def can_create_profile?
     profiles.count <= Date.today.year - self.founded_on.year unless profiles.count == 4
+  end
+
+  def eligibility_count(funder)
+    count = 0
+
+    funder.restrictions.each do |r|
+      self.eligibilities.each do |e|
+        count += 1 if e.restriction_id == r.id
+      end
+    end
+
+    count
+  end
+
+  def eligible?(funder)
+    count = 0
+
+    funder.restrictions.each do |r|
+      self.eligibilities.each do |e|
+        count += 1 if e.restriction_id == r.id && e.eligible == true
+      end
+    end
+
+    funder.restrictions.count == count ? true : false
   end
 
 end
