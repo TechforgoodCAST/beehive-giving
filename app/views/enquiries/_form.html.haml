@@ -5,6 +5,8 @@
       .uk-panel.uk-panel-box#panel
         .uk-form.uk-form-stacked
           .uk-width-1-1.uk-margin-bottom
+            = f.hidden_field :funder_id, value: @funder.id
+            = f.error :recipient, class: 'uk-text-small uk-text-warning'
             %label.uk-form-label Are you seeking funding for a new project?
             = f.input :new_project, as: :select, input_html: { class: 'uk-width-1-1' }
             = f.error :new_project, class: 'uk-text-small uk-text-warning'
@@ -38,4 +40,4 @@
             .uk-width-1-2
               = link_to 'Cancel', recipient_comparison_path(@funder), class: 'uk-button uk-width-1-1'
             .uk-width-1-2
-              = f.submit 'Preview', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'
+              = f.submit 'Next', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'

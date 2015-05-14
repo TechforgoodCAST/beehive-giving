@@ -37,6 +37,9 @@ Rails.application.routes.draw do
   match '/(:funder_id)/eligibility', to: 'recipients#eligibility', via: :get, as: 'recipient_eligibility'
   match '/(:funder_id)/eligibility', to: 'recipients#update_eligibility', via: :patch
 
+  # Enquiries
+  # match '/(:id)/(:funder_id)/feedback', to: 'enquiries#feedback', via: :get, as: 'funder_enquiry_feedback'
+
   resources :users
 
   resources :recipients do
@@ -51,7 +54,9 @@ Rails.application.routes.draw do
       get :explore
     end
     resources :grants
-    resources :enquiries, :only => [:new, :create]
+    resources :enquiries, :only => [:new, :create] do
+      get :feedback
+    end
   end
 
   resources :feedback, :only => [:create]

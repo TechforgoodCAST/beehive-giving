@@ -3,6 +3,7 @@ class CreateRestrictions < ActiveRecord::Migration
     create_table :restrictions do |t|
       t.references :funder
       t.string :details
+      t.string :funding_stream
 
       t.timestamps null: false
     end

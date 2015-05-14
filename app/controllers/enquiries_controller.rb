@@ -4,7 +4,11 @@ class EnquiriesController < ApplicationController
 
   def new
     if @recipient.eligible?(@funder)
-      @enquiry = Enquiry.new
+      if @recipient.enquiries.where('funder_id = ?', @funder.id).count > 0
+        redirect_to funder_enquiry_feedback_path(@funder, @recipient)
+      else
+        @enquiry = Enquiry.new
+      end
     elsif @recipient.eligibility_count(@funder) < @funder.restrictions.count
       flash[:alert] = "Sorry you're ineligible"
       redirect_to recipient_eligibility_path(@funder)
@@ -15,23 +19,27 @@ class EnquiriesController < ApplicationController
   end
 
   def create
-    @enquiry = Enquiry.new(enquiry_params)
-    if @enquiry.valid?
-      if params[:commit] == "Preview"
-        render :new
-      else
-        @enquiry.save
-        redirect_to root_path
-      end
+    @enquiry = @recipient.enquiries.new(enquiry_params)
+
+    if @recipient.enquiries.where('funder_id = ?', @funder.id).count > 0
+      redirect_to funder_enquiry_feedback_path(@funder, @recipient)
     else
-      render :new
+      if @enquiry.save
+        redirect_to funder_enquiry_feedback_path(@funder, @recipient)
+      else
+        render :new
+      end
     end
+  end
+
+  def feedback
+    @enquiry = @recipient.enquiries.where('funder_id = ?', @funder)
   end
 
   private
 
   def enquiry_params
-    params.require(:enquiry).permit(:new_project, :new_location, :amount_seeking,
+    params.require(:enquiry).permit(:funder_id, :new_project, :new_location, :amount_seeking,
     :duration_seeking, country_ids: [], district_ids: [])
   end
 
