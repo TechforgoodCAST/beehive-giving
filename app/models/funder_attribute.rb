@@ -47,6 +47,7 @@ class FunderAttribute < ActiveRecord::Base
 
   def approval_months_from_grants
     if self.funder && self.approval_months.empty?
+      array = []
       if self.funding_stream == 'All'
         array = []
         self.funder.grants.where('approved_on > ?', Date.today - 365).pluck(:approved_on).uniq.each do |d|
@@ -67,11 +68,11 @@ class FunderAttribute < ActiveRecord::Base
     if self.funder && self.funding_types.empty?
       if self.funding_stream == 'All'
         self.funder.grants.where('approved_on > ?', Date.today - 365).pluck(:grant_type).uniq.each do |t|
-          self.funding_types << FundingType.find_by_label(t)
+          self.funding_types << FundingType.find_by_label(t) unless t.blank?
         end
       else
         self.funder.grants.where('approved_on > ?', Date.today - 365).where('funding_stream = ?', self.funding_stream).pluck(:grant_type).uniq.each do |t|
-          self.funding_types << FundingType.find_by_label(t)
+          self.funding_types << FundingType.find_by_label(t) unless t.blank?
         end
       end
     end
