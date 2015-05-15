@@ -96,7 +96,7 @@
                     -#     of funding meets your search criteria
                     .uk-overlay-area
                       .uk-overlay-area-content
-                        - if funder.active_on_beehive?
+                        - if funder.active_on_beehive? && funder.attributes.count > 0
                           %a.uk-button.uk-button-primary.uk-button-large.uk-width-1-1{ href: recipient_comparison_path(funder) }
                             See how you compare
                             - if @recipient.locked_funder?(funder)
