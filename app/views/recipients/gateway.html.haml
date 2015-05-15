@@ -79,7 +79,7 @@
     .uk-grid.uk-margin-bottom{"data-uk-grid-match" => "{target:'.uk-panel'}"}
       .uk-width-medium-1-3.uk-margin-bottom
         .uk-panel.uk-panel-box#panel
-          - if @funder.grants.count > 0
+          - if @funder.grants.count > 0 && @funder.attributes.first.grant_count.present?
             .uk-panel-badge
               %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360 Giving."}
           .uk-panel-title.uk-text-center Funded organisations
@@ -109,7 +109,7 @@
 
       .uk-width-medium-1-3.uk-margin-bottom
         .uk-panel.uk-panel-box#panel
-          - if @funder.grants.count > 0
+          - if @funder.grants.count > 0 && @funder.attributes.first.funding_size_average.present?
             .uk-panel-badge
               %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360 Giving."}
           .uk-panel-title.uk-text-center Funding size
@@ -135,7 +135,7 @@
 
       .uk-width-medium-1-3.uk-margin-bottom
         .uk-panel.uk-panel-box#panel
-          - if @funder.grants.count > 0
+          - if @funder.grants.count > 0 && @funder.attributes.first.funding_duration_average.present?
             .uk-panel-badge
               %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360 Giving."}
           .uk-panel-title.uk-text-center Funding duration
