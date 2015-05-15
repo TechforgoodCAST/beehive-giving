@@ -8,6 +8,14 @@ class Recipient < Organisation
 
   PROFILE_MAX_FREE_LIMIT = 4
 
+  def recipient_profile_limit
+    if (Date.today.year - self.founded_on.year) < 4
+      (Date.today.year - self.founded_on.year) + 1
+    else
+      4
+    end
+  end
+
   def can_unlock_funder?(funder)
     profiles.count <= PROFILE_MAX_FREE_LIMIT && profiles.count > unlocked_funders.size
   end
