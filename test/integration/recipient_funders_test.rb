@@ -10,7 +10,11 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
   # end
 
   test 'funders are locked for user with no profiles' do
-    3.times { create(:funder, :active_on_beehive => true) }
+    3.times do |i|
+      @funder = create(:funder, :active_on_beehive => true)
+      create(:funder_attribute, :funder => @funder, :funding_stream => "All")
+    end
+
     create_and_auth_user!(:organisation => @recipient)
     visit '/funders'
     assert page.has_content?("See how you compare (Locked)")
@@ -19,6 +23,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
 
   test 'that clicking the comparison link takes you a page with options to unlock' do
     @funder = create(:funder, :active_on_beehive => true)
+    create(:funder_attribute, :funder => @funder, :funding_stream => "All")
     create_and_auth_user!(:organisation => @recipient)
     visit '/funders'
     find_link('See how you compare (Locked)').click
@@ -28,6 +33,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
   test 'that clicking the comparison link with a profile gives an unlock button' do
     @recipient = create(:recipient)
     @funder = create(:funder, :active_on_beehive => true)
+    create(:funder_attribute, :funder => @funder, :funding_stream => "All")
     @profile = create(:profile, :organisation => @recipient)
     create_and_auth_user!(:organisation => @recipient)
     visit '/funders'
@@ -38,7 +44,11 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
   test 'recipient with 4 profiles can only pay' do
     @recipient = create(:recipient, founded_on: "01/01/2005")
     @funders   = []
-    5.times { @funders << create(:funder, :active_on_beehive => true) }
+    5.times do |i|
+      @funder = create(:funder, :active_on_beehive => true)
+      @funders << @funder
+      create(:funder_attribute, :funder => @funder, :funding_stream => "All")
+    end
     4.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i ) }
 
     @recipient.unlock_funder!(@funders[0])
@@ -56,6 +66,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
 
   test "recipient can unlock a funder" do
     @funder = create(:funder, :active_on_beehive => true)
+    create(:funder_attribute, :funder => @funder, :funding_stream => "All")
     @profile = create(:profile, :organisation => @recipient)
     create_and_auth_user!(:organisation => @recipient)
     visit '/funders'

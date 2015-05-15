@@ -34,11 +34,11 @@ FactoryGirl.define do
     amount_awarded { "1000#{n}" }
     amount_applied { "1000#{n}" }
     installments 1
-    approved_on Date.new(2015, 1, 1)
-    start_on Date.new(2015, 1, 1)
-    end_on Date.new(2015, 1, 1)
-    attention_on Date.new(2015, 1, 1)
-    applied_on Date.new(2015, 1, 1)
+    approved_on Date.new(2014, 1, 1)
+    start_on Date.new(2014, 1, 1)
+    end_on Date.new(2014, 1, 1)
+    attention_on Date.new(2014, 1, 1)
+    applied_on Date.new(2014, 1, 1)
     country { ['GB', 'KE', 'UG', 'ET'][c] }
     open_call [true, false].sample
     after(:build) do |object|
