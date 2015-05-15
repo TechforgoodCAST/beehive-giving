@@ -1,6 +1,9 @@
 #overview.overview-offset{style: 'background: #454545'}
 %div{style: 'background: #454545; padding-top: 30px;'}
-  %h3.uk-text-center{style: 'color: #eee;'} In the past 12 months...
+  %h3.uk-text-center{style: 'color: #eee;'}
+    In
+    = succeed '...' do
+      = Date.today.year - 1
   .uk-margin-top
     %ul.uk-subnav.uk-subnav-pill.uk-text-center.uk-margin-bottom-remove{"data-uk-scrollspy-nav" => "{closest:'li', topoffset:-350}", "data-uk-sticky" => "{top:40}"}
       %li
