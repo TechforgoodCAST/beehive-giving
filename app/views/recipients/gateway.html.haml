@@ -31,17 +31,179 @@
           - if @recipient.can_unlock_funder?(@funder)
             .uk-panel.uk-panel-box#panel
               %p Now that you have completed a profile you can click below to unlock this funder.
-              = link_to "Unlock Funder", recipient_unlock_funder_path(@funder), class: 'uk-button uk-button-large uk-button-primary uk-width-1-1', method: :post
-          - elsif @recipient.profiles.count < Recipient::PROFILE_MAX_FREE_LIMIT
+              = link_to "Unlock Funder (#{(Recipient::PROFILE_MAX_FREE_LIMIT - @recipient.unlocked_funders.count)} left)", recipient_unlock_funder_path(@funder), class: 'uk-button uk-button-large uk-button-primary uk-width-1-1', method: :post
+
+          - elsif @recipient.profiles.count < @recipient.recipient_profile_limit
             .uk-panel.uk-panel-box#panel
               %p To unlock more details just click below to complete a profile:
               = link_to "Complete Profile", new_recipient_profile_path(@recipient, :redirect_to_funder => @funder.id), class: 'uk-button uk-button-large uk-button-primary uk-width-1-1', id: 'mp-complete-profile'
+
+          - elsif @recipient.unlocked_funders.count < 4
+            .uk-panel.uk-panel-box#panel
+              %p Now that you have completed a profile you can click below to unlock this funder.
+              = link_to "Unlock Funder (#{(Recipient::PROFILE_MAX_FREE_LIMIT - @recipient.unlocked_funders.count)} left)", recipient_unlock_funder_path(@funder), class: 'uk-button uk-button-large uk-button-primary uk-width-1-1', method: :post
+
           - else
             .uk-panel.uk-panel-box#panel
               %i.uk-icon-lock.uk-icon-medium
               %p You can only unlock 4 funders at the moment...
 
-= render partial: 'recipients/sections/overview'
+-# = render partial: 'recipients/sections/overview'
+
+#overview.overview-offset{style: 'background: #454545'}
+%div{style: 'background: #454545; padding-top: 30px;'}
+  %h3.uk-text-center{style: 'color: #eee;'} In the past 12 months...
+  .uk-margin-top
+    %ul.uk-subnav.uk-subnav-pill.uk-text-center.uk-margin-bottom-remove{"data-uk-scrollspy-nav" => "{closest:'li', topoffset:-350}", "data-uk-sticky" => "{top:40}"}
+      %li
+        %a{:href => "#top", "data-uk-smooth-scroll" => ""}
+          %i.uk-icon-arrow-up
+      %li
+        %a{:href => "#overview", "data-uk-smooth-scroll" => ""} Funding overview
+      %li
+        %a{:href => "#funded", "data-uk-smooth-scroll" => ""} Funded organisations
+      %li
+        %a{:href => "#similar", "data-uk-smooth-scroll" => "{offset: 92}"} Similar funders
+
+  .uk-container.uk-container-center.uk-animation-fade
+    %hr
+    %h2.uk-text-center.upcase.white
+      Funding overview
+    %p.white
+      - if params[:funding_stream]
+        Funding stream:
+        %span.uk-button-group
+          = link_to "#{@funding_stream} &#10006;".html_safe, recipient_comparison_path(@funder, :funding_stream => nil, :anchor => 'overview'), class: 'uk-button uk-button-mini'
+
+      -# .uk-button.uk-button-mini.roboto Compare
+    .uk-grid.uk-margin-bottom{"data-uk-grid-match" => "{target:'.uk-panel'}"}
+      .uk-width-medium-1-3.uk-margin-bottom
+        .uk-panel.uk-panel-box#panel
+          - if @funder.grants.count > 0
+            .uk-panel-badge
+              %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360 Giving."}
+          .uk-panel-title.uk-text-center Funded organisations
+          .uk-text-center
+            %h6.uk-text-bold.upcase Funded
+            - if @funder.attributes.count < 1 || @funder.attributes.first.grant_count.nil?
+              = simple_data_not_available('request_grant_count')
+            - else
+              %h1.uk-margin-top-remove.stat-big
+                = @funder.attributes.where('funding_stream = ?', @funding_stream).first.grant_count
+          %hr
+          .uk-grid.uk-text-center
+            .uk-width-1-2
+              %h6.uk-text-bold.upcase Applications
+              - if @funder.attributes.count < 1 || @funder.attributes.first.application_count.nil?
+                = simple_data_not_available('request_applications_count')
+              - else
+                %h2.uk-margin-top-remove.stat-normal
+                  = @funder.attributes.where('funding_stream = ?', @funding_stream).first.application_count
+            .uk-width-1-2
+              %h6.uk-text-bold.upcase Enquiries
+              - if @funder.attributes.count < 1 || @funder.attributes.where('funding_stream = ?', @funding_stream).first.enquiry_count.nil?
+                = simple_data_not_available('request_enquiry_count')
+              - else
+                %h2.uk-margin-top-remove.stat-normal
+                  = @funder.attributes.where('funding_stream = ?', @funding_stream).first.enquiry_count
+
+      .uk-width-medium-1-3.uk-margin-bottom
+        .uk-panel.uk-panel-box#panel
+          - if @funder.grants.count > 0
+            .uk-panel-badge
+              %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360 Giving."}
+          .uk-panel-title.uk-text-center Funding size
+          .uk-text-center
+            - if @funder.attributes.count < 1 || @funder.attributes.first.funding_size_average.nil?
+              = data_not_available('request_amount_awarded')
+            - else
+              %h6.uk-text-bold.upcase Average
+              %h1.uk-margin-top-remove.stat-big
+                = number_to_currency(@funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_size_average, unit: '£', precision: 0)
+              %hr
+          .uk-grid.uk-text-center
+            .uk-width-1-2
+              - unless @funder.attributes.count < 1 || @funder.attributes.first.funding_size_min.nil?
+                %h6.uk-text-bold.upcase Min
+                %h2.uk-margin-top-remove.stat-normal
+                  = number_to_currency(@funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_size_min, unit: '£', precision: 0)
+            .uk-width-1-2
+              - unless @funder.attributes.count < 1 || @funder.attributes.first.funding_size_max.nil?
+                %h6.uk-text-bold.upcase Max
+                %h2.uk-margin-top-remove.stat-normal
+                  = number_to_currency(@funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_size_max, unit: '£', precision: 0)
+
+      .uk-width-medium-1-3.uk-margin-bottom
+        .uk-panel.uk-panel-box#panel
+          - if @funder.grants.count > 0
+            .uk-panel-badge
+              %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360 Giving."}
+          .uk-panel-title.uk-text-center Funding duration
+          .uk-text-center
+            - if @funder.attributes.count < 1 || @funder.attributes.first.funding_duration_average.nil?
+              = data_not_available('request_funding_dates')
+            - else
+              %h6.uk-text-bold.upcase Average
+              %h1.uk-margin-top-remove.stat-big
+                = (@funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_duration_average / 365).round(2)
+                %span.uk-text-small year(s)
+              %hr
+          .uk-grid.uk-text-center
+            .uk-width-1-2
+              - unless @funder.attributes.count < 1 || @funder.attributes.first.funding_duration_min.nil?
+                %h6.uk-text-bold.upcase Min
+                %h2.uk-margin-top-remove.stat-normal
+                  = (@funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_duration_min / 365).round(2)
+                  %span.uk-text-small year(s)
+            .uk-width-1-2
+              - unless @funder.attributes.count < 1 || @funder.attributes.first.funding_duration_max.nil?
+                %h6.uk-text-bold.upcase Max
+                %h2.uk-margin-top-remove.stat-normal
+                  = (@funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_duration_max / 365).round(2)
+                  %span.uk-text-small year(s)
+
+      .uk-width-medium-1-3.uk-margin-bottom
+        .uk-panel.uk-panel-box.uk-text-center
+          %a.locked-overlay.uk-vertical-align.uk-text-center.white{:href => "#top", "data-uk-smooth-scroll" => "{offset: 40}"}
+            .uk-vertical-align-middle
+              %i.uk-icon-lock.uk-icon-large
+          %div
+            %h1.uk-margin-top-remove.stat-big.redacted.uk-text-muted 000
+            %h5.uk-text-bold.upcase Type(s) of funding
+            %hr
+            .uk-button.uk-button-small
+              .redacted.uk-text-muted 00000
+      .uk-width-medium-1-3.uk-margin-bottom
+        .uk-panel.uk-panel-box.uk-text-center
+          %a.locked-overlay.uk-vertical-align.uk-text-center.white{:href => "#top", "data-uk-smooth-scroll" => "{offset: 40}"}
+            .uk-vertical-align-middle
+              %i.uk-icon-lock.uk-icon-large
+          %div
+            %h1.uk-margin-top-remove.stat-big.redacted.uk-text-muted 000
+            %h5.uk-text-bold.upcase Funding stream(s)
+            %hr
+            .uk-button.uk-button-small
+              .redacted.uk-text-muted 00000
+            .uk-button.uk-button-small
+              .redacted.uk-text-muted 000
+            .uk-button.uk-button-small
+              .redacted.uk-text-muted 00000 000
+      .uk-width-medium-1-3.uk-margin-bottom
+        .uk-panel.uk-panel-box.uk-text-center
+          %a.locked-overlay.uk-vertical-align.uk-text-center.white{:href => "#top", "data-uk-smooth-scroll" => "{offset: 40}"}
+            .uk-vertical-align-middle
+              %i.uk-icon-lock.uk-icon-large
+          %div
+            %h1.uk-margin-top-remove.stat-big.redacted.uk-text-muted 000
+            %h5.uk-text-bold.upcase Approval month(s)
+            %hr
+            .uk-button.uk-button-small
+              .redacted.uk-text-muted 000
+            .uk-button.uk-button-small
+              .redacted.uk-text-muted 000
+            .uk-button.uk-button-small
+              .redacted.uk-text-muted 000
+
 
 .uk-container.uk-container-center.uk-margin-large.uk-margin-large-bottom#funded
   %h2.uk-text-center.upcase Funded organisations

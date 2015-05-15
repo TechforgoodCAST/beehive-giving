@@ -30,6 +30,7 @@
                           .uk-form-controls
                             = f.input :name_cont, input_html: { class: 'uk-width-1-1' }
                         .uk-width-1-1.uk-margin-top.uk-margin-bottom
+                          %p In the last 12 months...
                           %label.uk-form-label
                             = f.label "Country where funding has been given"
                           .uk-form-controls
@@ -72,7 +73,7 @@
 
                 .uk-grid
                   .uk-width-2-3
-                    = f.submit 'Find funders', class: "uk-width-1-1 uk-button uk-button-primary", style: 'color: #fff;'
+                    = f.submit 'Filter funders', class: "uk-width-1-1 uk-button uk-button-primary", style: 'color: #fff;'
                   .uk-width-1-3{style: 'padding-left: 0;'}
                     = link_to "Clear", request.path, class: "uk-width-1-1 uk-button"
 
@@ -89,10 +90,10 @@
                     .uk-panel-teaser.uk-text-center.uk-vertical-align{style: 'height: 100px;'}
                       .uk-vertical-align-middle
                         = image_tag "logos/#{funder.slug}-logo.png", alt: "#{funder.name}"
-                    - if params[:q]
-                      .uk-panel-box.uk-text-center
-                        = percentage_of_grants(funder)
-                        of funding meets your search criteria
+                    -# - if params[:q]
+                    -#   .uk-panel-box.uk-text-center
+                    -#     = percentage_of_grants(funder)
+                    -#     of funding meets your search criteria
                     .uk-overlay-area
                       .uk-overlay-area-content
                         - if funder.active_on_beehive?
