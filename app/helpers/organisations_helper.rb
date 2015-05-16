@@ -1,5 +1,33 @@
 module OrganisationsHelper
 
+  def funding_frequency_distribution(funder)
+    increment = 5
+
+    if @funding_stream == 'All'
+      grants = funder.grants
+        .where('approved_on < ? AND approved_on >= ?', '2015-01-01', '2014-01-01')
+    else
+      grants = funder.grants
+        .where('approved_on < ? AND approved_on >= ?', '2015-01-01', '2014-01-01')
+        .where("funding_stream = ?", @funding_stream)
+    end
+
+    max = grants.calculate(:maximum, :amount_awarded)
+    count = (max / (increment * 1000)) + 1
+
+    data = []
+    count.times do |i|
+      start_amount = i * (increment * 1000)
+      end_amount = (i * (increment * 1000)) + (increment * 1000)
+
+      data << {
+        target: "#{number_to_currency(i * increment, unit: '£', precision: 0)}k - #{number_to_currency(i * increment + increment, unit: '£', precision: 0)}k",
+        grant_count: grants.where('amount_awarded >= ? AND amount_awarded < ?', start_amount, end_amount).count
+      }
+    end
+    data
+  end
+
   def group_grants_by(funder, calculation, funding_stream, years_ago = 1, metric = :amount_awarded)
     years_ago_result = Date.today.year - years_ago
 
