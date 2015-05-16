@@ -6,7 +6,7 @@ class Funder < Organisation
   has_many :funder_attributes, dependent: :destroy
 
   has_many :recipients, :through => :grants
-  has_many :profiles, :through => :recipients
+  has_many :profiles, :through => :recipients, dependent: :destroy
 
   has_many :approval_months, :through => :funder_attributes
 

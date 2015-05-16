@@ -38,7 +38,7 @@
               %p To unlock more details just click below to complete a profile:
               = link_to "Complete Profile", new_recipient_profile_path(@recipient, :redirect_to_funder => @funder.id), class: 'uk-button uk-button-large uk-button-primary uk-width-1-1', id: 'mp-complete-profile'
 
-          - elsif @recipient.unlocked_funders.count < 4
+          - elsif @recipient.unlocked_funders.count < Recipient::PROFILE_MAX_FREE_LIMIT
             .uk-panel.uk-panel-box#panel
               %p Now that you have completed a profile you can click below to unlock this funder.
               = link_to "Unlock Funder (#{(Recipient::PROFILE_MAX_FREE_LIMIT - @recipient.unlocked_funders.count)} left)", recipient_unlock_funder_path(@funder), class: 'uk-button uk-button-large uk-button-primary uk-width-1-1', method: :post

@@ -33,11 +33,11 @@ class FunderAttribute < ActiveRecord::Base
     if self.funder && self.countries.empty?
       if self.funding_stream == 'All'
         self.funder.grants.where('approved_on < ? AND approved_on >= ?', '2015-01-01', '2014-01-01').pluck(:country).uniq.each do |c|
-          self.countries << Country.find_by_alpha2(c)
+          self.countries << Country.find_by_alpha2(c) unless c.blank?
         end
       else
         self.funder.grants.where('approved_on < ? AND approved_on >= ?', '2015-01-01', '2014-01-01').where('funding_stream = ?', self.funding_stream).pluck(:country).uniq.each do |c|
-          self.countries << Country.find_by_alpha2(c)
+          self.countries << Country.find_by_alpha2(c) unless c.blank?
         end
       end
     end
