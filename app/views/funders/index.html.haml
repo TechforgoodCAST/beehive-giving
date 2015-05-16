@@ -29,6 +29,11 @@
                             = f.label "Funder name"
                           .uk-form-controls
                             = f.input :name_cont, input_html: { class: 'uk-width-1-1' }
+                        -# .uk-width-1-1.uk-margin-top.uk-margin-bottom
+                        -#   %label.uk-form-label
+                        -#     = f.label "Active"
+                        -#   .uk-form-controls
+                        -#     = f.input :active_on_beehive_eq, as: :select, input_html: { class: 'uk-width-1-1' }
                         .uk-width-1-1.uk-margin-top.uk-margin-bottom
                           %p In the last 12 months...
                           %label.uk-form-label
@@ -61,7 +66,7 @@
                           %label.uk-form-label
                             = f.label "Type of funding given"
                           .uk-form-controls
-                            = f.input :grants_grant_type_cont, collection: Grant.pluck(:grant_type).uniq, as: :select, input_html: { class: 'uk-width-1-1' }
+                            = f.input :grants_grant_type_cont, collection: FundingType.all.pluck(:label), as: :select, input_html: { class: 'uk-width-1-1' }
 
                         -# .uk-width-1-1.uk-margin-top
                         -#   %label.uk-form-label

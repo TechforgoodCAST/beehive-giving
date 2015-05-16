@@ -49,7 +49,8 @@ class RecipientComparisonTest < ActionDispatch::IntegrationTest
   test 'Open data symbol shows if grants data held' do
     @grants = 4.times { create(:grants, :funder => @funder, :recipient => @recipient) }
     @profiles = 4.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i ) }
-    @attribute = create(:funder_attribute, :funder => @funder)
+    create(:funder_attribute, :funder => @funder)
+    create(:funder_attribute, :funder => @funder, :funding_stream => 'Main')
     create_and_auth_user!(:organisation => @recipient)
     visit "/comparison/#{@funder.slug}"
 

@@ -1,5 +1,5 @@
 class Grant < ActiveRecord::Base
-  before_save :default_values
+  before_validation :default_values
 
   def default_values
     self.days_from_attention_to_applied = (self.applied_on - self.attention_on).to_i if self.attention_on && self.applied_on
@@ -41,7 +41,8 @@ class Grant < ActiveRecord::Base
   :days_form_approval_to_start, :days_from_start_to_end,
   numericality: {only_integer: true, greater_than_or_equal_to: 0}, unless: :skip_validation
   validates :installments,
-  numericality: {only_integer: true, greater_than_or_equal_to: 1}
+  numericality: {only_integer: true, greater_than_or_equal_to: 1},
+  unless: :skip_validation
 
   ransacker :months_from_start_to_end, formatter: proc {|v| v.to_i * 30.4368 } do |parent|
     parent.table[:days_from_start_to_end]

@@ -15,7 +15,8 @@ class Organisation < ActiveRecord::Base
   validates :registered_on, presence: true, if: :registered?,
   unless: :skip_validation
 
-  validates :registered, :inclusion => { in: [true, false] }
+  validates :registered, :inclusion => { in: [true, false] },
+  unless: :skip_validation
 
   validates :status, inclusion: { in: STATUS },
   unless: :skip_validation

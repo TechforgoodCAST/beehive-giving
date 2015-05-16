@@ -14,10 +14,14 @@ ActiveAdmin.register Feature do
     column "Funding streams", :request_funding_streams
     column "Approval months", :request_approval_months
     column "for", :funder do |feature|
-      link_to feature.funder.name, [:admin, feature.recipient]
+      if feature.funder
+        link_to feature.funder.name, [:admin, feature.recipient]
+      end
     end
     column "by", :recipient do |feature|
-      link_to feature.recipient.name, [:admin, feature.recipient]
+      if feature.recipient
+        link_to feature.recipient.name, [:admin, feature.recipient]
+      end
     end
     column "at", :updated_at
     actions
