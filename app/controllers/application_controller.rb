@@ -25,6 +25,11 @@ class ApplicationController < ActionController::Base
       current_user.role == 'Funder'
   end
 
+  def ensure_admin
+    redirect_to root_path, alert: "Sorry, you don't have access to that" unless
+      current_user.role == 'Admin'
+  end
+
   def check_organisation_ownership
     redirect_to root_path, alert: "Sorry, you don't have access to that" unless
       current_user.organisation == Recipient.find_by_slug(params[:id])

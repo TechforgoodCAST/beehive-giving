@@ -1,5 +1,6 @@
 class FundersController < ApplicationController
   before_filter :ensure_logged_in
+  before_filter :ensure_admin, only: [:comparison]
   # before_filter :ensure_funder
   before_filter :load_funder, except: [:new, :create]
   before_filter :load_recipient
@@ -20,6 +21,24 @@ class FundersController < ApplicationController
 
   def show
     @grants = @funder.grants.order("created_at").page(params[:page]).per(10)
+  end
+
+  def comparison
+    # refactor
+    @funders = [
+      Funder.find_by_name('The Foundation'),
+      Funder.find_by_name('The Dulverton Trust'),
+      Funder.find_by_name('Paul Hamlyn Foundation'),
+      Funder.find_by_name('The Indigo Trust'),
+      Funder.find_by_name('Nominet Trust')
+    ]
+
+    # refactor
+    gon.funderName1 = Funder.find_by_name('The Foundation').name
+    gon.funderName2 = Funder.find_by_name('The Dulverton Trust').name
+    gon.funderName3 = Funder.find_by_name('Paul Hamlyn Foundation').name
+    gon.funderName4 = Funder.find_by_name('The Indigo Trust').name
+    gon.funderName5 = Funder.find_by_name('Nominet Trust').name
   end
 
   private

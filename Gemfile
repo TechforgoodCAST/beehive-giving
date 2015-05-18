@@ -57,6 +57,7 @@ gem 'newrelic_rpm'
 gem 'httparty'
 gem 'nokogiri'
 gem 'intercom-rails'
+gem 'gon'
 
 group :test do
   gem 'capybara'

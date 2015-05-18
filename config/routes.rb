@@ -33,6 +33,9 @@ Rails.application.routes.draw do
   match '/comparison/(:id)', to: 'recipients#comparison', via: :get, as: 'recipient_comparison'
   match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
 
+  # Compare funders
+  match '/funders/comparison', to: 'funders#comparison', via: :get, as: 'funders_comparison'
+
   resources :users
 
   resources :recipients do
