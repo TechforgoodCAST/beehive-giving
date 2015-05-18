@@ -40,6 +40,9 @@ Rails.application.routes.draw do
   # Enquiries
   # match '/(:id)/(:funder_id)/feedback', to: 'enquiries#feedback', via: :get, as: 'funder_enquiry_feedback'
 
+  # Compare funders
+  match '/funders/comparison', to: 'funders#comparison', via: :get, as: 'funders_comparison'
+
   resources :users
 
   resources :recipients do

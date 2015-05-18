@@ -28,6 +28,31 @@ module OrganisationsHelper
     data
   end
 
+  def multiple_funding_frequency_distribution(funders)
+    increment = 5
+    data = []
+
+    max = 45000
+    count = (max / (increment * 1000)) + 1
+
+    count.times do |i|
+      start_amount = i * (increment * 1000)
+      end_amount = (i * (increment * 1000)) + (increment * 1000)
+
+      hash = {
+        target: "#{number_to_currency(i * increment, unit: '£', precision: 0)}k - #{number_to_currency(i * increment + increment, unit: '£', precision: 0)}k"
+      }
+
+      funders.each_with_index do |funder, f|
+        hash[:"funder#{f+1}"] = funder.grants.where('approved_on < ? AND approved_on >= ?', '2015-01-01', '2014-01-01').where('amount_awarded >= ? AND amount_awarded < ?', start_amount, end_amount).count
+      end
+
+      data << hash
+    end
+
+    data
+  end
+
   def group_grants_by(funder, calculation, funding_stream, years_ago = 1, metric = :amount_awarded)
     years_ago_result = Date.today.year - years_ago
 
