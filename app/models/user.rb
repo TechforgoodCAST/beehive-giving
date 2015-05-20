@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   before_create { generate_token(:auth_token) }
 
   def name
-    name = "#{last_name.capitalize} #{first_name.capitalize}"
+    name = "#{first_name.capitalize} #{last_name.capitalize}"
   end
 
   has_secure_password
