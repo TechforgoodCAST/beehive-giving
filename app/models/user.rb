@@ -13,6 +13,10 @@ class User < ActiveRecord::Base
 
   before_create { generate_token(:auth_token) }
 
+  def name
+    name = "#{last_name.capitalize} #{first_name.capitalize}"
+  end
+
   has_secure_password
 
   def send_password_reset
