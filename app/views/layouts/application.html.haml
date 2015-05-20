@@ -26,7 +26,7 @@
       mixpanel.init("4c4e5cf90cda42b527052a9383f2f60a");
 
     - if logged_in?
-      = intercom_script_tag({:email => current_user.user_email, :name => current_user.name})
+      = intercom_script_tag({:email => current_user.user_email, :name => current_user.name, :job_role => current_user.job_role})
 
   %body#top
     %nav.uk-navbar#bg.border{"data-uk-sticky" => ""}
