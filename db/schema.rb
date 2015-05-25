@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150507155337) do
+ActiveRecord::Schema.define(version: 20150521184229) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,17 +48,6 @@ ActiveRecord::Schema.define(version: 20150507155337) do
 
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
-
-  create_table "application_supports", force: :cascade do |t|
-    t.string   "label",      limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
-
-  create_table "application_supports_funder_attributes", force: :cascade do |t|
-    t.integer "funder_attribute_id"
-    t.integer "application_support_id"
-  end
 
   create_table "approval_months", force: :cascade do |t|
     t.string "month"
@@ -188,9 +177,25 @@ ActiveRecord::Schema.define(version: 20150507155337) do
     t.integer "funding_type_id"
   end
 
-  create_table "funder_attributes_reporting_requirements", force: :cascade do |t|
-    t.integer "funder_attribute_id"
-    t.integer "reporting_requirement_id"
+  create_table "funding_streams", force: :cascade do |t|
+    t.string   "label"
+    t.string   "group"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "funding_streams_organisations", force: :cascade do |t|
+    t.integer  "funder_id"
+    t.integer  "funding_stream_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  create_table "funding_streams_restrictions", force: :cascade do |t|
+    t.integer  "funding_stream_id"
+    t.integer  "restriction_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   create_table "funding_types", force: :cascade do |t|
@@ -268,13 +273,6 @@ ActiveRecord::Schema.define(version: 20150507155337) do
 
   add_index "organisations", ["slug"], name: "index_organisations_on_slug", unique: true, using: :btree
 
-  create_table "organisations_restrictions", force: :cascade do |t|
-    t.integer  "funder_id"
-    t.integer  "restriction_id"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-  end
-
   create_table "profiles", force: :cascade do |t|
     t.integer  "organisation_id"
     t.string   "gender",                     limit: 255
@@ -308,17 +306,10 @@ ActiveRecord::Schema.define(version: 20150507155337) do
     t.datetime "updated_at"
   end
 
-  create_table "reporting_requirements", force: :cascade do |t|
-    t.string   "label",      limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
-
   create_table "restrictions", force: :cascade do |t|
     t.string   "details"
-    t.string   "funding_stream"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

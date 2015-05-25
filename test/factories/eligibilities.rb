@@ -1,12 +1,17 @@
 FactoryGirl.define do
-  factory :restriction do
-    funders {FactoryGirl.create_list(:funder, 2)}
-    details "Restriction details"
-  end
-
   factory :eligibility do
     association :recipient, :factory => :recipient
     association :restriction, :factory => :restriction
     eligible true
+  end
+
+  factory :restriction do
+    details "Restriction details"
+  end
+
+  factory :funding_stream do
+    funders {FactoryGirl.create_list(:funder, 1)}
+    restrictions {FactoryGirl.create_list(:restriction, 1)}
+    label "Funding stream name"
   end
 end

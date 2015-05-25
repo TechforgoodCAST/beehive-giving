@@ -52,15 +52,15 @@ class RecipientsController < ApplicationController
 
   def eligibility
     @funder = Funder.find_by_slug(params[:funder_id])
-    @restrictions = @funder.restrictions
+    @restrictions = @funder.restrictions.uniq
 
-    if @recipient.eligible?(@funder)
-      redirect_to new_funder_enquiry_path(@funder)
-    elsif @recipient.eligibility_count(@funder) == @restrictions.count
+    if @recipient.questions_remaining?(@funder)
+      @eligibility =  1.times { @restrictions.each { |r| @recipient.eligibilities.new(restriction_id: r.id) unless @recipient.eligibilities.where('restriction_id = ?', r.id).count > 0 } }
+    elsif @recipient.eligible?(@funder)
+      redirect_to funder_fit_path(@funder)
+    else
       flash[:alert] = "Sorry you're ineligible"
       redirect_to recipient_comparison_path(@funder)
-    else
-      @eligibility =  1.times { @restrictions.each { |r| @recipient.eligibilities.new(restriction_id: r.id) unless @recipient.eligibilities.where('restriction_id = ?', r.id).count > 0 } }
     end
   end
 
@@ -71,7 +71,7 @@ class RecipientsController < ApplicationController
     if @recipient.update_attributes(eligibility_params)
       if @recipient.eligible?(@funder)
         flash[:notice] = "You're eligible"
-        redirect_to new_funder_enquiry_path(@funder)
+        redirect_to funder_fit_path(@funder)
       else
         flash[:alert] = "Sorry you're ineligible"
         redirect_to recipient_comparison_path(@funder)

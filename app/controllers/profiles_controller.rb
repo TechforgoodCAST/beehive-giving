@@ -18,7 +18,7 @@ class ProfilesController < ApplicationController
     if @profile.save
       UserMailer.notify_funder(@profile).deliver
       if @redirect_to_funder
-        redirect_to recipient_comparison_path(Funder.find(@redirect_to_funder))
+        redirect_to recipient_comparison_path(Funder.find_by_slug(@redirect_to_funder))
       else
         redirect_to recipient_profiles_path(@recipient), notice: 'Profile created'
       end

@@ -1,7 +1,7 @@
 class FundersController < ApplicationController
   before_filter :ensure_logged_in
   before_filter :ensure_admin, only: [:comparison]
-  # before_filter :ensure_funder
+  before_filter :ensure_funder, only: [:explore, :show]
   before_filter :load_funder, except: [:new, :create]
   before_filter :load_recipient
 
@@ -39,6 +39,20 @@ class FundersController < ApplicationController
     gon.funderName3 = Funder.find_by_name('Paul Hamlyn Foundation').name
     gon.funderName4 = Funder.find_by_name('The Indigo Trust').name
     gon.funderName5 = Funder.find_by_name('Nominet Trust').name
+  end
+
+  def eligibility
+    @funder = Funder.find_by_slug(params[:funder_id])
+    @restrictions = @funder.restrictions.uniq
+
+    if @recipient.questions_remaining?(@funder)
+      redirect_to recipient_eligibility_path(@funder)
+    elsif @recipient.eligible?(@funder)
+      render :eligibility
+    else
+      flash[:alert] = "Sorry you're ineligible"
+      redirect_to recipient_comparison_path(@funder)
+    end
   end
 
   private

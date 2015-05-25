@@ -63,7 +63,7 @@ class Recipient < Organisation
   def eligibility_count(funder)
     count = 0
 
-    funder.restrictions.each do |r|
+    funder.restrictions.uniq.each do |r|
       self.eligibilities.each do |e|
         count += 1 if e.restriction_id == r.id
       end
@@ -72,16 +72,30 @@ class Recipient < Organisation
     count
   end
 
-  def eligible?(funder)
+  def funding_stream_eligible?(funding_stream, funder)
     count = 0
 
-    funder.restrictions.each do |r|
+    funder.funding_streams.where('label = ?', funding_stream).first.restrictions.each do |r|
       self.eligibilities.each do |e|
         count += 1 if e.restriction_id == r.id && e.eligible == true
       end
     end
 
-    funder.restrictions.count == count ? true : false
+    funder.funding_streams.where('label = ?', funding_stream).first.restrictions.count == count ? true : false
+  end
+
+  def eligible?(funder)
+    count = 0
+
+    funder.funding_streams.each do |f|
+      count += 1 if self.funding_stream_eligible?(f.label, funder)
+    end
+
+    count > 0 ? true : false
+  end
+
+  def questions_remaining?(funder)
+    self.eligibility_count(funder) < funder.restrictions.uniq.count
   end
 
 end
