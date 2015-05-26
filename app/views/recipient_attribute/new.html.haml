@@ -2,8 +2,12 @@
   .uk-grid.uk-margin-large.uk-margin-large-top
     .uk-width-medium-1-1.uk-animation-fade
       .uk-vertical-align.uk-text-center{:style => "height: 480px;"}
-        .uk-width-large-1-2.uk-vertical-align-middle
+        .uk-width-large-1-2.uk-vertical-align-middle.uk-text-left
           .uk-animation-fade.uk-form.uk-form-stacked.uk-panel.uk-panel-box#panel
+            .uk-panel-title Problem/Solution
+            %p Remember, you can update your answers any time.
             %fieldset
             = simple_form_for [@recipient, @attribute], url: recipient_attribute_index_path do |f|
+              - if @redirect_to_funder
+                = f.hidden_field :redirect_to_funder, value: @redirect_to_funder
               = render partial: 'recipient_attribute/form', locals: {f: f}

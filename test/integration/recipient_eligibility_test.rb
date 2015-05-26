@@ -6,6 +6,7 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
     @recipient = create(:recipient)
     @funder = create(:funder)
     @recipient.unlock_funder!(@funder)
+    @attribute = create(:recipient_attribute, recipient: @recipient)
   end
 
   test "recipient no eligibility data has to complete all questions" do

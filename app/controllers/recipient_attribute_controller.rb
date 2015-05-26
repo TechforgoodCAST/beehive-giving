@@ -2,6 +2,8 @@ class RecipientAttributeController < ApplicationController
   before_filter :ensure_logged_in, :load_recipient
 
   def new
+    @redirect_to_funder = params[:redirect_to_funder]
+
     unless @recipient.attribute
       @attribute = @recipient.build_recipient_attribute
     else
@@ -11,11 +13,17 @@ class RecipientAttributeController < ApplicationController
   end
 
   def create
+    @redirect_to_funder = params[:recipient_attribute].delete(:redirect_to_funder)
+
     @attribute = @recipient.build_recipient_attribute(attribute_params)
 
     if @attribute.save
       flash[:notice] = 'Saved!'
-      redirect_to root_path
+      if @redirect_to_funder
+        redirect_to recipient_eligibility_path(Funder.find_by_slug(@redirect_to_funder))
+      else
+        redirect_to root_path
+      end
     else
       render :new
     end
@@ -26,7 +34,8 @@ class RecipientAttributeController < ApplicationController
   end
 
   def update
-    if @recipient.attribute.update_attributes(attribute_params)
+    @attribute = @recipient.attribute
+    if @attribute.update_attributes(attribute_params)
       redirect_to root_path, notice: 'Updated!'
     else
       render :edit

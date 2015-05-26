@@ -14,14 +14,45 @@
 
         .uk-grid.uk-margin-top-remove.uk-margin-bottom
           .uk-width-medium-1-3
-            - unless @recipient.unlocked_funders.any?
+            - unless @recipient.profiles.count > 0 && @recipient.attribute && @recipient.unlocked_funders.any? && @recipient.eligibilities.count > 1
               .uk-panel.uk-panel-box#panel.uk-margin-top-remove
                 .uk-panel-title Get started
-                %ul.uk-nav.uk-nav-side
-                  %li
-                    %a{href: recipient_comparison_gateway_path(Funder.find_by_name('The Foundation'))}
-                      %i.uk-icon-info-circle
-                        See how you with The Foundation
+                %ol.uk-nav.uk-nav-side
+                  - unless @recipient.profiles.count > 0
+                    %li
+                      %a{href: recipient_comparison_gateway_path(Funder.find_by_name('The Foundation'))}
+                        1. Add details to help match your organisation
+                  - else
+                    %li
+                      %a.uk-text-muted
+                        %strike 1. Add details to help match your organisation
+
+                  - unless @recipient.attribute
+                    %li
+                      %a{href: new_recipient_attribute_path(@recipient)}
+                        2. Add problem/solution
+                  - else
+                    %li
+                      %a.uk-text-muted
+                        %strike 2. Add problem/solution
+
+                  - unless @recipient.unlocked_funders.any?
+                    %li
+                      %a{href: recipient_comparison_path(Funder.find_by_name('The Foundation'))}
+                        3. See how you compare with The Foundation
+                  - else
+                    %li
+                      %a.uk-text-muted
+                        %strike 3. See how you compare with The Foundation
+
+                  - unless @recipient.eligibilities.count > 1 # refactor
+                    %li
+                      %a{href: recipient_eligibility_path(Funder.find_by_name('The Foundation'))}
+                        4. See if you're eligible for The Foundation
+                  - else
+                    %li
+                      %a.uk-text-muted
+                        %strike 4. See if you're eligible for The Foundation
 
             .uk-panel.uk-panel-box.uk-overlay-panel#panel
               %h3 Your recommended funders
@@ -30,11 +61,11 @@
                   %h3.uk-margin-top.uk-text-muted Coming soon...
             .uk-width-1-1.uk-button.uk-margin-bottom#mp-find-out-more{"data-uk-modal" => "{target:'#about-recommendation'}"} Find out more
 
-            .uk-width-1-1
-              - if @recipient.attribute
-                = link_to 'Edit problem/solution', edit_recipient_attribute_path(@recipient, @recipient.attribute)
-              - else
-                = link_to 'Add problem/solution', new_recipient_attribute_path(@recipient)
+            -# .uk-width-1-1
+            -#   - if @recipient.attribute
+            -#     = link_to 'Edit problem/solution', edit_recipient_attribute_path(@recipient, @recipient.attribute)
+            -#   - else
+            -#     = link_to 'Add problem/solution', new_recipient_attribute_path(@recipient)
 
             -#     %li
             -#       %a.uk-text-muted
