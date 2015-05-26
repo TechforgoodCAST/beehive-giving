@@ -30,6 +30,12 @@
                   %h3.uk-margin-top.uk-text-muted Coming soon...
             .uk-width-1-1.uk-button.uk-margin-bottom#mp-find-out-more{"data-uk-modal" => "{target:'#about-recommendation'}"} Find out more
 
+            .uk-width-1-1
+              - if @recipient.attribute
+                = link_to 'Edit problem/solution', edit_recipient_attribute_path(@recipient, @recipient.attribute)
+              - else
+                = link_to 'Add problem/solution', new_recipient_attribute_path(@recipient)
+
             -#     %li
             -#       %a.uk-text-muted
             -#         %i.uk-icon-check-circle-o.uk-icon-small.uk-text-muted

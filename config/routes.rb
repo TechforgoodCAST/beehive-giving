@@ -32,6 +32,8 @@ Rails.application.routes.draw do
   match '/comparison/(:id)/unlock_funder', to: 'recipients#unlock_funder', via: :post, as: 'recipient_unlock_funder'
   match '/comparison/(:id)', to: 'recipients#comparison', via: :get, as: 'recipient_comparison'
   match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
+  # match '/(:id)/edit', to: 'recipients#edit', via: :get, as: 'recipient_edit'
+  # match '/(:id)/edit', to: 'recipients#edit', via: :patch
 
   # Eligibility
   match '/eligibility/(:funder_id)', to: 'recipients#eligibility', via: :get, as: 'recipient_eligibility'
@@ -51,6 +53,7 @@ Rails.application.routes.draw do
       post :vote
     end
     resources :profiles
+    resources :recipient_attribute, :as => :attribute, :only => [:new, :create, :edit, :update]
   end
 
   resources :funders do

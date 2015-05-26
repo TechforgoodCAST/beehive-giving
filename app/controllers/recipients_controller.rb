@@ -2,7 +2,18 @@ class RecipientsController < ApplicationController
   before_filter :check_organisation_ownership_or_funder, :only => [:show]
   before_filter :ensure_logged_in, :load_recipient, :years_ago
   before_filter :load_funder, :only => [:gateway, :unlock_funder, :comparison]
-  before_filter :load_feedback, :only => [:dashboard, :gateway, :comparison, :show, :eligibility, :update_eligibility]
+  before_filter :load_feedback, :except => [:unlock_funder, :vote]
+
+  # def edit
+  # end
+  #
+  # def update
+  #   if @recipient.update_attributes(recipient_params)
+  #     redirect_to root_path, notice: 'Organisation updated!'
+  #   else
+  #     render :edit
+  #   end
+  # end
 
   def dashboard
     @search = Funder.ransack(params[:q])
@@ -107,5 +118,11 @@ class RecipientsController < ApplicationController
   def eligibility_params
     params.require(:recipient).permit(:eligibilities_attributes => [:id, :eligible, :restriction_id, :recipient_id])
   end
+
+  # def recipient_params
+  #   params.require(:recipient).permit(:name, :contact_number, :website,
+  #   :street_address, :city, :region, :postal_code, :country, :charity_number,
+  #   :company_number, :founded_on, :registered_on, :mission, :status, :registered)
+  # end
 
 end

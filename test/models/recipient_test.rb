@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class OrganisationTest < ActiveSupport::TestCase
+class RecipientTest < ActiveSupport::TestCase
   setup do
     @recipient = build(:recipient)
   end

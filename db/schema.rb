@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150521184229) do
+ActiveRecord::Schema.define(version: 20150526102832) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -298,6 +298,16 @@ ActiveRecord::Schema.define(version: 20150521184229) do
     t.datetime "updated_at",                             null: false
     t.boolean  "does_sell"
   end
+
+  create_table "recipient_attributes", force: :cascade do |t|
+    t.integer  "recipient_id"
+    t.text     "problem"
+    t.text     "solution"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "recipient_attributes", ["recipient_id"], name: "index_recipient_attributes_on_recipient_id", using: :btree
 
   create_table "recipient_funder_accesses", force: :cascade do |t|
     t.integer  "recipient_id"

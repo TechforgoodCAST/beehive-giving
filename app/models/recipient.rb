@@ -6,6 +6,9 @@ class Recipient < Organisation
   has_many :restrictions, :through => :eligibilities
   accepts_nested_attributes_for :eligibilities
 
+  has_one :recipient_attribute
+  alias_method :attribute, :recipient_attribute
+
   PROFILE_MAX_FREE_LIMIT = 4
 
   def recipient_profile_limit
