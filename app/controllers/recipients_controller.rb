@@ -70,6 +70,7 @@ class RecipientsController < ApplicationController
 
     if @recipient.update_attributes(eligibility_params)
       if @recipient.eligible?(@funder)
+        EligibiltyMailer.notify_funder(@recipient, @funder).deliver
         flash[:notice] = "You're eligible"
         redirect_to funder_fit_path(@funder)
       else
