@@ -20,7 +20,7 @@
                 %ol.uk-nav.uk-nav-side
                   - unless @recipient.profiles.count > 0
                     %li
-                      %a{href: recipient_comparison_gateway_path(Funder.find_by_name('The Foundation'))}
+                      %a{href: new_recipient_profile_path(@recipient, :redirect_to_funder => Funder.find_by_name('The Foundation').slug)}
                         1. Add details to help match your organisation
                   - else
                     %li
