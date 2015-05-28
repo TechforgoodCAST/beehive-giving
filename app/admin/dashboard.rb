@@ -18,9 +18,17 @@ ActiveAdmin.register_page "Dashboard" do
         span class: "blank_slate" do
           h3 'Non-profits'
           h5 'Recipients'
-          h1 Recipient.all.count
+          h1 Recipient.joins(:users).all.count
           h5 'Profiles'
-          h1 Profile.all.count
+          h1 Profile.joins(:organisation).all.count
+        end
+
+        span class: "blank_slate" do
+          h3 'Non-profits'
+          h5 'Unlocks'
+          h1 RecipientFunderAccess.all.count
+          # h5 'Eligibilities'
+          # h1 Eligibility.all.count
         end
 
         span class: "blank_slate" do
@@ -42,9 +50,18 @@ ActiveAdmin.register_page "Dashboard" do
         end
 
         span class: "blank_slate" do
-          h3 'Grants'
+          h3 'Funders'
+          h5 'Grants'
           h1 Grant.all.count
         end
+
+        # span class: "blank_slate" do
+        #   h3 'Funders'
+        #   h5 'Funding streams'
+        #   h1 FundingStream.all.uniq.count
+        #   h5 'Restrictions'
+        #   h1 Restriction.all.count
+        # end
       end
     end
 
@@ -62,7 +79,7 @@ ActiveAdmin.register_page "Dashboard" do
 
     div style: "float:left; width: 50%; padding: 0 20px; box-sizing: border-box;" do
       section "User Activation by week" do
-        @metric = User.group_by_week(:created_at).count
+        @metric = User.where("role = ?", "User").group_by_week(:created_at).count
         render :partial => 'metrics/line_chart', :locals => {:metric => @metric}
       end
     end
