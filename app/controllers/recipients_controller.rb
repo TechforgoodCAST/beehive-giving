@@ -66,7 +66,7 @@ class RecipientsController < ApplicationController
     @restrictions = @funder.restrictions.uniq
 
     if @recipient.attribute.blank?
-      redirect_to new_recipient_attribute_path(@recipient, :redirect_to_funder => @funder.slug)
+      redirect_to new_recipient_attribute_path(@recipient, :redirect_to_funder => @funder)
     elsif @recipient.questions_remaining?(@funder)
       @eligibility =  1.times { @restrictions.each { |r| @recipient.eligibilities.new(restriction_id: r.id) unless @recipient.eligibilities.where('restriction_id = ?', r.id).count > 0 } }
     elsif @recipient.eligible?(@funder)

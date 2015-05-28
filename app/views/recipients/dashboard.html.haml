@@ -20,7 +20,7 @@
                 %ol.uk-nav.uk-nav-side
                   - unless @recipient.profiles.count > 0
                     %li
-                      %a{href: new_recipient_profile_path(@recipient, :redirect_to_funder => Funder.find_by_name('The Foundation').slug)}
+                      %a{href: new_recipient_profile_path(@recipient, :redirect_to_funder => Funder.first)}
                         1. Add details to help match your organisation
                   - else
                     %li
@@ -38,7 +38,7 @@
 
                   - unless @recipient.unlocked_funders.any?
                     %li
-                      %a{href: recipient_comparison_path(Funder.find_by_name('The Foundation'))}
+                      %a{href: recipient_comparison_path(Funder.first)}
                         3. See how you compare with The Foundation
                   - else
                     %li
@@ -47,7 +47,7 @@
 
                   - unless @recipient.eligibilities.count > 1 # refactor
                     %li
-                      %a{href: recipient_eligibility_path(Funder.find_by_name('The Foundation'))}
+                      %a{href: recipient_eligibility_path(Funder.first)}
                         4. See if you're eligible for The Foundation
                   - else
                     %li
@@ -110,6 +110,12 @@
             -#   .uk-panel.uk-panel-box.uk-overlay-panel#panel
             -#     %h3 Your recommended funders
             -#   .uk-width-1-1.uk-button{"data-uk-modal" => "{target:'#about-recommendation'}"} Find out more
+
+            .uk-width-1-1.uk-panel.uk-panel-box#panel.uk-margin
+              -# %strong Problem
+              -# %p= @recipient.attribute.problem
+              -# %strong Solution
+              -# %p= @recipient.attribute.solution
 
             = search_form_for @search, url: funders_path do |f|
               .uk-width-1-1.uk-margin-bottom
