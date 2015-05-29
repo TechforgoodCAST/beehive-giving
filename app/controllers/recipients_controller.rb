@@ -2,10 +2,22 @@ class RecipientsController < ApplicationController
   before_filter :check_organisation_ownership_or_funder, :only => [:show]
   before_filter :ensure_logged_in, :load_recipient, :years_ago
   before_filter :load_funder, :only => [:gateway, :unlock_funder, :comparison]
-  before_filter :load_feedback, :only => [:dashboard, :gateway, :comparison, :show]
+  before_filter :load_feedback, :except => [:unlock_funder, :vote]
+
+  # def edit
+  # end
+  #
+  # def update
+  #   if @recipient.update_attributes(recipient_params)
+  #     redirect_to root_path, notice: 'Organisation updated!'
+  #   else
+  #     render :edit
+  #   end
+  # end
 
   def dashboard
     @search = Funder.ransack(params[:q])
+    @profile = @recipient.profiles.where('year = ?', 2015).first
   end
 
   def gateway
@@ -21,6 +33,7 @@ class RecipientsController < ApplicationController
   def comparison
     redirect_to recipient_comparison_gateway_path(@funder) if @recipient.locked_funder?(@funder)
     @funding_stream = params[:funding_stream] || 'All'
+    @restrictions = @funder.restrictions.uniq
   end
 
   def vote
@@ -50,6 +63,41 @@ class RecipientsController < ApplicationController
     @recipient = Recipient.find_by_slug(params[:id])
   end
 
+  def eligibility
+    @funder = Funder.find_by_slug(params[:funder_id])
+    @restrictions = @funder.restrictions.uniq
+
+    # if @recipient.attribute.blank?
+    #   redirect_to new_recipient_attribute_path(@recipient, :redirect_to_funder => @funder)
+    if @recipient.questions_remaining?(@funder)
+      @eligibility =  1.times { @restrictions.each { |r| @recipient.eligibilities.new(restriction_id: r.id) unless @recipient.eligibilities.where('restriction_id = ?', r.id).count > 0 } }
+    elsif @recipient.eligible?(@funder)
+      redirect_to recipient_comparison_path(@funder)
+    else
+      flash[:alert] = "Sorry you're ineligible"
+      redirect_to recipient_comparison_path(@funder)
+    end
+  end
+
+  def update_eligibility
+    @funder = Funder.find_by_slug(params[:funder_id])
+    @restrictions = @funder.restrictions
+
+    if @recipient.update_attributes(eligibility_params)
+      if @recipient.eligible?(@funder)
+        FunderMailer.eligible_email(@recipient, @funder).deliver
+        flash[:notice] = "You're eligible"
+        redirect_to recipient_comparison_path(@funder)
+      else
+        FunderMailer.not_eligible_email(@recipient, @funder).deliver
+        flash[:alert] = "Sorry you're ineligible"
+        redirect_to recipient_comparison_path(@funder)
+      end
+    else
+      render :eligibility
+    end
+  end
+
   private
 
   def load_recipient
@@ -71,5 +119,15 @@ class RecipientsController < ApplicationController
       @years_ago = 1
     end
   end
+
+  def eligibility_params
+    params.require(:recipient).permit(:eligibilities_attributes => [:id, :eligible, :restriction_id, :recipient_id])
+  end
+
+  # def recipient_params
+  #   params.require(:recipient).permit(:name, :contact_number, :website,
+  #   :street_address, :city, :region, :postal_code, :country, :charity_number,
+  #   :company_number, :founded_on, :registered_on, :mission, :status, :registered)
+  # end
 
 end

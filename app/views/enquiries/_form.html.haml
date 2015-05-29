@@ -1,0 +1,43 @@
+#bg-color{style: 'background: #454545'}
+  .uk-container.uk-container-center.uk-animation-fade
+    .uk-margin-large-top.uk-margin-large-bottom
+      %h2.uk-text-center.upcase.white What are you seeking funding for?
+      .uk-panel.uk-panel-box#panel
+        .uk-form.uk-form-stacked
+          .uk-width-1-1.uk-margin-bottom
+            = f.hidden_field :funder_id, value: @funder.id
+            = f.error :recipient, class: 'uk-text-small uk-text-warning'
+            %label.uk-form-label Are you seeking funding for a new project?
+            = f.input :new_project, as: :select, input_html: { class: 'uk-width-1-1' }
+            = f.error :new_project, class: 'uk-text-small uk-text-warning'
+
+          .uk-width-1-1.uk-margin-bottom
+            %label.uk-form-label Are you seeking funding to work in a new location for your organisation?
+            = f.input :new_location, as: :select, input_html: { class: 'uk-width-1-1 js-registered-toggle' }
+            = f.error :new_location, class: 'uk-text-small uk-text-warning'
+
+          .js-registered-toggle-target.uk-hidden
+            .uk-width-1-1.uk-margin-bottom
+              %label.uk-form-label Which countries will you affect with the funding you are seeking?
+              = f.association :countries, collection: Country.order('name ASC'), input_html: {class: 'chosen-select'}
+              = f.error :countries, class: 'uk-text-small uk-text-warning'
+
+            .uk-width-1-1.uk-margin-bottom
+              %label.uk-form-label Which regions will you affect with the funding you are seeking?
+              = f.association :districts, collection: District.order('label ASC'), collection: Country.all, as: :grouped_select, group_method: :districts, label_method: :label, value_method: :id, input_html: {multiple: true, class: 'chosen-select'}
+              = f.error :districts, class: 'uk-text-small uk-text-warning'
+
+          .uk-width-1-1.uk-margin-bottom
+            %label.uk-form-label How much funding are you seeking? (£)
+            = f.input :amount_seeking, input_html: { class: 'uk-width-1-1' }
+            = f.error :amount_seeking, class: 'uk-text-small uk-text-warning'
+
+          .uk-width-1-1.uk-margin-bottom
+            %label.uk-form-label How many months are you seeking funding for?
+            = f.input :duration_seeking, input_html: { class: 'uk-width-1-1' }
+            = f.error :duration_seeking, class: 'uk-text-small uk-text-warning'
+          .uk-grid
+            .uk-width-1-2
+              = link_to 'Cancel', recipient_comparison_path(@funder), class: 'uk-button uk-width-1-1'
+            .uk-width-1-2
+              = f.submit 'Next', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'

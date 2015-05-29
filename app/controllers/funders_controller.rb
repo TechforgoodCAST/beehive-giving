@@ -1,7 +1,7 @@
 class FundersController < ApplicationController
   before_filter :ensure_logged_in
   before_filter :ensure_admin, only: [:comparison]
-  # before_filter :ensure_funder
+  before_filter :ensure_funder, only: [:explore, :show]
   before_filter :load_funder, except: [:new, :create]
   before_filter :load_recipient
 
@@ -9,7 +9,7 @@ class FundersController < ApplicationController
 
   def index
     @search = Funder.ransack(params[:q])
-    @search.sorts = 'id asc' if @search.sorts.empty?
+    @search.sorts = ['active_on_beehive desc', 'name asc'] if @search.sorts.empty?
     @funders = @search.result.includes(:funder_attributes, :grants)
   end
 
@@ -24,21 +24,17 @@ class FundersController < ApplicationController
   end
 
   def comparison
-    # refactor
-    @funders = [
-      Funder.find_by_name('The Foundation'),
-      Funder.find_by_name('The Dulverton Trust'),
-      Funder.find_by_name('Paul Hamlyn Foundation'),
-      Funder.find_by_name('The Indigo Trust'),
-      Funder.find_by_name('Nominet Trust')
-    ]
+    @funders = Funder.where(name: ['The Foundation',
+                    'The Dulverton Trust',
+                    'Paul Hamlyn Foundation',
+                    'The Indigo Trust',
+                    'Nominet Trust']).to_a
 
-    # refactor
-    gon.funderName1 = Funder.find_by_name('The Foundation').name
-    gon.funderName2 = Funder.find_by_name('The Dulverton Trust').name
-    gon.funderName3 = Funder.find_by_name('Paul Hamlyn Foundation').name
-    gon.funderName4 = Funder.find_by_name('The Indigo Trust').name
-    gon.funderName5 = Funder.find_by_name('Nominet Trust').name
+    gon.funderName1 = @funders[0].name
+    gon.funderName2 = @funders[1].name
+    gon.funderName3 = @funders[2].name
+    gon.funderName4 = @funders[3].name
+    gon.funderName5 = @funders[4].name
   end
 
   private

@@ -7,7 +7,12 @@
             Year of profile
       .uk-width-1-2
         .uk-form-controls
-          = f.input :year, as: :select, :collection => @recipient.valid_profile_years, :include_blank => false, input_html: { class: 'uk-width-1-1 uk-form-blank' }
+          - if @profile.year.present?
+            .uk-vertical-align{:style => "height: 30px;"}
+              .uk-vertical-align-middle
+                = @profile.year
+          - else
+            = f.input :year, as: :select, :collection => @recipient.valid_profile_years, :include_blank => false, input_html: { class: 'uk-width-1-1 uk-form-blank' }
   = f.error :year, class: 'uk-text-small uk-text-warning'
 
 .uk-grid.uk-margin.uk-margin-top-remove{"data-uk-grid-match" => "{target:'.uk-panel'}"}
@@ -24,7 +29,7 @@
           = f.error :countries, class: 'uk-text-small uk-text-warning'
       .uk-width-1-1.uk-margin-top
         %label.uk-form-label
-          In which districts did your organisation affect beneficiaries in
+          In which regions did your organisation affect beneficiaries in
           = succeed '?' do
             = get_year
         .uk-form-controls
@@ -37,10 +42,12 @@
       .uk-panel-badge
         %i.uk-icon-globe.uk-icon-large
       %p
-        Be sure to select all regions where your organisation has affected people in
+        Be sure to select
+        %strong all
+        regions where your organisation has affected people in
         = succeed '.' do
           = get_year
-        Remember the locations where beneficiaries have been affected, may be different from the locations you target. Start by selecting all the countries, to populate the list of districts to choose from. You can type the name of the location to filter the list.
+        Remember the locations where beneficiaries have been affected may be different from the locations you target. Start by selecting all the countries, to populate the list of districts to choose from. You can type the name of the location to filter the list.
 
 .uk-grid.uk-margin.uk-margin-top-remove{"data-uk-grid-match" => "{target:'.uk-panel'}"}
   .uk-width-medium-2-3

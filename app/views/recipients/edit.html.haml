@@ -1,0 +1,6 @@
+.uk-width-medium-1-2.uk-float-left.uk-animation-fade
+  .uk-form.uk-form-stacked.uk-panel.uk-panel-box#panel
+    .uk-panel-title Update organisation details
+    %fieldset
+      = simple_form_for [@recipient] do |f|
+        = render partial: 'organisations/form', locals: {f: f}

@@ -1,5 +1,4 @@
-class UserMailer < ActionMailer::Base
-  default from: "\"Beehive\" <support@beehivegiving.org>"
+class UserMailer < ApplicationMailer
   def welcome_email(user)
     @user = user
     mail(to: @user.user_email, subject: 'Welcome to Beehive!')
@@ -12,6 +11,6 @@ class UserMailer < ActionMailer::Base
 
   def notify_funder(profile)
     @profile = profile
-    mail(to: 'anna@forwardfoundation.org.uk, suraj@forwardfoundation.org.uk', subject: "#{@profile.organisation.name} has just submitted a profile")
+    mail(to: 'support@beehivegiving.org', subject: "#{@profile.organisation.name} has just submitted a profile")
   end
 end

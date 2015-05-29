@@ -1,0 +1,71 @@
+#bg-color{style: 'border-bottom: solid 3px #EAEAEA;' }
+  .uk-container.uk-container-center
+    .uk-grid
+      = render partial: 'recipients/sections/header'
+
+      .uk-width-medium-1-1.uk-width-large-1-4.uk-vertical-align.uk-text-center{style: 'height: 220px;'}
+        .uk-vertical-align-middle
+          .uk-panel.uk-panel-box#panel
+            %p Step 3 of 3
+
+#bg-color{style: 'background: #454545'}
+  .uk-container.uk-container-center.uk-animation-fade
+    .uk-margin-large-top.uk-margin-large-bottom
+      %h2.uk-text-center.upcase.white Are you a good fit?
+      .uk-panel.uk-panel-box#panel
+        .uk-overflow-container
+          %table.uk-table.uk-table-striped.uk-text-nowrap
+            %thead
+              %tr
+                %th{:width => "250"}
+                %td.uk-text-center{:colspan => "2"}
+                  .uk-button.uk-button-primary.uk-width-1-1 What's next?
+            %tbody
+              %tr
+                %th Funding stream
+                - @funder.grants.pluck(:funding_stream).uniq.each do |s|
+                  %td.uk-text-center= s
+              %tr
+                %th Eligibility
+                %td.uk-text-center
+                  %i.uk-icon-check.uk-text-success
+                %td.uk-text-center
+                  %i.uk-icon-check.uk-text-success
+              %tr
+                %th Funding amount
+                %td.uk-text-center
+                  %i.uk-icon-check.uk-text-success
+                %td.uk-text-center
+                  %i.uk-icon-close.uk-text-danger
+              %tr
+                %th Funding duration
+                %td.uk-text-center
+                  %i.uk-icon-close.uk-text-danger
+                %td.uk-text-center
+                  %i.uk-icon-check.uk-text-success
+              %tr
+                %th Finance
+                %td.uk-text-center
+                  %i.uk-icon-question.uk-text-warning
+                %td.uk-text-center
+                  %i.uk-icon-question.uk-text-warning
+              %tr
+                %th Age
+                %td.uk-text-center
+                  %i.uk-icon-check.uk-text-success
+                %td.uk-text-center
+                  %i.uk-icon-close.uk-text-danger
+              %tr
+                %th Beneficiaries
+                %td.uk-text-center
+                  %i.uk-icon-question.uk-text-warning
+                %td.uk-text-center
+                  %i.uk-icon-question.uk-text-warning
+
+        -# %h1= @enquiry.first
+
+
+-# Does the person reviewing the organisation like the solution?
+-# Is the problem worthy of being solved?
+-# Is the solution innovative?
+-# is the solution meeting a need?

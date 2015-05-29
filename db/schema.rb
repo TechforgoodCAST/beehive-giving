@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150429192153) do
+ActiveRecord::Schema.define(version: 20150526102832) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -49,17 +49,6 @@ ActiveRecord::Schema.define(version: 20150429192153) do
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
 
-  create_table "application_supports", force: :cascade do |t|
-    t.string   "label",      limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
-  end
-
-  create_table "application_supports_funder_attributes", force: :cascade do |t|
-    t.integer "funder_attribute_id"
-    t.integer "application_support_id"
-  end
-
   create_table "approval_months", force: :cascade do |t|
     t.string "month"
   end
@@ -85,6 +74,11 @@ ActiveRecord::Schema.define(version: 20150429192153) do
     t.string "alpha2", limit: 255
   end
 
+  create_table "countries_enquiries", force: :cascade do |t|
+    t.integer "enquiry_id"
+    t.integer "country_id"
+  end
+
   create_table "countries_funder_attributes", force: :cascade do |t|
     t.integer "funder_attribute_id"
     t.integer "country_id"
@@ -102,9 +96,33 @@ ActiveRecord::Schema.define(version: 20150429192153) do
     t.string  "subdivision", limit: 255
   end
 
+  create_table "districts_enquiries", force: :cascade do |t|
+    t.integer "enquiry_id"
+    t.integer "district_id"
+  end
+
   create_table "districts_profiles", force: :cascade do |t|
     t.integer "district_id"
     t.integer "profile_id"
+  end
+
+  create_table "eligibilities", force: :cascade do |t|
+    t.integer  "recipient_id"
+    t.integer  "restriction_id"
+    t.boolean  "eligible"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  create_table "enquiries", force: :cascade do |t|
+    t.integer  "recipient_id"
+    t.integer  "funder_id"
+    t.boolean  "new_project"
+    t.boolean  "new_location"
+    t.integer  "amount_seeking"
+    t.integer  "duration_seeking"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   create_table "features", force: :cascade do |t|
@@ -159,9 +177,25 @@ ActiveRecord::Schema.define(version: 20150429192153) do
     t.integer "funding_type_id"
   end
 
-  create_table "funder_attributes_reporting_requirements", force: :cascade do |t|
-    t.integer "funder_attribute_id"
-    t.integer "reporting_requirement_id"
+  create_table "funding_streams", force: :cascade do |t|
+    t.string   "label"
+    t.string   "group"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "funding_streams_organisations", force: :cascade do |t|
+    t.integer  "funder_id"
+    t.integer  "funding_stream_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  create_table "funding_streams_restrictions", force: :cascade do |t|
+    t.integer  "funding_stream_id"
+    t.integer  "restriction_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
   end
 
   create_table "funding_types", force: :cascade do |t|
@@ -265,6 +299,16 @@ ActiveRecord::Schema.define(version: 20150429192153) do
     t.boolean  "does_sell"
   end
 
+  create_table "recipient_attributes", force: :cascade do |t|
+    t.integer  "recipient_id"
+    t.text     "problem"
+    t.text     "solution"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "recipient_attributes", ["recipient_id"], name: "index_recipient_attributes_on_recipient_id", using: :btree
+
   create_table "recipient_funder_accesses", force: :cascade do |t|
     t.integer  "recipient_id"
     t.integer  "funder_id"
@@ -272,10 +316,10 @@ ActiveRecord::Schema.define(version: 20150429192153) do
     t.datetime "updated_at"
   end
 
-  create_table "reporting_requirements", force: :cascade do |t|
-    t.string   "label",      limit: 255
-    t.datetime "created_at",             null: false
-    t.datetime "updated_at",             null: false
+  create_table "restrictions", force: :cascade do |t|
+    t.string   "details"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|

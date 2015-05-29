@@ -1,0 +1,21 @@
+#eligible.uk-modal
+  .uk-modal-dialog
+    %a.uk-modal-close.uk-close
+    .uk-modal-header
+      %h2 Your eligibility
+    %table.uk-table.uk-table-striped.uk-text-nowrap
+      %thead
+        %tr
+          %th{:width => "250"} Funding stream
+          %th.uk-text-center Eligible?
+      %tbody
+        - @funder.funding_streams.each do |s|
+          %tr
+            %td= s.label
+            %td.uk-text-center
+              - if @recipient.funding_stream_eligible?(s.label, @funder)
+                %i.uk-icon-check.uk-text-success
+              - else
+                %i.uk-icon-close.uk-text-danger
+    %p What would you like to be able to do next?
+    %a.uk-button.uk-button-large.uk-button-primary.uk-width-1-1{"data-uk-modal" => "{target:'#next'}"} Next step

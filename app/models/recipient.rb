@@ -1,6 +1,13 @@
 class Recipient < Organisation
   has_many :grants
   has_many :features, dependent: :destroy
+  has_many :enquiries
+  has_many :eligibilities
+  has_many :restrictions, :through => :eligibilities
+  accepts_nested_attributes_for :eligibilities
+
+  has_one :recipient_attribute
+  alias_method :attribute, :recipient_attribute
 
   PROFILE_MAX_FREE_LIMIT = 4
 
@@ -54,6 +61,54 @@ class Recipient < Organisation
 
   def can_create_profile?
     profiles.count <= Date.today.year - self.founded_on.year unless profiles.count == 4
+  end
+
+  def full_address
+    [
+      "#{self.street_address}",
+      "#{self.region}",
+      "#{self.city}",
+      "#{self.postal_code}",
+      Country.find_by_alpha2(self.country).name
+    ].join(", ")
+  end
+
+  def eligibility_count(funder)
+    count = 0
+
+    funder.restrictions.uniq.each do |r|
+      self.eligibilities.each do |e|
+        count += 1 if e.restriction_id == r.id
+      end
+    end
+
+    count
+  end
+
+  def funding_stream_eligible?(funding_stream, funder)
+    count = 0
+
+    funder.funding_streams.where('label = ?', funding_stream).first.restrictions.each do |r|
+      self.eligibilities.each do |e|
+        count += 1 if e.restriction_id == r.id && e.eligible == true
+      end
+    end
+
+    funder.funding_streams.where('label = ?', funding_stream).first.restrictions.count == count ? true : false
+  end
+
+  def eligible?(funder)
+    count = 0
+
+    funder.funding_streams.each do |f|
+      count += 1 if self.funding_stream_eligible?(f.label, funder)
+    end
+
+    count > 0 ? true : false
+  end
+
+  def questions_remaining?(funder)
+    self.eligibility_count(funder) < funder.restrictions.uniq.count
   end
 
 end
