@@ -45,9 +45,6 @@ Rails.application.routes.draw do
   # Compare funders
   match '/funders/comparison', to: 'funders#comparison', via: :get, as: 'funders_comparison'
 
-  # Compare funders
-  match '/funders/comparison', to: 'funders#comparison', via: :get, as: 'funders_comparison'
-
   resources :users
 
   resources :recipients do
