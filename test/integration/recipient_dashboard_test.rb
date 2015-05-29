@@ -19,7 +19,7 @@ class RecipientDashboardTest < ActionDispatch::IntegrationTest
     assert_equal "/organisation/#{@recipient.slug}", current_path
 
     visit "/organisation/#{@recipient2.slug}"
-    assert_equal '/dashboard', current_path
+    assert_equal '/funders', current_path
   end
 
   test 'funders can see all organisation profiles' do
@@ -43,13 +43,13 @@ class RecipientDashboardTest < ActionDispatch::IntegrationTest
     assert_equal "/comparison/#{@funder.slug}/gateway", current_path
   end
 
-  test "recipient can see unlocked link on dashboard for an unlocked funder" do
+  test "recipient can see unlocked link on funders index for an unlocked funder" do
     @funder = create(:funder, :active_on_beehive => true)
     @profile = create(:profile, :organisation => @recipient)
     create_and_auth_user!(:organisation => @recipient)
     @recipient.unlock_funder!(@funder)
 
-    visit "/dashboard"
+    visit "/funders"
     assert_not page.has_content?('See how you compare (Locked)')
   end
 

@@ -41,7 +41,7 @@
                   Welcome,
                   = current_user.organisation.name
                 .uk-button-group.bh-button-group
-                  %a.uk-button{href: recipient_dashboard_path} Dashboard
+                  -# %a.uk-button{href: recipient_dashboard_path} Dashboard
                   %div{"data-uk-dropdown" => "{mode:'click'}"}
                     %button.uk-button
                       %i.uk-icon-caret-down
@@ -58,9 +58,9 @@
                   %ul.uk-navbar-nav
                     %li{class: ('uk-active' if current_page?(funders_path))}
                       %a{href: funders_path} Funders
-                    %li{class: ('uk-active' if current_page?(recipient_dashboard_path))}
-                      %a{href: recipient_dashboard_path}
-                        Dashboard
+                    -# %li{class: ('uk-active' if current_page?(recipient_dashboard_path))}
+                    -#   %a{href: recipient_dashboard_path}
+                    -#     Dashboard
                         -# %span.uk-badge.uk-badge-notification 1
                     %li.uk-parent{"data-uk-dropdown" => "{mode:'click'}"}
                       %a
@@ -147,7 +147,7 @@
                 - if current_user.organisation.type == 'Funder'
                   %a{href: funder_path(current_user.organisation)} Dashboard
                 - else
-                  %a{href: recipient_dashboard_path} Dashboard
+                  -# %a{href: recipient_dashboard_path} Dashboard
                   %a{:href => recipient_profiles_path(current_user.organisation)} Edit profiles
                   %a{"data-uk-modal" => "{target:'#feedback'}"} Feedback
               %li

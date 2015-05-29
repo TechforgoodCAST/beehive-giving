@@ -66,7 +66,7 @@ class SignupController < ApplicationController
 
   def organisation
     if current_user.organisation_id
-      redirect_to recipient_dashboard_path
+      redirect_to funders_path
     else
       @organisation = Recipient.new(
         name: session[:name],
@@ -89,7 +89,7 @@ class SignupController < ApplicationController
     @organisation = Recipient.new(organisation_params)
     if @organisation.save
       current_user.update_attribute(:organisation_id, @organisation.id)
-      redirect_to recipient_dashboard_path
+      redirect_to funders_path
     else
       render :organisation
     end

@@ -6,11 +6,11 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
     assert_equal current_path, '/welcome'
   end
 
-  test 'if you are signed in and you have an organisation you get redirected your dashboard' do
+  test 'if you are signed in and you have an organisation you get redirected to funders index' do
     @recipient = create(:recipient)
     create_and_auth_user!(:organisation => @recipient)
     visit '/your-organisation'
-    assert_equal '/dashboard', current_path
+    assert_equal '/funders', current_path
   end
 
   test 'if you are signed in and have no organisation you can see the organisation page' do
@@ -46,8 +46,8 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
       select(@recipient.registered_on.strftime("%Y"), :from => "recipient_registered_on_1i")
     end
     click_button('Next')
-    assert_equal '/dashboard', current_path
-    assert page.has_content?("From here you can start to discover")
+    assert_equal '/funders', current_path
+    assert page.has_content?("Funders")
   end
 
   test 'filling form incorrectly causes validation to trigger' do

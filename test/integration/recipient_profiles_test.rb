@@ -10,7 +10,7 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
     assert_not page.has_content?("New profile")
 
     visit new_recipient_profile_path(@recipient)
-    assert_equal '/dashboard', current_path
+    assert_equal '/funders', current_path
   end
 
 end

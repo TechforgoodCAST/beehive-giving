@@ -7,7 +7,12 @@
             Year of profile
       .uk-width-1-2
         .uk-form-controls
-          = f.input :year, as: :select, :collection => @recipient.valid_profile_years, :include_blank => false, input_html: { class: 'uk-width-1-1 uk-form-blank' }
+          - if @profile.year.present?
+            .uk-vertical-align{:style => "height: 30px;"}
+              .uk-vertical-align-middle
+                = @profile.year
+          - else
+            = f.input :year, as: :select, :collection => @recipient.valid_profile_years, :include_blank => false, input_html: { class: 'uk-width-1-1 uk-form-blank' }
   = f.error :year, class: 'uk-text-small uk-text-warning'
 
 .uk-grid.uk-margin.uk-margin-top-remove{"data-uk-grid-match" => "{target:'.uk-panel'}"}

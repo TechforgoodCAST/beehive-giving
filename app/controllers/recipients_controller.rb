@@ -17,6 +17,7 @@ class RecipientsController < ApplicationController
 
   def dashboard
     @search = Funder.ransack(params[:q])
+    @profile = @recipient.profiles.where('year = ?', 2015).first
   end
 
   def gateway
@@ -32,6 +33,7 @@ class RecipientsController < ApplicationController
   def comparison
     redirect_to recipient_comparison_gateway_path(@funder) if @recipient.locked_funder?(@funder)
     @funding_stream = params[:funding_stream] || 'All'
+    @restrictions = @funder.restrictions.uniq
   end
 
   def vote
@@ -65,12 +67,12 @@ class RecipientsController < ApplicationController
     @funder = Funder.find_by_slug(params[:funder_id])
     @restrictions = @funder.restrictions.uniq
 
-    if @recipient.attribute.blank?
-      redirect_to new_recipient_attribute_path(@recipient, :redirect_to_funder => @funder)
-    elsif @recipient.questions_remaining?(@funder)
+    # if @recipient.attribute.blank?
+    #   redirect_to new_recipient_attribute_path(@recipient, :redirect_to_funder => @funder)
+    if @recipient.questions_remaining?(@funder)
       @eligibility =  1.times { @restrictions.each { |r| @recipient.eligibilities.new(restriction_id: r.id) unless @recipient.eligibilities.where('restriction_id = ?', r.id).count > 0 } }
     elsif @recipient.eligible?(@funder)
-      redirect_to funder_fit_path(@funder)
+      redirect_to recipient_comparison_path(@funder)
     else
       flash[:alert] = "Sorry you're ineligible"
       redirect_to recipient_comparison_path(@funder)
@@ -83,10 +85,11 @@ class RecipientsController < ApplicationController
 
     if @recipient.update_attributes(eligibility_params)
       if @recipient.eligible?(@funder)
-        EligibiltyMailer.notify_funder(@recipient, @funder).deliver
+        FunderMailer.eligible_email(@recipient, @funder).deliver
         flash[:notice] = "You're eligible"
-        redirect_to funder_fit_path(@funder)
+        redirect_to recipient_comparison_path(@funder)
       else
+        FunderMailer.not_eligible_email(@recipient, @funder).deliver
         flash[:alert] = "Sorry you're ineligible"
         redirect_to recipient_comparison_path(@funder)
       end

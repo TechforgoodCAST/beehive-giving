@@ -16,6 +16,6 @@
               = link_to "Edit #{profile.year}", edit_recipient_profile_path(current_user.organisation, profile), class: 'uk-button uk-button-primary uk-width-1-1'
   - else
     .uk-alert.uk-alert-warning
-      %o In order to unlock funders you need to complete at least profile. We'll use the information you provide to construct a unique digital fingerprint for your organisation, enabling us to give you personalised funding recommendations.
+      %o In order to unlock funders you need to complete your profile. We'll use the information you provide to construct a unique digital fingerprint for your organisation, enabling us to give you personalised funding recommendations.
       = link_to 'Click here', new_recipient_profile_path(@recipient)
       to create a profile.

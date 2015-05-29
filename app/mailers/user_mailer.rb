@@ -11,6 +11,6 @@ class UserMailer < ApplicationMailer
 
   def notify_funder(profile)
     @profile = profile
-    mail(to: 'anna@forwardfoundation.org.uk, suraj@forwardfoundation.org.uk', subject: "#{@profile.organisation.name} has just submitted a profile")
+    mail(to: 'support@beehivegiving.org', subject: "#{@profile.organisation.name} has just submitted a profile")
   end
 end

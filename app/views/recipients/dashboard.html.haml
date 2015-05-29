@@ -3,140 +3,254 @@
   mixpanel.track_forms("#funder_search", "Find Funders Form");
   mixpanel.track_links("#mp-the-foundation", "Clicked 'The Foundation' Link");
 
-#bg-color{style: 'min-height: 550px'}
+#bg-color{style: 'border-bottom: solid 3px #EAEAEA;'}
+  .uk-container.uk-container-center
+    .uk-grid
+      .uk-width-small-1-1.uk-width-medium-1-4.uk-width-large-1-4.uk-vertical-align.uk-text-center{style: 'height: 220px;'}
+        .uk-vertical-align-middle
+          .uk-border-circle.uk-vertical-align{style: 'background: #fff; height: 160px; width: 160px; border: 3px solid #F7BA0E; padding: 10px;'}
+            .uk-vertical-align-middle
+              = @recipient.name
+      .uk-width-small-1-1.uk-width-medium-3-4.uk-width-large-2-4.uk-vertical-align{style: 'height: 220px;'}
+        .uk-vertical-align-middle
+          %h6.uk-text-muted.uk-text-bold.upcase.uk-margin-bottom-remove Mission
+          %p.uk-margin-top-remove= @recipient.mission
+          .uk-grid
+            - if @recipient.charity_number.present?
+              %h6.uk-text-muted.uk-text-bold.upcase.uk-margin-bottom-remove Charity No:
+              %p= @recipient.charity_number
+            - if @recipient.company_number.present?
+              %h6.uk-text-muted.uk-text-bold.upcase.uk-margin-bottom-remove Company No:
+              %p= @recipient.company_number
+      .uk-width-medium-1-1.uk-width-large-1-4.uk-vertical-align.uk-text-center{style: 'height: 220px;'}
+        .uk-vertical-align-middle
+          .uk-panel.uk-panel-box#panel
+            .uk-text-center
+              %h6.uk-text-bold.upcase Eligible funders
+              = link_to "Count", recipient_eligibility_path(@funder), class: 'uk-width-1-1 uk-button uk-button-primary'
+              %hr
+              %h6.uk-margin-top-remove.uk-text-bold.upcase Recommended Funders
+              .uk-width-1-1.uk-button{"data-uk-modal" => "{target:'#about-recommendation'}"} Find out more
+
+#overview{style: 'background: #454545'}
   .uk-container.uk-container-center.uk-animation-fade
-    .uk-grid.uk-margin
-      .uk-width-1-1.uk-margin
+    %h2.uk-margin-large-top.uk-text-center.upcase.white Overview
+    .uk-grid.uk-margin-bottom{"data-uk-grid-match" => "{target:'.match-height'}"}
+      .uk-width-medium-1-3.uk-margin-bottom
+        .match-height.uk-panel.uk-panel-box#panel
+          .uk-panel-badge
+            %i.uk-icon-eye.uk-text-muted{"data-uk-tooltip" => "{pos:'left'}", :title => "This is visible to funders you unlock."}
+            %a
+              %i.uk-icon-edit{"data-uk-tooltip" => "{pos:'left'}", :title => "Edit"}
+          .uk-panel-title At a glance
+          %dl.uk-description-list-horizontal
+            %dt Website
+            %dd
+              %a{href: "http://#{@recipient.website}",  target: "_blank"}= @recipient.website
+            %dt Contact number
+            %dd= @recipient.contact_number
+            -# %dt Address
+            -# %dd= @recipient.full_address
+          %hr
+          .uk-grid.uk-text-center
+            .uk-width-1-2
+              %h6.uk-text-bold.upcase Age
+              %h2.uk-margin-top-remove.stat-normal.stat-normal
+                = ((Date.today - @recipient.founded_on).to_f / 365).round(1)
+                %span.uk-text-small year(s) old
+            .uk-width-1-2
+              %h6.uk-text-bold.upcase Income
+              %h2.uk-margin-top-remove.stat-normal
+                - if @recipient.profiles.where('year = ? OR year = ?', Date.today.year, Date.today.year - 365).any?
+                  = number_to_currency(@recipient.profiles.where('year = ? OR year = ?', Date.today.year, Date.today.year - 365).first.income, unit: '£', precision: 0)
+          %hr
+          .uk-grid.uk-text-center
+            .uk-width-1-2
+              %h6.uk-text-bold.upcase Staff
+              %h2.uk-margin-top-remove.stat-normal.stat-normal
+                2
+            .uk-width-1-2
+              %h6.uk-text-bold.upcase Volunteers
+              .uk-overlay.uk-width-1-1
+                %h2.uk-margin-top-remove.stat-normal
+                  - if @profile
+                    = @profile.volunteer_count
+                  - else
+                    = link_to 'Add', new_recipient_profile_path(@recipient)
+                %a.uk-overlay-area{href: edit_recipient_profile_path(@recipient, @profile)}
+                  .uk-overlay-area-content Edit
 
-        %h2.uk-margin-top
-          Dashboard
-          %a.uk-text-small{"data-uk-modal" => "{target:'#about-dashboard'}"} What's this?
+          %hr
+            %h6.uk-text-bold.upcase Countrie(s) targeted
+            .uk-overlay
+              - @recipient.profiles.where('year = ? OR year = ?', Date.today.year, Date.today.year - 365).first.countries.each do |country|
+                = link_to country.name, funders_path(:'q[grants_country_eq]' => "#{country.alpha2}"), class: 'uk-button uk-button-small', style: 'margin-bottom: 3px;'
+                %a.uk-overlay-area
+                  .uk-overlay-area-content Edit
+        -# .uk-width-1-1.uk-button.uk-button-primary.uk-button-large Similar organisations
 
-        .uk-grid.uk-margin-top-remove.uk-margin-bottom
-          .uk-width-medium-1-3
-            - unless @recipient.profiles.count > 0 && @recipient.attribute && @recipient.unlocked_funders.any? && @recipient.eligibilities.count > 1
+      .match-height.uk-margin-bottom.uk-width-medium-2-3
+        .uk-width-medium-1-1.uk-margin-bottom
+          .uk-panel.uk-panel-box#panel
+            .uk-panel-badge
+              %i.uk-icon-eye.uk-text-muted{"data-uk-tooltip" => "{pos:'left'}", :title => "This is visible to funders you unlock."}
+            .uk-panel-title Problem
+            .uk-overlay.uk-width-1-1
+              -# = @recipient.attribute.problem if @recipient.attribute
+              -# %a.uk-overlay-area{href: edit_recipient_attribute_path(@recipient, @recipient.attribute)}
+              -#   .uk-overlay-area-content Edit
+
+        .uk-width-medium-1-1
+          .uk-panel.uk-panel-box#panel
+            .uk-panel-badge
+              %i.uk-icon-eye.uk-text-muted{"data-uk-tooltip" => "{pos:'left'}", :title => "This is visible to funders you unlock."}
+            .uk-panel-title Solution
+            .uk-overlay.uk-width-1-1
+              -# = @recipient.attribute.solution if @recipient.attribute
+              -# %a.uk-overlay-area{href: edit_recipient_attribute_path(@recipient, @recipient.attribute)}
+              -#   .uk-overlay-area-content Edit
+
+.uk-container.uk-container-center.uk-animation-fade{style: 'min-height: 550px'}
+  .uk-grid.uk-margin
+    .uk-width-1-1.uk-margin
+
+      %h2.uk-margin-top
+        Dashboard
+        %a.uk-text-small{"data-uk-modal" => "{target:'#about-dashboard'}"} What's this?
+
+      .uk-grid.uk-margin-top-remove.uk-margin-bottom
+        .uk-width-medium-1-3
+          - unless @recipient.profiles.count > 0 && @recipient.attribute && @recipient.unlocked_funders.any? && @recipient.eligibilities.count > 1
+            .uk-panel.uk-panel-box#panel.uk-margin-top-remove
+              .uk-panel-title Get started
+              %ol.uk-nav.uk-nav-side
+                - unless @recipient.profiles.count > 0
+                  %li
+                    %a{href: new_recipient_profile_path(@recipient, :redirect_to_funder => Funder.first)}
+                      1. Add details to help match your organisation
+                - else
+                  %li
+                    %a.uk-text-muted
+                      %strike 1. Add details to help match your organisation
+
+                - unless @recipient.attribute
+                  %li
+                    %a{href: new_recipient_attribute_path(@recipient)}
+                      2. Add problem/solution
+                - else
+                  %li
+                    %a.uk-text-muted
+                      %strike 2. Add problem/solution
+
+                - unless @recipient.unlocked_funders.any?
+                  %li
+                    %a{href: recipient_comparison_path(Funder.first)}
+                      3. See how you compare with The Foundation
+                - else
+                  %li
+                    %a.uk-text-muted
+                      %strike 3. See how you compare with The Foundation
+
+                - unless @recipient.eligibilities.count > 1 # refactor
+                  %li
+                    %a{href: recipient_eligibility_path(Funder.first)}
+                      4. See if you're eligible for The Foundation
+                - else
+                  %li
+                    %a.uk-text-muted
+                      %strike 4. See if you're eligible for The Foundation
+
+          .uk-panel.uk-panel-box.uk-overlay-panel#panel
+            %h3 Your recommended funders
+            .uk-panel.uk-text-center.uk-vertical-align{style: 'border: 3px #ddd dashed; height: 110px;'}
+              .uk-vertical-align-middle
+                %h3.uk-margin-top.uk-text-muted Coming soon...
+          .uk-width-1-1.uk-button.uk-margin-bottom#mp-find-out-more{"data-uk-modal" => "{target:'#about-recommendation'}"} Find out more
+
+          -# .uk-width-1-1
+          -#   - if @recipient.attribute
+          -#     = link_to 'Edit problem/solution', edit_recipient_attribute_path(@recipient, @recipient.attribute)
+          -#   - else
+          -#     = link_to 'Add problem/solution', new_recipient_attribute_path(@recipient)
+
+          -#     %li
+          -#       %a.uk-text-muted
+          -#         %i.uk-icon-check-circle-o.uk-icon-small.uk-text-muted
+          -#           Add problem
+          -#     %li
+          -#       %a
+          -#         %i.uk-icon-circle-o.uk-icon-small
+          -#           Add solution
+          -#     %li
+          -#       %a
+          -#         %i.uk-icon-circle-o.uk-icon-small
+          -#           Complete a profile for 2013
+          -#     %li
+          -#       %a
+          -#         %i.uk-icon-circle-o.uk-icon-small
+          -#           Get your first endorsment
+          -# .uk-margin-bottom
+          -#   = link_to 'Your profile', recipient_public_path(@recipient), class: 'uk-button uk-button-primary uk-width-1-1'
+
+          -# .uk-panel.uk-panel-box#panel
+          -#   .uk-panel-title Notifications
+          -#   %ul.uk-nav.uk-nav-side
+          -#     %li
+          -#       %a.uk-text-success
+          -#         %i.uk-icon-check-circle.uk-icon-small
+          -#           A funder likes you
+          -#         %div Paul Hamlyn Foundation thinks your a good fit
+          -#     %li
+          -#       %a.uk-text-warning
+          -#         %i.uk-icon-exclamation-circle.uk-icon-small
+          -#           Funding opportunity
+          -#         %div The Foundation is looking for organisations like yours
+          -#     %li
+          -#       %a.uk-text-primary
+          -#         %i.uk-icon-info-circle.uk-icon-small
+          -#           You're getting noticed
+          -#         %div Big Lottery Fund has viewed your enquiry
+
+        .uk-width-medium-2-3.uk-margin-bottom
+          -# .uk-width-1-1.uk-margin-bottom
+          -#   .uk-panel.uk-panel-box.uk-overlay-panel#panel
+          -#     %h3 Your recommended funders
+          -#   .uk-width-1-1.uk-button{"data-uk-modal" => "{target:'#about-recommendation'}"} Find out more
+
+          .uk-width-medium-1-1
+            .uk-grid.uk-margin-top-remove.uk-animation-fade{"data-uk-grid-match" => "{target:'.uk-panel'}"}
+              .uk-width-medium-1-2.uk-margin-bottom
+                .uk-panel.uk-panel-box#panel
+                  .uk-panel-title.uk-text-center Eligible funders
+                  .uk-text-center
+                    %h1.uk-margin-top-remove.stat-big 1
+
+              .uk-width-medium-1-2.uk-margin-bottom
+                .uk-panel.uk-panel-box#panel
+                  .uk-panel-title.uk-text-center Recommended funders
+                  -# .uk-width-1-1.uk-button.uk-margin-bottom{"data-uk-modal" => "{target:'#about-recommendation'}"} Find out more
+
+
+          = search_form_for @search, url: funders_path do |f|
+            .uk-width-1-1.uk-margin-bottom
               .uk-panel.uk-panel-box#panel.uk-margin-top-remove
-                .uk-panel-title Get started
-                %ol.uk-nav.uk-nav-side
-                  - unless @recipient.profiles.count > 0
-                    %li
-                      %a{href: new_recipient_profile_path(@recipient, :redirect_to_funder => Funder.first)}
-                        1. Add details to help match your organisation
-                  - else
-                    %li
-                      %a.uk-text-muted
-                        %strike 1. Add details to help match your organisation
-
-                  - unless @recipient.attribute
-                    %li
-                      %a{href: new_recipient_attribute_path(@recipient)}
-                        2. Add problem/solution
-                  - else
-                    %li
-                      %a.uk-text-muted
-                        %strike 2. Add problem/solution
-
-                  - unless @recipient.unlocked_funders.any?
-                    %li
-                      %a{href: recipient_comparison_path(Funder.first)}
-                        3. See how you compare with The Foundation
-                  - else
-                    %li
-                      %a.uk-text-muted
-                        %strike 3. See how you compare with The Foundation
-
-                  - unless @recipient.eligibilities.count > 1 # refactor
-                    %li
-                      %a{href: recipient_eligibility_path(Funder.first)}
-                        4. See if you're eligible for The Foundation
-                  - else
-                    %li
-                      %a.uk-text-muted
-                        %strike 4. See if you're eligible for The Foundation
-
-            .uk-panel.uk-panel-box.uk-overlay-panel#panel
-              %h3 Your recommended funders
-              .uk-panel.uk-text-center.uk-vertical-align{style: 'border: 3px #ddd dashed; height: 110px;'}
-                .uk-vertical-align-middle
-                  %h3.uk-margin-top.uk-text-muted Coming soon...
-            .uk-width-1-1.uk-button.uk-margin-bottom#mp-find-out-more{"data-uk-modal" => "{target:'#about-recommendation'}"} Find out more
-
-            -# .uk-width-1-1
-            -#   - if @recipient.attribute
-            -#     = link_to 'Edit problem/solution', edit_recipient_attribute_path(@recipient, @recipient.attribute)
-            -#   - else
-            -#     = link_to 'Add problem/solution', new_recipient_attribute_path(@recipient)
-
-            -#     %li
-            -#       %a.uk-text-muted
-            -#         %i.uk-icon-check-circle-o.uk-icon-small.uk-text-muted
-            -#           Add problem
-            -#     %li
-            -#       %a
-            -#         %i.uk-icon-circle-o.uk-icon-small
-            -#           Add solution
-            -#     %li
-            -#       %a
-            -#         %i.uk-icon-circle-o.uk-icon-small
-            -#           Complete a profile for 2013
-            -#     %li
-            -#       %a
-            -#         %i.uk-icon-circle-o.uk-icon-small
-            -#           Get your first endorsment
-            -# .uk-margin-bottom
-            -#   = link_to 'Your profile', recipient_public_path(@recipient), class: 'uk-button uk-button-primary uk-width-1-1'
-
-            -# .uk-panel.uk-panel-box#panel
-            -#   .uk-panel-title Notifications
-            -#   %ul.uk-nav.uk-nav-side
-            -#     %li
-            -#       %a.uk-text-success
-            -#         %i.uk-icon-check-circle.uk-icon-small
-            -#           A funder likes you
-            -#         %div Paul Hamlyn Foundation thinks your a good fit
-            -#     %li
-            -#       %a.uk-text-warning
-            -#         %i.uk-icon-exclamation-circle.uk-icon-small
-            -#           Funding opportunity
-            -#         %div The Foundation is looking for organisations like yours
-            -#     %li
-            -#       %a.uk-text-primary
-            -#         %i.uk-icon-info-circle.uk-icon-small
-            -#           You're getting noticed
-            -#         %div Big Lottery Fund has viewed your enquiry
-
-          .uk-width-medium-2-3.uk-margin-bottom
-            -# .uk-width-1-1.uk-margin-bottom
-            -#   .uk-panel.uk-panel-box.uk-overlay-panel#panel
-            -#     %h3 Your recommended funders
-            -#   .uk-width-1-1.uk-button{"data-uk-modal" => "{target:'#about-recommendation'}"} Find out more
-
-            .uk-width-1-1.uk-panel.uk-panel-box#panel.uk-margin
-              -# %strong Problem
-              -# %p= @recipient.attribute.problem
-              -# %strong Solution
-              -# %p= @recipient.attribute.solution
-
-            = search_form_for @search, url: funders_path do |f|
-              .uk-width-1-1.uk-margin-bottom
-                .uk-panel.uk-panel-box#panel.uk-margin-top-remove
-                  .uk-panel-title
-                    Find funders
-                    %a.uk-text-small{:'data-uk-toggle' => "{target: '.js-dashboard-search-form'}"} More options
-                  .uk-grid.uk-margin-top-remove
-                    .uk-width-1-1
-                      .uk-form.uk-form-stacked
-                        .uk-width-1-1
-                          %label.uk-form-label
-                            = f.label "Funder name"
-                          .uk-form-controls
-                            = f.input :name_cont, input_html: { class: 'uk-width-1-1' }
-                        = render :partial => 'recipients/filter', locals: {f: f}
-                .uk-grid
-                  .uk-width-2-3
-                    = f.submit 'Find funders', class: "uk-width-1-1 uk-button uk-button-primary", style: 'color: #fff;'
-                  .uk-width-1-3{style: 'padding-left: 0;'}
-                    = link_to "Clear", request.path, class: "uk-width-1-1 uk-button"
+                .uk-panel-title
+                  Find funders
+                  %a.uk-text-small{:'data-uk-toggle' => "{target: '.js-dashboard-search-form'}"} More options
+                .uk-grid.uk-margin-top-remove
+                  .uk-width-1-1
+                    .uk-form.uk-form-stacked
+                      .uk-width-1-1
+                        %label.uk-form-label
+                          = f.label "Funder name"
+                        .uk-form-controls
+                          = f.input :name_cont, input_html: { class: 'uk-width-1-1' }
+                      = render :partial => 'recipients/filter', locals: {f: f}
+              .uk-grid
+                .uk-width-2-3
+                  = f.submit 'Find funders', class: "uk-width-1-1 uk-button uk-button-primary", style: 'color: #fff;'
+                .uk-width-1-3{style: 'padding-left: 0;'}
+                  = link_to "Clear", request.path, class: "uk-width-1-1 uk-button"
 
 #about-dashboard.uk-modal
   .uk-modal-dialog

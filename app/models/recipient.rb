@@ -63,6 +63,16 @@ class Recipient < Organisation
     profiles.count <= Date.today.year - self.founded_on.year unless profiles.count == 4
   end
 
+  def full_address
+    [
+      "#{self.street_address}",
+      "#{self.region}",
+      "#{self.city}",
+      "#{self.postal_code}",
+      Country.find_by_alpha2(self.country).name
+    ].join(", ")
+  end
+
   def eligibility_count(funder)
     count = 0
 

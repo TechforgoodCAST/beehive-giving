@@ -18,7 +18,7 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
 
     create_and_auth_user!(:organisation => @recipient)
     visit "/comparison/#{@funder.slug}"
-    click_link('Are you a good fit?')
+    click_link('Are you eligible?')
 
     assert_equal "/eligibility/#{@funder.slug}", current_path
     assert page.has_content?("Are you seeking funding for", count: 3)
@@ -50,7 +50,7 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
 
     create_and_auth_user!(:organisation => @recipient)
     visit "/comparison/#{@funder.slug}"
-    click_link('Are you a good fit?')
+    click_link('Are you eligible?')
 
     assert_equal "/eligibility/#{@funder.slug}", current_path
     assert page.has_content?("Are you seeking funding for", count: 1)
@@ -73,7 +73,7 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
     assert page.has_content?("Are you seeking funding for", count: 1)
   end
 
-  test "recipient with all eligibility data redirected to eligibility fit page" do
+  test "recipient with all eligibility data has eligibility modal" do
     @restriction1 = create(:restriction)
     @restriction2 = create(:restriction)
     @restriction3 = create(:restriction)
@@ -86,33 +86,32 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
 
     create_and_auth_user!(:organisation => @recipient)
     visit "/comparison/#{@funder.slug}"
-    click_link('Are you a good fit?')
-
-    assert_equal "/#{@funder.slug}/eligibility", current_path
+    assert page.has_content?("Your eligibility")
+    # click_link("You're eligible")
   end
 
-  test "inelligible recipient redirected to comparison page" do
-    @restriction1 = create(:restriction)
-    @restriction2 = create(:restriction)
-    @restriction3 = create(:restriction)
-
-    @funding_stream = create(:funding_stream, :restrictions => [@restriction1, @restriction2, @restriction3], :funders => [@funder])
-
-    create_and_auth_user!(:organisation => @recipient)
-    visit "/comparison/#{@funder.slug}"
-    click_link('Are you a good fit?')
-
-    select('Yes', :from => 'recipient_eligibilities_attributes_0_eligible')
-    select('No', :from => 'recipient_eligibilities_attributes_1_eligible')
-    select('No', :from => 'recipient_eligibilities_attributes_2_eligible')
-
-    click_button('Check')
-
-    assert_equal "/comparison/#{@funder.slug}", current_path
-
-    visit "/#{@funder.slug}/eligibility"
-    assert_equal "/comparison/#{@funder.slug}", current_path
-  end
+  # test "inelligible recipient redirected to comparison page" do
+  #   @restriction1 = create(:restriction)
+  #   @restriction2 = create(:restriction)
+  #   @restriction3 = create(:restriction)
+  #
+  #   @funding_stream = create(:funding_stream, :restrictions => [@restriction1, @restriction2, @restriction3], :funders => [@funder])
+  #
+  #   create_and_auth_user!(:organisation => @recipient)
+  #   visit "/comparison/#{@funder.slug}"
+  #   click_link('Are you eligible?')
+  #
+  #   select('Yes', :from => 'recipient_eligibilities_attributes_0_eligible')
+  #   select('No', :from => 'recipient_eligibilities_attributes_1_eligible')
+  #   select('No', :from => 'recipient_eligibilities_attributes_2_eligible')
+  #
+  #   click_button('Check')
+  #
+  #   assert_equal "/comparison/#{@funder.slug}", current_path
+  #
+  #   visit "/#{@funder.slug}/eligibility"
+  #   assert_equal "/comparison/#{@funder.slug}", current_path
+  # end
 
   test "ineligible recipient cannot visit eligibility check page" do
     @restriction1 = create(:restriction)
@@ -131,19 +130,19 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
     assert_equal "/comparison/#{@funder.slug}", current_path
   end
 
-  test "ineligible recipient cannot visit eligibility fit page" do
-    @restriction1 = create(:restriction)
-    @restriction2 = create(:restriction)
-    @restriction3 = create(:restriction)
-
-    @eligibility1 = create(:eligibility, :eligible => false, :recipient => @recipient, :restriction => @restriction1)
-    @eligibility2 = create(:eligibility, :recipient => @recipient, :restriction => @restriction2)
-    @eligibility3 = create(:eligibility, :recipient => @recipient, :restriction => @restriction3)
-
-    create_and_auth_user!(:organisation => @recipient)
-    visit "/#{@funder.slug}/eligibility"
-
-    assert_equal "/comparison/#{@funder.slug}", current_path
-  end
+  # test "ineligible recipient cannot visit eligibility fit page" do
+  #   @restriction1 = create(:restriction)
+  #   @restriction2 = create(:restriction)
+  #   @restriction3 = create(:restriction)
+  #
+  #   @eligibility1 = create(:eligibility, :eligible => false, :recipient => @recipient, :restriction => @restriction1)
+  #   @eligibility2 = create(:eligibility, :recipient => @recipient, :restriction => @restriction2)
+  #   @eligibility3 = create(:eligibility, :recipient => @recipient, :restriction => @restriction3)
+  #
+  #   create_and_auth_user!(:organisation => @recipient)
+  #   visit "/#{@funder.slug}/eligibility"
+  #
+  #   assert_equal "/comparison/#{@funder.slug}", current_path
+  # end
 
 end

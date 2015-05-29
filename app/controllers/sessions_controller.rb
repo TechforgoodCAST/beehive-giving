@@ -41,7 +41,7 @@ class SessionsController < ApplicationController
   def start_path_for_user(user)
     if user.role == 'User'
       return signup_organisation_path unless user.organisation_id
-      recipient_dashboard_path
+      funders_path
     else
       funder_path(current_user.organisation)
     end
