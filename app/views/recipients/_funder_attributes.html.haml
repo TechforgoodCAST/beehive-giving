@@ -1,19 +1,12 @@
-.uk-width-medium-1-1
-  = funder.mission
+.uk-panel-box{style: 'height: 60px;'}
+  .uk-width-1-1
+    = funder.mission.truncate(120)
+-# .uk-panel-box{style: 'height: 20px;'}
+-#   .uk-width-1-1
+-#     .uk-button.uk-button-mini.uk-button-primary Youth
+
   -# %h4 Attributes
   -# %ul
   -#   %li
   -#     %strong Next Deadline:
     -#   = funder.attributes.next_deadline
-    -# %li
-    -#   %strong Application Process:
-    -#   = funder.attributes.application_process.humanize
-    -# %li
-    -#   %strong Funding Streams:
-    -#   = funder.attributes.funding_streams
-    -# %li
-    -#   %strong Funding Round Frequency:
-    -#   = funder.attributes.funding_frequency_label
-    -# %li
-    -#   %strong Funding Type:
-    -#   = funder.attributes.funding_type.humanize

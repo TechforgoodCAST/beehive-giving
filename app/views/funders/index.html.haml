@@ -46,6 +46,7 @@
                 .uk-panel.uk-panel-box#panel.uk-margin-top-remove
                   .uk-panel-title
                     Find funders
+                    %a.uk-text-small{:'data-uk-toggle' => "{target: '.js-dashboard-search-form'}"} More options
                     -# .uk-text-small
                     -#   Sort:
                     -#   = sort_link @search, :name, 'Funder name', default_order: :asc
@@ -64,51 +65,7 @@
                         -#     = f.label "Active"
                         -#   .uk-form-controls
                         -#     = f.input :active_on_beehive_eq, as: :select, input_html: { class: 'uk-width-1-1' }
-                        .uk-width-1-1.uk-margin-top.uk-margin-bottom
-                          %p
-                            In
-                            = succeed  '...' do
-                              = Date.today.year - 1
-                          %label.uk-form-label
-                            = f.label "Country where funding has been given"
-                          .uk-form-controls
-                            = f.input :grants_country_eq, input_html: { class: 'uk-width-1-1 chosen-select' }
-                        .uk-grid.uk-margin-top-remove
-                          .uk-width-small-1-2.uk-width-medium-1-2.uk-width-large-1-1.uk-margin-bottom
-                            %label.uk-form-label
-                              = f.label "Given funding greater than"
-                            .uk-form-controls
-                              = f.input :grants_amount_awarded_gt, input_html: { class: 'uk-width-1-1' }, placeholder: 'e.g. 10000'
-                          .uk-width-small-1-2.uk-width-medium-1-2.uk-width-large-1-1.uk-margin-bottom
-                            %label.uk-form-label
-                              = f.label "Given funding less than"
-                            .uk-form-controls
-                              = f.input :grants_amount_awarded_lt, input_html: { class: 'uk-width-1-1' }, placeholder: 'e.g. 75000'
-                        .uk-grid.uk-margin-top-remove
-                          .uk-width-small-1-2.uk-width-medium-1-2.uk-width-large-1-1.uk-margin-bottom
-                            %label.uk-form-label
-                              = f.label "Funding duration greater than (months)"
-                            .uk-form-controls
-                              = f.input :grants_months_from_start_to_end_gt, input_html: { class: 'uk-width-1-1' }, placeholder: 'e.g. 6'
-                          .uk-width-small-1-2.uk-width-medium-1-2.uk-width-large-1-1.uk-margin-bottom
-                            %label.uk-form-label
-                              = f.label "Funding duration less than (months)"
-                            .uk-form-controls
-                              = f.input :grants_months_from_start_to_end_lt, input_html: { class: 'uk-width-1-1' }, placeholder: 'e.g. 12'
-
-                        -# .uk-width-1-1
-                        -#   %label.uk-form-label
-                        -#     = f.label "Type of funding given"
-                        -#   .uk-form-controls
-                        -#     = f.input :grants_grant_type_cont, collection: FundingType.all.pluck(:label), as: :select, input_html: { class: 'uk-width-1-1' }
-
-                        -# .uk-width-1-1.uk-margin-top
-                        -#   %label.uk-form-label
-                        -#     = f.label "Who/what affected"
-                        -#   .uk-form-controls
-                        -#     = f.input :profiles_beneficiaries_id_eq, collection: Beneficiary.order(:label), input_html: { class: 'uk-width-1-1 chosen-select' }, label_method: :label, value_method: :id
-                        -#
-                        -#   = @funders.to_a.count
+                        = render :partial => 'recipients/filter_slim', locals: {f: f}
 
                 .uk-grid
                   .uk-width-2-3
@@ -126,6 +83,12 @@
               - @funders.to_a.uniq.each do |funder|
                 .uk-width-medium-1-2.uk-margin-bottom
                   .uk-width-1-1.uk-panel#panel.uk-overlay
+
+                    - if @recipient.eligible?(funder)
+                      .uk-panel-badge.uk-badge.uk-badge-success{style: 'margin: 6px;'} Eligible
+                    - elsif !@recipient.eligible?(funder) && @recipient.eligibility_count(funder) > 0
+                      .uk-panel-badge.uk-badge.uk-badge-danger{style: 'margin: 8px 6px;'} Not eligible
+
                     .uk-panel-teaser.uk-text-center.uk-vertical-align{style: 'height: 100px;'}
                       .uk-vertical-align-middle
                         = image_tag "logos/#{funder.slug}-logo.png", alt: "#{funder.name}"
@@ -147,9 +110,8 @@
                           - else
                             %button.uk-button.uk-button-primary.uk-button-large.uk-width-1-1{:disabled => "", :type => "button"}
                               %i.uk-icon-check Requested
-                    -# - if funder.attributes
-                    -#   .uk-panel-box
-                    -#     = render :partial => 'recipients/funder_attributes', :locals => { :funder => funder }
+
+                    = render :partial => 'recipients/funder_attributes', :locals => { :funder => funder }
 
               .uk-width-medium-1-2.uk-margin-bottom
                 .uk-width-1-1.uk-panel
