@@ -197,3 +197,16 @@ $white: #fff;
   transition-duration: 0.2s !important;
   transition-timing-function: linear !important;
 }
+
+.footer-left {
+  float: left;
+}
+.footer-right {
+  float: right;
+}
+.footer-left, .footer-right {
+  @media only screen and (max-width: 767px) {
+    float: none;
+    text-align: center;
+  }
+}
