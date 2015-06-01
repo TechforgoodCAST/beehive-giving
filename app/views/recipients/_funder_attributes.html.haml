@@ -1,6 +1,6 @@
 .uk-panel-box{style: 'height: 60px;'}
   .uk-width-1-1
-    = funder.mission.truncate(120)
+    = truncate("#{funder.mission}", length: 120, separator: ' ')
 -# .uk-panel-box{style: 'height: 20px;'}
 -#   .uk-width-1-1
 -#     .uk-button.uk-button-mini.uk-button-primary Youth
