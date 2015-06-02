@@ -71,6 +71,8 @@
                             %a{:href => recipient_profiles_path(current_user.organisation)} Edit profiles
                           -# %li
                           -#   %a{:href => "#"} Edit organisation
+                          %li
+                            %a{:href => recipient_eligibilities_path(current_user.organisation)} Manage eligibility
                           %li.uk-nav-divider
                           %li
                             %a{href: logout_path, method: :destroy} Sign out
@@ -149,6 +151,7 @@
                 - else
                   -# %a{href: recipient_dashboard_path} Dashboard
                   %a{:href => recipient_profiles_path(current_user.organisation)} Edit profiles
+                  %a{:href => recipient_eligibilities_path(current_user.organisation)} Manage eligibility
                   %a{"data-uk-modal" => "{target:'#feedback'}"} Feedback
               %li
                 %a{href: logout_path, method: :destroy} Sign out

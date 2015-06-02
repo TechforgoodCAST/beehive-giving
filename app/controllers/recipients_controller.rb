@@ -98,6 +98,18 @@ class RecipientsController < ApplicationController
     end
   end
 
+  def eligibilities
+  end
+
+  def update_eligibilities
+    if @recipient.update_attributes(eligibility_params)
+      flash[:notice] = "Updated!"
+      redirect_to recipient_eligibilities_path(current_user.organisation)
+    else
+      render :eligibilities
+    end
+  end
+
   private
 
   def load_recipient
