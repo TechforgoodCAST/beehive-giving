@@ -8,7 +8,8 @@
     .uk-width-medium-1-2.uk-margin-bottom
       .uk-width-1-1.uk-panel#panel.uk-overlay
 
-        - if @recipient.eligible?(funder)
+        - if @recipient.questions_remaining?(funder)
+        - elsif @recipient.eligible?(funder)
           .uk-panel-badge.uk-badge.uk-badge-success{style: 'margin: 6px;'} Eligible
         - elsif !@recipient.eligible?(funder) && @recipient.eligibility_count(funder) > 0
           .uk-panel-badge.uk-badge.uk-badge-danger{style: 'margin: 8px 6px;'} Not eligible
