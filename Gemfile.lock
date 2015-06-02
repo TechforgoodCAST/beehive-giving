@@ -216,6 +216,7 @@ GEM
     notiffany (0.0.6)
       nenv (~> 0.1)
       shellany (~> 0.0)
+    nprogress-rails (0.1.6.7)
     oj (2.12.4)
     orm_adapter (0.5.0)
     pg (0.18.1)
@@ -361,6 +362,7 @@ DEPENDENCIES
   kaminari
   newrelic_rpm
   nokogiri
+  nprogress-rails
   oj
   pg
   rabl

@@ -1,0 +1,44 @@
+- if @recipient.profiles.count < 1
+  .uk-alert.uk-alert-warning{'data-uk-alert' => ''}
+    %o In order to unlock funders you need to complete your profile. We'll use the information you provide to construct a unique digital fingerprint for your organisation, enabling us to give you personalised funding recommendations.
+    = link_to 'Click here', new_recipient_profile_path(@recipient)
+    to create a profile.
+.uk-grid.uk-margin-top-remove.uk-animation-fade{"data-uk-grid-match" => ""}
+  - @funders.to_a.uniq.each do |funder|
+    .uk-width-medium-1-2.uk-margin-bottom
+      .uk-width-1-1.uk-panel#panel.uk-overlay
+
+        - if @recipient.eligible?(funder)
+          .uk-panel-badge.uk-badge.uk-badge-success{style: 'margin: 6px;'} Eligible
+        - elsif !@recipient.eligible?(funder) && @recipient.eligibility_count(funder) > 0
+          .uk-panel-badge.uk-badge.uk-badge-danger{style: 'margin: 8px 6px;'} Not eligible
+
+        .uk-panel-teaser.uk-text-center.uk-vertical-align{style: 'height: 100px;'}
+          .uk-vertical-align-middle
+            = image_tag "logos/#{funder.slug}-logo.png", alt: "#{funder.name}"
+        -# - if params[:q]
+        -#   .uk-panel-box.uk-text-center
+        -#     = percentage_of_grants(funder)
+        -#     of funding meets your search criteria
+        .uk-overlay-area
+          .uk-overlay-area-content
+            - if funder.active_on_beehive? && funder.attributes.count > 0
+              %a.uk-button.uk-button-primary.uk-button-large.uk-width-1-1{ href: recipient_comparison_path(funder) }
+                See how you compare
+                - if @recipient.locked_funder?(funder)
+                  %span.uk-text-small (Locked)
+                  %i.uk-icon-lock
+            - else
+              - if @recipient.can_request_funder?(funder, 'data_requested')
+                = link_to 'Request', vote_recipient_path(@recipient.id,  data_requested: true, funder_id: funder.id, recipient_id: @recipient.id), method: 'post', class: 'uk-button uk-button-large uk-width-1-1'
+              - else
+                %button.uk-button.uk-button-primary.uk-button-large.uk-width-1-1{:disabled => "", :type => "button"}
+                  %i.uk-icon-check Requested
+
+        = render :partial => 'recipients/funder_attributes', :locals => { :funder => funder }
+
+  .uk-width-medium-1-2.uk-margin-bottom
+    .uk-width-1-1.uk-panel
+      .uk-text-center.uk-vertical-align{style: 'border: 3px #ddd dashed; height: 100px;'}
+        .uk-vertical-align-middle
+          %h3.uk-margin-top.uk-text-muted More coming soon...

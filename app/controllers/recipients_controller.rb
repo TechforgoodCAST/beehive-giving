@@ -99,12 +99,13 @@ class RecipientsController < ApplicationController
   end
 
   def eligibilities
+    session[:return_to] ||= request.referer
   end
 
   def update_eligibilities
     if @recipient.update_attributes(eligibility_params)
       flash[:notice] = "Updated!"
-      redirect_to recipient_eligibilities_path(current_user.organisation)
+      redirect_to session.delete(:return_to)
     else
       render :eligibilities
     end

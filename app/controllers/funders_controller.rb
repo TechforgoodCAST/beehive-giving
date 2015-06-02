@@ -11,6 +11,11 @@ class FundersController < ApplicationController
     @search = Funder.ransack(params[:q])
     @search.sorts = ['active_on_beehive desc', 'name asc'] if @search.sorts.empty?
     @funders = @search.result.includes(:funder_attributes, :grants)
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def explore

@@ -21,4 +21,11 @@
 //= require c3
 //= require raphael
 //= require morris
+//= require nprogress
+//= require nprogress-turbolinks
+//= require nprogress-ajax
 //= require_tree .
+
+NProgress.configure({
+  showSpinner: false,
+});

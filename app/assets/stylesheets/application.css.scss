@@ -33,6 +33,11 @@
 $yellow: #F7BA0E;
 $white: #fff;
 
+$nprogress-color: $yellow;
+
+@import 'nprogress';
+@import 'nprogress-bootstrap';
+
 /* $base-body-font-family: "Times New Roman", Georgia, Serif !default; */
 /* h1, h2, h3, h4, h5, h6, .uk-panel-title, .uk-text-large {
   font-family: "Times New Roman", Georgia, Serif !important;

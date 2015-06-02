@@ -58,6 +58,7 @@ gem 'httparty'
 gem 'nokogiri'
 gem 'intercom-rails'
 gem 'gon'
+gem 'nprogress-rails'
 
 group :test do
   gem 'capybara'
