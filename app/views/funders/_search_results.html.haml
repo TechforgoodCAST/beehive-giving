@@ -16,7 +16,7 @@
 
         .uk-panel-teaser.uk-text-center.uk-vertical-align{style: 'height: 100px;'}
           .uk-vertical-align-middle
-            = image_tag "logos/#{funder.slug}-logo.png", alt: "#{funder.name}"
+            .funder{class: "#{funder.slug}", alt: "#{funder.name} Logo"}
         -# - if params[:q]
         -#   .uk-panel-box.uk-text-center
         -#     = percentage_of_grants(funder)
