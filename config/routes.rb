@@ -68,5 +68,5 @@ Rails.application.routes.draw do
   end
 
   resources :feedback, :only => [:create]
-  resources :password_resets
+  resources :password_resets, :only => [:new, :create, :edit, :update]
 end

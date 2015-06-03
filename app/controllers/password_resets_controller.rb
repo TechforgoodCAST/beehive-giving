@@ -1,12 +1,4 @@
 class PasswordResetsController < ApplicationController
-  def index
-    if params[:user_email].present?
-      render :new
-    else
-      redirect_to root_path
-    end
-  end
-
   def create
     user = User.find_by_user_email(params[:user_email])
     user.send_password_reset if user
