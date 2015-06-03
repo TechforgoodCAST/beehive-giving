@@ -4,8 +4,7 @@ ActiveAdmin.register FunderAttribute do
   permit_params :funder_id, :year, :grant_count, :application_count, :enquiry_count, :non_financial_support,
   :funding_stream,  :funding_size_average, :funding_size_min, :funding_size_max, :funding_duration_average,
   :funding_duration_min, :funding_duration_max, :funded_average_age, :funded_average_income,
-  :funded_average_paid_staff, country_ids: [], approval_month_ids: [], funding_type_ids: [], beneficiary_ids: [],
-  application_support_ids: [], reporting_requirement_ids: []
+  :funded_average_paid_staff, country_ids: [], approval_month_ids: [], funding_type_ids: [], beneficiary_ids: []
 
   index do
     selectable_column

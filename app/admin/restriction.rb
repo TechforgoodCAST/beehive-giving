@@ -2,11 +2,12 @@ ActiveAdmin.register Restriction do
   config.sort_order = 'created_at_asc'
   config.per_page = 1000
 
-  permit_params :restriction, :details
+  permit_params :restriction, :details, :invert
 
   form do |f|
     f.inputs do
       f.input :details, label: 'Are you seeking funding for ___ ?'
+      f.input :invert
     end
     f.actions
   end
@@ -23,6 +24,7 @@ ActiveAdmin.register Restriction do
         li f.label
       end
     end
+    column :invert
     actions
   end
 

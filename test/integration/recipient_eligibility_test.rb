@@ -145,4 +145,26 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
   #   assert_equal "/comparison/#{@funder.slug}", current_path
   # end
 
+  test "inverted restrictions set yes as true" do
+    create(:profile, :organisation => @recipient)
+
+    @restriction1 = create(:restriction)
+    @restriction2 = create(:restriction, :invert => true)
+    @restriction3 = create(:restriction)
+
+    @funding_stream = create(:funding_stream, :restrictions => [@restriction1, @restriction2, @restriction3], :funders => [@funder])
+
+    create_and_auth_user!(:organisation => @recipient)
+    visit "/eligibility/#{@funder.slug}"
+
+    within("#edit_recipient_#{@recipient.id}") do
+      select('No', :from => "recipient_eligibilities_attributes_0_eligible")
+      select('Yes', :from => "recipient_eligibilities_attributes_1_eligible")
+      select('No', :from => "recipient_eligibilities_attributes_2_eligible")
+    end
+    click_button('Check')
+
+    assert page.has_content?("You're eligible", count: 1)
+  end
+
 end

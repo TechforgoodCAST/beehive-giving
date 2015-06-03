@@ -111,4 +111,12 @@ class Recipient < Organisation
     self.eligibility_count(funder) < funder.restrictions.uniq.count
   end
 
+  def restriction_truthy(restriction)
+    if restriction.invert
+      [['Yes', true],['No', false]]
+    else
+      [['Yes', false],['No', true]]
+    end
+  end
+
 end

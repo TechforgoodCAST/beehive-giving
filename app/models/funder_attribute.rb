@@ -4,8 +4,6 @@ class FunderAttribute < ActiveRecord::Base
                           :funded_organisation_age, :funded_organisation_income_and_staff
 
   belongs_to              :funder
-  has_and_belongs_to_many :application_supports
-  has_and_belongs_to_many :reporting_requirements
 
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :funding_types

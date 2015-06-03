@@ -143,5 +143,5 @@
             - if @funder.attributes.count < 1 || @funder.attributes.first.approval_months.count < 1
               = data_not_available('request_approval_months')
             - else
-              - @funder.attributes.where('funding_stream = ?', @funding_stream).first.approval_months.pluck(:month).uniq.each do |month|
+              - @funder.attributes.where('funding_stream = ?', @funding_stream).first.approval_months.order(:id).pluck(:month).uniq.each do |month|
                 .uk-button.uk-button-small{style: 'margin-bottom: 3px;'}= month
