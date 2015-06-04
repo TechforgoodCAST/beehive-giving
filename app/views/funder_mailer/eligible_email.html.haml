@@ -15,10 +15,13 @@
                           %tbody
                             %tr
                               %td.mcnTextContent{:style => "padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #000000;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;", :valign => "top"}
+                                %p
+                                  Hello
+                                  = succeed ',' do
+                                    = @funder.name
                                 %h1{:style => "margin: 0 0 12px -2px;padding: 0;display: block;font-family: Helvetica;font-size: 35px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: -1px;text-align: left;color: #8cc14c !important;"}
                                   = @recipient.name
                                   is eligible
-
                             %table
                               %tbody
                                 %tr
