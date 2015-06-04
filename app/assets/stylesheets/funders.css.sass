@@ -1,53 +1,131 @@
+=funder-logo($ypos, $scale:1, $width:229px)
+  width: $width
+  height: 65px * $scale
+  background-size: (229px * $scale) (1625px * $scale)
+  background-position: center ((-65px * $ypos) * $scale)
+
 .funder
+  background: image-url("funder-logos-sprite.png") no-repeat
   width: 229px
   height: 65px
-  background: image-url("funder-logos-sprite.png") no-repeat
-  background-position: 0 65px
+  background-position: center 65px
+
   &.the-foundation
-    background-position: 0 0
+    +funder-logo(0)
+  &.the-foundation-small
+    +funder-logo(0, 0.8, 150px)
+
   &.the-dulverton-trust
-    background-position: 0 -65px
+    +funder-logo(1)
+  &.the-dulverton-trust-small
+    +funder-logo(1, 0.7, 150px)
+
   &.esmee-fairbairn-foundation
-    background-position: 0 -130px
+    +funder-logo(2)
+  &.esmee-fairbairn-foundation-small
+    +funder-logo(2, 0.9, 150px)
+
   &.nesta
-    background-position: 0 -195px
+    +funder-logo(3)
+  &.nesta-small
+    +funder-logo(3, 0.7, 150px)
+
   &.nominet-trust
-    background-position: 0 -260px
+    +funder-logo(4)
+  &.nominet-trust-small
+    +funder-logo(4, 0.8, 150px)
+
   &.arts-council-england
-    background-position: 0 -325px
+    +funder-logo(5)
+  &.arts-council-england-small
+    +funder-logo(5, 1, 150px)
+
   &.big-lottery-fund
-    background-position: 0 -390px
+    +funder-logo(6)
+  &.big-lottery-fund-small
+    +funder-logo(6, 1, 150px)
+
   &.heritage-lottery-fund
-    background-position: 0 -455px
-  &.indigo-trust
-    background-position: 0 -520px
+    +funder-logo(7)
+  &.heritage-lottery-fund-small
+    +funder-logo(7, 0.9, 150px)
+
+  &.the-indigo-trust
+    +funder-logo(8)
+  &.the-indigo-trust-small
+    +funder-logo(8, 0.8, 150px)
+
   &.lloyds-bank-foundation
-    background-position: 0 -585px
+    +funder-logo(9)
+  &.lloyds-bank-foundation-small
+    +funder-logo(9, 0.6, 150px)
+
   &.paul-hamlyn-foundation
-    background-position: 0 -650px
+    +funder-logo(10)
+  &.paul-hamlyn-foundation-small
+    +funder-logo(10, 0.6, 150px)
+
   &.sport-england
-    background-position: 0 -715px
+    +funder-logo(11)
+  &.sport-england-small
+    +funder-logo(11, 0.7, 150px)
+
   &.beyondme
-    background-position: 0 -780px
+    +funder-logo(12)
+  &.beyondme-small
+    +funder-logo(12, 0.8, 150px)
+
   &.comic-relief
-    background-position: 0 -845px
+    +funder-logo(13)
+  &.comic-relief-small
+    +funder-logo(13, 0.8, 150px)
+
   &.garfield-weston-foundation
-    background-position: 0 -910px
+    +funder-logo(14)
+  &.garfield-weston-foundation-small
+    +funder-logo(14, 1, 150px)
+
   &.trust-for-london
-    background-position: 0 -975px
+    +funder-logo(15)
+  &.trust-for-london-small
+    +funder-logo(15, 0.8, 150px)
+
   &.the-henry-smith-charity
-    background-position: 0 -1040px
+    +funder-logo(16)
+  &.the-henry-smith-charity-small
+    +funder-logo(16, 1, 150px)
+
   &.john-lyons-charity
-    background-position: 0 -1105px
+    +funder-logo(17)
+  &.john-lyons-charity-small
+    +funder-logo(17, 0.6, 150px)
+
   &.city-bridge-trust
-    background-position: 0 -1170px
+    +funder-logo(18)
+  &.city-bridge-trust-small
+    +funder-logo(18, 0.6, 150px)
+
   &.children-in-need
-    background-position: 0 -1235px
+    +funder-logo(19)
+  &.children-in-need-small
+    +funder-logo(19, 0.8, 150px)
+
   &.the-tudor-trust
-    background-position: 0 -1300px
+    +funder-logo(20)
+  &.the-tudor-trust-small
+    +funder-logo(20, 0.7, 150px)
+
   &.sigrid-rausing-trust
-    background-position: 0 -1365px
+    +funder-logo(21)
+  &.sigrid-rausing-trust-small
+    +funder-logo(21, 0.6, 150px)
+
   &.the-joseph-rowntree-charitable-trust
-    background-position: 0 -1430px
+    +funder-logo(22)
+  &.the-joseph-rowntree-charitable-trust-small
+    +funder-logo(22, 1, 150px)
+
   &.lankellychase-foundation
-    background-position: 0 -1495px
+    +funder-logo(23)
+  &.lankellychase-foundation-small
+    +funder-logo(23, 0.8, 150px)

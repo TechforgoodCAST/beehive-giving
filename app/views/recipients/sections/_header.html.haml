@@ -2,7 +2,8 @@
   .uk-vertical-align-middle
     .uk-border-circle.uk-vertical-align{style: 'background: #fff; height: 160px; width: 160px; border: 3px solid #F7BA0E;'}
       .uk-vertical-align-middle
-        = image_tag "logos/#{@funder.slug}-logo.png", width: 120
+        .funder{class: "#{@funder.slug}-small", alt: "#{@funder.name} Logo"}
+        -# = image_tag "logos/#{@funder.slug}-logo.png", width: 120
 .uk-width-small-1-1.uk-width-medium-3-4.uk-width-large-2-4.uk-vertical-align{style: 'height: 220px;'}
   .uk-vertical-align-middle
     %h6.uk-text-muted.uk-text-bold.upcase.uk-margin-bottom-remove Mission
