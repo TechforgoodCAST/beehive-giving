@@ -21,8 +21,13 @@ class RecipientsController < ApplicationController
   end
 
   def gateway
-    redirect_to recipient_comparison_path(@funder) unless @recipient.locked_funder?(@funder)
     @funding_stream = params[:funding_stream] || 'All'
+
+    if current_user.feedbacks.count < 1 && @recipient.unlocked_funders.count == 1
+      redirect_to new_feedback_path(:redirect_to_funder => @funder)
+    else
+      redirect_to recipient_comparison_path(@funder) unless @recipient.locked_funder?(@funder)
+    end
   end
 
   def unlock_funder

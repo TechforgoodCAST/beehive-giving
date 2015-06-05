@@ -24,19 +24,19 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
     assert page.has_content?("Are you seeking funding for", count: 3)
   end
 
-  test "recipient with no eligibility data cannot visit new enquiry page and redirected to eligibility page" do
-    @restriction1 = create(:restriction)
-    @restriction2 = create(:restriction)
-    @restriction3 = create(:restriction)
-
-    @funding_stream = create(:funding_stream, :restrictions => [@restriction1, @restriction2, @restriction3], :funders => [@funder])
-
-    create_and_auth_user!(:organisation => @recipient)
-    visit "/funders/#{@funder.slug}/enquiries/new"
-
-    assert_equal "/eligibility/#{@funder.slug}", current_path
-    assert page.has_content?("Are you seeking funding for", count: 3)
-  end
+  # test "recipient with no eligibility data cannot visit new enquiry page and redirected to eligibility page" do
+  #   @restriction1 = create(:restriction)
+  #   @restriction2 = create(:restriction)
+  #   @restriction3 = create(:restriction)
+  #
+  #   @funding_stream = create(:funding_stream, :restrictions => [@restriction1, @restriction2, @restriction3], :funders => [@funder])
+  #
+  #   create_and_auth_user!(:organisation => @recipient)
+  #   visit "/funders/#{@funder.slug}/enquiries/new"
+  #
+  #   assert_equal "/eligibility/#{@funder.slug}", current_path
+  #   assert page.has_content?("Are you seeking funding for", count: 3)
+  # end
 
   test "recipient with partial eligibility data able to fill gaps" do
     @restriction1 = create(:restriction)
@@ -56,22 +56,22 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
     assert page.has_content?("Are you seeking funding for", count: 1)
   end
 
-  test "recipient with partial eligibility data cannot visit eligibility fit page and redirected to eligibility check page" do
-    @restriction1 = create(:restriction)
-    @restriction2 = create(:restriction)
-    @restriction3 = create(:restriction)
-
-    @funding_stream = create(:funding_stream, :restrictions => [@restriction1, @restriction2, @restriction3], :funders => [@funder])
-
-    @eligibility1 = create(:eligibility, :recipient => @recipient, :restriction => @restriction1)
-    @eligibility2 = create(:eligibility, :recipient => @recipient, :restriction => @restriction2)
-
-    create_and_auth_user!(:organisation => @recipient)
-    visit "/funders/#{@funder.slug}/enquiries/new"
-
-    assert_equal "/eligibility/#{@funder.slug}", current_path
-    assert page.has_content?("Are you seeking funding for", count: 1)
-  end
+  # test "recipient with partial eligibility data cannot visit eligibility fit page and redirected to eligibility check page" do
+  #   @restriction1 = create(:restriction)
+  #   @restriction2 = create(:restriction)
+  #   @restriction3 = create(:restriction)
+  #
+  #   @funding_stream = create(:funding_stream, :restrictions => [@restriction1, @restriction2, @restriction3], :funders => [@funder])
+  #
+  #   @eligibility1 = create(:eligibility, :recipient => @recipient, :restriction => @restriction1)
+  #   @eligibility2 = create(:eligibility, :recipient => @recipient, :restriction => @restriction2)
+  #
+  #   create_and_auth_user!(:organisation => @recipient)
+  #   visit "/funders/#{@funder.slug}/enquiries/new"
+  #
+  #   assert_equal "/eligibility/#{@funder.slug}", current_path
+  #   assert page.has_content?("Are you seeking funding for", count: 1)
+  # end
 
   test "recipient with all eligibility data has eligibility modal" do
     @restriction1 = create(:restriction)

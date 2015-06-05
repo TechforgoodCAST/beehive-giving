@@ -13,6 +13,7 @@ class RecipientGatewayTest < ActionDispatch::IntegrationTest
   test "recipient founded_on > 4 years ago has to create 4 profiles to unlock funders" do
     @recipient = create(:recipient, :founded_on => "#{Date.today.year-10}/01/01")
     create_and_auth_user!(:organisation => @recipient)
+    create(:feedback, :user => @recipient.users.first)
 
     visit "/comparison/#{@funder1.slug}"
     assert_equal "/comparison/#{@funder1.slug}/gateway", current_path
@@ -44,6 +45,7 @@ class RecipientGatewayTest < ActionDispatch::IntegrationTest
   test "recipient founded_on < 4 years ago has to create as many profiles as long as they have existed" do
     @recipient = create(:recipient, :founded_on => "#{Date.today.year-1}/01/01")
     create_and_auth_user!(:organisation => @recipient)
+    create(:feedback, :user => @recipient.users.first)
 
     create(:profile, :organisation => @recipient, :year => Date.today.year )
     visit "/comparison/#{@funder1.slug}/gateway"

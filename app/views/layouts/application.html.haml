@@ -53,7 +53,7 @@
               - else current_user.organisation.type == 'Recipient'
                 - if current_user_should_render_feedback?
                   .uk-navbar-content.uk-hidden-small{style: 'padding-top: 2px'}
-                    %a.uk-text-primary{"data-uk-modal" => "{target:'#feedback'}"} Feedback
+                    %a.uk-text-primary#feedback-button{href: "", "data-uk-modal" => "{target:'#feedback'}"} Feedback
                 .uk-navbar-flip.uk-hidden-small
                   %ul.uk-navbar-nav
                     %li{class: ('uk-active' if current_page?(funders_path))}
@@ -152,7 +152,8 @@
                   -# %a{href: recipient_dashboard_path} Dashboard
                   %a{:href => recipient_profiles_path(current_user.organisation)} Edit profiles
                   %a{:href => recipient_eligibilities_path(current_user.organisation)} Manage eligibility
-                  %a{"data-uk-modal" => "{target:'#feedback'}"} Feedback
+                  - if current_user_should_render_feedback?
+                    %a#feedback-button-mobile{"data-uk-modal" => "{target:'#feedback'}"} Feedback
               %li
                 %a{href: logout_path, method: :destroy} Sign out
           - else
@@ -164,7 +165,7 @@
         - else
           %ul.uk-nav.uk-nav-offcanvas
             %li.uk-nav-header.uk-margin-top.uk-text-center Sign in
-            = form_tag login_path, method: 'post', class: 'uk-panel uk-form' do
+            = form_tag login_path, method: 'post', class: 'uk-panel uk-form', id: 'sign-in' do
               .uk-form-row
                 = text_field_tag :email, nil, placeholder: 'Email', type: 'email', class: 'uk-width-1-1'
               .uk-form-row{style: 'position: relative;'}
@@ -183,3 +184,7 @@
 
     - if current_user_should_render_feedback?
       = render partial: 'recipients/feedback'
+      - if current_user.sign_in_count > 0 && cookies['_BHfeedbackClose'].blank?
+        -# refactor
+        :javascript
+          $.UIkit.modal("#feedback").show()

@@ -27,8 +27,8 @@ ActiveAdmin.register_page "Dashboard" do
           h3 'Non-profits'
           h5 'Unlocks'
           h1 RecipientFunderAccess.all.count
-          # h5 'Eligibilities'
-          # h1 Eligibility.all.count
+          h5 'Eligibilities'
+          h1 Eligibility.all.count
         end
 
         span class: "blank_slate" do
@@ -55,13 +55,13 @@ ActiveAdmin.register_page "Dashboard" do
           h1 Grant.all.count
         end
 
-        # span class: "blank_slate" do
-        #   h3 'Funders'
-        #   h5 'Funding streams'
-        #   h1 FundingStream.all.uniq.count
-        #   h5 'Restrictions'
-        #   h1 Restriction.all.count
-        # end
+        span class: "blank_slate" do
+          h3 'Funders'
+          h5 'Funding streams'
+          h1 FundingStream.all.uniq.count
+          h5 'Restrictions'
+          h1 Restriction.all.count
+        end
       end
     end
 

@@ -15,6 +15,5 @@ ActiveAdmin.register Feedback do
     column :informs_decision
     column :other
     column :created_at
-    actions
   end
 end

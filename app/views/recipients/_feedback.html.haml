@@ -1,29 +1,6 @@
-#feedback.uk-modal
+#feedback.uk-modal{class: ('feedback-prompt' if current_user.sign_in_count > 0 && cookies['_BHfeedbackClose'].blank?)}
   .uk-modal-dialog
     %a.uk-modal-close.uk-close.js-record-feedback-close
     .uk-modal-header
       %h2 Let us know what you think
-    = simple_form_for @feedback, :url => feedback_index_path do |f|
-      .uk-form.uk-form-stacked
-        .uk-width-1-1.uk-margin-bottom
-          %label.uk-form-label
-            1. How likely is it that you would recommend Beehive to a friend or colleague?
-          = f.input :nps, as: :select, collection: (0..10).to_a.reverse, :label_method => lambda { |n| "#{n} #{Feedback::NPS[n]}" }, input_html: {class: 'uk-width-1-1'}
-
-        .uk-width-1-1.uk-margin-bottom
-          %label.uk-form-label
-            2. How would you feel if this service was taken away?
-          = f.input :taken_away, as: :select, collection: (0..10).to_a.reverse, :label_method => lambda { |n| "#{n} #{Feedback::TAKEN_AWAY[n]}" }, input_html: {class: 'uk-width-1-1'}
-
-        .uk-width-1-1.uk-margin-bottom
-          %label.uk-form-label
-            3. Beehive informs the decisions I make around fundraising
-          = f.input :informs_decision, as: :select, collection: (0..10).to_a.reverse, :label_method => lambda { |n| "#{n} #{Feedback::INFORMS_DECISION[n]}" }, input_html: {class: 'uk-width-1-1'}
-
-        .uk-width-1-1.uk-margin-bottom
-          %label.uk-form-label
-            4. Any other feedback?
-          = f.input :other, as: :text, input_html: {class: 'uk-width-1-1'}
-
-      .uk-modal-footer.uk-text-right
-        = f.submit 'Submit feedback', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'
+    = render partial: 'feedback/form'

@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
+
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
+
   root :to => 'sessions#check'
   get '/login' => 'sessions#new', as: 'login'
   post '/login' => 'sessions#create'
@@ -48,6 +50,8 @@ Rails.application.routes.draw do
   match '/funders/comparison', to: 'funders#comparison', via: :get, as: 'funders_comparison'
 
   resources :users
+  resources :feedback, :only => [:new, :create]
+  resources :password_resets, :only => [:new, :create, :edit, :update]
 
   resources :recipients do
     member do
@@ -62,11 +66,9 @@ Rails.application.routes.draw do
       get :explore
     end
     resources :grants
-    resources :enquiries, :only => [:new, :create] do
-      get :feedback
-    end
+    # resources :enquiries, :only => [:new, :create] do
+    #   get :feedback
+    # end
   end
 
-  resources :feedback, :only => [:create]
-  resources :password_resets, :only => [:new, :create, :edit, :update]
 end
