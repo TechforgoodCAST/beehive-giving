@@ -117,8 +117,25 @@
           .uk-text-center
             - if @funder.attributes.count < 1 || @funder.attributes.first.funding_size_average.nil?
               = data_not_available('request_amount_awarded')
+            - elsif @funder.grants.count == 0
+              %h6.uk-text-bold.upcase Average
+              %h1.uk-margin-top-remove.stat-big
+                = number_to_currency(@funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_size_average, unit: '£', precision: 0)
+              %hr
+              .uk-grid.uk-text-center
+                .uk-width-1-2
+                  - unless @funder.attributes.count < 1 || @funder.attributes.first.funding_size_min.nil?
+                    %h6.uk-text-bold.upcase Min
+                    %h2.uk-margin-top-remove.stat-normal
+                      = number_to_currency(@funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_size_min, unit: '£', precision: 0)
+                .uk-width-1-2
+                  - unless @funder.attributes.count < 1 || @funder.attributes.first.funding_size_max.nil?
+                    %h6.uk-text-bold.upcase Max
+                    %h2.uk-margin-top-remove.stat-normal
+                      = number_to_currency(@funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_size_max, unit: '£', precision: 0)
             - else
-              #funding_frequency_distribution{ data: {data: funding_frequency_distribution(@funder).to_json} }
+              - if @funder.grants.where('approved_on IS NOT NULL').count == @funder.grants.count
+                #funding_frequency_distribution{ data: {data: funding_frequency_distribution(@funder).to_json} }
 
       .uk-width-medium-1-3.uk-margin-bottom
         .uk-panel.uk-panel-box#panel

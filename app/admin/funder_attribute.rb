@@ -56,7 +56,7 @@ ActiveAdmin.register FunderAttribute do
   form do |f|
     f.inputs do
       f.input :funder, input_html: {class: 'chosen-select'}
-      f.input :funding_stream, collection: Grant.pluck(:funding_stream).uniq << 'All', input_html: {class: 'chosen-select'}
+      f.input :funding_stream, collection: Grant.where('approved_on < ? AND approved_on >= ?', '2015-01-01', '2014-01-01').pluck(:funding_stream).uniq << 'All', input_html: {class: 'chosen-select'}
       f.input :countries, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :name, label: "Countries"
       f.input :grant_count
       f.input :application_count
