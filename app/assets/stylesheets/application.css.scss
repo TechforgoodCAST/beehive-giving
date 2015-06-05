@@ -24,11 +24,11 @@
 
 @font-face {
   font-family: "Redacted";
-    src: url(/assets/redacted-script-bold.eot);
-    src: url(/assets/redacted-script-bold.woff2) format("woff2"),
-         url(/assets/redacted-script-bold.woff) format("woff"),
-         url(/assets/redacted-script-bold.otf) format("opentype"),
-         url(/assets/redacted-script-bold.svg#filename) format("svg");
+    src: font-url('redacted-script-bold.eot');
+    src: font-url('redacted-script-bold.woff2') format("woff2"),
+         font-url('redacted-script-bold.woff') format("woff"),
+         font-url('redacted-script-bold.otf') format("opentype"),
+         font-url('redacted-script-bold.svg#filename') format("svg");
 }
 
 $yellow: #F7BA0E;
