@@ -7,7 +7,13 @@
     %label.uk-form-label
       = f.label "Country where funding has been given"
     .uk-form-controls
-      = f.input :grants_country_eq, input_html: { class: 'uk-width-1-1 chosen-select' }
+      = f.input :grants_countries_id_eq, collection: Country.all, input_html: { class: 'uk-width-1-1 chosen-select' }
+  -# .uk-grid.uk-margin-top-remove
+  -#   .uk-width-small-1-2.uk-width-medium-1-2.uk-width-large-1-1.uk-margin-bottom
+  -#     %label.uk-form-label
+  -#       = f.label "Regions where funding has been given"
+  -#     .uk-form-controls
+  -#       = f.input :grants_districts_id_eq, collection: District.all, input_html: { class: 'uk-width-1-1 chosen-select' }, label_method: :label
   .uk-grid.uk-margin-top-remove
     .uk-width-small-1-2.uk-width-medium-1-2.uk-width-large-1-1.uk-margin-bottom
       %label.uk-form-label
