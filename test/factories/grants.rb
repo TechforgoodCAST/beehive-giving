@@ -13,8 +13,9 @@ FactoryGirl.define do
     end_on Date.new(2015, 1, 1)
     attention_on Date.new(2015, 1, 1)
     applied_on Date.new(2015, 1, 1)
-    country "GB"
     open_call true
+    countries {FactoryGirl.create_list(:country, 2)}
+    districts {FactoryGirl.create_list(:district, 2)}
     after(:build) do |object|
       object.default_values
     end
@@ -39,8 +40,9 @@ FactoryGirl.define do
     end_on Date.new(2014, 1, 1)
     attention_on Date.new(2014, 1, 1)
     applied_on Date.new(2014, 1, 1)
-    country { ['GB', 'KE', 'UG', 'ET'][c] }
     open_call [true, false].sample
+    countries {FactoryGirl.create_list(:country, 2)}
+    districts {FactoryGirl.create_list(:district, 2)}
     after(:build) do |object|
       object.default_values
     end

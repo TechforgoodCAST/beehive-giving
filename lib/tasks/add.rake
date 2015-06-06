@@ -34,7 +34,7 @@ namespace :import do
         :registered_on => row['registered_on']
       }
 
-      recipient = Recipient.new(recipient_values)
+      recipient = Recipient.find_or_initialize_by(recipient_values)
       recipient.skip_validation = @skip_validation
 
       if ENV['SAVE']
@@ -47,6 +47,20 @@ namespace :import do
       end
 
       @find_recipient = Recipient.where(:name => row['recipient']).first
+
+      @countries = []
+      if row['grant_countries']
+        row['grant_countries'].split(', ').each do |c|
+          @countries << Country.find_by_alpha2(c)
+        end
+      end
+
+      @districts = []
+      if row['grant_districts']
+        row['grant_districts'].split(', ').each do |d|
+          @districts << District.find_by_district(d)
+        end
+      end
 
       grant_values = {
         :funder => @find_funder,
@@ -62,8 +76,9 @@ namespace :import do
         :end_on => row['end_on'],
         :attention_on => row['attention_on'],
         :applied_on => row['applied_on'],
-        :country => row['grant_country'],
-        :open_call => row['open_call']
+        :open_call => row['open_call'],
+        :countries => @countries,
+        :districts => @districts
       }
 
       grant = Grant.new(grant_values)

@@ -1,9 +1,14 @@
 class FunderAttribute < ActiveRecord::Base
-  before_validation       :grant_count_from_grants, :countries_from_grants, :approval_months_from_grants,
-                          :funding_type_from_grants,:funding_size_and_duration_from_grants,
-                          :funded_organisation_age, :funded_organisation_income_and_staff
 
-  belongs_to              :funder
+  before_validation :grant_count_from_grants,
+                    :countries_from_grants,
+                    :approval_months_from_grants,
+                    :funding_type_from_grants,
+                    :funding_size_and_duration_from_grants,
+                    :funded_organisation_age,
+                    :funded_organisation_income_and_staff
+
+  belongs_to :funder
 
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :funding_types
@@ -30,11 +35,11 @@ class FunderAttribute < ActiveRecord::Base
   def countries_from_grants
     if self.funder && self.countries.empty?
       if self.funding_stream == 'All'
-        self.funder.grants.where('approved_on < ? AND approved_on >= ?', '2015-01-01', '2014-01-01').pluck(:country).uniq.each do |c|
+        self.funder.countries.where('approved_on < ? AND approved_on >= ?', '2015-01-01', '2014-01-01').pluck(:alpha2).uniq.each do |c|
           self.countries << Country.find_by_alpha2(c) unless c.blank?
         end
       else
-        self.funder.grants.where('approved_on < ? AND approved_on >= ?', '2015-01-01', '2014-01-01').where('funding_stream = ?', self.funding_stream).pluck(:country).uniq.each do |c|
+        self.funder.countries.where('approved_on < ? AND approved_on >= ?', '2015-01-01', '2014-01-01').where('funding_stream = ?', self.funding_stream).pluck(:alpha2).uniq.each do |c|
           self.countries << Country.find_by_alpha2(c) unless c.blank?
         end
       end

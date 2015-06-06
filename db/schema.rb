@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150603101333) do
+ActiveRecord::Schema.define(version: 20150606112312) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -84,6 +84,13 @@ ActiveRecord::Schema.define(version: 20150603101333) do
     t.integer "country_id"
   end
 
+  create_table "countries_grants", force: :cascade do |t|
+    t.integer  "country_id"
+    t.integer  "grant_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "countries_profiles", force: :cascade do |t|
     t.integer "country_id"
     t.integer "profile_id"
@@ -99,6 +106,13 @@ ActiveRecord::Schema.define(version: 20150603101333) do
   create_table "districts_enquiries", force: :cascade do |t|
     t.integer "enquiry_id"
     t.integer "district_id"
+  end
+
+  create_table "districts_grants", force: :cascade do |t|
+    t.integer  "district_id"
+    t.integer  "grant_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "districts_profiles", force: :cascade do |t|
@@ -222,7 +236,6 @@ ActiveRecord::Schema.define(version: 20150603101333) do
     t.integer  "days_from_applied_to_approved"
     t.integer  "days_form_approval_to_start"
     t.integer  "days_from_start_to_end"
-    t.string   "country",                        limit: 255
     t.boolean  "open_call"
   end
 

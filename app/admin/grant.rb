@@ -4,7 +4,8 @@ ActiveAdmin.register Grant do
 
   permit_params :funding_stream, :grant_type, :attention_how, :amount_awarded,
   :amount_applied, :installments, :approved_on, :start_on, :end_on, :attention_on, :applied_on,
-  :recipient_id, :funder_id, :days_from_start_to_end, :country, :open_call
+  :recipient_id, :funder_id, :days_from_start_to_end, :open_call,
+  country_ids: [], district_ids: []
 
   index do
     selectable_column
@@ -45,8 +46,17 @@ ActiveAdmin.register Grant do
       row :approved_on
       row :start_on
       row :end_on
-      row :country
       row(:open_call) { status_tag(grant.open_call) }
+      row :countries do |grant|
+        grant.countries.each do |c|
+          li c.name
+        end
+      end
+      row :districts do |grant|
+        grant.districts.each do |d|
+          li d.district
+        end
+      end
     end
   end
 
@@ -65,7 +75,8 @@ ActiveAdmin.register Grant do
       f.input :approved_on
       f.input :start_on
       f.input :end_on
-      f.input :country
+      f.input :countries, collection: Country.order('name ASC'), input_html: {multiple: true, class: 'chosen-select'}, member_label: :name
+      f.input :districts, collection: District.order('label ASC'), input_html: {multiple: true, class: 'chosen-select'}, member_label: :label
     end
     f.actions
   end

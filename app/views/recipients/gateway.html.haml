@@ -83,9 +83,9 @@
           - if @funder.grants.count > 0 && @funder.attributes.first.grant_count.present?
             .uk-panel-badge
               %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360 Giving."}
-          .uk-panel-title.uk-text-center Funded organisations
+          .uk-panel-title.uk-text-center Funding awarded
           .uk-text-center
-            %h6.uk-text-bold.upcase Funded
+            %h6.uk-text-bold.upcase Grants
             - if @funder.attributes.count < 1 || @funder.attributes.first.grant_count.nil?
               = simple_data_not_available('request_grant_count')
             - else

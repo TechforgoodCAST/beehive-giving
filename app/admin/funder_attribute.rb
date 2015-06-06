@@ -28,6 +28,11 @@ ActiveAdmin.register FunderAttribute do
         attribute.funder
       end
       row :funding_stream
+      row :countries do |attribute|
+        attribute.countries.each do |c|
+          li c.name
+        end
+      end
       row :grant_count
       row :application_count
       row :enquiry_count

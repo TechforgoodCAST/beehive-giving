@@ -261,6 +261,8 @@ namespace :import do
     Country.create(name: "Yemen",	alpha2: "YE")
     Country.create(name: "Zambia",	alpha2: "ZM")
     Country.create(name: "Zimbabwe",	alpha2: "ZW")
+    Country.create(name: "Worldwide",	alpha2: "Worldwide")
+    Country.create(name: "Other",	alpha2: "Other")
 
     CSV.foreach(@filename, :headers => true, encoding:'iso-8859-1:utf-8') do |row|
 
@@ -276,7 +278,7 @@ namespace :import do
       district = District.new(district_values)
 
       if district.valid?
-        district.save
+        district.save if ENV['SAVE']
       else
         @messages << "\n#{district.label}"
         @messages << "Grant: #{district.errors.messages}"
