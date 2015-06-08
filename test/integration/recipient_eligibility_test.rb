@@ -162,7 +162,7 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
       select('Yes', :from => "recipient_eligibilities_attributes_1_eligible")
       select('No', :from => "recipient_eligibilities_attributes_2_eligible")
     end
-    click_button('Check')
+    click_button('Check eligibility')
 
     assert page.has_content?("You're eligible", count: 1)
   end

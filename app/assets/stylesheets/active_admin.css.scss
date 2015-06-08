@@ -7,6 +7,14 @@
 // For example, to change the sidebar width:
 // $sidebar-width: 242px;
 
+.active_admin {
+  .index_as_table {
+    td {
+      max-width: 250px;
+    }
+  }
+}
+
 // Active Admin's got SASS!
 @import "active_admin/mixins";
 @import "active_admin/base";

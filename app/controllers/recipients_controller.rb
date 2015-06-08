@@ -70,7 +70,7 @@ class RecipientsController < ApplicationController
 
   def eligibility
     @funder = Funder.find_by_slug(params[:funder_id])
-    @restrictions = @funder.restrictions.uniq
+    @restrictions = @funder.restrictions.order(:id).uniq
 
     # if @recipient.attribute.blank?
     #   redirect_to new_recipient_attribute_path(@recipient, :redirect_to_funder => @funder)
