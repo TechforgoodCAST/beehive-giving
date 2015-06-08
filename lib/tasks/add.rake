@@ -50,14 +50,14 @@ namespace :import do
 
       @countries = []
       if row['grant_countries']
-        row['grant_countries'].split(', ').each do |c|
+        row['grant_countries'].split('; ').each do |c|
           @countries << Country.find_by_alpha2(c)
         end
       end
 
       @districts = []
       if row['grant_districts']
-        row['grant_districts'].split(', ').each do |d|
+        row['grant_districts'].split('; ').each do |d|
           @districts << District.find_by_district(d)
         end
       end
