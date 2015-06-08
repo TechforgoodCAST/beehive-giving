@@ -70,6 +70,13 @@ class RecipientsController < ApplicationController
     @funder = Funder.find_by_slug(params[:funder_id])
     @restrictions = @funder.restrictions.order(:id).uniq
 
+    # refactor
+    @funding_stream = params[:funding_stream] || 'All'
+    if @funder.attributes.any?
+      @year_of_funding =  @funder.attributes.order(year: :desc).first.year
+      @funder_attribute = @funder.attributes.where('year = ? AND funding_stream = ?', @year_of_funding, @funding_stream).first
+    end
+
     # if @recipient.attribute.blank?
     #   redirect_to new_recipient_attribute_path(@recipient, :redirect_to_funder => @funder)
     if @recipient.questions_remaining?(@funder)
@@ -85,6 +92,13 @@ class RecipientsController < ApplicationController
   def update_eligibility
     @funder = Funder.find_by_slug(params[:funder_id])
     @restrictions = @funder.restrictions
+
+    # refactor
+    @funding_stream = params[:funding_stream] || 'All'
+    if @funder.attributes.any?
+      @year_of_funding =  @funder.attributes.order(year: :desc).first.year
+      @funder_attribute = @funder.attributes.where('year = ? AND funding_stream = ?', @year_of_funding, @funding_stream).first
+    end
 
     if @recipient.update_attributes(eligibility_params)
       if @recipient.eligible?(@funder)
