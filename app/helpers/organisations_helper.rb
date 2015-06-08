@@ -1,14 +1,14 @@
 module OrganisationsHelper
 
-  def funding_frequency_distribution(funder)
+  def funding_frequency_distribution(funder, year)
     increment = 5
 
     if @funding_stream == 'All'
       grants = funder.grants
-        .where('approved_on < ? AND approved_on >= ?', '2015-01-01', '2014-01-01')
+        .where("approved_on < ? AND approved_on >= ?", "#{year + 1}-01-01", "#{year}-01-01")
     else
       grants = funder.grants
-        .where('approved_on < ? AND approved_on >= ?', '2015-01-01', '2014-01-01')
+        .where("approved_on < ? AND approved_on >= ?", "#{year + 1}-01-01", "#{year}-01-01")
         .where("funding_stream = ?", @funding_stream)
     end
 

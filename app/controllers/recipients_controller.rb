@@ -3,6 +3,7 @@ class RecipientsController < ApplicationController
   before_filter :ensure_logged_in, :load_recipient, :years_ago
   before_filter :load_funder, :only => [:gateway, :unlock_funder, :comparison]
   before_filter :load_feedback, :except => [:unlock_funder, :vote]
+  before_filter :funder_attribute, :only => [:gateway, :comparison]
 
   # def edit
   # end
@@ -21,8 +22,6 @@ class RecipientsController < ApplicationController
   end
 
   def gateway
-    @funding_stream = params[:funding_stream] || 'All'
-
     if current_user.feedbacks.count < 1 && @recipient.unlocked_funders.count == 1
       redirect_to new_feedback_path(:redirect_to_funder => @funder)
     else
@@ -37,7 +36,6 @@ class RecipientsController < ApplicationController
 
   def comparison
     redirect_to recipient_comparison_gateway_path(@funder) if @recipient.locked_funder?(@funder)
-    @funding_stream = params[:funding_stream] || 'All'
     @restrictions = @funder.restrictions.uniq
   end
 
@@ -135,6 +133,16 @@ class RecipientsController < ApplicationController
       @years_ago = params[:years_ago].to_i
     else
       @years_ago = 1
+    end
+  end
+
+  def funder_attribute
+    @funding_stream = params[:funding_stream] || 'All'
+
+    if @funder.attributes.any?
+      @year_of_funding = Funder.find_by_slug(params[:id]).attributes.order(year: :desc).first.year
+      @funder_attribute = Funder.find_by_slug(params[:id]).attributes.where('year = ? AND funding_stream = ?', @year_of_funding, @funding_stream).first
+      # @funding_years = @funder.attributes.order(year: :desc).pluck(:year).uniq
     end
   end
 

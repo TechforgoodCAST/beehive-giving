@@ -7,6 +7,7 @@ FactoryGirl.define do
   end
 
   factory :funder_attribute, class: FunderAttribute do
+    year 2014
     association :funder, :factory => :funder
     countries { FactoryGirl.create_list(:country, 2) }
     after(:build) { |a| a.grant_count_from_grants }
@@ -23,6 +24,7 @@ FactoryGirl.define do
   end
 
   factory :funder_attribute_no_grants, class: FunderAttribute do
+    year 2014
     association :funder, :factory => :funder
     countries { FactoryGirl.create_list(:country, 2) }
     funding_stream "All"

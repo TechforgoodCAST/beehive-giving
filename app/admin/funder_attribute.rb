@@ -1,13 +1,14 @@
 ActiveAdmin.register FunderAttribute do
   config.sort_order = 'created_at_asc'
 
-  permit_params :funder_id, :year, :grant_count, :application_count, :enquiry_count, :non_financial_support,
-  :funding_stream,  :funding_size_average, :funding_size_min, :funding_size_max, :funding_duration_average,
+  permit_params :funder_id, :year, :grant_count, :application_count, :enquiry_count,
+  :funding_stream, :funding_size_average, :funding_size_min, :funding_size_max, :funding_duration_average,
   :funding_duration_min, :funding_duration_max, :funded_average_age, :funded_average_income,
   :funded_average_paid_staff, country_ids: [], approval_month_ids: [], funding_type_ids: [], beneficiary_ids: []
 
   index do
     selectable_column
+    column :year
     column "Funder" do |attribute|
       link_to attribute.funder.name, [:admin, attribute.funder]
     end
@@ -24,6 +25,7 @@ ActiveAdmin.register FunderAttribute do
 
   show do
     attributes_table do
+      row :year
       row "Funder" do |attribute|
         attribute.funder
       end
@@ -60,6 +62,7 @@ ActiveAdmin.register FunderAttribute do
 
   form do |f|
     f.inputs do
+      f.input :year, as: :select, collection: Profile::VALID_YEARS
       f.input :funder, input_html: {class: 'chosen-select'}
       f.input :funding_stream, collection: Grant.where('approved_on < ? AND approved_on >= ?', '2015-01-01', '2014-01-01').pluck(:funding_stream).uniq << 'All', input_html: {class: 'chosen-select'}
       f.input :countries, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :name, label: "Countries"

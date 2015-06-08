@@ -17,5 +17,5 @@
       - if @funder.attributes.count < 1
         %h2.uk-text-primary Missing
       - else
-        - @funder.attributes.where('funding_stream = ?', 'All').first.countries.each do |country|
+        - @funder_attribute.countries.each do |country|
           = link_to country.name, funders_path(:'q[grants_country_eq]' => "#{country.alpha2}"), class: 'uk-button uk-button-small', style: 'margin-bottom: 3px;'

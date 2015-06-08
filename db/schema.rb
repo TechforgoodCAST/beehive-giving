@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150606112312) do
+ActiveRecord::Schema.define(version: 20150608141420) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -184,6 +184,7 @@ ActiveRecord::Schema.define(version: 20150606112312) do
     t.decimal  "funded_average_income"
     t.decimal  "funded_average_paid_staff"
     t.string   "funding_stream"
+    t.integer  "year"
   end
 
   create_table "funder_attributes_funding_types", force: :cascade do |t|

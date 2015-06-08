@@ -68,102 +68,98 @@
 
   .uk-container.uk-container-center.uk-animation-fade
     %hr
-    %h2.uk-text-center.upcase.white
-      Funding overview
-    %p.white
-      - if params[:funding_stream]
-        Funding stream:
-        %span.uk-button-group
-          = link_to "#{@funding_stream} &#10006;".html_safe, recipient_comparison_path(@funder, :funding_stream => nil, :anchor => 'overview'), class: 'uk-button uk-button-mini'
+    %h2.uk-text-center.upcase.white Funding overview
 
-      -# .uk-button.uk-button-mini.roboto Compare
     .uk-grid.uk-margin-bottom{"data-uk-grid-match" => "{target:'.uk-panel'}"}
       .uk-width-medium-1-3.uk-margin-bottom
         .uk-panel.uk-panel-box#panel
-          - if @funder.grants.count > 0 && @funder.attributes.first.grant_count.present?
+          - if @funder.grants.count > 0 && @funder_attribute.grant_count.present?
             .uk-panel-badge
               %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360 Giving."}
           .uk-panel-title.uk-text-center Funding awarded
           .uk-text-center
             %h6.uk-text-bold.upcase Grants
-            - if @funder.attributes.count < 1 || @funder.attributes.first.grant_count.nil?
+            - if @funder.attributes.count < 1 || @funder_attribute.grant_count.nil?
               = simple_data_not_available('request_grant_count')
             - else
               %h1.uk-margin-top-remove.stat-big
-                = @funder.attributes.where('funding_stream = ?', @funding_stream).first.grant_count
+                = @funder_attribute.grant_count
           %hr
           .uk-grid.uk-text-center
             .uk-width-1-2
               %h6.uk-text-bold.upcase Applications
-              - if @funder.attributes.count < 1 || @funder.attributes.first.application_count.nil?
+              - if @funder.attributes.count < 1 || @funder_attribute.application_count.nil?
                 = simple_data_not_available('request_applications_count')
               - else
                 %h2.uk-margin-top-remove.stat-normal
                   = @funder.attributes.where('funding_stream = ?', @funding_stream).first.application_count
             .uk-width-1-2
               %h6.uk-text-bold.upcase Enquiries
-              - if @funder.attributes.count < 1 || @funder.attributes.where('funding_stream = ?', @funding_stream).first.enquiry_count.nil?
+              - if @funder.attributes.count < 1 || @funder_attribute.enquiry_count.nil?
                 = simple_data_not_available('request_enquiry_count')
               - else
                 %h2.uk-margin-top-remove.stat-normal
-                  = @funder.attributes.where('funding_stream = ?', @funding_stream).first.enquiry_count
+                  = @funder_attribute.enquiry_count
 
       .uk-width-medium-1-3.uk-margin-bottom
         .uk-panel.uk-panel-box#panel
-          - if @funder.grants.count > 0 && @funder.attributes.first.funding_size_average.present?
+          - if @funder.grants.count > 0 && @funder_attribute.funding_size_average.present?
             .uk-panel-badge
               %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360 Giving."}
           .uk-panel-title.uk-text-center Funding size
           .uk-text-center
-            - if @funder.attributes.count < 1 || @funder.attributes.first.funding_size_average.nil?
+            - if @funder.attributes.count < 1 || @funder_attribute.funding_size_min.nil?
               = data_not_available('request_amount_awarded')
             - elsif @funder.grants.count == 0
               %h6.uk-text-bold.upcase Average
               %h1.uk-margin-top-remove.stat-big
-                = number_to_currency(@funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_size_average, unit: '£', precision: 0)
+                - unless @funder.attributes.count < 1 || @funder_attribute.funding_size_average.nil?
+                  = number_to_currency(@funder_attribute.funding_size_average, unit: '£', precision: 0)
+                - else
+                  %h2.uk-text-primary Not provided
               %hr
               .uk-grid.uk-text-center
                 .uk-width-1-2
-                  - unless @funder.attributes.count < 1 || @funder.attributes.first.funding_size_min.nil?
+                  - unless @funder.attributes.count < 1 || @funder_attribute.funding_size_min.nil?
                     %h6.uk-text-bold.upcase Min
                     %h2.uk-margin-top-remove.stat-normal
-                      = number_to_currency(@funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_size_min, unit: '£', precision: 0)
+                      = number_to_currency(@funder_attribute.funding_size_min, unit: '£', precision: 0)
                 .uk-width-1-2
-                  - unless @funder.attributes.count < 1 || @funder.attributes.first.funding_size_max.nil?
+                  - unless @funder.attributes.count < 1 || @funder_attribute.funding_size_max.nil?
                     %h6.uk-text-bold.upcase Max
                     %h2.uk-margin-top-remove.stat-normal
-                      = number_to_currency(@funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_size_max, unit: '£', precision: 0)
+                      = number_to_currency(@funder_attribute.funding_size_max, unit: '£', precision: 0)
             - else
               - if @funder.grants.where('approved_on IS NOT NULL').count == @funder.grants.count
-                #funding_frequency_distribution{ data: {data: funding_frequency_distribution(@funder).to_json} }
+                #funding_frequency_distribution{ data: {data: funding_frequency_distribution(@funder, @year_of_funding).to_json} }
 
       .uk-width-medium-1-3.uk-margin-bottom
         .uk-panel.uk-panel-box#panel
-          - if @funder.grants.count > 0 && @funder.attributes.first.funding_duration_average.present?
+          - if @funder.grants.count > 0 && @funder_attribute.funding_duration_average.present?
             .uk-panel-badge
               %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360 Giving."}
           .uk-panel-title.uk-text-center Funding duration
           .uk-text-center
-            - if @funder.attributes.count < 1 || @funder.attributes.first.funding_duration_average.nil?
+            - if @funder.attributes.count < 1 || @funder_attribute.funding_duration_average.nil?
               = data_not_available('request_funding_dates')
             - else
               %h6.uk-text-bold.upcase Average
               %h1.uk-margin-top-remove.stat-big
-                = (@funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_duration_average / 365).round(2)
+                = (@funder_attribute.funding_duration_average / 365).round(2)
                 %span.uk-text-small year(s)
               %hr
           .uk-grid.uk-text-center
             .uk-width-1-2
-              - unless @funder.attributes.count < 1 || @funder.attributes.first.funding_duration_min.nil?
+              - unless @funder.attributes.count < 1 || @funder_attribute.funding_duration_min.nil?
                 %h6.uk-text-bold.upcase Min
                 %h2.uk-margin-top-remove.stat-normal
-                  = (@funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_duration_min / 365).round(2)
+                  = (@funder_attribute.funding_duration_min / 365).round(2)
                   %span.uk-text-small year(s)
             .uk-width-1-2
-              - unless @funder.attributes.count < 1 || @funder.attributes.first.funding_duration_max.nil?
+              - unless @funder.attributes.count < 1 || @funder_attribute.funding_duration_max.nil?
                 %h6.uk-text-bold.upcase Max
                 %h2.uk-margin-top-remove.stat-normal
-                  = (@funder.attributes.where('funding_stream = ?', @funding_stream).first.funding_duration_max / 365).round(2)
+                  = (@funder_attribute.funding_duration_max / 365).round(2)
                   %span.uk-text-small year(s)
 
       .uk-width-medium-1-3.uk-margin-bottom
