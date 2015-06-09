@@ -6,7 +6,10 @@ FactoryGirl.define do
   end
 
   factory :restriction do
-    details "Restriction details"
+    transient do
+      n  { rand(1000) }
+    end
+    details { "Random restriction #{n}" }
   end
 
   factory :funding_stream do

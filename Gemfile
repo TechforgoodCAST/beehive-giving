@@ -30,6 +30,7 @@ group :development do
   gem 'spring'
   gem 'guard-rake'
   gem 'guard-livereload'
+  gem 'quiet_assets'
 end
 gem 'google-webfonts-rails'
 gem 'faker'

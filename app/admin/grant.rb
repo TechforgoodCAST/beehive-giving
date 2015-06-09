@@ -1,4 +1,5 @@
 ActiveAdmin.register Grant do
+  
   config.sort_order = 'created_at_asc'
   config.per_page = 1000
 
@@ -80,4 +81,5 @@ ActiveAdmin.register Grant do
     end
     f.actions
   end
+
 end

@@ -4,5 +4,5 @@ class Restriction < ActiveRecord::Base
   has_many :recipients, :through => :eligibilities
   has_many :funders, :through => :funding_streams
 
-  validates :details, presence: true
+  validates :details, presence: true, uniqueness: true
 end

@@ -1,8 +1,6 @@
 module OrganisationsHelper
 
   def funding_frequency_distribution(funder, year)
-    increment = 5
-
     if @funding_stream == 'All'
       grants = funder.grants
         .where("approved_on < ? AND approved_on >= ?", "#{year + 1}-01-01", "#{year}-01-01")
@@ -12,8 +10,12 @@ module OrganisationsHelper
         .where("funding_stream = ?", @funding_stream)
     end
 
-    max = grants.calculate(:maximum, :amount_awarded)
-    count = (max / (increment * 1000)) + 1
+    range_limit = 475000
+    increment = grants.calculate(:maximum, :amount_awarded) < range_limit ? 10 : 25
+
+    range = grants.calculate(:maximum, :amount_awarded) < range_limit ? grants.calculate(:maximum, :amount_awarded) : grants.calculate(:minimum, :amount_awarded) + range_limit
+    count = (range / (increment * 1000)) + 1
+    max = grants.calculate(:maximum, :amount_awarded) + (increment * 1000)
 
     data = []
     count.times do |i|
@@ -25,6 +27,14 @@ module OrganisationsHelper
         grant_count: grants.where('amount_awarded >= ? AND amount_awarded < ?', start_amount, end_amount).count
       }
     end
+
+    unless grants.calculate(:maximum, :amount_awarded) < range_limit
+      data << {
+        target: "Above #{number_to_currency(count * increment, unit: '£', precision: 0)}k",
+        grant_count: grants.where('amount_awarded >= ? AND amount_awarded < ?', (range + (increment * 1000)), 1006000).count
+      }
+    end
+
     data
   end
 
