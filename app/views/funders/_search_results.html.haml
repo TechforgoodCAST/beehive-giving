@@ -17,22 +17,24 @@
         .uk-panel-teaser.uk-text-center.uk-vertical-align{style: 'height: 100px;'}
           .uk-vertical-align-middle
             .funder{class: "#{funder.slug}", alt: "#{funder.name} Logo"}
-        -# - if params[:q]
-        -#   .uk-panel-box.uk-text-center
-        -#     = percentage_of_grants(funder)
-        -#     of funding meets your search criteria
-        .uk-overlay-area
-          .uk-overlay-area-content
-            - if funder.active_on_beehive? && funder.attributes.count > 0
-              %a.uk-button.uk-button-primary.uk-button-large.uk-width-1-1{ href: recipient_comparison_path(funder) }
+
+
+        - if funder.active_on_beehive? && funder.attributes.count > 0
+          %a.uk-overlay-area{ href: recipient_comparison_path(funder) }
+            .uk-overlay-area-content
+              .uk-button.uk-button-primary.uk-button-large.uk-width-1-1
                 See how you compare
                 - if @recipient.locked_funder?(funder)
                   %span.uk-text-small (Locked)
                   %i.uk-icon-lock
-            - else
-              - if @recipient.can_request_funder?(funder, 'data_requested')
+        - else
+          - if @recipient.can_request_funder?(funder, 'data_requested')
+            .uk-overlay-area
+              .uk-overlay-area-content
                 = link_to 'Request', vote_recipient_path(@recipient.id,  data_requested: true, funder_id: funder.id, recipient_id: @recipient.id), method: 'post', class: 'uk-button uk-button-large uk-width-1-1'
-              - else
+          - else
+            .uk-overlay-area
+              .uk-overlay-area-content
                 %button.uk-button.uk-button-primary.uk-button-large.uk-width-1-1{:disabled => "", :type => "button"}
                   %i.uk-icon-check Requested
 

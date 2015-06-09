@@ -11,7 +11,7 @@ module OrganisationsHelper
     end
 
     range_limit = 475000
-    increment = grants.calculate(:maximum, :amount_awarded) < range_limit ? 10 : 25
+    increment = grants.calculate(:maximum, :amount_awarded) < range_limit ? 5 : 25
 
     range = grants.calculate(:maximum, :amount_awarded) < range_limit ? grants.calculate(:maximum, :amount_awarded) : grants.calculate(:minimum, :amount_awarded) + range_limit
     count = (range / (increment * 1000)) + 1

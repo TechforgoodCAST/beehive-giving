@@ -18,4 +18,4 @@
         %h2.uk-text-primary Missing
       - else
         - @funder_attribute.countries.each do |country|
-          = link_to country.name, funders_path(:'q[grants_countries_id_eq]' => "#{country.alpha2}"), class: 'uk-button uk-button-small', style: 'margin-bottom: 3px;'
+          = link_to country.name, funders_path(:'q[grants_countries_id_eq]' => "#{country.id}"), class: 'uk-button uk-button-small', style: 'margin-bottom: 3px;'
