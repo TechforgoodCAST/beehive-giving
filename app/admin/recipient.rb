@@ -1,5 +1,4 @@
 ActiveAdmin.register Recipient do
-  config.sort_order = 'created_at_asc'
   config.per_page = 1000
 
   permit_params :name, :contact_number, :website,
