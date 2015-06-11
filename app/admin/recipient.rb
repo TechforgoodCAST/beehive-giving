@@ -1,5 +1,5 @@
 ActiveAdmin.register Recipient do
-  config.per_page = 1000
+  config.per_page = 500
 
   permit_params :name, :contact_number, :website,
   :street_address, :city, :region, :postal_code, :country, :charity_number,
