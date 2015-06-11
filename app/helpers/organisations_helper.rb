@@ -31,7 +31,7 @@ module OrganisationsHelper
     unless grants.calculate(:maximum, :amount_awarded) < range_limit
       data << {
         target: "Above #{number_to_currency(count * increment, unit: '£', precision: 0)}k",
-        grant_count: grants.where('amount_awarded >= ? AND amount_awarded < ?', (range + (increment * 1000)), 1006000).count
+        grant_count: grants.where('amount_awarded >= ? AND amount_awarded <= ?', (count * increment) * 1000, grants.calculate(:maximum, :amount_awarded)).count
       }
     end
 
