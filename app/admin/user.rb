@@ -1,5 +1,5 @@
 ActiveAdmin.register User do
-  config.sort_order = 'created_at_asc'
+
   config.per_page = 1000
 
   permit_params :first_name, :last_name, :job_role,
@@ -48,4 +48,5 @@ ActiveAdmin.register User do
     end
     f.actions
   end
+  
 end
