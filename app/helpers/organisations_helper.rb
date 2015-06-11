@@ -288,31 +288,36 @@ module OrganisationsHelper
   end
 
   def data_progress(funder)
-    years_ago_result = Date.today.year - @years_ago
-    array = []
-
-    grants = Grant.where('funder_id = ?', funder.id)
-      .where("extract(year FROM approved_on) = ?", years_ago_result)
-
-    grants.each do |grant|
-      array << grant.recipient.profiles.any?
-    end
-
-    grant_total = grants.uniq.pluck(:recipient_id).count
-    profile_count = array.count(true)
-
-    if grant_total == 0
-      percentage = 0
-    else
-      percentage = ((profile_count.to_f / grant_total.to_f) * 100).round(0)
-    end
+    # years_ago_result = Date.today.year - @years_ago
+    # array = []
+    #
+    # grants = Grant.where('funder_id = ?', funder.id)
+    #   .where("extract(year FROM approved_on) = ?", years_ago_result)
+    #
+    # grants.each do |grant|
+    #   array << grant.recipient.profiles.any?
+    # end
+    #
+    # grant_total = grants.uniq.pluck(:recipient_id).count
+    # profile_count = array.count(true)
+    #
+    # if grant_total == 0
+    #   percentage = 0
+    # else
+    #   percentage = ((profile_count.to_f / grant_total.to_f) * 100).round(0)
+    # end
+    #
+    # content_tag(:div, class: 'uk-alert uk-alert-warning') do
+    #   content_tag(:span, "Whoa! This information seems to be missing", :class => 'uk-text-bold') +
+    #   content_tag(:br, "We're working hard to collect the 'fingerprints' of these previously funded organistions, and you can see our progress below:") +
+    #   content_tag(:div, class: 'uk-progress uk-progress-warning') do
+    #     content_tag(:span, "#{percentage}%", class: 'uk-progress-bar', style: "width: #{percentage}%;")
+    #   end
+    # end
 
     content_tag(:div, class: 'uk-alert uk-alert-warning') do
       content_tag(:span, "Whoa! This information seems to be missing", :class => 'uk-text-bold') +
-      content_tag(:br, "We're working hard to collect the 'fingerprints' of these previously funded organistions, and you can see our progress below:") +
-      content_tag(:div, class: 'uk-progress uk-progress-warning') do
-        content_tag(:span, "#{percentage}%", class: 'uk-progress-bar', style: "width: #{percentage}%;")
-      end
+      content_tag(:br, "We're working hard to collect the 'fingerprints' of these previously funded organistions so you see how you compare.")
     end
   end
 
