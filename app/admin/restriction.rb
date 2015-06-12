@@ -1,6 +1,6 @@
 ActiveAdmin.register Restriction do
-  config.sort_order = 'created_at_asc'
-  config.per_page = 1000
+
+  config.per_page = 200
 
   permit_params :restriction, :details, :invert
 

@@ -184,7 +184,7 @@ namespace :import do
 
     puts @messages
     puts "#{recipient_count} Recipient's created"
-    puts "#{grant_count} Recipient's created"
+    puts "#{grant_count} Grant's created"
 
   end
 end
