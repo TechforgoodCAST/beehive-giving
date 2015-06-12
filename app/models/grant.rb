@@ -37,7 +37,7 @@ class Grant < ActiveRecord::Base
   :days_form_approval_to_start, :days_from_start_to_end,
   numericality: {only_integer: true, greater_than_or_equal_to: 0}, unless: :skip_validation
   validates :installments,
-  numericality: {only_integer: true, greater_than_or_equal_to: 1},
+  numericality: {only_integer: true, greater_than_or_equal_to: 0},
   unless: :skip_validation
 
   ransacker :months_from_start_to_end, formatter: proc {|v| v.to_i * 30.4368 } do |parent|

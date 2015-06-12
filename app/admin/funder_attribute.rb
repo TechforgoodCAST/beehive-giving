@@ -1,5 +1,4 @@
 ActiveAdmin.register FunderAttribute do
-  config.sort_order = 'created_at_asc'
 
   permit_params :funder_id, :year, :grant_count, :application_count, :enquiry_count,
   :funding_stream, :funding_size_average, :funding_size_min, :funding_size_max, :funding_duration_average,
@@ -19,8 +18,9 @@ ActiveAdmin.register FunderAttribute do
     actions
   end
 
-  filter :funder
-  filter :funding_stream, member_label: :label
+  filter :funder, input_html: {class: 'chosen-select'}
+  filter :year, as: :select, collection: Profile::VALID_YEARS
+  filter :funding_stream
   filter :updated_at
 
   show do

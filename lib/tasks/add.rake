@@ -13,6 +13,9 @@ namespace :import do
     @filename = ENV['FILE']
     @skip_validation = ENV['SKIP_VALIDATION']
 
+    recipient_count = 0
+    grant_count = 0
+
     CSV.parse(open(@filename).read, :headers => true, encoding:'iso-8859-1:utf-8') do |row|
       @find_funder = Funder.where(:name => row['funder']).first
 
@@ -39,6 +42,7 @@ namespace :import do
 
       if recipient.valid?
         recipient.save if ENV['SAVE']
+        recipient_count += 1
       else
         @messages << "\n#{recipient.name}"
         @messages << "Recipient: #{recipient.errors.messages}"
@@ -170,6 +174,7 @@ namespace :import do
 
       if grant.valid?
         grant.save if ENV['SAVE']
+        grant_count += 1
       else
         @messages << "\n#{recipient.name}"
         @messages << "Grant: #{grant.errors.messages}"
@@ -178,6 +183,8 @@ namespace :import do
     end
 
     puts @messages
+    puts "#{recipient_count} Recipient's created"
+    puts "#{grant_count} Recipient's created"
 
   end
 end
