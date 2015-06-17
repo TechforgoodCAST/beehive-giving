@@ -2,7 +2,13 @@ require 'test_helper'
 
 class RecipientTest < ActiveSupport::TestCase
   setup do
-    @recipient = build(:recipient)
+    3.times { |i| create(:funder, :active_on_beehive => true) }
+    @recipient = create(:recipient)
+    @recipient.initial_recommendation
+  end
+
+  test "recipient has initial recommendations" do
+    assert_equal 3, @recipient.recommendations.count
   end
 
   test "recipient with basic details is valid" do
@@ -29,6 +35,12 @@ class RecipientTest < ActiveSupport::TestCase
     @recipient.grants << build(:grant)
     @recipient.grants << build(:grant)
     assert 2, @recipient.grants.size
+  end
+
+  test "recipient has many recommendations" do
+    @recipient.recommendations << build(:recommendation)
+    @recipient.recommendations << build(:recommendation)
+    assert 2, @recipient.recommendations.size
   end
 
   test "founded_on before registered_on checked when registered" do
@@ -77,4 +89,5 @@ class RecipientTest < ActiveSupport::TestCase
     assert_equal nil, @recipient.charity_number
     assert_equal nil, @recipient.company_number
   end
+
 end

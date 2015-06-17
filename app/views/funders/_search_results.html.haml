@@ -1,14 +1,11 @@
-- if @recipient.profiles.count < 1
-  .uk-alert.uk-alert-warning{'data-uk-alert' => ''}
-    %o In order to unlock funders you need to complete your profile. We'll use the information you provide to construct a unique digital fingerprint for your organisation, enabling us to give you personalised funding recommendations.
-    = link_to 'Click here', new_recipient_profile_path(@recipient)
-    to create a profile.
 .uk-grid.uk-margin-top-remove.uk-animation-fade{"data-uk-grid-match" => ""}
   - @funders.to_a.uniq.each do |funder|
     .uk-width-medium-1-2.uk-margin-bottom
       .uk-width-1-1.uk-panel#panel.uk-overlay
 
         - if @recipient.questions_remaining?(funder)
+          - if @recipient.recommended_funder?(funder) && @recipient.profiles.count > 0
+            .uk-panel-badge.uk-badge.uk-badge-warning{style: 'margin: 6px;'} Suggested
         - elsif @recipient.eligible?(funder)
           .uk-panel-badge.uk-badge.uk-badge-success{style: 'margin: 6px;'} Eligible
         - elsif !@recipient.eligible?(funder) && @recipient.eligibility_count(funder) > 0
@@ -17,7 +14,6 @@
         .uk-panel-teaser.uk-text-center.uk-vertical-align{style: 'height: 100px;'}
           .uk-vertical-align-middle
             .funder{class: "#{funder.slug}", alt: "#{funder.name} Logo"}
-
 
         - if funder.active_on_beehive? && funder.attributes.count > 0
           %a.uk-overlay-area{ href: recipient_comparison_path(funder) }

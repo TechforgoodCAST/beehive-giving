@@ -1,4 +1,5 @@
 class Recipient < Organisation
+
   has_many :grants
   has_many :features, dependent: :destroy
   has_many :enquiries
@@ -8,6 +9,11 @@ class Recipient < Organisation
 
   has_one :recipient_attribute
   alias_method :attribute, :recipient_attribute
+
+  has_many :recommendations, dependent: :destroy
+  has_many :countries, :through => :profiles
+  has_many :districts, :through => :profiles
+  has_many :beneficiaries, :through => :profiles
 
   PROFILE_MAX_FREE_LIMIT = 4
 
@@ -117,6 +123,75 @@ class Recipient < Organisation
     else
       [['Yes', false],['No', true]]
     end
+  end
+
+  def build_recommendation(funder, score)
+    recommendation = Recommendation.find_or_initialize_by(
+      recipient: self,
+      funder: funder
+    )
+    recommendation.update_attributes(
+      score: recommendation.score + score
+    )
+    recommendation.save
+  end
+
+  def initial_recommendation
+    recommendations.destroy_all
+    Funder.all.each do |funder|
+      score = 0
+      if funder.attributes.any?
+        funder.attributes.where('funding_stream = ?', 'All').first.countries.where(alpha2: country).uniq.each { |f| score += 0.1 }
+      end
+      build_recommendation(funder, score)
+    end
+  end
+
+  def refined_recommendation
+    recommendations.destroy_all
+    Funder.all.each do |funder|
+      score = 0
+
+      if funder.attributes.any?
+        # Location
+        countries.map(&:alpha2).each do |country|
+          score += 0.1 if funder.attributes.where('funding_stream = ?', 'All').first.countries.pluck(:alpha2).uniq.include?(country)
+        end
+
+        districts.map(&:district).each do |district|
+          score += 0.1 if funder.attributes.where('funding_stream = ?', 'All').first.districts.pluck(:district).uniq.include?(district)
+        end
+
+        # Beneficiaries
+        beneficiaries.map(&:label).each do |beneficiary|
+          score += 0.1 if funder.attributes.where('funding_stream = ?', 'All').first.beneficiaries.pluck(:label).uniq.include?(beneficiary)
+        end
+
+        if funder.attributes.where('funding_stream = ?', 'All').first.beneficiary_min_age
+          score += 0.1 if profiles.first.min_age >= funder.attributes.where('funding_stream = ?', 'All').first.beneficiary_min_age
+        end
+
+        if funder.attributes.where('funding_stream = ?', 'All').first.beneficiary_max_age
+          score += 0.1 if profiles.first.min_age <= funder.attributes.where('funding_stream = ?', 'All').first.beneficiary_max_age
+        end
+
+        # Age
+        if funder.attributes.where('funding_stream = ?', 'All').first.funded_average_age
+          score += 0.1 if (Date.today - founded_on) >= (funder.attributes.where('funding_stream = ?', 'All').first.funded_average_age - 2.5) && (Date.today - founded_on) <= (funder.attributes.where('funding_stream = ?', 'All').first.funded_average_age + 2.5)
+        end
+
+        # Finance
+        if funder.attributes.where('funding_stream = ?', 'All').first.funded_average_income
+          score += 0.1 if profiles.first.income >= (funder.attributes.where('funding_stream = ?', 'All').first.funded_average_income - 25000) && profiles.first.income <= (funder.attributes.where('funding_stream = ?', 'All').first.funded_average_income + 25000)
+        end
+      end
+
+      build_recommendation(funder, score)
+    end
+  end
+
+  def recommended_funder?(funder)
+    Funder.joins(:recommendations).where("recipient_id = ? AND score > ?", self.id, 0).order("recommendations.score DESC").order("name ASC").pluck(:funder_id).include?(funder.id)
   end
 
 end

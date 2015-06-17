@@ -2,6 +2,7 @@ class FunderAttribute < ActiveRecord::Base
 
   before_validation :grant_count_from_grants,
                     :countries_from_grants,
+                    :districts_from_grants,
                     :approval_months_from_grants,
                     :funding_type_from_grants,
                     :funding_size_and_duration_from_grants,
@@ -11,8 +12,10 @@ class FunderAttribute < ActiveRecord::Base
   belongs_to :funder
 
   has_and_belongs_to_many :countries
+  has_and_belongs_to_many :districts
   has_and_belongs_to_many :funding_types
   has_and_belongs_to_many :approval_months
+  has_and_belongs_to_many :beneficiaries
 
   validates :funder, :year, :countries, :funding_stream, presence: true
   validates :year, inclusion: {in: Profile::VALID_YEARS}
@@ -38,6 +41,20 @@ class FunderAttribute < ActiveRecord::Base
       else
         self.funder.countries.where('approved_on < ? AND approved_on >= ?', "#{self.year + 1}-01-01", "#{self.year}-01-01").where('funding_stream = ?', self.funding_stream).pluck(:alpha2).uniq.each do |c|
           self.countries << Country.find_by_alpha2(c) unless c.blank?
+        end
+      end
+    end
+  end
+
+  def districts_from_grants
+    if self.funder && self.districts.empty?
+      if self.funding_stream == 'All'
+        self.funder.districts.where('approved_on < ? AND approved_on >= ?', "#{self.year + 1}-01-01", "#{self.year}-01-01").pluck(:district).uniq.each do |d|
+          self.districts << District.find_by_district(d) unless d.blank?
+        end
+      else
+        self.funder.districts.where('approved_on < ? AND approved_on >= ?', "#{self.year + 1}-01-01", "#{self.year}-01-01").where('funding_stream = ?', self.funding_stream).pluck(:district).uniq.each do |d|
+          self.districts << District.find_by_district(d) unless d.blank?
         end
       end
     end

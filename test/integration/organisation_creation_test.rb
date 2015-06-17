@@ -36,7 +36,7 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
       fill_in("recipient_charity_number", :with => 123)
       fill_in("recipient_company_number", :with => 123)
       select('Yes', :from => "registered")
-      select(@recipient.country, :from => "recipient_country")
+      select("United Kingdom", :from => "recipient_country")
       select(@recipient.founded_on.day, :from => "recipient_founded_on_3i")
       select(@recipient.founded_on.strftime("%-d"), :from => "recipient_founded_on_3i")
       select(@recipient.founded_on.strftime("%B"), :from => "recipient_founded_on_2i")

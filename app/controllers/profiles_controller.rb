@@ -17,10 +17,11 @@ class ProfilesController < ApplicationController
     @profile = @recipient.profiles.new(profile_params)
     if @profile.save
       UserMailer.notify_funder(@profile).deliver
+      @recipient.refined_recommendation if @recipient.profiles.count == 1
       if @redirect_to_funder
         redirect_to recipient_comparison_path(Funder.find_by_slug(@redirect_to_funder))
       else
-        redirect_to recipient_profiles_path(@recipient), notice: 'Profile created'
+        redirect_to funders_path, notice: 'Profile created'
       end
     else
       render :new

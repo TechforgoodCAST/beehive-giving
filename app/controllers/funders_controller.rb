@@ -8,9 +8,9 @@ class FundersController < ApplicationController
   respond_to :html
 
   def index
-    @search = Funder.ransack(params[:q])
-    @search.sorts = ['active_on_beehive desc', 'name asc'] if @search.sorts.empty?
-    @funders = @search.result.includes(:funder_attributes, :grants)
+    @search = Funder.where('recommendations.recipient_id = ?', @recipient.id).ransack(params[:q])
+    @search.sorts = ['recommendations_score desc', 'name asc'] if @search.sorts.empty?
+    @funders = @search.result.includes(:funder_attributes, :grants, :recommendations)
 
     respond_to do |format|
       format.html

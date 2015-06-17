@@ -5,15 +5,16 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
   setup do
     @recipient = create(:recipient)
     @funder = create(:funder)
-    create_and_auth_user!(:organisation => @recipient)
   end
 
   test "recipient with no feedback can see link" do
+    create_and_auth_user!(:organisation => @recipient)
     visit "/funders"
     assert page.has_content?("Feedback", count: 2)
   end
 
   test "no feedback button on new feedback action" do
+    create_and_auth_user!(:organisation => @recipient)
     visit '/funders'
     assert page.has_content?("Feedback", count: 2)
     visit '/feedback/new'
@@ -21,17 +22,20 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
   end
 
   test "recipient with feedback cannot see link" do
+    create_and_auth_user!(:organisation => @recipient)
     create(:feedback, user: @recipient.users.first)
     visit "/funders"
     assert page.has_content?("Feedback", count: 0)
   end
 
   test "no feedback prompt before second sign in" do
+    create_and_auth_user!(:organisation => @recipient)
     visit '/'
     assert_not page.has_css?(".feedback-prompt")
   end
 
   test "feedback prompt after second sign in" do
+    create_and_auth_user!(:organisation => @recipient)
     assert_equal @recipient.users.first.sign_in_count, 0
     expire_cookies
 
@@ -69,6 +73,8 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
     end
 
     @profiles = 3.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i) }
+
+    create_and_auth_user!(:organisation => @recipient)
 
     @recipient.unlock_funder!(@funders[0])
     visit "/comparison/#{@funders[0].slug}"

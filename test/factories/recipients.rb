@@ -11,7 +11,7 @@ FactoryGirl.define do
     city "City"
     region "Region"
     postal_code "A1 B2"
-    country "United Kingdom"
+    country "GB"
     status Organisation::STATUS.first
     registered true
     charity_number { "1AB1C#{n}" }

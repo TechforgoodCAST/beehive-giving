@@ -1,18 +1,22 @@
 FactoryGirl.define do
   factory :country, class: Country do
-    name "Other"
-    alpha2 "Other"
+    name "United Kingdom"
+    alpha2 "GB"
   end
 
   factory :district do
     association :country, :factory => :country
     label 'Other'
-    district 'Other'
+    district 'London'
     subdivision 'Other'
   end
 
   factory :beneficiary do
     label 'Other'
+  end
+
+  factory :beneficiary_unique, class: Beneficiary do
+    label 'Education'
   end
 
   factory :implementor do

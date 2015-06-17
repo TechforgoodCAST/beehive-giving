@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150608141420) do
+ActiveRecord::Schema.define(version: 20150613134307) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,13 @@ ActiveRecord::Schema.define(version: 20150608141420) do
     t.datetime "updated_at",             null: false
   end
 
+  create_table "beneficiaries_funder_attributes", force: :cascade do |t|
+    t.integer  "funder_attribute_id"
+    t.integer  "beneficiary_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+  end
+
   create_table "beneficiaries_profiles", force: :cascade do |t|
     t.integer "beneficiary_id"
     t.integer "profile_id"
@@ -106,6 +113,13 @@ ActiveRecord::Schema.define(version: 20150608141420) do
   create_table "districts_enquiries", force: :cascade do |t|
     t.integer "enquiry_id"
     t.integer "district_id"
+  end
+
+  create_table "districts_funder_attributes", force: :cascade do |t|
+    t.integer  "funder_attribute_id"
+    t.integer  "district_id"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
   create_table "districts_grants", force: :cascade do |t|
@@ -185,6 +199,8 @@ ActiveRecord::Schema.define(version: 20150608141420) do
     t.decimal  "funded_average_paid_staff"
     t.string   "funding_stream"
     t.integer  "year"
+    t.integer  "beneficiary_min_age"
+    t.integer  "beneficiary_max_age"
   end
 
   create_table "funder_attributes_funding_types", force: :cascade do |t|
@@ -328,6 +344,14 @@ ActiveRecord::Schema.define(version: 20150608141420) do
     t.integer  "funder_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "recommendations", force: :cascade do |t|
+    t.integer  "funder_id"
+    t.integer  "recipient_id"
+    t.float    "score",        default: 0.0
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   create_table "restrictions", force: :cascade do |t|

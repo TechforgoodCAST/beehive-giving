@@ -3,7 +3,8 @@ ActiveAdmin.register FunderAttribute do
   permit_params :funder_id, :year, :grant_count, :application_count, :enquiry_count,
   :funding_stream, :funding_size_average, :funding_size_min, :funding_size_max, :funding_duration_average,
   :funding_duration_min, :funding_duration_max, :funded_average_age, :funded_average_income,
-  :funded_average_paid_staff, country_ids: [], approval_month_ids: [], funding_type_ids: [], beneficiary_ids: []
+  :funded_average_paid_staff, :beneficiary_min_age, :beneficiary_max_age, country_ids: [],
+  district_ids: [], approval_month_ids: [], funding_type_ids: [], beneficiary_ids: []
 
   index do
     selectable_column
@@ -30,11 +31,6 @@ ActiveAdmin.register FunderAttribute do
         attribute.funder
       end
       row :funding_stream
-      row :countries do |attribute|
-        attribute.countries.each do |c|
-          li c.name
-        end
-      end
       row :grant_count
       row :application_count
       row :enquiry_count
@@ -57,6 +53,23 @@ ActiveAdmin.register FunderAttribute do
       row :funded_average_age
       row :funded_average_income
       row :funded_average_paid_staff
+      row :beneficiary_min_age
+      row :beneficiary_max_age
+      row :beneficiaries do |attribute|
+        attribute.beneficiaries.each do |b|
+          li b.label
+        end
+      end
+      row :countries do |attribute|
+        attribute.countries.each do |c|
+          li c.name
+        end
+      end
+      row :districts do |attribute|
+        attribute.districts.each do |d|
+          li d.district
+        end
+      end
     end
   end
 
@@ -66,6 +79,7 @@ ActiveAdmin.register FunderAttribute do
       f.input :funder, input_html: {class: 'chosen-select'}
       f.input :funding_stream, collection: Grant.pluck(:funding_stream).uniq << 'All', input_html: {class: 'chosen-select'}
       f.input :countries, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :name, label: "Countries"
+      f.input :districts, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: "Districts"
       f.input :grant_count
       f.input :application_count
       f.input :enquiry_count
@@ -80,6 +94,9 @@ ActiveAdmin.register FunderAttribute do
       f.input :funded_average_age
       f.input :funded_average_income
       f.input :funded_average_paid_staff
+      f.input :beneficiaries, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: "Beneficiaries"
+      f.input :beneficiary_min_age
+      f.input :beneficiary_max_age
     end
     f.actions
   end

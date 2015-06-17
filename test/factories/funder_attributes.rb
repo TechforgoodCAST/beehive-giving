@@ -10,6 +10,7 @@ FactoryGirl.define do
     year 2014
     association :funder, :factory => :funder
     countries { FactoryGirl.create_list(:country, 2) }
+    districts { FactoryGirl.create_list(:district, 2) }
     after(:build) { |a| a.grant_count_from_grants }
     application_count nil
     enquiry_count nil

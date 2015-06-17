@@ -64,7 +64,8 @@
                         -# %span.uk-badge.uk-badge-notification 1
                     %li.uk-parent{"data-uk-dropdown" => "{mode:'click'}"}
                       %a
-                        %i.uk-icon-user.uk-icon-small
+                        %i.uk-icon-cog.uk-icon-small
+                        %i.uk-icon-caret-down
                       .uk-dropdown.uk-dropdown-navbar.uk-dropdown-flip#panel
                         %ul.uk-nav.uk-nav-navbar
                           %li
@@ -145,7 +146,7 @@
           - if current_user.organisation
             %ul.uk-nav.uk-nav-offcanvas
               %li.uk-nav-header.uk-margin-top.uk-text-center
-                %i.uk-icon-user.uk-icon-small
+                %i.uk-icon-cog.uk-icon-small
               %li
                 - if current_user.organisation.type == 'Funder'
                   %a{href: funder_path(current_user.organisation)} Dashboard

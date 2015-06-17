@@ -31,5 +31,6 @@ class ActionDispatch::IntegrationTest
   def create_and_auth_user!(opts = {})
     @user = create(:user, opts)
     create_cookie(:auth_token, @user.auth_token)
+    @recipient.initial_recommendation if @recipient.present?
   end
 end

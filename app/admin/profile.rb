@@ -1,6 +1,6 @@
 ActiveAdmin.register Profile do
-  config.sort_order = 'created_at_asc'
-  config.per_page = 1000
+
+  config.per_page = 200
 
   permit_params :organisation_id, :year, :gender, :min_age, :max_age,
   :income, :expenditure, :volunteer_count, :staff_count, :does_sell,
