@@ -17,7 +17,7 @@ class ProfilesController < ApplicationController
     @profile = @recipient.profiles.new(profile_params)
     if @profile.save
       UserMailer.notify_funder(@profile).deliver
-      @recipient.refined_recommendation if @recipient.profiles.count == 1
+      @recipient.refined_recommendation if @recipient.profiles.count > 0
       if @redirect_to_funder
         redirect_to recipient_comparison_path(Funder.find_by_slug(@redirect_to_funder))
       else
@@ -37,6 +37,7 @@ class ProfilesController < ApplicationController
 
   def update
     if @profile.update_attributes(profile_params)
+      @recipient.refined_recommendation
       redirect_to recipient_profiles_path(@recipient), notice: 'Profile saved'
     else
       render :edit

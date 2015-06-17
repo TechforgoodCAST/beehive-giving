@@ -201,6 +201,8 @@ ActiveRecord::Schema.define(version: 20150613134307) do
     t.integer  "year"
     t.integer  "beneficiary_min_age"
     t.integer  "beneficiary_max_age"
+    t.decimal  "funded_age_temp"
+    t.decimal  "funded_income_temp"
   end
 
   create_table "funder_attributes_funding_types", force: :cascade do |t|

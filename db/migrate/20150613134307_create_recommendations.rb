@@ -24,5 +24,7 @@ class CreateRecommendations < ActiveRecord::Migration
 
     add_column :funder_attributes, :beneficiary_min_age, :integer
     add_column :funder_attributes, :beneficiary_max_age, :integer
+    add_column :funder_attributes, :funded_age_temp, :decimal
+    add_column :funder_attributes, :funded_income_temp, :decimal
   end
 end

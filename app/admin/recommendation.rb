@@ -10,4 +10,10 @@ ActiveAdmin.register Recommendation do
     actions
   end
 
+  filter :funder, input_html: {class: 'chosen-select'}
+  filter :recipient, input_html: {class: 'chosen-select'}
+  filter :score
+  filter :created_at
+  filter :updated_at
+
 end

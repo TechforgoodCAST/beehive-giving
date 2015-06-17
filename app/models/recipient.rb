@@ -152,37 +152,37 @@ class Recipient < Organisation
     Funder.all.each do |funder|
       score = 0
 
-      if funder.attributes.any?
+      if funder.attributes.any? && profiles.count > 0
         # Location
-        countries.map(&:alpha2).each do |country|
-          score += 0.1 if funder.attributes.where('funding_stream = ?', 'All').first.countries.pluck(:alpha2).uniq.include?(country)
+        profiles.order('year').last.countries.map(&:alpha2).each do |country|
+          score += 0.9 if funder.attributes.where('funding_stream = ?', 'All').first.countries.pluck(:alpha2).uniq.include?(country)
         end
 
-        districts.map(&:district).each do |district|
+        profiles.order('year').last.districts.map(&:district).each do |district|
           score += 0.1 if funder.attributes.where('funding_stream = ?', 'All').first.districts.pluck(:district).uniq.include?(district)
         end
 
         # Beneficiaries
-        beneficiaries.map(&:label).each do |beneficiary|
+        profiles.order('year').last.beneficiaries.map(&:label).each do |beneficiary|
           score += 0.1 if funder.attributes.where('funding_stream = ?', 'All').first.beneficiaries.pluck(:label).uniq.include?(beneficiary)
         end
 
         if funder.attributes.where('funding_stream = ?', 'All').first.beneficiary_min_age
-          score += 0.1 if profiles.first.min_age >= funder.attributes.where('funding_stream = ?', 'All').first.beneficiary_min_age
+          score += 0.1 if profiles.order('year').last.min_age >= funder.attributes.where('funding_stream = ?', 'All').first.beneficiary_min_age
         end
 
         if funder.attributes.where('funding_stream = ?', 'All').first.beneficiary_max_age
-          score += 0.1 if profiles.first.min_age <= funder.attributes.where('funding_stream = ?', 'All').first.beneficiary_max_age
+          score += 0.1 if profiles.order('year').last.min_age <= funder.attributes.where('funding_stream = ?', 'All').first.beneficiary_max_age
         end
 
         # Age
-        if funder.attributes.where('funding_stream = ?', 'All').first.funded_average_age
-          score += 0.1 if (Date.today - founded_on) >= (funder.attributes.where('funding_stream = ?', 'All').first.funded_average_age - 2.5) && (Date.today - founded_on) <= (funder.attributes.where('funding_stream = ?', 'All').first.funded_average_age + 2.5)
+        if funder.attributes.where('funding_stream = ?', 'All').first.funded_age_temp
+          score += 0.1 if (Date.today - founded_on) >= (funder.attributes.where('funding_stream = ?', 'All').first.funded_age_temp - 2.5) && (Date.today - founded_on) <= (funder.attributes.where('funding_stream = ?', 'All').first.funded_age_temp + 2.5)
         end
 
         # Finance
-        if funder.attributes.where('funding_stream = ?', 'All').first.funded_average_income
-          score += 0.1 if profiles.first.income >= (funder.attributes.where('funding_stream = ?', 'All').first.funded_average_income - 25000) && profiles.first.income <= (funder.attributes.where('funding_stream = ?', 'All').first.funded_average_income + 25000)
+        if funder.attributes.where('funding_stream = ?', 'All').first.funded_income_temp
+          score += 0.1 if profiles.order('year').last.income >= (funder.attributes.where('funding_stream = ?', 'All').first.funded_income_temp - 25000) && profiles.order('year').last.income <= (funder.attributes.where('funding_stream = ?', 'All').first.funded_income_temp + 25000)
         end
       end
 
@@ -191,7 +191,7 @@ class Recipient < Organisation
   end
 
   def recommended_funder?(funder)
-    Funder.joins(:recommendations).where("recipient_id = ? AND score > ?", self.id, 0).order("recommendations.score DESC").order("name ASC").pluck(:funder_id).include?(funder.id)
+    Funder.joins(:recommendations).where("recipient_id = ? AND score >= ?", self.id, 1).order("recommendations.score DESC").order("name ASC").pluck(:funder_id).include?(funder.id)
   end
 
 end

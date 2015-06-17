@@ -8,7 +8,7 @@
         %h1.uk-margin-top.uk-hidden Funders
 
         - if @recipient.profiles.count < 1
-          %a.uk-panel.cta.uk-margin{href: new_recipient_profile_path(@recipient)}
+          %a.uk-panel.cta.cta-hover.uk-margin{href: new_recipient_profile_path(@recipient)}
             .uk-grid
               .uk-width-medium-2-3
                 %h2.white Refine your results

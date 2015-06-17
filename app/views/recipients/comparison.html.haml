@@ -5,7 +5,7 @@
 
       .uk-width-medium-1-1.uk-width-large-1-4.uk-vertical-align.uk-text-center{style: 'height: 220px;'}
         .uk-vertical-align-middle
-          .uk-panel.uk-panel-box#panel
+          .uk-panel.cta
             - if @funder.restrictions.any?
               - if @recipient.questions_remaining?(@funder)
                 %p
