@@ -23,7 +23,7 @@ class FunderMailer < ApplicationMailer
     @funder = funder
     @profile = @recipient.profiles.first
 
-    mail(to: ('support@beehivegiving.org'), subject: "#{@recipient.name} is eligible for your support")
+    mail(to: ('support@beehivegiving.org'), subject: "#{@recipient.name} is NOT eligible for your support")
     # mail(to: (@funder.users.any? ? @funder.users.first.user_email : 'support@beehivegiving.org'), subject: "#{@recipient.name} is not eligible for your support")
   end
 
