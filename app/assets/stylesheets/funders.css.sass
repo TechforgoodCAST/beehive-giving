@@ -8,6 +8,34 @@
     background: #FFC728
     color: #fff
     text-decoration: none
+.cta p a
+  color: #00a8e6
+  font-weight: bold
+  &:hover
+    color: #35b3ee
+
+.funder-logo-banner
+  position: absolute
+  background: #FFC728
+  bottom: -8px
+  width: 100%
+  height: 35px
+  color: #fff
+  line-height: 35px
+  font-size: 12px
+  text-transform: uppercase
+  border: solid #fff 2px
+
+.or
+  position: absolute
+  top: 4px
+  right: -26px
+  font-weight: bold
+  font-size: 16px
+  @media screen and (max-width: 1220px)
+    right: -20px
+  @media screen and (max-width: 767px)
+    display: none
 
 =funder-logo($ypos, $scale:1, $width:229px)
   width: $width
