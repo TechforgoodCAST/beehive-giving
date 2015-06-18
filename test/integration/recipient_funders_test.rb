@@ -17,7 +17,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
 
     create_and_auth_user!(:organisation => @recipient)
     visit '/funders'
-    assert page.has_content?("See how you compare (Locked)")
+    assert page.has_content?("See how you compare")
     assert_equal all(".uk-icon-lock").length, 3
   end
 
@@ -26,7 +26,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     create(:funder_attribute, :funder => @funder, :funding_stream => "All")
     create_and_auth_user!(:organisation => @recipient)
     visit '/funders'
-    find_link('See how you compare (Locked)').click
+    find_link('See how you compare').click
     assert page.has_link?('Complete Profile')
   end
 
@@ -37,7 +37,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     @profile = create(:profile, :organisation => @recipient)
     create_and_auth_user!(:organisation => @recipient)
     visit '/funders'
-    find_link('See how you compare (Locked)').click
+    find_link('See how you compare').click
     assert page.has_link?('Unlock Funder')
   end
 
@@ -50,15 +50,12 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
       create(:funder_attribute, :funder => @funder, :funding_stream => "All")
     end
     4.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i ) }
-
-    @recipient.unlock_funder!(@funders[0])
-    @recipient.unlock_funder!(@funders[1])
-    @recipient.unlock_funder!(@funders[2])
-    @recipient.unlock_funder!(@funders[3])
+    @funders.each_with_index { |funder, i| @recipient.unlock_funder!(@funders[i]) }
 
     create_and_auth_user!(:organisation => @recipient)
     visit '/funders'
-    find_link('See how you compare (Locked)').click
+    Capybara.match = :first
+    find_link('See how you compare').click
 
     assert_not page.has_link?('Complete Profile')
     assert_not page.has_link?('Unlock Funder')
@@ -70,7 +67,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     @profile = create(:profile, :organisation => @recipient)
     create_and_auth_user!(:organisation => @recipient)
     visit '/funders'
-    find_link('See how you compare (Locked)').click
+    find_link('See how you compare').click
     assert_equal "/comparison/#{@funder.slug}/gateway", current_path
     find_link('Unlock Funder').click
     assert_equal "/comparison/#{@funder.slug}", current_path

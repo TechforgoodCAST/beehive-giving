@@ -16,12 +16,11 @@
             .funder{class: "#{funder.slug}", alt: "#{funder.name} Logo"}
 
         - if funder.active_on_beehive? && funder.attributes.count > 0
-          %a.uk-overlay-area{ href: recipient_comparison_path(funder) }
+          %a.uk-overlay-area{ href: recipient_comparison_path(funder), id: ('#locked_funder' if @recipient.locked_funder?(funder)) }
             .uk-overlay-area-content
               .uk-button.uk-button-primary.uk-button-large.uk-width-1-1
                 See how you compare
                 - if @recipient.locked_funder?(funder)
-                  %span.uk-text-small (Locked)
                   %i.uk-icon-lock
         - else
           - if @recipient.can_request_funder?(funder, 'data_requested')

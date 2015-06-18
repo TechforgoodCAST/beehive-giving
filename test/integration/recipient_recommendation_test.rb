@@ -19,7 +19,7 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
   test "funders order by initial recommendation" do
     visit "/funders"
     Capybara.match = :first
-    click_link("See how you compare (Locked)")
+    click_link("See how you compare")
     assert_equal "/comparison/#{@funders[1].slug}/gateway", current_path
   end
 
@@ -28,7 +28,7 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
     @recipient.refined_recommendation
     visit "/funders"
     Capybara.match = :first
-    click_link("See how you compare (Locked)")
+    click_link("See how you compare")
     assert_equal "/comparison/#{@funders[2].slug}/gateway", current_path
   end
 

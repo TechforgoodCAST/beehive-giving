@@ -83,7 +83,8 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
     # navigating to funder page redirects
     visit '/funders'
     Capybara.match = :first
-    click_link('See how you compare (Locked)')
+    puts page.body
+    click_link('#locked_funder')
     assert_equal "/feedback/new", current_path
 
     # visiting funder pages redirects if no feedback before second unlock

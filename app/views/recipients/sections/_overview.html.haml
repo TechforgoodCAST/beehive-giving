@@ -21,7 +21,7 @@
       %li
         %a{:href => "#overview", "data-uk-smooth-scroll" => "", style: 'margin-bottom: 3px;'} Funding overview
       %li
-        %a{:href => "#funded", "data-uk-smooth-scroll" => "", style: 'margin-bottom: 3px;'} Funded organisations
+        %a{:href => "#funded", "data-uk-smooth-scroll" => "", style: 'margin-bottom: 3px;'} Organisations funded
       %li
         %a{:href => "#similar", "data-uk-smooth-scroll" => "{offset: 92}", style: 'margin-bottom: 3px;'} Similar funders
 
@@ -41,7 +41,7 @@
         .uk-panel.uk-panel-box#panel
           - if @funder.grants.count > 0 && @funder_attribute.grant_count.present?
             .uk-panel-badge
-              %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360 Giving."}
+              %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'left'}", :title => "This information is from open grants data made possible by 360Giving"}
           .uk-panel-title.uk-text-center Funding awarded
           .uk-text-center
             %h6.uk-text-bold.upcase Grants
@@ -71,7 +71,7 @@
         .uk-panel.uk-panel-box#panel
           - if @funder.grants.count > 0 && @funder_attribute.funding_size_average.present?
             .uk-panel-badge
-              %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360 Giving."}
+              %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360Giving"}
           .uk-panel-title.uk-text-center Funding size
           .uk-text-center
             - if @funder.attributes.count < 1 || @funder_attribute.funding_size_min.nil?
@@ -103,7 +103,7 @@
         .uk-panel.uk-panel-box#panel
           - if @funder.grants.count > 0 && @funder_attribute.funding_duration_average.present?
             .uk-panel-badge
-              %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360 Giving."}
+              %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'left'}", :title => "This information is from open grants data made possible by 360Giving"}
           .uk-panel-title.uk-text-center Funding duration
           .uk-text-center
             - if @funder.attributes.count < 1 || @funder_attribute.funding_duration_average.nil?
@@ -133,7 +133,7 @@
           .uk-panel.uk-panel-box#panel.uk-text-center
             - if @funder.grants.count > 0 && @funder_attribute.funding_types.count > 0
               .uk-panel-badge
-                %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360 Giving."}
+                %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'left'}", :title => "This information is from open grants data made possible by 360Giving"}
             - unless @funder.attributes.count < 1 || @funder_attribute.funding_types.count < 1
               %h1.uk-margin-top-remove.stat-big
                 = @funder_attribute.funding_types.count
@@ -149,7 +149,7 @@
         .uk-panel.uk-panel-box#panel.uk-text-center
           - if @funder.grants.count > 0 && @funder.attributes.pluck(:funding_stream).uniq.count > 1
             .uk-panel-badge
-              %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360 Giving."}
+              %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'left'}", :title => "This information is from open grants data made possible by 360Giving"}
           - unless @funder.attributes.count < 1 || @funder.attributes.where('year = ? AND funding_stream != ?', @year_of_funding, 'All').pluck(:funding_stream).uniq.count == 0
             %h1.uk-margin-top-remove.stat-big
               = @funder.attributes.where('year = ? AND funding_stream != ?', @year_of_funding, 'All').pluck(:funding_stream).uniq.count
@@ -166,7 +166,7 @@
         .uk-panel.uk-panel-box#panel.uk-text-center
           - if @funder.grants.count > 0 && @funder_attribute.approval_months.count > 0
             .uk-panel-badge
-              %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360 Giving."}
+              %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'left'}", :title => "This information is from open grants data made possible by 360Giving"}
           - unless @funder.attributes.count < 1 || @funder_attribute.approval_months.count < 1
             %h1.uk-margin-top-remove.stat-big
               = @funder_attribute.approval_months.count
