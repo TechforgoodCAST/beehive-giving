@@ -44,7 +44,11 @@ Rails.application.routes.draw do
   match '/(:id)/eligibility', to: 'recipients#update_eligibilities', via: :patch
 
   # Enquiries
-  # match '/(:id)/(:funder_id)/feedback', to: 'enquiries#feedback', via: :get, as: 'funder_enquiry_feedback'
+  match '/comparison/(:id)/approach_funder', to: 'enquiries#approach_funder', via: :post, as: 'recipient_approach_funder'
+  match '/comparison/(:id)/feedback', to: 'recommendations#edit', via: :get, as: 'recipient_recommendation_feedback'
+  match '/comparison/(:id)/feedback', to: 'recommendations#update', via: :patch
+  match '/comparison/(:id)/apply', to: 'enquiries#apply', via: :post, as: 'recipient_apply'
+  match '/comparison/(:id)/guidance', to: 'enquiries#guidance', via: :post, as: 'recipient_guidance'
 
   # Compare funders
   match '/funders/comparison', to: 'funders#comparison', via: :get, as: 'funders_comparison'
@@ -56,6 +60,7 @@ Rails.application.routes.draw do
   resources :recipients do
     member do
       post :vote
+      post :approach_funder
     end
     resources :profiles
     resources :recipient_attribute, :as => :attribute, :only => [:new, :create, :edit, :update]
@@ -66,9 +71,6 @@ Rails.application.routes.draw do
       get :explore
     end
     resources :grants
-    # resources :enquiries, :only => [:new, :create] do
-    #   get :feedback
-    # end
   end
 
 end

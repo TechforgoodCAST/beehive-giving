@@ -7,6 +7,8 @@
           - if @recipient.recommended_funder?(funder) && @recipient.profiles.count > 0
             .uk-panel-badge.uk-badge.uk-badge-warning{style: 'margin: 6px;'} Suggested
         - elsif @recipient.eligible?(funder)
+          - if @recipient.recommended_funder?(funder) && @recipient.profiles.count > 0
+            .uk-panel-badge.uk-badge.uk-badge-warning{style: 'margin: 6px; right: 50px;'} Suggested
           .uk-panel-badge.uk-badge.uk-badge-success{style: 'margin: 6px;'} Eligible
         - elsif !@recipient.eligible?(funder) && @recipient.eligibility_count(funder) > 0
           .uk-panel-badge.uk-badge.uk-badge-danger{style: 'margin: 8px 6px;'} Not eligible

@@ -14,13 +14,13 @@
               - else
                 - if @recipient.eligible?(@funder)
                   %p
-                    You're eligible for
+                    You're eligible for one or more of
                     = succeed ',' do
-                      = @funder.name
-                    now follow the link below to proceed.
-                  %a.uk-width-1-1.uk-button.uk-button-success.uk-button-large{href: '', "data-uk-modal" => "{target:'#eligible'}"}
-                    %i.uk-icon-check
-                      Eligible
+                      = @funder.name.pluralize
+                    funding streams. Now...
+                  = link_to "Approach for funding", recipient_approach_funder_path(@funder), method: :post, remote: true, class: "uk-button uk-button-primary uk-width-1-1"
+                  .uk-text-bold OR
+                  = link_to "Find another funder", funders_path, class: "uk-button uk-button-primary uk-width-1-1"
                 - else
                   %p
                     Drat! It looks like you're ineligible for
@@ -35,18 +35,6 @@
               %p What would you like to do next?
               %a.uk-button.uk-button-large.uk-button-primary.uk-width-1-1{"data-uk-modal" => "{target:'#next'}"} Next step
 
-- if @recipient.eligible?(@funder)
-  #bg-color
-    .uk-container.uk-container-center
-      .uk-width-1-1
-        .uk-grid
-          .uk-width-medium-1-2.uk-margin{style: 'position: relative;'}
-            %a.uk-button.uk-button-primary.uk-width-1-1{href: '', "data-uk-modal" => "{target:'#eligible'}"} Approach for funding
-            .or or
-          .uk-visible-small.uk-width-1-1.uk-text-center.uk-margin-bottom{style: 'font-weight: bold; font-size: 16px; line-height: 30px;'} or
-          .uk-width-medium-1-2.uk-margin-bottom
-            %a.uk-button.uk-button-primary.uk-width-1-1{:href => "#similar", "data-uk-smooth-scroll" => "{offset: 92}", style: 'margin-bottom: 3px;'} Find another funder
-
 = render partial: 'recipients/sections/overview'
 
 = render partial: 'recipients/sections/funded'
@@ -55,6 +43,10 @@
 
 - if @recipient.eligible?(@funder)
   = render partial: 'recipients/eligible'
+
+- if params[:proceed]
+  :javascript
+    $.UIkit.modal("#eligible").show();
 
 #next.uk-modal
   .uk-modal-dialog

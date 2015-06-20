@@ -1,10 +1,13 @@
 ActiveAdmin.register FunderAttribute do
 
-  permit_params :funder_id, :year, :grant_count, :application_count, :enquiry_count,
-  :funding_stream, :funding_size_average, :funding_size_min, :funding_size_max, :funding_duration_average,
-  :funding_duration_min, :funding_duration_max, :funded_average_age, :funded_average_income,
-  :funded_average_paid_staff, :beneficiary_min_age, :beneficiary_max_age, :funded_age_temp, :funded_income_temp,
-  country_ids: [], district_ids: [], approval_month_ids: [], funding_type_ids: [], beneficiary_ids: []
+  permit_params :funder_id, :year, :grant_count, :application_count,
+  :enquiry_count, :funding_stream, :funding_size_average, :funding_size_min,
+  :funding_size_max, :funding_duration_average, :funding_duration_min,
+  :funding_duration_max, :funded_average_age, :funded_average_income,
+  :funded_average_paid_staff, :beneficiary_min_age, :beneficiary_max_age,
+  :funded_age_temp, :funded_income_temp, :guidance_link, :application_link,
+  country_ids: [], district_ids: [], approval_month_ids: [],
+  funding_type_ids: [], beneficiary_ids: []
 
   index do
     selectable_column
@@ -44,6 +47,8 @@ ActiveAdmin.register FunderAttribute do
           li t.label
         end
       end
+      row :guidance_link
+      row :application_link
       row :funding_size_average
       row :funding_size_min
       row :funding_size_max
@@ -82,6 +87,8 @@ ActiveAdmin.register FunderAttribute do
       f.input :funding_stream, collection: Grant.pluck(:funding_stream).uniq << 'All', input_html: {class: 'chosen-select'}
       f.input :countries, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :name, label: "Countries"
       f.input :districts, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: "Districts"
+      f.input :guidance_link
+      f.input :application_link
       f.input :grant_count
       f.input :application_count
       f.input :enquiry_count

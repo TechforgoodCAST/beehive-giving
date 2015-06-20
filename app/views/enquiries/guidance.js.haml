@@ -1,0 +1,5 @@
+$.UIkit.modal("#eligible").show();
+- if @funder_attribute.guidance_link
+  window.open("http://#{@funder_attribute.guidance_link}", "_blank");
+- else
+  $.UIkit.notify({message: "<i class='uk-icon-exclamation-triangle'></i><span> Sorry, this link doesn't appear to be working right now.</span>", status: 'danger', timeout: 3000, pos: 'top-center' });

@@ -1,7 +1,5 @@
 class Enquiry < ActiveRecord::Base
 
-  # before_validation :set_funder
-
   belongs_to :recipient
   belongs_to :funder
   has_and_belongs_to_many :countries
