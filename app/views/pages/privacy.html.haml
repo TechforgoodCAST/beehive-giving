@@ -1,32 +1,55 @@
 .uk-container.uk-container-center
-  .uk-grid.uk-margin.uk-margin-top
-    .uk-width-1-1.uk-margin
+  .uk-grid.uk-margin-large-top
+    .uk-width-1-1
       %h1 Privacy
 
-    .uk-width-medium-3-4
+    .uk-width-medium-3-4.uk-margin-large-bottom
       %hr
       %h3.uk-text-bold#general-information General Information
-      %p We collect the e-mail addresses of those who communicate with us via e-mail, aggregate information on what pages consumers access or visit, and information volunteered by the consumer (such as survey information and/or site registrations). The information we collect is used to improve the content of our Web pages and the quality of our service, and is not shared with or sold to other organizations for commercial purposes, except to provide products or services you've requested, when we have your permission, or under the following circumstances:
-      %ul
-        %li It is necessary to share information in order to investigate, prevent, or take action regarding illegal activities, suspected fraud, situations involving potential threats to the physical safety of any person, violations of Terms of Service, or as otherwise required by law.
-        %li We transfer information about you if Beehive is acquired by or merged with another company. In this event, Beehive will notify you before information about you is transferred and becomes subject to a different privacy policy.
+      This Privacy Policy applies to the Beehive service
+      = surround '(', ')' do
+        %span.uk-text-bold "Beehive"
+      provided by The Foundation People
+      = precede '(' do
+        %span.uk-text-bold "the Foundation”, “we”
+      or
+      = succeed ')' do
+        %span.uk-text-bold “us”
 
       %hr
       %h3.uk-text-bold#information-gathering-and-usage Information Gathering and Usage
+
+      We collect the following types of information from users of our website
+      = succeed ':' do
+        = surround '(', ')' do
+          %span.uk-text-bold "Users"
       %ul
-        %li When you register for Beehive we ask for information such as your name, email address, billing address, or payment information. Members who sign up for the free account are not required to enter any payment details.
-        %li Beehive uses collected information for the following general purposes: products and services provision, billing, identification and authentication, services improvement, contact, and research.
+        %li Information input by Users as part of the process of registration to use our website;
+        %li E-mail addresses of Users who communicate with us via e-mail;
+        %li Information volunteered by Users in the course of use of our website (such as, for example their profile, information about their organisation, survey responses); and
+        -# %li [will we use tracking data/retargeting/behavioural marketing techniques?]
+
+      %p When you register for Beehive we ask for information including your name, email address, organisation name, billing address, and payment information (Members who sign up for the free account are not required to enter any payment details). Once you have registered for Beehive you may also submit additional information relating to your funding activities or requirements, your other activities or objectives, or those of your organisation, and other relevant information.
+
+      %p Unless we obtain your permission, information that is identifiable as relating to you (i.e. it has not been edited to make it anonymous) is not shared with or sold to other organizations for commercial purposes, except in connection with the operation of the Beehive service (including matching users with other users, providing insights into the activities of Users and related research and publications), or under the following circumstances:
+
+      %ul
+        %li If it is necessary to share information in order to investigate, prevent, or take action regarding illegal activities, suspected fraud, situations involving potential threats to the physical safety of any person, violations of Terms of Service, or as otherwise required by law.
+        %li If we transfer information about you if Beehive is acquired by or merged with another organisation, other than an organisation established by us and controlled by us. In this event, Beehive will notify you before information about you is transferred and becomes subject to a different privacy policy.
 
       %hr
       %h3.uk-text-bold#cookies Cookies
-      %ul
-        %li A cookie is a small amount of data, which often includes an anonymous unique identifier, that is sent to your browser from a web site's computers and stored on your computer's hard drive.
-        %li Cookies are required to use the Beehive service.
-        %li We use cookies to record current session information, but do not use permanent cookies. You are required to re-login to your Beehive account after a certain period of time has elapsed to protect you against others accidentally accessing your account contents.
+      %p A cookie is a small amount of data, which often includes an anonymous unique identifier, that is sent to your browser from a web site's computers and stored on your computer's hard drive.
+
+      %p Cookies are required to use the Beehive service. We use cookies to record current session information.
 
       %hr
       %h3.uk-text-bold#data-storage Data Storage
-      %p Beehive uses third-party vendors and hosting partners to provide the necessary hardware, software, networking, storage, and related technology required to run Beehive. Although Beehive owns the code, databases, and all rights to the Beehive application, you retain all rights to your data.
+      %p Beehive uses third-party vendors and hosting partners to provide the Beehive service. Data relating to Users and their organisations may be transferred to or mirrored on servers outside the European Union.
+
+      %p Beehive will apply all reasonable measures to ensure that data held on Beehive servers is secure but cannot guarantee that security measures will not be breached.
+
+      %p Beehive will, when applicable, use secure third-party payment service providers and so will not have access to any User’s bank account or payment card information.
 
       %hr
       %h3.uk-text-bold#changes Changes
@@ -35,14 +58,14 @@
       %hr
       %h3.uk-text-bold#questions Questions
       %p
-        Any questions about this Privacy Policy should be addressed to
+        Any questions about this Privacy Policy should be sent to
         = succeed '.' do
           = link_to 'support@beehivegiving.org', 'mailto:support@beehivegiving.org'
 
     .uk-width-medium-1-4.uk-margin-top
       .uk-panel.uk-panel-box{"data-uk-sticky" => "{top:115}"}
         %ul.uk-nav.uk-nav-side{"data-uk-scrollspy-nav" => "{closest:'li', smoothscroll:true}"}
-          %li.uk-nav-header Contents
+          %li.uk-nav-header Privacy
           %li
             %a{:href => "#general-information"} General Information
           %li

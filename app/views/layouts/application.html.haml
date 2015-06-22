@@ -125,17 +125,19 @@
     = yield
 
   %div{style: 'border-top: #EAEAEA 1px solid;'}
-    .uk-container.uk-container-center
+    .uk-container.uk-container-center.uk-margin
       .uk-grid.uk-margin-top
         .uk-width-small-1-1.uk-width-medium-1-2
           .footer-left
-            %p
+            %div
               %a.uk-button.uk-button-mini{:href => about_path, style: 'margin-bottom: 3px;'} About
               %a.uk-button.uk-button-mini{:href => privacy_path, style: 'margin-bottom: 3px;'} Privacy
+              %a.uk-button.uk-button-mini{:href => terms_path, style: 'margin-bottom: 3px;'} Terms
               %a.uk-button.uk-button-mini{:href => "mailto:support@beehivegiving.org", style: 'margin-bottom: 3px;'} Contact
-              %small
-                %a.yellow{href: "http://www.forwardfoundation.org.uk/?utm_source=Beehive&utm_medium=Link&utm_campaign=Beehive%2Bto%2BFoundation", target: "_blank"} &copy; #{Date.today.year}
-        .uk-width-small-1-1.uk-width-medium-1-2
+            %small
+              %a.yellow{href: "http://www.forwardfoundation.org.uk/?utm_source=Beehive&utm_medium=Link&utm_campaign=Beehive%2Bto%2BFoundation", target: "_blank"} &copy; The Foundation People #{Date.today.year}, Registered Charity No: 1144526.
+
+        .uk-width-small-1-1.uk-width-medium-1-2.uk-hidden-small
           .footer-right
             = link_to image_tag("tf-logo-light.png", size: "100"), "http://www.thefoundation.org/?utm_source=Beehive&utm_medium=Link&utm_campaign=Beehive%2Bto%2BFoundation", target: "_blank"
             .powered-by Powered by
