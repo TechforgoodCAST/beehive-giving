@@ -1,0 +1,6 @@
+$.UIkit.modal("#eligible").show();
+- if @funder_attribute.application_link
+  $("##{@funding_stream_id}").html('#{escape_javascript(render("funding_stream"))}');
+  window.open("http://#{@funder_attribute.application_link}", "_blank");
+- else
+  $.UIkit.notify({message: "<i class='uk-icon-exclamation-triangle'></i><span> Sorry, this link doesn't appear to be working right now.</span>", status: 'danger', timeout: 3000, pos: 'top-center' });

@@ -27,7 +27,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     create_and_auth_user!(:organisation => @recipient)
     visit '/funders'
     find_link('See how you compare').click
-    assert page.has_link?('Complete Profile')
+    assert page.has_link?('Complete profile')
   end
 
   test 'that clicking the comparison link with a profile gives an unlock button' do
@@ -57,7 +57,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     Capybara.match = :first
     find_link('See how you compare').click
 
-    assert_not page.has_link?('Complete Profile')
+    assert_not page.has_link?('Complete profile')
     assert_not page.has_link?('Unlock Funder')
   end
 

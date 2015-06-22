@@ -1,0 +1,14 @@
+.uk-form.uk-form-stacked
+  .uk-width-1-1.uk-margin-bottom
+    %label.uk-form-label
+      How would you rate our suggestion of
+      = @funder.name
+      as a an appropriate funder for your organisation?
+    = f.input :recommendation_quality, as: :select, collection: Recommendation::RECOMMENDATION_QUALITY, input_html: { class: 'uk-width-1-1' }
+    = f.error :recommendation_quality, class: 'uk-text-small uk-text-warning'
+
+  .uk-grid
+    .uk-width-1-2
+      = link_to 'Cancel', recipient_comparison_path(@funder), class: 'uk-button uk-width-1-1'
+    .uk-width-1-2
+      = f.submit 'Next', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'

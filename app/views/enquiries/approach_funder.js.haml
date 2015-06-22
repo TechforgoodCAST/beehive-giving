@@ -1,0 +1,4 @@
+- if @recipient.recommended_funder?(@funder) && @recommendation.recommendation_quality.blank?
+  window.location.replace("#{recipient_recommendation_feedback_path(@funder)}");
+- else
+  $.UIkit.modal("#eligible").show();

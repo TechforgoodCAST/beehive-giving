@@ -22,6 +22,9 @@ FactoryGirl.define do
     # funded_average_income 1234
     # funded_average_paid_staff 1234
     after(:build) { |a| a.funded_organisation_income_and_staff }
+    soft_restrictions "Soft restrictions"
+    application_details "Application details"
+    application_link "www.example.com"
   end
 
   factory :funder_attribute_no_grants, class: FunderAttribute do
@@ -29,6 +32,8 @@ FactoryGirl.define do
     association :funder, :factory => :funder
     countries { FactoryGirl.create_list(:country, 2) }
     funding_stream "All"
+    soft_restrictions "Soft restrictions"
+    application_details "Application details"
   end
 
 end

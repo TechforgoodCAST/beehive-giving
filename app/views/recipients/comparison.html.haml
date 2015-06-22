@@ -1,4 +1,4 @@
-#bg-color{style: 'border-bottom: solid 3px #EAEAEA;'}
+#bg-color
   .uk-container.uk-container-center
     .uk-grid
       = render partial: 'recipients/sections/header'
@@ -14,10 +14,13 @@
               - else
                 - if @recipient.eligible?(@funder)
                   %p
-                    Find out if
-                    = @funder.name
-                    is recommended for your organisation.
-                  %a.uk-width-1-1.uk-button.uk-button-success.uk-button-large{href: '', "data-uk-modal" => "{target:'#eligible'}"} You're eligible
+                    You're eligible for one or more of
+                    = succeed ',' do
+                      = @funder.name.pluralize
+                    funding streams. Now...
+                  = link_to "Approach for funding", recipient_approach_funder_path(@funder), method: :post, remote: true, class: "uk-button uk-button-primary uk-width-1-1"
+                  .uk-text-bold OR
+                  = link_to "Find another funder", funders_path, class: "uk-button uk-button-primary uk-width-1-1"
                 - else
                   %p
                     Drat! It looks like you're ineligible for
@@ -40,6 +43,10 @@
 
 - if @recipient.eligible?(@funder)
   = render partial: 'recipients/eligible'
+
+- if params[:proceed]
+  :javascript
+    $.UIkit.modal("#eligible").show();
 
 #next.uk-modal
   .uk-modal-dialog

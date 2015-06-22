@@ -7,13 +7,14 @@ ActiveAdmin.register Recommendation do
     column :recipient
     column :funder
     column :score
+    column :recommendation_quality
     actions
   end
 
   filter :funder, input_html: {class: 'chosen-select'}
   filter :recipient, input_html: {class: 'chosen-select'}
   filter :score
-  filter :created_at
+  filter :recommendation_quality, as: :select, collection: Recommendation::RECOMMENDATION_QUALITY
   filter :updated_at
 
 end
