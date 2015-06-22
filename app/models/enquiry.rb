@@ -5,7 +5,7 @@ class Enquiry < ActiveRecord::Base
   # has_and_belongs_to_many :countries
   # has_and_belongs_to_many :districts
 
-  validates :funder, :recipient, presence: true
+  validates :funder, :recipient, :funding_stream, presence: true
   # validates :new_project, presence: true, if: :new_project?
   # validates :new_location, presence: true, if: :new_location?
   # validates :amount_seeking, :duration_seeking, presence: true

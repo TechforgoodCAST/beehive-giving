@@ -12,8 +12,17 @@ class RecommendationTest < ActiveSupport::TestCase
     assert @recommendation.valid?
   end
 
-  test "invalid recommendation" do
-    @recommendation.funder = nil
+  test "recommended recommendation is valid" do
+    @recommendation.score = 10
+    @recommendation.recommendation_quality = "Good suggestion"
+    @recommendation.save
+    assert @recommendation.valid?
+  end
+
+  test "recommended recommendation is invalid" do
+    @recommendation.score = 10
+    @recommendation.recommendation_quality = nil
+    @recommendation.save
     assert_not @recommendation.valid?
   end
 

@@ -7,7 +7,8 @@ class RecipientApproachFunderTest < ActionDispatch::IntegrationTest
     @funder = create(:funder)
     @recipient.unlock_funder!(@funder)
     @restriction = create(:restriction)
-    @funding_stream = create(:funding_stream, :restrictions => [@restriction], :funders => [@funder])
+    @funding_stream = create(:funding_stream, :restrictions => [@restriction], :funders => [@funder], :label => 'All')
+    @funder_attribute = create(:funder_attribute, :funder => @funder, :funding_stream => 'All')
     create_and_auth_user!(:organisation => @recipient)
   end
 
@@ -22,58 +23,26 @@ class RecipientApproachFunderTest < ActionDispatch::IntegrationTest
     assert_not page.has_content?("Approach for funding")
   end
 
-  # JS testing
-  # test "clickling approach funder link increments counter" do
+  # test "recipient has to complete recommendation feedback if suggested funder" do
+  #   # JS testing?
   #   @eligibility = create(:eligibility, :recipient => @recipient, :restriction => @restriction)
   #   visit "/comparison/#{@funder.slug}"
-  #   assert_equal 0, @recipient.enquiries.count
+  #   Capybara.match = :first
   #   click_link("Approach for funding")
-  #   assert_equal 1, @recipient.enquiries.count
-  #   assert_equal 1, @recipient.enquiries.first.approach_funder_count
-  #   visit "/comparison/#{@funder.slug}"
-  #   click_link("Approach for funding")
-  #   assert_equal 2, @recipient.enquiries.first.approach_funder_count
-  # end
-  #
-  # test "clicking guidance link increments counter" do
-  #
-  # end
-  #
-  # test "clicking apply link increments counter" do
-  #
+  #   assert_equal "/comparison/#{@funder.slug}/feedback", current_path
   # end
 
-  test "recipient has to complete suggestion feedback if suggested funder" do
-
-  end
-
-  test "recipient does not have to complete suggestion feedback if already completed" do
-
-  end
-
-  test "recipient redirected to iframe if funder not recommended" do
-
-  end
-
-  # funder attributes
-  # + guidance link string
-  # + application link string
-  # + application details string/text?
-  # + soft restrictions text
-  # enquiry
-  # + approach_funder_count
-
-  # clicks approach funder
-  # modal? with rectangles for each fundng stream with eligibility, suggestion highlighted, , soft restrictions expand?,
-  # click apply link?
-  # if suggested check suggestion quality
-  # link to funder website in blank tab
-
-  # test "approach funder redirects to new enquiry path" do
+  # test "recipient does not have to complete recommendation feedback if already completed" do
+  #   # JS testing?
   #   @eligibility = create(:eligibility, :recipient => @recipient, :restriction => @restriction)
   #   visit "/comparison/#{@funder.slug}"
+  #   Capybara.match = :first
   #   click_link("Approach for funding")
-  #   assert_equal "/funders/#{@funder.slug}/enquiries/new", current_path
+  #   assert_equal "/comparison/#{@funder.slug}", current_path
+  # end
+
+  # test "clicking approach funder link increments counter" do
+  #   # JS testing?
   # end
 
 end

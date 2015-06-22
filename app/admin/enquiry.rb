@@ -3,6 +3,8 @@ ActiveAdmin.register Enquiry do
   config.sort_order = 'created_at_asc'
   config.per_page = 1000
 
+  permit_params :recipient_id, :funder_id, :funding_stream
+
   index do
     selectable_column
     column "Recipient" do |enquiry|

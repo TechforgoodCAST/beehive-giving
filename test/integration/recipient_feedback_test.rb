@@ -83,7 +83,6 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
     # navigating to funder page redirects
     visit '/funders'
     Capybara.match = :first
-    puts page.body
     click_link('#locked_funder')
     assert_equal "/feedback/new", current_path
 
