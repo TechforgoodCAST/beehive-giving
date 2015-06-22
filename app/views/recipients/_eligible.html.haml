@@ -2,22 +2,32 @@
   .uk-modal-dialog
     %a.uk-modal-close.uk-close
     .uk-modal-header
-      %h2 Approach for funding
-    %table.uk-table.uk-table-striped.uk-text-nowrap
-      %thead
-        %tr
-          %th{:width => "250"} Funding stream
-          %th.uk-text-center Eligible?
-          %th
-          %th
-      %tbody
-        - @funder.funding_streams.each do |s|
-          %tr
-            %td= s.label
-            %td.uk-text-center
-              - if @recipient.funding_stream_eligible?(s.label, @funder)
-                %i.uk-icon-check.uk-text-success
-              - else
-                %i.uk-icon-close.uk-text-danger
-            %td= link_to "Guidance", recipient_guidance_path(@funder), method: :post, remote: true, "data-uk-tooltip" => "{pos:'top'}", :title => "#{@funder.name.pluralize} website will open in a new page"
-            %td= link_to "Apply", recipient_apply_path(@funder), method: :post, remote: true, "data-uk-tooltip" => "{pos:'top'}", :title => "#{@funder.name.pluralize} website will open in a new page"
+      %h2
+        Approach
+        = @funder.name
+        for funding
+    - @funder.funding_streams.each do |stream|
+      .uk-width-1-1.uk-margin
+        .uk-panel{id: "#{stream.label.downcase.gsub(/[^a-z0-9]+/, '-')}"}
+          .uk-panel-title= stream.label
+          - if @recipient.funding_stream_eligible?(stream.label, @funder)
+            - if @recipient.recommended_funder?(@funder)
+              .uk-panel-badge.uk-badge.uk-badge-warning{style: 'right: 55px;'} Suggested
+            .uk-panel-badge.uk-badge.uk-badge-success Eligible
+
+            %h4.uk-margin-top-remove Things to consider
+            %p= @funder.attributes.where(funding_stream: stream.label).first.soft_restrictions
+
+            %h4.uk-margin-top-remove Application process
+            %p= @funder.attributes.where(funding_stream: stream.label).first.application_details
+
+            = link_to "Approach for funding", recipient_apply_path(@funder, funding_stream: stream.label), method: :post, remote: true, "data-uk-tooltip" => "{pos:'top'}", :title => "#{@funder.name.pluralize} website will open in a new page", class: "uk-button uk-button-primary uk-width-1-1"
+
+            - if @funder.funding_streams.count > 1
+              %hr
+
+          - else
+            .uk-panel-badge.uk-badge.uk-badge-danger Not eligible
+            Sorry, it seems you're not eligible for this funding stream. Remember you can always your eligiblity in your
+            = succeed '.' do
+              = link_to "settings", recipient_eligibilities_path(@recipient)

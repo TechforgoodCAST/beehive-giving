@@ -1,0 +1,17 @@
+.uk-panel-title= @funder.funding_streams.where(label: params[:funding_stream]).first.label
+- if @recipient.recommended_funder?(@funder)
+  .uk-panel-badge.uk-badge.uk-badge-warning{style: 'right: 55px;'} Suggested
+.uk-panel-badge.uk-badge.uk-badge-success Eligible
+
+.uk-alert.uk-alert-warning
+  %h3 Nice one!
+  We noticed you may have approached
+  = @funder.name
+  for funding.
+  = link_to "Why not check out your next funder to approach?", funders_path
+
+-# New approaches
+-# = Enquiry.group_by_week(:created_at, week_start: :mon, range: 1.minute.ago..Time.now).count
+-#
+-# Returning approaches
+-# = Enquiry.group_by_week(:updated_at, week_start: :mon, range: 1.minute.ago..Time.now).count

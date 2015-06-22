@@ -12,8 +12,7 @@ ActiveAdmin.register Enquiry do
       link_to enquiry.funder.name, [:admin, enquiry.funder]
     end
     column :approach_funder_count
-    column :guidance_count
-    column :apply_count
+    column :funding_stream
     actions
   end
 

@@ -152,8 +152,7 @@ ActiveRecord::Schema.define(version: 20150619174213) do
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
     t.integer  "approach_funder_count"
-    t.integer  "guidance_count"
-    t.integer  "apply_count"
+    t.string   "funding_stream"
   end
 
   create_table "features", force: :cascade do |t|
@@ -206,7 +205,6 @@ ActiveRecord::Schema.define(version: 20150619174213) do
     t.integer  "beneficiary_max_age"
     t.decimal  "funded_age_temp"
     t.decimal  "funded_income_temp"
-    t.string   "guidance_link"
     t.string   "application_link"
     t.string   "application_details"
     t.text     "soft_restrictions"

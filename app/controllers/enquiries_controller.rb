@@ -1,24 +1,20 @@
 class EnquiriesController < ApplicationController
 
   before_filter :load_funder, :load_recipient
-  before_filter :load_funder_attribute, only: [:guidance, :apply]
 
   respond_to :js
 
   def approach_funder
     @recommendation = Recommendation.where(recipient: @recipient, funder: @funder).first
-    @enquiry = Enquiry.where(recipient: @recipient, funder: @funder).first_or_create
-    @enquiry.increment!(:approach_funder_count)
-  end
-
-  def guidance
-    @enquiry = Enquiry.where(recipient: @recipient, funder: @funder).first_or_create
-    @enquiry.increment!(:guidance_count)
   end
 
   def apply
-    @enquiry = Enquiry.where(recipient: @recipient, funder: @funder).first_or_create
-    @enquiry.increment!(:apply_count)
+    @enquiry = Enquiry.where(recipient: @recipient, funder: @funder, funding_stream: params[:funding_stream]).first_or_create
+    @enquiry.increment!(:approach_funder_count)
+    @enquiry.update_attributes(funding_stream: params[:funding_stream])
+
+    @funding_stream_id = "#{params[:funding_stream].downcase.gsub(/[^a-z0-9]+/, '-')}"
+    @funder_attribute = @funder.attributes.where(funding_stream: params[:funding_stream]).first
   end
 
   private
@@ -29,10 +25,6 @@ class EnquiriesController < ApplicationController
 
   def load_recipient
     @recipient = current_user.organisation
-  end
-
-  def load_funder_attribute
-    @funder_attribute = @funder.attributes.where(funding_stream: 'All').first
   end
 
 end

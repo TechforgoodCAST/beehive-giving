@@ -15,7 +15,7 @@ class RecommendationsController < ApplicationController
   def update
     @recommendation = Recommendation.where(recipient: @recipient, funder: @funder).first_or_initialize
 
-    if @recommendation.update_attributes(enquiry_params)
+    if @recommendation.update_attributes(recommendation_params)
       redirect_to recipient_comparison_path(@funder, proceed: true)
     else
       render :edit
@@ -24,7 +24,7 @@ class RecommendationsController < ApplicationController
 
   private
 
-  def enquiry_params
+  def recommendation_params
     params.require(:recommendation).permit(:recommendation_quality)
   end
 

@@ -21,6 +21,10 @@ class FunderAttribute < ActiveRecord::Base
   validates :year, inclusion: {in: Profile::VALID_YEARS}
   validates :year, uniqueness: {scope: [:funding_stream, :funder_id], message: 'only one year per funder'}
   validates :funding_stream, uniqueness: {scope: [:year, :funder_id], message: 'only one funding stream of each kind per funder'}
+  validates :application_link, format: {
+    with: /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/,
+    multiline: true,
+    message: "enter a valid website address e.g. www.example.com"}
 
   def grant_count_from_grants
     if self.funder && self.funder.grants.count > 0
