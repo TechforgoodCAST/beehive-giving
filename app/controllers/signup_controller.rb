@@ -114,7 +114,7 @@ class SignupController < ApplicationController
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :job_role,
-    :user_email, :password, :password_confirmation, :role)
+    :user_email, :password, :password_confirmation, :role, :agree_to_terms)
   end
 
   def organisation_params

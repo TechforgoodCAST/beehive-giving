@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150613134307) do
+ActiveRecord::Schema.define(version: 20150622114712) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -149,8 +149,10 @@ ActiveRecord::Schema.define(version: 20150613134307) do
     t.boolean  "new_location"
     t.integer  "amount_seeking"
     t.integer  "duration_seeking"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+    t.integer  "approach_funder_count"
+    t.string   "funding_stream"
   end
 
   create_table "features", force: :cascade do |t|
@@ -203,6 +205,9 @@ ActiveRecord::Schema.define(version: 20150613134307) do
     t.integer  "beneficiary_max_age"
     t.decimal  "funded_age_temp"
     t.decimal  "funded_income_temp"
+    t.string   "application_link"
+    t.string   "application_details"
+    t.text     "soft_restrictions"
   end
 
   create_table "funder_attributes_funding_types", force: :cascade do |t|
@@ -351,9 +356,10 @@ ActiveRecord::Schema.define(version: 20150613134307) do
   create_table "recommendations", force: :cascade do |t|
     t.integer  "funder_id"
     t.integer  "recipient_id"
-    t.float    "score",        default: 0.0
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.float    "score",                  default: 0.0
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "recommendation_quality"
   end
 
   create_table "restrictions", force: :cascade do |t|
@@ -378,6 +384,7 @@ ActiveRecord::Schema.define(version: 20150613134307) do
     t.integer  "sign_in_count",                      default: 0
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
+    t.boolean  "agree_to_terms"
   end
 
 end

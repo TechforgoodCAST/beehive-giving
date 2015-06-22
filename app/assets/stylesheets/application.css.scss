@@ -33,6 +33,7 @@
 
 $yellow: #F7BA0E;
 $white: #fff;
+$blue: #35b3ee;
 
 $nprogress-color: $yellow;
 
@@ -109,6 +110,9 @@ $nprogress-color: $yellow;
 }
 .yellow, .yellow:hover {
   color: $yellow;
+}
+.blue, .blue:hover {
+  color: $blue;
 }
 
 #padding-remove {

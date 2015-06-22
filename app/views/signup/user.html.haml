@@ -50,5 +50,12 @@
                   = f.input :password_confirmation, error: false, type: 'email', input_html: { class: 'uk-width-1-1' }
                   .uk-form-password-toggle
                     = f.error :password_confirmation, class: 'uk-text-small uk-text-warning'
+              .uk-width-medium-1-1.uk-margin-top
+                .uk-form-controls.uk-text-muted
+                  Accept
+                  = succeed '?' do
+                    = link_to 'terms of service', terms_path, class: 'blue'
+                  = f.input_field :agree_to_terms, error: false, checked: true
+                  = f.error :agree_to_terms, class: 'uk-text-small uk-text-warning', target: '_blank'
               .uk-width-medium-1-1.uk-margin-top.uk-text-truncate
                 = f.submit 'Sign up', class: 'uk-button uk-button-large uk-button-primary uk-width-1-1', style: 'color: #fff; font-size:16px;'

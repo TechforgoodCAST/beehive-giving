@@ -7,5 +7,6 @@ FactoryGirl.define do
     password 'password123'
     password_confirmation 'password123'
     role 'User'
+    agree_to_terms true
   end
 end
