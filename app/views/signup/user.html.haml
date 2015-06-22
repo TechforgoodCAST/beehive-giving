@@ -54,8 +54,8 @@
                 .uk-form-controls.uk-text-muted
                   Accept
                   = succeed '?' do
-                    = link_to 'terms of service', terms_path, class: 'blue'
+                    = link_to 'terms of service', '#terms', class: 'blue', onclick: "window.open('#{terms_path}','Terms of Service','width=600,height=400')"
                   = f.input_field :agree_to_terms, error: false, checked: true
-                  = f.error :agree_to_terms, class: 'uk-text-small uk-text-warning', target: '_blank'
+                  = f.error :agree_to_terms, class: 'uk-text-small uk-text-warning'
               .uk-width-medium-1-1.uk-margin-top.uk-text-truncate
                 = f.submit 'Sign up', class: 'uk-button uk-button-large uk-button-primary uk-width-1-1', style: 'color: #fff; font-size:16px;'
