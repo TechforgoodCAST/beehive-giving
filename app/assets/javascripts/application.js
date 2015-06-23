@@ -22,7 +22,6 @@
 //= require nprogress
 //= require nprogress-turbolinks
 //= require nprogress-ajax
-//= require ckeditor/init
 //= require_tree .
 
 NProgress.configure({

@@ -13,5 +13,3 @@ timelinejs_assets = %w(
   timelineJS/fancybox_sprite@2x.png
 )
 Rails.application.config.assets.precompile += timelinejs_assets
-
-Rails.application.config.assets.precompile += %w( ckeditor/* )
