@@ -60,6 +60,7 @@ gem 'nokogiri'
 gem 'intercom-rails'
 gem 'gon'
 gem 'nprogress-rails'
+gem 'ckeditor'
 
 group :test do
   gem 'capybara'

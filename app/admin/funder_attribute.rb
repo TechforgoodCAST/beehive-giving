@@ -88,8 +88,8 @@ ActiveAdmin.register FunderAttribute do
       f.input :funding_stream, collection: Grant.pluck(:funding_stream).uniq << 'All', input_html: {class: 'chosen-select'}
       f.input :countries, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :name, label: "Countries"
       f.input :districts, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: "Districts"
-      f.input :soft_restrictions
-      f.input :application_details
+      f.input :soft_restrictions, :as => :ckeditor, :input_html => { :ckeditor => {:toolbar => 'Full'} }
+      f.input :application_details, :as => :ckeditor, :input_html => { :ckeditor => {:toolbar => 'Full'} }
       f.input :application_link
       f.input :grant_count
       f.input :application_count

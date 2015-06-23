@@ -17,13 +17,12 @@
 //= require uikit
 //= require chosen-jquery
 //= require turbolinks
-//= require d3
-//= require c3
 //= require raphael
 //= require morris
 //= require nprogress
 //= require nprogress-turbolinks
 //= require nprogress-ajax
+//= require ckeditor/init
 //= require_tree .
 
 NProgress.configure({
