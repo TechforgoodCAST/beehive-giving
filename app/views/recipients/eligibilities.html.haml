@@ -12,7 +12,7 @@
                   %label.uk-form-label
                     Are you seeking funding for
                     = succeed '?' do
-                      = Restriction.find(e.object.restriction_id).details
+                      = raw(Restriction.find(e.object.restriction_id).details)
                   = e.hidden_field :recipient_id, value: @recipient.id
                   = e.hidden_field :restriction_id
                   = e.input :eligible, collection: @recipient.restriction_truthy(e.object.restriction), input_html: { class: 'uk-width-1-1' }

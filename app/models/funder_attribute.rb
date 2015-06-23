@@ -18,7 +18,7 @@ class FunderAttribute < ActiveRecord::Base
   has_and_belongs_to_many :beneficiaries
 
   validates :funder, :year, :countries, :funding_stream, presence: true
-  validates :soft_restrictions, :application_details, presence: true
+  validates :soft_restrictions, presence: true
 
   validates :year, inclusion: {in: Profile::VALID_YEARS}
   validates :year, uniqueness: {scope: [:funding_stream, :funder_id], message: 'only one year per funder'}
