@@ -8,6 +8,7 @@
         for funding
     - @funder.funding_streams.each do |stream|
       .uk-width-1-1.uk-margin
+        %hr
         .uk-panel{id: "#{stream.label.downcase.gsub(/[^a-z0-9]+/, '-')}"}
           .uk-panel-title= stream.label
           - if @recipient.funding_stream_eligible?(stream.label, @funder)
@@ -28,9 +29,6 @@
               %p= raw(@funder.attributes.where('funding_stream = ? OR funding_stream =?', stream.label, 'All').first.application_details)
 
             = link_to "Approach for funding", recipient_apply_path(@funder, funding_stream: stream.label), method: :post, remote: true, "data-uk-tooltip" => "{pos:'top'}", :title => "#{@funder.name.pluralize} website will open in a new page", class: "uk-button uk-button-primary uk-width-1-1"
-
-            - if @funder.funding_streams.count > 1
-              %hr
 
           - else
             .uk-panel-badge.uk-badge.uk-badge-danger Not eligible
