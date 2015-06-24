@@ -37,7 +37,7 @@ ActiveAdmin.register User do
 
   form do |f|
     f.inputs "User Details" do
-      f.input :organisation, required: true
+      f.input :organisation, required: true, input_html: {class: 'chosen-select'}
       f.input :role
       f.input :first_name
       f.input :last_name
@@ -48,5 +48,5 @@ ActiveAdmin.register User do
     end
     f.actions
   end
-  
+
 end
