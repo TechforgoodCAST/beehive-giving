@@ -2,10 +2,10 @@ class User < ActiveRecord::Base
   belongs_to :organisation
   has_many :feedbacks
 
-  validates :first_name, :last_name, :job_role, :user_email, :role, :agree_to_terms, presence: true
+  validates :first_name, :last_name, :job_role, :user_email, :role, :agree_to_terms, presence: true, on: :create
   validates :user_email, format: {with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i,
-    message: "please enter a valid email"}
-  validates :user_email, uniqueness: true
+    message: "please enter a valid email"}, on: :create
+  validates :user_email, uniqueness: true, on: :create
 
   validates :password, presence: true, confirmation: true,
   length: {:within => 6..40}, on: :create

@@ -110,7 +110,15 @@ class RecipientComparisonTest < ActionDispatch::IntegrationTest
     assert page.has_css?('.stat-normal.yellow', count: 3)
   end
 
-  # test 'Beneficairy chart hidden if minimum profiles not held' do
-  # end
+  test "approved on hidden if all grants on 1st of jan" do
+    @grants = 4.times { create(:grants_first_jan, :funder => @funder, :recipient => @recipient) }
+    @profiles = 4.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i ) }
+    @attribute1 = create(:funder_attribute, :funder => @funder, :funded_average_age => 4, :funded_average_income => 1234, :funded_average_paid_staff => 4)
+    @attribute2 = create(:funder_attribute, :funder => @funder, :funding_stream => 'Main')
+    create_and_auth_user!(:organisation => @recipient)
+    visit "/comparison/#{@funder.slug}"
+
+    assert page.has_content?("Oh snap", count: 1)
+  end
 
 end
