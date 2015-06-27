@@ -126,18 +126,17 @@ class Recipient < Organisation
   end
 
   def build_recommendation(funder, score)
-    recommendation = Recommendation.find_or_initialize_by(
+    recommendation = Recommendation.where(
       recipient: self,
       funder: funder
-    )
+    ).first_or_initialize
     recommendation.update_attributes(
-      score: recommendation.score + score
+      score: score
     )
     recommendation.save
   end
 
   def initial_recommendation
-    recommendations.destroy_all
     Funder.all.each do |funder|
       score = 0
       if funder.attributes.any?
@@ -148,7 +147,6 @@ class Recipient < Organisation
   end
 
   def refined_recommendation
-    recommendations.destroy_all
     Funder.all.each do |funder|
       score = 0
 
