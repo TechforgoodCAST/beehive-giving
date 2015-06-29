@@ -1,5 +1,6 @@
 ActiveAdmin.register Funder do
   config.sort_order = 'created_at_asc'
+  config.per_page = 200
 
   permit_params :name, :contact_number, :website,
   :street_address, :city, :region, :postal_code, :country, :charity_number,

@@ -1,6 +1,6 @@
 ActiveAdmin.register User do
 
-  config.per_page = 1000
+  config.per_page = 200
 
   permit_params :first_name, :last_name, :job_role,
   :user_email, :password, :password_confirmation, :role, :organisation_id

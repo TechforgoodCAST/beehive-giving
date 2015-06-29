@@ -1,6 +1,8 @@
 ActiveAdmin.register Feedback do
   config.sort_order = 'created_at_asc'
 
+  permit_params :user_id, :nps, :taken_away, :informs_decision, :other
+
   index do
     column "Organisation", :user do |feedback|
       if feedback.user.organisation

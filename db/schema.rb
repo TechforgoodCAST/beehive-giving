@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150622114712) do
+ActiveRecord::Schema.define(version: 20150629111836) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -177,9 +177,9 @@ ActiveRecord::Schema.define(version: 20150622114712) do
     t.integer  "nps"
     t.integer  "taken_away"
     t.integer  "informs_decision"
-    t.string   "other",            limit: 255
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.text     "other"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
   end
 
   create_table "funder_attributes", force: :cascade do |t|
