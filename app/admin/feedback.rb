@@ -5,12 +5,14 @@ ActiveAdmin.register Feedback do
 
   index do
     column "Organisation", :user do |feedback|
-      if feedback.user.organisation
+      if feedback.user
         link_to feedback.user.organisation.name, [:admin, feedback.user.organisation]
       end
     end
     column "Contact", :user do |feedback|
-      feedback.user.user_email
+      if feedback.user
+        feedback.user.user_email
+      end
     end
     column "Net Promoter Score", :nps
     column :taken_away
