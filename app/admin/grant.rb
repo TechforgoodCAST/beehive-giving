@@ -1,5 +1,5 @@
 ActiveAdmin.register Grant do
-  
+
   config.sort_order = 'created_at_asc'
   config.per_page = 1000
 
@@ -23,6 +23,11 @@ ActiveAdmin.register Grant do
     column :amount_awarded
     actions
   end
+
+  filter :funder, input_html: {class: 'chosen-select'}
+  filter :recipient, input_html: {class: 'chosen-select'}
+  filter :created_at
+  filter :updated_at
 
   show do
     attributes_table do

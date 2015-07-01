@@ -66,6 +66,20 @@ ActiveAdmin.register_page "Dashboard" do
     end
 
     div style: "float:left; width: 50%; padding: 0 20px; box-sizing: border-box;" do
+      section "User activation by day" do
+        @metric = User.where("role = ?", "User").group_by_day(:created_at, week_start: :mon, range: 2.weeks.ago..Time.now).count
+        render :partial => 'metrics/line_chart', :locals => {:metric => @metric}
+      end
+    end
+
+    div style: "float:left; width: 50%; padding: 0 20px; box-sizing: border-box;" do
+      section "User activation by week" do
+        @metric = User.where("role = ?", "User").group_by_week(:created_at, week_start: :mon, range: Time.new(2015,03,01,00,00,00)..Time.now).count
+        render :partial => 'metrics/line_chart', :locals => {:metric => @metric}
+      end
+    end
+
+    div style: "float:left; width: 100%; padding: 0 20px; box-sizing: border-box;" do
       section "Recent Non-profits" do
         table_for Recipient.order("created_at desc").limit(5) do
           column :name do |recipient|
@@ -74,13 +88,6 @@ ActiveAdmin.register_page "Dashboard" do
           column :country
           column :created_at
         end
-      end
-    end
-
-    div style: "float:left; width: 50%; padding: 0 20px; box-sizing: border-box;" do
-      section "User Activation by week" do
-        @metric = User.where("role = ?", "User").group_by_week(:created_at, week_start: :mon, range: Time.new(2015,03,01,00,00,00)..Time.now).count
-        render :partial => 'metrics/line_chart', :locals => {:metric => @metric}
       end
     end
 
