@@ -226,6 +226,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    puma (2.11.3)
+      rack (>= 1.1, < 2.0)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rabl (0.11.6)
@@ -367,6 +369,7 @@ DEPENDENCIES
   nprogress-rails
   oj
   pg
+  puma
   quiet_assets
   rabl
   rails (= 4.2.1)
