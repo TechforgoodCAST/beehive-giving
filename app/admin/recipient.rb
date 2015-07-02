@@ -1,5 +1,5 @@
 ActiveAdmin.register Recipient do
-  config.per_page = 500
+  config.per_page = 50
 
   permit_params :name, :contact_number, :website,
   :street_address, :city, :region, :postal_code, :country, :charity_number,
@@ -25,9 +25,9 @@ ActiveAdmin.register Recipient do
     column :website
     column :contact_number
     column :country
-    column ("Legally registered"), :registered
-    column :founded_on
+    column ("Users"){|f| f.users.count }
     column ("Profiles"){|f| f.profiles.count }
+    column ("Unlocks"){|f| RecipientFunderAccess.where(recipient_id: f.id).count }
     column ("Grants"){|f| f.grants.count }
     column ("Requests"){|f| f.features.count }
   end
