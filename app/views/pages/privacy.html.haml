@@ -1,80 +1,81 @@
-.uk-container.uk-container-center
-  .uk-grid.uk-margin-large-top
-    .uk-width-1-1
-      %h1 Privacy
+- content_for :public do
+  .uk-container.uk-container-center
+    .uk-grid.uk-margin-large-top
+      .uk-width-1-1
+        %h1 Privacy
 
-    .uk-width-medium-3-4.uk-margin-large-bottom
-      %hr
-      %h3.uk-text-bold#general-information General Information
-      This Privacy Policy applies to the Beehive service
-      = surround '(', ')' do
-        %span.uk-text-bold "Beehive"
-      provided by The Foundation People
-      = precede '(' do
-        %span.uk-text-bold "the Foundation”, “we”
-      or
-      = succeed ')' do
-        %span.uk-text-bold “us”
-
-      %hr
-      %h3.uk-text-bold#information-gathering-and-usage Information Gathering and Usage
-
-      We collect the following types of information from users of our website
-      = succeed ':' do
+      .uk-width-medium-3-4.uk-margin-large-bottom
+        %hr
+        %h3.uk-text-bold#general-information General Information
+        This Privacy Policy applies to the Beehive service
         = surround '(', ')' do
-          %span.uk-text-bold "Users"
-      %ul
-        %li Information input by Users as part of the process of registration to use our website;
-        %li E-mail addresses of Users who communicate with us via e-mail;
-        %li Information volunteered by Users in the course of use of our website (such as, for example their profile, information about their organisation, survey responses); and
-        -# %li [will we use tracking data/retargeting/behavioural marketing techniques?]
+          %span.uk-text-bold "Beehive"
+        provided by The Foundation People
+        = precede '(' do
+          %span.uk-text-bold "the Foundation”, “we”
+        or
+        = succeed ')' do
+          %span.uk-text-bold “us”
 
-      %p When you register for Beehive we ask for information including your name, email address, organisation name, billing address, and payment information (Members who sign up for the free account are not required to enter any payment details). Once you have registered for Beehive you may also submit additional information relating to your funding activities or requirements, your other activities or objectives, or those of your organisation, and other relevant information.
+        %hr
+        %h3.uk-text-bold#information-gathering-and-usage Information Gathering and Usage
 
-      %p Unless we obtain your permission, information that is identifiable as relating to you (i.e. it has not been edited to make it anonymous) is not shared with or sold to other organizations for commercial purposes, except in connection with the operation of the Beehive service (including matching users with other users, providing insights into the activities of Users and related research and publications), or under the following circumstances:
+        We collect the following types of information from users of our website
+        = succeed ':' do
+          = surround '(', ')' do
+            %span.uk-text-bold "Users"
+        %ul
+          %li Information input by Users as part of the process of registration to use our website;
+          %li E-mail addresses of Users who communicate with us via e-mail;
+          %li Information volunteered by Users in the course of use of our website (such as, for example their profile, information about their organisation, survey responses); and
+          -# %li [will we use tracking data/retargeting/behavioural marketing techniques?]
 
-      %ul
-        %li If it is necessary to share information in order to investigate, prevent, or take action regarding illegal activities, suspected fraud, situations involving potential threats to the physical safety of any person, violations of Terms of Service, or as otherwise required by law.
-        %li If we transfer information about you if Beehive is acquired by or merged with another organisation, other than an organisation established by us and controlled by us. In this event, Beehive will notify you before information about you is transferred and becomes subject to a different privacy policy.
+        %p When you register for Beehive we ask for information including your name, email address, organisation name, billing address, and payment information (Members who sign up for the free account are not required to enter any payment details). Once you have registered for Beehive you may also submit additional information relating to your funding activities or requirements, your other activities or objectives, or those of your organisation, and other relevant information.
 
-      %hr
-      %h3.uk-text-bold#cookies Cookies
-      %p A cookie is a small amount of data, which often includes an anonymous unique identifier, that is sent to your browser from a web site's computers and stored on your computer's hard drive.
+        %p Unless we obtain your permission, information that is identifiable as relating to you (i.e. it has not been edited to make it anonymous) is not shared with or sold to other organizations for commercial purposes, except in connection with the operation of the Beehive service (including matching users with other users, providing insights into the activities of Users and related research and publications), or under the following circumstances:
 
-      %p Cookies are required to use the Beehive service. We use cookies to record current session information.
+        %ul
+          %li If it is necessary to share information in order to investigate, prevent, or take action regarding illegal activities, suspected fraud, situations involving potential threats to the physical safety of any person, violations of Terms of Service, or as otherwise required by law.
+          %li If we transfer information about you if Beehive is acquired by or merged with another organisation, other than an organisation established by us and controlled by us. In this event, Beehive will notify you before information about you is transferred and becomes subject to a different privacy policy.
 
-      %hr
-      %h3.uk-text-bold#data-storage Data Storage
-      %p Beehive uses third-party vendors and hosting partners to provide the Beehive service. Data relating to Users and their organisations may be transferred to or mirrored on servers outside the European Union.
+        %hr
+        %h3.uk-text-bold#cookies Cookies
+        %p A cookie is a small amount of data, which often includes an anonymous unique identifier, that is sent to your browser from a web site's computers and stored on your computer's hard drive.
 
-      %p Beehive will apply all reasonable measures to ensure that data held on Beehive servers is secure but cannot guarantee that security measures will not be breached.
+        %p Cookies are required to use the Beehive service. We use cookies to record current session information.
 
-      %p Beehive will, when applicable, use secure third-party payment service providers and so will not have access to any User’s bank account or payment card information.
+        %hr
+        %h3.uk-text-bold#data-storage Data Storage
+        %p Beehive uses third-party vendors and hosting partners to provide the Beehive service. Data relating to Users and their organisations may be transferred to or mirrored on servers outside the European Union.
 
-      %hr
-      %h3.uk-text-bold#changes Changes
-      %p Beehive may periodically update this policy. We will notify you about significant changes in the way we treat personal information by sending a notice to the primary email address specified in your Beehive primary account holder account or by placing a prominent notice on our site.
+        %p Beehive will apply all reasonable measures to ensure that data held on Beehive servers is secure but cannot guarantee that security measures will not be breached.
 
-      %hr
-      %h3.uk-text-bold#questions Questions
-      %p
-        Any questions about this Privacy Policy should be sent to
-        = succeed '.' do
-          = link_to 'support@beehivegiving.org', 'mailto:support@beehivegiving.org'
+        %p Beehive will, when applicable, use secure third-party payment service providers and so will not have access to any User’s bank account or payment card information.
 
-    .uk-width-medium-1-4.uk-margin-top.uk-hidden-small
-      .uk-panel.uk-panel-box{"data-uk-sticky" => "{top:115}"}
-        %ul.uk-nav.uk-nav-side{"data-uk-scrollspy-nav" => "{closest:'li', smoothscroll:true}"}
-          %li.uk-nav-header Privacy
-          %li
-            %a{:href => "#general-information"} General Information
-          %li
-            %a{:href => "#information-gathering-and-usage"} Information Gathering and Usage
-          %li
-            %a{:href => "#cookies"} Cookies
-          %li
-            %a{:href => "#data-storage"} Data Storage
-          %li
-            %a{:href => "#changes"} Changes
-          %li
-            %a{:href => "#questions"} Questions
+        %hr
+        %h3.uk-text-bold#changes Changes
+        %p Beehive may periodically update this policy. We will notify you about significant changes in the way we treat personal information by sending a notice to the primary email address specified in your Beehive primary account holder account or by placing a prominent notice on our site.
+
+        %hr
+        %h3.uk-text-bold#questions Questions
+        %p
+          Any questions about this Privacy Policy should be sent to
+          = succeed '.' do
+            = link_to 'support@beehivegiving.org', 'mailto:support@beehivegiving.org'
+
+      .uk-width-medium-1-4.uk-margin-top.uk-hidden-small
+        .uk-panel.uk-panel-box{"data-uk-sticky" => "{top:115}"}
+          %ul.uk-nav.uk-nav-side{"data-uk-scrollspy-nav" => "{closest:'li', smoothscroll:true}"}
+            %li.uk-nav-header Privacy
+            %li
+              %a{:href => "#general-information"} General Information
+            %li
+              %a{:href => "#information-gathering-and-usage"} Information Gathering and Usage
+            %li
+              %a{:href => "#cookies"} Cookies
+            %li
+              %a{:href => "#data-storage"} Data Storage
+            %li
+              %a{:href => "#changes"} Changes
+            %li
+              %a{:href => "#questions"} Questions

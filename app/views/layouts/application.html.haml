@@ -35,7 +35,7 @@
           .logo-label Beta
         .uk-navbar-flip
           - if logged_in?
-            - unless content_for?(:signup)
+            - unless content_for?(:signup) || content_for?(:public)
               - if current_user.organisation.type == 'Funder'
                 .uk-navbar-content.uk-text-muted.uk-hidden-small
                   Welcome,
@@ -121,6 +121,7 @@
           });
         #notice
 
+    = yield(:public) if content_for?(:public)
     = yield(:signup) if content_for?(:signup)
     = yield
 
