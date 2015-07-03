@@ -7,16 +7,17 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
+  # Sessions
   root :to => 'sessions#check'
   get '/login' => 'sessions#new', as: 'login'
   post '/login' => 'sessions#create'
   get '/logout'  => 'sessions#destroy'
 
   # Pages
-  match 'tour', to: 'pages#tour', via: :get, as: 'tour'
-  match 'about', to: 'pages#about', via: :get, as: 'about'
-  match 'privacy', to: 'pages#privacy', via: :get, as: 'privacy'
-  match 'terms', to: 'pages#terms', via: :get, as: 'terms'
+  match '/tour', to: 'pages#tour', via: :get, as: 'tour'
+  match '/about', to: 'pages#about', via: :get, as: 'about'
+  match '/privacy', to: 'pages#privacy', via: :get, as: 'privacy'
+  match '/terms', to: 'pages#terms', via: :get, as: 'terms'
 
   # Sign up
   match '/welcome', to: 'signup#user', via: :get, as: 'signup_user'
@@ -33,7 +34,6 @@ Rails.application.routes.draw do
   match '/new-funder', to: 'signup#create_funder', via: :post
 
   # RecipientDashboard
-  # match '/dashboard', to: 'recipients#dashboard', via: :get, as: 'recipient_dashboard'
   match '/comparison/(:id)/gateway', to: 'recipients#gateway', via: :get, as: 'recipient_comparison_gateway'
   match '/comparison/(:id)/unlock_funder', to: 'recipients#unlock_funder', via: :post, as: 'recipient_unlock_funder'
   match '/comparison/(:id)', to: 'recipients#comparison', via: :get, as: 'recipient_comparison'
