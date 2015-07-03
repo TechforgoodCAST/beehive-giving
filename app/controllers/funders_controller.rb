@@ -10,7 +10,7 @@ class FundersController < ApplicationController
   def index
     @search = Funder.where('recommendations.recipient_id = ?', @recipient.id).ransack(params[:q])
     @search.sorts = ['recommendations_score desc', 'name asc'] if @search.sorts.empty?
-    @funders = @search.result.includes(:funder_attributes, :grants, :recommendations)
+    @funders = @search.result
 
     respond_to do |format|
       format.html
