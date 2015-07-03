@@ -1,7 +1,12 @@
 ActiveAdmin.register Feedback do
-  config.sort_order = 'created_at_asc'
 
   permit_params :user_id, :nps, :taken_away, :informs_decision, :other
+
+  controller do
+    def scoped_collection
+      Feedback.includes(:user)
+    end
+  end
 
   index do
     column "Organisation", :user do |feedback|

@@ -1,5 +1,4 @@
 ActiveAdmin.register Recipient do
-  config.per_page = 50
 
   permit_params :name, :contact_number, :website,
   :street_address, :city, :region, :postal_code, :country, :charity_number,
@@ -8,6 +7,10 @@ ActiveAdmin.register Recipient do
   controller do
     def find_resource
       Recipient.where(slug: params[:id]).first!
+    end
+
+    def scoped_collection
+      Recipient.includes(:users, :profiles, :grants, :features)
     end
   end
 

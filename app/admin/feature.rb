@@ -1,6 +1,10 @@
 ActiveAdmin.register Feature do
-  config.sort_order = 'created_at_asc'
-  config.per_page = 1000
+
+  controller do
+    def scoped_collection
+      Feature.includes(:funder, :recipient)
+    end
+  end
 
   index do
     column :data_requested

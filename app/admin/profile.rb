@@ -1,12 +1,16 @@
 ActiveAdmin.register Profile do
 
-  config.per_page = 200
-
   permit_params :organisation_id, :year, :gender, :min_age, :max_age,
   :income, :expenditure, :volunteer_count, :staff_count, :does_sell,
   :beneficiaries_count, :beneficiaries_count_actual, :income_actual,
   :expenditure_actual, beneficiary_ids: [], country_ids: [], district_ids: [],
   implementation_ids: [], implementor_ids: []
+
+  controller do
+    def scoped_collection
+      Profile.includes(:organisation, :districts)
+    end
+  end
 
   index do
     column "Organisation" do |profile|

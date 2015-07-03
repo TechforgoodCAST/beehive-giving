@@ -1,8 +1,12 @@
 ActiveAdmin.register Restriction do
 
-  config.per_page = 200
-
   permit_params :restriction, :details, :invert
+
+  controller do
+    def scoped_collection
+      Restriction.includes(:funders, :funding_streams)
+    end
+  end
 
   form do |f|
     f.inputs do

@@ -3,15 +3,16 @@ ActiveAdmin.register User do
   permit_params :first_name, :last_name, :job_role,
   :user_email, :password, :password_confirmation, :role, :organisation_id
 
+  controller do
+    def scoped_collection
+      User.includes(:organisation)
+    end
+  end
+
   index do
     column "Organisation" do |user|
       if user.organisation
         link_to user.organisation.name, [:admin, user.organisation]
-      end
-    end
-    column "Profiles" do |user|
-      if user.organisation
-        user.organisation.profiles.count
       end
     end
     column :first_name

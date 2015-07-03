@@ -2,6 +2,12 @@ ActiveAdmin.register Recommendation do
 
   permit_params :recipient_id, :funder_id, :score
 
+  controller do
+    def scoped_collection
+      Recommendation.includes(:funder, :recipient)
+    end
+  end
+
   index do
     selectable_column
     column :recipient

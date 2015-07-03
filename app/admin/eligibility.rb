@@ -1,9 +1,12 @@
 ActiveAdmin.register Eligibility do
 
-  config.sort_order = 'created_at_asc'
-  config.per_page = 1000
-
   permit_params :recipient_id, :restriction_id, :eligible
+
+  controller do
+    def scoped_collection
+      Eligibility.includes(:recipient, :restriction)
+    end
+  end
 
   form do |f|
     f.inputs do

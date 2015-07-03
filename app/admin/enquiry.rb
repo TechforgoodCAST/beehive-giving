@@ -1,9 +1,12 @@
 ActiveAdmin.register Enquiry do
 
-  config.sort_order = 'created_at_asc'
-  config.per_page = 1000
-
   permit_params :recipient_id, :funder_id, :funding_stream
+
+  controller do
+    def scoped_collection
+      Enquiry.includes(:funder, :recipient)
+    end
+  end
 
   index do
     selectable_column

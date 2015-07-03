@@ -1,8 +1,12 @@
 ActiveAdmin.register FundingStream do
-  
-  config.per_page = 200
 
   permit_params :label, :group, funder_ids: [], restriction_ids: []
+
+  controller do
+    def scoped_collection
+      FundingStream.includes(:funders, :restrictions)
+    end
+  end
 
   form do |f|
     f.inputs do

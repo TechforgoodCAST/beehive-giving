@@ -9,6 +9,12 @@ ActiveAdmin.register FunderAttribute do
   :application_details, country_ids: [], district_ids: [], approval_month_ids: [],
   funding_type_ids: [], beneficiary_ids: []
 
+  controller do
+    def scoped_collection
+      FunderAttribute.includes(:funder)
+    end
+  end
+
   index do
     selectable_column
     column :year

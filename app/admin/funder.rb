@@ -1,6 +1,5 @@
 ActiveAdmin.register Funder do
   config.sort_order = 'created_at_asc'
-  config.per_page = 200
 
   permit_params :name, :contact_number, :website,
   :street_address, :city, :region, :postal_code, :country, :charity_number,
@@ -11,7 +10,13 @@ ActiveAdmin.register Funder do
     def find_resource
       Funder.where(slug: params[:id]).first!
     end
+
+    def scoped_collection
+      Funder.includes(:grants, :features)
+    end
   end
+
+  filter :name
 
   index do
     column "Funder", :name do |funder|
