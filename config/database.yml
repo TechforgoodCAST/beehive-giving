@@ -19,12 +19,11 @@ default: &default
   encoding: unicode
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: 5
+  pool: <%= ENV["DB_POOL"] || ENV['MAX_THREADS'] || 5 %>
 
 development:
   <<: *default
   database: beehive_development
-  pool: <%= ENV["DB_POOL"] || ENV['MAX_THREADS'] || 5 %>
 
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
@@ -82,6 +81,5 @@ test:
 production:
   <<: *default
   database: beehive_production
-  pool: <%= ENV["DB_POOL"] || ENV['MAX_THREADS'] || 5 %>
   username: beehive
   password: <%= ENV['BEEHIVE_DATABASE_PASSWORD'] %>
