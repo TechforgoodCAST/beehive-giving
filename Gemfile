@@ -26,55 +26,57 @@ gem 'sdoc', '~> 0.4.0',          group: :doc
 
 # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
 
-gem 'puma'
 group :development do
   gem 'spring'
   gem 'guard-rake'
   gem 'guard-livereload'
   gem 'quiet_assets'
 end
-gem 'google-webfonts-rails'
-gem 'faker'
-
-gem 'factory_girl_rails'
-gem 'haml'
-gem 'simple_form'
-gem 'uikit-sass-rails'
-gem 'chosen-rails'
-gem 'jquery-turbolinks'
-gem 'country_select'
-gem 'timelineJS-rails', '~> 1.1.5'
-gem 'rabl'
-gem 'oj'
-gem 'kaminari'
-gem 'fiscali'
-gem 'ransack'
-gem 'activeadmin', github: 'activeadmin'
-gem 'devise'
-gem 'groupdate'
-gem 'chartkick'
-gem 'd3_rails'
-gem 'c3-rails'
-gem 'newrelic_rpm'
-gem 'httparty'
-gem 'nokogiri'
-gem 'intercom-rails'
-gem 'gon'
-gem 'nprogress-rails'
 
 group :test do
   gem 'capybara'
   gem 'show_me_the_cookies'
   gem 'selenium-webdriver'
+  gem 'factory_girl_rails'
 end
+
+gem 'haml'
+gem 'google-webfonts-rails'
+gem 'uikit-sass-rails'
+gem 'chosen-rails'
+gem 'jquery-turbolinks'
+gem 'country_select'
+gem 'simple_form'
+gem 'nprogress-rails'
+
+gem 'rabl'
+gem 'oj'
+gem 'gon'
+
+gem 'kaminari'
+gem 'fiscali'
+
+gem 'ransack'
+gem 'activeadmin', github: 'activeadmin'
+gem 'devise'
+
+gem 'timelineJS-rails', '~> 1.1.5'
+gem 'groupdate'
+gem 'chartkick'
+
+gem 'httparty'
+gem 'nokogiri'
+
+gem 'newrelic_rpm', require: false
+gem 'intercom-rails'
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
 gem 'rails_12factor'
 
-# Use unicorn as the app server
-# gem 'unicorn'
+# Use puma as the app server
+gem 'puma'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
