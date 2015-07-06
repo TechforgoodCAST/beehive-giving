@@ -189,7 +189,3 @@
 
     - if current_user_should_render_feedback?
       = render partial: 'recipients/feedback'
-      - if current_user.sign_in_count > 0 && cookies['_BHfeedbackClose'].blank?
-        -# refactor
-        :javascript
-          $.UIkit.modal("#feedback").show()

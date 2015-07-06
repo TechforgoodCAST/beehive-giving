@@ -53,8 +53,10 @@
               .uk-width-medium-1-1.uk-margin-top
                 .uk-form-controls.uk-text-muted
                   Accept
+                  = link_to 'terms of service', '#terms', class: 'blue', onclick: "window.open('#{terms_path}','Terms of Service','width=600,height=400')"
+                  and
                   = succeed '?' do
-                    = link_to 'terms of service', '#terms', class: 'blue', onclick: "window.open('#{terms_path}','Terms of Service','width=600,height=400')"
+                    = link_to 'privacy policy', '#privacy', class: 'blue', onclick: "window.open('#{privacy_path}','Privacy Policy','width=600,height=400')"
                   = f.input_field :agree_to_terms, error: false, checked: true
                   = f.error :agree_to_terms, class: 'uk-text-small uk-text-warning'
               .uk-width-medium-1-1.uk-margin-top.uk-text-truncate
