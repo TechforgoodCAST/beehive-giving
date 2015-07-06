@@ -1,14 +1,9 @@
 .uk-width-medium-1-3.uk-margin.uk-margin-top-remove
-  .uk-form.uk-panel#panel
-    .uk-grid
-      .uk-width-1-2
-        .uk-vertical-align.uk-text-center{:style => "height: 30px;"}
-          .uk-vertical-align-middle.uk-text-bold
-            Year of profile
-      .uk-width-1-2
-        .uk-form-controls
-          = f.input :year, as: :select, :collection => @recipient.valid_profile_years, :include_blank => false, input_html: { class: 'uk-width-1-1 uk-form-blank' }
-  = f.error :year, class: 'uk-text-small uk-text-warning'
+  .uk-form.uk-panel.uk-panel-box#panel
+    .uk-panel-title Year of profile
+    .uk-form-controls
+      = f.input :year, as: :select, :collection => @recipient.valid_profile_years, :include_blank => false, input_html: { class: 'uk-width-1-1' }
+      = f.error :year, class: 'uk-text-small uk-text-warning'
 
 .uk-grid.uk-margin.uk-margin-top-remove{"data-uk-grid-match" => "{target:'.uk-panel'}"}
   .uk-width-medium-2-3
@@ -158,7 +153,7 @@
           = f.error :implementations, class: 'uk-text-small uk-text-warning'
       .uk-width-medium-1-1.uk-margin-bottom
         %label.uk-form-label
-          Did you receive financial payment for your work in
+          Did you receive financial payment (not donations) for your work in
           = succeed '?' do
             = get_year
         = f.hint :who_pays, class: 'uk-text-small uk-hidden', id: 'who_pays_hint'

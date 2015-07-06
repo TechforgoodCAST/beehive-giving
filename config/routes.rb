@@ -1,9 +1,11 @@
 Rails.application.routes.draw do
 
+  # Errors
   %w( 404 422 500 ).each do |code|
     get code, :to => "errors#show", :code => code
   end
 
+  # Admin
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
