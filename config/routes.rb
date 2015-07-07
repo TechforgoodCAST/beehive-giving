@@ -68,7 +68,7 @@ Rails.application.routes.draw do
       post :vote
       post :approach_funder
     end
-    resources :profiles
+    resources :profiles, :only => [:new, :create, :edit, :update]
     resources :recipient_attribute, :as => :attribute, :only => [:new, :create, :edit, :update]
   end
 

@@ -4,6 +4,7 @@ class FeedbackController < ApplicationController
 
   def new
     @redirect_to_funder = params[:redirect_to_funder]
+    redirect_to funders_path, alert: "It looks like you've already provided feedback" if current_user.feedbacks.count > 0
   end
 
   def create
