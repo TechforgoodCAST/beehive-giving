@@ -8,6 +8,9 @@
         = simple_form_for [@recipient, @profile], method: :patch do |f|
           .uk-grid
             .uk-width-medium-2-3.uk-margin
-              %h2 Update your profile
+              %h2
+                Update your
+                = @profile.year
+                profile
 
           = render partial: 'profiles/form', locals: {f: f, mode: :edit}
