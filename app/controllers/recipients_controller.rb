@@ -22,20 +22,25 @@ class RecipientsController < ApplicationController
   end
 
   def gateway
-    if current_user.feedbacks.count < 1 && @recipient.unlocked_funders.count == 1
-      redirect_to new_feedback_path(:redirect_to_funder => @funder)
-    else
-      redirect_to recipient_comparison_path(@funder) unless @recipient.locked_funder?(@funder)
-    end
+    redirect_to recipient_comparison_path(@funder) unless @recipient.locked_funder?(@funder)
   end
 
   def unlock_funder
-    @recipient.unlock_funder!(@funder) if @recipient.locked_funder?(@funder)
-    redirect_to recipient_comparison_path(@funder)
+    if current_user.feedbacks.count < 1 && @recipient.unlocked_funders.count == 2
+      redirect_to new_feedback_path(:redirect_to_funder => @funder)
+    else
+      @recipient.unlock_funder!(@funder) if @recipient.locked_funder?(@funder)
+      redirect_to recipient_comparison_path(@funder)
+    end
   end
 
   def comparison
-    redirect_to recipient_comparison_gateway_path(@funder) if @recipient.locked_funder?(@funder)
+    if @recipient.locked_funder?(@funder)
+      redirect_to recipient_comparison_gateway_path(@funder)
+    else
+      render :comparison
+    end
+
     @restrictions = @funder.restrictions.uniq
   end
 

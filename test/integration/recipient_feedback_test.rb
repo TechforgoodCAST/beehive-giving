@@ -28,43 +28,17 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
     assert page.has_content?("Feedback", count: 0)
   end
 
-  test "no feedback prompt before second sign in" do
-    create_and_auth_user!(:organisation => @recipient)
-    visit '/'
-    assert_not page.has_css?(".feedback-prompt")
-  end
-
-  test "feedback prompt after second sign in" do
-    create_and_auth_user!(:organisation => @recipient)
-    assert_equal @recipient.users.first.sign_in_count, 0
-    expire_cookies
-
-    visit '/welcome'
-    within("ul > li:nth-child(2)") do
-      click_link("Sign in")
-    end
-
-    within("#sign-in") do
-      fill_in("email", :with => @user.user_email)
-      fill_in("password", :with => @user.password)
-    end
-    click_button("Sign in")
-    assert_equal @recipient.users.first.sign_in_count, 1
-
-    assert page.has_css?(".feedback-prompt")
-  end
-
-  test "feedback prompt before second funder unlock" do
+  test "feedback prompt before third funder unlock" do
     @recipient.founded_on = "01/01/2005"
     @funders, @funding_streams = [], []
 
-    3.times do |i|
+    4.times do |i|
       @funder = create(:funder, :active_on_beehive => true)
       @funders << @funder
       create(:funder_attribute, :funder => @funder, :funding_stream => "All")
     end
 
-    3.times do |i|
+    4.times do |i|
       @restriction1 = create(:restriction)
       @restriction2 = create(:restriction)
 
@@ -76,21 +50,20 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
 
     create_and_auth_user!(:organisation => @recipient)
 
+    # First funder unlock
     @recipient.unlock_funder!(@funders[0])
-    visit "/comparison/#{@funders[0].slug}"
-    assert_equal "/comparison/#{@funders[0].slug}", current_path
+    visit recipient_comparison_path(@funders[0])
+    assert_equal recipient_comparison_path(@funders[0]), current_path
 
-    # navigating to funder page redirects
-    visit '/funders'
-    Capybara.match = :first
-    click_link('#locked_funder')
-    assert_equal "/feedback/new", current_path
+    # Second funder unlock
+    @recipient.unlock_funder!(@funders[1])
+    visit recipient_comparison_path(@funders[1])
+    assert_equal recipient_comparison_path(@funders[1]), current_path
 
-    # visiting funder pages redirects if no feedback before second unlock
-    visit "/comparison/#{@funders[2].slug}/gateway"
-    assert_equal "/feedback/new", current_path
-    visit "/comparison/#{@funders[1].slug}/gateway"
-    assert_equal "/feedback/new", current_path
+    # Visiting third funders pages redirects if no feedback
+    visit recipient_comparison_gateway_path(@funders[2])
+    click_link('Unlock Funder')
+    assert_equal new_feedback_path, current_path
 
     # completing feedback form redirects to funder gateway
     within("#new_feedback") do
@@ -99,11 +72,11 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
       select("10 - Strongly agree", :from => "feedback_informs_decision")
     end
     click_button("Submit feedback")
-    assert_equal "/comparison/#{@funders[1].slug}/gateway", current_path
+    assert_equal recipient_comparison_gateway_path(@funders[2]), current_path
 
-    # feedback only required for second unlock
-    visit "/comparison/#{@funders[2].slug}/gateway"
-    assert_equal "/comparison/#{@funders[2].slug}/gateway", current_path
+    # Feedback only required for second unlock
+    visit recipient_comparison_gateway_path(@funders[3])
+    assert_equal recipient_comparison_gateway_path(@funders[3]), current_path
   end
 
   # # Selenium testing

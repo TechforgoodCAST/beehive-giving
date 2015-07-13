@@ -29,10 +29,8 @@
                     .uk-width-1-1
                       .uk-form.uk-form-stacked
                         .uk-width-1-1
-                          %label.uk-form-label
-                            = f.label "Funder name"
                           .uk-form-controls
-                            = f.input :name_cont, input_html: { class: 'uk-width-1-1' }
+                            = f.input :name_cont, placeholder: "Funder name", input_html: { class: 'uk-width-1-1' }
                         = render :partial => 'recipients/filter_slim', locals: {f: f}
 
                 .uk-grid
@@ -41,5 +39,15 @@
                   .uk-width-1-3{style: 'padding-left: 0;'}
                     = link_to "Clear", request.path, class: "uk-width-1-1 uk-button"
 
+            %h2
+              = Recipient::MAX_FREE_LIMIT - @recipient.unlocked_funders.count
+              %span.uk-text-small Unlocks remaining
+
           #search_results.uk-width-medium-1-1.uk-width-large-2-3.uk-margin-bottom
             = render :partial => 'funders/search_results'
+
+- if current_user_should_render_welcome_modal?
+  = render :partial => 'recipients/modals/welcome'
+
+- if current_user_should_render_recommendation_modal?
+  = render :partial => 'recipients/modals/recommendation'

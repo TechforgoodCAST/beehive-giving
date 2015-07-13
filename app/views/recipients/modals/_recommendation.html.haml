@@ -1,0 +1,17 @@
+#recommendation.uk-modal
+  .uk-modal-dialog
+    .uk-modal-header
+      %h2
+        Recommendation
+        = succeed '!' do
+          = current_user.first_name
+    %p Did you know
+    .uk-modal-footer.uk-text-center
+      -# %a.uk-modal-close.js-record-welcome-close Tell me more
+      %a.uk-button.uk-button-primary.uk-modal-close.uk-width-2-5.js-record-recommendation-close Show me my recommendations
+
+:javascript
+  var modal = $.UIkit.modal("#recommendation");
+  modal.options.bgclose = false;
+  modal.options.keyboard = false;
+  modal.show();

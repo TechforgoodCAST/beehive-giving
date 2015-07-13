@@ -3,6 +3,7 @@ class Organisation < ActiveRecord::Base
 
   STATUS = ['Active - currently operational', 'Closed - no longer operational', 'Merged - operating as a different entity']
 
+  has_one :subscription
   has_many :users, dependent: :destroy
   has_many :profiles, dependent: :destroy
 

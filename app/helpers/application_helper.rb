@@ -1,19 +1,23 @@
 module ApplicationHelper
+
   def current_user_should_render_feedback?
     unless content_for?(:signup) || current_page?(controller: 'feedback', action: 'new')
       logged_in? && (current_user.feedbacks.count == 0)
     end
   end
 
-  def current_user_has_closed_feedback?
-    if current_user.sign_in_count < 2
-      true
-    else
-      cookies['_BHfeedbackClose'].present?
-    end
+  def current_user_should_render_welcome_modal?
+    current_user.sign_in_count == 0 unless cookies['_BHwelcomeClose'].present? || @recipient.profiles.count > 0
   end
 
-  def curent_user_should_show_profile_prompt?
-
+  # refactor
+  def current_user_should_render_recommendation_modal?
+    @recipient.profiles.where(year: Date.today.year).count == 1 unless  @recipient.users.count > 1 || current_user.created_at < Date.today-3 || cookies['_BHrecommendationClose'].present?
   end
+
+  # refactor
+  def current_user_should_render_eligibility_modal?
+    @recipient.unlocked_funders.count == 1 if @recipient.questions_remaining?(@recipient.unlocked_funders.first)
+  end
+
 end

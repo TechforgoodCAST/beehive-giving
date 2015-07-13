@@ -3,72 +3,72 @@ require 'test_helper'
 class RecipientGatewayTest < ActionDispatch::IntegrationTest
 
   setup do
-    @funder1 = create(:funder, name: "funder1")
-    @funder2 = create(:funder, name: "funder2")
-    @funder3 = create(:funder, name: "funder3")
-    @funder4 = create(:funder, name: "funder4")
-    @funder5 = create(:funder, name: "funder5")
+    @funders = Array.new(5) {|i| create(:funder, name: "funder#{i}")}
+    @recipient = create(:recipient)
   end
 
-  test "recipient founded_on > 4 years ago has to create 4 profiles to unlock funders" do
-    @recipient = create(:recipient, :founded_on => "#{Date.today.year-10}/01/01")
+  test "recipient with one profile for current year can unlock 3 funders" do
+    @recipient.founded_on = "#{Date.today.year-10}/01/01"
     create_and_auth_user!(:organisation => @recipient)
     create(:feedback, :user => @recipient.users.first)
 
-    visit "/comparison/#{@funder1.slug}"
-    assert_equal "/comparison/#{@funder1.slug}/gateway", current_path
+    # Cannot unlock funders without one profile
+    visit recipient_comparison_path(@funders[0])
+    assert_equal recipient_comparison_gateway_path(@funders[0]), current_path
 
+    # Create one profile for current year
     create(:profile, :organisation => @recipient, :year => Date.today.year )
-    visit "/comparison/#{@funder1.slug}/gateway"
-    click_link('Unlock Funder (4 left)')
-    assert_equal "/comparison/#{@funder1.slug}", current_path
 
+    # First unlock
+    visit recipient_comparison_gateway_path(@funders[0])
+    click_link("Unlock Funder (#{Recipient::MAX_FREE_LIMIT} left)")
+    assert_equal recipient_comparison_path(@funders[0]), current_path
+
+    # Second unlock
     create(:profile, :organisation => @recipient, :year => (Date.today.year - 1) )
-    visit "/comparison/#{@funder2.slug}/gateway"
-    click_link('Unlock Funder (3 left)')
-    assert_equal "/comparison/#{@funder2.slug}", current_path
+    visit recipient_comparison_gateway_path(@funders[1])
+    click_link("Unlock Funder (#{Recipient::MAX_FREE_LIMIT - 1} left)")
+    assert_equal recipient_comparison_path(@funders[1]), current_path
 
+    # Third unlock
     create(:profile, :organisation => @recipient, :year => (Date.today.year - 2) )
-    visit "/comparison/#{@funder3.slug}/gateway"
-    click_link('Unlock Funder (2 left)')
-    assert_equal "/comparison/#{@funder3.slug}", current_path
+    visit recipient_comparison_gateway_path(@funders[2])
+    click_link("Unlock Funder (#{Recipient::MAX_FREE_LIMIT - 2} left)")
+    assert_equal recipient_comparison_path(@funders[2]), current_path
 
-    create(:profile, :organisation => @recipient, :year => (Date.today.year - 3) )
-    visit "/comparison/#{@funder4.slug}/gateway"
-    click_link('Unlock Funder (1 left)')
-    assert_equal "/comparison/#{@funder4.slug}", current_path
-
-    visit "/comparison/#{@funder5.slug}/gateway"
-    assert page.has_content?("You can only unlock 4 funders at the moment...")
+    # Fouth unlock not permitted
+    visit recipient_comparison_gateway_path(@funders[4])
+    assert page.has_content?("You can only unlock #{Recipient::MAX_FREE_LIMIT} funders at the moment...")
   end
 
-  test "recipient founded_on < 4 years ago has to create as many profiles as long as they have existed" do
-    @recipient = create(:recipient, :founded_on => "#{Date.today.year-1}/01/01")
+  test "Eligibilty modal shown when first funder unlocked on first funders page" do
+    create(:profile, :organisation => @recipient)
+    create(:funding_stream, :restrictions => Array.new(3) { |i| create(:restriction) }, :funders => [@funders[0]])
     create_and_auth_user!(:organisation => @recipient)
-    create(:feedback, :user => @recipient.users.first)
 
-    create(:profile, :organisation => @recipient, :year => Date.today.year )
-    visit "/comparison/#{@funder1.slug}/gateway"
-    click_link('Unlock Funder (4 left)')
-    assert_equal "/comparison/#{@funder1.slug}", current_path
+    visit recipient_comparison_gateway_path(@funders[0])
+    click_link("Unlock Funder")
+    assert page.has_css?("#eligibility")
+  end
 
-    create(:profile, :organisation => @recipient, :year => (Date.today.year - 1) )
-    visit "/comparison/#{@funder2.slug}/gateway"
-    click_link('Unlock Funder (3 left)')
-    assert_equal "/comparison/#{@funder2.slug}", current_path
+  test "Eligibilty modal hidden if first funder eligibility complete" do
+    create(:profile, :organisation => @recipient)
+    @restrictions = Array.new(3) { |i| create(:restriction) }
+    create(:funding_stream, :restrictions => @restrictions, :funders => [@funders[0]])
+    create(:funder_attribute, :funder => @funders[0], :funding_stream => 'All')
+    create_and_auth_user!(:organisation => @recipient)
 
-    visit "/comparison/#{@funder3.slug}/gateway"
-    assert page.has_content?("Unlock Funder (2 left)")
-    click_link('Unlock Funder')
-    assert_equal "/comparison/#{@funder3.slug}", current_path
+    visit recipient_comparison_gateway_path(@funders[0])
+    click_link("Unlock Funder")
+    assert page.has_css?("#eligibility")
+    
+    3.times { |i| create(:eligibility, :recipient => @recipient, :restriction => @restrictions[i])}
 
-    visit "/comparison/#{@funder4.slug}/gateway"
-    assert page.has_content?("Unlock Funder (1 left)")
-    click_link('Unlock Funder')
-    assert_equal "/comparison/#{@funder4.slug}", current_path
+    visit recipient_comparison_gateway_path(@funders[0])
+    assert_not page.has_css?("#eligibility")
 
-    visit "/comparison/#{@funder5.slug}/gateway"
-    assert page.has_content?("You can only unlock 4 funders at the moment...")
+    visit recipient_comparison_gateway_path(@funders[1])
+    assert_not page.has_css?("#eligibility")
   end
 
 end
