@@ -17,19 +17,19 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
   end
 
   test "funders order by initial recommendation" do
-    visit "/funders"
+    visit funders_path
     Capybara.match = :first
-    click_link("See how you compare")
-    assert_equal "/comparison/#{@funders[1].slug}/gateway", current_path
+    click_link("#locked_funder")
+    assert_equal recipient_comparison_gateway_path(@funders[1]), current_path
   end
 
   test "funders order by refined recommendation" do
     create(:profile, :organisation => @recipient, :beneficiaries => FactoryGirl.create_list(:beneficiary_unique, 4))
     @recipient.refined_recommendation
-    visit "/funders"
+    visit funders_path
     Capybara.match = :first
     click_link("See how you compare")
-    assert_equal "/comparison/#{@funders[2].slug}/gateway", current_path
+    assert_equal recipient_comparison_gateway_path(@funders[2]), current_path
   end
 
 end

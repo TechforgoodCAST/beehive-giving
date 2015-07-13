@@ -13,13 +13,14 @@ class RecipientApproachFunderTest < ActionDispatch::IntegrationTest
   end
 
   test "approach funder choice visible if eligible on comparison page" do
+    create(:profile, :organisation => @recipient)
     @eligibility = create(:eligibility, :recipient => @recipient, :restriction => @restriction)
-    visit "/comparison/#{@funder.slug}"
+    visit recipient_comparison_path(@funder)
     assert page.has_content?("Approach for funding")
   end
 
   test "approach funder choice invisible if ineligible on comparison page" do
-    visit "/comparison/#{@funder.slug}"
+    visit recipient_comparison_path(@funder)
     assert_not page.has_content?("Approach for funding")
   end
 

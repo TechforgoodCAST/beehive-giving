@@ -5,8 +5,8 @@ class ProfilesController < ApplicationController
   def new
     @redirect_to_funder = params[:redirect_to_funder]
     if !@recipient || !@recipient.can_create_profile?
-      flash[:alert] = "Sorry you can't create a profile"
-      redirect_to root_path
+      flash[:alert] = "Sorry you can't create more than one profile a year, why not edit the one you've already created."
+      redirect_to edit_recipient_profile_path(current_user.organisation, current_user.organisation.profiles.where(year: Date.today.year).first)
     else
       @profile = @recipient.profiles.new
     end
@@ -21,7 +21,7 @@ class ProfilesController < ApplicationController
       if @redirect_to_funder
         redirect_to recipient_comparison_path(Funder.find_by_slug(@redirect_to_funder))
       else
-        redirect_to funders_path, notice: 'Profile created'
+        redirect_to funders_path
       end
     else
       render :new

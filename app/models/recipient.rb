@@ -15,18 +15,22 @@ class Recipient < Organisation
   has_many :districts, :through => :profiles
   has_many :beneficiaries, :through => :profiles
 
-  PROFILE_MAX_FREE_LIMIT = 4
+  MAX_FREE_LIMIT = 3
 
   def recipient_profile_limit
     if (Date.today.year - self.founded_on.year) < 4
       (Date.today.year - self.founded_on.year) + 1
     else
-      4
+      MAX_FREE_LIMIT
     end
   end
 
   def can_unlock_funder?(funder)
-    profiles.count <= PROFILE_MAX_FREE_LIMIT && profiles.count > unlocked_funders.size
+    if self.subscription.present?
+      true
+    else
+      unlocked_funders.size < MAX_FREE_LIMIT && self.profiles.count > 0
+    end
   end
 
   def can_request_funder?(funder, request)
@@ -66,7 +70,7 @@ class Recipient < Organisation
   end
 
   def can_create_profile?
-    profiles.count <= Date.today.year - self.founded_on.year unless profiles.count == 4
+    profiles.where(year: Date.today.year).count < 1
   end
 
   def full_address
@@ -189,7 +193,13 @@ class Recipient < Organisation
   end
 
   def recommended_funder?(funder)
-    Funder.joins(:recommendations).where("recipient_id = ? AND score >= ?", self.id, 1).order("recommendations.score DESC").order("name ASC").pluck(:funder_id).take(6).include?(funder.id)
+    Funder.joins(:recommendations).where("recipient_id = ? AND score >= ?", self.id, 1).order("recommendations.score DESC, name ASC").pluck(:funder_id).take(6).include?(funder.id)
+  end
+
+  def similar_funders(funder)
+    array = Funder.joins(:recommendations).where("recipient_id = ?", self.id).order("recommendations.score DESC, name ASC").to_a
+
+    array[(array.index(funder)+1)..(array.index(funder)+7)].sample(3)
   end
 
 end

@@ -4,6 +4,7 @@ class RecipientDashboardTest < ActionDispatch::IntegrationTest
 
   setup do
     @recipient = create(:recipient)
+    @funder = create(:funder, :active_on_beehive => true)
   end
 
   test 'public cannot see organisation profile' do
@@ -24,7 +25,7 @@ class RecipientDashboardTest < ActionDispatch::IntegrationTest
 
   test 'funders can see all organisation profiles' do
     @recipient2 = create(:organisation)
-    @funder = create(:funder)
+
     create_and_auth_user!(:organisation => @funder, :role => 'Funder')
 
     visit "/organisation/acme"
@@ -35,40 +36,21 @@ class RecipientDashboardTest < ActionDispatch::IntegrationTest
   end
 
   test "recipient is directed to gateway for locked funders" do
-    @funder = create(:funder, :active_on_beehive => true)
     @profile = create(:profile, :organisation => @recipient)
+
     create_and_auth_user!(:organisation => @recipient)
 
-    visit "/comparison/#{@funder.slug}"
-    assert_equal "/comparison/#{@funder.slug}/gateway", current_path
+    visit recipient_comparison_path(@funder)
+    assert_equal recipient_comparison_gateway_path(@funder), current_path
   end
 
   test "recipient can see unlocked link on funders index for an unlocked funder" do
-    @funder = create(:funder, :active_on_beehive => true)
     @profile = create(:profile, :organisation => @recipient)
     create_and_auth_user!(:organisation => @recipient)
     @recipient.unlock_funder!(@funder)
 
-    visit "/funders"
+    visit funders_path
     assert_not page.has_content?('See how you compare (Locked)')
-  end
-
-  test "recipient can only unlock 4 funders" do
-    @recipient = create(:recipient, founded_on: "01/01/2005")
-    @funders   = []
-    5.times { @funders << create(:funder, :active_on_beehive => true) }
-    4.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i ) }
-    create_and_auth_user!(:organisation => @recipient)
-
-    @recipient.unlock_funder!(@funders[0])
-    @recipient.unlock_funder!(@funders[1])
-    @recipient.unlock_funder!(@funders[2])
-    @recipient.unlock_funder!(@funders[3])
-
-    visit "/comparison/#{@funders[4].slug}"
-
-    assert_equal "/comparison/#{@funders[4].slug}/gateway", current_path
-    assert page.has_content?("You can only unlock 4 funders at the moment...")
   end
 
 end

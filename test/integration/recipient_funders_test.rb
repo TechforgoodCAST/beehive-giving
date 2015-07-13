@@ -6,71 +6,45 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     @recipient = create(:recipient)
   end
 
-  # test 'who is @recipient on funders' do
-  # end
-
-  test 'funders are locked for user with no profiles' do
+  test 'funders are locked for recipients with no profiles' do
     3.times do |i|
       @funder = create(:funder, :active_on_beehive => true)
       create(:funder_attribute, :funder => @funder, :funding_stream => "All")
     end
 
     create_and_auth_user!(:organisation => @recipient)
-    visit '/funders'
+    visit funders_path
     assert page.has_content?("See how you compare")
     assert_equal all(".uk-icon-lock").length, 3
   end
 
-  test 'that clicking the comparison link takes you a page with options to unlock' do
-    @funder = create(:funder, :active_on_beehive => true)
-    create(:funder_attribute, :funder => @funder, :funding_stream => "All")
-    create_and_auth_user!(:organisation => @recipient)
-    visit '/funders'
-    find_link('See how you compare').click
-    assert page.has_link?('Complete profile')
-  end
+  test 'recipients only needs to create one profile to unlock funders' do
+    @funders = Array.new(3) { |i| create(:funder, :active_on_beehive => true) }
+    Array.new(3) { |i| create(:funder_attribute, :funder => @funders[i], :funding_stream => "All") }
 
-  test 'that clicking the comparison link with a profile gives an unlock button' do
-    @recipient = create(:recipient)
-    @funder = create(:funder, :active_on_beehive => true)
-    create(:funder_attribute, :funder => @funder, :funding_stream => "All")
     @profile = create(:profile, :organisation => @recipient)
     create_and_auth_user!(:organisation => @recipient)
-    visit '/funders'
-    find_link('See how you compare').click
+
+    visit recipient_comparison_path(@funders[0])
     assert page.has_link?('Unlock Funder')
-  end
-
-  test 'recipient with 4 profiles can only pay' do
-    @recipient = create(:recipient, founded_on: "01/01/2005")
-    @funders   = []
-    5.times do |i|
-      @funder = create(:funder, :active_on_beehive => true)
-      @funders << @funder
-      create(:funder_attribute, :funder => @funder, :funding_stream => "All")
-    end
-    4.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i ) }
-    @funders.each_with_index { |funder, i| @recipient.unlock_funder!(@funders[i]) }
-
-    create_and_auth_user!(:organisation => @recipient)
-    visit '/funders'
-    Capybara.match = :first
-    find_link('See how you compare').click
-
-    assert_not page.has_link?('Complete profile')
-    assert_not page.has_link?('Unlock Funder')
-  end
-
-  test "recipient can unlock a funder" do
-    @funder = create(:funder, :active_on_beehive => true)
-    create(:funder_attribute, :funder => @funder, :funding_stream => "All")
-    @profile = create(:profile, :organisation => @recipient)
-    create_and_auth_user!(:organisation => @recipient)
-    visit '/funders'
-    find_link('See how you compare').click
-    assert_equal "/comparison/#{@funder.slug}/gateway", current_path
     find_link('Unlock Funder').click
-    assert_equal "/comparison/#{@funder.slug}", current_path
+
+    visit recipient_comparison_path(@funders[1])
+    assert page.has_link?('Unlock Funder')
+    find_link('Unlock Funder').click
+  end
+
+  test 'recipient can only unlock 3 funders without subscribing' do
+    @funders = Array.new(4) { |i| create(:funder, :active_on_beehive => true) }
+    Array.new(4) { |i| create(:funder_attribute, :funder => @funders[i], :funding_stream => "All") }
+
+    @profile = create(:profile, :organisation => @recipient)
+    3.times { |i| @recipient.unlock_funder!(@funders[i]) }
+
+    create_and_auth_user!(:organisation => @recipient)
+    visit recipient_comparison_path(@funders[3])
+
+    assert_not page.has_link?('Unlock Funder')
   end
 
   def eligible_badge
@@ -101,7 +75,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     end
 
     create_and_auth_user!(:organisation => @recipient)
-    visit '/funders'
+    visit funders_path
 
     assert page.has_content?('Eligible', count: 2)
     assert page.has_content?('Not eligible', count: 0)
@@ -117,7 +91,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     end
 
     create_and_auth_user!(:organisation => @recipient)
-    visit '/funders'
+    visit funders_path
 
     assert page.has_content?('Eligible', count: 3)
     assert page.has_content?('Not eligible', count: 0)
@@ -133,10 +107,73 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     end
 
     create_and_auth_user!(:organisation => @recipient)
-    visit '/funders'
+    visit funders_path
 
     assert page.has_content?('Eligible', count: 0)
     assert page.has_content?('Not eligible', count: 3)
   end
+
+  test 'Welcome modal shows when user first sees funders index' do
+    create_and_auth_user!(:organisation => @recipient)
+    visit funders_path
+    assert page.has_css?("#welcome")
+  end
+
+  test 'Welcome modal hidden if cookie present' do
+    create_and_auth_user!(:organisation => @recipient)
+    create_cookie('_BHwelcomeClose', true)
+    visit funders_path
+    assert_not page.has_css?("#welcome")
+  end
+
+  test 'Welcome model hidden from second sign in' do
+    create_and_auth_user!(:organisation => @recipient)
+    @recipient.users.first.increment!(:sign_in_count)
+    visit funders_path
+    assert_not page.has_css?("#welcome")
+  end
+
+  test 'Recommendation modal shows when profile for current year is completed' do
+    create(:profile, :organisation => @recipient, :year => Date.today.year)
+    create_and_auth_user!(:organisation => @recipient)
+    visit funders_path
+
+    # Welcome modal not shown
+    assert_not page.has_css?("#welcome")
+    # Recommendation modal shown
+    assert page.has_css?("#recommendation")
+  end
+
+  test 'Recommendation modal hidden if cookie present' do
+    create(:profile, :organisation => @recipient, :year => Date.today.year)
+    create_and_auth_user!(:organisation => @recipient)
+    create_cookie('_BHrecommendationClose', true)
+    visit funders_path
+    assert_not page.has_css?("#recommendation")
+  end
+
+  test 'Recommendation modal hidden if second user' do
+    create(:profile, :organisation => @recipient, :year => Date.today.year)
+    create_and_auth_user!(:organisation => @recipient)
+    visit logout_path
+    create_and_auth_user!(:organisation => @recipient, :user_email => 'user2@email.com')
+    visit funders_path
+    assert_not page.has_css?("#recommendation")
+  end
+
+  test 'Recommendation modal hidden if user created more than 3 days ago' do
+    create(:profile, :organisation => @recipient, :year => Date.today.year)
+    create_and_auth_user!(:organisation => @recipient, :created_at => Date.today - 10)
+    visit funders_path
+    assert_not page.has_css?("#recommendation")
+  end
+
+  # test 'funders page shows call to action for unlocking funders' do
+  #
+  # end
+  #
+  # test 'funders page shows call to action for cheking eligibility' do
+  #
+  # end
 
 end

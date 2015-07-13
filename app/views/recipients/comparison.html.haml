@@ -3,13 +3,13 @@
     .uk-grid
       = render partial: 'recipients/sections/header'
 
-      .uk-width-medium-1-1.uk-width-large-1-4.uk-vertical-align.uk-text-center{style: 'height: 220px;'}
+      .uk-width-medium-1-1.uk-width-large-1-4.uk-vertical-align.uk-text-center{style: "height: 220px;"}
         .uk-vertical-align-middle
           .uk-panel.cta
             - if @funder.restrictions.any?
               - if @recipient.questions_remaining?(@funder)
                 %p
-                  First things first. Let's see if you're eligible?
+                  First things first. Let's see if you're eligible.
                 = link_to 'Are you eligible?', recipient_eligibility_path(@funder), class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
               - else
                 - if @recipient.eligible?(@funder)
@@ -37,9 +37,10 @@
 
 = render partial: 'recipients/sections/overview'
 
-= render partial: 'recipients/sections/funded'
-
 = render partial: 'recipients/sections/similar'
+
+- if current_user_should_render_eligibility_modal?
+  = render :partial => 'recipients/modals/eligibility'
 
 - if @recipient.eligible?(@funder)
   = render partial: 'recipients/eligible'

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150629111836) do
+ActiveRecord::Schema.define(version: 20150709111343) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -310,6 +310,17 @@ ActiveRecord::Schema.define(version: 20150629111836) do
 
   add_index "organisations", ["slug"], name: "index_organisations_on_slug", unique: true, using: :btree
 
+  create_table "plans", force: :cascade do |t|
+    t.string   "name"
+    t.float    "price"
+    t.string   "interval"
+    t.text     "features"
+    t.boolean  "highlight"
+    t.integer  "display_order"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
   create_table "profiles", force: :cascade do |t|
     t.integer  "organisation_id"
     t.string   "gender",                     limit: 255
@@ -367,6 +378,13 @@ ActiveRecord::Schema.define(version: 20150629111836) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean  "invert"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.integer  "plan_id"
+    t.integer  "organisation_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
   end
 
   create_table "users", force: :cascade do |t|

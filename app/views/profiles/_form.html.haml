@@ -1,10 +1,6 @@
 - if mode == :new
-  .uk-width-medium-1-3.uk-margin.uk-margin-top-remove
-    .uk-form.uk-panel.uk-panel-box#panel
-      .uk-panel-title Year of profile
-      .uk-form-controls
-        = f.input :year, as: :select, :collection => @recipient.valid_profile_years, :include_blank => false, input_html: { class: 'uk-width-1-1' }
-        = f.error :year, class: 'uk-text-small uk-text-warning'
+  = f.hidden_field :year, value: Date.today.year.to_s
+  = f.error :year, class: 'uk-text-small uk-text-warning'
 
 .uk-grid.uk-margin.uk-margin-top-remove{"data-uk-grid-match" => "{target:'.uk-panel'}"}
   .uk-width-medium-2-3
@@ -38,7 +34,7 @@
         regions where your organisation has affected people in
         = succeed '.' do
           = get_year
-        Remember the locations where beneficiaries have been affected may be different from the locations you target. Start by selecting all the countries, to populate the list of districts to choose from. You can type the name of the location to filter the list.
+        Remember the locations where beneficiaries have been affected may be different from the locations you target. Start by selecting all the countries, to populate the list of regions to choose from. You can type the name of the location to filter the list.
 
 .uk-grid.uk-margin.uk-margin-top-remove{"data-uk-grid-match" => "{target:'.uk-panel'}"}
   .uk-width-medium-2-3
