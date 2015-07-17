@@ -7,9 +7,9 @@
     .uk-grid
       .uk-width-small-1-1.uk-width-medium-1-4.uk-width-large-1-4.uk-vertical-align.uk-text-center{style: 'height: 220px;'}
         .uk-vertical-align-middle
-          .uk-border-circle.uk-vertical-align{style: 'background: #fff; height: 160px; width: 160px; border: 3px solid #F7BA0E; position: relative;'}
+          .uk-border-circle.uk-vertical-align.shadow{style: 'background: #fff; height: 160px; width: 160px; border: 3px solid #F7BA0E; position: relative;'}
             - if @recipient.recommended_funder?(@funder) && @recipient.profiles.count > 0
-              .funder-logo-banner
+              .funder-logo-banner.shadow
                 %p Suggested
             .uk-vertical-align-middle
               .funder{class: "#{@funder.slug}-small", alt: "#{@funder.name} Logo"}
@@ -31,7 +31,7 @@
 
       .uk-width-medium-1-1.uk-width-large-1-4.uk-vertical-align.uk-text-center{style: 'height: 220px;'}
         .uk-vertical-align-middle
-          .uk-panel.cta
+          .uk-panel.cta.shadow{"data-uk-sticky" => "{top:40, media: 959}"}
             - if @recipient.can_unlock_funder?(@funder)
               %p Now that you have completed a profile you can click below to unlock this funder.
               = link_to "Unlock Funder (#{(Recipient::MAX_FREE_LIMIT - @recipient.unlocked_funders.count)} left)", recipient_unlock_funder_path(@funder), class: 'uk-button uk-button-large uk-button-primary uk-width-1-1', method: :post
@@ -45,12 +45,10 @@
               = link_to "Unlock Funder (#{(Recipient::MAX_FREE_LIMIT - @recipient.unlocked_funders.count)} left)", recipient_unlock_funder_path(@funder), class: 'uk-button uk-button-large uk-button-primary uk-width-1-1', method: :post
 
             - else
-              %i.uk-icon-lock.uk-icon-medium
               %p
                 You can only unlock
                 = Recipient::MAX_FREE_LIMIT
-                funders at the moment...
-              %p What would you like to do next?
+                funders at the moment. Let us know what you like to do next...
               %a.uk-button.uk-button-large.uk-button-primary.uk-width-1-1{"data-uk-modal" => "{target:'#next'}"} Next step
 
 #next.uk-modal
@@ -81,7 +79,7 @@
 
     .uk-grid.uk-margin-bottom{"data-uk-grid-match" => "{target:'.uk-panel'}"}
       .uk-width-medium-1-3.uk-margin-bottom
-        .uk-panel.uk-panel-box#panel
+        .uk-panel.uk-panel-box#panel.shadow
           - if @funder.grants.count > 0 && @funder_attribute.grant_count.present?
             .uk-panel-badge
               %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360Giving"}
@@ -111,7 +109,7 @@
                   = @funder_attribute.enquiry_count
 
       .uk-width-medium-1-3.uk-margin-bottom
-        .uk-panel.uk-panel-box#panel
+        .uk-panel.uk-panel-box#panel.shadow
           - if @funder.grants.count > 0 && @funder_attribute.funding_size_average.present?
             .uk-panel-badge
               %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'bottom-right'}", :title => "This information is from open grants data made possible by 360Giving"}
@@ -143,7 +141,7 @@
                 #funding_frequency_distribution{ data: {data: funding_frequency_distribution(@funder, @year_of_funding).to_json} }
 
       .uk-width-medium-1-3.uk-margin-bottom
-        .uk-panel.uk-panel-box#panel
+        .uk-panel.uk-panel-box#panel.shadow
           - if @funder.grants.count > 0 && @funder_attribute.funding_duration_average.present?
             .uk-panel-badge
               %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'left'}", :title => "This information is from open grants data made possible by 360Giving"}
@@ -172,7 +170,7 @@
                   %span.uk-text-small year(s)
 
       .uk-width-medium-1-3.uk-margin-bottom
-        .uk-panel.uk-panel-box.uk-text-center
+        .uk-panel.uk-panel-box.uk-text-center.shadow
           %a.locked-overlay.uk-vertical-align.uk-text-center.white{:href => "#top", "data-uk-smooth-scroll" => "{offset: 40}"}
             .uk-vertical-align-middle
               %i.uk-icon-lock.uk-icon-large
@@ -183,7 +181,7 @@
             .uk-button.uk-button-small
               .redacted.uk-text-muted 00000
       .uk-width-medium-1-3.uk-margin-bottom
-        .uk-panel.uk-panel-box.uk-text-center
+        .uk-panel.uk-panel-box.uk-text-center.shadow
           %a.locked-overlay.uk-vertical-align.uk-text-center.white{:href => "#top", "data-uk-smooth-scroll" => "{offset: 40}"}
             .uk-vertical-align-middle
               %i.uk-icon-lock.uk-icon-large
@@ -198,7 +196,7 @@
             .uk-button.uk-button-small
               .redacted.uk-text-muted 00000 000
       .uk-width-medium-1-3.uk-margin-bottom
-        .uk-panel.uk-panel-box.uk-text-center
+        .uk-panel.uk-panel-box.uk-text-center.shadow
           %a.locked-overlay.uk-vertical-align.uk-text-center.white{:href => "#top", "data-uk-smooth-scroll" => "{offset: 40}"}
             .uk-vertical-align-middle
               %i.uk-icon-lock.uk-icon-large
@@ -220,7 +218,7 @@
       .uk-grid.uk-text-center
         - 3.times do |i|
           .uk-width-medium-1-3.uk-margin-bottom
-            .uk-panel.uk-panel-box.uk-text-center{style: 'height: 190px;'}
+            .uk-panel.uk-panel-box.uk-text-center.shadow{style: 'height: 190px;'}
               %a.locked-overlay.uk-vertical-align.uk-text-center.white{:href => "#top", "data-uk-smooth-scroll" => "{offset: 40}"}
                 .uk-vertical-align-middle
                   %i.uk-icon-lock.uk-icon-large

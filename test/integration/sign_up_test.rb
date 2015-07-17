@@ -23,8 +23,8 @@ class SignUpTest < ActionDispatch::IntegrationTest
       fill_in("user_password_confirmation", :with => "password111")
     end
     click_button('Sign up')
-    assert_equal current_path, '/find'
-    assert page.has_content?("England")
+    assert_equal find_path, current_path
+    assert page.has_content?('recommendations of funders in minutes')
   end
 
   test 'Filling in landing page form with incorrect info should not submit' do

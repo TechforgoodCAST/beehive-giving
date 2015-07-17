@@ -3,24 +3,22 @@
   mixpanel.track_forms("#new_recipient", "Create Organisation Form");
 
 - content_for :signup do
-  .tm-section-color-2
-    .uk-container.uk-container-center
-      .uk-grid.uk-margin-large.uk-margin-large-top
+  #bg-color.tm-section-color-1
+    .uk-container.uk-container-center.uk-animation-fade
+      .uk-margin-large.uk-margin-large-top
+        .uk-width-1-1.uk-text-center
+          %h4
+            %span.uk-text-muted
+              Sign up
+              %i.uk-icon.uk-icon-angle-right.uk-icon-small
+            Register
 
-        .uk-width-medium-1-2.uk-float-right.tm-section-colored.uk-animation-fade
-          .uk-vertical-align{:style => "height: 480px;"}
-            .uk-vertical-align-middle
-              %h1 Register your organisation
-              %p.uk-text-large
-                If you have difficulties entering a 'company' and/or 'charity/nonprofit' number it probably means we have your details on our records. Just drop us an
-                = link_to 'email', 'mailto:support@beehivegiving.org', class: 'uk-text-bold', style: 'color: #fff;'
-                with your 'company' and/or 'charity/nonprofit' number requesting access to your account.
-
-        .uk-width-medium-1-2.uk-float-left.uk-animation-fade
-          .uk-form.uk-form-stacked.uk-panel.uk-panel-box#panel
-            .uk-panel-title
-              About your organisation
-              %span.uk-text-small= link_to 'Find your organisation', find_path
-            %fieldset
-            = simple_form_for [@organisation], url: signup_organisation_path, method: :post do |f|
-              = render partial: 'organisations/form', locals: {f: f}
+        .uk-width-1-1
+          .uk-text-center.uk-container-center
+            %h2 Last step, and you'll be registered
+            %p.uk-text-large Your funding recommendations are waiting.
+          .uk-width-large-1-2.uk-container-center.uk-margin-top
+            .uk-form.uk-form-stacked.uk-panel.uk-panel-box#panel.shadow
+              .uk-panel-title About your organisation
+              = simple_form_for [@organisation], url: signup_organisation_path, method: :post do |f|
+                = render partial: 'organisations/form', locals: {f: f}

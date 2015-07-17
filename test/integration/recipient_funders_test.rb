@@ -126,12 +126,12 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     assert_not page.has_css?("#welcome")
   end
 
-  test 'Welcome model hidden from second sign in' do
-    create_and_auth_user!(:organisation => @recipient)
-    @recipient.users.first.increment!(:sign_in_count)
-    visit funders_path
-    assert_not page.has_css?("#welcome")
-  end
+  # test 'Welcome model hidden from second sign in' do
+  #   create_and_auth_user!(:organisation => @recipient)
+  #   @recipient.users.first.increment!(:sign_in_count)
+  #   visit funders_path
+  #   assert_not page.has_css?("#welcome")
+  # end
 
   test 'Recommendation modal shows when profile for current year is completed' do
     create(:profile, :organisation => @recipient, :year => Date.today.year)
@@ -167,13 +167,5 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     visit funders_path
     assert_not page.has_css?("#recommendation")
   end
-
-  # test 'funders page shows call to action for unlocking funders' do
-  #
-  # end
-  #
-  # test 'funders page shows call to action for cheking eligibility' do
-  #
-  # end
 
 end

@@ -10,10 +10,11 @@
       .uk-width-1-1.uk-margin
         %hr
         .uk-panel{id: "#{stream.label.downcase.gsub(/[^a-z0-9]+/, '-')}"}
-          .uk-panel-title= stream.label
-          - if @recipient.funding_stream_eligible?(stream.label, @funder)
+          .uk-panel-title
+            = stream.label
             - if @recipient.recommended_funder?(@funder)
-              .uk-panel-badge.uk-badge.uk-badge-warning{style: 'right: 55px;'} Suggested
+              %i.uk-icon.uk-icon-star.yellow
+          - if @recipient.funding_stream_eligible?(stream.label, @funder)
             .uk-panel-badge.uk-badge.uk-badge-success Eligible
 
             %h4.uk-margin-top-remove Things to consider

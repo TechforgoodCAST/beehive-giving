@@ -10,10 +10,10 @@
         = simple_form_for [@recipient, @profile], method: :post do |f|
           .uk-grid
             .uk-width-medium-1-1.uk-margin-bottom
-              .uk-panel.cta.uk-margin
+              .uk-panel.cta.uk-margin.shadow
                 %h2.white Tell us about your organisation
                 Beehive uses the information you provide in this form to suggest funders to approach. We know it looks scary but don't worry it's a breeze. Give it a shot and see which funders are a good fit. And remember you can easily update these details if you're not happy with your recommendations. Drop us a
-                = link_to 'line', 'mailto:support@beehivegiving.org'
+                = link_to 'line', 'mailto:support@beehivegiving.org', style: 'color: #efefef'
                 if you get stuck.
 
           = render partial: 'profiles/form', locals: {f: f, mode: :new}

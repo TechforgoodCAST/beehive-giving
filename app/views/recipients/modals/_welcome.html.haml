@@ -2,13 +2,26 @@
   .uk-modal-dialog
     .uk-modal-header
       %h2
-        Welcome
+        Welcome to Beehive
         = succeed '!' do
           = current_user.first_name
-    %p Did you know
+    %p Beehive helps you quickly and easily understand which funders to approach, in three simple steps...
+    %ol
+      %li Get recommendations of appropriate funders
+      %li Explore their profiles
+      %li Check to see if you are eligibile
+    %p Beehive is currently in public testing, which means you can only unlock 3 funder profiles at the moment.
+    %p Later in the year we'll be adding a premium service where you can access an unlimited number of funders. But in the mean time we're super keen to learn from you, our awesome users.
+    %p
+      So if you run into any problems or want us to change something, then please get in touch be email on
+      = succeed '.' do
+        = link_to 'support@beehivegiving.org', 'mailto:support@beehivegiving.org'
+    %p
+      = image_tag "about/suraj.jpg", size: "50x50", class: 'uk-border-circle'
+      Suraj, Creator of Beehive
     .uk-modal-footer.uk-text-center
-      -# %a.uk-modal-close.js-record-welcome-close Tell me more
-      %a.uk-button.uk-button-primary.uk-modal-close.uk-width-2-5.js-record-welcome-close I understand
+      = link_to 'Get recommendations', new_recipient_profile_path(@recipient), class: 'uk-button uk-button-primary uk-width-medium-2-5 js-record-welcome-close'
+      %a.uk-text-muted.uk-modal-close.js-record-welcome-close Let me explore
 
 :javascript
   var modal = $.UIkit.modal("#welcome");

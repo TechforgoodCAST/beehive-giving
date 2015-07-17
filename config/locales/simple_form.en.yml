@@ -4,7 +4,7 @@ en:
       recipient:
         founded_on: 'The date your organisation founded.'
         status: 'What is the operational status of your organisation.'
-        registered: 'Do you have a company and/or charity/nonprofit number?'
+        registered: 'Does your organisation have a charity or company number?'
         registered_on: 'The date your organisation was legally registered. Leave blank if you are unregistered. '
     placeholders:
       user:
@@ -23,11 +23,15 @@ en:
         expenditure: 'e.g. 1560'
         beneficiaries_count: 'e.g. 50'
       recipient:
+        name: 'Organisation name'
+        mission: 'Organisation mission'
+        contact_number: 'Contact number'
+        website: 'Website'
         street_address: 'Street address'
         city: 'City'
         region: 'Region'
         postal_code: 'Postal code'
-        charity_number: 'Charity/Non-profit number'
+        charity_number: 'Charity number'
         company_number: 'Company number'
       funder:
         name: 'Organisation name'
@@ -38,7 +42,7 @@ en:
         city: 'City'
         region: 'Region'
         postal_code: 'Postal code'
-        charity_number: 'Charity/Nonprofit number'
+        charity_number: 'Charity number'
         company_number: 'Company number'
       feedback:
         other: "We're commited to delivering a service which is useful for non-profits, and we'd love feedback good or bad."

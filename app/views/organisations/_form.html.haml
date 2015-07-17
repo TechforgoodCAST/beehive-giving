@@ -2,22 +2,19 @@
   = f.hidden_field :status, value: 'Active - currently operational'
   .uk-width-medium-1-1
     .uk-form-controls
-      %label.uk-form-label Organisation name
+      %label.uk-form-label The basics
       = f.input :name, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :name, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-1.uk-margin-top
     .uk-form-controls
-      %label.uk-form-label Organisation mission
       = f.input :mission, as: :text, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :mission, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-2.uk-margin-top
     .uk-form-controls
-      %label.uk-form-label Contact number
       = f.input :contact_number, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :contact_number, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-2.uk-margin-top
     .uk-form-controls
-      %label.uk-form-label Website
       = f.input :website, type: 'text', input_html: { class: 'uk-width-1-1' }
       = f.error :website, class: 'uk-text-small uk-text-warning'
   .uk-width-medium-1-1.uk-margin-top
@@ -80,5 +77,8 @@
         .uk-form-controls
           = f.input :company_number, type: 'text', input_html: { class: 'uk-width-1-1' }
           = f.error :company_number, class: 'uk-text-small uk-text-warning'
+      .uk-width-1-1.uk-margin-small-top
+        .uk-text-small
+          %a{"data-uk-tooltip" => "{pos:'top'}", :title => "If you have difficulties entering a charity number it probably means we have your details on our records. Simply click this link to get in touch with support@beehivegiving.org who will be happy to help you.", :href => "mailto:support@beehivegiving.org"} Having trouble with your charity number?
   .uk-width-medium-1-1.uk-margin-top
-    = f.submit 'Next', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'
+    = f.button :button, "Next", class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;', data: {disable_with: "<i style='color: #999;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #999;'> Saving...</span>"}

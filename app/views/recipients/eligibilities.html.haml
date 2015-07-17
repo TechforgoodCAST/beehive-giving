@@ -3,7 +3,7 @@
     .uk-width-medium-1-1.uk-animation-fade
       .uk-vertical-align.uk-text-center{:style => "min-height: 480px;"}
         .uk-width-large-1-2.uk-vertical-align-middle.uk-text-left
-          .uk-animation-fade.uk-form.uk-form-stacked.uk-panel.uk-panel-box#panel
+          .uk-animation-fade.uk-form.uk-form-stacked.uk-panel.uk-panel-box#panel.shadow
             .uk-panel-title Manage eligibility
             %fieldset
             = simple_form_for @recipient, :url => recipient_eligibilities_path(current_user.organisation) do |f|

@@ -134,7 +134,11 @@ $nprogress-color: $yellow;
 #panel {
   background: #fff;
   border: solid 1px #EAEAEA;
-  border-bottom: solid 3px #EAEAEA;
+}
+.shadow {
+  -webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.15);
+  -moz-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.15);
+  box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.15);
 }
 .upcase {
   text-transform: uppercase;

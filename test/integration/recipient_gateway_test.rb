@@ -38,7 +38,7 @@ class RecipientGatewayTest < ActionDispatch::IntegrationTest
 
     # Fouth unlock not permitted
     visit recipient_comparison_gateway_path(@funders[4])
-    assert page.has_content?("You can only unlock #{Recipient::MAX_FREE_LIMIT} funders at the moment...")
+    assert page.has_content?("You can only unlock #{Recipient::MAX_FREE_LIMIT} funders at the moment")
   end
 
   test "Eligibilty modal shown when first funder unlocked on first funders page" do
@@ -61,7 +61,7 @@ class RecipientGatewayTest < ActionDispatch::IntegrationTest
     visit recipient_comparison_gateway_path(@funders[0])
     click_link("Unlock Funder")
     assert page.has_css?("#eligibility")
-    
+
     3.times { |i| create(:eligibility, :recipient => @recipient, :restriction => @restrictions[i])}
 
     visit recipient_comparison_gateway_path(@funders[0])

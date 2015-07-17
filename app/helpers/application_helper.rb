@@ -7,7 +7,7 @@ module ApplicationHelper
   end
 
   def current_user_should_render_welcome_modal?
-    current_user.sign_in_count == 0 unless cookies['_BHwelcomeClose'].present? || @recipient.profiles.count > 0
+    cookies['_BHwelcomeClose'].blank? unless @recipient.profiles.count > 0
   end
 
   # refactor

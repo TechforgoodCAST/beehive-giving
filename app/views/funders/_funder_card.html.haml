@@ -1,11 +1,13 @@
-.uk-width-1-1.uk-panel#panel.uk-overlay
+.uk-width-1-1.uk-panel#panel.uk-overlay.shadow
 
   - if @recipient.questions_remaining?(funder)
     - if @recipient.recommended_funder?(funder) && @recipient.profiles.count > 0
-      .uk-panel-badge.uk-badge.uk-badge-warning{style: 'margin: 6px;'} Suggested
+      .uk-panel-badge{style: 'margin: 6px; left: 0px;'}
+        %i.uk-icon.uk-icon-star.uk-icon-small.yellow
   - elsif @recipient.eligible?(funder)
     - if @recipient.recommended_funder?(funder) && @recipient.profiles.count > 0
-      .uk-panel-badge.uk-badge.uk-badge-warning{style: 'margin: 6px; right: 50px;'} Suggested
+      .uk-panel-badge{style: 'margin: 6px; left: 0px;'}
+        %i.uk-icon.uk-icon-star.uk-icon-small.yellow
     .uk-panel-badge.uk-badge.uk-badge-success{style: 'margin: 6px;'} Eligible
   - elsif !@recipient.eligible?(funder) && @recipient.eligibility_count(funder) > 0
     .uk-panel-badge.uk-badge.uk-badge-danger{style: 'margin: 8px 6px;'} Not eligible

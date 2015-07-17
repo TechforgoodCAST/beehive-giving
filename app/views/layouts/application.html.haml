@@ -69,7 +69,7 @@
                       .uk-dropdown.uk-dropdown-navbar.uk-dropdown-flip#panel
                         %ul.uk-nav.uk-nav-navbar
                           %li
-                            %a{:href => recipient_profiles_path(current_user.organisation)} Edit profiles
+                            %a{:href => recipient_profiles_path(current_user.organisation)} Edit my profile
                           -# %li
                           -#   %a{:href => "#"} Edit organisation
                           %li
@@ -155,7 +155,7 @@
                   %a{href: funder_path(current_user.organisation)} Dashboard
                 - else
                   -# %a{href: recipient_dashboard_path} Dashboard
-                  %a{:href => recipient_profiles_path(current_user.organisation)} Edit profiles
+                  %a{:href => recipient_profiles_path(current_user.organisation)} Edit my profile
                   %a{:href => recipient_eligibilities_path(current_user.organisation)} Manage eligibility
                   - if current_user_should_render_feedback?
                     %a#feedback-button-mobile{"data-uk-modal" => "{target:'#feedback'}"} Feedback

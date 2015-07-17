@@ -4,24 +4,34 @@
   mixpanel.track_links("#mp-skip", "Skipped search for organisation");
 
 - content_for :signup do
-  .tm-section-color-2
-    .uk-container.uk-container-center
+  #bg-color.tm-section-color-1
+    .uk-container.uk-container-center.uk-animation-fade
       .uk-margin-large.uk-margin-large-top
-        .uk-vertical-align.uk-text-center{:style => "height: 633px;"}
-          .uk-width-large-1-2.uk-vertical-align-middle
-            .uk-animation-fade
-              .uk-form.uk-form-stacked.uk-panel.uk-panel-box#panel
-                .uk-panel-title Are you a registered charity in England and Wales?
-                = form_for '/find', :html => { :id => "find" } do
-                  .uk-width-medium-1-1
-                    .uk-form-controls
-                      = select_tag :uk_charity, options_for_select([['Yes', true], ['No', false]]), { include_blank: true, class: 'uk-width-1-1 js-registered-toggle' }
+        .uk-width-1-1.uk-text-center
+          %h4
+            %span.uk-text-muted
+              Sign up
+              %i.uk-icon.uk-icon-angle-right.uk-icon-small
+            Register
 
-                  .uk-width-medium-1-1.js-registered-toggle-target.uk-hidden
-                    .uk-grid
-                      .uk-width-medium-1-1.uk-margin-top
-                        .uk-form-controls
-                          = text_field_tag :charity_number, nil, { class: 'uk-width-1-1', placeholder: 'Charity no.' }
-                  .uk-width-medium-1-1.uk-margin-top
-                    = submit_tag 'Next', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'
-              .uk-text-small.uk-margin-small-top= link_to 'Skip this step', signup_organisation_path, id: 'mp-skip'
+        .uk-width-1-1.uk-text-center
+          .uk-width-medium-2-3.uk-container-center
+            %h2
+              Thanks for signing up
+              = succeed '!' do
+                = current_user.first_name
+              %br You'll have recommendations of funders in minutes.
+            %p.uk-text-large Beehive uses a personalised profile of your organisation, along with a funders preferences to provide tailored funding recommendations...
+            .uk-text-center= image_tag "signup/puzzle.svg", alt: "Puzzle", width: 150
+            %p.uk-text-large ...so let's start by adding your organisation.
+
+            .uk-width-1-1.uk-margin-top
+              .uk-form.uk-form-stacked.uk-panel.uk-panel-box#panel.shadow
+                = form_for '/find', :html => { :id => "find" } do
+                  .uk-width-large-1-1
+                    .uk-form-controls
+                      %label.uk-form-label.uk-float-left Find your organisation
+                      = text_field_tag :charity_number, nil, { class: 'uk-width-1-1 uk-form-large', placeholder: "Your charity number" }
+                  .uk-width-large-1-1
+                    = button_tag "Next".html_safe, class: 'uk-button uk-button-primary uk-width-1-1', data: {disable_with: "<i class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i> Finding..."}
+              .uk-margin-top.uk-text-center= link_to "Don't have a charity number? Skip this step", signup_organisation_path, id: 'mp-skip'

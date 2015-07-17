@@ -193,7 +193,7 @@ class Recipient < Organisation
   end
 
   def recommended_funder?(funder)
-    Funder.joins(:recommendations).where("recipient_id = ? AND score >= ?", self.id, 1).order("recommendations.score DESC, name ASC").pluck(:funder_id).take(6).include?(funder.id)
+    Funder.joins(:recommendations).where("recipient_id = ? AND score >= ?", self.id, 1).order("recommendations.score DESC, name ASC").pluck(:funder_id).take(5).include?(funder.id)
   end
 
   def similar_funders(funder)
