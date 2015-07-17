@@ -20,7 +20,7 @@
       = image_tag "about/suraj.jpg", size: "50x50", class: 'uk-border-circle'
       Suraj, Creator of Beehive
     .uk-modal-footer.uk-text-center
-      = link_to 'Get recommendations', new_recipient_profile_path(@recipient), class: 'uk-button uk-button-primary uk-width-medium-2-5 js-record-welcome-close'
+      = link_to 'Get recommendations', new_recipient_profile_path(@recipient), :"data-no-turbolink" => true, class: 'uk-button uk-button-primary uk-width-medium-2-5 js-record-welcome-close'
       %a.uk-text-muted.uk-modal-close.js-record-welcome-close Let me explore
 
 :javascript
