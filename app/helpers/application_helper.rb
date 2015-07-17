@@ -12,7 +12,7 @@ module ApplicationHelper
 
   # refactor
   def current_user_should_render_recommendation_modal?
-    @recipient.profiles.where(year: Date.today.year).count == 1 unless  @recipient.users.count > 1 || current_user.created_at < Date.today-3 || cookies['_BHrecommendationClose'].present?
+    @recipient.profiles.where(year: Date.today.year).count == 1 unless @recipient.unlocked_funders.count > 0 || cookies['_BHrecommendationClose'].present?
   end
 
   # refactor

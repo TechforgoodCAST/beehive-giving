@@ -152,18 +152,13 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     assert_not page.has_css?("#recommendation")
   end
 
-  test 'Recommendation modal hidden if second user' do
+  test 'Recommendation modal hidden if funder have been unlocked' do
     create(:profile, :organisation => @recipient, :year => Date.today.year)
+    @funder = create(:funder)
+    @recipient.unlock_funder!(@funder)
     create_and_auth_user!(:organisation => @recipient)
     visit logout_path
     create_and_auth_user!(:organisation => @recipient, :user_email => 'user2@email.com')
-    visit funders_path
-    assert_not page.has_css?("#recommendation")
-  end
-
-  test 'Recommendation modal hidden if user created more than 3 days ago' do
-    create(:profile, :organisation => @recipient, :year => Date.today.year)
-    create_and_auth_user!(:organisation => @recipient, :created_at => Date.today - 10)
     visit funders_path
     assert_not page.has_css?("#recommendation")
   end
