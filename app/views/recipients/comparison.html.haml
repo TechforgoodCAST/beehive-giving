@@ -31,6 +31,7 @@
                   %button.uk-button.uk-button-large.uk-width-1-1{:disabled => "", style: "background: #d32c46; color: #fff;"}
                     %i.uk-icon-ban
                       Ineligible
+                  = link_to 'Made a mistake?', recipient_eligibilities_path(current_user.organisation), class: 'uk-text-small'
             - else
               %p What would you like to do next?
               %a.uk-button.uk-button-large.uk-button-primary.uk-width-1-1{"data-uk-modal" => "{target:'#next'}"} Next step

@@ -32,7 +32,7 @@
               We don't have enough information from
               = funder.name
               to offer recommendations just yet. Why not hit the 'request' button below to help us decide what to focus on.
-            = link_to 'Request', vote_recipient_path(@recipient.id,  data_requested: true, funder_id: funder.id, recipient_id: @recipient.id), method: 'post', class: 'uk-button uk-button-large uk-width-1-1'
+            = link_to 'Request', vote_recipient_path(@recipient.id,  data_requested: true, funder_id: funder.id, recipient_id: @recipient.id), method: 'post', class: 'uk-button uk-button-large uk-width-1-1', data: {disable_with: "<i style='color: #999;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #999;'> Requesting...</span>"}
     - else
       .uk-overlay-area
         .uk-overlay-area-content
