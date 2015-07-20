@@ -23,7 +23,7 @@
 /* Large screen and bigger */
 @media (min-width: 1220px) {
   .tm-section, .tm-footer {
-    padding: 135px 0;
+    padding: 113px 0;
   }
 }
 
@@ -48,4 +48,8 @@
 .tm-section-colored h2,
 .tm-section-colored a:not([class]) {
   color: #fff !important;
+}
+
+.stat {
+  font-size: 20px;
 }

@@ -8,15 +8,24 @@
 
       .uk-width-medium-2-3.tm-section.uk-animation-slide-left
         %h1
-          Reinventing how non-profit funding
-          %br takes place
-        %p.uk-text-large A new way for nonprofits and funders to make funding decisions using data.
+          Quickly and easily see if you're
+          %br a good fit for funding
+        %p.uk-text-large A new way for to make funding decisions using data
         %a.uk-button.uk-button-large.uk-width-1-2{ href: tour_path }
           Find out more
+        %p
+          %span.stat
+            15+
+            %span.uk-text-small funders
+          %span.stat
+            |
+          %span.stat
+            17+
+            %span.uk-text-small thousand grants
 
       .uk-width-medium-1-3.uk-animation-slide-right
         .uk-form.uk-form-stacked.uk-panel.uk-panel-box#panel.shadow
-          %h3.uk-text-bold Are you a non-profit? Sign up today...
+          %h3.uk-text-bold Are you a non-profit? Sign up (for free!)
           %fieldset
           = simple_form_for [@user], url: signup_user_path, method: :post do |f|
             .uk-grid
