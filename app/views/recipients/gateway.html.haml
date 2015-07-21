@@ -10,7 +10,7 @@
           .uk-border-circle.uk-vertical-align.shadow{style: 'background: #fff; height: 160px; width: 160px; border: 3px solid #F7BA0E; position: relative;'}
             - if @recipient.recommended_funder?(@funder) && @recipient.profiles.count > 0
               .funder-logo-banner.shadow
-                %p Suggested
+                %p Recommended
             .uk-vertical-align-middle
               .funder{class: "#{@funder.slug}-small", alt: "#{@funder.name} Logo"}
       .uk-width-small-1-1.uk-width-medium-3-4.uk-width-large-2-4.uk-vertical-align{style: 'height: 220px;'}
@@ -37,7 +37,7 @@
               = link_to "Unlock Funder (#{(Recipient::MAX_FREE_LIMIT - @recipient.unlocked_funders.count)} left)", recipient_unlock_funder_path(@funder), class: 'uk-button uk-button-large uk-button-primary uk-width-1-1', method: :post
 
             - elsif @recipient.profiles.where(year: Date.today.year).count == 0
-              %p Get suggestions of which funders to look at
+              %p Before you continue, get recommendations of which funders to look at
               = link_to "Recommend funders", new_recipient_profile_path(@recipient), class: 'uk-button uk-button-large uk-button-primary uk-width-1-1', id: 'mp-complete-profile'
 
             - elsif @recipient.unlocked_funders.count < Recipient::MAX_FREE_LIMIT

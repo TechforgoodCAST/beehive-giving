@@ -341,7 +341,7 @@ $(document).ready ->
       element: 'recipient_implement'
       data: [
         { y: 'Campaigns', a: 0, b: 15 },
-        { y: 'Reasearch', a: 17, b: 23 },
+        { y: 'Research', a: 17, b: 23 },
         { y: 'Third Party', a: 17, b: 23 },
         { y: 'Products', a: 0, b: 8 },
         { y: 'Software', a: 33, b: 8 },

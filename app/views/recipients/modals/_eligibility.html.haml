@@ -6,14 +6,14 @@
       .uk-container-center.uk-border-circle.uk-vertical-align.shadow{style: 'background: #fff; height: 160px; width: 160px; border: 3px solid #F7BA0E; position: relative;'}
         - if @recipient.recommended_funder?(@funder) && @recipient.profiles.count > 0
           .funder-logo-banner.shadow
-            %p Suggested
+            %p Recommended
         .uk-vertical-align-middle
           .funder{class: "#{@funder.slug}-small", alt: "#{@funder.name} Logo"}
       %h2
         You've unlocked
         = succeed '!' do
           = funder.name
-      %p Well done, you've unlocked your first funder. Before investing any more time in reasearch, why not check to see if you're eligible for their support?
+      %p Well done, you've unlocked your first funder. Before investing any more time in research, why not check to see if you're eligible for their support?
     .uk-modal-footer.uk-text-center
       = link_to 'Am I eligible?', recipient_eligibility_path(funder), :"data-no-turbolink" => true, class: 'uk-button uk-button-primary uk-width-2-5'
 
