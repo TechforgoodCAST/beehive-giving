@@ -45,29 +45,11 @@ class Profile < ActiveRecord::Base
             :does_sell, inclusion: {in: [true, false]}
 
   def allowed_years
-    if organisation.founded_on.year.to_i > year
-      errors.add(:year, "you can't make a profile before #{organisation.founded_on.year} because that's when your organisation was founded")
+    if organisation.founded_on
+      if organisation.founded_on.year.to_i > year
+        errors.add(:year, "you can't make a profile before #{organisation.founded_on.year} because that's when your organisation was founded")
+      end
     end
   end
-
-  # def find_implementor(label)
-  #   Proc.new { |profile|
-  #     result = false
-  #     profile.implementors.each { |i|
-  #       if i.label == "#{label}"
-  #         result = true
-  #       end
-  #     }
-  #     result unless profile.implementors.nil?
-  #   }
-  # end
-  #
-  # def staff_implementor_selected
-  #   find_implementor('Paid staff')
-  # end
-  #
-  # def volunteer_implementor_selected
-  #   find_implementor('Volunteers')
-  # end
 
 end
