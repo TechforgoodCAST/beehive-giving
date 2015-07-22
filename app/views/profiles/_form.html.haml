@@ -12,7 +12,7 @@
             %label.uk-form-label
               In which countries did your organisation affect beneficiaries in
               = succeed '?' do
-                = get_year
+                = @profile.year || @profile.year || get_year
             .uk-form-controls
               = f.association :countries, collection: Country.order('name ASC'), input_html: {class: 'chosen-select'}
               = f.error :countries, class: 'uk-text-small uk-text-warning'
@@ -20,7 +20,7 @@
             %label.uk-form-label
               In which regions did your organisation affect beneficiaries in
               = succeed '?' do
-                = get_year
+                = @profile.year || get_year
             .uk-form-controls
               = f.association :districts, collection: Country.includes(:districts), as: :grouped_select, group_method: :districts, label_method: :label, value_method: :id, input_html: {multiple: true, class: 'chosen-select'}
               = f.error :districts, class: 'uk-text-small uk-text-warning'
@@ -35,7 +35,7 @@
             %strong all
             regions where your organisation has affected people in
             = succeed '.' do
-              = get_year
+              = @profile.year || get_year
             Remember the locations where beneficiaries have been affected may be different from the locations you target. Start by selecting all the countries, to populate the list of regions to choose from. You can type the name of the location to filter the list.
 
 .uk-margin.uk-margin-top-remove
@@ -48,7 +48,7 @@
             %label.uk-form-label
               Who/what did your organisation affect in
               = succeed '?' do
-                = get_year
+                = @profile.year || get_year
             .uk-form-controls
               = f.association :beneficiaries, collection: Beneficiary.order('label ASC'), label_method: :label, value_method: :id, input_html: {class: 'chosen-select'}
               = f.error :beneficiaries, class: 'uk-text-small uk-text-warning'
@@ -56,21 +56,21 @@
             %label.uk-form-label
               Which gender did your organisation target in
               = succeed '?' do
-                = get_year
+                = @profile.year || get_year
             .uk-form-controls
               = f.input :gender, collection: Profile::GENDERS, input_html: { class: 'uk-width-1-1' }
               = f.error :gender, class: 'uk-text-small uk-text-warning'
           .uk-width-large-1-1.uk-margin-top
             %label.uk-form-label
               Minimum age of beneficiaries your organisation targeted in
-              = get_year
+              = @profile.year || get_year
             .uk-form-controls
               = f.input :min_age, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
               = f.error :min_age, class: 'uk-text-small uk-text-warning'
           .uk-width-large-1-1.uk-margin-top
             %label.uk-form-label
               Maximum age of beneficiaries your organisation targeted in
-              = get_year
+              = @profile.year || get_year
             .uk-form-controls
               = f.input :max_age, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
               = f.error :max_age, class: 'uk-text-small uk-text-warning'
@@ -82,7 +82,7 @@
             %i.uk-icon-child.uk-icon-large
           %p
             Consider the 'state' of your typical beneficiaries in
-            = get_year
+            = @profile.year || get_year
             when completing this section. For example, if your typical beneficiaries are young men who are unemployed, homeless, and abuse harmful substances you might select - 'Unemployed people', 'People with housing/shelter challenges', and 'People with physical diseases or disorders', along with 'Male' for gender, and an age range of '16' to '25' years old.
           %p We know it can be tempting to select lot's of options, but remember the more specific you are, the better recommendations we'll be able to provide (you can always come back and update your selection in future).
 
@@ -96,14 +96,14 @@
             .uk-width-large-1-2.uk-margin-bottom
               %label.uk-form-label
                 Number of voluntary staff in
-                = get_year
+                = @profile.year || get_year
               .uk-form-controls
                 = f.input :volunteer_count, type: 'text', input_html: { class: 'uk-width-1-1' }
                 = f.error :volunteer_count, class: 'uk-text-small uk-text-warning'
             .uk-width-large-1-2.uk-margin-bottom
               %label.uk-form-label
                 Number of paid staff in
-                = get_year
+                = @profile.year || get_year
               .uk-form-controls
                 = f.input :staff_count, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
                 = f.error :staff_count, class: 'uk-text-small uk-text-warning'
@@ -111,7 +111,7 @@
             %label.uk-form-label
               Who delivered your work in
               = succeed '?' do
-                = get_year
+                = @profile.year || get_year
             .uk-form-controls
               = f.association :implementors, collection: Implementor.order('label ASC'), label_method: :label, value_method: :id, input_html: {class: 'chosen-select'}
               = f.error :implementors, class: 'uk-text-small uk-text-warning'
@@ -123,7 +123,7 @@
             %i.uk-icon-users.uk-icon-large
           Give your best estimate to the number of full time equivalent volunteers and staff your organisation had in
           = succeed '.' do
-            = get_year
+            = @profile.year || get_year
           Below is a rough guide to help:
           %table.uk-table.uk-table-condensed.uk-margin-top-remove
             %tbody
@@ -152,7 +152,7 @@
             %label.uk-form-label
               How did you deliver your work in
               = succeed '?' do
-                = get_year
+                = @profile.year || get_year
             .uk-form-controls
               = f.association :implementations, collection: Implementation.order('label ASC'), label_method: :label, value_method: :id, input_html: {class: 'chosen-select'}
               = f.error :implementations, class: 'uk-text-small uk-text-warning'
@@ -160,7 +160,7 @@
             %label.uk-form-label
               Did you receive financial payment (not donations) for your work in
               = succeed '?' do
-                = get_year
+                = @profile.year || get_year
             = f.hint :who_pays, class: 'uk-text-small uk-hidden', id: 'who_pays_hint'
             .uk-form-controls
               = f.input :does_sell, as: :select, input_html: { class: 'uk-width-1-1' }
@@ -169,7 +169,7 @@
             %label.uk-form-label
               How many beneficiaries did your work affect in
               = succeed '?' do
-                = get_year
+                = @profile.year || get_year
             .uk-form-controls
               = f.input :beneficiaries_count, input_html: { class: 'uk-width-1-1' }
               = f.error :beneficiaries_count, class: 'uk-text-small uk-text-warning'
@@ -187,12 +187,12 @@
           %p
             Describe how your organisation typically delivered its work for it's usual beneficiaries in
             = succeed '.' do
-              = get_year
+              = @profile.year || get_year
             For example, if you're a social business offering supported accommodation, accompanied with a drugs rehabilitation and employment programme where beneficiaries build furniture; you might select - 'Buildings/Facilities to Beneficiary', and 'Service to Beneficiary', along with saying 'Yes' to the question about payment (as you happen to sell the furniture beneficiaries create).
           %p
             Finally, report the number of beneficiaries you've impacted with your typical offer of work in
             = succeed '.' do
-              = get_year
+              = @profile.year || get_year
             If you can't give precise figures please give an estimate and select the appropriate option, but avoid including 'vanity metrics' like the number of page views to your website, or visitors to a one off event you held.
 
 .uk-margin.uk-margin-top-remove
@@ -206,7 +206,7 @@
               .uk-width-large-1-2.uk-margin-top
                 %label.uk-form-label
                   Income in GBP (£) for
-                  = get_year
+                  = @profile.year || get_year
                 .uk-form-controls
                   = f.input :income, type: 'text', input_html: { class: 'uk-width-1-1' }
                   = f.error :income, class: 'uk-text-small uk-text-warning'
@@ -221,7 +221,7 @@
                 .uk-width-large-1-2.uk-margin-top
                   %label.uk-form-label
                     Expenditure in GBP (£) for
-                    = get_year
+                    = @profile.year || get_year
                   .uk-form-controls
                     = f.input :expenditure, type: 'text', input_html: { class: 'uk-width-1-1' }
                     = f.error :expenditure, class: 'uk-text-small uk-text-warning'
@@ -239,7 +239,7 @@
             %i.uk-icon-bank.uk-icon-large
           %p
             If you don't yet have annual accounts ending in
-            = get_year
+            = @profile.year || get_year
             please give an estimate and select the appropriate option.
 
   - if @redirect_to_funder
