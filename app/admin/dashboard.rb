@@ -65,6 +65,67 @@ ActiveAdmin.register_page "Dashboard" do
       end
     end
 
+    def week(week)
+      week.weeks.ago.beginning_of_week(:monday).strftime('w/o %d %b')
+    end
+
+    def user_count(week_start, week_end)
+      User.where("role = ?", "User").group_by_week(:created_at, week_start: :mon, range: week_start.weeks.ago..week_end.weeks.ago).count.first[1].to_d
+    end
+
+    def recipient_count(week_start, week_end)
+      Recipient.joins(:users).group_by_week("users.created_at", week_start: :mon, range: week_start.weeks.ago..week_end.weeks.ago).count.first[1].to_d
+    end
+
+    def profile_count(week_start, week_end)
+      Profile.group_by_week(:created_at, week_start: :mon, range: week_start.weeks.ago..week_end.weeks.ago).count.first[1].to_d
+    end
+
+    def recipient_percentage(week_start, week_end)
+      "#{recipient_count(week_start, week_end).to_i} (#{number_to_percentage((recipient_count(week_start, week_end) / user_count(week_start, week_end))*100, precision: 0)})"
+    end
+
+    def profile_percentage(week_start, week_end)
+      "#{profile_count(week_start, week_end).to_i} (#{number_to_percentage((profile_count(week_start, week_end) / user_count(week_start, week_end))*100, precision: 0)})"
+    end
+
+    div style: "float:left; width: 100%; padding: 0 20px; box-sizing: border-box;" do
+      section "Conversion" do
+        table do
+          thead do
+            tr do
+              th 'Stage'
+              th week(1)
+              th week(2)
+              th week(3)
+              th week(4)
+            end
+          end
+          tr do
+            td 'Sign up'
+            td user_count(1, 0).to_i
+            td user_count(2, 1).to_i
+            td user_count(3, 2).to_i
+            td user_count(4, 3).to_i
+          end
+          tr do
+            td 'Register non-profit'
+            td recipient_percentage(1, 0)
+            td recipient_percentage(2, 1)
+            td recipient_percentage(3, 2)
+            td recipient_percentage(4, 3)
+          end
+          tr do
+            td 'Create profile'
+            td profile_percentage(1, 0)
+            td profile_percentage(2, 1)
+            td profile_percentage(3, 2)
+            td profile_percentage(4, 3)
+          end
+        end
+      end
+    end
+
     div style: "float:left; width: 50%; padding: 0 20px; box-sizing: border-box;" do
       section "User activation by day" do
         @metric = User.where("role = ?", "User").group_by_day(:created_at, week_start: :mon, range: 2.weeks.ago..Time.now).count
@@ -79,9 +140,16 @@ ActiveAdmin.register_page "Dashboard" do
       end
     end
 
-    div style: "float:left; width: 100%; padding: 0 20px; box-sizing: border-box;" do
+    div style: "float:left; width: 50%; padding: 0 20px; box-sizing: border-box;" do
+      section "Non-profits by country" do
+        @metric = Recipient.joins(:users).group(:country).count
+        render :partial => 'metrics/geo_chart', :locals => {:metric => @metric}
+      end
+    end
+
+    div style: "float:left; width: 50%; padding: 0 20px; box-sizing: border-box;" do
       section "Recent Non-profits" do
-        table_for Recipient.order("created_at desc").limit(5) do
+        table_for Recipient.joins(:users).order("created_at desc").limit(5) do
           column :name do |recipient|
             link_to recipient.name, [:admin, recipient]
           end
