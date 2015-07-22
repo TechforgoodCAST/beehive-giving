@@ -1,5 +1,7 @@
-$.UIkit.modal("#eligible").show();
-- if @funder_attribute.application_link
+- if @recipient.recommended_funder?(@funder) && @recommendation.recommendation_quality.blank?
+  window.open("http://#{@funder_attribute.application_link}", "_blank");
+  window.location.replace("#{recipient_recommendation_feedback_path(@funder)}");
+- elsif
   $("##{@funding_stream_id}").html('#{escape_javascript(render("funding_stream"))}');
   window.open("http://#{@funder_attribute.application_link}", "_blank");
 - else

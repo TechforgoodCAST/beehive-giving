@@ -1,6 +1,4 @@
 .uk-panel-title= @funder.funding_streams.where(label: params[:funding_stream]).first.label
-- if @recipient.recommended_funder?(@funder)
-  .uk-panel-badge.uk-badge.uk-badge-warning{style: 'right: 55px;'} Suggested
 .uk-panel-badge.uk-badge.uk-badge-success Eligible
 
 .cta

@@ -6,14 +6,14 @@
         Approach
         = @funder.name
         for funding
+        - if @recipient.recommended_funder?(@funder)
+          %i.uk-icon.uk-icon-star.yellow
     - @funder.funding_streams.each do |stream|
       .uk-width-1-1.uk-margin
         %hr
         .uk-panel{id: "#{stream.label.downcase.gsub(/[^a-z0-9]+/, '-')}"}
           .uk-panel-title
             = stream.label
-            - if @recipient.recommended_funder?(@funder)
-              %i.uk-icon.uk-icon-star.yellow
           - if @recipient.funding_stream_eligible?(stream.label, @funder)
             .uk-panel-badge.uk-badge.uk-badge-success Eligible
 

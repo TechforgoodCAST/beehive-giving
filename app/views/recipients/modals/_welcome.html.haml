@@ -1,6 +1,5 @@
 :javascript
   mixpanel.track_links("#get-recommendations", "Click 'Get recommendations' modal");
-  mixpanel.track_links("#explore", "Click 'Let me explore' modal");
 
 #welcome.uk-modal
   .uk-modal-dialog
@@ -25,7 +24,7 @@
       Suraj, Creator of Beehive
     .uk-modal-footer.uk-text-center
       = link_to 'Get recommendations', new_recipient_profile_path(@recipient), :"data-no-turbolink" => true, class: 'uk-button uk-button-primary uk-width-medium-2-5 js-record-welcome-close #get-recommendations'
-      %a.uk-text-muted.uk-modal-close.js-record-welcome-close#explore Let me explore
+      %a.uk-text-muted.uk-modal-close.js-record-welcome-close Let me explore
 
 :javascript
   var modal = $.UIkit.modal("#welcome");

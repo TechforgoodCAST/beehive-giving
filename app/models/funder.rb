@@ -21,4 +21,6 @@ class Funder < Organisation
 
   has_many :recommendations
 
+  scope :active, -> {where(active_on_beehive: true)}
+
 end

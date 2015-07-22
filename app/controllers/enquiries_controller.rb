@@ -4,11 +4,9 @@ class EnquiriesController < ApplicationController
 
   respond_to :js
 
-  def approach_funder
-    @recommendation = Recommendation.where(recipient: @recipient, funder: @funder).first
-  end
-
   def apply
+    @recommendation = Recommendation.where(recipient: @recipient, funder: @funder).first
+
     @enquiry = Enquiry.where(recipient: @recipient, funder: @funder, funding_stream: params[:funding_stream]).first_or_create
     @enquiry.increment!(:approach_funder_count)
     @enquiry.update_attributes(funding_stream: params[:funding_stream])
