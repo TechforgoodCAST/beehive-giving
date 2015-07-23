@@ -25,4 +25,6 @@ class Funder < Organisation
 
   FUNDERS_WITH_WIDE_LAYOUT = ['Big Lottery Fund', 'City Bridge Trust', 'The Joseph Rowntree Charitable Trust']
 
+  CLOSED_FUNDERS = ['Cripplegate Foundation']
+
 end
