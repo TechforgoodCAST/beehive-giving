@@ -16,7 +16,9 @@
 #bg-color{style: 'background: #454545'}
   .uk-container.uk-container-center.uk-animation-fade
     .uk-margin-large-top.uk-margin-large-bottom
-      %h2.uk-text-center.upcase.white Let's see if you're eligible for funding...
+      %h2.uk-text-center.upcase.white Are you eligible for funding?
+      .uk-width-medium-3-4.uk-text-center.uk-container-center
+        %p.uk-text-large.white We've worked with the funder to capture their specific crteria below. Simply answer the questions below to see if you are eligible for their support.
       .uk-panel.uk-panel-box#panel
         .uk-form.uk-form-stacked
           = simple_form_for @recipient,:url => recipient_eligibility_path(@funder) do |f|
