@@ -32,4 +32,17 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
     assert_equal recipient_comparison_gateway_path(@funders[2]), current_path
   end
 
+  test "closed funder is not recommended" do
+    recommendation = @recipient.recommendations.where(funder_id: @funders[0].id).first
+
+    @recipient.refined_recommendation
+    assert_not recommendation.score == 0
+
+    @funders[0].name = 'Cripplegate Foundation'
+    @recipient.refined_recommendation
+    recommendation = @recipient.recommendations.where(funder_id: @funders[0].id).first
+
+    assert_equal 0, recommendation.score
+  end
+
 end

@@ -186,6 +186,9 @@ class Recipient < Organisation
         if funder.attributes.where('funding_stream = ?', 'All').first.funded_income_temp
           score += 0.1 if profiles.order('year').last.income >= (funder.attributes.where('funding_stream = ?', 'All').first.funded_income_temp - 25000) && profiles.order('year').last.income <= (funder.attributes.where('funding_stream = ?', 'All').first.funded_income_temp + 25000)
         end
+
+        # Reset for closed funders
+        score = 0 if Funder::CLOSED_FUNDERS.include?(funder.name)
       end
 
       build_recommendation(funder, score)
