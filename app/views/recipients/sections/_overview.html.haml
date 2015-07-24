@@ -31,7 +31,7 @@
       - if params[:funding_stream]
         Funding stream:
         %span.uk-button-group
-          = link_to "#{@funding_stream} &#10006;".html_safe, recipient_comparison_path(@funder, :funding_stream => nil, :anchor => 'overview'), class: 'uk-button uk-button-mini'
+          = link_to "#{@funding_stream} &#10006;".html_safe, recipient_comparison_path(@funder, :funding_stream => nil, :anchor => 'overview'), class: 'uk-button uk-button-mini shadow'
 
       -# .uk-button.uk-button-mini.roboto Compare
     .uk-grid.uk-margin-bottom{"data-uk-grid-match" => "{target:'.uk-panel'}"}
@@ -158,7 +158,7 @@
             - else
               - @funder.attributes.order('funding_stream asc').pluck(:funding_stream).uniq.each do |stream|
                 - unless stream == 'All'
-                  = link_to stream, recipient_comparison_path(@funder, :anchor => 'overview', :funding_stream => "#{stream}", :anchor => 'overview'), class: 'uk-button uk-button-small', style: 'margin-bottom: 3px;'
+                  = link_to stream, recipient_comparison_path(@funder, :anchor => 'overview', :funding_stream => "#{stream}", :anchor => 'overview'), class: 'uk-button uk-button-small shadow', style: 'margin-bottom: 3px;'
 
       .uk-width-medium-1-3.uk-margin-bottom
         .uk-panel.uk-panel-box#panel.uk-text-center.shadow

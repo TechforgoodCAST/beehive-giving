@@ -253,7 +253,7 @@ module OrganisationsHelper
       content_tag(:div, class: 'uk-alert uk-alert-warning uk-margin-bottom-remove') do
         content_tag(:span, "Oh snap!", :class => 'uk-text-bold') +
         content_tag(:br, "We don't have this information from " + @funder.name + ". To help us demonstrate the demand for this information, why not hit request...") +
-        content_tag(:p, link_to('Request', vote_recipient_path("#{request}" => true, funder_id: @funder.id, recipient_id: @recipient.id), method: 'post', class: 'uk-button uk-width-1-1', data: {disable_with: "<i class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i> Requesting..."}))
+        content_tag(:p, link_to('Request', vote_recipient_path("#{request}" => true, funder_id: @funder.id, recipient_id: @recipient.id), method: 'post', class: 'uk-button uk-width-1-1 shadow', data: {disable_with: "<i class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i> Requesting..."}))
       end
     else
       content_tag(:div, class: 'uk-alert uk-alert') do
@@ -270,7 +270,7 @@ module OrganisationsHelper
 
   def simple_data_not_available(request)
     if @recipient.can_request_funder?(@funder, "#{request}")
-      content_tag(:a, link_to('Request', vote_recipient_path("#{request}" => true, funder_id: @funder.id, recipient_id: @recipient.id), method: 'post', class: 'uk-button uk-width-1-1', data: {disable_with: "<i class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i> Requesting..."}))
+      content_tag(:a, link_to('Request', vote_recipient_path("#{request}" => true, funder_id: @funder.id, recipient_id: @recipient.id), method: 'post', class: 'uk-button uk-width-1-1 shadow', data: {disable_with: "<i class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i> Requesting..."}))
     else
       content_tag(:button, class: 'uk-button uk-width-1-1', disabled: "") do
         content_tag(:i, " Requested", class: 'uk-icon-check')

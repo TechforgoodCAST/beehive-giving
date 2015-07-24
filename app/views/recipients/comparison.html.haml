@@ -5,12 +5,12 @@
 
       .uk-width-medium-1-1.uk-width-large-1-4.uk-vertical-align.uk-text-center{style: "height: 220px;"}
         .uk-vertical-align-middle
-          .uk-panel.cta.shadow{"data-uk-sticky" => "{top:40, media: 959}"}
+          .uk-panel.cta.shadow.bounce{"data-uk-sticky" => "{top:40, media: 959}"}
             - if @funder.restrictions.any?
               - if @recipient.questions_remaining?(@funder)
                 %p
                   First things first. Let's see if you're eligible.
-                = link_to 'Are you eligible?', recipient_eligibility_path(@funder), class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
+                = link_to 'Are you eligible?', recipient_eligibility_path(@funder), class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large shadow'
               - else
                 - if @recipient.eligible?(@funder)
                   %p
