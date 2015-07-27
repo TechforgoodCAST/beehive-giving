@@ -159,20 +159,13 @@ class RecipientsController < ApplicationController
     @funding_stream = params[:funding_stream] || 'All'
 
     if @funder.attributes.any?
-      @year_of_funding = Funder.find_by_slug(params[:id]).attributes.order(year: :desc).first.year
+      @year_of_funding = Funder.find_by_slug(params[:id]).attributes.where('grant_count > ?', 0).order(year: :desc).first.year
       @funder_attribute = Funder.find_by_slug(params[:id]).attributes.where('year = ? AND funding_stream = ?', @year_of_funding, @funding_stream).first
-      # @funding_years = @funder.attributes.order(year: :desc).pluck(:year).uniq
     end
   end
 
   def eligibility_params
     params.require(:recipient).permit(:eligibilities_attributes => [:id, :eligible, :restriction_id, :recipient_id])
   end
-
-  # def recipient_params
-  #   params.require(:recipient).permit(:name, :contact_number, :website,
-  #   :street_address, :city, :region, :postal_code, :country, :charity_number,
-  #   :company_number, :founded_on, :registered_on, :mission, :status, :registered)
-  # end
 
 end

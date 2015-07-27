@@ -9,10 +9,10 @@ namespace :missing do
     @days_ago = ENV['DAYS_AGO'] || 365
 
     CSV.open(@destination, "w+") do |csv|
-      csv << ["Last Updated", "First Name", "Last Name", "User Email", "Created On",
-              "Last Seen", "Organisation", "Contact number", "Profiles", "Unlocks",
-              "Eligibilities", "Requests", "Feedbacks", "NPS", "Taken Away",
-              "Informs Decision"]
+      csv << ["Last Updated", "First Name", "Last Name", "User Email", "Signed Up?",
+              "Last Seen", "Registered Organisation?", "Organisation", "Contact number",
+              "Profile Created?", "Unlocked Funders?", "Last Unlock?", "Eligibilities", "Requests",
+              "Feedbacks", "NPS", "Taken Away", "Informs Decision"]
     end
 
     User.where('role = ? AND created_at >= ?', 'User', Date.today - @days_ago.to_i).order(:created_at).each do |user|
@@ -26,10 +26,12 @@ namespace :missing do
       row << (user.last_seen ? "#{user.last_seen.strftime('%F')}" : "-")
       if user.organisation
         @recipient = Recipient.find(user.organisation.id)
+        row << @recipient.created_at.strftime('%F')
         row << "#{user.organisation.name}"
         row << "#{user.organisation.contact_number}"
-        row << "#{user.organisation.profiles.count}"
+        row << (user.organisation.profiles.count > 0 ? "#{user.organisation.profiles.last.created_at.strftime('%F')}" : "-")
         row << "#{RecipientFunderAccess.where(recipient_id: @recipient.id).count}"
+        row << (RecipientFunderAccess.where(recipient_id: @recipient.id).count > 0 ? "#{RecipientFunderAccess.where(recipient_id: @recipient.id).last.created_at.strftime('%F')}" : "-")
         row << "#{Eligibility.where(recipient_id: @recipient.id).count}"
         row << "#{Feature.where(recipient_id: @recipient.id).count}"
         row << "#{Feedback.where(user: user).count}"
@@ -51,7 +53,7 @@ namespace :missing do
       CSV.open(@destination, "a+") do |csv|
         csv << [row[0], row[1], row[2], row[3], row[4], row[5], row[6],
                 row[7], row[8], row[9], row[10], row[11], row[12], row[13],
-                row[14], row[15], row[16]]
+                row[14], row[15], row[16], row[17], row[18]]
       end
     end
   end

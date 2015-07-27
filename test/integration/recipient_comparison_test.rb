@@ -65,7 +65,7 @@ class RecipientComparisonTest < ActionDispatch::IntegrationTest
   end
 
   test 'Open data symbol hidden if no grants data held' do
-    @attribute = create(:funder_attribute, :funder => @funder)
+    @attribute = create(:funder_attribute, :funder => @funder, :grant_count => 1)
     create_and_auth_user!(:organisation => @recipient)
     visit recipient_comparison_path(@funder)
 
@@ -81,17 +81,17 @@ class RecipientComparisonTest < ActionDispatch::IntegrationTest
   end
 
   test 'Data request if no grants data held' do
-    @attribute = create(:funder_attribute_no_grants, :funder => @funder)
+    @attribute = create(:funder_attribute_no_grants, :funder => @funder, :grant_count => 1)
     create(:profile, :organisation => @recipient, :year => Date.today.year)
     create_and_auth_user!(:organisation => @recipient)
     visit recipient_comparison_path(@funder)
 
-    assert page.has_content?("Request", count: 8)
+    assert page.has_content?("Request", count: 7)
   end
 
   test 'Data requested locked if requested' do
     @attribute1 = create(:funder_attribute_no_grants, :funder => @funder)
-    @attribute2 = create(:funder_attribute, :funder => @funder, :funding_stream => 'Main')
+    @attribute2 = create(:funder_attribute, :funder => @funder, :funding_stream => 'Main', :grant_count => 1)
     create(:profile, :organisation => @recipient, :year => Date.today.year)
     create_and_auth_user!(:organisation => @recipient)
     visit recipient_comparison_path(@funder)
@@ -129,6 +129,22 @@ class RecipientComparisonTest < ActionDispatch::IntegrationTest
     visit recipient_comparison_path(@funder)
 
     assert page.has_content?("Oh snap", count: 1)
+  end
+
+  test 'funder attributes with no grants are not displayed' do
+    create(:profile, :organisation => @recipient)
+    create( :funder_attribute,
+            :funder => @funder,
+            :year => Date.today.year,
+            :grant_count => 0)
+    create( :funder_attribute,
+            :funder => @funder,
+            :year => Date.today.year - 1,
+            :grant_count => 123)
+    create_and_auth_user!(:organisation => @recipient)
+    visit recipient_comparison_path(@funder)
+
+    assert page.has_content?('123', count: 1)
   end
 
 end

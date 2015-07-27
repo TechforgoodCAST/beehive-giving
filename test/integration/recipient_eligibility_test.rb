@@ -48,7 +48,7 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
     @restriction3 = create(:restriction)
 
     @funding_stream = create(:funding_stream, :restrictions => [@restriction1, @restriction2, @restriction3], :funders => [@funder], :label => 'All')
-    @funder_attribute = create(:funder_attribute, :funder => @funder, :funding_stream => 'All')
+    @funder_attribute = create(:funder_attribute, :funder => @funder, :funding_stream => 'All', :grant_count => 1)
 
     @eligibility1 = create(:eligibility, :recipient => @recipient, :restriction => @restriction1)
     @eligibility2 = create(:eligibility, :recipient => @recipient, :restriction => @restriction2)
@@ -85,7 +85,7 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
     @restriction3 = create(:restriction)
 
     @funding_stream = create(:funding_stream, :restrictions => [@restriction1, @restriction2, @restriction3], :funders => [@funder], :label => 'All')
-    @funder_attribute = create(:funder_attribute, :funder => @funder, :funding_stream => 'All')
+    @funder_attribute = create(:funder_attribute, :funder => @funder, :funding_stream => 'All', :grant_count => 1)
 
     create_and_auth_user!(:organisation => @recipient)
     visit "/eligibility/#{@funder.slug}"

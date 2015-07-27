@@ -8,7 +8,7 @@ class RecipientApproachFunderTest < ActionDispatch::IntegrationTest
     @recipient.unlock_funder!(@funder)
     @restriction = create(:restriction)
     @funding_stream = create(:funding_stream, :restrictions => [@restriction], :funders => [@funder], :label => 'All')
-    @funder_attribute = create(:funder_attribute, :funder => @funder, :funding_stream => 'All')
+    @funder_attribute = create(:funder_attribute, :funder => @funder, :funding_stream => 'All', :grant_count => 1)
     create_and_auth_user!(:organisation => @recipient)
   end
 

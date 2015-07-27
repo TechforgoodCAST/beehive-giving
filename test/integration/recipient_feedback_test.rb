@@ -35,7 +35,7 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
     4.times do |i|
       @funder = create(:funder, :active_on_beehive => true)
       @funders << @funder
-      create(:funder_attribute, :funder => @funder, :funding_stream => "All")
+      create(:funder_attribute, :funder => @funder, :funding_stream => "All", :grant_count => 1)
     end
 
     4.times do |i|

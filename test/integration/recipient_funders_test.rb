@@ -20,7 +20,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
 
   test 'recipients only needs to create one profile to unlock funders' do
     @funders = Array.new(3) { |i| create(:funder, :active_on_beehive => true) }
-    Array.new(3) { |i| create(:funder_attribute, :funder => @funders[i], :funding_stream => "All") }
+    Array.new(3) { |i| create(:funder_attribute, :funder => @funders[i], :funding_stream => "All", :grant_count => 1) }
 
     @profile = create(:profile, :organisation => @recipient)
     create_and_auth_user!(:organisation => @recipient)
@@ -36,7 +36,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
 
   test 'recipient can only unlock 3 funders without subscribing' do
     @funders = Array.new(4) { |i| create(:funder, :active_on_beehive => true) }
-    Array.new(4) { |i| create(:funder_attribute, :funder => @funders[i], :funding_stream => "All") }
+    Array.new(4) { |i| create(:funder_attribute, :funder => @funders[i], :funding_stream => "All", :grant_count => 1) }
 
     @profile = create(:profile, :organisation => @recipient)
     3.times { |i| @recipient.unlock_funder!(@funders[i]) }

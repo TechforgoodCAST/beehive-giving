@@ -55,7 +55,7 @@ class RecipientGatewayTest < ActionDispatch::IntegrationTest
     create(:profile, :organisation => @recipient)
     @restrictions = Array.new(3) { |i| create(:restriction) }
     create(:funding_stream, :restrictions => @restrictions, :funders => [@funders[0]])
-    create(:funder_attribute, :funder => @funders[0], :funding_stream => 'All')
+    create(:funder_attribute, :funder => @funders[0], :funding_stream => 'All', :grant_count => 1)
     create_and_auth_user!(:organisation => @recipient)
 
     visit recipient_comparison_gateway_path(@funders[0])
