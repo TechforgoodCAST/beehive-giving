@@ -150,13 +150,13 @@
               %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'left'}", :title => "This information is from open grants data made possible by 360Giving"}
           - unless @funder.attributes.count < 1 || @funder.attributes.where('year = ? AND funding_stream != ?', @year_of_funding, 'All').pluck(:funding_stream).uniq.count == 0
             %h1.uk-margin-top-remove.stat-big
-              = @funder.attributes.where('year = ? AND funding_stream != ?', @year_of_funding, 'All').pluck(:funding_stream).uniq.count
+              = @funder.attributes.where('year = ? AND funding_stream != ? AND grant_count > ?', @year_of_funding, 'All', 0).pluck(:funding_stream).uniq.count
           %h5.uk-text-bold.upcase Funding stream(s)
           %hr
             - if @funder.attributes.count < 1 || @funder.attributes.where('year = ? AND funding_stream != ?', @year_of_funding, 'All').pluck(:funding_stream).uniq.count == 0
               = data_not_available('request_funding_streams')
             - else
-              - @funder.attributes.order('funding_stream asc').pluck(:funding_stream).uniq.each do |stream|
+              - @funder.attributes.where('grant_count > ?', 0).order('funding_stream asc').pluck(:funding_stream).uniq.each do |stream|
                 - unless stream == 'All'
                   = link_to stream, recipient_comparison_path(@funder, :anchor => 'overview', :funding_stream => "#{stream}", :anchor => 'overview'), class: 'uk-button uk-button-small shadow', style: 'margin-bottom: 3px;'
 
