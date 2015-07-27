@@ -4,17 +4,21 @@ class FeedbackController < ApplicationController
 
   def new
     @redirect_to_funder = params[:redirect_to_funder]
+    @funder = Funder.find_by_slug(@redirect_to_funder)
+    
     redirect_to funders_path, alert: "It looks like you've already provided feedback" if current_user.feedbacks.count > 0
   end
 
   def create
     @redirect_to_funder = params[:feedback].delete(:redirect_to_funder)
     @feedback = current_user.feedbacks.new(feedback_params)
+    @funder = Funder.find_by_slug(@redirect_to_funder)
 
     respond_to do |format|
       format.html {
         if @feedback.save
           flash[:notice] = "You're a star! Thanks for the feedback."
+          @recipient.unlock_funder!(@funder) if @recipient.locked_funder?(@funder)
           redirect_to recipient_comparison_gateway_path(Funder.find_by_slug(@redirect_to_funder))
         else
           render :new

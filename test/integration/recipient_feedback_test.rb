@@ -72,7 +72,7 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
       select("10 - Strongly agree", :from => "feedback_informs_decision")
     end
     click_button("Submit feedback")
-    assert_equal recipient_comparison_gateway_path(@funders[2]), current_path
+    assert_equal recipient_comparison_path(@funders[2]), current_path
 
     # Feedback only required for second unlock
     visit recipient_comparison_gateway_path(@funders[3])
