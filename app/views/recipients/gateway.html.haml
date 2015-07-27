@@ -17,17 +17,15 @@
         .uk-vertical-align-middle
           %h6.uk-text-muted.uk-text-bold.upcase.uk-margin-bottom-remove Mission
           %p.uk-margin-top-remove= @funder.mission
-          -# %h6.uk-text-muted.uk-text-bold.upcase.uk-margin-bottom-remove.uk-margin-top-remove Focus
-          -# .uk-width-1-1.uk-margin-small-top.uk-margin-bottom
-          -#   .uk-button.uk-button-small Youth
-          -#   .uk-button.uk-button-small Employment
           %h6.uk-text-muted.uk-text-bold.upcase.uk-margin-bottom-remove.uk-margin-top-remove Countries targeted
           .uk-width-1-1.uk-margin-small-top
             - if @funder.attributes.count < 1
               %h2.uk-text-primary Missing
             - else
-              - @funder.attributes.where('funding_stream = ?', @funding_stream).first.countries.each do |country|
+              - @funder_attribute.countries.limit(15).each do |country|
                 = link_to country.name, funders_path(:'q[grants_countries_id_eq]' => "#{country.id}"), class: 'uk-button uk-button-small shadow', style: 'margin-bottom: 3px;'
+              - if @funder_attribute.countries.count > 15
+                %span ...
 
       .uk-width-medium-1-1.uk-width-large-1-4.uk-vertical-align.uk-text-center{style: 'height: 220px;'}
         .uk-vertical-align-middle
