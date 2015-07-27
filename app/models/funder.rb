@@ -23,7 +23,10 @@ class Funder < Organisation
 
   scope :active, -> {where(active_on_beehive: true)}
 
-  FUNDERS_WITH_WIDE_LAYOUT = ['Big Lottery Fund', 'City Bridge Trust', 'The Joseph Rowntree Charitable Trust']
+  FUNDERS_WITH_WIDE_LAYOUT = ['Big Lottery Fund',
+                              'City Bridge Trust',
+                              'The Joseph Rowntree Charitable Trust',
+                              'Oak Foundation']
 
   CLOSED_FUNDERS = ['Cripplegate Foundation']
 
