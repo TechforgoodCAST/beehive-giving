@@ -33,6 +33,6 @@
 
           - else
             .uk-panel-badge.uk-badge.uk-badge-danger Not eligible
-            Sorry, it seems you're not eligible for this funding stream. Remember you can always your eligiblity in your
+            Sorry, it seems you're not eligible for this funding stream. Remember you can always manage your eligiblity in the
             = succeed '.' do
-              = link_to "settings", recipient_eligibilities_path(@recipient)
+              = link_to "settings", recipient_eligibilities_path(@recipient), :"data-no-turbolink" => true
