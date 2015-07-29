@@ -31,6 +31,7 @@ group :development do
   gem 'guard-rake'
   gem 'guard-livereload'
   gem 'quiet_assets'
+  gem 'meta_request'
 end
 
 group :test do
