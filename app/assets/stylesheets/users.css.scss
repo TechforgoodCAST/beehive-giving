@@ -23,16 +23,16 @@
 /* Large screen and bigger */
 @media (min-width: 1220px) {
   .tm-section, .tm-footer {
-    padding: 113px 0;
+    padding: 50px 0;
   }
 }
 
 /* Sections */
 
 .tm-section-color-1 {
-  background: #F7BA0E;
+  background: #FAFAFA;
     @media (min-width: 767px) {
-    background: #F7BA0E image-url('bg_teaser.svg') 50% 50% no-repeat;
+    background: #FAFAFA image-url('bg.png') 50% 50% no-repeat;
     background-size: cover;
   }
 }

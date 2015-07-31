@@ -10,7 +10,7 @@ en:
       user:
         first_name: 'First name'
         last_name: 'Last name'
-        job_role: 'Job role'
+        job_role: 'Job title'
         user_email: 'Email'
         password: 'Password'
         password_confirmation: 'Password Confirmation'
