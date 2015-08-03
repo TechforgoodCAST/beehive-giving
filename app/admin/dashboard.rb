@@ -105,25 +105,25 @@ ActiveAdmin.register_page "Dashboard" do
           tr do
             td 'Register non-profit'
             recipient_count.each_with_index do |count, i|
-              td percentage(count, i)
+              td percentage(count, i) if count[1] > 0
             end
           end
           tr do
             td 'Create profile'
             profile_count.each_with_index do |count, i|
-              td percentage(count, i)
+              td percentage(count, i) if count[1] > 0
             end
           end
           tr do
             td 'Funder unlocks'
             unlock_count.each_with_index do |count, i|
-              td percentage(count, i)
+              td percentage(count, i) if count[1] > 0
             end
           end
           tr do
             td 'Eligibility checks'
             eligibility_count.each_with_index do |count, i|
-              td percentage(count, i)
+              td percentage(count, i) if count[1] > 0
             end
           end
         end
