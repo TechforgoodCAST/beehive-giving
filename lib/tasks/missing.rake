@@ -9,10 +9,11 @@ namespace :missing do
     @days_ago = ENV['DAYS_AGO'] || 365
 
     CSV.open(@destination, "w+") do |csv|
-      csv << ["Last Updated", "First Name", "Last Name", "User Email", "Signed Up?",
-              "Last Seen", "Registered Organisation?", "Organisation", "Contact number",
-              "Profile Created?", "Unlocked Funders?", "Last Unlock?", "Eligibilities", "Requests",
-              "Feedbacks", "NPS", "Taken Away", "Informs Decision"]
+      csv << ["Last Updated", "First Name", "Last Name", "User Email", "Job Title",
+              "Signed Up?", "Last Seen", "Registered Organisation?", "Organisation",
+              "Contact number", "Profile Created?", "Unlocked Funders?", "Last Unlock?",
+              "Eligibilities", "Requests", "Feedbacks", "NPS", "Taken Away",
+              "Informs Decision"]
     end
 
     User.where('role = ? AND created_at >= ?', 'User', Date.today - @days_ago.to_i).order(:created_at).each do |user|
@@ -22,6 +23,7 @@ namespace :missing do
       row << "#{user.first_name}"
       row << "#{user.last_name}"
       row << "#{user.user_email}"
+      row << "#{user.job_role}"
       row << "#{user.created_at.strftime('%F')}"
       row << (user.last_seen ? "#{user.last_seen.strftime('%F')}" : "-")
       if user.organisation
@@ -53,7 +55,7 @@ namespace :missing do
       CSV.open(@destination, "a+") do |csv|
         csv << [row[0], row[1], row[2], row[3], row[4], row[5], row[6],
                 row[7], row[8], row[9], row[10], row[11], row[12], row[13],
-                row[14], row[15], row[16], row[17], row[18]]
+                row[14], row[15], row[16], row[17], row[18], row[19]]
       end
     end
   end
