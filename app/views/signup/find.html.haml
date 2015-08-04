@@ -4,7 +4,7 @@
   mixpanel.track_links("#mp-skip", "Skipped search for organisation");
 
 - content_for :signup do
-  #bg-color.tm-section-color-1
+  #bg-color
     .uk-container.uk-container-center.uk-animation-fade
       .uk-margin-large.uk-margin-large-top
         .uk-width-1-1.uk-text-center
@@ -22,7 +22,7 @@
                 = current_user.first_name
               %br You'll have recommendations of funders in minutes.
             %p.uk-text-large Beehive uses a personalised profile of your organisation, along with a funders preferences to provide tailored funding recommendations...
-            .uk-text-center= image_tag "signup/puzzle.svg", alt: "Puzzle", width: 150
+            .illus.puzzle
             %p.uk-text-large ...so let's start by adding your organisation.
 
             .uk-width-1-1.uk-margin-top

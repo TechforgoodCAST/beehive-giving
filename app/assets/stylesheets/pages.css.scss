@@ -1,104 +1,46 @@
-#tour1, #tour2, #tour3, #tour4, #tour5, #tour6 {
-  width: 50%;
-  min-height: 400px;
-  background: #ccc;
-  padding: 0 0 0 0;
-  @media (max-width: 1220px) {
-    min-height: 350px;
+.illus {
+  background: image-url("homepage-illus.svg") no-repeat;
+  background-size: 500px 800px;
+  margin: 0 auto;
+  &.problem, &.solution, &.benefits {
+    width: 350px;
+    height: 200px;
+    @media screen and (max-width: 320px) {
+      background-size: 385px 616px;
+      width: 270px;
+      height: 154px;
+    }
   }
-  @media (max-width: 995px) {
-    min-height: 300px;
+  &.solution {
+    background-position: left -200px;
+    @media screen and (max-width: 320px) {
+      background-position: left -154px;
+    }
   }
-  @media (max-width: 767px) {
-    width: 100%;
-    min-height: 400px;
+  &.benefits {
+    background-position: left -400px;
+    @media screen and (max-width: 320px) {
+      background-position: left -308px;
+    }
   }
-  @media (max-width: 480px) {
-    width: 100%;
-    min-height: 275px;
+  &.profile, &.recommendation, &.eligibility {
+    width: 150px;
+    height: 150px;
   }
-}
-
-#set-height{
-  height: 400px;
-  @media (max-width: 1220px) {
-    height: 350px;
+  &.profile {
+    background-position: right 0;
   }
-  @media (max-width: 995px) {
-    height: 300px;
+  &.recommendation {
+    background-position: right -150px;
   }
-  @media (max-width: 767px) {
-    height: 350px;
+  &.eligibility {
+    background-position: right -300px;
   }
-}
-
-// Non-profit images
-#tour1 {
-  background: image-url('tour/np-problem.png') no-repeat;
-  background-size: cover;
-}
-#tour2 {
-  background: #F7BA0E image-url('tour/np-solution.png') no-repeat;
-  background-size: cover;
-}
-#tour3 {
-  background: image-url('tour/np-benefits.png') no-repeat;
-  background-size: cover;
-}
-
-// Funder images
-#tour4 {
-  background: image-url('tour/funder-problem.png') no-repeat;
-  background-size: cover;
-}
-#tour5 {
-  background: #F7BA0E image-url('tour/funder-solution.png') no-repeat;
-  background-size: cover;
-}
-#tour6 {
-  background: image-url('tour/funder-benefits.png') no-repeat;
-  background-size: cover;
-}
-
-.container-l {
-  float: right;
-  max-width: 580px;
-  padding: 0 80px 0 33px;
-  @media (max-width: 1220px) {
-    max-width: 490px;
-    padding: 0 60px 0 38px;
+  &.puzzle {
+    width: 185px;
+    height: 200px;
+    background-position: left -600px;
   }
-  @media (max-width: 995px) {
-    max-width: auto;
-    padding: 0 25px 0 25px;
-  }
-  @media (max-width: 767px) {
-    max-width: 100%;
-    padding: 0 25px 0 25px;
-  }
-}
-
-.container-r {
-  float: left;
-  max-width: 580px;
-  padding: 0 33px 0 80px;
-  @media (max-width: 1220px) {
-    max-width: 490px;
-    padding: 0 38px 0 60px;
-  }
-  @media (max-width: 995px) {
-    max-width: auto;
-    padding: 0 25px 0 25px;
-  }
-  @media (max-width: 767px) {
-    max-width: 100%;
-    padding: 0 25px 0 25px;
-  }
-}
-
-#beehive-bullet {
-  line-height: 5.5em;
-  list-style-image: image-url("bullet-white.png");
 }
 
 // Roadmap
@@ -158,23 +100,9 @@
   content: none;
 }
 
-// .timeline li.todo {
-  // margin-top: 50px;
-// }
-
-// .timeline li.todo b {
-//   color: #8d8d8d;
-// }
-//
-// .timeline li.todo span.bull {
-//   border-color: #8d8d8d;
-// }
-
 .timeline li.todo span.bull:after {
   background: image-url("bg-dashed-timeline.gif") center top;
   z-index: -1;
-  // height: 64px;
-  // bottom: 12px;
 }
 
 @media only screen and (max-width: 950px) {
@@ -227,12 +155,6 @@
     width: auto;
     display: block;
   }
-  // .timeline li.todo span.bull:after {
-    // background-repeat: repeat-y;
-    // background-position: center -1px;
-    // z-index: -1;
-    // margin-top: 50px;
-  // }
   .timeline li:first-child + li + li + li + li + li span.bull:after {
     height: 100px;
   }

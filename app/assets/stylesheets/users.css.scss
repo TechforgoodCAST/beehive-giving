@@ -23,15 +23,15 @@
 /* Large screen and bigger */
 @media (min-width: 1220px) {
   .tm-section, .tm-footer {
-    padding: 50px 0;
+    padding: 40px 0;
   }
 }
 
 /* Sections */
 
 .tm-section-color-1 {
-  background: #FAFAFA;
-    @media (min-width: 767px) {
+  background: #444444;
+  @media (min-width: 767px) {
     background: #FAFAFA image-url('bg.png') 50% 50% no-repeat;
     background-size: cover;
   }
