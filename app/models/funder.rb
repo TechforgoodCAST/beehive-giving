@@ -30,4 +30,12 @@ class Funder < Organisation
 
   CLOSED_FUNDERS = ['Cripplegate Foundation']
 
+  def eligible_organisations
+    array = []
+    Recipient.joins(:eligibilities).order(:id).uniq.each do |recipient|
+      array << recipient if recipient.eligible?(self)
+    end
+    array
+  end
+
 end

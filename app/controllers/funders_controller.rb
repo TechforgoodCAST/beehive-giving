@@ -1,7 +1,7 @@
 class FundersController < ApplicationController
   before_filter :ensure_logged_in
   before_filter :ensure_admin, only: [:comparison]
-  before_filter :ensure_funder, only: [:explore, :show]
+  before_filter :ensure_funder, only: [:explore, :show, :eligible]
   before_filter :load_funder, except: [:new, :create]
   before_filter :load_recipient
 
@@ -26,6 +26,10 @@ class FundersController < ApplicationController
 
   def show
     @grants = @funder.grants.order("created_at").page(params[:page]).per(10)
+  end
+
+  def eligible
+    @eligible_organisations = @funder.eligible_organisations
   end
 
   def comparison

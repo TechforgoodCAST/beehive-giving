@@ -75,6 +75,7 @@ Rails.application.routes.draw do
   resources :funders do
     member do
       get :explore
+      get :eligible
     end
     resources :grants
   end

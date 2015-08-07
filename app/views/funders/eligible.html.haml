@@ -1,0 +1,111 @@
+.uk-container.uk-container-center.uk-margin-large
+  %h2
+    Eligible organisations
+    = surround '(', ')' do
+      = @eligible_organisations.count
+      of
+      = RecipientFunderAccess.where(funder_id: @funder.id).count
+
+  - @eligible_organisations.each do |recipient|
+    - profile = recipient.profiles.first
+    .uk-panel.uk-panel-box#panel.shadow.uk-margin
+      .uk-panel-title
+        = recipient.name
+        = surround '(', ')' do
+          = profile.year
+      - if recipient.charity_number.present?
+        Charity No.
+        = recipient.charity_number
+      - if recipient.company_number.present?
+        %br
+          Company No.
+          = recipient.company_number
+      %table.uk-table.uk-table-condensed.uk-table-striped
+        %tbody
+          %tr
+            %td
+              %strong Contact
+            %td
+              %strong Website
+            %td
+              %strong Address
+          %tr
+            %td.uk-width-1-3
+              = recipient.users.first.first_name
+              = recipient.users.first.last_name
+              %br= recipient.users.first.user_email
+            %td.uk-width-1-3
+              = recipient.website
+            %td.uk-width-1-3
+              = recipient.full_address
+          %tr
+            %td
+              %strong Beneficiaries
+            %td
+              %strong Beneficiaries Age/Gender
+            %td
+              %strong Beneficiaries impacted
+          %tr
+            %td.uk-width-1-3
+              - profile.beneficiaries.each do |i|
+                %li.uk-list= i.label
+            %td.uk-width-1-3
+              = profile.min_age
+              to
+              = succeed ' years old' do
+                = profile.max_age
+              |
+              = profile.gender
+            %td.uk-width-1-3
+              = profile.beneficiaries_count
+              - unless profile.beneficiaries_count_actual
+                (estimate)
+          %tr
+            %td
+              %strong Organisations age
+            %td
+              %strong Operating locations
+            %td
+              %strong Income/Expenditure
+          %tr
+            %td.uk-width-1-3
+              = succeed ' years old' do
+                = ((Date.today - recipient.founded_on).to_f / 356).round(1)
+            %td.uk-width-1-3
+              - profile.districts.each do |d|
+                %li.uk-list= d.label
+            %td.uk-width-1-3
+              = number_to_currency(profile.income, unit: '£', precision: 0)
+              - unless profile.income_actual
+                (estimate)
+              |
+              = number_to_currency(profile.expenditure, unit: '£', precision: 0)
+              - unless profile.expenditure_actual
+                (estimate)
+
+          %tr
+            %td
+              %strong Staff/Volunteers
+            %td
+              %strong Provides
+            %td
+              %strong Recieves financial payment (not donations) for work?
+          %tr
+            %td.uk-width-1-3
+              = succeed ' paid staff' do
+                = profile.staff_count
+              |
+              = succeed ' volunteers' do
+                = profile.volunteer_count
+              %br
+              %br Work delivered by:
+              - profile.implementors.each do |i|
+                %li.uk-list= i.label
+            %td.uk-width-1-3
+              - profile.implementations.each do |i|
+                %li.uk-list= i.label
+            %td.uk-width-1-3
+              - if profile.does_sell
+                Yes
+              - else
+                No
