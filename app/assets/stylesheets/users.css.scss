@@ -23,7 +23,7 @@
 /* Large screen and bigger */
 @media (min-width: 1220px) {
   .tm-section, .tm-footer {
-    padding: 40px 0;
+    padding: 79px 0;
   }
 }
 
@@ -52,4 +52,15 @@
 
 .stat {
   font-size: 20px;
+}
+
+.show-more-arrow {
+  position: absolute;
+  font-size: 16px;
+  margin-left: -16px;
+  bottom: 0;
+  &:hover {
+    font-size: 18px;
+    margin-left: -18px;
+  }
 }

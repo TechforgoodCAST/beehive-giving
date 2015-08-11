@@ -12,7 +12,7 @@
 
     .uk-width-medium-1-3.uk-margin-top.uk-container-center
       .uk-form.uk-form-stacked.uk-panel.uk-panel-box#panel.shadow
-        %h4.uk-text-bold Work for a non-profit?
+        %h4.uk-text-bold Do you work for a non-profit?
         = simple_form_for [@user], url: signup_user_path, method: :post do |f|
           .uk-grid
             .uk-width-large-1-2.uk-margin-bottom
@@ -27,24 +27,14 @@
                   = f.error :last_name, class: 'uk-text-small uk-text-warning'
             .uk-width-medium-1-1.uk-margin-bottom
               .uk-form-controls{style: 'position: relative;'}
-                = f.input :job_role, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
-                .uk-form-password-toggle
-                  = f.error :job_role, class: 'uk-text-small uk-text-warning'
-            .uk-width-medium-1-1.uk-margin-bottom
-              .uk-form-controls{style: 'position: relative;'}
                 = f.input :user_email, error: false, type: 'email', input_html: { class: 'uk-width-1-1' }
                 .uk-form-password-toggle
                   = f.error :user_email, class: 'uk-text-small uk-text-warning'
             .uk-width-medium-1-1.uk-margin-bottom
               .uk-form-controls{style: 'position: relative;'}
-                = f.input :password, error: false, type: 'password', input_html: { class: 'uk-width-1-1' }
+                = f.input :password, error: false, type: 'password', input_html: { class: 'uk-width-1-1', "data-uk-tooltip" => "{pos:'top', animation:true}", :title => "At least 6 characters with 1 number."}
                 .uk-form-password-toggle
                   = f.error :password, class: 'uk-text-small uk-text-warning'
-            .uk-width-medium-1-1.uk-margin-bottom
-              .uk-form-controls{style: 'position: relative;'}
-                = f.input :password_confirmation, error: false, type: 'email', input_html: { class: 'uk-width-1-1' }
-                .uk-form-password-toggle
-                  = f.error :password_confirmation, class: 'uk-text-small uk-text-warning'
             .uk-width-medium-1-1.uk-margin-bottom
               .uk-form-controls.uk-text-muted
                 Accept
@@ -52,7 +42,7 @@
                 and
                 = succeed '?' do
                   = link_to 'privacy policy', '#privacy', class: 'blue', onclick: "window.open('#{privacy_path}','Privacy Policy','width=600,height=400')"
-                = f.input_field :agree_to_terms, error: false, checked: true
+                = f.input_field :agree_to_terms, error: false
                 = f.error :agree_to_terms, class: 'uk-text-small uk-text-warning'
             .uk-width-medium-1-1.uk-text-truncate
               = f.button :button, "Sign up (for free!)", class: 'uk-button uk-button-primary uk-width-1-1 uk-button-large shadow bounce', style: 'color: #fff; font-size:16px;', data: {disable_with: "<i style='color: #999;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #999;'> Signing up...</span>"}
@@ -68,7 +58,11 @@
           18+
           %span.uk-text-small thousand grants
 
-      %a.uk-button.uk-button-small{:href => "#tell-me-more", "data-uk-smooth-scroll" => "{offset: 40}"} Tell me more
+      %a.uk-button.uk-button-small.shadow.bounce{:href => "#tell-me-more", "data-uk-smooth-scroll" => "{offset: 40}"} Tell me more
+
+      .uk-width-1-1.uk-hidden-small
+        %a{:href => "#tell-me-more", "data-uk-smooth-scroll" => "{offset: 40}"}
+          %i.uk-icon.uk-icon-chevron-circle-down.uk-icon-large.show-more-arrow
 
 #bg-color#tell-me-more
   .uk-container.uk-container-center.uk-text-center
@@ -90,6 +84,12 @@
         %p
           3. Check to see if you’re eligible
           %br and approach them for support
+
+    .uk-width-large-3-4.uk-width-medium-1-1.uk-container-center.uk-margin-large.uk-margin-large-top
+      .uk-text-large
+        "I have been fundraising for 20 years and even though it is still in development this tool is long over-due and is brilliant!" -
+        %span{style: 'font-style: italic;'}
+          Catherine Marchant, Bright Ideas Trust
 
     %hr
 
