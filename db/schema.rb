@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150729150755) do
+ActiveRecord::Schema.define(version: 20150812112203) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,8 +88,9 @@ ActiveRecord::Schema.define(version: 20150729150755) do
   add_index "beneficiaries_profiles", ["profile_id"], name: "index_beneficiaries_profiles_on_profile_id", using: :btree
 
   create_table "countries", force: :cascade do |t|
-    t.string "name",   limit: 255
-    t.string "alpha2", limit: 255
+    t.string  "name",     limit: 255
+    t.string  "alpha2",   limit: 255
+    t.integer "priority",             default: 0
   end
 
   create_table "countries_enquiries", force: :cascade do |t|

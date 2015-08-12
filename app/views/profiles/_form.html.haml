@@ -14,7 +14,7 @@
               = succeed '?' do
                 = @profile.year || @profile.year || get_year
             .uk-form-controls
-              = f.association :countries, collection: Country.order('name ASC'), input_html: {class: 'chosen-select'}
+              = f.association :countries, collection: Country.order('priority DESC'), input_html: {class: 'chosen-select'}
               = f.error :countries, class: 'uk-text-small uk-text-warning'
           .uk-width-1-1.uk-margin-top
             %label.uk-form-label
