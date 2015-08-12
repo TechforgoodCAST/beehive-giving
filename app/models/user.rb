@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   validates :password, presence: true, length: {:within => 6..25}, on: :create
   validates :password,
             format: {with: /\A(?=.*\d)(?=.*[a-zA-Z]).{6,25}\z/,
-            message: 'password must include at least 1 number'}, on: :create
+            message: 'must include 6 characters with 1 number'}, on: :create
 
   before_create { generate_token(:auth_token) }
 
@@ -47,5 +47,5 @@ class User < ActiveRecord::Base
       self[column] = SecureRandom.urlsafe_base64
     end while User.exists?(column => self[column])
   end
-  
+
 end

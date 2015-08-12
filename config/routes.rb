@@ -23,14 +23,10 @@ Rails.application.routes.draw do
 
   # Sign up
   match '/welcome', to: 'signup#user', via: :get, as: 'signup_user'
-  match '/find', to: 'signup#find', via: :get, as: 'find'
   match '/your-organisation', to: 'signup#organisation', via: :get, as: 'signup_organisation'
-  match '/your-profile', to: 'signup#profile', via: :get, as: 'signup_profile'
 
   match '/welcome', to: 'signup#create_user', via: :post
-  match '/find', to: 'signup#find', via: :post
   match '/your-organisation', to: 'signup#create_organisation', via: :post
-  match '/your-profile', to: 'signup#create_profile', via: :post
 
   match '/new-funder', to: 'signup#funder', via: :get, as: 'new_funder'
   match '/new-funder', to: 'signup#create_funder', via: :post

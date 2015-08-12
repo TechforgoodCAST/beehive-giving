@@ -434,14 +434,18 @@ $(document).ready ->
                       return x.toLocaleString('en-gb', { year: 'numeric', month: 'short' })
 
 OrganisationForm = ((w, d) ->
-
   triggerRegisteredToggle = (state)->
-    target = $('.js-registered-toggle-target')
+    founded = $('.js-founded-toggle-target')
+    registered = $('.js-registered-toggle-target')
     if state == 'true'
-      target.removeClass 'uk-hidden'
+      registered.removeClass 'uk-hidden'
+      founded.removeClass 'uk-hidden'
+    else if state == 'false'
+      founded.removeClass 'uk-hidden'
+      registered.addClass 'uk-hidden'
     else
-      target.addClass 'uk-hidden'
-
+      founded.addClass 'uk-hidden'
+      registered.addClass 'uk-hidden'
 
   bindRegistrationToggle = ->
     selector = '.js-registered-toggle'

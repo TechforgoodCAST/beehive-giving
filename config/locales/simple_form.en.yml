@@ -1,19 +1,11 @@
 en:
   simple_form:
-    hints:
-      recipient:
-        founded_on: 'The date your organisation founded.'
-        status: 'What is the operational status of your organisation.'
-        registered: 'Does your organisation have a charity or company number?'
-        registered_on: 'The date your organisation was legally registered. Leave blank if you are unregistered. '
     placeholders:
       user:
         first_name: 'First name'
         last_name: 'Last name'
-        job_role: 'Job title'
         user_email: 'Email'
         password: 'Password'
-        password_confirmation: 'Password Confirmation'
       profile:
         min_age: 'e.g. 0'
         max_age: 'e.g. 120'
@@ -24,13 +16,7 @@ en:
         beneficiaries_count: 'e.g. 50'
       recipient:
         name: 'Organisation name'
-        mission: 'Organisation mission'
-        contact_number: 'Contact number'
-        website: 'Website'
-        street_address: 'Street address'
-        city: 'City'
-        region: 'Region'
-        postal_code: 'Postal code'
+        website: 'Website (optional)'
         charity_number: 'Charity number'
         company_number: 'Company number'
       funder:

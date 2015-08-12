@@ -20,31 +20,31 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
     assert_equal '/your-organisation', current_path
   end
 
+  def full_form?(registered)
+    within("#new_recipient") do
+      fill_in("recipient_name", :with => 'ACME')
+      fill_in("recipient_website", :with => 'www.example.com')
+      select('No', :from => "registered")
+      Capybara.match = :first
+      select("United Kingdom", :from => "recipient_country")
+      select(Date.today.strftime("%-d"), :from => "recipient_founded_on_3i")
+      select(Date.today.strftime("%B"), :from => "recipient_founded_on_2i")
+      select(Date.today.strftime("%Y"), :from => "recipient_founded_on_1i")
+      if registered
+        select('Yes', :from => "registered")
+        fill_in("recipient_charity_number", :with => 123)
+        fill_in("recipient_company_number", :with => 123)
+        select(Date.today.strftime("%-d"), :from => "recipient_registered_on_3i")
+        select(Date.today.strftime("%B"), :from => "recipient_registered_on_2i")
+        select(Date.today.strftime("%Y"), :from => "recipient_registered_on_1i")
+      end
+    end
+  end
+
   test 'filling in form correctly submits, saves record and redirects to correct page' do
-    @recipient = create(:recipient)
     create_and_auth_user!
     visit '/your-organisation'
-    within("#new_recipient") do
-      fill_in("recipient_name", :with => @recipient.name)
-      fill_in("recipient_mission", :with => @recipient.mission)
-      fill_in("recipient_contact_number", :with => @recipient.contact_number)
-      fill_in("recipient_website", :with => @recipient.website)
-      fill_in("recipient_street_address", :with => @recipient.street_address)
-      fill_in("recipient_city", :with => @recipient.city)
-      fill_in("recipient_region", :with => @recipient.region)
-      fill_in("recipient_postal_code", :with => @recipient.postal_code)
-      fill_in("recipient_charity_number", :with => 123)
-      fill_in("recipient_company_number", :with => 123)
-      select('Yes', :from => "registered")
-      select("United Kingdom", :from => "recipient_country")
-      select(@recipient.founded_on.day, :from => "recipient_founded_on_3i")
-      select(@recipient.founded_on.strftime("%-d"), :from => "recipient_founded_on_3i")
-      select(@recipient.founded_on.strftime("%B"), :from => "recipient_founded_on_2i")
-      select(@recipient.founded_on.strftime("%Y"), :from => "recipient_founded_on_1i")
-      select(@recipient.registered_on.strftime("%-d"), :from => "recipient_registered_on_3i")
-      select(@recipient.registered_on.strftime("%B"), :from => "recipient_registered_on_2i")
-      select(@recipient.registered_on.strftime("%Y"), :from => "recipient_registered_on_1i")
-    end
+    full_form?(true)
     click_button('Next')
     assert_equal '/funders', current_path
     assert page.has_content?("Funders")
@@ -54,13 +54,20 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
     create_and_auth_user!
     visit '/your-organisation'
     within("#new_recipient") do
-      fill_in("recipient_contact_number", :with => 'not an number')
       fill_in("recipient_website", :with => 'bbbbb')
-      fill_in("recipient_street_address", :with => '')
-      fill_in("recipient_city", :with => '')
     end
     click_button('Next')
     assert_equal '/your-organisation', current_path
     assert page.has_content?("can't be blank")
+  end
+
+  test 'unregistered organistion only needs founded on' do
+    create_and_auth_user!
+    visit '/your-organisation'
+    full_form?(false)
+    click_button('Next')
+    assert_equal '/funders', current_path
+    assert page.has_content?("Funders")
+    assert Recipient.first.registered_on.nil?
   end
 end

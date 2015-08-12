@@ -9,29 +9,21 @@ class Organisation < ActiveRecord::Base
 
   attr_accessor :skip_validation
 
-  validates :name, :contact_number, :street_address, :city, :region,
-  :postal_code, :country, :founded_on, :mission, :status, presence: true,
-  unless: :skip_validation
+  validates :name, :founded_on, :status, :country, presence: true,
+    unless: :skip_validation
 
   validates :registered_on, presence: true, if: :registered?,
-  unless: :skip_validation
+    unless: :skip_validation
 
   validates :registered, :inclusion => { in: [true, false] },
-  unless: :skip_validation
+    unless: :skip_validation
 
   validates :status, inclusion: { in: STATUS },
-  unless: :skip_validation
+    unless: :skip_validation
 
   validates :website, format: {
-    with: /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/,
-    multiline: true,
-    message: "enter a valid website address e.g. www.example.com"}, if: :website?
-
-  validates :contact_number, format: {
-    with: /(((\+44)? ?(\(0\))? ?)|(0))( ?[0-9]{3,4}){3}/,
-    multiline: true,
-    message: "enter a valid contact number"},
-    unless: :skip_validation
+    with: /\A(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?\z/,
+    message: 'enter a valid website address e.g. www.example.com'}, if: :website?
 
   validates :slug, uniqueness: true, presence: true
 

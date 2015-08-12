@@ -12,7 +12,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
     assert page.has_css?("form#new_user")
   end
 
-  test 'Filling in landing page form with correct info redirects to find page' do
+  test 'Filling in landing page form with correct info redirects to new organisation page' do
     visit '/'
     within("#new_user") do
       fill_in("user_first_name", :with => "Joe")
@@ -22,8 +22,8 @@ class SignUpTest < ActionDispatch::IntegrationTest
       check("user_agree_to_terms")
     end
     click_button('Sign up')
-    assert_equal find_path, current_path
-    assert page.has_content?('recommendations of funders in minutes')
+    assert_equal signup_organisation_path, current_path
+    assert page.has_content?('Last step')
   end
 
   test 'Filling in landing page form with incorrect info should not submit' do

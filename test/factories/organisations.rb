@@ -4,14 +4,8 @@ FactoryGirl.define do
       n 1
     end
     name { "Random #{n}" }
-    mission { "mission #{n}" }
-    contact_number "01234 567 890"
     website { "www.random#{n}.com" }
-    street_address { "123 street address #{n}" }
-    city { "City #{n}" }
-    region { "Region #{n}" }
-    postal_code "A1 B2"
-    country "United Kingdom"
+    country "GB"
     status Organisation::STATUS.first
     registered true
     charity_number { "1AB1C#{n}" }

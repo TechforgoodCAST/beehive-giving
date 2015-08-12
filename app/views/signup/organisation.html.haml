@@ -15,10 +15,10 @@
 
         .uk-width-1-1
           .uk-text-center.uk-container-center
-            %h2 Last step, and you'll be registered
-            %p.uk-text-large Your funding recommendations are waiting.
+            %h2.uk-margin-small Last step, and you'll be registered
+            %p.uk-text-large.uk-margin-remove Your funding recommendations are waiting
           .uk-width-large-1-2.uk-container-center.uk-margin-top
             .uk-form.uk-form-stacked.uk-panel.uk-panel-box#panel.shadow
-              .uk-panel-title About your organisation
+              %h4.uk-text-bold About your organisation
               = simple_form_for [@organisation], url: signup_organisation_path, method: :post do |f|
                 = render partial: 'organisations/form', locals: {f: f}
