@@ -16,11 +16,11 @@ class Profile < ActiveRecord::Base
             :implementations, :implementors, presence: true
 
   validates :year, :gender, :min_age, :max_age, :income, :expenditure,
-            :volunteer_count, :staff_count, :beneficiaries_count,
+            :volunteer_count, :staff_count, :trustee_count, :beneficiaries_count,
             presence: true
 
-  validates :min_age, :max_age, :volunteer_count, :staff_count, :income,
-            :expenditure, :beneficiaries_count,
+  validates :min_age, :max_age, :volunteer_count, :staff_count, :trustee_count,
+            :income, :expenditure, :beneficiaries_count,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   validates :min_age, numericality: { less_than_or_equal_to: :max_age,

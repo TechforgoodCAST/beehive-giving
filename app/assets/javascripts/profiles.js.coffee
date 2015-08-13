@@ -38,6 +38,9 @@ ProfileForm = ((w, d) ->
   #   $(document).on 'change', selector, ->
   #     triggerHiddenQuestionsToggle(elem.val())
 
+  # bindGetTooltip = ->
+  #   return $('.checkbox label').append('<i class="uk-icon-question-circle" style="float: right;" data-uk-tooltip="{pos:"top"}" title="Tooltip"></i>')
+
   bindCheckedItemsHighlight = ->
     return unless $('.checkbox label input:checked')
     $('.checkbox label input:checked').parent().css('background-color', '#f5fbfe')
@@ -50,10 +53,12 @@ ProfileForm = ((w, d) ->
 
   return {
     # bindHiddenQuestionsToggle: bindHiddenQuestionsToggle,
+    # bindGetTooltip: bindGetTooltip,
     bindCheckedItemsHighlight: bindCheckedItemsHighlight
   }
 )(window, document)
 
 $(document).ready ->
   # ProfileForm.bindHiddenQuestionsToggle()
+  # ProfileForm.bindGetTooltip()
   ProfileForm.bindCheckedItemsHighlight()

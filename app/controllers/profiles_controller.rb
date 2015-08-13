@@ -48,10 +48,10 @@ class ProfilesController < ApplicationController
 
   def profile_params
     params.require(:profile).permit(:year, :gender, :min_age, :max_age,
-    :income, :expenditure, :volunteer_count, :staff_count, :does_sell,
-    :beneficiaries_count, :beneficiaries_count_actual, :income_actual,
-    :expenditure_actual, beneficiary_ids: [], country_ids: [], district_ids: [],
-    implementation_ids: [], implementor_ids: [])
+    :income, :expenditure, :volunteer_count, :staff_count, :trustee_count,
+    :does_sell, :beneficiaries_count, :beneficiaries_count_actual,
+    :income_actual, :expenditure_actual, beneficiary_ids: [], country_ids: [],
+    district_ids: [], implementation_ids: [], implementor_ids: [])
   end
 
   def load_recipient

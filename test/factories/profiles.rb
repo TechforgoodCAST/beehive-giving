@@ -34,6 +34,7 @@ FactoryGirl.define do
     max_age 28
     volunteer_count 1
     staff_count 1
+    trustee_count 3
     does_sell true
     beneficiaries_count 1
     beneficiaries_count_actual true
@@ -56,6 +57,7 @@ FactoryGirl.define do
     max_age 28
     volunteer_count 1
     staff_count 1
+    trustee_count 3
     does_sell true
     beneficiaries_count 1
     beneficiaries_count_actual true
