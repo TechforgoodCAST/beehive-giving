@@ -21,7 +21,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
       fill_in("user_password", :with => "password111")
       check("user_agree_to_terms")
     end
-    click_button('Sign up')
+    click_button('Create an account')
     assert_equal signup_organisation_path, current_path
     assert page.has_content?('Last step')
   end
@@ -33,7 +33,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
       fill_in("user_user_email", :with => "testnotanemail")
       fill_in("user_password", :with => "password111")
     end
-    click_button('Sign up')
+    click_button('Create an account')
     assert_equal current_path, '/welcome'
     assert page.has_content?("can't be blank")
   end
