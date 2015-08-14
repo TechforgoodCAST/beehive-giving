@@ -11,13 +11,25 @@ class SignupController < ApplicationController
 
   def create_user
     @user = User.new(user_params)
-    if @user.save
-      cookies[:auth_token] = @user.auth_token
-      UserMailer.welcome_email(@user).deliver
-      redirect_to signup_organisation_path if @user.role == 'User'
-      redirect_to new_funder_path if @user.role == 'Funder'
-    else
-      render :user
+
+    respond_to do |format|
+      if @user.save
+        format.html {
+          cookies[:auth_token] = @user.auth_token
+          UserMailer.welcome_email(@user).deliver
+          redirect_to signup_organisation_path if @user.role == 'User'
+          redirect_to new_funder_path if @user.role == 'Funder'
+        }
+        format.js   {
+          cookies[:auth_token] = @user.auth_token
+          UserMailer.welcome_email(@user).deliver
+          render :js => "window.location = '#{signup_organisation_path}'" if @user.role == 'User'
+          render :js => "window.location = '#{new_funder_path}'" if @user.role == 'Funder'
+        }
+      else
+        format.html { render :user }
+        format.js
+      end
     end
   end
 
