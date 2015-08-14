@@ -1,6 +1,6 @@
 :javascript
   mixpanel.track("Page View", {"Page Name": "Create Organisation Page"});
-  mixpanel.track_forms("#new_recipient", "Create Organisation Form");
+  // mixpanel.track_forms("#new_recipient", "Create Organisation Form"); # screws up ajax
 
 - content_for :signup do
   #bg-color
@@ -20,5 +20,4 @@
           .uk-width-large-1-2.uk-container-center.uk-margin-top
             .uk-form.uk-form-stacked.uk-panel.uk-panel-box#panel.shadow
               %h4.uk-text-bold About your organisation
-              = simple_form_for [@organisation], url: signup_organisation_path, method: :post do |f|
-                = render partial: 'organisations/form', locals: {f: f}
+              = render partial: 'organisations/form'

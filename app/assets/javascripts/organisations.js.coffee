@@ -5,6 +5,13 @@ $(document).ready ->
     placeholder_text_multiple: 'Select as many as applicable'
     width: '100%'
 
+$(document).ajaxComplete ->
+  return $('.chosen-select').chosen
+    allow_single_deselect: true
+    no_results_text: 'No results matched'
+    placeholder_text_multiple: 'Select as many as applicable'
+    width: '100%'
+
 $(document).on 'uk.switcher.show', '[data-uk-tab]', ->
   $(window).trigger 'resize'
   return
@@ -459,4 +466,7 @@ OrganisationForm = ((w, d) ->
 )(window, document)
 
 $(document).ready ->
+  OrganisationForm.bindRegistrationToggle()
+
+$(document).ajaxComplete ->
   OrganisationForm.bindRegistrationToggle()

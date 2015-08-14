@@ -1,49 +1,50 @@
-.uk-grid
-  = f.hidden_field :status, value: 'Active - currently operational'
+= simple_form_for @organisation, url: signup_organisation_path, remote: true do |f|
+  .uk-grid
+    = f.hidden_field :status, value: 'Active - currently operational'
 
-  .uk-width-medium-1-1
-    .uk-form-controls
-      = f.input :name, type: 'text', input_html: { class: 'uk-width-1-1' }
-      = f.error :name, class: 'uk-text-small uk-text-warning'
-  .uk-width-medium-1-1.uk-margin-top
-    .uk-form-controls
-      = f.input :website, type: 'text', input_html: { class: 'uk-width-1-1' }
-      = f.error :website, class: 'uk-text-small uk-text-warning'
-  .uk-width-medium-1-1.uk-margin-top
-    .uk-form-controls
-      %label.uk-form-label Where is your organisation based?
-      = f.input :country, error: false, type: 'text', input_html: { class: 'uk-width-1-1 chosen-select' }, include_blank: true, priority: ["United Kingdom"]
-      = f.error :country, class: 'uk-text-small uk-text-warning'
+    .uk-width-medium-1-1
+      .uk-form-controls
+        = f.input :name, type: 'text', input_html: { class: 'uk-width-1-1' }
+        = f.error :name, class: 'uk-text-small uk-text-warning'
+    .uk-width-medium-1-1.uk-margin-top
+      .uk-form-controls
+        = f.input :website, type: 'text', input_html: { class: 'uk-width-1-1' }
+        = f.error :website, class: 'uk-text-small uk-text-warning'
+    .uk-width-medium-1-1.uk-margin-top
+      .uk-form-controls
+        %label.uk-form-label Where is your organisation based?
+        = f.input :country, error: false, type: 'text', input_html: { class: 'uk-width-1-1 chosen-select' }, include_blank: true, priority: ["United Kingdom"]
+        = f.error :country, class: 'uk-text-small uk-text-warning'
 
-  .uk-width-medium-1-1.uk-margin-top
-    %label.uk-form-label Does your organisation have a charity or company number?
-    .uk-form-controls
-      = f.input :registered, as: :select, input_html: { class: 'uk-width-1-1 js-registered-toggle', id: 'registered'}
-      = f.error :registered, class: 'uk-text-small uk-text-warning'
+    .uk-width-medium-1-1.uk-margin-top
+      %label.uk-form-label Does your organisation have a charity or company number?
+      .uk-form-controls
+        = f.input :registered, as: :select, input_html: { class: 'uk-width-1-1 js-registered-toggle', id: 'registered'}
+        = f.error :registered, class: 'uk-text-small uk-text-warning'
 
-  .uk-width-medium-1-1.uk-margin-top.js-founded-toggle-target.uk-hidden
-    %label.uk-form-label When was your organisation founded?
-    .uk-form-controls
-      = f.date_select :founded_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-100, order: [:day, :month, :year], include_blank: true, default: nil
-      = f.error :founded_on, class: 'uk-text-small uk-text-warning'
+    .uk-width-medium-1-1.uk-margin-top.js-founded-toggle-target.uk-hidden
+      %label.uk-form-label When was your organisation founded?
+      .uk-form-controls
+        = f.date_select :founded_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-250, order: [:day, :month, :year], include_blank: true, default: nil
+        = f.error :founded_on, class: 'uk-text-small uk-text-warning'
 
-  .uk-width-medium-1-1.uk-margin-top.js-registered-toggle-target.uk-hidden
-    %label.uk-form-label When was your organisation legally registered?
-    .uk-form-controls
-      = f.date_select :registered_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-100, order: [:day, :month, :year], include_blank: true, default: nil
-      = f.error :registered_on, class: 'uk-text-small uk-text-warning'
-    .uk-grid
-      .uk-width-large-1-2.uk-margin-top
-        .uk-form-controls
-          = f.input :charity_number, type: 'text', input_html: { class: 'uk-width-1-1' }
-          = f.error :charity_number, class: 'uk-text-small uk-text-warning'
-      .uk-width-large-1-2.uk-margin-top
-        .uk-form-controls
-          = f.input :company_number, type: 'text', input_html: { class: 'uk-width-1-1' }
-          = f.error :company_number, class: 'uk-text-small uk-text-warning'
-      .uk-width-1-1.uk-margin-small-top
-        .uk-text-small
-          %a{"data-uk-tooltip" => "{pos:'top'}", :title => "If you have difficulties entering a charity number it probably means we have your details on our records. Simply click this link to get in touch with support@beehivegiving.org who will be happy to help you.", :href => "mailto:support@beehivegiving.org"} Having trouble with your charity number?
+    .uk-width-medium-1-1.uk-margin-top.js-registered-toggle-target.uk-hidden
+      %label.uk-form-label When was your organisation legally registered?
+      .uk-form-controls
+        = f.date_select :registered_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-250, order: [:day, :month, :year], include_blank: true, default: nil
+        = f.error :registered_on, class: 'uk-text-small uk-text-warning'
+      .uk-grid
+        .uk-width-large-1-2.uk-margin-top
+          .uk-form-controls
+            = f.input :charity_number, type: 'text', input_html: { class: 'uk-width-1-1' }
+            = f.error :charity_number, class: 'uk-text-small uk-text-warning'
+        .uk-width-large-1-2.uk-margin-top
+          .uk-form-controls
+            = f.input :company_number, type: 'text', input_html: { class: 'uk-width-1-1' }
+            = f.error :company_number, class: 'uk-text-small uk-text-warning'
+        .uk-width-1-1.uk-margin-small-top
+          .uk-text-small
+            %a{"data-uk-tooltip" => "{pos:'top'}", :title => "If you have difficulties entering a charity number it probably means we have your details on our records. Simply click this link to get in touch with support@beehivegiving.org who will be happy to help you.", :href => "mailto:support@beehivegiving.org"} Having trouble with your charity number?
 
-  .uk-width-medium-1-1.uk-margin-top
-    = f.button :button, "Next", class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;', data: {disable_with: "<i style='color: #999;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #999;'> Saving...</span>"}
+    .uk-width-medium-1-1.uk-margin-top
+      = f.button :button, "Next", class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;', data: {disable_with: "<i style='color: #999;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #999;'> Saving...</span>"}

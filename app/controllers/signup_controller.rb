@@ -14,21 +14,21 @@ class SignupController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.html {
-          cookies[:auth_token] = @user.auth_token
-          UserMailer.welcome_email(@user).deliver
-          redirect_to signup_organisation_path if @user.role == 'User'
-          redirect_to new_funder_path if @user.role == 'Funder'
-        }
         format.js   {
           cookies[:auth_token] = @user.auth_token
           UserMailer.welcome_email(@user).deliver
           render :js => "window.location = '#{signup_organisation_path}'" if @user.role == 'User'
           render :js => "window.location = '#{new_funder_path}'" if @user.role == 'Funder'
         }
+        format.html {
+          cookies[:auth_token] = @user.auth_token
+          UserMailer.welcome_email(@user).deliver
+          redirect_to signup_organisation_path if @user.role == 'User'
+          redirect_to new_funder_path if @user.role == 'Funder'
+        }
       else
-        format.html { render :user }
         format.js
+        format.html { render :user }
       end
     end
   end
@@ -43,12 +43,23 @@ class SignupController < ApplicationController
 
   def create_organisation
     @organisation = Recipient.new(organisation_params)
-    if @organisation.save
-      current_user.update_attribute(:organisation_id, @organisation.id)
-      @organisation.initial_recommendation
-      redirect_to funders_path
-    else
-      render :organisation
+
+    respond_to do |format|
+      if @organisation.save
+        format.js   {
+          current_user.update_attribute(:organisation_id, @organisation.id)
+          @organisation.initial_recommendation
+          render :js => "window.location = '#{funders_path}'"
+        }
+        format.html {
+          current_user.update_attribute(:organisation_id, @organisation.id)
+          @organisation.initial_recommendation
+          redirect_to funders_path
+        }
+      else
+        format.js
+        format.html { render :organisation }
+      end
     end
   end
 
