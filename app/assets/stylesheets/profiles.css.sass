@@ -1,9 +1,19 @@
-.checkbox label
+.boolean
+  label
+    cursor: pointer
+.boolean-padding
+  @media screen and (min-width: 960px)
+    padding-left: 2px !important
+  @media screen and (min-width: 768px)
+    padding-left: 4px !important
+.radio
+  margin: 0
+.checkbox label, .radio label
   input
     margin-right: 4px
   background-color: #fafafa
   border: 1px solid #cacece
-  padding: 8px
+  padding: 6px 8px 5px 8px
   margin: 4px 8px 4px 0
   display: inline-block
   cursor: pointer

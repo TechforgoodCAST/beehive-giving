@@ -15,6 +15,8 @@ ActiveAdmin.register Recipient do
   end
 
   filter :name
+  filter :charity_number
+  filter :company_number
   filter :country
   filter :registered
   filter :founded_on

@@ -133,35 +133,25 @@
         .uk-form.uk-form-stacked.uk-panel.uk-panel-box#panel
           .uk-panel-title Work
           .uk-width-1-1.uk-margin-top.uk-margin-bottom
-            %label.uk-form-label
-              How did you deliver your work in
-              = succeed '?' do
-                = @profile.year || get_year
+            %fieldset.uk-label What does you organsiation provide?
+            %small.uk-text-muted Select as many as applicable
             .uk-form-controls
-              = f.association :implementations, collection: Implementation.order('label ASC'), label_method: :label, value_method: :id, input_html: {class: 'chosen-select'}
+              = f.association :implementations, as: :check_boxes, label_method: :label, value_method: :id
               = f.error :implementations, class: 'uk-text-small uk-text-warning'
           .uk-width-medium-1-1.uk-margin-bottom
-            %label.uk-form-label
-              Did you receive financial payment (not donations) for your work in
-              = succeed '?' do
-                = @profile.year || get_year
-            = f.hint :who_pays, class: 'uk-text-small uk-hidden', id: 'who_pays_hint'
+            %label.uk-form-label Did you receive financial payment (not donations) for your work?
             .uk-form-controls
-              = f.input :does_sell, as: :select, input_html: { class: 'uk-width-1-1' }
+              = f.input :does_sell, as: :radio_buttons, input_html: { class: 'uk-width-1-1' }
               = f.error :does_sell, class: 'uk-text-small uk-text-warning'
-          .uk-width-medium-1-1.uk-margin-bottom
-            %label.uk-form-label
-              How many beneficiaries did your work affect in
-              = succeed '?' do
-                = @profile.year || get_year
-            .uk-form-controls
-              = f.input :beneficiaries_count, input_html: { class: 'uk-width-1-1' }
-              = f.error :beneficiaries_count, class: 'uk-text-small uk-text-warning'
-          .uk-width-medium-1-1
-            %label.uk-form-label Beneficiaries, actual figures?
-            .uk-form-controls
-              = f.input :beneficiaries_count_actual, as: :select, collection: [['Yes, actual', false], ['No, estimated or predicted', true]], input_html: { class: 'uk-width-1-1' }
-              = f.error :beneficiaries_count_actual, class: 'uk-text-small uk-text-warning'
+          .uk-width-1-1
+            %label.uk-form-label How many beneficiaries has your work affected this year?
+            .uk-grid
+              .uk-width-medium-1-2
+                .uk-form-controls
+                  = f.input :beneficiaries_count, input_html: { class: 'uk-width-1-1', style: 'width: 98%;' }
+                  = f.error :beneficiaries_count, class: 'uk-text-small uk-text-warning'
+              .uk-form-controls.uk-display-block.uk-margin-small-top.boolean-padding
+                = f.input :beneficiaries_count_actual, as: :boolean, inline_label: 'Are these estimated figures?'
       .uk-width-medium-1-3.remove-left-padding
         .uk-panel.uk-panel-box.uk-panel-box-secondary
           .uk-panel-title
@@ -172,7 +162,7 @@
             Describe how your organisation typically delivered its work for it's usual beneficiaries in
             = succeed '.' do
               = @profile.year || get_year
-            For example, if you're a social business offering supported accommodation, accompanied with a drugs rehabilitation and employment programme where beneficiaries build furniture; you might select - 'Buildings/Facilities to Beneficiary', and 'Service to Beneficiary', along with saying 'Yes' to the question about payment (as you happen to sell the furniture beneficiaries create).
+            For example, if you're a social business offering supported accommodation, accompanied with a drugs rehabilitation and employment programme where beneficiaries build furniture; you might select - 'Buildings/facilities', and 'Services', along with saying 'Yes' to the question about payment (as you happen to sell the furniture beneficiaries create).
           %p
             Finally, report the number of beneficiaries you've impacted with your typical offer of work in
             = succeed '.' do
@@ -186,35 +176,28 @@
         .uk-form.uk-form-stacked.uk-panel.uk-panel-box#panel
           .uk-panel-title.uk-margin-bottom-remove Finance
           .uk-width-1-1
+            .uk-width-1-1.uk-margin-top
+              %label.uk-form-label
+                Income in
+                = @profile.year || get_year
             .uk-grid
-              .uk-width-large-1-2.uk-margin-top
-                %label.uk-form-label
-                  Income in GBP (£) for
-                  = @profile.year || get_year
+              .uk-width-medium-1-2
                 .uk-form-controls
-                  = f.input :income, type: 'text', input_html: { class: 'uk-width-1-1' }
+                  = f.input :income, as: :currency, input_html: {class: 'numeric integer', style: 'width: 94%;'}, placeholder: 'e.g. 1234'
                   = f.error :income, class: 'uk-text-small uk-text-warning'
-              .uk-width-large-1-2.uk-margin-top
-                %label.uk-form-label Income, actual figures?
-                = f.hint :income_actual, class: 'uk-text-small uk-hidden', id: 'income_actual_hint'
-                .uk-form-controls
-                  = f.input :income_actual, as: :select, collection: [['Yes, actual', false], ['No, estimated or predicted', true]], input_html: { class: 'uk-width-1-1' }
-                  = f.error :income_actual, class: 'uk-text-small uk-text-warning'
-            .uk-width-1-1
+              .uk-form-controls.uk-display-block.uk-margin-small-top.boolean-padding
+                = f.input :income_actual, as: :boolean, inline_label: 'Are these estimated figures?'
+            .uk-width-1-1.uk-margin-top
+              %label.uk-form-label
+                Expenditure in
+                = @profile.year || get_year
               .uk-grid
-                .uk-width-large-1-2.uk-margin-top
-                  %label.uk-form-label
-                    Expenditure in GBP (£) for
-                    = @profile.year || get_year
+                .uk-width-medium-1-2
                   .uk-form-controls
-                    = f.input :expenditure, type: 'text', input_html: { class: 'uk-width-1-1' }
+                    = f.input :expenditure, as: :currency, input_html: {class: 'numeric integer', style: 'width: 94%;'}, placeholder: 'e.g. 2345'
                     = f.error :expenditure, class: 'uk-text-small uk-text-warning'
-                .uk-width-large-1-2.uk-margin-top
-                  %label.uk-form-label Expenditure, actual figures?
-                  = f.hint :expenditure_actual, class: 'uk-text-small uk-hidden', id: 'expenditure_actual_hint'
-                  .uk-form-controls
-                    = f.input :expenditure_actual, as: :select, collection: [['Yes, actual', false], ['No, estimated or predicted', true]], input_html: { class: 'uk-width-1-1' }
-                    = f.error :expenditure_actual, class: 'uk-text-small uk-text-warning'
+                .uk-form-controls.uk-display-block.uk-margin-small-top.boolean-padding
+                  = f.input :expenditure_actual, as: :boolean, inline_label: 'Are these estimated figures?'
       .uk-width-medium-1-3.remove-left-padding
         .uk-panel.uk-panel-box.uk-panel-box-secondary
           .uk-panel-title

@@ -41,8 +41,6 @@ class Profile < ActiveRecord::Base
 
   validates :gender, inclusion: {in: GENDERS}
   validates :year, inclusion: {in: VALID_YEARS}
-  validates :beneficiaries_count_actual, :income_actual, :expenditure_actual,
-            :does_sell, inclusion: {in: [true, false]}
 
   def allowed_years
     if organisation.founded_on
