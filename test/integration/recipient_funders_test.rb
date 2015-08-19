@@ -14,7 +14,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
 
     create_and_auth_user!(:organisation => @recipient)
     visit funders_path
-    assert page.has_content?("See how you compare")
+    assert page.has_content?("Check eligibility")
     assert_equal all(".uk-icon-lock").length, 3
   end
 

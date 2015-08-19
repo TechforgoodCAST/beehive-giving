@@ -10,7 +10,7 @@
               - if @recipient.questions_remaining?(@funder)
                 %p
                   First things first. Let's see if you're eligible.
-                = link_to 'Are you eligible?', recipient_eligibility_path(@funder), class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large shadow bounce'
+                = link_to 'Check eligibility', recipient_eligibility_path(@funder), class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large shadow bounce'
               - else
                 - if @recipient.eligible?(@funder)
                   %p

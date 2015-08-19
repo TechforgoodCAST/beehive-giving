@@ -28,7 +28,7 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
     @recipient.refined_recommendation
     visit funders_path
     Capybara.match = :first
-    click_link("See how you compare")
+    click_link("Check eligibility")
     assert_equal recipient_comparison_gateway_path(@funders[2]), current_path
   end
 

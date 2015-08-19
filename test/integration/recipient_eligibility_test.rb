@@ -18,7 +18,7 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
 
     create_and_auth_user!(:organisation => @recipient)
     visit "/comparison/#{@funder.slug}"
-    click_link('Are you eligible?')
+    click_link('Check eligibility')
 
     assert_equal "/eligibility/#{@funder.slug}", current_path
     assert page.has_content?("Are you seeking funding for", count: 3)
@@ -36,7 +36,7 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
 
     create_and_auth_user!(:organisation => @recipient)
     visit "/comparison/#{@funder.slug}"
-    click_link('Are you eligible?')
+    click_link('Check eligibility')
 
     assert_equal "/eligibility/#{@funder.slug}", current_path
     assert page.has_content?("Are you seeking funding for", count: 1)

@@ -20,7 +20,7 @@
     %a.uk-overlay-area{ href: recipient_comparison_path(funder), id: ('#locked_funder' if @recipient.locked_funder?(funder)) }
       .uk-overlay-area-content
         .uk-button.uk-button-primary.uk-button-large.uk-width-1-1.shadow.bounce
-          See how you compare
+          Check eligibility
           - if @recipient.locked_funder?(funder)
             %i.uk-icon-lock
   - else
