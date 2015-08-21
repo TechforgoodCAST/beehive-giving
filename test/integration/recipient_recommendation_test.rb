@@ -20,7 +20,7 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
     visit funders_path
     Capybara.match = :first
     click_link("#locked_funder")
-    assert_equal recipient_comparison_gateway_path(@funders[1]), current_path
+    assert_equal recipient_comparison_path(@funders[1]), current_path
   end
 
   test "funders order by refined recommendation" do
@@ -28,8 +28,9 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
     @recipient.refined_recommendation
     visit funders_path
     Capybara.match = :first
-    click_link("Check eligibility")
-    assert_equal recipient_comparison_gateway_path(@funders[2]), current_path
+    puts page.body
+    click_link("Browse")
+    assert_equal recipient_comparison_path(@funders[2]), current_path
   end
 
   test "closed funder is not recommended" do

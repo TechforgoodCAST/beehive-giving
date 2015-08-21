@@ -17,8 +17,12 @@ class SignupController < ApplicationController
         format.js   {
           cookies[:auth_token] = @user.auth_token
           UserMailer.welcome_email(@user).deliver
-          render :js => "window.location = '#{signup_organisation_path}'" if @user.role == 'User'
-          render :js => "window.location = '#{new_funder_path}'" if @user.role == 'Funder'
+          render :js => "window.location.href = '#{signup_organisation_path}';
+                        $('button[type=submit]').prop('disabled', true)
+                        .removeAttr('data-disable-with');" if @user.role == 'User'
+          render :js => "window.location.href = '#{new_funder_path}';
+                        $('button[type=submit]').prop('disabled', true)
+                        .removeAttr('data-disable-with');" if @user.role == 'Funder'
         }
         format.html {
           cookies[:auth_token] = @user.auth_token
@@ -49,7 +53,9 @@ class SignupController < ApplicationController
         format.js   {
           current_user.update_attribute(:organisation_id, @organisation.id)
           @organisation.initial_recommendation
-          render :js => "window.location = '#{funders_path}'"
+          render :js => "window.location.href = '#{funders_path}';
+                        $('button[type=submit]').prop('disabled', true)
+                        .removeAttr('data-disable-with');"
         }
         format.html {
           current_user.update_attribute(:organisation_id, @organisation.id)

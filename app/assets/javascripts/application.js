@@ -22,6 +22,7 @@
 //= require nprogress
 //= require nprogress-turbolinks
 //= require nprogress-ajax
+//= require vex.combined.min.js
 //= require_tree .
 
 NProgress.configure({

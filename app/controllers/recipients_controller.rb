@@ -1,28 +1,17 @@
 class RecipientsController < ApplicationController
   before_filter :check_organisation_ownership_or_funder, :only => [:show]
   before_filter :ensure_logged_in, :load_recipient, :years_ago
-  before_filter :load_funder, :only => [:gateway, :unlock_funder, :comparison]
+  before_filter :load_funder, :only => [:unlock_funder_redirect, :unlock_funder, :comparison]
   before_filter :load_feedback, :except => [:unlock_funder, :vote]
-  before_filter :funder_attribute, :only => [:gateway, :comparison]
-
-  # def edit
-  # end
-  #
-  # def update
-  #   if @recipient.update_attributes(recipient_params)
-  #     redirect_to root_path, notice: 'Organisation updated!'
-  #   else
-  #     render :edit
-  #   end
-  # end
+  before_filter :funder_attribute, :only => [:comparison]
 
   def dashboard
     @search = Funder.ransack(params[:q])
     @profile = @recipient.profiles.where('year = ?', 2015).first
   end
 
-  def gateway
-    redirect_to recipient_comparison_path(@funder) unless @recipient.locked_funder?(@funder)
+  def unlock_funder_redirect
+    unlock_funder
   end
 
   def unlock_funder
@@ -30,17 +19,11 @@ class RecipientsController < ApplicationController
       redirect_to new_feedback_path(:redirect_to_funder => @funder)
     else
       @recipient.unlock_funder!(@funder) if @recipient.locked_funder?(@funder)
-      redirect_to recipient_comparison_path(@funder)
+      redirect_to recipient_eligibility_path(@funder)
     end
   end
 
   def comparison
-    if @recipient.locked_funder?(@funder)
-      redirect_to recipient_comparison_gateway_path(@funder)
-    else
-      render :comparison
-    end
-
     @restrictions = @funder.restrictions.uniq
   end
 
@@ -82,7 +65,10 @@ class RecipientsController < ApplicationController
       @funder_attribute = @funder.attributes.where('year = ? AND funding_stream = ?', @year_of_funding, @funding_stream).first
     end
 
-    if @recipient.questions_remaining?(@funder)
+    if @recipient.locked_funder?(@funder)
+      flash[:alert] = "Sorry you don't have access to that"
+      redirect_to recipient_comparison_path(@funder)
+    elsif @recipient.questions_remaining?(@funder)
       @eligibility =  1.times { @restrictions.each { |r| @recipient.eligibilities.new(restriction_id: r.id) unless @recipient.eligibilities.where('restriction_id = ?', r.id).count > 0 } }
     elsif @recipient.eligible?(@funder)
       redirect_to recipient_comparison_path(@funder)

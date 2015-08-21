@@ -61,22 +61,22 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
     assert_equal recipient_comparison_path(@funders[1]), current_path
 
     # Visiting third funders pages redirects if no feedback
-    visit recipient_comparison_gateway_path(@funders[2])
-    click_link('Unlock Funder')
+    visit recipient_comparison_path(@funders[2])
+    click_link('Check eligibility (1 left)')
     assert_equal new_feedback_path, current_path
 
-    # completing feedback form redirects to funder gateway
+    # completing feedback form redirects to funder
     within("#new_feedback") do
       select("10 - Extremely likely", :from => "feedback_nps")
       select("10 - Very dissatisfied", :from => "feedback_taken_away")
       select("10 - Strongly agree", :from => "feedback_informs_decision")
     end
     click_button("Submit feedback")
-    assert_equal recipient_comparison_path(@funders[2]), current_path
+    assert_equal recipient_eligibility_path(@funders[2]), current_path
 
     # Feedback only required for second unlock
-    visit recipient_comparison_gateway_path(@funders[3])
-    assert_equal recipient_comparison_gateway_path(@funders[3]), current_path
+    visit recipient_comparison_path(@funders[3])
+    assert_equal recipient_comparison_path(@funders[3]), current_path
   end
 
   # # Selenium testing

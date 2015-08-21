@@ -66,12 +66,12 @@
                     %a.uk-text-primary#feedback-button{href: "", "data-uk-modal" => "{target:'#feedback'}"} Feedback
                 .uk-navbar-flip.uk-hidden-small
                   %ul.uk-navbar-nav
-                    %li{class: ('uk-active' if current_page?(funders_path))}
-                      %a{href: funders_path} Funders
-                    -# %li{class: ('uk-active' if current_page?(recipient_dashboard_path))}
-                    -#   %a{href: recipient_dashboard_path}
-                    -#     Dashboard
-                        -# %span.uk-badge.uk-badge-notification 1
+                    - if current_page?(funders_path)
+                      %li.uk-active
+                        %a{href: funders_path} Funders
+                    - else
+                      %li
+                        %a{href: funders_path} Back to funders
                     %li.uk-parent{"data-uk-dropdown" => "{mode:'click'}"}
                       %a
                         %i.uk-icon-cog.uk-icon-small
@@ -80,8 +80,6 @@
                         %ul.uk-nav.uk-nav-navbar
                           %li
                             %a{:href => recipient_profiles_path(current_user.organisation)} Edit my profile
-                          -# %li
-                          -#   %a{:href => "#"} Edit organisation
                           %li
                             %a{:href => recipient_eligibilities_path(current_user.organisation)} Manage eligibility
                           %li.uk-nav-divider
@@ -156,13 +154,12 @@
         - if logged_in?
           - if current_user.organisation
             %ul.uk-nav.uk-nav-offcanvas
-              %li.uk-nav-header.uk-margin-top.uk-text-center
-                %i.uk-icon-cog.uk-icon-small
+              %li.uk-nav-header.uk-margin-top.uk-text-center Navigation
               %li
                 - if current_user.organisation.type == 'Funder'
                   %a{href: funder_path(current_user.organisation)} Dashboard
                 - else
-                  -# %a{href: recipient_dashboard_path} Dashboard
+                  %a{href: funders_path} Funders
                   %a{:href => recipient_profiles_path(current_user.organisation)} Edit my profile
                   %a{:href => recipient_eligibilities_path(current_user.organisation)} Manage eligibility
                   - if current_user_should_render_feedback?

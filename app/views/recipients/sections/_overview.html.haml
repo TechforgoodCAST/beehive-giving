@@ -42,7 +42,7 @@
               %i.uk-icon-pie-chart.uk-icon-small.yellow{"data-uk-tooltip" => "{pos:'left'}", :title => "This information is from open grants data made possible by 360Giving"}
           .uk-panel-title.uk-text-center Funding awarded
           .uk-text-center
-            %h6.uk-text-bold.upcase Grants
+            %h6.uk-text-bold.upcase No. of Grants
             - if @funder.attributes.count < 1 || @funder_attribute.grant_count.nil?
               = simple_data_not_available('request_grant_count')
             - else
@@ -51,14 +51,14 @@
           %hr
           .uk-grid.uk-text-center
             .uk-width-1-2
-              %h6.uk-text-bold.upcase Applications
+              %h6.uk-text-bold.upcase.uk-text-truncate No. of Applications
               - if @funder.attributes.count < 1 || @funder_attribute.application_count.nil?
                 = simple_data_not_available('request_applications_count')
               - else
                 %h2.uk-margin-top-remove.stat-normal
                   = @funder.attributes.where('funding_stream = ?', @funding_stream).first.application_count
             .uk-width-1-2
-              %h6.uk-text-bold.upcase Enquiries
+              %h6.uk-text-bold.upcase % Successful
               - if @funder.attributes.count < 1 || @funder_attribute.enquiry_count.nil?
                 = simple_data_not_available('request_enquiry_count')
               - else

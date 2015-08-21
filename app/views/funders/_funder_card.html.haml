@@ -17,10 +17,15 @@
       .funder{class: "#{funder.slug}", alt: "#{funder.name} Logo"}
 
   - if funder.active_on_beehive? && funder.attributes.count > 0
-    %a.uk-overlay-area{ href: recipient_comparison_path(funder), id: ('#locked_funder' if @recipient.locked_funder?(funder)) }
+    %a.uk-overlay-area{ href: recipient_comparison_path(funder), id: ('#locked_funder' if @recipient.locked_funder?(funder)), class: ('unsuitable' unless @recipient.recommended_funder?(funder)) }
       .uk-overlay-area-content
         .uk-button.uk-button-primary.uk-button-large.uk-width-1-1.shadow.bounce
-          Check eligibility
+          - if @recipient.eligible?(funder)
+            Approach for funding
+          - elsif !@recipient.eligible?(funder) && @recipient.questions_remaining?(funder)
+            Check eligibility
+          - else
+            Browse
           - if @recipient.locked_funder?(funder)
             %i.uk-icon-lock
   - else

@@ -8,9 +8,21 @@
           .uk-panel.cta.shadow{"data-uk-sticky" => "{top:40, media: 959}"}
             - if @funder.restrictions.any?
               - if @recipient.questions_remaining?(@funder)
-                %p
-                  First things first. Let's see if you're eligible.
-                = link_to 'Check eligibility', recipient_eligibility_path(@funder), class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large shadow bounce'
+                - if @recipient.profiles.where(year: Date.today.year).count == 0
+                  %p Before you continue, get recommendations of which funders to look at
+                  = link_to "Recommend funders", new_recipient_profile_path(@recipient), class: 'uk-button uk-button-large uk-button-primary uk-width-1-1 shadow bounce', id: 'mp-complete-profile'
+                - elsif @recipient.locked_funder?(@funder) && @recipient.unlocked_funders.count < Recipient::MAX_FREE_LIMIT
+                  %p Like what you see? Let's see if you're eligible.
+                  = link_to "Check eligibility (#{(Recipient::MAX_FREE_LIMIT - @recipient.unlocked_funders.count)} left)", recipient_unlock_funder_path(@funder), method: :post, class: 'uk-button uk-button-large uk-button-primary uk-width-1-1 shadow bounce check-eligibility'
+                - elsif !@recipient.locked_funder?(@funder)
+                  %p Like what you see? Let's see if you're eligible.
+                  = link_to 'Check eligibility', recipient_eligibility_path(@funder), class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large shadow bounce'
+                - else
+                  %p
+                    You can only check your eligibility with
+                    = Recipient::MAX_FREE_LIMIT
+                    funders at the moment. Help shape what we do next...
+                  %a.uk-button.uk-button-large.uk-button-primary.uk-width-1-1.shadow.bounce{"data-uk-modal" => "{target:'#next'}"} Next step
               - else
                 - if @recipient.eligible?(@funder)
                   %p
@@ -41,9 +53,6 @@
 = render partial: 'recipients/sections/overview'
 
 = render partial: 'recipients/sections/similar'
-
-- if current_user_should_render_eligibility_modal?
-  = render :partial => 'recipients/modals/eligibility'
 
 - if @recipient.eligible?(@funder)
   = render partial: 'recipients/eligible'

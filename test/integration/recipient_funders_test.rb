@@ -10,6 +10,8 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     3.times do |i|
       @funder = create(:funder, :active_on_beehive => true)
       create(:funder_attribute, :funder => @funder, :funding_stream => "All")
+      @restrictions = Array.new(3) { |i| create(:restriction) }
+      @funding_stream = create(:funding_stream, :restrictions => @restrictions, :funders => [@funder])
     end
 
     create_and_auth_user!(:organisation => @recipient)
@@ -19,19 +21,24 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
   end
 
   test 'recipients only needs to create one profile to unlock funders' do
+    # refactor - create helper method
     @funders = Array.new(3) { |i| create(:funder, :active_on_beehive => true) }
-    Array.new(3) { |i| create(:funder_attribute, :funder => @funders[i], :funding_stream => "All", :grant_count => 1) }
+    @grants = Array.new(3) { |i| create(:grants, :funder => @funders[i], :recipient => @recipient) }
+    @attributes = Array.new(3) { |i| create(:funder_attribute, :funder => @funders[i]) }
+    @restrictions = Array.new(3) { |i| create(:restriction) }
+    @funding_streams = Array.new(3) { |i| create(:funding_stream, :restrictions => @restrictions, :funders => [@funders[i]]) }
 
-    @profile = create(:profile, :organisation => @recipient)
+    create(:profile, :organisation => @recipient, :year => Date.today.year )
     create_and_auth_user!(:organisation => @recipient)
 
     visit recipient_comparison_path(@funders[0])
-    assert page.has_link?('Unlock Funder')
-    find_link('Unlock Funder').click
+    puts page.body
+    assert page.has_link?('Check eligibility (3 left)')
+    find_link('Check eligibility (3 left)').click
 
     visit recipient_comparison_path(@funders[1])
-    assert page.has_link?('Unlock Funder')
-    find_link('Unlock Funder').click
+    assert page.has_link?('Check eligibility (2 left)')
+    find_link('Check eligibility (2 left)').click
   end
 
   test 'recipient can only unlock 3 funders without subscribing' do

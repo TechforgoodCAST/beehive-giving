@@ -14,9 +14,10 @@ class RecipientComparisonTest < ActionDispatch::IntegrationTest
     @attribute2 = create(:funder_attribute, :funder => @funder, :funding_stream => 'Main')
     create_and_auth_user!(:organisation => @recipient)
 
+    # Cannot check eligibility if funder locked
     RecipientFunderAccess.where(recipient_id: @recipient.id, funder_id: @funder.id).first.destroy
-    visit recipient_comparison_path(@funder)
-    assert_equal recipient_comparison_gateway_path(@funder), current_path
+    visit recipient_eligibility_path(@funder)
+    assert_equal recipient_comparison_path(@funder), current_path
     @profiles = 4.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i ) }
 
     @recipient.unlock_funder!(@funder)

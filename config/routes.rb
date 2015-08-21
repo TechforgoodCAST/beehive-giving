@@ -32,8 +32,7 @@ Rails.application.routes.draw do
   match '/new-funder', to: 'signup#create_funder', via: :post
 
   # RecipientDashboard
-  match '/comparison/(:id)/gateway', to: 'recipients#gateway', via: :get, as: 'recipient_comparison_gateway'
-  match '/comparison/(:id)/unlock_funder', to: 'recipients#unlock_funder', via: :post, as: 'recipient_unlock_funder'
+  match '/comparison/(:id)/unlock_funder', to: 'recipients#unlock_funder', via: [:get, :post], as: 'recipient_unlock_funder'
   match '/comparison/(:id)', to: 'recipients#comparison', via: :get, as: 'recipient_comparison'
   match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
   # match '/(:id)/edit', to: 'recipients#edit', via: :get, as: 'recipient_edit'
