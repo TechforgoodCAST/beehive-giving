@@ -8,6 +8,13 @@ class RecipientComparisonTest < ActionDispatch::IntegrationTest
     @recipient.unlock_funder!(@funder)
   end
 
+  test 'cannot view funder if not active' do
+    @funder.update_column(:active_on_beehive, false)
+    create_and_auth_user!(:organisation => @recipient)
+    visit recipient_comparison_path(@funder)
+    assert_equal funders_path, current_path
+  end
+
   test 'All funder attributes shown if grants and profile data held' do
     @grants = 4.times { create(:grants, :funder => @funder, :recipient => @recipient) }
     @attribute1 = create(:funder_attribute, :funder => @funder, :funded_average_age => 4, :funded_average_income => 1234, :funded_average_paid_staff => 4)

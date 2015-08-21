@@ -25,6 +25,10 @@ class RecipientsController < ApplicationController
 
   def comparison
     @restrictions = @funder.restrictions.uniq
+    unless @funder.active_on_beehive
+      flash[:alert] = "Sorry, you don't have access to that"
+      redirect_to funders_path
+    end
   end
 
   def vote
