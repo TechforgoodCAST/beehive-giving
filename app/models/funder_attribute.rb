@@ -1,6 +1,7 @@
 class FunderAttribute < ActiveRecord::Base
 
   before_validation :grant_count_from_grants,
+                    :success_percentage,
                     :countries_from_grants,
                     :districts_from_grants,
                     :approval_months_from_grants,
@@ -36,6 +37,10 @@ class FunderAttribute < ActiveRecord::Base
         self.grant_count = funder.grants.where('approved_on < ? AND approved_on >= ?', "#{self.year  + 1}-01-01", "#{self.year}-01-01").where('funding_stream = ?', self.funding_stream).count
       end
     end
+  end
+
+  def success_percentage
+    self.enquiry_count = ((self.funder.grants.count.to_d / self.application_count.to_d) * 100).round(0) if self.application_count && self.funder.grants.count > 0
   end
 
   def countries_from_grants

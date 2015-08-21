@@ -47,7 +47,7 @@
               = simple_data_not_available('request_grant_count')
             - else
               %h1.uk-margin-top-remove.stat-big
-                = @funder_attribute.grant_count
+                = number_with_delimiter(@funder_attribute.grant_count, :delimiter => ',')
           %hr
           .uk-grid.uk-text-center
             .uk-width-1-2
@@ -56,14 +56,14 @@
                 = simple_data_not_available('request_applications_count')
               - else
                 %h2.uk-margin-top-remove.stat-normal
-                  = @funder.attributes.where('funding_stream = ?', @funding_stream).first.application_count
+                  = number_with_delimiter(@funder.attributes.where('funding_stream = ?', @funding_stream).first.application_count, :delimiter => ',')
             .uk-width-1-2
               %h6.uk-text-bold.upcase % Successful
               - if @funder.attributes.count < 1 || @funder_attribute.enquiry_count.nil?
                 = simple_data_not_available('request_enquiry_count')
               - else
                 %h2.uk-margin-top-remove.stat-normal
-                  = @funder_attribute.enquiry_count
+                  = number_to_percentage(@funder_attribute.enquiry_count, precision: 0)
 
       .uk-width-medium-1-3.uk-margin-bottom
         .uk-panel.uk-panel-box#panel.shadow
