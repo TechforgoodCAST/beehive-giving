@@ -49,4 +49,15 @@ class ApplicationController < ActionController::Base
     @feedback = current_user.feedbacks.new
   end
 
+  rescue_from StandardError do |exception|
+    NewRelic::Agent.notice_error(exception)
+    render status_code.to_s, :status => status_code
+  end
+
+  protected
+
+  def status_code
+    params[:code] || 500
+  end
+
 end
