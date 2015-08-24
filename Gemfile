@@ -71,7 +71,7 @@ gem 'chartkick'
 gem 'httparty'
 gem 'nokogiri'
 
-gem 'newrelic_rpm', require: false
+gem 'newrelic_rpm', '~> 3.12.0', require: false
 gem 'intercom-rails'
 
 # Use ActiveModel has_secure_password

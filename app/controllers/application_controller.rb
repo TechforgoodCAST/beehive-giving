@@ -49,9 +49,12 @@ class ApplicationController < ActionController::Base
     @feedback = current_user.feedbacks.new
   end
 
-  rescue_from StandardError do |exception|
-    NewRelic::Agent.notice_error(exception)
-    render status_code.to_s, :status => status_code
+  unless Rails.application.config.consider_all_requests_local
+    rescue_from StandardError do |exception|
+      NewRelic::Agent.add_custom_attributes({ user_id: current_user.id }) if current_user
+      NewRelic::Agent.notice_error(exception)
+      render "errors/#{status_code}", :status => status_code
+    end
   end
 
   protected
