@@ -27,14 +27,12 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
       select('No', :from => "registered")
       Capybara.match = :first
       select("United Kingdom", :from => "recipient_country")
-      select(Date.today.strftime("%-d"), :from => "recipient_founded_on_3i")
       select(Date.today.strftime("%B"), :from => "recipient_founded_on_2i")
       select(Date.today.strftime("%Y"), :from => "recipient_founded_on_1i")
       if registered
         select('Yes', :from => "registered")
         fill_in("recipient_charity_number", :with => 123)
         fill_in("recipient_company_number", :with => 123)
-        select(Date.today.strftime("%-d"), :from => "recipient_registered_on_3i")
         select(Date.today.strftime("%B"), :from => "recipient_registered_on_2i")
         select(Date.today.strftime("%Y"), :from => "recipient_registered_on_1i")
       end

@@ -25,13 +25,13 @@
     .uk-width-medium-1-1.uk-margin-top.js-founded-toggle-target.uk-hidden
       %label.uk-form-label When was your organisation founded?
       .uk-form-controls
-        = f.date_select :founded_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-250, order: [:day, :month, :year], include_blank: true, default: nil
+        = f.input :founded_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-250, discard_day: true, order: [:month, :year], include_blank: true, default: nil
         = f.error :founded_on, class: 'uk-text-small uk-text-warning'
 
     .uk-width-medium-1-1.uk-margin-top.js-registered-toggle-target.uk-hidden
       %label.uk-form-label When was your organisation legally registered?
       .uk-form-controls
-        = f.date_select :registered_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-250, order: [:day, :month, :year], include_blank: true, default: nil
+        = f.input :registered_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-250, discard_day: true, order: [:month, :year], include_blank: true, default: nil
         = f.error :registered_on, class: 'uk-text-small uk-text-warning'
       .uk-grid
         .uk-width-large-1-2.uk-margin-top

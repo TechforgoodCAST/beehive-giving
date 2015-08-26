@@ -17,6 +17,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
     within("#new_user") do
       fill_in("user_first_name", :with => "Joe")
       fill_in("user_last_name", :with => "Bloggs")
+      select(User::JOB_ROLES.sample, :from => "user_job_role")
       fill_in("user_user_email", :with => "test@test.com")
       fill_in("user_password", :with => "password111")
       check("user_agree_to_terms")

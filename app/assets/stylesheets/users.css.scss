@@ -16,14 +16,14 @@
 /* Tablet and bigger */
 @media (min-width: 768px) {
   .tm-section, .tm-footer {
-    padding: 79px 0;
+    padding: 47px 0;
   }
 }
 
 /* Large screen and bigger */
 @media (min-width: 1220px) {
   .tm-section, .tm-footer {
-    padding: 79px 0;
+    padding: 47px 0;
   }
 }
 
@@ -58,7 +58,7 @@
   position: absolute;
   font-size: 16px;
   margin-left: -16px;
-  bottom: -85px;
+  bottom: -53px;
   &:hover {
     font-size: 18px;
     margin-left: -18px;
