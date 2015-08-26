@@ -70,6 +70,9 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
       select("10 - Extremely likely", :from => "feedback_nps")
       select("10 - Very dissatisfied", :from => "feedback_taken_away")
       select("10 - Strongly agree", :from => "feedback_informs_decision")
+      select(Feedback::APP_AND_GRANT_FREQUENCY.sample, :from => "feedback_application_frequency")
+      select(Feedback::APP_AND_GRANT_FREQUENCY.sample, :from => "feedback_grant_frequency")
+      select(Feedback::MARKETING_FREQUENCY.sample, :from => "feedback_marketing_frequency")
     end
     click_button("Submit feedback")
     assert_equal recipient_eligibility_path(@funders[2]), current_path

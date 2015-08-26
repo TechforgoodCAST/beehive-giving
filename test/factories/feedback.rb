@@ -4,5 +4,8 @@ FactoryGirl.define do
     nps 10
     taken_away 10
     informs_decision 10
+    application_frequency Feedback::APP_AND_GRANT_FREQUENCY.sample
+    grant_frequency Feedback::APP_AND_GRANT_FREQUENCY.sample
+    marketing_frequency Feedback::MARKETING_FREQUENCY.sample
   end
 end

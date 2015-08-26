@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   belongs_to :organisation
   has_many :feedbacks
 
-  JOB_ROLES = ['Fundraiser', 'Founder/Leader', "None, I don't work/volunteer for a non-profit", 'Other']
+  JOB_ROLES = ['Fundraiser', 'Founder/Leader', 'Trustee', "None, I don't work/volunteer for a non-profit", 'Other']
 
   validates :first_name, :last_name, :user_email, :role, :job_role, :agree_to_terms,
             presence: true, on: :create
