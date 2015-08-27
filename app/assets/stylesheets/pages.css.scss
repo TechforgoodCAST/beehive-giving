@@ -26,15 +26,26 @@
   &.profile, &.recommendation, &.eligibility {
     width: 150px;
     height: 150px;
+    &.small {
+      background-size: 375px 600px;
+      width: 112px;
+      height: 112px;
+    }
   }
   &.profile {
     background-position: right 0;
   }
   &.recommendation {
     background-position: right -150px;
+    &.small {
+      background-position: right -112px;
+    }
   }
   &.eligibility {
     background-position: right -300px;
+    &.small {
+      background-position: right -224px;
+    }
   }
   &.puzzle {
     width: 185px;

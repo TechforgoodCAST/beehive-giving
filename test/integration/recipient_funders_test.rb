@@ -16,12 +16,12 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
 
     create_and_auth_user!(:organisation => @recipient)
     visit funders_path
-    assert page.has_content?("Check eligibility")
-    assert_equal all(".uk-icon-lock").length, 3
+    assert_not page.has_content?("Check eligibility")
+    assert_equal all(".funder").length, 3
   end
 
   test 'recipients only needs to create one profile to unlock funders' do
-    # refactor - create helper method
+    # refactor - method?
     @funders = Array.new(3) { |i| create(:funder, :active_on_beehive => true) }
     @grants = Array.new(3) { |i| create(:grants, :funder => @funders[i], :recipient => @recipient) }
     @attributes = Array.new(3) { |i| create(:funder_attribute, :funder => @funders[i]) }
@@ -32,7 +32,6 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     create_and_auth_user!(:organisation => @recipient)
 
     visit recipient_comparison_path(@funders[0])
-    puts page.body
     assert page.has_link?('Check eligibility (3 left)')
     find_link('Check eligibility (3 left)').click
 
@@ -64,12 +63,16 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
       create(:funder_attribute, :funder => @funder, :funding_stream => "All")
     end
 
-    3.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i ) }
+    create(:profile, :organisation => @recipient, :year => Date.today.year)
 
     3.times { |i| @recipient.unlock_funder!(@funders[i]) }
   end
 
-  test "no eligibility badge if questions remaining" do
+  def recommend_all_funders
+    Recommendation.all.each { |r| r.update_column(:score, Recipient::RECOMMENDATION_THRESHOLD)}
+  end
+
+  test 'no eligibility badge if questions remaining' do
     eligible_badge
 
     3.times do |i|
@@ -82,13 +85,14 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     end
 
     create_and_auth_user!(:organisation => @recipient)
+    recommend_all_funders
     visit funders_path
 
     assert page.has_content?('Eligible', count: 2)
     assert page.has_content?('Not eligible', count: 0)
   end
 
-  test "eligible badge if recipient eligible" do
+  test 'eligible badge if recipient eligible' do
     eligible_badge
 
     3.times do |i|
@@ -98,13 +102,14 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     end
 
     create_and_auth_user!(:organisation => @recipient)
+    recommend_all_funders
     visit funders_path
 
     assert page.has_content?('Eligible', count: 3)
     assert page.has_content?('Not eligible', count: 0)
   end
 
-  test "not eligible badge if recipient no eligible" do
+  test 'not eligible badge if recipient no eligible' do
     eligible_badge
 
     3.times do |i|
@@ -114,60 +119,18 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     end
 
     create_and_auth_user!(:organisation => @recipient)
+    recommend_all_funders
     visit funders_path
 
     assert page.has_content?('Eligible', count: 0)
     assert page.has_content?('Not eligible', count: 3)
   end
 
-  test 'Welcome modal shows when user first sees funders index' do
+  test 'Welcome modal shows if no profile' do
     create_and_auth_user!(:organisation => @recipient)
     visit funders_path
+    assert_equal 0, @recipient.profiles.count
     assert page.has_css?("#welcome")
-  end
-
-  test 'Welcome modal hidden if cookie present' do
-    create_and_auth_user!(:organisation => @recipient)
-    create_cookie('_BHwelcomeClose', true)
-    visit funders_path
-    assert_not page.has_css?("#welcome")
-  end
-
-  # test 'Welcome model hidden from second sign in' do
-  #   create_and_auth_user!(:organisation => @recipient)
-  #   @recipient.users.first.increment!(:sign_in_count)
-  #   visit funders_path
-  #   assert_not page.has_css?("#welcome")
-  # end
-
-  test 'Recommendation modal shows when profile for current year is completed' do
-    create(:profile, :organisation => @recipient, :year => Date.today.year)
-    create_and_auth_user!(:organisation => @recipient)
-    visit funders_path
-
-    # Welcome modal not shown
-    assert_not page.has_css?("#welcome")
-    # Recommendation modal shown
-    assert page.has_css?("#recommendation")
-  end
-
-  test 'Recommendation modal hidden if cookie present' do
-    create(:profile, :organisation => @recipient, :year => Date.today.year)
-    create_and_auth_user!(:organisation => @recipient)
-    create_cookie('_BHrecommendationClose', true)
-    visit funders_path
-    assert_not page.has_css?("#recommendation")
-  end
-
-  test 'Recommendation modal hidden if funder have been unlocked' do
-    create(:profile, :organisation => @recipient, :year => Date.today.year)
-    @funder = create(:funder)
-    @recipient.unlock_funder!(@funder)
-    create_and_auth_user!(:organisation => @recipient)
-    visit logout_path
-    create_and_auth_user!(:organisation => @recipient, :user_email => 'user2@email.com')
-    visit funders_path
-    assert_not page.has_css?("#recommendation")
   end
 
 end

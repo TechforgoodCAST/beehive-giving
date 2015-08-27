@@ -18,13 +18,6 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
     assert_equal edit_recipient_profile_path(@recipient, @profile), current_path
   end
 
-  test 'that clicking the call to action takes you the new profile page' do
-    @recipient.profiles.last.destroy
-    visit funders_path
-    find_link('Refine your results').click
-    assert_equal new_recipient_profile_path(@recipient), current_path
-  end
-
   test 'new profile page redirects to edit when profile exisits for current year' do
     visit new_recipient_profile_path(@recipient)
     assert_equal edit_recipient_profile_path(@recipient, @profile), current_path

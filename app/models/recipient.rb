@@ -16,6 +16,8 @@ class Recipient < Organisation
   has_many :beneficiaries, :through => :profiles
 
   MAX_FREE_LIMIT = 3
+  RECOMMENDATION_THRESHOLD = 1
+  RECOMMENDATION_LIMIT = 6
 
   def recipient_profile_limit
     if (Date.today.year - self.founded_on.year) < 4
@@ -134,10 +136,9 @@ class Recipient < Organisation
       recipient: self,
       funder: funder
     ).first_or_initialize
-    recommendation.update_attributes(
-      score: score
+    recommendation.update_attribute(
+      :score, score
     )
-    recommendation.save
   end
 
   def initial_recommendation
@@ -151,7 +152,7 @@ class Recipient < Organisation
   end
 
   def refined_recommendation
-    Funder.all.each do |funder|
+    Funder.where(active_on_beehive: true).each do |funder|
       score = 0
 
       if funder.attributes.any? && profiles.count > 0
@@ -195,8 +196,12 @@ class Recipient < Organisation
     end
   end
 
+  def recommended_funders
+    Funder.joins(:recommendations).where("recipient_id = ? AND score >= ?", self.id, RECOMMENDATION_THRESHOLD).order("recommendations.score DESC, name ASC")
+  end
+
   def recommended_funder?(funder)
-    Funder.joins(:recommendations).where("recipient_id = ? AND score >= ?", self.id, 1).order("recommendations.score DESC, name ASC").pluck(:funder_id).take(5).include?(funder.id)
+    recommended_funders.pluck(:funder_id).take(RECOMMENDATION_LIMIT).include?(funder.id)
   end
 
   def similar_funders(funder)

@@ -16,6 +16,6 @@
         %h2.uk-text-primary Missing
       - else
         - @funder_attribute.countries.limit(12).each do |country|
-          = link_to country.name, funders_path(:'q[grants_countries_id_eq]' => "#{country.id}"), class: 'uk-button uk-button-small shadow', style: 'margin-bottom: 3px;'
+          .uk-button.uk-button-small.shadow{style: 'margin-bottom: 3px;'}= country.name
         - if @funder_attribute.countries.count > 15
           %span ...

@@ -19,8 +19,7 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
   test "funders order by initial recommendation" do
     visit funders_path
     Capybara.match = :first
-    click_link("#locked_funder")
-    assert_equal recipient_comparison_path(@funders[1]), current_path
+    assert_equal 'acme-2 funder', find('.funder')[:class]
   end
 
   test "funders order by refined recommendation" do

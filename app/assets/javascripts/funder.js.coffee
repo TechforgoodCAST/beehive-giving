@@ -15,3 +15,18 @@ $(document).ready ->
 #           amount_awarded: $('#chart').data('grants')
 #       }
 #   )
+
+FundersIndex = ((w, d) ->
+  triggerFundersToggle = ->
+    $('#toggle_funders').on 'click', ->
+      $('#search_results').removeClass 'uk-hidden'
+      $(this).bind 'ajax:complete', ->
+        $('#suitable_funders').addClass 'uk-hidden'
+        $(this).prop('disabled', true).removeAttr('data-disable-with')
+        $(this).addClass 'uk-hidden'
+
+  return { triggerFundersToggle: triggerFundersToggle }
+)(window, document)
+
+$(document).ready ->
+  FundersIndex.triggerFundersToggle()

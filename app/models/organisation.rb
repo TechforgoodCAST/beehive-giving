@@ -39,6 +39,10 @@ class Organisation < ActiveRecord::Base
 
   before_validation :set_slug, unless: :slug
 
+  def name=(s)
+    write_attribute(:name, s.sub(s.first, s.first.upcase))
+  end
+
   def to_param
     self.slug
   end
