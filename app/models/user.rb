@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   validates :first_name, :last_name,
             format: {with: /\A[a-z]+\z/i, message: 'invalid name'}, on: :create
 
-  validates :job_role, inclusion: {in: JOB_ROLES}
+  validates :job_role, inclusion: {in: JOB_ROLES}, if: Proc.new { |user| user.job_role.blank? }
 
   validates :user_email,
             format: {with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i,
