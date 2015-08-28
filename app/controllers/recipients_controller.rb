@@ -1,4 +1,5 @@
 class RecipientsController < ApplicationController
+
   before_filter :check_organisation_ownership_or_funder, :only => [:show]
   before_filter :ensure_logged_in, :load_recipient, :years_ago
   before_filter :load_funder, :only => [:unlock_funder_redirect, :unlock_funder, :comparison]

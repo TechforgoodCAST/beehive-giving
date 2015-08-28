@@ -1,4 +1,5 @@
 class FundersController < ApplicationController
+
   before_filter :ensure_logged_in
   before_filter :ensure_admin, only: [:comparison]
   before_filter :ensure_funder, only: [:explore, :show, :eligible]
@@ -56,4 +57,5 @@ class FundersController < ApplicationController
   def load_recipient
     @recipient = current_user.organisation if logged_in?
   end
+
 end

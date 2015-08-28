@@ -1,4 +1,5 @@
 class RecipientAttributeController < ApplicationController
+
   before_filter :ensure_logged_in, :load_recipient
 
   def new
@@ -51,4 +52,5 @@ class RecipientAttributeController < ApplicationController
   def load_recipient
     @recipient = Recipient.find_by_slug(params[:recipient_id])
   end
+  
 end

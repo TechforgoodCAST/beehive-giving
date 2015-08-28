@@ -1,5 +1,6 @@
 class ProfilesController < ApplicationController
-  before_filter :load_recipient
+
+  before_filter :ensure_logged_in, :load_recipient
   before_filter :load_profile, :only => [:edit, :update, :destroy]
 
   def new
@@ -61,4 +62,5 @@ class ProfilesController < ApplicationController
   def load_profile
     @profile = @recipient.profiles.find(params[:id])
   end
+  
 end

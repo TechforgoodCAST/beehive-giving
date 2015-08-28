@@ -1,6 +1,6 @@
 class RecommendationsController < ApplicationController
 
-  before_filter :load_funder, :load_recipient
+  before_filter :ensure_logged_in, :load_funder, :load_recipient
 
   def edit
     @recommendation = Recommendation.where(recipient: @recipient, funder: @funder).first

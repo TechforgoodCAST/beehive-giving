@@ -1,5 +1,6 @@
 class EnquiriesController < ApplicationController
 
+  before_filter :ensure_logged_in
   before_filter :load_funder, :load_recipient
 
   respond_to :js

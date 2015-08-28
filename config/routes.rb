@@ -58,7 +58,7 @@ Rails.application.routes.draw do
   resources :feedback, :only => [:new, :create]
   resources :password_resets, :only => [:new, :create, :edit, :update]
 
-  resources :recipients do
+  resources :recipients, :except => [:new, :index] do
     member do
       post :vote
       post :approach_funder
@@ -67,12 +67,12 @@ Rails.application.routes.draw do
     resources :recipient_attribute, :as => :attribute, :only => [:new, :create, :edit, :update]
   end
 
-  resources :funders do
+  resources :funders, :except =>[:edit, :update] do
     member do
       get :explore
       get :eligible
     end
-    resources :grants
+    resources :grants, :except =>[:show]
   end
 
 end

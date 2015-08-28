@@ -1,6 +1,6 @@
 class GrantsController < ApplicationController
-  before_filter :ensure_logged_in
-  before_filter :load_funder
+
+  before_filter :ensure_logged_in, :load_funder
 
   def index
     @grants = @funder.grants
@@ -49,4 +49,5 @@ class GrantsController < ApplicationController
   def load_funder
     @funder = Funder.find_by_slug(params[:funder_id])
   end
+  
 end

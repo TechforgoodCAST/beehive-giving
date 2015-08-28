@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+
   def new
   end
 
@@ -46,4 +47,5 @@ class SessionsController < ApplicationController
       funder_path(current_user.organisation)
     end
   end
+
 end
