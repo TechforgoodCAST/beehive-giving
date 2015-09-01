@@ -139,7 +139,7 @@
               = f.association :implementations, as: :check_boxes, label_method: :label, value_method: :id
               = f.error :implementations, class: 'uk-text-small uk-text-warning'
           .uk-width-medium-1-1.uk-margin-bottom
-            %label.uk-form-label Did you receive financial payment (not donations) for your work?
+            %label.uk-form-label Do you receive financial payment (not donations) for your work?
             .uk-form-controls
               = f.input :does_sell, as: :radio_buttons, input_html: { class: 'uk-width-1-1' }
               = f.error :does_sell, class: 'uk-text-small uk-text-warning'
