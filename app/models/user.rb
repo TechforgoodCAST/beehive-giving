@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
             presence: true, on: :create
 
   validates :first_name, :last_name,
-            format: {with: /\A[a-z]+\z/i, message: 'invalid name'}, on: :create
+            format: {with: /\A(([a-z]+)*(-)*)+\z/i, message: 'only a-z and -'}, on: :create
 
   validates :job_role, inclusion: {in: JOB_ROLES}, if: Proc.new { |user| user.job_role.blank? }
 
