@@ -1,15 +1,4 @@
 /*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any styles
- * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
- * file per style scope.
- *
  *= require_self
  *= require pages
  *= require users
@@ -41,11 +30,6 @@ $nprogress-color: $yellow;
 
 @import 'nprogress';
 @import 'nprogress-bootstrap';
-
-/* $base-body-font-family: "Times New Roman", Georgia, Serif !default; */
-/* h1, h2, h3, h4, h5, h6, .uk-panel-title, .uk-text-large {
-  font-family: "Times New Roman", Georgia, Serif !important;
-} */
 
 .uk-grid.uk-grid-collapse,
 .uk-grid.uk-grid-collapse > [class*='uk-width-'] {
@@ -226,6 +210,12 @@ $nprogress-color: $yellow;
   transition-delay: 0s !important;
   transition-duration: 0.2s !important;
   transition-timing-function: linear !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .footer-left {
