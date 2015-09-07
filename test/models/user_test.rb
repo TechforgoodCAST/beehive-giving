@@ -26,8 +26,12 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test 'invalid name' do
-    create(:user)
     assert_not build(:user, :first_name => ':Name!').valid?
+  end
+
+  test 'capitalize name and strip whitespace' do
+    user = create(:user, :first_name => ' john ')
+    assert_equal 'John', user.first_name
   end
 
 end

@@ -26,15 +26,15 @@ class User < ActiveRecord::Base
   before_create { generate_token(:auth_token) }
 
   def first_name=(s)
-    write_attribute(:first_name, s.to_s.capitalize)
+    write_attribute(:first_name, s.to_s.strip.capitalize)
   end
 
   def last_name=(s)
-    write_attribute(:last_name, s.to_s.capitalize)
+    write_attribute(:last_name, s.to_s.strip.capitalize)
   end
 
   def full_name
-    name = "#{first_name.capitalize} #{last_name.capitalize}"
+    name = "#{first_name} #{last_name}"
   end
 
   has_secure_password
