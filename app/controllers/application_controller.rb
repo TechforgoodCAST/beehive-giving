@@ -17,7 +17,11 @@ class ApplicationController < ActionController::Base
   end
 
   def ensure_logged_in
-    redirect_to "/", alert: "Please sign in" unless logged_in?
+    if !logged_in?
+      redirect_to "/", alert: "Please sign in" 
+    else
+      redirect_to unauthorised_path unless current_user.authorised
+    end
   end
 
   def ensure_funder

@@ -59,6 +59,16 @@ class Organisation < ActiveRecord::Base
     generate_slug(n+1)
   end
 
+  # TODO
+  def send_authorisation_email(to_authorise)
+    # self.pending_authorisation_list.add(to_authorise)
+    if self.users.empty
+      send_authorisation_email_to_admin(to_authorise)
+    else
+      send_authorisation_email_to_users(to_authorise)
+    end
+  end
+
   private
 
   def founded_on_before_registered_on
@@ -73,4 +83,18 @@ class Organisation < ActiveRecord::Base
     end
   end
 
+  # TODO
+  def send_authorisation_email_to_admin(user)
+    User.find_by_role('Admin').each do |u|
+      UserMailer.request_authorisation(u, self, user)
+    end
+  end
+
+  def send_authorisation_email_to_users(user)
+    self.users.each do |u|
+      if u.authorised
+        UserMailer.request_authorisation(u, self, user)
+      end
+    end
+  end
 end

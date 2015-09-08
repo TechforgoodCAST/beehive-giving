@@ -1,4 +1,4 @@
-# Preview all emails at http://localhost:3000/rails/mailers/eligibilty_mailer
+# Preview all emails at http://localhost:3000/rails/mailers/funder_mailer
 class FunderMailerPreview < ActionMailer::Preview
 
   def weekly_summary_email

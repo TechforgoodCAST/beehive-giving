@@ -13,4 +13,8 @@ class UserMailer < ApplicationMailer
     @profile = profile
     mail(to: 'support@beehivegiving.org', subject: "#{@profile.organisation.name} has just submitted a profile")
   end
+
+  def request_authorisation(recipient, organisation, user)
+  end
+  
 end

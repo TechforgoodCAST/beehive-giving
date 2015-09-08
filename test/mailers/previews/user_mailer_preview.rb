@@ -9,6 +9,6 @@ class UserMailerPreview < ActionMailer::Preview
   end
 
   def notify
-    UserMailer.eligible_notify(Profile.first)
+    UserMailer.notify_funder(Profile.first)
   end
 end
