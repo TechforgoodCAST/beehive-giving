@@ -499,7 +499,7 @@ ActiveRecord::Schema.define(version: 20150906155103) do
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
     t.boolean  "agree_to_terms"
-    t.boolean  "authorised"
+    t.boolean  "authorised",                         default: true
   end
 
   add_index "users", ["organisation_id"], name: "index_users_on_organisation_id", using: :btree

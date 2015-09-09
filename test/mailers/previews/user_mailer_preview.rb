@@ -11,4 +11,8 @@ class UserMailerPreview < ActionMailer::Preview
   def notify
     UserMailer.notify_funder(Profile.first)
   end
+
+  def authorise
+    UserMailer.request_access(User.first, Organisation.first, User.last)
+  end
 end

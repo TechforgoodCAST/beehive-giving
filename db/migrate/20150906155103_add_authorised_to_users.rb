@@ -1,6 +1,9 @@
 class AddAuthorisedToUsers < ActiveRecord::Migration
-  def change
-    add_column :users, :authorised, :bool
-    # TODO: make all existing users authorised. default to true.
+  def up
+    add_column :users, :authorised, :boolean, :default => true
+  end
+
+  def down
+    remove_column :users, :authorised
   end
 end

@@ -14,7 +14,11 @@ class UserMailer < ApplicationMailer
     mail(to: 'support@beehivegiving.org', subject: "#{@profile.organisation.name} has just submitted a profile")
   end
 
-  def request_authorisation(recipient, organisation, user)
+  def request_access(recipient, organisation, user)
+    @recipient = recipient
+    @organisation = organisation
+    @user = user
+    mail(to: @recipient.user_email, subject: "#{@user.first_name} has requested access to your organisation's record.")
   end
-  
+
 end

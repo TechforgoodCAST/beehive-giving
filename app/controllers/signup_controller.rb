@@ -1,6 +1,6 @@
 class SignupController < ApplicationController
   
-  before_filter :ensure_logged_in, except: [:user, :create_user]
+  before_filter :ensure_logged_in, except: [:user, :create_user, :unauthorised]
 
   def user
     if logged_in?
@@ -101,6 +101,11 @@ class SignupController < ApplicationController
     end
   end
 
+
+  def unauthorised
+    # TODO
+  end
+
   private
 
   def user_params
@@ -119,5 +124,4 @@ class SignupController < ApplicationController
     :street_address, :city, :region, :postal_code, :country, :charity_number,
     :company_number, :founded_on, :registered_on, :mission, :status, :registered, organisation_ids: [])
   end
-
 end

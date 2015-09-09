@@ -54,6 +54,9 @@ Rails.application.routes.draw do
   # Compare funders
   match '/funders/comparison', to: 'funders#comparison', via: :get, as: 'funders_comparison'
 
+  # Unauthorised
+  match '/unauthorised', to: 'signup#unauthorised', via: :get, as: 'unauthorised'
+  
   resources :users
   resources :feedback, :only => [:new, :create]
   resources :password_resets, :only => [:new, :create, :edit, :update]

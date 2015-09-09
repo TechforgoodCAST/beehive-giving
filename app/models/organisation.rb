@@ -86,14 +86,14 @@ class Organisation < ActiveRecord::Base
   # TODO
   def send_authorisation_email_to_admin(user)
     User.find_by_role('Admin').each do |u|
-      UserMailer.request_authorisation(u, self, user)
+      UserMailer.request_access(u, self, user)
     end
   end
 
   def send_authorisation_email_to_users(user)
     self.users.each do |u|
       if u.authorised
-        UserMailer.request_authorisation(u, self, user)
+        UserMailer.request_access(u, self, user)
       end
     end
   end
