@@ -1,0 +1,12 @@
+.uk-container.uk-container-center
+  .uk-grid.uk-margin-large.uk-margin-large-top
+    .uk-width-1-1.uk-margin
+      %h1 Waiting for access
+      %h3 You have tried to register an organisation that is already in our database. An email has been sent to the organisation's original registrant or this site's administrator to request for access. 
+
+      %h5 If you think you are receiving this message in error, please contact support@beehive.org.
+      / = form_tag password_resets_path, method: 'post', class: 'uk-panel uk-panel-box uk-form' do
+      /   .uk-form-row
+      /     = text_field_tag :user_email, params[:user_email], placeholder: 'Email', type: 'email', class: 'uk-width-1-1'
+      /   .uk-form-row
+      /     = submit_tag 'Reset Password', class: 'uk-width-1-1 uk-button uk-button-primary', style: 'color: #fff'

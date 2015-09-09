@@ -122,6 +122,8 @@ class RecipientsController < ApplicationController
     end
   end
 
+# TODO: some update access function
+
   private
 
   def load_recipient

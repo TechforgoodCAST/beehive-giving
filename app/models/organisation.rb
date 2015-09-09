@@ -59,9 +59,7 @@ class Organisation < ActiveRecord::Base
     generate_slug(n+1)
   end
 
-  # TODO
   def send_authorisation_email(to_authorise)
-    # self.pending_authorisation_list.add(to_authorise)
     if self.users.empty
       send_authorisation_email_to_admin(to_authorise)
     else
