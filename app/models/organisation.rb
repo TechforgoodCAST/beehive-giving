@@ -60,9 +60,11 @@ class Organisation < ActiveRecord::Base
   end
 
   def send_authorisation_email(to_authorise)
-    if self.users.empty
+    if self.users.empty?
+      logger.debug ("No users registered for this organisation")
       send_authorisation_email_to_admin(to_authorise)
     else
+      logger.debug ("Sending authorisation email to users")
       send_authorisation_email_to_users(to_authorise)
     end
   end
@@ -83,7 +85,7 @@ class Organisation < ActiveRecord::Base
 
   # TODO
   def send_authorisation_email_to_admin(user)
-    User.find_by_role('Admin').each do |u|
+    AdminUser.all.each do |u|
       UserMailer.request_access(u, self, user)
     end
   end
@@ -91,6 +93,7 @@ class Organisation < ActiveRecord::Base
   def send_authorisation_email_to_users(user)
     self.users.each do |u|
       if u.authorised
+        logger.debug("Sending authorisation email to #{u.user_email}")
         UserMailer.request_access(u, self, user)
       end
     end

@@ -23,9 +23,8 @@
 
                                 %p{:style => "margin: 1em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #000000;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;"}
 
-                                = link_to "Click to grant access", '#', style: "background-color:#01a8e5; border: none; display:inline-block; cursor:pointer; padding:12px 18px; width: 100%; color:#ffffff; font-family:arial; font-size:17px; text-decoration:none; text-align:center;"
+                                = link_to "Click to grant access", grant_access_url(@user.id), method: :patch, style: "background-color:#01a8e5; border: none; display:inline-block; cursor:pointer; padding:12px 18px; width: 100%; color:#ffffff; font-family:arial; font-size:17px; text-decoration:none; text-align:center;"
 
-                                / edit_password_reset_url(@user.password_reset_token)
 
                                 %p{:style => "margin: 1em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #000000;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;"}
 

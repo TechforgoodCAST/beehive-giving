@@ -37,6 +37,7 @@ Rails.application.routes.draw do
   match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
   # match '/(:id)/edit', to: 'recipients#edit', via: :get, as: 'recipient_edit'
   # match '/(:id)/edit', to: 'recipients#edit', via: :patch
+  match '/grant_access/(:id)', to: 'recipients#grant_access', via: :get, as: 'grant_access'
 
   # Eligibility
   match '/eligibility/(:funder_id)', to: 'recipients#eligibility', via: :get, as: 'recipient_eligibility'
@@ -56,7 +57,7 @@ Rails.application.routes.draw do
 
   # Unauthorised
   match '/unauthorised', to: 'signup#unauthorised', via: :get, as: 'unauthorised'
-  
+
   resources :users
   resources :feedback, :only => [:new, :create]
   resources :password_resets, :only => [:new, :create, :edit, :update]

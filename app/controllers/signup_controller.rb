@@ -64,22 +64,32 @@ class SignupController < ApplicationController
           redirect_to funders_path
         }    
       elsif ((@organisation.errors.added? :charity_number, :taken) ||
-        (@organisation.errors.added? :company_number, :taken)) 
-        # If company/charity number has already been taken
-        charity_number = @organisation.charity_number
-        company_number = @organisation.company_number
-        organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
-                        (Organisation.find_by_company_nuber(company_number) if company_number)
+          (@organisation.errors.added? :company_number, :taken)) 
+        format.js {
+          charity_number = @organisation.charity_number
+          company_number = @organisation.company_number
+          organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
+                          (Organisation.find_by_company_nuber(company_number) if company_number)
 
-        current_user.update_attribute(:authorised, false) 
-        current_user.update_attribute(:organisation_id, organisation.id)
-        # send relevant email
-        organisation.send_authorisation_email(current_user.id)
-        redirect_to unauthorised_path
-        # send email to existing user or admin
-        # add user to organisation (Organisation.add new user relationship)
-        # redirect requesting user to holding page and send email
-        # ensure user can only visit holding page until authorized
+          current_user.update_attribute(:authorised, false) 
+          current_user.update_attribute(:organisation_id, organisation.id)
+          organisation.send_authorisation_email(current_user.id)
+          render :js => "window.location = '#{unauthorised_path}';"
+        }
+        format.html {
+          # If company/charity number has already been taken
+          charity_number = @organisation.charity_number
+          company_number = @organisation.company_number
+          organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
+                          (Organisation.find_by_company_nuber(company_number) if company_number)
+
+          current_user.update_attribute(:authorised, false) 
+          current_user.update_attribute(:organisation_id, organisation.id)
+          organisation.send_authorisation_email(current_user.id)
+
+          redirect_to unauthorised_path
+        }
+        # TODO: redirect
       else
         format.js
         format.html { render :organisation }

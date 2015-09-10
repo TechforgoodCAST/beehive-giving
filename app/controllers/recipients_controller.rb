@@ -123,6 +123,15 @@ class RecipientsController < ApplicationController
   end
 
 # TODO: some update access function
+# TODO: check ownership before this?
+  def grant_access
+    @user = User.find(params[:id])
+    @user.save
+    redirect_to action: :access_granted
+  end
+
+  def access_granted
+  end
 
   private
 
