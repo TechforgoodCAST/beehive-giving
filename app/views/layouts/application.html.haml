@@ -81,7 +81,7 @@
                           %li
                             %a{:href => recipient_profiles_path(current_user.organisation)} Edit my profile
                           %li
-                            %a{:href => recipient_eligibilities_path(current_user.organisation)} Manage eligibility
+                            %a{:href => recipient_eligibilities_path(current_user.organisation), :"data-no-turbolink" => true} Manage eligibility
                           %li.uk-nav-divider
                           %li
                             %a{href: logout_path, method: :destroy} Sign out

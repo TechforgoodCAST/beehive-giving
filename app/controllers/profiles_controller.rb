@@ -24,6 +24,8 @@ class ProfilesController < ApplicationController
       else
         redirect_to funders_path
       end
+    elsif @recipient.profiles.where(year: Date.today.year).count > 0
+      redirect_to funders_path
     else
       render :new
     end
@@ -62,5 +64,5 @@ class ProfilesController < ApplicationController
   def load_profile
     @profile = @recipient.profiles.find(params[:id])
   end
-  
+
 end

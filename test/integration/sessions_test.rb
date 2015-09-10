@@ -74,11 +74,6 @@ class SessionsTest < ActionDispatch::IntegrationTest
     ])
   end
 
-  test 'ensure logged in for recommendations' do
-    visit recipient_recommendation_feedback_path
-    assert_equal welcome_path, current_path
-  end
-
   test 'ensure logged in for signup' do
     visit signup_organisation_path
     assert_equal welcome_path, current_path
