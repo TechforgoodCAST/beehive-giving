@@ -23,6 +23,8 @@ class User < ActiveRecord::Base
             format: {with: /\A(?=.*\d)(?=.*[a-zA-Z]).{6,25}\z/,
             message: 'must include 6 characters with 1 number'}, on: :create
 
+  validate  :no_organisation_declared
+
   before_create { generate_token(:auth_token) }
 
   def first_name=(s)
@@ -50,6 +52,12 @@ class User < ActiveRecord::Base
     begin
       self[column] = SecureRandom.urlsafe_base64
     end while User.exists?(column => self[column])
+  end
+
+  private
+
+  def no_organisation_declared
+    errors.add(:job_role, '') if job_role == "None, I don't work/volunteer for a non-profit"
   end
 
 end

@@ -11,7 +11,7 @@ class UserTest < ActiveSupport::TestCase
     assert_equal 'ACME', @user.organisation.name
   end
 
-  test 'doesn\'t allow duplicate emails for different users' do
+  test "doesn't allow duplicate emails for different users" do
     create(:user)
     assert_not build(:user).valid?
   end
@@ -32,6 +32,10 @@ class UserTest < ActiveSupport::TestCase
   test 'capitalize name and strip whitespace' do
     user = create(:user, :first_name => ' john ')
     assert_equal 'John', user.first_name
+  end
+
+  test 'no organisation declared validation' do
+    assert_not build(:user, :job_role => "None, I don't work/volunteer for a non-profit").valid?
   end
 
 end

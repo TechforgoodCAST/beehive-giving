@@ -16,24 +16,31 @@
         = f.input :job_role, error: false, as: :select, collection: User::JOB_ROLES, input_html: { class: 'uk-width-1-1' }
         .uk-form-password-toggle
           = f.error :job_role, class: 'uk-text-small uk-text-warning'
-    .uk-width-medium-1-1.uk-margin-bottom
-      .uk-form-controls{style: 'position: relative;'}
-        = f.input :user_email, error: false, type: 'email', input_html: { class: 'uk-width-1-1' }
-        .uk-form-password-toggle
-          = f.error :user_email, class: 'uk-text-small uk-text-warning'
-    .uk-width-medium-1-1.uk-margin-bottom
-      .uk-form-controls{style: 'position: relative;'}
-        = f.input :password, error: false, type: 'password', input_html: { class: 'uk-width-1-1', "data-uk-tooltip" => "{pos:'top', animation:true}", :title => "At least 6 characters with 1 number."}
-        .uk-form-password-toggle
-          = f.error :password, class: 'uk-text-small uk-text-warning'
-    .uk-width-medium-1-1.uk-margin-bottom
-      .uk-form-controls.uk-text-muted
-        Accept
-        = link_to 'terms of service', '#terms', class: 'blue', onclick: "window.open('#{terms_path}','Terms of Service','width=600,height=400')"
-        and
-        = succeed '?' do
-          = link_to 'privacy policy', '#privacy', class: 'blue', onclick: "window.open('#{privacy_path}','Privacy Policy','width=600,height=400')"
-        = f.input_field :agree_to_terms, error: false, checked: true
-        = f.error :agree_to_terms, class: 'uk-text-small uk-text-warning'
-    .uk-width-medium-1-1.uk-text-truncate
-      = f.button :button, "Create an account (for free!)", class: 'uk-button uk-button-primary uk-width-1-1 uk-button-large shadow bounce', style: 'color: #fff; font-size:16px;', data: {disable_with: "<i style='color: #999;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #999;'> Creating...</span>"}, id: 'submit_user'
+
+    .uk-width-1-1.organisation-declared
+      .uk-width-medium-1-1.uk-margin-bottom
+        .uk-form-controls{style: 'position: relative;'}
+          = f.input :user_email, error: false, type: 'email', input_html: { class: 'uk-width-1-1' }
+          .uk-form-password-toggle
+            = f.error :user_email, class: 'uk-text-small uk-text-warning'
+      .uk-width-medium-1-1.uk-margin-bottom
+        .uk-form-controls{style: 'position: relative;'}
+          = f.input :password, error: false, type: 'password', input_html: { class: 'uk-width-1-1', "data-uk-tooltip" => "{pos:'top', animation:true}", :title => "At least 6 characters with 1 number."}
+          .uk-form-password-toggle
+            = f.error :password, class: 'uk-text-small uk-text-warning'
+      .uk-width-medium-1-1.uk-margin-bottom
+        .uk-form-controls.uk-text-muted
+          Accept
+          = link_to 'terms of service', '#terms', class: 'blue', onclick: "window.open('#{terms_path}','Terms of Service','width=600,height=400')"
+          and
+          = succeed '?' do
+            = link_to 'privacy policy', '#privacy', class: 'blue', onclick: "window.open('#{privacy_path}','Privacy Policy','width=600,height=400')"
+          = f.input_field :agree_to_terms, error: false, checked: true
+          = f.error :agree_to_terms, class: 'uk-text-small uk-text-warning'
+      .uk-width-medium-1-1.uk-text-truncate
+        = f.button :button, "Create an account (for free!)", class: 'uk-button uk-button-primary uk-width-1-1 uk-button-large shadow bounce', style: 'color: #fff; font-size:16px;', data: {disable_with: "<i style='color: #999;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #999;'> Creating...</span>"}, id: 'submit_user'
+
+    .uk-width-1-1.organisation-not-declared.fade-out
+      .uk-alert.uk-alert-danger
+        %i.uk-icon.uk-icon-small.uk-icon-exclamation-triangle
+        %p Beehive helps non-profits connect with suitable funders. It appears you dont work/volunteer for a non-profit. If this is a mistake please select the appropriate option above.
