@@ -8,7 +8,7 @@ ActiveAdmin.register_page "Dashboard" do
         span class: "blank_slate" do
           h3 'Users'
           h5 'Non-profits'
-          h1 User.where("role = ?", "User").count
+          h1  number_with_delimiter(User.where("role = ?", "User").count)
           h5 'Funders'
           h1 User.where("role = ?", "Funder").count
         end
@@ -18,7 +18,7 @@ ActiveAdmin.register_page "Dashboard" do
         span class: "blank_slate" do
           h3 'Non-profits'
           h5 'Recipients'
-          h1 Recipient.joins(:users).all.count
+          h1 number_with_delimiter(Recipient.joins(:users).all.count)
           h5 'Profiles'
           h1 Profile.joins(:organisation).all.count
         end
@@ -28,7 +28,7 @@ ActiveAdmin.register_page "Dashboard" do
           h5 'Unlocks'
           h1 RecipientFunderAccess.all.count
           h5 'Eligibilities'
-          h1 Eligibility.all.count
+          h1 number_with_delimiter(Eligibility.all.count)
         end
 
         span class: "blank_slate" do
@@ -52,7 +52,7 @@ ActiveAdmin.register_page "Dashboard" do
         span class: "blank_slate" do
           h3 'Funders'
           h5 'Grants'
-          h1 Grant.all.count
+          h1 number_with_delimiter(Grant.all.count)
         end
 
         span class: "blank_slate" do

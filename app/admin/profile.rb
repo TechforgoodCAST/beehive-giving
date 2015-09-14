@@ -16,29 +16,37 @@ ActiveAdmin.register Profile do
     column "Organisation" do |profile|
       link_to profile.organisation.name, [:admin, profile]
     end
-    column "Year of profile", :year
     column "Locations", :districts do |profile|
       profile.districts.each do |d|
         li d.label
       end
     end
-    column "Age (years)" do |user|
+    column "Organisation Age" do |user|
       if user.organisation.founded_on
-        ((Date.today - user.organisation.founded_on).to_f / 356).round(1)
+        "#{((Date.today - user.organisation.founded_on).to_f / 356).round(1)} years"
       end
     end
     column :income do |profile|
       number_to_currency(profile.income, unit: '£', precision: 0)
     end
     column :income_actual
+    column :staff_count
+    column :volunteer_count
+    column "Beneficiaries", :beneficiaries do |profile|
+      profile.beneficiaries.each do |b|
+        li b.label
+      end
+    end
+    column :gender
+    column :min_age
+    column :max_age
     column :created_at
-    column :currency
   end
 
   filter :organisation
   filter :year, as: :select
   filter :countries, label: "Country", member_label: :name
-  filter :districts, label: "District", member_label: :label
+  filter :districts, label: "District", member_label: :label, input_html: { multiple: true, class: 'chosen-select' }
   filter :income
   filter :created_at
 
