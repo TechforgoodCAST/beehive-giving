@@ -38,7 +38,7 @@ Rails.application.routes.draw do
   # match '/(:id)/edit', to: 'recipients#edit', via: :get, as: 'recipient_edit'
   # match '/(:id)/edit', to: 'recipients#edit', via: :patch
   match '/grant_access/(:id)', to: 'recipients#grant_access', via: :get, as: 'grant_access'
-
+  match '/access_granted/(:id)', to: 'recipients#access_granted', via: :get, as: 'access_granted'
   # Eligibility
   match '/eligibility/(:funder_id)', to: 'recipients#eligibility', via: :get, as: 'recipient_eligibility'
   match '/eligibility/(:funder_id)', to: 'recipients#update_eligibility', via: :patch

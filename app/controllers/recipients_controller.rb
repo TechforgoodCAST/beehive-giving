@@ -124,13 +124,16 @@ class RecipientsController < ApplicationController
 
 # TODO: some update access function
 # TODO: check ownership before this?
+# TODO: make this a patch request?
   def grant_access
     @user = User.find(params[:id])
+    @user.authorised = true
     @user.save
-    redirect_to action: :access_granted
+    redirect_to access_granted_path(params[:id])
   end
 
   def access_granted
+    @user = User.find(params[:id])
   end
 
   private

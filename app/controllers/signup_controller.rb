@@ -89,7 +89,6 @@ class SignupController < ApplicationController
 
           redirect_to unauthorised_path
         }
-        # TODO: redirect
       else
         format.js
         format.html { render :organisation }

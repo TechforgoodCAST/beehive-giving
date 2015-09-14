@@ -14,16 +14,5 @@ Rachels-MacBook-Pro-2:beehive Rachel$ createuser -s -r postgres
 
 ### QUESTIONS
 =========
-How to have custom paths?
-What's a Proc? (eg Proc.new(|o| etc))
-How to have a specific action for a missing item in a rails form? (eg. pulling up an email)
 
-TO CHECK OUT: when are password reset emails sent?
-
-What's the unique key of an organisation? Is it the charity number? some independent key?
-
-Which controller should the holding page be in?
-
-How does rails tell which stage in the signup process you're in? Where should I put the redirect to the loader page? (aplpication_controller when you're ensuring user? or what?)
-
-Model validates charity_number and company_number by uniqueness: AND or OR?
+HTTP verb for authorisation? (GET vs PUT vs PATCH?)
