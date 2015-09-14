@@ -126,10 +126,10 @@ class RecipientsController < ApplicationController
 # TODO: check ownership before this?
 # TODO: make this a patch request?
   def grant_access
-    @user = User.find(params[:id])
+    @user = User.find_by_auth_token(params[:auth_token])
     @user.authorised = true
     @user.save
-    redirect_to access_granted_path(params[:id])
+    redirect_to access_granted_path(@user.id)
   end
 
   def access_granted

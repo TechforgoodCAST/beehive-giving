@@ -83,7 +83,6 @@ class Organisation < ActiveRecord::Base
     end
   end
 
-  # TODO
   def send_authorisation_email_to_admin(user)
     AdminUser.all.each do |u|
       UserMailer.request_access(u, self, user)

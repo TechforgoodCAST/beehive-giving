@@ -16,3 +16,6 @@ Rachels-MacBook-Pro-2:beehive Rachel$ createuser -s -r postgres
 =========
 
 HTTP verb for authorisation? (GET vs PUT vs PATCH?)
+Where to put grant_access & access_granted function? 
+  - in Recipients controller? 
+Bulk authorise?

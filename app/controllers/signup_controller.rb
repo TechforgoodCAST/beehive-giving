@@ -64,7 +64,9 @@ class SignupController < ApplicationController
           redirect_to funders_path
         }    
       elsif ((@organisation.errors.added? :charity_number, :taken) ||
-          (@organisation.errors.added? :company_number, :taken)) 
+            (@organisation.errors.added? :company_number, :taken)) 
+
+        # If company/charity number has already been taken
         format.js {
           charity_number = @organisation.charity_number
           company_number = @organisation.company_number
@@ -77,7 +79,6 @@ class SignupController < ApplicationController
           render :js => "window.location = '#{unauthorised_path}';"
         }
         format.html {
-          # If company/charity number has already been taken
           charity_number = @organisation.charity_number
           company_number = @organisation.company_number
           organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
