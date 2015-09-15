@@ -24,7 +24,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
     end
     click_button('Create an account')
     assert_equal signup_organisation_path, current_path
-    assert page.has_content?('Last step')
+    assert page.has_content?('Welcome to Beehive')
   end
 
   test 'Filling in landing page form with incorrect info should not submit' do

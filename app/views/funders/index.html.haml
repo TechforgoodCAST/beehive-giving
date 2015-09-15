@@ -22,9 +22,9 @@
         .uk-margin#suitable_funders
           .uk-grid.uk-margin-top.uk-animation-fade{"data-uk-grid-match" => ""}
             - if @recipient.profiles.count < 1
-              - @funders.to_a.uniq.take(12).each do |funder|
+              - @funders.sample(12).each do |funder|
                 .uk-width-medium-1-2.uk-width-large-1-3.uk-margin-bottom
-                  .uk-width-1-1.uk-panel#panel.uk-overlay.shadow
+                  .uk-width-1-1.uk-panel#panel.shadow
                     .uk-panel-teaser.uk-text-center.uk-vertical-align{style: 'height: 100px;'}
                       .uk-vertical-align-middle
                         .funder{class: "#{funder.slug}", alt: "#{funder.name} Logo"}

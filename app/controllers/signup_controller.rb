@@ -1,5 +1,5 @@
 class SignupController < ApplicationController
-  
+
   before_filter :ensure_logged_in, except: [:user, :create_user]
 
   def user
@@ -54,14 +54,14 @@ class SignupController < ApplicationController
         format.js   {
           current_user.update_attribute(:organisation_id, @organisation.id)
           @organisation.initial_recommendation
-          render :js => "window.location.href = '#{funders_path}';
+          render :js => "window.location.href = '#{new_recipient_profile_path(@organisation)}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
         }
         format.html {
           current_user.update_attribute(:organisation_id, @organisation.id)
           @organisation.initial_recommendation
-          redirect_to funders_path
+          redirect_to new_recipient_profile_path(@organisation)
         }
       else
         format.js
