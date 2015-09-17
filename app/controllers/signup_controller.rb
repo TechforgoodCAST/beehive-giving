@@ -53,14 +53,12 @@ class SignupController < ApplicationController
       if @organisation.save
         format.js   {
           current_user.update_attribute(:organisation_id, @organisation.id)
-          @organisation.initial_recommendation
           render :js => "window.location.href = '#{new_recipient_profile_path(@organisation)}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
         }
         format.html {
           current_user.update_attribute(:organisation_id, @organisation.id)
-          @organisation.initial_recommendation
           redirect_to new_recipient_profile_path(@organisation)
         }
       else

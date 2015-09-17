@@ -12,5 +12,7 @@
                 Update your
                 = @profile.year
                 profile
-
-          = render partial: 'profiles/form', locals: {f: f, mode: :edit}
+          - if @profile.state == 'complete'
+            = render partial: 'profiles/form', locals: {f: f, mode: :edit}
+          - else
+            = render partial: "profiles/states/#{@profile.state}", locals: { f: f }

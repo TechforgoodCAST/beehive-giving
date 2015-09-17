@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150826125846) do
+ActiveRecord::Schema.define(version: 20150915152326) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -433,9 +433,11 @@ ActiveRecord::Schema.define(version: 20150826125846) do
     t.datetime "updated_at",                             null: false
     t.boolean  "does_sell"
     t.integer  "trustee_count"
+    t.string   "state"
   end
 
   add_index "profiles", ["organisation_id"], name: "index_profiles_on_organisation_id", using: :btree
+  add_index "profiles", ["state"], name: "index_profiles_on_state", using: :btree
 
   create_table "recipient_attributes", force: :cascade do |t|
     t.integer  "recipient_id"

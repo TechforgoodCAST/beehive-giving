@@ -28,4 +28,9 @@
                 = link_to 'line', 'mailto:support@beehivegiving.org', style: 'color: #efefef'
                 if you get stuck.
 
-          = render partial: 'profiles/form', locals: {f: f, mode: :new}
+          = f.hidden_field :year, value: Date.today.year.to_s
+          = f.error :year, class: 'uk-text-small uk-text-warning'
+          .uk-margin.uk-margin-top-remove
+            .uk-width-1-1.shadow
+              .uk-grid{"data-uk-grid-match" => "{target:'.uk-panel'}"}
+                = render partial: "profiles/states/#{@profile.state}", locals: { f: f }

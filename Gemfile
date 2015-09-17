@@ -63,6 +63,7 @@ gem 'fiscali'
 gem 'ransack'
 gem 'activeadmin', github: 'activeadmin'
 gem 'devise'
+gem 'workflow'
 
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'groupdate'

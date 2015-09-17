@@ -16,12 +16,6 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
     create_and_auth_user!(:organisation => @recipient)
   end
 
-  test "funders order by initial recommendation" do
-    visit funders_path
-    Capybara.match = :first
-    assert_equal 'acme-2 funder', find('.funder')[:class]
-  end
-
   test "funders order by refined recommendation" do
     create(:profile, :organisation => @recipient, :beneficiaries => FactoryGirl.create_list(:beneficiary_unique, 4))
     @recipient.refined_recommendation

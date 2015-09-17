@@ -1,4 +1,5 @@
 FactoryGirl.define do
+
   factory :country, class: Country do
     name "United Kingdom"
     alpha2 "GB"
@@ -13,6 +14,7 @@ FactoryGirl.define do
 
   factory :beneficiary do
     label 'Other'
+    category 'People'
   end
 
   factory :beneficiary_unique, class: Beneficiary do
@@ -72,4 +74,5 @@ FactoryGirl.define do
     implementors {FactoryGirl.create_list(:implementor, 2)}
     implementations {FactoryGirl.create_list(:implementation, 2)}
   end
+  
 end

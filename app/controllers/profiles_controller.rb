@@ -4,28 +4,20 @@ class ProfilesController < ApplicationController
   before_filter :load_profile, :only => [:edit, :update, :destroy]
 
   def new
-    @redirect_to_funder = params[:redirect_to_funder]
     if !@recipient || !@recipient.can_create_profile?
       flash[:alert] = "Sorry you can't create more than one profile a year, why not edit the one you've already created."
       redirect_to edit_recipient_profile_path(current_user.organisation, current_user.organisation.profiles.where(year: Date.today.year).first)
     else
       @profile = @recipient.profiles.new
+      @profile.state = 'beneficiaries'
     end
   end
 
   def create
-    @redirect_to_funder = params[:profile].delete(:redirect_to_funder)
     @profile = @recipient.profiles.new(profile_params)
     if @profile.save
-      UserMailer.notify_funder(@profile).deliver
-      @recipient.refined_recommendation if @recipient.profiles.count > 0
-      if @redirect_to_funder
-        redirect_to recipient_comparison_path(Funder.find_by_slug(@redirect_to_funder))
-      else
-        redirect_to funders_path
-      end
-    elsif @recipient.profiles.where(year: Date.today.year).count > 0
-      redirect_to funders_path
+      @profile.next_step!
+      redirect_to edit_recipient_profile_path(@recipient, @profile)
     else
       render :new
     end
@@ -35,13 +27,18 @@ class ProfilesController < ApplicationController
     @profiles = @recipient.profiles
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @profile.update_attributes(profile_params)
-      @recipient.refined_recommendation
-      redirect_to recipient_profiles_path(@recipient), notice: 'Profile saved'
+      @profile.next_step! unless @profile.state == 'complete'
+      if @profile.state == 'complete'
+        @recipient.refined_recommendation
+        UserMailer.notify_funder(@profile).deliver
+        redirect_to funders_path
+      else
+        redirect_to edit_recipient_profile_path(@recipient, @profile)
+      end
     else
       render :edit
     end
