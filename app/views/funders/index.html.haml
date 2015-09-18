@@ -21,16 +21,8 @@
 
         .uk-margin#suitable_funders
           .uk-grid.uk-margin-top.uk-animation-fade{"data-uk-grid-match" => ""}
-            - if @recipient.profiles.count < 1
-              - @funders.sample(12).each do |funder|
-                .uk-width-medium-1-2.uk-width-large-1-3.uk-margin-bottom
-                  .uk-width-1-1.uk-panel#panel.shadow
-                    .uk-panel-teaser.uk-text-center.uk-vertical-align{style: 'height: 100px;'}
-                      .uk-vertical-align-middle
-                        .funder{class: "#{funder.slug}", alt: "#{funder.name} Logo"}
-                    .uk-panel-box{style: 'height: 60px;'}
-                      .uk-width-1-1
-                        = truncate("#{funder.mission}", length: 120, separator: ' ')
+            - if current_user_should_render_welcome_modal?
+              = render partial: 'funders/static_background'
 
             - else
               .uk-width-1-1.uk-margin-large-top.uk-margin-bottom

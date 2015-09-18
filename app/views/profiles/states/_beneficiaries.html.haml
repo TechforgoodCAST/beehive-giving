@@ -1,60 +1,64 @@
-.uk-width-medium-2-3
-  .uk-form.uk-form-stacked.uk-panel.uk-panel-box#panel
-    .uk-panel-title Beneficiaries
-    %label.uk-label My organisation primarily benefits...
-    .uk-width-1-1.uk-margin-small-top
-      .uk-form-controls
-        -# = f.association :beneficiaries, as: :check_boxes, collection: Beneficiary.where(category: 'Other'), label_method: :label, value_method: :id
-        -# = f.error :beneficiaries, class: 'uk-text-small uk-text-warning'
-        -# %span.checkbox
-        -#   %label{:for => "people"}
-        -#     %input#people.check_boxes.required{:name => "people", :type => "checkbox", :value => true} People
-        -# .uk-width-1-1#hidden_questions.uk-hidden{style: 'border: 2px dashed #ccc; padding: 10px;'}
+- if mode == :new
+  %ul.progress-indicator
+    %li.completed
+      %span.bubble
+      Basics
+    %li.warning
+      %span.bubble
+      Target
+    %li
+      %span.bubble
+      Location
+    %li
+      %span.bubble
+      Team
+    %li
+      %span.bubble
+      Work
+    %li
+      %span.bubble
+      Finance
 
-        .uk-width-1-1{style: 'background-color: #eee; padding: 7px;'}
-          %fieldset.uk-label People
-          %small.uk-text-muted Select as many as applicable
-          = f.association :beneficiaries, as: :check_boxes, collection: Beneficiary.order(:sort).where(category: 'People'), label_method: :label, value_method: :id
-          = f.error :beneficiaries, class: 'uk-text-small uk-text-warning'
-          .uk-grid
-            .uk-width-medium-1-3.uk-margin-top
-              %label.uk-form-label Gender
-              .uk-form-controls
-                = f.input :gender, collection: Profile::GENDERS, input_html: { class: 'uk-width-1-1' }
-                = f.error :gender, class: 'uk-text-small uk-text-warning'
-            .uk-width-medium-1-3.uk-margin-top
-              %label.uk-form-label
-                Minimum age
-              .uk-form-controls
-                = f.input :min_age, error: false, type: 'text', input_html: { class: 'uk-width-1-1', min: 0 }
-                = f.error :min_age, class: 'uk-text-small uk-text-warning'
-            .uk-width-medium-1-3.uk-margin-top
-              %label.uk-form-label
-                Maximum age
-              .uk-form-controls
-                = f.input :max_age, error: false, type: 'text', input_html: { class: 'uk-width-1-1', min: 0 }
-                = f.error :max_age, class: 'uk-text-small uk-text-warning'
+.uk-form.uk-form-stacked
+  %p.uk-text-large My organisation primarily benefits...
+  .uk-width-1-1.uk-margin-small-top
+    .uk-form-controls
+      -# = f.association :beneficiaries, as: :check_boxes, collection: Beneficiary.where(category: 'Other'), label_method: :label, value_method: :id
+      -# = f.error :beneficiaries, class: 'uk-text-small uk-text-warning'
+      -# %span.checkbox
+      -#   %label{:for => "people"}
+      -#     %input#people.check_boxes.required{:name => "people", :type => "checkbox", :value => true} People
+      -# .uk-width-1-1#hidden_questions.uk-hidden{style: 'border: 2px dashed #ccc; padding: 10px;'}
 
-        .uk-width-1-1.uk-margin-top
-          %fieldset.uk-label More options
+      .uk-width-1-1{style: 'background-color: #eee; padding: 7px;'}
+        .uk-label People
+        %small.uk-text-muted Select as many as applicable
+        = f.association :beneficiaries, as: :check_boxes, collection: Beneficiary.order(:sort).where(category: 'People'), label_method: :label, value_method: :id
+        = f.error :beneficiaries, class: 'uk-text-small uk-text-warning'
+        .uk-grid
+          .uk-width-medium-1-3.uk-margin-top
+            %label.uk-form-label Gender
+            .uk-form-controls
+              = f.input :gender, collection: Profile::GENDERS, input_html: { class: 'uk-width-1-1' }
+              = f.error :gender, class: 'uk-text-small uk-text-warning'
+          .uk-width-medium-1-3.uk-margin-top
+            %label.uk-form-label
+              Minimum age
+            .uk-form-controls
+              = f.input :min_age, error: false, type: 'text', input_html: { class: 'uk-width-1-1', min: 0 }
+              = f.error :min_age, class: 'uk-text-small uk-text-warning'
+          .uk-width-medium-1-3.uk-margin-top
+            %label.uk-form-label
+              Maximum age
+            .uk-form-controls
+              = f.input :max_age, error: false, type: 'text', input_html: { class: 'uk-width-1-1', min: 0 }
+              = f.error :max_age, class: 'uk-text-small uk-text-warning'
+
+      .uk-width-1-1.uk-margin-top
+        %a.uk-button.uk-button-small{"data-uk-toggle" => "{target:'#beneficiary-more-options'}"} More options
+        #beneficiary-more-options.uk-hidden
           %small.uk-text-muted Select as many as applicable
           = f.association :beneficiaries, as: :check_boxes, collection: Beneficiary.order(:sort).where(category: 'Other'), label_method: :label, value_method: :id
 
--# .uk-width-medium-1-3.remove-left-padding
--#   .uk-panel.uk-panel-box.uk-panel-box-secondary
--#     .uk-panel-title
--#       Describe your beneficiaries
--#     .uk-panel-badge
--#       %i.uk-icon-child.uk-icon-large
--#     %p
--#       Consider the 'state' of your typical beneficiaries in
--#       = @profile.year || get_year
--#       when completing this section. For example, if your typical beneficiaries are young men who are unemployed, homeless, and abuse harmful substances you might select - 'Who are unemployed', 'With housing/shelter challenges', and 'With physical diseases or disorders', along with 'Male' for gender, and an age range of '16' to '25' years old.
--#     %p.uk-alert We know it can be tempting to select lot's of options, but remember the more specific you are, the better recommendations we'll be able to provide (you can always come back and update your selection in future).
-
-.uk-width-1-1.uk-margin-top
-  .uk-grid
-    .uk-width-2-3
-      = f.button :button, "Save", class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;', data: {disable_with: "<i style='color: #999;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #999;'> Calculating...</span>"}
-    .uk-width-1-3{style: 'padding-left: 0;'}
-      = link_to 'Cancel', :back, class: 'uk-button uk-width-1-1'
+.uk-modal-footer
+  = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-margin-top uk-width-1-1', style: 'color: #fff;', data: {disable_with: "<i style='color: #999;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #999;'> That wasn't so bad...</span>"}

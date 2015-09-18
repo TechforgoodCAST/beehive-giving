@@ -74,12 +74,12 @@ class Profile < ActiveRecord::Base
 
   validates :volunteer_count, numericality: { greater_than: 0,
             message: 'must have at least one volunteer if no staff',
-            unless: Proc.new { |profile| (profile.staff_count > 0 || profile.staff_count != 0) },
+            unless: Proc.new { |profile| (profile.staff_count.nil? || profile.staff_count != 0) },
             if: 'self.team?' }
 
   validates :staff_count, numericality: { greater_than: 0,
             message: 'must have at least one member of staff if no volunteers',
-            unless: Proc.new { |profile| (profile.volunteer_count > 0 || profile.volunteer_count != 0) },
+            unless: Proc.new { |profile| (profile.volunteer_count.nil? || profile.volunteer_count != 0) },
             if: 'self.team?' }
 
   ## work state validations

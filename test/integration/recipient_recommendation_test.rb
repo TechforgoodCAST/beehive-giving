@@ -17,7 +17,7 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
   end
 
   test "funders order by refined recommendation" do
-    create(:profile, :organisation => @recipient, :beneficiaries => FactoryGirl.create_list(:beneficiary_unique, 4))
+    create(:profile, :organisation => @recipient, :beneficiaries => FactoryGirl.create_list(:beneficiary_unique, 4), :state => 'complete')
     @recipient.refined_recommendation
     visit funders_path
     Capybara.match = :first

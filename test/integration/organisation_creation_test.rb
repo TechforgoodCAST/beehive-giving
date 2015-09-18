@@ -43,7 +43,7 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
     create_and_auth_user!
     visit signup_organisation_path
     full_form(true)
-    click_button('Continue')
+    click_button('Next')
     assert_equal new_recipient_profile_path(Recipient.first), current_path
     assert page.has_content?("Funders")
   end
@@ -52,7 +52,7 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
     create_and_auth_user!
     visit signup_organisation_path
 
-    click_button('Continue')
+    click_button('Next')
     assert_equal signup_organisation_path, current_path
     assert page.has_content?("can't be blank")
   end
@@ -61,7 +61,7 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
     create_and_auth_user!
     visit '/your-organisation'
     full_form(false)
-    click_button('Continue')
+    click_button('Next')
     assert_equal new_recipient_profile_path(Recipient.first), current_path
     assert page.has_content?("Funders")
     assert Recipient.first.registered_on.nil?

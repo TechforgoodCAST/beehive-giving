@@ -230,3 +230,7 @@ input::-webkit-inner-spin-button {
     text-align: center;
   }
 }
+
+.modal-scroll-touch {
+  -webkit-overflow-scrolling: touch !important;
+}

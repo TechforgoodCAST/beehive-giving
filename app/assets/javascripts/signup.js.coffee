@@ -11,13 +11,20 @@ SignupHelpers = ((w, d) ->
         $('.organisation-not-declared').addClass 'fade-out'
         $('.arrow-container').css 'margin-top', 0
       return
-    return
 
-  { toggleNoOrg: toggleNoOrg }
+  hideWelcomeMessage = ->
+    $(document).on 'click', '.js-record-welcome-close', ->
+      $('#welcome-message').addClass('fade-out')
+      $('#new-organisation-form').removeClass('uk-hidden')
+      $('#new-organisation-form').addClass('fade-in')
+
+  return { toggleNoOrg: toggleNoOrg, hideWelcomeMessage: hideWelcomeMessage }
 )(window, document)
 
 $(document).ready ->
   SignupHelpers.toggleNoOrg()
+  SignupHelpers.hideWelcomeMessage()
 
 $(document).ajaxComplete ->
   SignupHelpers.toggleNoOrg()
+  SignupHelpers.hideWelcomeMessage()

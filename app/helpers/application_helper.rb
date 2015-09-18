@@ -7,7 +7,7 @@ module ApplicationHelper
   end
 
   def current_user_should_render_welcome_modal?
-    @recipient.profiles.count < 1
+    @recipient.profiles.count < 1 || @recipient.profiles.first.state != 'complete'
   end
 
 end

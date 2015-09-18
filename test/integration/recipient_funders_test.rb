@@ -63,7 +63,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
       create(:funder_attribute, :funder => @funder, :funding_stream => "All")
     end
 
-    create(:profile, :organisation => @recipient, :year => Date.today.year)
+    create(:profile, :organisation => @recipient, :year => Date.today.year, :state => 'complete')
 
     3.times { |i| @recipient.unlock_funder!(@funders[i]) }
   end
