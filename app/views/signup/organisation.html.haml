@@ -1,3 +1,5 @@
+= stylesheet_link_tag 'modals.css'
+
 :javascript
   mixpanel.track("Page View", {"Page Name": "Create Organisation Page"});
 
@@ -61,6 +63,8 @@
 
       .uk-form.uk-form-stacked
         = render 'organisations/form'
+
+  = render 'snippets/need_help'
 
 :javascript
   var modal = $.UIkit.modal("#your-organisation");

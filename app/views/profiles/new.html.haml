@@ -1,3 +1,5 @@
+= stylesheet_link_tag 'modals.css'
+
 :javascript
   mixpanel.track("Page View", {"Page Name": "New Profile"});
   mixpanel.track_forms("#new_profile", "Create Profile Form");
@@ -23,6 +25,7 @@
       = f.hidden_field :year, value: Date.today.year.to_s
       = f.error :year, class: 'uk-text-small uk-text-warning'
       = render partial: "profiles/states/#{@profile.state}", locals: { f: f, mode: :new }
+  = render 'snippets/need_help'
 
 :javascript
   var modal = $.UIkit.modal('#new-profile-modal');
