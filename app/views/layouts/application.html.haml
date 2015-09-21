@@ -95,9 +95,8 @@
                   %a{href: logout_path, method: :destroy} Sign out
 
           - else
-            %ul.uk-navbar-nav.uk-hidden-small
-              %li
-                %a{"data-uk-offcanvas" => "", :href => "#offcanvas"} Sign in
+            .uk-navbar-content.uk-hidden-small
+              %a.uk-button.uk-button-primary{"data-uk-offcanvas" => "", :href => "#offcanvas"} Sign in
           %a.uk-navbar-toggle.uk-visible-small#padding-remove{"data-uk-offcanvas" => "{target:'#offcanvas'}"}
         %a.uk-navbar-brand.uk-visible-small.logo{:href => root_path}
           .logo-label Beta

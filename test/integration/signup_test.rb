@@ -8,7 +8,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
 
   test 'Landing page should have sign up form' do
     visit signup_user_path
-    assert page.has_content?("Do you work for a")
+    assert page.has_content?("Work or volunteer for a non-profit?")
     assert page.has_css?("form#new_user")
   end
 
