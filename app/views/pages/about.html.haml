@@ -1,3 +1,5 @@
+= stylesheet_link_tag 'pages'
+  
 - content_for :public do
   .tm-section-color-2
     .uk-container.uk-container-center
@@ -130,22 +132,6 @@
       %h1.uk-text-center Roadmap
       %ul.timeline
         %li
-          %span.text1 June 2014
-          %span.bull
-          %span.text Research & development
-        %li
-          %span.text1 August 2014
-          %span.bull
-          %span.text Initial prototype
-        %li
-          %span.text1 October 2014
-          %span.bull
-          %span.text Second iteration
-        %li
-          %span.text1 January 2015
-          %span.bull
-          %span.text Build web app
-        %li
           %span.text1 May 2015
           %span.bull
           %span.text Beehive beta
@@ -157,6 +143,10 @@
           %span.text1 December 2015
           %span.bull
           %span.text 30 top funders on Beehive
+        %li.todo
+          %span.text1 April 2016
+          %span.bull
+          %span.text In-app funder feedback
 
   %a.uk-button.uk-button-primary.uk-button-large.uk-width-1-1.uk-vertical-align.uk-animation-fade.uk-active{ href: welcome_path, style: 'height: 60px;'}
     .uk-vertical-align-middle{style: 'font-size: 20px;'}

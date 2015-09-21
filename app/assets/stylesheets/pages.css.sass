@@ -1,0 +1,194 @@
+@import variables
+
+/* Layout
+ ========================================================================== */
+
+// Blocks
+.tm-section, .tm-footer
+  padding: 50px 0
+
+// Tablet and bigger
+@media (min-width: 768px)
+  .tm-section, .tm-footer
+    padding: 47px 0
+
+// Large screen and bigger
+@media (min-width: 1220px)
+  .tm-section, .tm-footer
+    padding: 47px 0
+
+// Sections
+.tm-section-color-1
+  @media (min-width: 767px)
+    background: $background-color image-url('bg.png') 50% 50% no-repeat
+    background-size: cover
+
+.tm-section-color-2
+  background: $yellow
+
+.tm-section-colored,
+.tm-section-colored h1,
+.tm-section-colored h2,
+.tm-section-colored a:not([class])
+  color: white !important
+
+/* Header
+ ========================================================================== */
+
+.arrow-container
+  position: relative
+  .show-more-arrow
+    position: absolute
+    font-size: 16px
+    margin-left: -16px
+    bottom: -53px
+    &:hover
+      font-size: 18px
+      margin-left: -18px
+
+/* Illustrations
+ ========================================================================== */
+
+.illus
+  background: image-url('homepage-illus.svg') no-repeat
+  background-size: 500px 800px
+  margin: 0 auto
+  &.problem, &.solution, &.benefits
+    width: 350px
+    height: 200px
+    @media screen and (max-width: 320px)
+      background-size: 385px 616px
+      width: 270px
+      height: 154px
+  &.solution
+    background-position: left -200px
+    @media screen and (max-width: 320px)
+      background-position: left -154px
+  &.benefits
+    background-position: left -400px
+    @media screen and (max-width: 320px)
+      background-position: left -308px
+  &.profile, &.recommendation, &.eligibility
+    width: 150px
+    height: 150px
+    &.small
+      background-size: 375px 600px
+      width: 112px
+      height: 112px
+  &.profile
+    background-position: right 0
+  &.recommendation
+    background-position: right -150px
+    &.small
+      background-position: right -112px
+  &.eligibility
+    background-position: right -300px
+    &.small
+      background-position: right -224px
+  &.puzzle
+    width: 185px
+    height: 200px
+    background-position: left -600px
+
+/* Roadmap
+ ========================================================================== */
+
+.timeline
+  list-style: none
+  max-width: 560px
+  margin: 66px auto 100px
+  -webkit-transform-origin: center top
+  -ms-transform-origin: center top
+  transform-origin: center top
+
+.timeline li
+  white-space: nowrap
+  line-height: 26px
+  margin-bottom: 24px
+
+.timeline li span.text1
+  width: 410px
+  display: inline-block
+  padding-right: 40px
+  text-align: right
+  margin-left: -220px
+
+.timeline li span.bull
+  display: inline-block
+  background: #363636
+  width: 12px
+  height: 12px
+  border-radius: 50%
+  position: relative
+  top: 5px
+
+.timeline li span.bull:after
+  content: ""
+  display: block
+  position: absolute
+  bottom: 3px
+  left: 50%
+  margin-left: -2px
+  width: 4px
+  height: 47px
+  background: black
+
+.timeline li span.text
+  width: 410px
+  display: inline-block
+  padding-left: 40px
+  text-align: left
+
+.timeline li:first-child span:after
+  content: none
+
+.timeline li.todo span.bull:after
+  background: image-url('about/bg-dashed-timeline.gif') center top
+  z-index: -1
+
+@media only screen and (max-width: 950px)
+  .timeline
+    -webkit-transform: scale(0.8)
+    -ms-transform: scale(0.8)
+    transform: scale(0.8)
+    margin-top: 40px
+    margin-bottom: 30px
+
+@media only screen and (max-width: 768px)
+  .timeline
+    -webkit-transform: scale(1)
+    -ms-transform: scale(1)
+    transform: scale(1)
+    width: 260px
+  .timeline li
+    white-space: normal
+  .timeline li span.text1
+    width: auto
+    display: block
+    padding-left: 40px
+    padding-right: 0
+    text-align: left
+    margin-left: 0
+  .timeline li span.bull
+    float: left
+    margin-top: -25px
+    position: relative
+    z-index: 10
+    border-width: 4px
+    width: 10px
+    height: 10px
+    -webkit-transform: translateZ(2px)
+    -ms-transform: translateZ(2px)
+    transform: translateZ(2px)
+  .timeline li span.bull:after
+    -webkit-transform: translateZ(0)
+    -ms-transform: translateZ(0)
+    transform: translateZ(0)
+    height: 80px
+  .timeline li span.text
+    width: auto
+    display: block
+  .timeline li:first-child + li + li + li + li + li span.bull:after
+    height: 100px
+  .timeline li:first-child + li + li + li + li + li + li + li span.bull:after
+    height: 90px

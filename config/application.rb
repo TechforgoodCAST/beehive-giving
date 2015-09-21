@@ -23,7 +23,12 @@ module Beehive
     config.exceptions_app = self.routes
 
     config.assets.precompile += %w(
-      modals.css
+      pages.css
+    )
+
+    config.assets.precompile += %w(
+      signup.js
+      funders.js
     )
   end
 end
