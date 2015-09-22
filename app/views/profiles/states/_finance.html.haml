@@ -47,5 +47,6 @@
         .uk-form-controls.uk-display-block.uk-margin-small-top.boolean-padding
           = f.input :expenditure_actual, as: :boolean, checked_value: false, unchecked_value: true, inline_label: 'Are these estimated figures?'
 
-.uk-modal-footer
-  = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-margin-top uk-width-1-1', style: 'color: #fff;', data: {disable_with: "<i style='color: #999;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #999;'> Next stop, recommendations!</span>"}
+- unless @profile.state == 'complete'
+  .uk-modal-footer
+    = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-margin-top uk-width-1-1', style: 'color: #fff;', data: {disable_with: "<i style='color: #999;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #999;'> Next stop, recommendations!</span>"}
