@@ -35,5 +35,6 @@
       = f.error :districts, class: 'uk-text-small uk-text-warning'
     %small.uk-text-muted This list will populate once you've selected some countries
 
-.uk-modal-footer
-  = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-margin-top uk-width-1-1', style: 'color: #fff;', data: {disable_with: "<i style='color: #999;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #999;'> Now we're cooking...</span>"}
+- unless @profile.state == 'complete'
+  .uk-modal-footer
+    = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-margin-top uk-width-1-1', style: 'color: #fff;', data: {disable_with: "<i style='color: #999;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #999;'> Now we're cooking...</span>"}
