@@ -1,4 +1,5 @@
 @import variables
+@import funder_logos
 
 /* Typography
  ========================================================================== */
@@ -52,6 +53,40 @@
     -moz-box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.3)
     box-shadow: 0px 4px 8px 0px rgba(0,0,0,0.3)
 
+=keyframes($name)
+  @-webkit-keyframes #{$name}
+    @content
+  @-moz-keyframes #{$name}
+    @content
+  @-ms-keyframes #{$name}
+    @content
+  @keyframes #{$name}
+    @content
+
+=keyframe-opacity($to)
+  to
+    opacity: $to
+
++keyframes(fadeIn)
+  +keyframe-opacity(1)
++keyframes(fadeOut)
+  +keyframe-opacity(0)
+
+=opacity-animation($animation-name)
+  -webkit-animation: $animation-name .25s ease-in 1 forwards
+  -moz-animation:    $animation-name .25s ease-in 1 forwards
+  -o-animation:      $animation-name .25s ease-in 1 forwards
+  animation:         $animation-name .25s ease-in 1 forwards
+
+.fade-in
+  opacity: 0
+  +opacity-animation(fadeIn)
+
+.fade-out
+  opacity: 1
+  display: none
+  +opacity-animation(fadeOut)
+
 /* Navbar
  ========================================================================== */
 
@@ -77,9 +112,6 @@
 .bh-button-group
   top: 5px
 
-
-
-
 /* Panel
  ========================================================================== */
 
@@ -98,6 +130,25 @@ input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button
   -webkit-appearance: none
   margin: 0
+
+/* Call to actions
+ ========================================================================== */
+
+.cta
+  padding: 15px
+  background: #F7BA0E
+  color: #fff
+  font-size: 1.1em
+.cta-hover
+  &:hover
+    background: #FFC728
+    color: #fff
+    text-decoration: none
+.cta p a
+  color: #00a8e6
+  font-weight: bold
+  &:hover
+    color: #35b3ee
 
 /* Footer
  ========================================================================== */

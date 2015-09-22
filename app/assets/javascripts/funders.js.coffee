@@ -16,6 +16,19 @@ $(document).ready ->
 #       }
 #   )
 
+$(document).ready ->
+  if $('#multiple_funding_frequency_distribution').length
+    Morris.Bar
+      element: 'multiple_funding_frequency_distribution'
+      data: $('#multiple_funding_frequency_distribution').data('data')
+      xkey: 'target'
+      ykeys: ['funder1', 'funder2', 'funder3', 'funder4', 'funder5']
+      labels: [gon.funderName1, gon.funderName2, gon.funderName3, gon.funderName4, gon.funderName5]
+      barColors: ['#FFD452', '#75A3D1', '#E05151', '#77BA9B', '#9C6A8D']
+      resize: true
+      hideHover: 'auto'
+      gridTextSize: 10
+
 FundersIndex = ((w, d) ->
   triggerFundersToggle = ->
     $('#toggle_funders').on 'click', ->

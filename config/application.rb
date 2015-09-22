@@ -22,13 +22,33 @@ module Beehive
 
     config.exceptions_app = self.routes
 
+    # controller assets
     config.assets.precompile += %w(
       pages.css
+      signup.css
+      organisations.css
+      profiles.css
+      funders.css
+      recipients.css
+    )
+    config.assets.precompile += %w(
+      pages.js
+      signup.js
+      organisations.js
+      profiles.js
+      funders.js
+      recipients.js
     )
 
+    # vendor assets
     config.assets.precompile += %w(
-      signup.js
-      funders.js
+      overrides/chosen.css
+      overrides/morris_overrides.css
+    )
+    config.assets.precompile += %w(
+      chosen.js
+      morris.js
+      raphael.js
     )
   end
 end

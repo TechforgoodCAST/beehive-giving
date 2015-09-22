@@ -28,3 +28,35 @@ $(document).ready ->
 $(document).ajaxComplete ->
   SignupHelpers.toggleNoOrg()
   SignupHelpers.hideWelcomeMessage()
+
+# refactor
+OrganisationForm = ((w, d) ->
+  triggerRegisteredToggle = (state)->
+    founded = $('.js-founded-toggle-target')
+    registered = $('.js-registered-toggle-target')
+    if state == 'true'
+      registered.removeClass 'uk-hidden'
+      founded.removeClass 'uk-hidden'
+    else if state == 'false'
+      founded.removeClass 'uk-hidden'
+      registered.addClass 'uk-hidden'
+    else
+      founded.addClass 'uk-hidden'
+      registered.addClass 'uk-hidden'
+
+  bindRegistrationToggle = ->
+    selector = '.js-registered-toggle'
+    elem     = $(selector)
+    return unless elem.length > 0
+    triggerRegisteredToggle(elem.val())
+    $(document).on 'change', selector, ->
+      triggerRegisteredToggle(elem.val())
+
+  return { bindRegistrationToggle: bindRegistrationToggle }
+)(window, document)
+
+$(document).ready ->
+  OrganisationForm.bindRegistrationToggle()
+
+$(document).ajaxComplete ->
+  OrganisationForm.bindRegistrationToggle()
