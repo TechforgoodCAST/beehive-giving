@@ -40,7 +40,7 @@
 =funder-logo($ypos, $scale:1, $width:229px)
   width: $width
   height: 65px * $scale
-  background-size: (229px * $scale) (3575px * $scale)
+  background-size: (229px * $scale) (3640px * $scale)
   background-position: center ((-65px * $ypos) * $scale)
 
 .funder
@@ -323,3 +323,8 @@
     +funder-logo(54)
   &.the-trusthouse-charitable-foundation-small
     +funder-logo(54, 0.6, 150px)
+
+  &.zing
+    +funder-logo(55)
+  &.zing-small
+    +funder-logo(55, 1, 150px)
