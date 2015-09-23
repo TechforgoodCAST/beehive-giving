@@ -45,12 +45,15 @@ module Beehive
       chosen.css
       overrides/chosen_overrides.css
       overrides/morris_overrides.css
+      timelineJS/timeline.css
+      timelineJS/themes/font/BreeSerif-OpenSans.css
     )
     config.assets.precompile += %w(
       chosen.js
       chosen-jquery.js
       morris.js
       raphael.js
+      timelineJS/embed.js
     )
   end
 end
