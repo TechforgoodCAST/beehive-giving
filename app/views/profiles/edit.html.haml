@@ -1,3 +1,9 @@
+- if @profile.state == 'location'
+  = javascript_include_tag 'chosen-jquery'
+  = javascript_include_tag 'chosen'
+  = stylesheet_link_tag 'chosen'
+  = stylesheet_link_tag 'overrides/chosen_overrides'
+
 :javascript
   mixpanel.track("Page View", {"Page Name": "Edit Profile"});
 

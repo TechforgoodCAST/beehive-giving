@@ -18,19 +18,6 @@ SignupHelpers = ((w, d) ->
       $('#new-organisation-form').removeClass('uk-hidden')
       $('#new-organisation-form').addClass('fade-in')
 
-  return { toggleNoOrg: toggleNoOrg, hideWelcomeMessage: hideWelcomeMessage }
-)(window, document)
-
-$(document).ready ->
-  SignupHelpers.toggleNoOrg()
-  SignupHelpers.hideWelcomeMessage()
-
-$(document).ajaxComplete ->
-  SignupHelpers.toggleNoOrg()
-  SignupHelpers.hideWelcomeMessage()
-
-# refactor
-OrganisationForm = ((w, d) ->
   triggerRegisteredToggle = (state)->
     founded = $('.js-founded-toggle-target')
     registered = $('.js-registered-toggle-target')
@@ -52,11 +39,19 @@ OrganisationForm = ((w, d) ->
     $(document).on 'change', selector, ->
       triggerRegisteredToggle(elem.val())
 
-  return { bindRegistrationToggle: bindRegistrationToggle }
+  return {
+    toggleNoOrg: toggleNoOrg,
+    hideWelcomeMessage: hideWelcomeMessage,
+    bindRegistrationToggle: bindRegistrationToggle
+  }
 )(window, document)
 
 $(document).ready ->
-  OrganisationForm.bindRegistrationToggle()
+  SignupHelpers.toggleNoOrg()
+  SignupHelpers.hideWelcomeMessage()
+  SignupHelpers.bindRegistrationToggle()
 
 $(document).ajaxComplete ->
-  OrganisationForm.bindRegistrationToggle()
+  SignupHelpers.toggleNoOrg()
+  SignupHelpers.hideWelcomeMessage()
+  SignupHelpers.bindRegistrationToggle()

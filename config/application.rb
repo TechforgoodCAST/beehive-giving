@@ -42,11 +42,13 @@ module Beehive
 
     # vendor assets
     config.assets.precompile += %w(
-      overrides/chosen.css
+      chosen.css
+      overrides/chosen_overrides.css
       overrides/morris_overrides.css
     )
     config.assets.precompile += %w(
       chosen.js
+      chosen-jquery.js
       morris.js
       raphael.js
     )
