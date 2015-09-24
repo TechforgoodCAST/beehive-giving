@@ -27,7 +27,8 @@ class SignupController < ApplicationController
                           '$created': '#{@user.created_at}',
                           '$last_login': '#{@user.last_seen}',
                           'Updated At': '#{@user.updated_at}',
-                          'Sign In Count': '#{@user.sign_in_count}'
+                          'Sign In Count': '#{@user.sign_in_count}',
+                          'Job Role': '#{@user.job_role}'
                         });
                         window.location.href = '#{signup_organisation_path}';
                         $('button[type=submit]').prop('disabled', true)
@@ -66,7 +67,10 @@ class SignupController < ApplicationController
           current_user.update_attribute(:organisation_id, @organisation.id)
           render :js => "mixpanel.identify('#{current_user.id}');
                         mixpanel.people.set({
-                          'Organisation': '#{@organisation.name}'
+                          'Organisation': '#{@organisation.name}',
+                          'Country': '#{@organisation.country}',
+                          'Registered?': '#{@organisation.registered}',
+                          'Founded On': '#{@organisation.founded_on}'
                         });
                         window.location.href = '#{new_recipient_profile_path(@organisation)}';
                         $('button[type=submit]').prop('disabled', true)

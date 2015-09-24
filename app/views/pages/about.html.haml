@@ -1,5 +1,8 @@
 = stylesheet_link_tag 'pages'
-  
+
+:javascript
+  mixpanel.track("View About Page");
+
 - content_for :public do
   .tm-section-color-2
     .uk-container.uk-container-center

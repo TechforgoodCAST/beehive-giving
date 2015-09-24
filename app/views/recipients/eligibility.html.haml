@@ -1,6 +1,5 @@
 :javascript
-  mixpanel.track("Page View", {"Page Name": "New Eligibility"});
-  mixpanel.track_forms(".edit_recipient", "Create Eligibility Form");
+  mixpanel.track("View New Eligibility Page", {"Funder": "#{@funder.name}"});
 
 #bg-color{style: 'border-bottom: solid 3px #EAEAEA;'}
   .uk-container.uk-container-center

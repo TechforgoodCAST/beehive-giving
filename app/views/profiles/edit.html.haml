@@ -5,7 +5,7 @@
   = stylesheet_link_tag 'overrides/chosen_overrides'
 
 :javascript
-  mixpanel.track("Page View", {"Page Name": "Edit Profile"});
+  mixpanel.track("View Profile #{@profile.state.capitalize} Page");
 
 - if @profile.state == 'complete'
   #bg-color

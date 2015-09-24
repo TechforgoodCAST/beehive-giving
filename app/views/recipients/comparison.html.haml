@@ -2,6 +2,9 @@
 = javascript_include_tag 'raphael'
 = javascript_include_tag 'morris'
 
+:javascript
+  mixpanel.track("View Funder Comparison Page", {"Funder": "#{@funder.name}"});
+
 #bg-color
   .uk-container.uk-container-center
     .uk-grid

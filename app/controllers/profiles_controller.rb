@@ -22,7 +22,8 @@ class ProfilesController < ApplicationController
           @profile.next_step!
           render :js => "mixpanel.identify('#{current_user.id}');
                         mixpanel.people.set({
-                          'Profile State': '#{@profile.state}'
+                          'Profile State': '#{@profile.state}',
+                          'Profile Year': '#{@profile.year}'
                         });
                         window.location.href = '#{edit_recipient_profile_path(@recipient, @profile)}';
                         $('button[type=submit]').prop('disabled', true)
