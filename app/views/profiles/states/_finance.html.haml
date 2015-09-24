@@ -1,52 +1,53 @@
-- if mode == :new
-  %ul.progress-indicator
-    %li.completed
-      %span.bubble
-      Basics
-    %li.completed
-      %span.bubble
-      Target
-    %li.completed
-      %span.bubble
-      Location
-    %li.completed
-      %span.bubble
-      Team
-    %li.completed
-      %span.bubble
-      Work
-    %li.warning
-      %span.bubble
-      Finance
+= simple_form_for [@recipient, @profile], method: :patch, remote: true do |f|
+  - unless @profile.state == 'complete'
+    %ul.progress-indicator
+      %li.completed
+        %span.bubble
+        Basics
+      %li.completed
+        %span.bubble
+        Target
+      %li.completed
+        %span.bubble
+        Location
+      %li.completed
+        %span.bubble
+        Team
+      %li.completed
+        %span.bubble
+        Work
+      %li.warning
+        %span.bubble
+        Finance
 
-.uk-form.uk-form-stacked
-  .uk-width-1-1
-    .uk-alert
-      %h4.uk-margin-remove Don't have exact figures?
-      %p.uk-margin-remove Not a problem. Simply give an estimate and check 'Are these estimated figures?'.
+  .uk-form.uk-form-stacked
     .uk-width-1-1
-      %label.uk-form-label
-        Income in
-        = @profile.year || get_year
-    .uk-grid
-      .uk-width-medium-1-2
-        .uk-form-controls
-          = f.input :income, as: :currency, input_html: { class: 'numeric integer', style: 'width: 94%;', min: 0 }, placeholder: 'e.g. 1234'
-          = f.error :income, class: 'uk-text-small uk-text-warning'
-      .uk-form-controls.uk-display-block.uk-margin-small-top.boolean-padding
-        = f.input :income_actual, as: :boolean, checked_value: false, unchecked_value: true, inline_label: 'Are these estimated figures?'
-    .uk-width-1-1.uk-margin-top
-      %label.uk-form-label
-        Expenditure in
-        = @profile.year || get_year
+      .uk-alert
+        %h4.uk-margin-remove Don't have exact figures?
+        %p.uk-margin-remove Not a problem. Simply give an estimate and check 'Are these estimated figures?'.
+      .uk-width-1-1
+        %label.uk-form-label
+          Income in
+          = @profile.year || get_year
       .uk-grid
         .uk-width-medium-1-2
           .uk-form-controls
-            = f.input :expenditure, as: :currency, input_html: { class: 'numeric integer', style: 'width: 94%;', min: 0 }, placeholder: 'e.g. 2345'
-            = f.error :expenditure, class: 'uk-text-small uk-text-warning'
+            = f.input :income, as: :currency, input_html: { class: 'numeric integer', style: 'width: 94%;', min: 0 }, placeholder: 'e.g. 1234'
+            = f.error :income, class: 'uk-text-small uk-text-warning'
         .uk-form-controls.uk-display-block.uk-margin-small-top.boolean-padding
-          = f.input :expenditure_actual, as: :boolean, checked_value: false, unchecked_value: true, inline_label: 'Are these estimated figures?'
+          = f.input :income_actual, as: :boolean, checked_value: false, unchecked_value: true, inline_label: 'Are these estimated figures?'
+      .uk-width-1-1.uk-margin-top
+        %label.uk-form-label
+          Expenditure in
+          = @profile.year || get_year
+        .uk-grid
+          .uk-width-medium-1-2
+            .uk-form-controls
+              = f.input :expenditure, as: :currency, input_html: { class: 'numeric integer', style: 'width: 94%;', min: 0 }, placeholder: 'e.g. 2345'
+              = f.error :expenditure, class: 'uk-text-small uk-text-warning'
+          .uk-form-controls.uk-display-block.uk-margin-small-top.boolean-padding
+            = f.input :expenditure_actual, as: :boolean, checked_value: false, unchecked_value: true, inline_label: 'Are these estimated figures?'
 
-- unless @profile.state == 'complete'
-  .uk-modal-footer
-    = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-margin-top uk-width-1-1', style: 'color: #fff;', data: {disable_with: "<i style='color: #999;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #999;'> Next stop, recommendations!</span>"}
+  - unless @profile.state == 'complete'
+    .uk-modal-footer
+      = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-margin-top uk-width-1-1', style: 'color: #fff;', data: {disable_with: "<i style='color: #999;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #999;'> Next stop, recommendations!</span>"}

@@ -15,11 +15,27 @@ class ProfilesController < ApplicationController
 
   def create
     @profile = @recipient.profiles.new(profile_params)
-    if @profile.save
-      @profile.next_step!
-      redirect_to edit_recipient_profile_path(@recipient, @profile)
-    else
-      render :new
+
+    respond_to do |format|
+      if @profile.save
+        format.js   {
+          @profile.next_step!
+          render :js => "mixpanel.identify('#{current_user.id}');
+                        mixpanel.people.set({
+                          'Profile State': '#{@profile.state}'
+                        });
+                        window.location.href = '#{edit_recipient_profile_path(@recipient, @profile)}';
+                        $('button[type=submit]').prop('disabled', true)
+                        .removeAttr('data-disable-with');"
+        }
+        format.html {
+          @profile.next_step!
+          redirect_to edit_recipient_profile_path(@recipient, @profile)
+        }
+      else
+        format.js
+        format.html { render :new }
+      end
     end
   end
 
@@ -30,17 +46,45 @@ class ProfilesController < ApplicationController
   def edit; end
 
   def update
-    if @profile.update_attributes(profile_params)
-      @profile.next_step! unless @profile.state == 'complete'
-      if @profile.state == 'complete'
-        @recipient.refined_recommendation
-        UserMailer.notify_funder(@profile).deliver
-        redirect_to funders_path
+    respond_to do |format|
+      if @profile.update_attributes(profile_params)
+        format.js   {
+          @profile.next_step! unless @profile.state == 'complete'
+
+          if @profile.state == 'complete'
+            @recipient.refined_recommendation
+            UserMailer.notify_funder(@profile).deliver
+            render :js => "mixpanel.identify('#{current_user.id}');
+                          mixpanel.people.set({
+                            'Profile State': '#{@profile.state}'
+                          });
+                          window.location.href = '#{funders_path}';
+                          $('button[type=submit]').prop('disabled', true)
+                          .removeAttr('data-disable-with');"
+          else
+            render :js => "mixpanel.identify('#{current_user.id}');
+                          mixpanel.people.set({
+                            'Profile State': '#{@profile.state}'
+                          });
+                          window.location.href = '#{edit_recipient_profile_path(@recipient, @profile)}';
+                          $('button[type=submit]').prop('disabled', true)
+                          .removeAttr('data-disable-with');"
+          end
+        }
+        format.html {
+          @profile.next_step! unless @profile.state == 'complete'
+          if @profile.state == 'complete'
+            @recipient.refined_recommendation
+            UserMailer.notify_funder(@profile).deliver
+            redirect_to funders_path
+          else
+            redirect_to edit_recipient_profile_path(@recipient, @profile)
+          end
+        }
       else
-        redirect_to edit_recipient_profile_path(@recipient, @profile)
+        format.js
+        format.html { render :edit }
       end
-    else
-      render :edit
     end
   end
 

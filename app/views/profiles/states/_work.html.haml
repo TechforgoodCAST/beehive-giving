@@ -1,46 +1,47 @@
-- if mode == :new
-  %ul.progress-indicator
-    %li.completed
-      %span.bubble
-      Basics
-    %li.completed
-      %span.bubble
-      Target
-    %li.completed
-      %span.bubble
-      Location
-    %li.completed
-      %span.bubble
-      Team
-    %li.warning
-      %span.bubble
-      Work
-    %li
-      %span.bubble
-      Finance
+= simple_form_for [@recipient, @profile], method: :patch, remote: true do |f|
+  - unless @profile.state == 'complete'
+    %ul.progress-indicator
+      %li.completed
+        %span.bubble
+        Basics
+      %li.completed
+        %span.bubble
+        Target
+      %li.completed
+        %span.bubble
+        Location
+      %li.completed
+        %span.bubble
+        Team
+      %li.warning
+        %span.bubble
+        Work
+      %li
+        %span.bubble
+        Finance
 
-.uk-form.uk-form-stacked
-  .uk-width-1-1.uk-margin-bottom
-    %fieldset.uk-label What does you organisation provide?
-    %small.uk-text-muted Select as many as applicable
-    .uk-form-controls
-      = f.association :implementations, as: :check_boxes, label_method: :label, value_method: :id
-      = f.error :implementations, class: 'uk-text-small uk-text-warning'
-  .uk-width-medium-1-1.uk-margin-bottom
-    %label.uk-form-label Do you receive financial payment (not donations) for your work?
-    .uk-form-controls
-      = f.input :does_sell, as: :radio_buttons, input_html: { class: 'uk-width-1-1' }
-      = f.error :does_sell, class: 'uk-text-small uk-text-warning'
-  .uk-width-1-1
-    %label.uk-form-label How many beneficiaries has your work affected this year?
-    .uk-grid
-      .uk-width-medium-1-2
-        .uk-form-controls
-          = f.input :beneficiaries_count, input_html: { class: 'uk-width-1-1', style: 'width: 98%;' }
-          = f.error :beneficiaries_count, class: 'uk-text-small uk-text-warning'
-      .uk-form-controls.uk-display-block.uk-margin-small-top.boolean-padding
-        = f.input :beneficiaries_count_actual, as: :boolean, checked_value: false, unchecked_value: true, inline_label: 'Are these estimated figures?'
+  .uk-form.uk-form-stacked
+    .uk-width-1-1.uk-margin-bottom
+      %fieldset.uk-label What does your organisation provide?
+      %small.uk-text-muted Select as many as applicable
+      .uk-form-controls
+        = f.association :implementations, as: :check_boxes, label_method: :label, value_method: :id
+        = f.error :implementations, class: 'uk-text-small uk-text-warning'
+    .uk-width-medium-1-1.uk-margin-bottom
+      %label.uk-form-label Do you receive financial payment (not donations) for your work?
+      .uk-form-controls
+        = f.input :does_sell, as: :radio_buttons, input_html: { class: 'uk-width-1-1' }
+        = f.error :does_sell, class: 'uk-text-small uk-text-warning'
+    .uk-width-1-1
+      %label.uk-form-label How many beneficiaries has your work affected this year?
+      .uk-grid
+        .uk-width-medium-1-2
+          .uk-form-controls
+            = f.input :beneficiaries_count, input_html: { class: 'uk-width-1-1', style: 'width: 98%;' }
+            = f.error :beneficiaries_count, class: 'uk-text-small uk-text-warning'
+        .uk-form-controls.uk-display-block.uk-margin-small-top.boolean-padding
+          = f.input :beneficiaries_count_actual, as: :boolean, checked_value: false, unchecked_value: true, inline_label: 'Are these estimated figures?'
 
-- unless @profile.state == 'complete'
-  .uk-modal-footer
-    = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-margin-top uk-width-1-1', style: 'color: #fff;', data: {disable_with: "<i style='color: #999;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #999;'> You're getting the hang of this...</span>"}
+  - unless @profile.state == 'complete'
+    .uk-modal-footer
+      = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-margin-top uk-width-1-1', style: 'color: #fff;', data: {disable_with: "<i style='color: #999;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #999;'> You're getting the hang of this...</span>"}

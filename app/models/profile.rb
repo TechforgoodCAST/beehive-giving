@@ -37,69 +37,69 @@ class Profile < ActiveRecord::Base
   ## beneficiaries state validations
 
   validates :year, uniqueness: { scope: :organisation_id,
-            message: 'only one is allowed per year', if: 'self.beneficiaries?' }
+            message: 'only one is allowed per year', if: ('self.beneficiaries? || self.complete?') }
 
-  validates :year, inclusion: { in: VALID_YEARS }, if: 'self.beneficiaries?'
+  validates :year, inclusion: { in: VALID_YEARS }, if: ('self.beneficiaries? || self.complete?')
 
-  validates :gender, inclusion: { in: GENDERS }, if: 'self.beneficiaries?'
+  validates :gender, inclusion: { in: GENDERS }, if: ('self.beneficiaries? || self.complete?')
 
   validates :organisation, :year, :gender, :min_age, :max_age, :beneficiaries,
-            presence: true, if: 'self.beneficiaries?'
+            presence: true, if: ('self.beneficiaries? || self.complete?')
 
   validates :min_age, :max_age, numericality: { only_integer: true,
-            greater_than_or_equal_to: 0, if: 'self.beneficiaries?' }
+            greater_than_or_equal_to: 0, if: ('self.beneficiaries? || self.complete?') }
 
   validates :min_age, numericality: { less_than_or_equal_to: :max_age,
             message: 'minimum age must be less than maximum age',
             unless: Proc.new { |profile| profile.min_age.nil? || profile.max_age.nil? },
-            if: 'self.beneficiaries?' }
+            if: ('self.beneficiaries? || self.complete?') }
 
   validates :max_age, numericality: { greater_than_or_equal_to: :min_age || 0,
             message: 'maximum age must be greater than minimum age',
             unless: Proc.new { |profile| profile.min_age.nil? || profile.max_age.nil? },
-            if: 'self.beneficiaries?' }
+            if: ('self.beneficiaries? || self.complete?') }
 
   ## location state validations
 
-  validates :countries, :districts, presence: true, if: 'self.location?'
+  validates :countries, :districts, presence: true, if: ('self.location? || self.complete?')
 
   ## team state validations
 
   validates :staff_count, :volunteer_count, :trustee_count, :implementors,
-            presence: true, if: 'self.team?'
+            presence: true, if: ('self.team? || self.complete?')
 
   validates :staff_count, :volunteer_count, :trustee_count,
             numericality: { only_integer: true, greater_than_or_equal_to: 0,
-            if: 'self.team?' }
+            if: ('self.team? || self.complete?') }
 
   validates :volunteer_count, numericality: { greater_than: 0,
             message: 'must have at least one volunteer if no staff',
             unless: Proc.new { |profile| (profile.staff_count.nil? || profile.staff_count != 0) },
-            if: 'self.team?' }
+            if: ('self.team? || self.complete?') }
 
   validates :staff_count, numericality: { greater_than: 0,
             message: 'must have at least one member of staff if no volunteers',
             unless: Proc.new { |profile| (profile.volunteer_count.nil? || profile.volunteer_count != 0) },
-            if: 'self.team?' }
+            if: ('self.team? || self.complete?') }
 
   ## work state validations
 
   validates :implementations, :beneficiaries_count, presence: true,
-            if: 'self.work?'
+            if: ('self.work? || self.complete?')
 
-  validates :does_sell, inclusion: { in: [true, false] }, if: 'self.work?'
+  validates :does_sell, inclusion: { in: [true, false] }, if: ('self.work? || self.complete?')
 
   validates :beneficiaries_count,
             numericality: { only_integer: true, greater_than_or_equal_to: 0,
-            if: 'self.work?' }
+            if: ('self.work? || self.complete?') }
 
   ## finance state validations
 
-  validates :income, :expenditure, presence: true, if: 'self.finance?'
+  validates :income, :expenditure, presence: true, if: ('self.finance? || self.complete?')
 
   validates :income, :expenditure,
             numericality: { only_integer: true, greater_than_or_equal_to: 0,
-            if: 'self.finance?' }
+            if: ('self.finance? || self.complete?') }
 
   def allowed_years
     if organisation.founded_on

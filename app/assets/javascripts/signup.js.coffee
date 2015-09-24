@@ -13,7 +13,7 @@ SignupHelpers = ((w, d) ->
       return
 
   hideWelcomeMessage = ->
-    $(document).on 'click', '.js-record-welcome-close', ->
+    $(d).on 'click', '.js-record-welcome-close', ->
       $('#welcome-message').addClass('fade-out')
       $('#new-organisation-form').removeClass('uk-hidden')
       $('#new-organisation-form').addClass('fade-in')
@@ -36,7 +36,7 @@ SignupHelpers = ((w, d) ->
     elem     = $(selector)
     return unless elem.length > 0
     triggerRegisteredToggle(elem.val())
-    $(document).on 'change', selector, ->
+    $(d).on 'change', selector, ->
       triggerRegisteredToggle(elem.val())
 
   return {

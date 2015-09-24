@@ -19,10 +19,7 @@
 
 #new-profile-modal.uk-modal
   .uk-modal-dialog
-    = simple_form_for [@recipient, @profile], method: :post do |f|
-      = f.hidden_field :year, value: Date.today.year.to_s
-      = f.error :year, class: 'uk-text-small uk-text-warning'
-      = render partial: "profiles/states/#{@profile.state}", locals: { f: f, mode: :new }
+    = render partial: "profiles/states/#{@profile.state}"
   = render 'snippets/need_help'
 
 :javascript

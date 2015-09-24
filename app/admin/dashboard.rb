@@ -74,7 +74,7 @@ ActiveAdmin.register_page "Dashboard" do
     end
 
     def profile_count
-      Profile.select(:organisation_id).group_by_week(:created_at, week_start: :mon, last: 4).count
+      Profile.where(state: 'complete').select(:organisation_id).group_by_week(:created_at, week_start: :mon, last: 4).count
     end
 
     def unlock_count
