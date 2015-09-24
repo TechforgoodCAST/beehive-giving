@@ -123,7 +123,6 @@ $mobile-size: 400px
     margin: 0 auto 0.5em auto
     // border-bottom: $border-thickness solid darken($inactive, 20%)
   // line connectors
-  > li .bubble:before,
   > li .bubble:after
     display: block
     position: absolute
@@ -132,6 +131,7 @@ $mobile-size: 400px
     height: $bubble-line-thickness
     content: ''
     background-color: $inactive
+    z-index: -1
   > li .bubble:before
     left: 0
   > li .bubble:after
@@ -141,6 +141,12 @@ $mobile-size: 400px
     color: $active
     .bubble
       +bubble-style($active)
+      &:before
+        content: '\2714'
+        color: white
+        font-size: 12px
+        font-size-adjust: .8
+        background: none
   // button states
   > li a:hover .bubble
     +bubble-style($hover)
