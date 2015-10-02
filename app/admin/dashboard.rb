@@ -66,23 +66,25 @@ ActiveAdmin.register_page "Dashboard" do
     end
 
     def user_count
-      User.where(role: 'User').group_by_week(:created_at, week_start: :mon, last: 4, format: 'w/o %d %b').count
+      User.where(role: 'User').group_by_week(:created_at, week_start: :mon, last: 12, format: 'w/o %d %b').count
     end
 
     def recipient_count
-      Recipient.joins(:users).group_by_week('users.created_at', week_start: :mon, last: 4).count
+      Recipient.joins(:users).group_by_week('users.created_at', week_start: :mon, last: 12).count
     end
 
     def profile_count
-      Profile.where(state: 'complete').select(:organisation_id).group_by_week(:created_at, week_start: :mon, last: 4).count
+      Profile.where(state: 'complete').select(:organisation_id).group_by_week(:created_at, week_start: :mon, last: 12).count
     end
 
-    def unlock_count
-      RecipientFunderAccess.select(:recipient_id).distinct.group_by_week(:created_at, week_start: :mon, last: 4).count
+    def unlock_count(count)
+      # RecipientFunderAccess.select(:recipient_id).distinct.group_by_week(:created_at, week_start: :mon, last: 12).count
+
+      Recipient.joins(:users).where('recipient_funder_accesses_count = ?', count).group_by_week('users.created_at', week_start: :mon, last: 12).count
     end
 
     def eligibility_count
-      Eligibility.select(:recipient_id).distinct.group_by_week(:created_at, week_start: :mon, last: 4).count
+      Eligibility.select(:recipient_id).distinct.group_by_week(:created_at, week_start: :mon, last: 12).count
     end
 
     def percentage(count, i)
@@ -115,8 +117,20 @@ ActiveAdmin.register_page "Dashboard" do
             end
           end
           tr do
-            td 'Funder unlocks'
-            unlock_count.each_with_index do |count, i|
+            td '1 Funder unlock'
+            unlock_count(1).each_with_index do |count, i|
+              td percentage(count, i) if count[1] > 0
+            end
+          end
+          tr do
+            td '2 Funder unlocks'
+            unlock_count(2).each_with_index do |count, i|
+              td percentage(count, i) if count[1] > 0
+            end
+          end
+          tr do
+            td '3 Funder unlocks'
+            unlock_count(3).each_with_index do |count, i|
               td percentage(count, i) if count[1] > 0
             end
           end
