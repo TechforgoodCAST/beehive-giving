@@ -21,6 +21,7 @@ ActiveAdmin.register Recipient do
   filter :registered
   filter :founded_on
   filter :created_at
+  filter :recipient_funder_accesses_count, label: 'Unlocks'
 
   index do
     selectable_column
@@ -28,11 +29,15 @@ ActiveAdmin.register Recipient do
       link_to recipient.name, [:admin, recipient]
     end
     column :website
-    column :contact_number
     column :country
     column ("Users"){|f| f.users.count }
     column ("Profiles"){|f| f.profiles.count }
-    column ("Unlocks"){|f| RecipientFunderAccess.where(recipient_id: f.id).count }
+    column ("Unlocks"), :recipient_funder_accesses_count
+    column ("Unlocked Funders") do |r|
+      r.recipient_funder_accesses.each do |f|
+        li "#{Funder.find(f.funder_id).name} (#{Recipient.find(f.recipient_id).created_at.strftime("%d-%b")}) / (#{f.created_at.strftime("%d-%b")})"
+      end
+    end
     column ("Grants"){|f| f.grants.count }
     column ("Requests"){|f| f.features.count }
   end
