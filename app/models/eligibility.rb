@@ -3,8 +3,6 @@ class Eligibility < ActiveRecord::Base
   belongs_to :recipient
   belongs_to :restriction
 
-  belongs_to :recipient, :counter_cache => true
-
   validates :eligible, presence: true, unless: Proc.new { |eligibility| eligibility.eligible == false }
   validates :recipient_id, :restriction_id, presence: true
   validates :eligible, inclusion: {:in => [true, false], :message => 'please select from the list'}

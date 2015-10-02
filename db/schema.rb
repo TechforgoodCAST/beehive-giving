@@ -393,7 +393,6 @@ ActiveRecord::Schema.define(version: 20150928120756) do
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
     t.integer  "recipient_funder_accesses_count"
-    t.integer  "eligibilities_count"
   end
 
   add_index "organisations", ["id", "type"], name: "index_organisations_on_id_and_type", using: :btree

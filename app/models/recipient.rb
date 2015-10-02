@@ -3,11 +3,10 @@ class Recipient < Organisation
   has_many :grants
   has_many :features, dependent: :destroy
   has_many :enquiries, dependent: :destroy
-  has_many :eligibilities, dependent: :destroy
-  has_many :restrictions, :through => :eligibilities
-  accepts_nested_attributes_for :eligibilities
-
   has_many :recipient_funder_accesses
+  has_many :restrictions, :through => :eligibilities
+  has_many :eligibilities, dependent: :destroy
+  accepts_nested_attributes_for :eligibilities
 
   has_one :recipient_attribute
   alias_method :attribute, :recipient_attribute

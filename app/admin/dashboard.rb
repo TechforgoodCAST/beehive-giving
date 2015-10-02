@@ -66,25 +66,19 @@ ActiveAdmin.register_page "Dashboard" do
     end
 
     def user_count
-      User.where(role: 'User').group_by_week(:created_at, week_start: :mon, last: 12, format: 'w/o %d %b').count
+      User.where(role: 'User').group_by_week(:created_at, week_start: :mon, last: 6, format: 'w/o %d %b').count
     end
 
     def recipient_count
-      Recipient.joins(:users).group_by_week('users.created_at', week_start: :mon, last: 12).count
+      Recipient.joins(:users).group_by_week('users.created_at', week_start: :mon, last: 6).count
     end
 
     def profile_count
-      Profile.where(state: 'complete').select(:organisation_id).group_by_week(:created_at, week_start: :mon, last: 12).count
+      Profile.where(state: 'complete').select(:organisation_id).group_by_week(:created_at, week_start: :mon, last: 6).count
     end
 
     def unlock_count(count)
-      # RecipientFunderAccess.select(:recipient_id).distinct.group_by_week(:created_at, week_start: :mon, last: 12).count
-
-      Recipient.joins(:users).where('recipient_funder_accesses_count = ?', count).group_by_week('users.created_at', week_start: :mon, last: 12).count
-    end
-
-    def eligibility_count
-      Eligibility.select(:recipient_id).distinct.group_by_week(:created_at, week_start: :mon, last: 12).count
+      Recipient.joins(:recipient_funder_accesses).where('recipient_funder_accesses_count = ?', count).uniq.group_by_week('recipient_funder_accesses.created_at', week_start: :mon, last: 6).count
     end
 
     def percentage(count, i)
@@ -134,23 +128,17 @@ ActiveAdmin.register_page "Dashboard" do
               td percentage(count, i) if count[1] > 0
             end
           end
-          tr do
-            td 'Eligibility checks'
-            eligibility_count.each_with_index do |count, i|
-              td percentage(count, i) if count[1] > 0
-            end
-          end
         end
       end
     end
 
-    div style: "float:left; width: 50%; padding: 0 20px; box-sizing: border-box;" do
+    div style: "float:left; width: 50%;" do
       section "Activity by day (2 weeks)" do
         render :partial => 'metrics/daily_chart', :locals => {:metric => @metric}
       end
     end
 
-    div style: "float:left; width: 50%; padding: 0 20px; box-sizing: border-box;" do
+    div style: "float:left; width: 50%;" do
       section "Activity by week (12 weeks)" do
         render :partial => 'metrics/weekly_chart', :locals => {:metric => @metric}
       end
