@@ -31,7 +31,6 @@ class RecipientGatewayTest < ActionDispatch::IntegrationTest
 
     # Second unlock
     visit recipient_comparison_path(@funders[1])
-    puts page.body
     click_link("Check eligibility (#{Recipient::MAX_FREE_LIMIT - 1} left)")
     assert_equal recipient_eligibility_path(@funders[1]), current_path
 

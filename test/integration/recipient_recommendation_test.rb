@@ -21,7 +21,6 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
     @recipient.refined_recommendation
     visit funders_path
     Capybara.match = :first
-    puts page.body
     click_link("#locked_funder")
     assert_equal recipient_comparison_path(@funders[2]), current_path
   end
