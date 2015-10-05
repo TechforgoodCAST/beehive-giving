@@ -22,8 +22,10 @@
 .yellow, .yellow:hover
   color: $yellow
 
-.blue, .blue:hover
+.blue
   color: $blue
+.blue:hover
+  color: $blue-hover
 
 .upcase
   text-transform: uppercase
@@ -37,6 +39,13 @@
   -webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.15)
   -moz-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.15)
   box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.15)
+  &:hover
+    .uk-button
+      background: $button-base-hover
+    .uk-button-primary
+      background: $blue-hover
+    .uk-button-danger
+      background: $red-hover
 
 // refactor
 .bounce
