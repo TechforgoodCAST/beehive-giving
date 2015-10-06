@@ -52,17 +52,15 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
 
     # First funder unlock
     @recipient.unlock_funder!(@funders[0])
-    visit recipient_comparison_path(@funders[0])
-    assert_equal recipient_comparison_path(@funders[0]), current_path
 
     # Second funder unlock
     @recipient.unlock_funder!(@funders[1])
-    visit recipient_comparison_path(@funders[1])
-    assert_equal recipient_comparison_path(@funders[1]), current_path
 
     # Visiting third funders pages redirects if no feedback
-    visit recipient_comparison_path(@funders[2])
-    click_link('Check eligibility (1 left)')
+    visit recipient_eligibility_path(@funders[2])
+    select('No', :from => 'recipient_eligibilities_attributes_0_eligible')
+    select('No', :from => 'recipient_eligibilities_attributes_1_eligible')
+    click_button('Check eligibility (1 left)')
     assert_equal new_feedback_path, current_path
 
     # completing feedback form redirects to funder
@@ -75,7 +73,7 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
       select(Feedback::MARKETING_FREQUENCY.sample, :from => "feedback_marketing_frequency")
     end
     click_button("Submit feedback")
-    assert_equal recipient_eligibility_path(@funders[2]), current_path
+    assert_equal recipient_comparison_path(@funders[2]), current_path
 
     # Feedback only required for second unlock
     visit recipient_comparison_path(@funders[3])

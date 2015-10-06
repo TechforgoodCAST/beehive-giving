@@ -20,24 +20,38 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     assert_equal all(".funder").length, 3
   end
 
-  test 'recipients only needs to create one profile to unlock funders' do
-    # refactor - method?
+  def setup_funders
     @funders = Array.new(3) { |i| create(:funder, :active_on_beehive => true) }
     @grants = Array.new(3) { |i| create(:grants, :funder => @funders[i], :recipient => @recipient) }
     @attributes = Array.new(3) { |i| create(:funder_attribute, :funder => @funders[i]) }
     @restrictions = Array.new(3) { |i| create(:restriction) }
     @funding_streams = Array.new(3) { |i| create(:funding_stream, :restrictions => @restrictions, :funders => [@funders[i]]) }
+  end
 
+  test 'Must have profile for current year to check eligibility' do
+    setup_funders
+    create(:profile, :organisation => @recipient, :year => Date.today.year-1 )
+    create_and_auth_user!(:organisation => @recipient)
+    visit recipient_comparison_path(@funders[0])
+    assert page.has_content?('Before you continue')
+  end
+
+  test 'recipients only needs to create one profile for current year to unlock funders' do
+    setup_funders
     create(:profile, :organisation => @recipient, :year => Date.today.year )
     create_and_auth_user!(:organisation => @recipient)
 
-    visit recipient_comparison_path(@funders[0])
-    assert page.has_link?('Check eligibility (3 left)')
-    find_link('Check eligibility (3 left)').click
+    visit recipient_eligibility_path(@funders[0])
+    assert page.has_content?('Check eligibility (3 left)')
+    select('No', :from => 'recipient_eligibilities_attributes_0_eligible')
+    select('No', :from => 'recipient_eligibilities_attributes_1_eligible')
+    select('No', :from => 'recipient_eligibilities_attributes_2_eligible')
+    click_button('Check eligibility (3 left)')
+    assert page.has_content?("You're eligible for one")
 
-    visit recipient_comparison_path(@funders[1])
-    assert page.has_link?('Check eligibility (2 left)')
-    find_link('Check eligibility (2 left)').click
+    @funding_streams[1].restrictions << create(:restriction)
+    visit recipient_eligibility_path(@funders[1])
+    assert page.has_content?('Check eligibility (2 left)')
   end
 
   test 'recipient can only unlock 3 funders without subscribing' do

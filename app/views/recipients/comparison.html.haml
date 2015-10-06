@@ -20,7 +20,7 @@
       - elsif @recipient.locked_funder?(@funder) && @recipient.unlocked_funders.count < Recipient::MAX_FREE_LIMIT
         .cta
           Like what you see? Let's see if you're eligible.
-          = link_to "Check eligibility (#{(Recipient::MAX_FREE_LIMIT - @recipient.unlocked_funders.count)} left)", recipient_unlock_funder_path(@funder), method: :post, class: 'uk-button uk-button-large uk-button-primary check-eligibility'
+          = link_to "Check eligibility", recipient_eligibility_path(@funder), class: 'uk-button uk-button-large uk-button-primary'
       - elsif !@recipient.locked_funder?(@funder)
         .cta
           Like what you see? Let's see if you're eligible.

@@ -31,16 +31,15 @@ Rails.application.routes.draw do
   match '/new-funder', to: 'signup#funder', via: :get, as: 'new_funder'
   match '/new-funder', to: 'signup#create_funder', via: :post
 
-  # RecipientDashboard
-  match '/comparison/(:id)/unlock_funder', to: 'recipients#unlock_funder', via: [:get, :post], as: 'recipient_unlock_funder'
+  # Recipients
   match '/comparison/(:id)', to: 'recipients#comparison', via: :get, as: 'recipient_comparison'
   match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
   # match '/(:id)/edit', to: 'recipients#edit', via: :get, as: 'recipient_edit'
   # match '/(:id)/edit', to: 'recipients#edit', via: :patch
 
-  # Eligibility
-  match '/eligibility/(:funder_id)', to: 'recipients#eligibility', via: :get, as: 'recipient_eligibility'
-  match '/eligibility/(:funder_id)', to: 'recipients#update_eligibility', via: :patch
+  # Eligibilities
+  match '/eligibility/(:id)', to: 'recipients#eligibility', via: :get, as: 'recipient_eligibility'
+  match '/eligibility/(:id)', to: 'recipients#update_eligibility', via: :patch
   match '/(:id)/eligibility', to: 'recipients#eligibilities', via: :get, as: 'recipient_eligibilities'
   match '/(:id)/eligibility', to: 'recipients#update_eligibilities', via: :patch
 
