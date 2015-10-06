@@ -21,6 +21,8 @@
 
 .yellow, .yellow:hover
   color: $yellow
+  &.background
+    background: $yellow
 
 .blue
   color: $blue
@@ -150,6 +152,12 @@ input::-webkit-inner-spin-button
   background: #F7BA0E
   color: #fff
   font-size: 1.1em
+  &.primary
+    background: $blue
+  &.success
+    background: $green
+  &.danger
+    background: $red
 .cta-hover
   &:hover
     background: #FFC728
