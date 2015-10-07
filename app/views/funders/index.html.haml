@@ -1,5 +1,9 @@
 :javascript
   mixpanel.track("View Funders Index Page");
+  mixpanel.identify('#{current_user.id}');
+  mixpanel.people.set({
+    'Funder Unlocks': '#{@recipient.recipient_funder_accesses_count}'
+  });
 
 :javascript
   var google_conversion_id = 958190855;
