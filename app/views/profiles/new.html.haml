@@ -1,5 +1,9 @@
 :javascript
   mixpanel.track("View Profile #{@profile.state.capitalize} Page");
+  mixpanel.identify('#{current_user.id}');
+  mixpanel.people.set({
+    'Profile State': '#{@profile.state}'
+  });
 
 :javascript
   var google_conversion_id = 958190855;
