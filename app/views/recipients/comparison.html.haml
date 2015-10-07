@@ -4,6 +4,10 @@
 
 :javascript
   mixpanel.track("View Funder Comparison Page", {"Funder": "#{@funder.name}"});
+  mixpanel.identify('#{current_user.id}');
+  mixpanel.people.set({
+    'Funder Unlocks': '#{@recipient.recipient_funder_accesses_count}'
+  });
 
 #bg-color
   .uk-container.uk-container-center
