@@ -24,6 +24,7 @@ module Beehive
 
     # controller assets
     config.assets.precompile += %w(
+      sessions.css
       pages.css
       signup.css
       organisations.css
@@ -32,6 +33,7 @@ module Beehive
       recipients.css
     )
     config.assets.precompile += %w(
+      sessions.js
       pages.js
       signup.js
       organisations.js

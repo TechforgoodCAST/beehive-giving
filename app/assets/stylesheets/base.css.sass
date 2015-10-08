@@ -9,12 +9,37 @@
   src: font-url("redacted-script-bold.eot")
   src: font-url("redacted-script-bold.woff2") format("woff2"), font-url("redacted-script-bold.woff") format("woff"), font-url("redacted-script-bold.otf") format("opentype"), font-url("redacted-script-bold.svg#filename") format("svg")
 
+/* Layout
+ ========================================================================== */
+
+html, body
+  min-height: 100% !important
+  height: 100%
+
+.full-height
+  min-height: 340px
+  height: calc(100% - 42px)
+  width: 100%
+  display: table
+  &.max
+    height: 100%
+  .full-height-content
+    display: table-cell
+    vertical-align: middle
 
 /* Utility
  ========================================================================== */
 
-#bg-color
-  background-color: $background-color
+.base
+  &.background
+    background-color: $background-base
+
+.dark
+  &.background
+    background-color: $background-dark
+
+.background-image
+  +background-image
 
 .white, .white:hover
   color: $white
@@ -136,8 +161,16 @@
  ========================================================================== */
 
 .field_with_errors
-  border: 1px #e28327 solid
-  border-radius: 4px
+  .string, .numeric, select, .checkbox label, .radio label, .chosen-container .chosen-single, .chosen-container .chosen-choices, .password
+    border: 1px #e28327 solid !important
+    background: #fff7f8 !important
+    color: #d85030 !important
+  .chosen-with-drop .chosen-drop
+    background: #fff7f8 !important
+    color: #d85030 !important
+    border-right: 1px solid #e28327 !important
+    border-bottom: 1px solid #e28327 !important
+    border-left: 1px solid #e28327 !important
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button

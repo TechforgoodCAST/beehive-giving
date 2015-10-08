@@ -8,6 +8,8 @@ class Recipient < Organisation
   has_many :eligibilities, dependent: :destroy
   accepts_nested_attributes_for :eligibilities
 
+  has_many :recipient_funder_accesses
+
   has_one :recipient_attribute
   alias_method :attribute, :recipient_attribute
 
