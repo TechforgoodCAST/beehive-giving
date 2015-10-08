@@ -9,22 +9,22 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
 
   test "recipient with no feedback can see link" do
     create_and_auth_user!(:organisation => @recipient)
-    visit "/funders"
+    visit funders_path
     assert page.has_content?("Feedback", count: 2)
   end
 
   test "no feedback button on new feedback action" do
     create_and_auth_user!(:organisation => @recipient)
-    visit '/funders'
+    visit funders_path
     assert page.has_content?("Feedback", count: 2)
-    visit '/feedback/new'
+    visit new_feedback_path
     assert_not page.has_content?("Feedback", count: 2)
   end
 
   test "recipient with feedback cannot see link" do
     create_and_auth_user!(:organisation => @recipient)
     create(:feedback, user: @recipient.users.first)
-    visit "/funders"
+    visit funders_path
     assert page.has_content?("Feedback", count: 0)
   end
 
@@ -46,7 +46,7 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
       @funding_streams << @funding_stream
     end
 
-    @profiles = 3.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i) }
+    @profiles = create(:profile, :organisation => @recipient, :year => Date.today.year)
 
     create_and_auth_user!(:organisation => @recipient)
 
@@ -58,12 +58,14 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
 
     # Visiting third funders pages redirects if no feedback
     visit recipient_eligibility_path(@funders[2])
-    select('No', :from => 'recipient_eligibilities_attributes_0_eligible')
-    select('No', :from => 'recipient_eligibilities_attributes_1_eligible')
-    click_button('Check eligibility (1 left)')
+    assert_equal new_feedback_path, current_path
+
+    # Visiting fourth funders pages redirects if no feedback
+    visit recipient_eligibility_path(@funders[3])
     assert_equal new_feedback_path, current_path
 
     # completing feedback form redirects to funder
+    visit recipient_eligibility_path(@funders[2])
     within("#new_feedback") do
       select("10 - Extremely likely", :from => "feedback_nps")
       select("10 - Very dissatisfied", :from => "feedback_taken_away")
@@ -73,7 +75,7 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
       select(Feedback::MARKETING_FREQUENCY.sample, :from => "feedback_marketing_frequency")
     end
     click_button("Submit feedback")
-    assert_equal recipient_comparison_path(@funders[2]), current_path
+    assert_equal recipient_eligibility_path(@funders[2]), current_path
 
     # Feedback only required for second unlock
     visit recipient_comparison_path(@funders[3])

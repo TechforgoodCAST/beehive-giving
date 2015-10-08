@@ -18,7 +18,6 @@ class FeedbackController < ApplicationController
       format.html {
         if @feedback.save
           flash[:notice] = "You're a star! Thanks for the feedback."
-          @recipient.unlock_funder!(@funder) if @recipient.locked_funder?(@funder)
           redirect_to recipient_eligibility_path(Funder.find_by_slug(@redirect_to_funder))
         else
           render :new

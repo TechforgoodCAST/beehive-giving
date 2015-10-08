@@ -49,7 +49,9 @@ class RecipientsController < ApplicationController
   def eligibility
     @restrictions = @funder.restrictions.order(:id).uniq
 
-    if @recipient.questions_remaining?(@funder)
+    if current_user.feedbacks.count < 1 && @recipient.unlocked_funders.count == 2
+      redirect_to new_feedback_path(:redirect_to_funder => @funder)
+    elsif @recipient.questions_remaining?(@funder)
       @eligibility =  1.times { @restrictions.each { |r| @recipient.eligibilities.new(restriction_id: r.id) unless @recipient.eligibilities.where('restriction_id = ?', r.id).count > 0 } }
     elsif @recipient.eligible?(@funder)
       redirect_to recipient_comparison_path(@funder)
@@ -63,19 +65,15 @@ class RecipientsController < ApplicationController
     @restrictions = @funder.restrictions
 
     if @recipient.update_attributes(eligibility_params)
-      if current_user.feedbacks.count < 1 && @recipient.unlocked_funders.count == 2
-        redirect_to new_feedback_path(:redirect_to_funder => @funder)
+      @recipient.unlock_funder!(@funder) if @recipient.locked_funder?(@funder)
+      if @recipient.eligible?(@funder)
+        FunderMailer.eligible_email(@recipient, @funder).deliver
+        flash[:notice] = "You're eligible"
+        redirect_to recipient_comparison_path(@funder)
       else
-        @recipient.unlock_funder!(@funder) if @recipient.locked_funder?(@funder)
-        if @recipient.eligible?(@funder)
-          FunderMailer.eligible_email(@recipient, @funder).deliver
-          flash[:notice] = "You're eligible"
-          redirect_to recipient_comparison_path(@funder)
-        else
-          FunderMailer.not_eligible_email(@recipient, @funder).deliver
-          flash[:alert] = "Sorry you're ineligible"
-          redirect_to recipient_comparison_path(@funder)
-        end
+        FunderMailer.not_eligible_email(@recipient, @funder).deliver
+        flash[:alert] = "Sorry you're ineligible"
+        redirect_to recipient_comparison_path(@funder)
       end
     else
       render :eligibility
