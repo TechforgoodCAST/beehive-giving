@@ -1,6 +1,7 @@
 class SessionsController < ApplicationController
 
   def new
+    redirect_to start_path_for_user(User.find_by_auth_token(cookies[:auth_token])) if cookies[:auth_token]
   end
 
   def check
@@ -23,7 +24,8 @@ class SessionsController < ApplicationController
       end
       redirect_to start_path_for_user(user), notice: 'Signed in!'
     else
-      redirect_to root_path, alert: 'Incorrect email or password, please try again'
+      flash[:error] = 'Incorrect email/password combination, please try again.'
+      redirect_to sign_in_path
     end
   end
 
