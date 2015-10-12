@@ -1,12 +1,6 @@
 class SignupController < ApplicationController
-<<<<<<< HEAD
-  
   before_filter :ensure_logged_in, except: [:user, :create_user, :unauthorised, :grant_access, :granted_access]
-=======
-
-  before_filter :ensure_logged_in, except: [:user, :create_user]
->>>>>>> 37b2085cbf298d6d678a51c5c3a0839ea7d4855f
-
+  
   def user
     if logged_in?
       redirect_to root_path
