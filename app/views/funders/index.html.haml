@@ -2,8 +2,15 @@
   mixpanel.track("View Funders Index Page");
   mixpanel.identify('#{current_user.id}');
   mixpanel.people.set({
-    'Funder Unlocks': '#{@recipient.recipient_funder_accesses_count}'
+    'Funder Unlocks': '#{@recipient.recipient_funder_accesses_count}',
   });
+
+- if @recipient.recipient_funder_accesses.any?
+  :javascript
+    mixpanel.people.set({
+      'Last Unlocked Funder': '#{Funder.find(@recipient.recipient_funder_accesses.last.funder_id).name}',
+      'Last Funder Eligibility': '#{@recipient.eligible?(Funder.find(@recipient.recipient_funder_accesses.last.funder_id))}'
+    });
 
 :javascript
   var google_conversion_id = 958190855;

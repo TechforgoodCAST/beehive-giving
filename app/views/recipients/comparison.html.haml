@@ -9,6 +9,13 @@
     'Funder Unlocks': '#{@recipient.recipient_funder_accesses_count}'
   });
 
+- if @recipient.recipient_funder_accesses.any?
+  :javascript
+    mixpanel.people.set({
+      'Last Unlocked Funder': '#{Funder.find(@recipient.recipient_funder_accesses.last.funder_id).name}',
+      'Last Funder Eligibility': '#{@recipient.eligible?(Funder.find(@recipient.recipient_funder_accesses.last.funder_id))}'
+    });
+
 .base.background
   .uk-container.uk-container-center
     .uk-grid
