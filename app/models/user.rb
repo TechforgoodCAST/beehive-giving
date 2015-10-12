@@ -39,6 +39,13 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
+  def lock_access(organisation_id)
+    update_attribute(:authorised, false)
+    update_attribute(:organisation_id, organisation_id)
+    organisation = Organisation.find(organisation_id)
+    organisation.send_authorisation_email(self.id)
+  end
+
   def send_password_reset
     generate_token(:password_reset_token)
     self.password_reset_sent_at = Time.zone.now

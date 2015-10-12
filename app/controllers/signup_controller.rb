@@ -73,9 +73,10 @@ class SignupController < ApplicationController
           organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
                           (Organisation.find_by_company_nuber(company_number) if company_number)
 
-          current_user.update_attribute(:authorised, false) 
-          current_user.update_attribute(:organisation_id, organisation.id)
-          organisation.send_authorisation_email(current_user.id)
+          current_user.lock_access(organisation.id)
+          # current_user.update_attribute(:authorised, false) 
+          # current_user.update_attribute(:organisation_id, organisation.id)
+          # organisation.send_authorisation_email(current_user.id)
           render :js => "window.location = '#{unauthorised_path}';"
         }
         format.html {
@@ -84,9 +85,10 @@ class SignupController < ApplicationController
           organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
                           (Organisation.find_by_company_nuber(company_number) if company_number)
 
-          current_user.update_attribute(:authorised, false) 
-          current_user.update_attribute(:organisation_id, organisation.id)
-          organisation.send_authorisation_email(current_user.id)
+          current_user.lock_access(organisation.id)
+          # current_user.update_attribute(:authorised, false) 
+          # current_user.update_attribute(:organisation_id, organisation.id)
+          # organisation.send_authorisation_email(current_user.id)
 
           redirect_to unauthorised_path
         }
@@ -112,13 +114,13 @@ class SignupController < ApplicationController
   end
 
   def grant_access
-    @user = User.find_by_auth_token(params[:auth_token])
-    @user.update_attribute(:authorised, true)
-    redirect_to granted_access_path(@user.id)
+    user = User.find_by_auth_token(params[:auth_token])
+    user.update_attribute(:authorised, true)
+    redirect_to granted_access_path(:name=>user.first_name)
   end
 
   def granted_access
-    @user = User.find(params[:id])
+    @name = params[:name]
   end
 
   def unauthorised
