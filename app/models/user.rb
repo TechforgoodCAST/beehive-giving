@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
 
   has_secure_password
 
-  def lock_access(organisation_id)
+  def lock_access_to_organisation(organisation_id)
     update_attribute(:authorised, false)
     update_attribute(:organisation_id, organisation_id)
     organisation = Organisation.find(organisation_id)

@@ -73,10 +73,8 @@ class SignupController < ApplicationController
           organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
                           (Organisation.find_by_company_nuber(company_number) if company_number)
 
-          current_user.lock_access(organisation.id)
-          # current_user.update_attribute(:authorised, false) 
-          # current_user.update_attribute(:organisation_id, organisation.id)
-          # organisation.send_authorisation_email(current_user.id)
+          current_user.lock_access_to_organisation(organisation.id)
+
           render :js => "window.location = '#{unauthorised_path}';"
         }
         format.html {
@@ -85,10 +83,7 @@ class SignupController < ApplicationController
           organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
                           (Organisation.find_by_company_nuber(company_number) if company_number)
 
-          current_user.lock_access(organisation.id)
-          # current_user.update_attribute(:authorised, false) 
-          # current_user.update_attribute(:organisation_id, organisation.id)
-          # organisation.send_authorisation_email(current_user.id)
+          current_user.lock_access_to_organisation(organisation.id)
 
           redirect_to unauthorised_path
         }
