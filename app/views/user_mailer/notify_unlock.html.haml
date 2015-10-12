@@ -16,20 +16,28 @@
                             %tr
                               %td.mcnTextContent{:style => "padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #000000;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;", :valign => "top"}
                                 %h1{:style => "margin: 0 0 12px -2px;padding: 0;display: block;font-family: Helvetica;font-size: 35px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: -1px;text-align: left;color: #000000 !important;"}
-                                  Grant access to your organisation.
+                                  You have been granted access to your organisation, #{@user.organisation.name}.
 
                                 %h3{:style => "margin: 0 0 0 -1px;padding: 0;display: block;font-family: Helvetica;font-size: 18px;font-style: normal;font-weight: bold;line-height: 125%;letter-spacing: -.5px;text-align: left;color: #000000 !important;"}
-                                  #{@user.full_name} (#{@user.user_email}) has requested access to the record of your organisation, #{@organisation.name}.
+                                  You may now:
 
-                                %p{:style => "margin: 1em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #000000;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;"}
+                                %ol
+                                  %li Register your organisation.
+                                  %li Complete your unique profile.
+                                  %li See how you compare to previously funded organisations.
 
-                                = link_to "Click to grant access", grant_access_url(@user.unlock_token), method: :patch, style: "background-color:#01a8e5; border: none; display:inline-block; cursor:pointer; padding:12px 18px; width: 100%; color:#ffffff; font-family:arial; font-size:17px; text-decoration:none; text-align:center;"
+                                = link_to 'Go to Beehive!', 'http://www.beehivegiving.org/sign-in?utm_source=Mailer&utm_medium=Email', style: "background-color:#01a8e5; border: none; display:inline-block; cursor:pointer; padding:12px 18px; width: 100%; color:#ffffff; font-family:arial; font-size:17px; text-decoration:none; text-align:center;", target: '_blank'
 
+                                / %p{:style => "margin: 1em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #000000;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;"}
+                                /   Or drop us a line at
+                                /   %a.mc-template-link{:href => "mailto:support@beehivegiving.org", :style => "word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #f7ba0e;font-weight: normal;text-decoration: underline;"}
+                                /     support@beehivegiving.org
+                                /   and we'll help you get started. And if your curious you can find out more about the
+                                /   %a.mc-template-link{:href => "http://www.beehivegiving.org/about?utm_source=Mailer&utm_medium=Email&utm_campaign=Welcome", :target => "_blank", :style => "word-wrap: break-word;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #f7ba0e;font-weight: normal;text-decoration: underline;"}
+                                /     origins of Beehive.
 
-                                %p{:style => "margin: 1em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #000000;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;"}
-
-                                  By clicking this button, you will be granting this user access to view and edit your organisation's record on Beehive. If this user is not part of your organisation, just ignore this email. 
-
+                                / %p{:style => "margin: 1em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #000000;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;"}
+                                /   Suraj
 
                                 %p{:style => "margin: 1em 0;padding: 0;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #000000;font-family: Helvetica;font-size: 15px;line-height: 150%;text-align: left;"}
                                   P.S. Beehive is currently in active development, and we'd love your feedback and comments. Just reply to this email with your thoughts.

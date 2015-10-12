@@ -40,10 +40,17 @@ class User < ActiveRecord::Base
   has_secure_password
 
   def lock_access_to_organisation(organisation_id)
+    generate_token(:unlock_token)
+    save!
     update_attribute(:authorised, false)
     update_attribute(:organisation_id, organisation_id)
     organisation = Organisation.find(organisation_id)
     organisation.send_authorisation_email(self.id)
+  end
+
+  def unlock
+    update_attribute(:authorised, true)
+    UserMailer.notify_unlock(self).deliver
   end
 
   def send_password_reset

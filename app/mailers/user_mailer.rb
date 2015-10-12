@@ -21,4 +21,8 @@ class UserMailer < ApplicationMailer
     mail(to: @recipient.user_email, subject: "#{@user.first_name} has requested access to your organisation's record.")
   end
 
+  def notify_unlock(user)
+    @user = user
+    mail(to: @user.user_email, subject: 'You have been granted access to your organisation')
+  end
 end

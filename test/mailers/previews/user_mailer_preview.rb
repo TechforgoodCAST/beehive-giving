@@ -15,4 +15,8 @@ class UserMailerPreview < ActionMailer::Preview
   def authorise
     UserMailer.request_access(User.first, Organisation.first, User.last)
   end
+
+  def unlock
+    UserMailer.notify_unlock(User.first)
+  end
 end

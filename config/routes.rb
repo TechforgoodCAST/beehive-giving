@@ -33,8 +33,8 @@ Rails.application.routes.draw do
 
   # User authorisation for organisational access
   match '/unauthorised', to: 'signup#unauthorised', via: :get, as: 'unauthorised'
-  match '/grant_access/(:auth_token)', to: 'signup#grant_access', via: :get, as: 'grant_access'
-  match '/granted_access/(:id)', to: 'signup#granted_access', via: :get, as: 'granted_access'
+  match '/grant_access/(:unlock_token)', to: 'signup#grant_access', via: :get, as: 'grant_access'
+  match '/granted_access/(:name)', to: 'signup#granted_access', via: :get, as: 'granted_access'
 
   # RecipientDashboard
   match '/comparison/(:id)/unlock_funder', to: 'recipients#unlock_funder', via: [:get, :post], as: 'recipient_unlock_funder'

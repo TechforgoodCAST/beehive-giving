@@ -85,7 +85,7 @@ class Organisation < ActiveRecord::Base
 
   def send_authorisation_email_to_admin(user)
     AdminUser.all.each do |u|
-      UserMailer.request_access(u, self, user)
+      UserMailer.request_access(u, self, user).deliver
     end
   end
 
@@ -93,7 +93,7 @@ class Organisation < ActiveRecord::Base
     self.users.each do |u|
       if u.authorised
         logger.debug("Sending authorisation email to #{u.user_email}")
-        UserMailer.request_access(u, self, user)
+        UserMailer.request_access(u, self, user).deliver
       end
     end
   end

@@ -109,9 +109,9 @@ class SignupController < ApplicationController
   end
 
   def grant_access
-    user = User.find_by_auth_token(params[:auth_token])
-    user.update_attribute(:authorised, true)
-    redirect_to granted_access_path(:name=>user.first_name)
+    user = User.find_by_unlock_token(params[:unlock_token])
+    user.unlock
+    redirect_to granted_access_path(user.first_name)
   end
 
   def granted_access
