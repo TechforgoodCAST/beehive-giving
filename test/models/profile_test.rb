@@ -1,22 +1,23 @@
 require 'test_helper'
 
 class ProfileTest < ActiveSupport::TestCase
+
   setup do
     @recipient = create(:recipient)
-    @profile = build(:profile, organisation: @recipient)
+    @profile = build(:profile, organisation: @recipient, state: 'beneficiaries')
     @country = create(:country)
     @district = build(:district, country: @country)
   end
 
-  test "a profile belongs to an organisation" do
+  test 'a profile belongs to an organisation' do
     assert_equal 'ACME', @profile.organisation.name
   end
 
-  test "a valid profile" do
+  test 'a valid profile' do
     assert @profile.valid?
   end
 
-  test "only positive numbers are allowed" do
+  test 'only positive numbers are allowed' do
     @profile.min_age = -10
     assert_not @profile.valid?
   end
@@ -26,12 +27,12 @@ class ProfileTest < ActiveSupport::TestCase
     assert_not @profile.valid?
   end
 
-  test "allows duplicate years for the different orgs" do
+  test 'allows duplicate years for the different orgs' do
     @profile =  build(:profile, organisation: create(:organisation, n: 1))
     assert @profile.valid?
   end
 
-  test "a district belongs to a country" do
+  test 'a district belongs to a country' do
     assert @district.country
   end
 
@@ -39,4 +40,39 @@ class ProfileTest < ActiveSupport::TestCase
     @profile.year = 2013
     assert_not @profile.valid?
   end
+
+  test 'profile starts with beneficiaries' do
+    assert_equal 'beneficiaries', @profile.state
+  end
+
+  test 'beneficiaries transitions to location' do
+    @profile.save
+    @profile.next_step!
+    assert_equal 'location', @profile.state
+  end
+
+  test 'location transitions to team' do
+    @profile.save
+    2.times { @profile.next_step! }
+    assert_equal 'team', @profile.state
+  end
+
+  test 'team transitions to work' do
+    @profile.save
+    3.times { @profile.next_step! }
+    assert_equal 'work', @profile.state
+  end
+
+  test 'work transitions to finance' do
+    @profile.save
+    4.times { @profile.next_step! }
+    assert_equal 'finance', @profile.state
+  end
+
+  test 'finance transitions to complete' do
+    @profile.save
+    5.times { @profile.next_step! }
+    assert_equal 'complete', @profile.state
+  end
+
 end

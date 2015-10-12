@@ -1,14 +1,14 @@
 $(document).ready ->
-  districts = $('#profile_district_ids').html()
-
-  country = $('#profile_country_ids :selected')
-  options = []
-  $.each country, (index, value) ->
-    options.push($(districts).filter("optgroup[label='#{$(value).text()}']").html())
+  $('.year').html($('#profile_year').val())
+  $('#profile_year').change ->
+    $('.year').html($('#profile_year').val())
     return
-  $('#profile_district_ids').html(options).trigger("chosen:updated")
 
-  $('#profile_country_ids').change ->
+ProfileForm = ((w, d) ->
+
+  bindCountryRegions = ->
+    districts = $('#profile_district_ids').html()
+
     country = $('#profile_country_ids :selected')
     options = []
     $.each country, (index, value) ->
@@ -16,13 +16,14 @@ $(document).ready ->
       return
     $('#profile_district_ids').html(options).trigger("chosen:updated")
 
-$(document).ready ->
-  $('.year').html($('#profile_year').val())
-  $('#profile_year').change ->
-    $('.year').html($('#profile_year').val())
-    return
+    $('#profile_country_ids').change ->
+      country = $('#profile_country_ids :selected')
+      options = []
+      $.each country, (index, value) ->
+        options.push($(districts).filter("optgroup[label='#{$(value).text()}']").html())
+        return
+      $('#profile_district_ids').html(options).trigger("chosen:updated")
 
-ProfileForm = ((w, d) ->
   # triggerHiddenQuestionsToggle = ->
   #   hiddenQuestions = $('#hidden_questions')
   #   if $('#people:checked').length > 0
@@ -51,14 +52,29 @@ ProfileForm = ((w, d) ->
         $(this).parent().css('background-color', '#fafafa')
       return
 
+  toggleMoreBeneficiaryOptions = ->
+    $(d).on 'click', '.more-options', ->
+      $('#more-beneficiary-options').toggleClass('uk-hidden')
+      $('#more-beneficiary-options').addClass 'fade-in'
+
   return {
+    bindCountryRegions: bindCountryRegions,
     # bindHiddenQuestionsToggle: bindHiddenQuestionsToggle,
     # bindGetTooltip: bindGetTooltip,
-    bindCheckedItemsHighlight: bindCheckedItemsHighlight
+    bindCheckedItemsHighlight: bindCheckedItemsHighlight,
+    toggleMoreBeneficiaryOptions: toggleMoreBeneficiaryOptions
   }
 )(window, document)
 
 $(document).ready ->
+  ProfileForm.bindCountryRegions()
+  # ProfileForm.bindHiddenQuestionsToggle()
+  # ProfileForm.bindGetTooltip()
+  ProfileForm.bindCheckedItemsHighlight()
+  ProfileForm.toggleMoreBeneficiaryOptions()
+
+$(document).ajaxComplete ->
+  ProfileForm.bindCountryRegions()
   # ProfileForm.bindHiddenQuestionsToggle()
   # ProfileForm.bindGetTooltip()
   ProfileForm.bindCheckedItemsHighlight()

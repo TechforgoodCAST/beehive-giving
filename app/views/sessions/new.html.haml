@@ -1,0 +1,35 @@
+- content_for :sign_in do
+  .full-height.max.background-image.uk-animation-fade
+    .full-height-content
+      .uk-container.uk-container-center.uk-margin-large-top.uk-margin-large
+
+        .uk-text-center.uk-margin-bottom
+          %a.logo-large{href: welcome_path, alt: 'Beehive'}
+          %h2.white.uk-margin-top-remove Intelligently matching non-profits with funders
+        .sign-in-container.uk-container-center
+
+          - if flash[:error]
+            .uk-alert.uk-alert-danger{'data-uk-alert' => ''}
+              %a.uk-alert-close.uk-close{:href => ''}
+              %h3.uk-text-bold Oops!
+              = flash[:error]
+
+          .uk-panel.uk-panel-box#panel.shadow
+            .uk-panel-title.uk-text-center Sign in to continue to Beehive
+
+            = form_tag sign_in_path, method: 'post', class: 'uk-panel uk-form', id: 'sign-in' do
+              .uk-form-row
+                = text_field_tag :email, nil, placeholder: 'Email', type: 'email', class: 'uk-form-large uk-width-1-1'
+              .uk-form-row{style: 'position: relative;'}
+                = password_field_tag :password, nil, placeholder: 'Password', type: 'password', class: 'uk-form-large uk-form-password uk-width-1-1'
+                %a.uk-form-password-toggle{"data-uk-form-password" => "", :href => ""} Show
+              .uk-form-row
+                = submit_tag 'Sign in', class: 'uk-width-1-1 uk-button uk-button-large uk-button-primary shadow bounce', style: 'color: #fff; font-size: 16px;'
+              .uk-form-row.uk-text-small
+                %label.uk-float-left
+                  = check_box_tag :remember_me, 1, params[:remember_me]
+                  Remember Me
+                = link_to 'Forgot Password?', new_password_reset_path, class: 'uk-float-right uk-link'
+
+        .uk-text-center.uk-margin-top
+          = link_to 'Create account', welcome_path, class: 'white', style: 'font-size: 16px;'

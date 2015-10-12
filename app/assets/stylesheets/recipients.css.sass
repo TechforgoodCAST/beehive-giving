@@ -1,0 +1,57 @@
+@import variables
+
+/* Layout
+ ========================================================================== *
+
+.overview-offset, .funded-offset
+  display: block
+  position: relative
+  visibility: hidden
+
+.overview-offset
+  top: 20px
+
+.funded-offset
+  top: -40px
+
+/* Utility
+ ========================================================================== */
+
+.stat-big
+  font-size: 3em
+  font-weight: 200
+
+.stat-normal
+  font-weight: 200
+
+/* Charts
+ ========================================================================== */
+
+#funding_frequency_distribution
+  height: 170px
+
+/* UI
+ ========================================================================== */
+
+.funder-logo-banner
+  position: absolute
+  background: #FFC728
+  bottom: -8px
+  width: 100%
+  height: 35px
+  color: #fff
+  line-height: 35px
+  font-size: 12px
+  text-transform: uppercase
+  border: solid #fff 2px
+
+.or
+  position: absolute
+  top: 4px
+  right: -26px
+  font-weight: bold
+  font-size: 16px
+  @media screen and (max-width: 1220px)
+    right: -20px
+  @media screen and (max-width: 767px)
+    display: none

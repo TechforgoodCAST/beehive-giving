@@ -16,19 +16,12 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
     create_and_auth_user!(:organisation => @recipient)
   end
 
-  test "funders order by initial recommendation" do
-    visit funders_path
-    Capybara.match = :first
-    assert_equal 'acme-2 funder', find('.funder')[:class]
-  end
-
   test "funders order by refined recommendation" do
-    create(:profile, :organisation => @recipient, :beneficiaries => FactoryGirl.create_list(:beneficiary_unique, 4))
+    create(:profile, :organisation => @recipient, :beneficiaries => FactoryGirl.create_list(:beneficiary_unique, 4), :state => 'complete')
     @recipient.refined_recommendation
     visit funders_path
     Capybara.match = :first
-    puts page.body
-    click_link("Browse")
+    click_link("#locked_funder")
     assert_equal recipient_comparison_path(@funders[2]), current_path
   end
 

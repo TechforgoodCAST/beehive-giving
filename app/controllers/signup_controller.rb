@@ -1,6 +1,11 @@
 class SignupController < ApplicationController
+<<<<<<< HEAD
   
   before_filter :ensure_logged_in, except: [:user, :create_user, :unauthorised, :grant_access, :granted_access]
+=======
+
+  before_filter :ensure_logged_in, except: [:user, :create_user]
+>>>>>>> 37b2085cbf298d6d678a51c5c3a0839ea7d4855f
 
   def user
     if logged_in?
@@ -17,8 +22,20 @@ class SignupController < ApplicationController
       if @user.save
         format.js   {
           cookies[:auth_token] = @user.auth_token
+          @user.update_attribute(:last_seen, Time.now)
           UserMailer.welcome_email(@user).deliver
-          render :js => "window.location.href = '#{signup_organisation_path}';
+          render :js => "mixpanel.identify('#{@user.id}');
+                        mixpanel.people.set({
+                          '$first_name': '#{@user.first_name}',
+                          '$last_name': '#{@user.last_name}',
+                          '$email': '#{@user.user_email}',
+                          '$created': '#{@user.created_at}',
+                          '$last_login': '#{@user.last_seen}',
+                          'Updated At': '#{@user.updated_at}',
+                          'Sign In Count': '#{@user.sign_in_count}',
+                          'Job Role': '#{@user.job_role}'
+                        });
+                        window.location.href = '#{signup_organisation_path}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');" if @user.role == 'User'
           render :js => "window.location.href = '#{new_funder_path}';
@@ -53,15 +70,20 @@ class SignupController < ApplicationController
       if @organisation.save
         format.js   {
           current_user.update_attribute(:organisation_id, @organisation.id)
-          @organisation.initial_recommendation
-          render :js => "window.location.href = '#{funders_path}';
+          render :js => "mixpanel.identify('#{current_user.id}');
+                        mixpanel.people.set({
+                          'Organisation': '#{@organisation.name}',
+                          'Country': '#{@organisation.country}',
+                          'Registered?': '#{@organisation.registered}',
+                          'Founded On': '#{@organisation.founded_on}'
+                        });
+                        window.location.href = '#{new_recipient_profile_path(@organisation)}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
         }
         format.html {
           current_user.update_attribute(:organisation_id, @organisation.id)
-          @organisation.initial_recommendation
-          redirect_to funders_path
+          redirect_to new_recipient_profile_path(@organisation)
         }    
       elsif ((@organisation.errors.added? :charity_number, :taken) ||
             (@organisation.errors.added? :company_number, :taken)) 

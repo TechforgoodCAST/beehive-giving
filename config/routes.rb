@@ -11,9 +11,9 @@ Rails.application.routes.draw do
 
   # Sessions
   root :to => 'sessions#check'
-  get '/login' => 'sessions#new', as: 'login'
-  post '/login' => 'sessions#create'
   get '/logout'  => 'sessions#destroy'
+  match '/sign-in', to: 'sessions#new', via: :get, as: 'sign_in'
+  match '/sign-in', to: 'sessions#create', via: :post
 
   # Pages
   match '/tour', to: 'pages#tour', via: :get, as: 'tour'
@@ -23,9 +23,9 @@ Rails.application.routes.draw do
 
   # Sign up
   match '/welcome', to: 'signup#user', via: :get, as: 'signup_user'
-  match '/your-organisation', to: 'signup#organisation', via: :get, as: 'signup_organisation'
-
   match '/welcome', to: 'signup#create_user', via: :post
+
+  match '/your-organisation', to: 'signup#organisation', via: :get, as: 'signup_organisation'
   match '/your-organisation', to: 'signup#create_organisation', via: :post
 
   match '/new-funder', to: 'signup#funder', via: :get, as: 'new_funder'
@@ -36,15 +36,15 @@ Rails.application.routes.draw do
   match '/grant_access/(:unlock_token)', to: 'signup#grant_access', via: :get, as: 'grant_access'
   match '/granted_access/(:name)', to: 'signup#granted_access', via: :get, as: 'granted_access'
 
-  # RecipientDashboard
-  match '/comparison/(:id)/unlock_funder', to: 'recipients#unlock_funder', via: [:get, :post], as: 'recipient_unlock_funder'
+  # Recipients
   match '/comparison/(:id)', to: 'recipients#comparison', via: :get, as: 'recipient_comparison'
   match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
   # match '/(:id)/edit', to: 'recipients#edit', via: :get, as: 'recipient_edit'
   # match '/(:id)/edit', to: 'recipients#edit', via: :patch
-  # Eligibility
-  match '/eligibility/(:funder_id)', to: 'recipients#eligibility', via: :get, as: 'recipient_eligibility'
-  match '/eligibility/(:funder_id)', to: 'recipients#update_eligibility', via: :patch
+
+  # Eligibilities
+  match '/eligibility/(:id)', to: 'recipients#eligibility', via: :get, as: 'recipient_eligibility'
+  match '/eligibility/(:id)', to: 'recipients#update_eligibility', via: :patch
   match '/(:id)/eligibility', to: 'recipients#eligibilities', via: :get, as: 'recipient_eligibilities'
   match '/(:id)/eligibility', to: 'recipients#update_eligibilities', via: :patch
 

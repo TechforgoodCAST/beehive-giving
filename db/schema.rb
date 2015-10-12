@@ -372,26 +372,27 @@ ActiveRecord::Schema.define(version: 20151012035614) do
   add_index "implementors_profiles", ["profile_id"], name: "index_implementors_profiles_on_profile_id", using: :btree
 
   create_table "organisations", force: :cascade do |t|
-    t.string   "name",              limit: 255
-    t.string   "contact_number",    limit: 255
-    t.string   "website",           limit: 255
-    t.string   "street_address",    limit: 255
-    t.string   "city",              limit: 255
-    t.string   "region",            limit: 255
-    t.string   "postal_code",       limit: 255
-    t.string   "country",           limit: 255
-    t.string   "charity_number",    limit: 255
-    t.string   "company_number",    limit: 255
-    t.string   "slug",              limit: 255
-    t.string   "type",              limit: 255
+    t.string   "name",                            limit: 255
+    t.string   "contact_number",                  limit: 255
+    t.string   "website",                         limit: 255
+    t.string   "street_address",                  limit: 255
+    t.string   "city",                            limit: 255
+    t.string   "region",                          limit: 255
+    t.string   "postal_code",                     limit: 255
+    t.string   "country",                         limit: 255
+    t.string   "charity_number",                  limit: 255
+    t.string   "company_number",                  limit: 255
+    t.string   "slug",                            limit: 255
+    t.string   "type",                            limit: 255
     t.text     "mission"
-    t.string   "status",            limit: 255
+    t.string   "status",                          limit: 255
     t.date     "founded_on"
     t.date     "registered_on"
     t.boolean  "registered"
     t.boolean  "active_on_beehive"
-    t.datetime "created_at",                    null: false
-    t.datetime "updated_at",                    null: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.integer  "recipient_funder_accesses_count"
   end
 
   add_index "organisations", ["id", "type"], name: "index_organisations_on_id_and_type", using: :btree
@@ -433,9 +434,11 @@ ActiveRecord::Schema.define(version: 20151012035614) do
     t.datetime "updated_at",                             null: false
     t.boolean  "does_sell"
     t.integer  "trustee_count"
+    t.string   "state"
   end
 
   add_index "profiles", ["organisation_id"], name: "index_profiles_on_organisation_id", using: :btree
+  add_index "profiles", ["state"], name: "index_profiles_on_state", using: :btree
 
   create_table "recipient_attributes", force: :cascade do |t|
     t.integer  "recipient_id"

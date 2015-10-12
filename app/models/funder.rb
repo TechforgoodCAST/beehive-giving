@@ -27,7 +27,8 @@ class Funder < Organisation
                               'City Bridge Trust',
                               'The Joseph Rowntree Charitable Trust',
                               'Oak Foundation',
-                              'The Rayne Foundation']
+                              'The Rayne Foundation',
+                              'The Trusthouse Charitable Foundation']
 
   CLOSED_FUNDERS = ['Cripplegate Foundation']
 

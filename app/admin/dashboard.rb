@@ -8,7 +8,7 @@ ActiveAdmin.register_page "Dashboard" do
         span class: "blank_slate" do
           h3 'Users'
           h5 'Non-profits'
-          h1 User.where("role = ?", "User").count
+          h1  number_with_delimiter(User.where("role = ?", "User").count)
           h5 'Funders'
           h1 User.where("role = ?", "Funder").count
         end
@@ -18,7 +18,7 @@ ActiveAdmin.register_page "Dashboard" do
         span class: "blank_slate" do
           h3 'Non-profits'
           h5 'Recipients'
-          h1 Recipient.joins(:users).all.count
+          h1 number_with_delimiter(Recipient.joins(:users).all.count)
           h5 'Profiles'
           h1 Profile.joins(:organisation).all.count
         end
@@ -28,7 +28,7 @@ ActiveAdmin.register_page "Dashboard" do
           h5 'Unlocks'
           h1 RecipientFunderAccess.all.count
           h5 'Eligibilities'
-          h1 Eligibility.all.count
+          h1 number_with_delimiter(Eligibility.all.count)
         end
 
         span class: "blank_slate" do
@@ -52,7 +52,7 @@ ActiveAdmin.register_page "Dashboard" do
         span class: "blank_slate" do
           h3 'Funders'
           h5 'Grants'
-          h1 Grant.all.count
+          h1 number_with_delimiter(Grant.all.count)
         end
 
         span class: "blank_slate" do
@@ -66,23 +66,19 @@ ActiveAdmin.register_page "Dashboard" do
     end
 
     def user_count
-      User.where(role: 'User').group_by_week(:created_at, week_start: :mon, last: 4, format: 'w/o %d %b').count
+      User.where(role: 'User').group_by_week(:created_at, week_start: :mon, last: 6, format: 'w/o %d %b').count
     end
 
     def recipient_count
-      Recipient.joins(:users).group_by_week('users.created_at', week_start: :mon, last: 4).count
+      Recipient.joins(:users).group_by_week('users.created_at', week_start: :mon, last: 6).count
     end
 
     def profile_count
-      Profile.select(:organisation_id).group_by_week(:created_at, week_start: :mon, last: 4).count
+      Profile.where(state: 'complete').select(:organisation_id).group_by_week(:created_at, week_start: :mon, last: 6).count
     end
 
-    def unlock_count
-      RecipientFunderAccess.select(:recipient_id).distinct.group_by_week(:created_at, week_start: :mon, last: 4).count
-    end
-
-    def eligibility_count
-      Eligibility.select(:recipient_id).distinct.group_by_week(:created_at, week_start: :mon, last: 4).count
+    def unlock_count(count)
+      Recipient.joins(:recipient_funder_accesses).where('recipient_funder_accesses_count = ?', count).uniq.group_by_week('recipient_funder_accesses.created_at', week_start: :mon, last: 6).count
     end
 
     def percentage(count, i)
@@ -115,14 +111,20 @@ ActiveAdmin.register_page "Dashboard" do
             end
           end
           tr do
-            td 'Funder unlocks'
-            unlock_count.each_with_index do |count, i|
+            td '1 Funder unlock'
+            unlock_count(1).each_with_index do |count, i|
               td percentage(count, i) if count[1] > 0
             end
           end
           tr do
-            td 'Eligibility checks'
-            eligibility_count.each_with_index do |count, i|
+            td '2 Funder unlocks'
+            unlock_count(2).each_with_index do |count, i|
+              td percentage(count, i) if count[1] > 0
+            end
+          end
+          tr do
+            td '3 Funder unlocks'
+            unlock_count(3).each_with_index do |count, i|
               td percentage(count, i) if count[1] > 0
             end
           end
@@ -130,13 +132,13 @@ ActiveAdmin.register_page "Dashboard" do
       end
     end
 
-    div style: "float:left; width: 50%; padding: 0 20px; box-sizing: border-box;" do
+    div style: "float:left; width: 50%;" do
       section "Activity by day (2 weeks)" do
         render :partial => 'metrics/daily_chart', :locals => {:metric => @metric}
       end
     end
 
-    div style: "float:left; width: 50%; padding: 0 20px; box-sizing: border-box;" do
+    div style: "float:left; width: 50%;" do
       section "Activity by week (12 weeks)" do
         render :partial => 'metrics/weekly_chart', :locals => {:metric => @metric}
       end

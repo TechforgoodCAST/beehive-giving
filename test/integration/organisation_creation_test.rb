@@ -1,29 +1,29 @@
 require 'test_helper'
 
 class OrganisationCreationTest < ActionDispatch::IntegrationTest
+
   test 'You get redirected when visiting the page when not signed in' do
-    visit '/your-organisation'
-    assert_equal current_path, '/welcome'
+    visit signup_organisation_path
+    assert_equal signup_user_path, current_path
   end
 
-  test 'if you are signed in and you have an organisation you get redirected to funders index' do
+  test 'if you are signed in and you have an organisation you get redirected to new profile path' do
     @recipient = create(:recipient)
     create_and_auth_user!(:organisation => @recipient)
-    visit '/your-organisation'
-    assert_equal '/funders', current_path
+    visit signup_organisation_path
+    assert_equal funders_path, current_path
   end
 
   test 'if you are signed in and have no organisation you can see the organisation page' do
     create_and_auth_user!
     assert_equal @user.organisation, nil
-    visit '/your-organisation'
-    assert_equal '/your-organisation', current_path
+    visit signup_organisation_path
+    assert_equal signup_organisation_path, current_path
   end
 
-  def full_form?(registered)
+  def full_form(registered)
     within("#new_recipient") do
       fill_in("recipient_name", :with => 'ACME')
-      fill_in("recipient_website", :with => 'www.example.com')
       select('No', :from => "registered")
       Capybara.match = :first
       select("United Kingdom", :from => "recipient_country")
@@ -41,31 +41,30 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
 
   test 'filling in form correctly submits, saves record and redirects to correct page' do
     create_and_auth_user!
-    visit '/your-organisation'
-    full_form?(true)
+    visit signup_organisation_path
+    full_form(true)
     click_button('Next')
-    assert_equal '/funders', current_path
+    assert_equal new_recipient_profile_path(Recipient.first), current_path
     assert page.has_content?("Funders")
   end
 
   test 'filling form incorrectly causes validation to trigger' do
     create_and_auth_user!
-    visit '/your-organisation'
-    within("#new_recipient") do
-      fill_in("recipient_website", :with => 'bbbbb')
-    end
+    visit signup_organisation_path
+
     click_button('Next')
-    assert_equal '/your-organisation', current_path
+    assert_equal signup_organisation_path, current_path
     assert page.has_content?("can't be blank")
   end
 
   test 'unregistered organistion only needs founded on' do
     create_and_auth_user!
     visit '/your-organisation'
-    full_form?(false)
+    full_form(false)
     click_button('Next')
-    assert_equal '/funders', current_path
+    assert_equal new_recipient_profile_path(Recipient.first), current_path
     assert page.has_content?("Funders")
     assert Recipient.first.registered_on.nil?
   end
+
 end

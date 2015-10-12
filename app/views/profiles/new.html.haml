@@ -1,6 +1,9 @@
 :javascript
-  mixpanel.track("Page View", {"Page Name": "New Profile"});
-  mixpanel.track_forms("#new_profile", "Create Profile Form");
+  mixpanel.track("View Profile #{@profile.state.capitalize} Page");
+  mixpanel.identify('#{current_user.id}');
+  mixpanel.people.set({
+    'Profile State': '#{@profile.state}'
+  });
 
 :javascript
   var google_conversion_id = 958190855;
@@ -14,18 +17,16 @@
   %div{:style => "display:inline;"}
     %img{:alt => "", :height => "1", :src => "//www.googleadservices.com/pagead/conversion/958190855/?label=2cu5CMnWrF8Qh6rzyAM&amp;guid=ON&amp;script=0", :style => "border-style:none;", :width => "1"}/
 
-#bg-color
-  .uk-container.uk-container-center
-    .uk-grid.uk-margin.uk-margin-top
+- content_for :signup do
+  = render partial: 'funders/static_background'
 
-      .uk-width-medium-1-1.uk-float-left.uk-animation-fade
-        = simple_form_for [@recipient, @profile], method: :post do |f|
-          .uk-grid
-            .uk-width-medium-1-1.uk-margin-bottom
-              .uk-panel.cta.uk-margin.shadow
-                %h2.white Tell us about your organisation
-                Beehive uses the information you provide in this form to suggest funders to approach. We know it looks scary but don't worry it's a breeze. Give it a shot and see which funders are a good fit. And remember you can easily update these details if you're not happy with your recommendations. Drop us a
-                = link_to 'line', 'mailto:support@beehivegiving.org', style: 'color: #efefef'
-                if you get stuck.
+#new-profile-modal.uk-modal
+  .uk-modal-dialog
+    = render partial: "profiles/states/#{@profile.state}"
+  = render 'snippets/need_help'
 
-          = render partial: 'profiles/form', locals: {f: f, mode: :new}
+:javascript
+  var modal = $.UIkit.modal('#new-profile-modal');
+  modal.options.bgclose = false;
+  modal.options.keyboard = false;
+  modal.show();

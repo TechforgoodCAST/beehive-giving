@@ -65,7 +65,6 @@ class SessionsTest < ActionDispatch::IntegrationTest
 
       # Non-profit
       recipient_comparison_path(@recipient, @funder),
-      recipient_unlock_funder_path(@recipient, @funder),
       recipient_public_path(@recipient),
 
       # Eligibility

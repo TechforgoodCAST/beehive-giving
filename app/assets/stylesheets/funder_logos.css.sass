@@ -1,0 +1,299 @@
+$background-image-height: 3705px
+$logo-width: 150px
+
+=funder-logo($ypos, $scale:1, $width:229px)
+  width: $width
+  height: 65px * $scale
+  background-size: (229px * $scale) ($background-image-height * $scale)
+  background-position: center ((-65px * $ypos) * $scale)
+
+.funder
+  background: image-url('funder-logos-sprite.png') no-repeat
+  width: 229px
+  height: 65px
+  background-position: center 65px
+
+  &.the-foundation
+    +funder-logo(0)
+  &.the-foundation-small
+    +funder-logo(0, .8, $logo-width)
+
+  &.the-dulverton-trust
+    +funder-logo(1)
+  &.the-dulverton-trust-small
+    +funder-logo(1, .7, $logo-width)
+
+  &.esmee-fairbairn-foundation
+    +funder-logo(2)
+  &.esmee-fairbairn-foundation-small
+    +funder-logo(2, .9, $logo-width)
+
+  &.nesta
+    +funder-logo(3)
+  &.nesta-small
+    +funder-logo(3, .7, $logo-width)
+
+  &.nominet-trust
+    +funder-logo(4)
+  &.nominet-trust-small
+    +funder-logo(4, .8, $logo-width)
+
+  &.arts-council-england
+    +funder-logo(5)
+  &.arts-council-england-small
+    +funder-logo(5, 1, $logo-width)
+
+  &.big-lottery-fund
+    +funder-logo(6)
+  &.big-lottery-fund-small
+    +funder-logo(6, 1, $logo-width)
+
+  &.heritage-lottery-fund
+    +funder-logo(7)
+  &.heritage-lottery-fund-small
+    +funder-logo(7, .9, $logo-width)
+
+  &.the-indigo-trust
+    +funder-logo(8)
+  &.the-indigo-trust-small
+    +funder-logo(8, .8, $logo-width)
+
+  &.lloyds-bank-foundation
+    +funder-logo(9)
+  &.lloyds-bank-foundation-small
+    +funder-logo(9, .6, $logo-width)
+
+  &.paul-hamlyn-foundation
+    +funder-logo(10)
+  &.paul-hamlyn-foundation-small
+    +funder-logo(10, .6, $logo-width)
+
+  &.sport-england
+    +funder-logo(11)
+  &.sport-england-small
+    +funder-logo(11, .7, $logo-width)
+
+  &.beyondme
+    +funder-logo(12)
+  &.beyondme-small
+    +funder-logo(12, .8, $logo-width)
+
+  &.comic-relief
+    +funder-logo(13)
+  &.comic-relief-small
+    +funder-logo(13, .8, $logo-width)
+
+  &.garfield-weston-foundation
+    +funder-logo(14)
+  &.garfield-weston-foundation-small
+    +funder-logo(14, 1, $logo-width)
+
+  &.trust-for-london
+    +funder-logo(15)
+  &.trust-for-london-small
+    +funder-logo(15, .8, $logo-width)
+
+  &.the-henry-smith-charity
+    +funder-logo(16)
+  &.the-henry-smith-charity-small
+    +funder-logo(16, 1, $logo-width)
+
+  &.john-lyons-charity
+    +funder-logo(17)
+  &.john-lyons-charity-small
+    +funder-logo(17, .6, $logo-width)
+
+  &.city-bridge-trust
+    +funder-logo(18)
+  &.city-bridge-trust-small
+    +funder-logo(18, .6, $logo-width)
+
+  &.children-in-need
+    +funder-logo(19)
+  &.children-in-need-small
+    +funder-logo(19, .8, $logo-width)
+
+  &.the-tudor-trust
+    +funder-logo(20)
+  &.the-tudor-trust-small
+    +funder-logo(20, .7, $logo-width)
+
+  &.sigrid-rausing-trust
+    +funder-logo(21)
+  &.sigrid-rausing-trust-small
+    +funder-logo(21, .6, $logo-width)
+
+  &.the-joseph-rowntree-charitable-trust
+    +funder-logo(22)
+  &.the-joseph-rowntree-charitable-trust-small
+    +funder-logo(22, 1, $logo-width)
+
+  &.lankellychase-foundation
+    +funder-logo(23)
+  &.lankellychase-foundation-small
+    +funder-logo(23, 1, $logo-width)
+
+  &.barrow-cadbury-trust
+    +funder-logo(24)
+  &.barrow-cadbury-trust-small
+    +funder-logo(24, .8, $logo-width)
+
+  &.the-bernard-sunley-charitable-foundation
+    +funder-logo(25)
+  &.the-bernard-sunley-charitable-foundation-small
+    +funder-logo(25, .58, $logo-width)
+
+  &.charles-hayward-foundation
+    +funder-logo(26)
+  &.charles-hayward-foundation-small
+    +funder-logo(26, .8, $logo-width)
+
+  &.clore-duffield-foundation
+    +funder-logo(27)
+  &.clore-duffield-foundation-small
+    +funder-logo(27, 1, $logo-width)
+
+  &.the-clothworkers-foundation
+    +funder-logo(28)
+  &.the-clothworkers-foundation-small
+    +funder-logo(28, .6, $logo-width)
+
+  &.cripplegate-foundation
+    +funder-logo(29)
+  &.cripplegate-foundation-small
+    +funder-logo(29, .6, $logo-width)
+
+  &.the-drapers-company
+    +funder-logo(30)
+  &.the-drapers-company-small
+    +funder-logo(30, 1, $logo-width)
+
+  &.fidelity-uk-foundation
+    +funder-logo(31)
+  &.fidelity-uk-foundation-small
+    +funder-logo(31, .7, $logo-width)
+
+  &.four-acre-trust
+    +funder-logo(32)
+  &.four-acre-trust-small
+    +funder-logo(32, .6, $logo-width)
+
+  &.foyle-foundation
+    +funder-logo(33)
+  &.foyle-foundation-small
+    +funder-logo(33, .6, $logo-width)
+
+  &.jack-petchey-foundation
+    +funder-logo(34)
+  &.jack-petchey-foundation-small
+    +funder-logo(34, .6, $logo-width)
+
+  &.john-ellerman-foundation
+    +funder-logo(35)
+  &.john-ellerman-foundation-small
+    +funder-logo(35, .6, $logo-width)
+
+  &.joseph-levy-charitable-foundation
+    +funder-logo(36)
+  &.joseph-levy-charitable-foundation-small
+    +funder-logo(36, .8, $logo-width)
+
+  &.the-leathersellers-company
+    +funder-logo(37)
+  &.the-leathersellers-company-small
+    +funder-logo(37, .6, $logo-width)
+
+  &.the-bulldog-trust
+    +funder-logo(38)
+  &.the-bulldog-trust-small
+    +funder-logo(38, .6, $logo-width)
+
+  &.oak-foundation
+    +funder-logo(39)
+  &.oak-foundation-small
+    +funder-logo(39, .6, $logo-width)
+
+  &.peter-harrison-foundation
+    +funder-logo(40)
+  &.peter-harrison-foundation-small
+    +funder-logo(40, .6, $logo-width)
+
+  &.the-pilgrim-trust
+    +funder-logo(41)
+  &.the-pilgrim-trust-small
+    +funder-logo(41, .6, $logo-width)
+
+  &.prince-of-wales-charitable-foundation
+    +funder-logo(42)
+  &.prince-of-wales-charitable-foundation-small
+    +funder-logo(42, 1, $logo-width)
+
+  &.the-rank-foundation
+    +funder-logo(43)
+  &.the-rank-foundation-small
+    +funder-logo(43, .6, $logo-width)
+
+  &.the-rayne-foundation
+    +funder-logo(44)
+  &.the-rayne-foundation-small
+    +funder-logo(44, .6, $logo-width)
+
+  &.the-robertson-trust
+    +funder-logo(45)
+  &.the-robertson-trust-small
+    +funder-logo(45, .6, $logo-width)
+
+  &.the-roddick-foundation
+    +funder-logo(46)
+  &.the-roddick-foundation-small
+    +funder-logo(46, .6, $logo-width)
+
+  &.santander-foundation
+    +funder-logo(47)
+  &.santander-foundation-small
+    +funder-logo(47, .9, $logo-width)
+
+  &.sir-john-casss-foundation
+    +funder-logo(48)
+  &.sir-john-casss-foundation-small
+    +funder-logo(48, .6, $logo-width)
+
+  &.sofronie-foundation
+    +funder-logo(49)
+  &.sofronie-foundation-small
+    +funder-logo(49, .6, $logo-width)
+
+  &.the-stone-family-foundation
+    +funder-logo(50)
+  &.the-stone-family-foundation-small
+    +funder-logo(50, 1, $logo-width)
+
+  &.the-mercers-company
+    +funder-logo(51)
+  &.the-mercers-company-small
+    +funder-logo(51, 1, $logo-width)
+
+  &.the-wakefield-and-tetley-trust
+    +funder-logo(52)
+  &.the-wakefield-and-tetley-trust-small
+    +funder-logo(52, .6, $logo-width)
+
+  &.westminster-foundtion
+    +funder-logo(53)
+  &.westminster-foundtion-small
+    +funder-logo(53, 1, $logo-width)
+
+  &.the-trusthouse-charitable-foundation
+    +funder-logo(54)
+  &.the-trusthouse-charitable-foundation-small
+    +funder-logo(54, 0.6, $logo-width)
+
+  &.zing
+    +funder-logo(55)
+  &.zing-small
+    +funder-logo(55, 1, $logo-width)
+
+  &.the-baring-foundation
+    +funder-logo(56)
+  &.the-baring-foundation-small
+    +funder-logo(56, .6, $logo-width)

@@ -9,22 +9,22 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
 
   test "recipient with no feedback can see link" do
     create_and_auth_user!(:organisation => @recipient)
-    visit "/funders"
+    visit funders_path
     assert page.has_content?("Feedback", count: 2)
   end
 
   test "no feedback button on new feedback action" do
     create_and_auth_user!(:organisation => @recipient)
-    visit '/funders'
+    visit funders_path
     assert page.has_content?("Feedback", count: 2)
-    visit '/feedback/new'
+    visit new_feedback_path
     assert_not page.has_content?("Feedback", count: 2)
   end
 
   test "recipient with feedback cannot see link" do
     create_and_auth_user!(:organisation => @recipient)
     create(:feedback, user: @recipient.users.first)
-    visit "/funders"
+    visit funders_path
     assert page.has_content?("Feedback", count: 0)
   end
 
@@ -46,26 +46,26 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
       @funding_streams << @funding_stream
     end
 
-    @profiles = 3.times { |i| create(:profile, :organisation => @recipient, :year => 2015-i) }
+    @profiles = create(:profile, :organisation => @recipient, :year => Date.today.year)
 
     create_and_auth_user!(:organisation => @recipient)
 
     # First funder unlock
     @recipient.unlock_funder!(@funders[0])
-    visit recipient_comparison_path(@funders[0])
-    assert_equal recipient_comparison_path(@funders[0]), current_path
 
     # Second funder unlock
     @recipient.unlock_funder!(@funders[1])
-    visit recipient_comparison_path(@funders[1])
-    assert_equal recipient_comparison_path(@funders[1]), current_path
 
     # Visiting third funders pages redirects if no feedback
-    visit recipient_comparison_path(@funders[2])
-    click_link('Check eligibility (1 left)')
+    visit recipient_eligibility_path(@funders[2])
+    assert_equal new_feedback_path, current_path
+
+    # Visiting fourth funders pages redirects if no feedback
+    visit recipient_eligibility_path(@funders[3])
     assert_equal new_feedback_path, current_path
 
     # completing feedback form redirects to funder
+    visit recipient_eligibility_path(@funders[2])
     within("#new_feedback") do
       select("10 - Extremely likely", :from => "feedback_nps")
       select("10 - Very dissatisfied", :from => "feedback_taken_away")

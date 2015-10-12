@@ -50,7 +50,7 @@ class ApplicationController < ActionController::Base
   end
 
   def check_user_ownership
-    redirect_to login_path unless @user == current_user
+    redirect_to sign_in_path unless @user == current_user
   end
 
   def load_feedback

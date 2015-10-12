@@ -1,5 +1,7 @@
+= stylesheet_link_tag 'pages'
+
 :javascript
-  mixpanel.track_links("#get-recommendations", "Click 'Get recommendations' modal");
+  mixpanel.track_links("#get-recommendations", "Click 'Create profile' link");
 
 #welcome.uk-modal
   .uk-modal-dialog
@@ -27,7 +29,7 @@
     %p P.S. The recommendation feature is still pretty new, so please forgive any poor recommendations you receive.
     -# %p * Beehive is currently in public testing, which means you can only check your eligibility with 3 funders at the moment and later in the year we'll be adding a premium service where you can access an unlimited number of funders.
     .uk-modal-footer.uk-text-center
-      = link_to 'Create profile', new_recipient_profile_path(@recipient), :"data-no-turbolink" => true, class: 'uk-button uk-button-large uk-button-primary uk-width-1-1 js-record-welcome-close #get-recommendations'
+      = link_to 'Create profile', new_recipient_profile_path(@recipient), :"data-no-turbolink" => true, class: 'uk-button uk-button-primary uk-width-1-1 js-record-welcome-close #get-recommendations'
 
 :javascript
   var modal = $.UIkit.modal("#welcome");
