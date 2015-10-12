@@ -19,3 +19,9 @@ HTTP verb for authorisation? (GET vs PUT vs PATCH?)
 Where to put grant_access & access_granted function? 
   - in Recipients controller? 
 Bulk authorise?
+
+
+### TODO
+========
+Notify access by email
+If multiple people try to authorise? 

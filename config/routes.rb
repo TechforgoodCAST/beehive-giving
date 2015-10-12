@@ -31,14 +31,17 @@ Rails.application.routes.draw do
   match '/new-funder', to: 'signup#funder', via: :get, as: 'new_funder'
   match '/new-funder', to: 'signup#create_funder', via: :post
 
+  # User authorisation for organisational access
+  match '/unauthorised', to: 'signup#unauthorised', via: :get, as: 'unauthorised'
+  match '/grant_access/(:auth_token)', to: 'signup#grant_access', via: :get, as: 'grant_access'
+  match '/granted_access/(:id)', to: 'signup#granted_access', via: :get, as: 'granted_access'
+
   # RecipientDashboard
   match '/comparison/(:id)/unlock_funder', to: 'recipients#unlock_funder', via: [:get, :post], as: 'recipient_unlock_funder'
   match '/comparison/(:id)', to: 'recipients#comparison', via: :get, as: 'recipient_comparison'
   match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
   # match '/(:id)/edit', to: 'recipients#edit', via: :get, as: 'recipient_edit'
   # match '/(:id)/edit', to: 'recipients#edit', via: :patch
-  match '/grant_access/(:auth_token)', to: 'recipients#grant_access', via: :get, as: 'grant_access'
-  match '/access_granted/(:id)', to: 'recipients#access_granted', via: :get, as: 'access_granted'
   # Eligibility
   match '/eligibility/(:funder_id)', to: 'recipients#eligibility', via: :get, as: 'recipient_eligibility'
   match '/eligibility/(:funder_id)', to: 'recipients#update_eligibility', via: :patch
@@ -51,9 +54,7 @@ Rails.application.routes.draw do
   # Compare funders
   match '/funders/comparison', to: 'funders#comparison', via: :get, as: 'funders_comparison'
 
-  # Unauthorised
-  match '/unauthorised', to: 'signup#unauthorised', via: :get, as: 'unauthorised'
-
+  
   resources :users
   resources :feedback, :only => [:new, :create]
   resources :password_resets, :only => [:new, :create, :edit, :update]

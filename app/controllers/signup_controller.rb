@@ -1,6 +1,6 @@
 class SignupController < ApplicationController
   
-  before_filter :ensure_logged_in, except: [:user, :create_user, :unauthorised]
+  before_filter :ensure_logged_in, except: [:user, :create_user, :unauthorised, :grant_access, :granted_access]
 
   def user
     if logged_in?
@@ -111,9 +111,17 @@ class SignupController < ApplicationController
     end
   end
 
+  def grant_access
+    @user = User.find_by_auth_token(params[:auth_token])
+    @user.update_attribute(:authorised, true)
+    redirect_to granted_access_path(@user.id)
+  end
+
+  def granted_access
+    @user = User.find(params[:id])
+  end
 
   def unauthorised
-    # TODO
   end
 
   private
