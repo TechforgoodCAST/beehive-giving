@@ -17,6 +17,8 @@ class Recipient < Organisation
   has_many :countries, :through => :profiles
   has_many :districts, :through => :profiles
   has_many :beneficiaries, :through => :profiles
+  has_many :implementors, :through => :profiles
+  has_many :implementations, :through => :profiles
 
   MAX_FREE_LIMIT = 3
   RECOMMENDATION_THRESHOLD = 1
