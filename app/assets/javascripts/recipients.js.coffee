@@ -1,3 +1,4 @@
+# refactor
 $(document).ready ->
   if $('#funding_frequency_distribution').length
     Morris.Bar

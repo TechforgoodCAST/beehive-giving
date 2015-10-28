@@ -36,7 +36,7 @@ html, body
 
 .dark
   &.background
-    background-color: $background-dark
+    background-color: $dark-blue
 
 .background-image
   +background-image
@@ -56,6 +56,12 @@ html, body
 
 .upcase
   text-transform: uppercase
+
+.x1-5
+  font-size: 1.5em
+
+.first
+  margin-left: 0 !important
 
 // refactor
 #padding-remove
@@ -181,26 +187,30 @@ input::-webkit-inner-spin-button
  ========================================================================== */
 
 .cta
-  padding: 15px
-  background: #F7BA0E
-  color: #fff
+  padding: 10px 12px
+  background: $dark-blue
+  color: $white
   font-size: 1.1em
-  &.primary
-    background: $blue
-  &.success
-    background: $green
-  &.danger
-    background: $red
-.cta-hover
-  &:hover
-    background: #FFC728
-    color: #fff
-    text-decoration: none
-.cta p a
-  color: #00a8e6
-  font-weight: bold
-  &:hover
-    color: #35b3ee
+  &.wide
+    padding: 15px 12px
+    text-align: center
+    font-size: 1.3em
+  // &.primary
+  //   background: $blue
+  // &.success
+  //   background: $green
+  // &.danger
+  //   background: $red
+// .cta-hover
+//   &:hover
+//     background: #FFC728
+//     color: #fff
+//     text-decoration: none
+// .cta p a
+//   color: #00a8e6
+//   font-weight: bold
+//   &:hover
+//     color: #35b3ee
 
 /* Footer
  ========================================================================== */

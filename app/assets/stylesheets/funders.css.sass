@@ -1,6 +1,154 @@
+@import variables
+
 // Funders section
 .uk-tab
   border-bottom: none !important
 .uk-tab > li.uk-active > a
   border-top-color: transparent !important
 // Funders section
+
+/* Mixins & Variables
+ ========================================================================== */
+
+=rotate($deg)
+  -webkit-transform: rotate($deg)
+  -moz-transform: rotate($deg)
+  -ms-transform: rotate($deg)
+  -o-transform: rotate($deg)
+  transform: rotate($deg)
+
+/* Shared
+ ========================================================================== */
+
+header, .subnav
+  width: 100%
+  max-width: 1400px
+
+/* Header
+ ========================================================================== */
+
+header
+  height: 250px
+  position: relative
+  overflow: hidden
+  &:before
+    content: ""
+    position: absolute
+    width: 200%
+    height: 200%
+    top: -50%
+    left: -50%
+    z-index: -1
+    background: image-url('hex.svg') center repeat $dark-blue
+    background-size: 150px
+    +rotate(10deg)
+  .header
+    height: 250px
+    position: relative
+    .header-contents
+      position: absolute
+      top: 50%
+      transform: translateY(-50%)
+      h1, h3
+        color: white
+      h1
+        margin-bottom: 5px
+      h3
+        margin-top: 0
+
+/* Subnav
+ ========================================================================== */
+
+.subnav-container
+  border-bottom: 1px solid $light-grey
+  .name
+    float: right
+    text-align: right
+    line-height: 56px
+    width: 50%
+  .subnav
+    margin: 0
+    padding: 0
+    list-style-type: none
+    height: 56px
+    width: 50%
+    float: left
+    a
+      text-decoration: none
+      color: $blue-base
+      font-size: 14px
+      transition: all .25s
+      &:hover
+        color: $blue-hover
+      &:active
+        color: $blue-active
+    li
+      display: inline-block
+      box-sizing: border-box
+      text-align: center
+      height: 56px
+      margin: 0 8px
+      padding-top: 8px
+      overflow: hidden
+      &.active
+        color: $blue-active
+        border-bottom: solid 4px $dark-blue
+        font-weight: bold
+      &:active
+        .highlight
+          background: $blue-active
+      &:hover
+        .highlight
+          top: 4px
+      .highlight
+        position: relative
+        top: 8px
+        width: 100%
+        height: 4px
+        background: $blue-hover
+        transition: all .25s
+      span
+        display: block
+        font-weight: normal
+
+/* Funder card
+ ========================================================================== */
+
+.funder-card
+  background: $white
+  box-shadow: 0px 2px 6px 0px rgba(0,0,0,0.15)
+  .help-icon
+    color: $light-grey
+    font-size: 18px
+    &:hover
+      color: darken($light-grey, 10%)
+  hr
+    width: 50%
+    margin: 0 25%
+  // .cta
+  .year
+    background: $blue-alert
+    text-align: center
+    font-size: 16px
+    font-weight: bold
+    padding: 10px 0
+  .grants-stats
+    text-align: center
+    padding: 10px
+    .main-stat, .sub-stat
+      font-size: 12px
+    .main-stat
+      h1
+        font-size: 45px
+        margin-top: 5px
+    .sub-stat
+      h1
+        font-size: 30px
+        margin: 0
+
+/* Charts
+ ========================================================================== */
+
+@for $i from 0 through 5
+  #funding-size-#{$i}
+    height: 200px

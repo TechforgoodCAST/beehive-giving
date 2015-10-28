@@ -1,14 +1,14 @@
 /* Typography
  ========================================================================== */
 
-.roboto, html, p, a, o, label, input, h6, h5, h4, h3, .uk-panel-title
-  font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif !important
+html, p, a, o, label, input, h6, h5, h4, h3, .uk-panel-title
+  font-family: 'Noto Sans', Helvetica, sans-serif !important
 
-.roboto-slab, h2, h1
-  font-family: "Roboto Slab", "Helvetica Neue", Helvetica, Arial, sans-serif !important
+h2, h1
+  font-family: 'Roboto Slab', Helvetica, sans-serif !important
 
 .redacted
-  font-family: "Redacted" !important
+  font-family: 'Redacted' !important
 
 /* Grid
  ========================================================================== */
@@ -17,6 +17,35 @@
 .uk-grid.uk-grid-collapse > [class*='uk-width-']
   margin: 0
   padding: 0
+
+.uk-grid-small
+  margin-left: -10px !important
+.uk-grid-small > *
+  padding-left: 10px !important
+
+/* Buttons
+ ========================================================================== */
+
+.uk-button
+  &.uk-button-primary
+    border: 2px solid $blue-base
+
+.uk-button-primary
+  background: $blue-base !important
+  transition: all .15s
+  &:hover
+    background: $blue-hover !important
+    border-color: $light-grey
+  &:active
+    background: $blue-active !important
+  &.invert
+    border: 2px solid $blue-base
+    background: $dark-blue !important
+    &:hover
+      border-color: $blue-hover
+      background: lighten($dark-blue, 5%) !important
+    &:active
+      background: $blue-active !important
 
 /* Navbar
  ========================================================================== */
@@ -30,7 +59,7 @@
  ========================================================================== */
 
 .uk-panel-title
-  font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif !important
+  font-family: 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif !important
 
 /* Inputs
  ========================================================================== */
