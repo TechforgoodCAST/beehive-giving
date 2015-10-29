@@ -58,7 +58,7 @@ class ProfilesController < ApplicationController
                           mixpanel.people.set({
                             'Profile State': '#{@profile.state}'
                           });
-                          window.location.href = '#{funders_path}';
+                          window.location.href = '#{recommended_funders_path}';
                           $('button[type=submit]').prop('disabled', true)
                           .removeAttr('data-disable-with');"
           else
@@ -76,7 +76,7 @@ class ProfilesController < ApplicationController
           if @profile.state == 'complete'
             @recipient.refined_recommendation
             UserMailer.notify_funder(@profile).deliver
-            redirect_to funders_path
+            redirect_to recommended_funders_path
           else
             redirect_to edit_recipient_profile_path(@recipient, @profile)
           end

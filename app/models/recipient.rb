@@ -90,6 +90,7 @@ class Recipient < Organisation
     ].join(", ")
   end
 
+  # refactor
   def eligibility_count(funder)
     count = 0
 
@@ -102,6 +103,7 @@ class Recipient < Organisation
     count
   end
 
+  # refactor?
   def funding_stream_eligible?(funding_stream, funder)
     count = 0
 
@@ -114,16 +116,40 @@ class Recipient < Organisation
     funder.funding_streams.where('label = ?', funding_stream).first.restrictions.count == count ? true : false
   end
 
-  def eligible?(funder)
+  def load_recommendation(funder)
+    Recommendation.where(recipient: self, funder: funder).first
+  end
+
+  def set_eligibility(funder, eligibility)
+    self.load_recommendation(funder).update_attributes(eligibility: eligibility)
+  end
+
+  def check_eligibility(funder)
     count = 0
 
     funder.funding_streams.each do |f|
       count += 1 if self.funding_stream_eligible?(f.label, funder)
     end
 
-    count > 0 ? true : false
+    count > 0 ? self.set_eligibility(funder, 'Eligible') : self.set_eligibility(funder, 'Ineligible')
   end
 
+  def check_eligibilities
+    self.recipient_funder_accesses.each do |unlocked_funder|
+      funder = Funder.find(unlocked_funder.funder_id)
+      self.check_eligibility(funder)
+    end
+  end
+
+  def eligible?(funder)
+    return true if self.load_recommendation(funder).eligibility == 'Eligible'
+  end
+
+  def ineligible?(funder)
+    return true if self.load_recommendation(funder).eligibility == 'Ineligible'
+  end
+
+  # refactor
   def questions_remaining?(funder)
     self.eligibility_count(funder) < funder.restrictions.uniq.count
   end

@@ -26,7 +26,7 @@
     %img{:alt => "", :height => "1", :src => "//www.googleadservices.com/pagead/conversion/958190855/?label=RAlQCI7Qp18Qh6rzyAM&amp;guid=ON&amp;script=0", :style => "border-style:none;", :width => "1"}/
 -# Update tracking END
 
-= render 'funders/header'
+= render partial: 'recipients/funders/header'
 
 .base.background
   .uk-container.uk-container-center
@@ -34,7 +34,7 @@
       .uk-grid{'data-uk-grid-match' => ''}
         - @funders.each do |funder|
           .uk-width-medium-1-2.uk-width-large-1-3.uk-margin-bottom
-            = render :partial => 'funders/funder_card', :locals => { :funder => funder }
+            = render partial: 'funders/funder_card', locals: { funder: funder }
 
   .dark.background
     .uk-container.uk-container-center

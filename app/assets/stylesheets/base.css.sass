@@ -45,12 +45,12 @@ html, body
   color: $white
 
 .yellow, .yellow:hover
-  color: $yellow
+  color: $yellow-base
   &.background
-    background: $yellow
+    background: $yellow-base
 
 .blue
-  color: $blue
+  color: $blue-base
 .blue:hover
   color: $blue-hover
 
@@ -59,6 +59,7 @@ html, body
 
 .x1-5
   font-size: 1.5em
+  line-height: 0
 
 .first
   margin-left: 0 !important
@@ -147,10 +148,10 @@ html, body
   top: -29px
   font-size: 12px
   font-weight: bold
-  color: $yellow
+  color: $yellow-base
 
 .border
-  border-bottom: 2px solid $yellow
+  border-bottom: 2px solid $yellow-base
 
 // refactor
 .bh-button-group
@@ -195,22 +196,6 @@ input::-webkit-inner-spin-button
     padding: 15px 12px
     text-align: center
     font-size: 1.3em
-  // &.primary
-  //   background: $blue
-  // &.success
-  //   background: $green
-  // &.danger
-  //   background: $red
-// .cta-hover
-//   &:hover
-//     background: #FFC728
-//     color: #fff
-//     text-decoration: none
-// .cta p a
-//   color: #00a8e6
-//   font-weight: bold
-//   &:hover
-//     color: #35b3ee
 
 /* Footer
  ========================================================================== */

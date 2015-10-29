@@ -12,26 +12,26 @@
 .subnav-container.uk-container-center
   .uk-container.uk-container-center
     %ul.subnav
-      %a{href: funder_recommended_path}
-        %li.first{ class: ('active' if current_page?(funder_recommended_path)) }
+      %a{href: recommended_funders_path}
+        %li.first{ class: ('active' if current_page?(recommended_funders_path)) }
           .subnav-contents
             Recommended
             %span 6
           .highlight
-      %a{href: funder_eligible_path}
-        %li{ class: ('active' if current_page?(funder_eligible_path)) }
+      %a{href: eligible_funders_path}
+        %li{ class: ('active' if current_page?(eligible_funders_path)) }
           .subnav-contents
             Eligible
-            %span 6
+            %span= @recipient.recommendations.where(eligibility: 'Eligible').count
           .highlight
-      %a{href: funder_ineligible_path}
-        %li{ class: ('active' if current_page?(funder_ineligible_path)) }
+      %a{href: ineligible_funders_path}
+        %li{ class: ('active' if current_page?(ineligible_funders_path)) }
           .subnav-contents
             Ineligible
-            %span -
+            %span= @recipient.recommendations.where(eligibility: 'Ineligible').count
           .highlight
-      %a{href: funders_path}
-        %li{ class: ('active' if current_page?(funders_path)) }
+      %a{href: all_funders_path}
+        %li{ class: ('active' if current_page?(all_funders_path)) }
           .subnav-contents
             All funders
             %span= Funder.where(active_on_beehive: true).count

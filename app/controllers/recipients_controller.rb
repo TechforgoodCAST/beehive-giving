@@ -6,6 +6,35 @@ class RecipientsController < ApplicationController
   before_filter :load_feedback, :except => [:unlock_funder, :vote]
   before_filter :funder_attribute, :only => [:comparison, :eligibility, :update_eligibility]
 
+  def recommended_funders
+    @funders = @recipient.recommended_funders.limit(Recipient::RECOMMENDATION_LIMIT)
+
+    render 'recipients/funders/recommended_funders'
+  end
+
+  def eligible_funders
+    @funders = Funder.find(@recipient.recommendations.where(eligibility: 'Eligible').pluck(:funder_id))
+
+    render 'recipients/funders/eligible_funders'
+  end
+
+  def ineligible_funders
+    @funders = Funder.find(@recipient.recommendations.where(eligibility: 'Ineligible').pluck(:funder_id))
+
+    render 'recipients/funders/ineligible_funders'
+  end
+
+  def all_funders
+    @search = Funder.where(active_on_beehive: true).where('recommendations.recipient_id = ?', @recipient.id).ransack(params[:q])
+    @search.sorts = ['recommendations_score desc', 'name asc'] if @search.sorts.empty?
+    @funders = @search.result
+
+    respond_to do |format|
+      format.html { render 'recipients/funders/all_funders' }
+      format.js
+    end
+  end
+
   def dashboard
     @search = Funder.ransack(params[:q])
     @profile = @recipient.profiles.where('year = ?', 2015).first
@@ -15,7 +44,7 @@ class RecipientsController < ApplicationController
     @restrictions = @funder.restrictions.uniq
     unless @funder.active_on_beehive
       flash[:alert] = "Sorry, you don't have access to that"
-      redirect_to funders_path
+      redirect_to recommended_funders_path
     end
   end
 
@@ -51,13 +80,13 @@ class RecipientsController < ApplicationController
 
     if current_user.feedbacks.count < 1 && @recipient.unlocked_funders.count == 2
       redirect_to new_feedback_path(:redirect_to_funder => @funder)
-    elsif @recipient.questions_remaining?(@funder)
-      @eligibility =  1.times { @restrictions.each { |r| @recipient.eligibilities.new(restriction_id: r.id) unless @recipient.eligibilities.where('restriction_id = ?', r.id).count > 0 } }
     elsif @recipient.eligible?(@funder)
       redirect_to recipient_comparison_path(@funder)
-    else
+    elsif @recipient.ineligible?(@funder)
       flash[:alert] = "Sorry you're ineligible"
       redirect_to recipient_comparison_path(@funder)
+    else
+      @eligibility =  1.times { @restrictions.each { |r| @recipient.eligibilities.new(restriction_id: r.id) unless @recipient.eligibilities.where('restriction_id = ?', r.id).count > 0 } }
     end
   end
 
@@ -66,6 +95,7 @@ class RecipientsController < ApplicationController
 
     if @recipient.update_attributes(eligibility_params)
       @recipient.unlock_funder!(@funder) if @recipient.locked_funder?(@funder)
+      @recipient.check_eligibility(@funder)
       if @recipient.eligible?(@funder)
         FunderMailer.eligible_email(@recipient, @funder).deliver
         flash[:notice] = "You're eligible"
@@ -86,6 +116,7 @@ class RecipientsController < ApplicationController
 
   def update_eligibilities
     if @recipient.update_attributes(eligibility_params)
+      @recipient.check_eligibilities
       flash[:notice] = "Updated!"
       redirect_to session.delete(:return_to)
     else

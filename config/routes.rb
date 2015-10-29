@@ -31,10 +31,11 @@ Rails.application.routes.draw do
   match '/new-funder', to: 'signup#funder', via: :get, as: 'new_funder'
   match '/new-funder', to: 'signup#create_funder', via: :post
 
-  # funders
-  match '/funders/recommended', to: 'funders#recommended', via: :get, as: 'funder_recommended'
-  match '/funders/eligible', to: 'funders#eligible', via: :get, as: 'funder_eligible'
-  match '/funders/ineligible', to: 'funders#ineligible', via: :get, as: 'funder_ineligible'
+  # Funders
+  match '/funders/recommended', to: 'recipients#recommended_funders', via: :get, as: 'recommended_funders'
+  match '/funders/eligible', to: 'recipients#eligible_funders', via: :get, as: 'eligible_funders'
+  match '/funders/ineligible', to: 'recipients#ineligible_funders', via: :get, as: 'ineligible_funders'
+  match '/funders', to: 'recipients#all_funders', via: :get, as: 'all_funders'
 
   # Recipients
   match '/comparison/(:id)', to: 'recipients#comparison', via: :get, as: 'recipient_comparison'

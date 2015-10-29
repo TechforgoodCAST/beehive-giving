@@ -1,10 +1,5 @@
 .uk-panel.funder-card
-
-  -# - elsif @recipient.eligible?(funder)
-  -#   .uk-panel-badge.uk-badge.uk-badge-success{style: 'margin: 6px;'} Eligible
-  -#
-  -# - elsif !@recipient.eligible?(funder) && @recipient.eligibility_count(funder) > 0
-  -#   .uk-panel-badge.uk-badge.uk-badge-danger{style: 'margin: 8px 6px;'} Not eligible
+  = render partial: 'recipients/funders/badge', locals: { funder: funder }
 
   .uk-panel-teaser.uk-text-center.uk-vertical-align{style: 'height: 140px;'}
     .uk-vertical-align-middle

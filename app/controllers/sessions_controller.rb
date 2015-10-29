@@ -43,8 +43,10 @@ class SessionsController < ApplicationController
 
   def start_path_for_user(user)
     if user.role == 'User'
-      return signup_organisation_path unless user.organisation_id
-      funders_path
+      return signup_organisation_path unless user.organisation
+      return new_recipient_profile_path(user.organisation) unless user.organisation.profiles.count > 0
+      return edit_recipient_profile_path(user.organisation, user.organisation.profiles.last) unless user.organisation.profiles.last.state == 'complete'
+      recommended_funders_path
     else
       funder_path(current_user.organisation)
     end

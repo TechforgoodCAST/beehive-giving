@@ -1,0 +1,5 @@
+- if @recipient.load_recommendation(funder).eligibility
+  - if @recipient.eligible?(funder)
+    .uk-panel-badge.uk-badge.uk-badge-success= @recipient.load_recommendation(funder).eligibility
+  - else
+    .uk-panel-badge.uk-badge.uk-badge-danger= @recipient.load_recommendation(funder).eligibility

@@ -74,5 +74,13 @@ FactoryGirl.define do
     implementors {FactoryGirl.create_list(:implementor, 2)}
     implementations {FactoryGirl.create_list(:implementation, 2)}
   end
-  
+
+  factory :incomplete_profile, class: Profile do
+    year Date.today.year
+    gender 'All genders'
+    min_age 14
+    max_age 28
+    beneficiaries {FactoryGirl.create_list(:beneficiary, 2)}
+  end
+
 end

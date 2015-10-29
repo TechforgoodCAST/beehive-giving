@@ -8,18 +8,16 @@ class FundersController < ApplicationController
 
   respond_to :html
 
-  def recommended; end
-
-  def index
-    @search = Funder.where(active_on_beehive: true).where('recommendations.recipient_id = ?', @recipient.id).ransack(params[:q])
-    @search.sorts = ['recommendations_score desc', 'name asc'] if @search.sorts.empty?
-    @funders = @search.result
-
-    respond_to do |format|
-      format.html
-      format.js
-    end
-  end
+  # def index
+  #   @search = Funder.where(active_on_beehive: true).where('recommendations.recipient_id = ?', @recipient.id).ransack(params[:q])
+  #   @search.sorts = ['recommendations_score desc', 'name asc'] if @search.sorts.empty?
+  #   @funders = @search.result
+  #
+  #   respond_to do |format|
+  #     format.html
+  #     format.js
+  #   end
+  # end
 
   def explore
     @recipient = Recipient.find_by_slug(params[:id])

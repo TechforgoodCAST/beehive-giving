@@ -31,7 +31,7 @@
     %img{:alt => "", :height => "1", :src => "//www.googleadservices.com/pagead/conversion/958190855/?label=RAlQCI7Qp18Qh6rzyAM&amp;guid=ON&amp;script=0", :style => "border-style:none;", :width => "1"}/
 -# Update tracking END
 
-= render 'funders/header'
+= render partial: 'recipients/funders/header', mode: {}
 
 .base.background
   .uk-container.uk-container-center
@@ -42,11 +42,12 @@
           = render partial: 'funders/static_background'
 
         - else
-          - @recipient.recommended_funders.limit(Recipient::RECOMMENDATION_LIMIT).each_with_index do |funder, i|
+          - @funders.each_with_index do |funder, i|
 
             .uk-width-medium-1-2.uk-width-large-1-3.uk-margin-bottom
 
               .uk-panel.funder-card
+                = render partial: 'recipients/funders/badge', locals: { funder: funder }
 
                 .uk-panel-teaser.uk-text-center.uk-vertical-align{style: 'height: 140px;'}
                   .uk-vertical-align-middle
@@ -98,7 +99,7 @@
                 .grants-stats
                   .main-stat{style: 'margin-bottom: 10px;'}
                     Countries Funded
-                    %span.help-icon{'data-uk-tooltip' => "{pos:'top'}", :title => 'Explination of what this is.'}
+                    %span.help-icon{'data-uk-tooltip' => "{pos:'top'}", :title => "The countries where #{funder.name} has given funding in #{funder.current_attribute.year}."}
                       %i.uk-icon.uk-icon-question-circle
                   .uk-margin-small-bottom= geo_chart funder.countries_by_year.group(:name).count, height: '200px', library: {colorAxis: {colors: ['#f5e8c4', '#fadc89', '#f5b918']}, tooltip: {textStyle: {color: '#353f45'}}}
 
@@ -110,4 +111,4 @@
 
 -# Is this needed, and when would it show (logout, then login without complete profile?)
 - if current_user_should_render_welcome_modal?
-  = render :partial => 'recipients/modals/welcome'
+  = render partial: 'recipients/modals/welcome'
