@@ -1,0 +1,28 @@
+.subnav{"data-uk-sticky" => ""}
+  .uk-container.uk-container-center
+    %ul.nav
+
+      %a{href: recommended_funders_path}
+        %li.first.active
+          Recommended
+          .highlight
+      %span &middot;
+
+      %a{href: eligible_funders_path}
+        %li
+          Eligible
+          .highlight
+
+      %span &middot;
+
+      %a{href: ineligible_funders_path}
+        %li
+          Ineligible
+          .highlight
+
+      %span &middot;
+
+      %a{href: all_funders_path}
+        %li.last
+          All funder
+          .highlight

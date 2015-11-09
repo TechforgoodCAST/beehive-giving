@@ -30,9 +30,9 @@ html, body
 /* Utility
  ========================================================================== */
 
-.base
-  &.background
-    background-color: $background-base
+// .base
+//   &.background
+//     background-color: $background-base
 
 .dark
   &.background
@@ -143,7 +143,7 @@ html, body
 /* Navbar
  ========================================================================== */
 
-.navbar
+.navbar, .subnav
   &.recipient
     background: $yellow-base
   &.funder
@@ -224,6 +224,23 @@ html, body
       position: absolute
       right: -25px
       top: 14px
+
+/* Subnav
+ ========================================================================== */
+
+.subnav
+  background: $off-white
+  border-bottom: 1px solid $lightest-grey
+  ul.nav
+    span
+      color: $mid-grey
+    li
+      color: $yellow-base
+      padding: 25px 2px
+      @media screen and (max-width: 480px)
+        padding: 15px 2px
+      .highlight
+        background: $yellow-base
 
 /* Panel
  ========================================================================== */

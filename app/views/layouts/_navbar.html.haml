@@ -1,6 +1,6 @@
 - unless content_for?(:sign_in)
 
-  %nav.uk-navbar.navbar.recipient{"data-uk-sticky" => ""}
+  %nav.uk-navbar.navbar.recipient
     .uk-container.uk-container-center
       %ul.nav
         %a{href: recommended_funders_path}
@@ -9,7 +9,7 @@
             .highlight
             .caret
         %a{href: '#'}
-          %li
+          %li.last
             My non-profit
             .highlight
             .caret
