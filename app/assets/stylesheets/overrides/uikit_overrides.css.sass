@@ -69,10 +69,21 @@ h2, h1
 /* Navbar
  ========================================================================== */
 
-// refactor
-#bg
-  background-color: rgba(255, 255, 255, 0.9)
-  z-index: 990
+.uk-dropdown
+  padding: 10px 15px !important
+
+.nav .uk-dropdown li
+  padding: 0 !important
+  width: 100%
+  a
+    padding: 5px 15px !important
+    &:hover
+      background: $yellow-base !important
+
+.uk-navbar-toggle, .uk-navbar-content
+  height: 50px !important
+  @media screen and (max-width: 480px)
+    height: 40px !important
 
 /* Panel
  ========================================================================== */
