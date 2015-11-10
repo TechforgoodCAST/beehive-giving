@@ -33,83 +33,66 @@
 
 = render partial: 'recipients/funders/subnav'
 
-= render partial: 'recipients/funders/header', mode: {}
+.uk-container.uk-container-center.uk-margin-large
+  %h2 Recommended funders
+  %h4 You are seeing funders that Beehive thinks would be suitable for you.
 
-.base.background
-  .uk-container.uk-container-center
-    .uk-margin-top.uk-margin-large-bottom.uk-animation-fade
-      .uk-grid{'data-uk-grid-match' => "{target:'.funder-card'}"}
-        -# Is this needed, and when would it show (logout, then login without complete profile?)
-        - if current_user_should_render_welcome_modal?
-          = render partial: 'funders/static_background'
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
 
-        - else
-          - @funders.each_with_index do |funder, i|
+    - @funders.each_with_index do |funder, i|
+      .uk-grid
+        .uk-width-medium-1-3
+          .card
+            %a{href: recipient_comparison_path(funder), alt: funder.name}
+              .thumbnail
+                .funder{class: funder.slug}
+            .details
+              .content.center
+                = funder_card_cta_button_copy(@recipient, funder)
+              .content.center
+                = link_to 'More info', recipient_comparison_path(funder)
 
-            .uk-width-medium-1-2.uk-width-large-1-3.uk-margin-bottom
+        .uk-width-medium-2-3
+          %h3.uk-margin-top
+            = link_to funder.name, recipient_comparison_path(funder), class: 'yellow'
+            %span.year.muted
+              in
+              = funder.current_attribute.year
+          %ul.insights
 
-              .uk-panel.funder-card
-                = render partial: 'recipients/funders/badge', locals: { funder: funder }
+            %li.eligible
+              %a.badge{href: eligible_funders_path} Eligible
+              You are eligible for funding.
+              %a.action See criteria
 
-                .uk-panel-teaser.uk-text-center.uk-vertical-align{style: 'height: 140px;'}
-                  .uk-vertical-align-middle
-                    .funder{class: "#{funder.slug}", alt: "#{funder.name} Logo"}
+            %li.ineligible
+              %a.badge{href: ineligible_funders_path} Ineligible
+              You are not eligible for funding.
+              %a.action Find out why
 
-                .cta
-                  .uk-grid.uk-grid-small
-                    .uk-width-1-2
-                      = funder_card_cta_button_copy(@recipient, funder)
-                    .uk-width-1-2
-                      = link_to 'More info', recipient_comparison_path(funder), class: 'uk-width-1-1 uk-button uk-button-large uk-button-primary invert'
+            %li
+              Awarded funding in
+              = succeed '.' do
+                %span.bold April, August, and October
 
-                .year
-                  In
-                  = funder.current_attribute.year
+            %li
+              - if false
+                You are not eligible for funding.
+              - else
+                .action.redacted.muted Some dummy text.
 
-                .grants-stats
-                  .main-stat{ style: ('margin: 42px 0;' unless funder.current_attribute.application_count)}
-                    No. of Grants
-                    %span.help-icon{'data-uk-tooltip' => "{pos:'top'}", :title => "The total number of grants awarded by #{funder.name} in #{funder.current_attribute.year}."}
-                      %i.uk-icon.uk-icon-question-circle
-                    %h1= funder.current_attribute.grant_count
-                  - if funder.current_attribute.application_count
-                    .uk-grid.uk-grid-small
-                      .uk-width-1-2
-                        .sub-stat
-                          No. of Applications
-                          %span.help-icon{'data-uk-tooltip' => "{pos:'top'}", :title => "The total number of applications received by #{funder.name} in #{funder.current_attribute.year}."}
-                            %i.uk-icon.uk-icon-question-circle
-                          %h1= funder.current_attribute.application_count
-                      .uk-width-1-2
-                        .sub-stat
-                          \% Successful
-                          %span.help-icon{'data-uk-tooltip' => "{pos:'top'}", :title => "The percentage of applications that received funding from #{funder.name} in #{funder.current_attribute.year}."}
-                            %i.uk-icon.uk-icon-question-circle
-                          %h1<
-                            = percentage(funder.current_attribute.application_count, funder.current_attribute.grant_count)
-                            %small> %
+              - if false
+                %a.action Find out why
+              - else
+                .action.redacted.yellow Fund
 
-                %hr
-                .grants-stats
-                  .main-stat
-                    Funding Size
-                    %span.help-icon{'data-uk-tooltip' => "{pos:'top'}", :title => "How the funding given by #{funder.name} in #{funder.current_attribute.year} is distributed."}
-                      %i.uk-icon.uk-icon-question-circle
-                    %div{ id: "funding-size-#{i}", data: {data: funding_frequency_distribution(funder, funder.current_attribute.year).to_json} }
-
-                %hr
-                .grants-stats
-                  .main-stat{style: 'margin-bottom: 10px;'}
-                    Countries Funded
-                    %span.help-icon{'data-uk-tooltip' => "{pos:'top'}", :title => "The countries where #{funder.name} has given funding in #{funder.current_attribute.year}."}
-                      %i.uk-icon.uk-icon-question-circle
-                  .uk-margin-small-bottom= geo_chart funder.countries_by_year.group(:name).count, height: '200px', library: {colorAxis: {colors: ['#f5e8c4', '#fadc89', '#f5b918']}, tooltip: {textStyle: {color: '#353f45'}}}
-
-  .dark.background
-    .uk-container.uk-container-center
-      .cta.wide
-        Add a project to improve the accuracy of your matches.
-        .uk-button.uk-button-large.uk-button-primary Improve your results
+      - if i == 2
+        .cta.wide
+          Add a project to improve your matches.
+          .uk-button.uk-button-large.uk-button-primary.invert Add a project
+      - elsif i == @funders.count-1
+      - else
+        %hr.thick
 
 -# Is this needed, and when would it show (logout, then login without complete profile?)
 - if current_user_should_render_welcome_modal?

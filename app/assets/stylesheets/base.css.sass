@@ -5,9 +5,14 @@
  ========================================================================== */
 
 @font-face
-  font-family: "Redacted"
-  src: font-url("redacted-script-bold.eot")
-  src: font-url("redacted-script-bold.woff2") format("woff2"), font-url("redacted-script-bold.woff") format("woff"), font-url("redacted-script-bold.otf") format("opentype"), font-url("redacted-script-bold.svg#filename") format("svg")
+  font-family: 'Redacted'
+  src: font-url('redacted-script-bold.eot')
+  src: font-url('redacted-script-bold.woff2') format('woff2'), font-url('redacted-script-bold.woff') format('woff'), font-url('redacted-script-bold.otf') format('opentype'), font-url('redacted-script-bold.svg#filename') format('svg')
+
+.redacted
+  font-family: 'Redacted' !important
+  font-size: 16px
+  line-height: 14px
 
 /* Layout
  ========================================================================== */
@@ -15,6 +20,10 @@
 html, body
   min-height: 100% !important
   height: 100%
+html
+  overflow: hidden
+body
+  overflow: auto
 
 .full-height
   min-height: 340px
@@ -30,13 +39,10 @@ html, body
 /* Utility
  ========================================================================== */
 
-// .base
-//   &.background
-//     background-color: $background-base
-
-.dark
-  &.background
-    background-color: $dark-blue
+hr
+  &.thick
+    border-width: 3px !important
+    margin: 30px auto
 
 .background-image
   +background-image
@@ -45,17 +51,17 @@ html, body
   color: $white !important
 
 .muted, .muted:hover
-  color: $mid-grey
+  color: $mid-grey !important
 
 .yellow, .yellow:hover
-  color: $yellow-base
+  color: $yellow-base !important
   &.background
-    background: $yellow-base
+    background: $yellow-base !important
 
 .blue
-  color: $blue-base
+  color: $blue-base !important
 .blue:hover
-  color: $blue-hover
+  color: $blue-hover !important
 
 .upcase
   text-transform: uppercase
@@ -71,10 +77,6 @@ html, body
 .last
   margin-right: 0 !important
   padding-right: 0 !important
-
-// refactor
-#padding-remove
-  padding: 0 0 0 0
 
 // refactor
 .shadow
@@ -274,13 +276,93 @@ input::-webkit-inner-spin-button
 
 .cta
   padding: 10px 12px
-  background: $dark-blue
-  color: $white
-  font-size: 1.1em
+  background: $off-white
+  font-size: 16px
+  margin: 30px 0
+  border-left: 4px solid $cta-base
+  +shadow
   &.wide
-    padding: 15px 12px
+    padding: 12px
     text-align: center
-    font-size: 1.3em
+
+/* Card
+ ========================================================================== */
+
+.card
+  border-radius: 3px
+  border: 1px solid $light-grey
+  +shadow
+  .thumbnail
+    padding: 10px
+    border-bottom: 1px solid $light-grey
+    text-indent: -9999px
+    .funder
+      margin: 20px auto
+  .details
+    background: $off-white
+    padding-top: 10px
+    hr
+      color: $light-grey
+      margin: 0
+    .content
+      padding: 0 10px 10px 10px
+      &.center
+        text-align: center
+
+/* Insights
+ ========================================================================== */
+
+=custom_bullet($bullet, $color)
+  font-family: 'FontAwesome'
+  content: $bullet
+  position: relative
+  top: 2px
+  margin: 0 5px 0 -25px
+  color: $color
+  font-size: 18px
+
+ul.insights
+  list-style: none
+  display: block
+  margin-top: 0
+  li
+    padding: 5px 0
+    .action
+      display: inline-block
+    &:before
+      +custom_bullet('\f05a', $light-grey)
+    &.eligible
+      .badge
+        border-color: $green-base
+        color: $green-base !important
+        &:hover
+          background: $green-alert
+        &:active
+          color: $green-active !important
+      &:before
+        +custom_bullet('\f058', $green-base)
+    &.ineligible
+      .badge
+        border-color: $red-base
+        color: $red-base !important
+        &:hover
+          background: $red-alert
+        &:active
+          color: $red-active !important
+      &:before
+        +custom_bullet('\f057', $red-base)
+
+.badge
+  display: inline-block
+  text-transform: uppercase
+  text-decoration: none !important
+  font-weight: bold
+  font-size: 11px
+  border: 2px solid $dark-brown
+  border-radius: 3px
+  padding: 0 12px
+  margin-right: 4px
+  transition: all .25s
 
 /* Footer
  ========================================================================== */

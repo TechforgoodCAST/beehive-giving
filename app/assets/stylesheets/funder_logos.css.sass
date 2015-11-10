@@ -1,16 +1,17 @@
-$background-image-height: 3705px
+$background-image-height: 3835px
 $logo-width: 150px
 
-=funder-logo($ypos, $scale:1, $width:229px)
-  width: $width
+=funder-logo($ypos, $scale:1, $width:200px)
+  max-width: $width
   height: 65px * $scale
   background-size: (229px * $scale) ($background-image-height * $scale)
   background-position: center ((-65px * $ypos) * $scale)
 
 .funder
   background: image-url('funder-logos-sprite.png') no-repeat
-  width: 229px
+  width: 100%
   height: 65px
+  margin: 0 auto
   background-position: center 65px
 
   &.the-foundation
@@ -104,7 +105,7 @@ $logo-width: 150px
     +funder-logo(17, .6, $logo-width)
 
   &.city-bridge-trust
-    +funder-logo(18)
+    +funder-logo(18, .85)
   &.city-bridge-trust-small
     +funder-logo(18, .6, $logo-width)
 
@@ -294,6 +295,16 @@ $logo-width: 150px
     +funder-logo(55, 1, $logo-width)
 
   &.the-baring-foundation
-    +funder-logo(56)
+    +funder-logo(56, .85)
   &.the-baring-foundation-small
     +funder-logo(56, .6, $logo-width)
+
+  &.the-wolfson-foundation
+    +funder-logo(57)
+  &.the-wolfson-foundation-small
+    +funder-logo(57, 1, $logo-width)
+
+  &.oxfordshire-community-foundation
+    +funder-logo(58)
+  &.oxfordshire-community-foundation-small
+    +funder-logo(58, .8, $logo-width)
