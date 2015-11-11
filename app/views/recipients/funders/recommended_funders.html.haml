@@ -40,52 +40,7 @@
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
 
     - @funders.each_with_index do |funder, i|
-      .uk-grid
-        .uk-width-medium-1-3
-          .card
-            %a{href: recipient_comparison_path(funder), alt: funder.name}
-              .thumbnail
-                .funder{class: funder.slug}
-            .details
-              .content.center
-                = funder_card_cta_button_copy(@recipient, funder)
-              .content.center
-                = link_to 'More info', recipient_comparison_path(funder)
-
-        .uk-width-medium-2-3
-          %h3.uk-margin-top
-            = link_to funder.name, recipient_comparison_path(funder), class: 'yellow'
-            %span.year.muted
-              in
-              = funder.current_attribute.year
-          %ul.insights
-
-            %li.eligible
-              %a.badge{href: eligible_funders_path} Eligible
-              You are eligible for funding.
-              %a.action See criteria
-
-            %li.ineligible
-              %a.badge{href: ineligible_funders_path} Ineligible
-              You are not eligible for funding.
-              %a.action Find out why
-
-            %li
-              Awarded funding in
-              = succeed '.' do
-                %span.bold April, August, and October
-
-            %li
-              - if false
-                You are not eligible for funding.
-              - else
-                .action.redacted.muted Some dummy text.
-
-              - if false
-                %a.action Find out why
-              - else
-                .action.redacted.yellow Fund
-
+      = render partial: 'recipients/funders/summary', locals: { funder: funder }
       - if i == 2
         .cta.wide
           Add a project to improve your matches.

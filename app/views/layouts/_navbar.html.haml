@@ -4,12 +4,12 @@
     .uk-container.uk-container-center
       %ul.nav
         %a{href: recommended_funders_path}
-          %li.first.active
+          %li.first{ class: ('active' if recipients_navbar_funders_active) }
             Funders
             .highlight
             .caret
-        %a{href: '#'}
-          %li.last
+        %a{href: recipient_profiles_path(current_user.organisation)}
+          %li.last{ class: ('active' if recipients_navbar_my_nonprofit_active) }
             My non-profit
             .highlight
             .caret
@@ -25,6 +25,10 @@
                     %i.uk-icon-caret-down
                   .uk-dropdown.uk-dropdown-navbar.uk-dropdown-flip
                     %ul.uk-nav.uk-nav-navbar
+                      %li
+                        %a{:href => recipient_profiles_path(current_user.organisation)} Edit my profile
+                      %li
+                        %a{:href => recipient_eligibilities_path(current_user.organisation), :"data-no-turbolink" => true} Manage eligibility
                       %li
                         %a{href: logout_path, method: :destroy} Sign out
 
@@ -42,5 +46,9 @@
     - if logged_in?
       %ul.uk-nav.uk-nav-offcanvas
         %li.uk-nav-header.uk-margin-top.uk-text-center Menu
+        %li
+          %a{:href => recipient_profiles_path(current_user.organisation)} Edit my profile
+        %li
+          %a{:href => recipient_eligibilities_path(current_user.organisation), :"data-no-turbolink" => true} Manage eligibility
         %li
           %a{href: logout_path, method: :destroy} Sign out
