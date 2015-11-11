@@ -4,7 +4,7 @@
     .uk-container.uk-container-center
       %ul.nav
         %a{href: recommended_funders_path}
-          %li.first{ class: ('active' if recipients_navbar_funders_active) }
+          %li.first{ class: ('active' if params[:funders_navbar]) }
             Funders
             .highlight
             .caret

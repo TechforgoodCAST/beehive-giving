@@ -2,9 +2,10 @@ class FundersController < ApplicationController
 
   before_filter :ensure_logged_in
   before_filter :ensure_admin, only: [:comparison]
-  before_filter :ensure_funder, only: [:explore, :show, :eligible]
+  before_filter :ensure_funder, only: [:explore, :eligible]
   before_filter :load_funder, except: [:new, :create]
   before_filter :load_recipient
+  before_filter :funder_attribute, :only => [:show]
 
   respond_to :html
 
@@ -26,7 +27,11 @@ class FundersController < ApplicationController
   end
 
   def show
-    @grants = @funder.grants.order("created_at").page(params[:page]).per(10)
+    @restrictions = @funder.restrictions.uniq
+    unless @funder.active_on_beehive
+      flash[:alert] = "Sorry, you don't have access to that"
+      redirect_to recommended_funders_path
+    end
   end
 
   def eligible
@@ -56,6 +61,16 @@ class FundersController < ApplicationController
   #refactor?
   def load_recipient
     @recipient = current_user.organisation if logged_in?
+  end
+
+  #refactor?
+  def funder_attribute
+    @funding_stream = params[:funding_stream] || 'All'
+
+    if @funder.attributes.any?
+      @year_of_funding = @funder.attributes.where('grant_count > ?', 0).order(year: :desc).first.year
+      @funder_attribute = @funder.attributes.where('year = ? AND funding_stream = ?', @year_of_funding, @funding_stream).first
+    end
   end
 
 end

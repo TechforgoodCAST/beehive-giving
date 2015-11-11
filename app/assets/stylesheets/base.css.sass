@@ -280,6 +280,16 @@ input::-webkit-inner-spin-button
   &.wide
     padding: 12px
     text-align: center
+  &.tight
+    margin: 0
+  &.red
+    background: $red-alert
+    border-left: 4px solid $red-base
+    color: $red-active
+  &.green
+    background: $green-alert
+    border-left: 4px solid $green-base
+    color: $green-active
 
 /* Card
  ========================================================================== */
@@ -304,6 +314,10 @@ input::-webkit-inner-spin-button
       padding: 0 10px 10px 10px
       &.center
         text-align: center
+
+.year
+  font-weight: normal
+  font-size: 14px
 
 /* Insights
  ========================================================================== */
@@ -359,6 +373,12 @@ ul.insights
   padding: 0 12px
   margin-right: 4px
   transition: all .25s
+
+/* Charts
+ ========================================================================== */
+
+.chart
+  +shadow
 
 /* Footer
  ========================================================================== */

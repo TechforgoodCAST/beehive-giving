@@ -6,13 +6,6 @@ module RecipientsHelper
       |k,v| v > 0 }.inject({}) { |r, e| r[e.first] = e.last; r }
   end
 
-  def recipients_navbar_funders_active
-    current_page?(recommended_funders_path) ||
-    current_page?(eligible_funders_path) ||
-    current_page?(ineligible_funders_path) ||
-    current_page?(all_funders_path)
-  end
-
   def recipients_navbar_my_nonprofit_active
     current_page?(recipient_profiles_path(current_user.organisation)) ||
     current_page?(edit_recipient_profile_path(current_user.organisation, current_user.organisation.profiles.first)) ||

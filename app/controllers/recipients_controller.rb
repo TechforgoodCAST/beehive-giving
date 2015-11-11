@@ -40,14 +40,6 @@ class RecipientsController < ApplicationController
     @profile = @recipient.profiles.where('year = ?', 2015).first
   end
 
-  def comparison
-    @restrictions = @funder.restrictions.uniq
-    unless @funder.active_on_beehive
-      flash[:alert] = "Sorry, you don't have access to that"
-      redirect_to recommended_funders_path
-    end
-  end
-
   def vote
     vote = Feature.find_or_initialize_by(recipient_id: params[:recipient_id], funder_id: params[:funder_id])
 
@@ -146,6 +138,7 @@ class RecipientsController < ApplicationController
     end
   end
 
+  #refactor?
   def funder_attribute
     @funding_stream = params[:funding_stream] || 'All'
 

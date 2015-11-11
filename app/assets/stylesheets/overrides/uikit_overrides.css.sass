@@ -50,20 +50,22 @@ h1
 
 .uk-button
   border-radius: 3px
-  &.uk-button-primary
-    border: 1px solid $cta-base
+
+.uk-button-primary, .uk-button-success, .uk-button-danger
+  color: $white !important
+  transition: all .25s
+  &.invert
+    background: transparent !important
 
 .uk-button-primary
   background: $cta-base !important
-  color: $white !important
-  transition: all .25s
+  border: 1px solid $cta-base
   &:hover
     background: $cta-hover !important
   &:active
     background: $cta-active !important
   &.invert
     border: 2px solid $cta-base
-    background: transparent !important
     color: $cta-base !important
     &:hover
       border-color: $cta-hover
@@ -72,6 +74,42 @@ h1
     &:active
       border-color: $cta-active
       color: $cta-active !important
+
+.uk-button-success
+  background: $green-base !important
+  border: 1px solid $green-base
+  &:hover
+    background: $green-hover !important
+  &:active
+    background: $green-active !important
+  &.invert
+    border: 2px solid $green-base
+    color: $green-base !important
+    &:hover
+      border-color: $green-hover
+      color: $green-hover !important
+      background: $green-alert !important
+    &:active
+      border-color: $green-active
+      color: $green-active !important
+
+.uk-button-danger
+  background: $red-base !important
+  border: 1px solid $red-base
+  &:hover
+    background: $red-hover !important
+  &:active
+    background: $red-active !important
+  &.invert
+    border: 2px solid $red-base
+    color: $red-base !important
+    &:hover
+      border-color: $red-hover
+      color: $red-hover !important
+      background: $red-alert !important
+    &:active
+      border-color: $red-active
+      color: $red-active !important
 
 /* Badges
  ========================================================================== */
