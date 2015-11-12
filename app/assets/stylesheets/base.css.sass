@@ -250,17 +250,76 @@ hr
 /* Inputs
  ========================================================================== */
 
+.radio
+  margin: 0
+  color: $cta-base
+  label
+    border-radius: 3px
+    border: 2px solid $cta-base
+    padding: 6px 8px 5px 8px
+    margin: 4px
+    display: inline-block
+    cursor: pointer
+    transition: all 0.25s ease
+    top: 0px
+    width: 50px
+    input
+      margin-right: 4px
+      border: 2px solid $cta-base !important
+      background: $white !important
+      width: 18px !important
+      height: 18px !important
+      transition: all 0.25s ease
+      &:before
+        background: $cta-active !important
+        width: 10px !important
+        height: 10px !important
+    &:hover
+      background: $cta-alert
+      border-color: $cta-active
+      color: $cta-active
+      input
+        border-color: $cta-active !important
+
+.radio label.radio-checked, .field_with_errors .radio label.radio-checked
+  background: $cta-active !important
+  border-color: $cta-active !important
+  color: $white !important
+  &:hover
+    background: $cta-active !important
+    border-color: $cta-base !important
+    color: $white !important
+  input
+    border-color: $cta-active !important
+    &:hover
+      border-color: $cta-base !important
+
+    // refactpr
+    // -webkit-transition: all 0.25s ease
+    // -o-transition: all 0.25s ease
+    // -moz-transition: all 0.25s ease
+    // -ms-transition: all 0.25s ease
+    // -kthtml-transition: all 0.25s ease
+
 .field_with_errors
   .string, .numeric, select, .checkbox label, .radio label, .chosen-container .chosen-single, .chosen-container .chosen-choices, .password
-    border: 1px #e28327 solid !important
-    background: #fff7f8 !important
-    color: #d85030 !important
+    border: 2px $red-base solid !important
+    background: $red-alert !important
+    color: $red-base !important
+  .radio label
+    &:hover
+      background: $cta-alert !important
+      border-color: $cta-active !important
+      color: $cta-active !important
+  .radio input
+    border-color: $red-base !important
+
   .chosen-with-drop .chosen-drop
     background: #fff7f8 !important
     color: #d85030 !important
-    border-right: 1px solid #e28327 !important
-    border-bottom: 1px solid #e28327 !important
-    border-left: 1px solid #e28327 !important
+    border-right: 1px solid $red-base !important
+    border-bottom: 1px solid $red-base !important
+    border-left: 1px solid $red-base !important
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button

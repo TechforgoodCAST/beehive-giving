@@ -1,6 +1,6 @@
 - params[:funders_navbar] = true
-.subnav{"data-uk-sticky" => ""}
-  .uk-container.uk-container-center
+.uk-container.uk-container-center
+  .subnav{"data-uk-sticky" => ""}
     .uk-grid
       .uk-width-2-3
         %ul.nav
@@ -11,7 +11,7 @@
           %span &rsaquo;
 
           %a{href: recipient_eligibility_path(funder)}
-            %li{ class: ('active' if current_page?(recipient_eligibility_path(funder))) }
+            %li{ class: ('active' if params[:controller] == 'recipients' && %w(eligibility update_eligibility).include?(params[:action])) }
               Check eligiblity
               .highlight
           %span &rsaquo;
