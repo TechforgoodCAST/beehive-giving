@@ -23,11 +23,11 @@
           - if @recipient.eligible?(funder)
             %a.badge{href: eligible_funders_path} Eligible
             You are eligible for funding.
-            %a.action See criteria
+            %a.action{href: recipient_eligibility_path(funder)} See criteria
           - else
             %a.badge{href: ineligible_funders_path} Ineligible
             You are ineligible for funding.
-            %a.action Find out why
+            %a.action{href: recipient_eligibility_path(funder)} Find out why
 
       %li
         Awarded funding in

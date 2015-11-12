@@ -145,8 +145,19 @@ class Recipient < Organisation
     return true if self.load_recommendation(funder).eligibility == 'Eligible'
   end
 
+  def get_funders_by_eligibility(eligibility)
+    Funder.find(self.recommendations.where(eligibility: eligibility).pluck(:funder_id))
+  end
+
   def ineligible?(funder)
     return true if self.load_recommendation(funder).eligibility == 'Ineligible'
+  end
+
+  def eligibility_restrictions(funder)
+    Eligibility.where(
+      recipient_id: self,
+      restriction_id: funder.restrictions
+    ).order(:id)
   end
 
   # refactor
@@ -228,7 +239,7 @@ class Recipient < Organisation
   end
 
   def recommended_funders
-    Funder.joins(:recommendations).where("recipient_id = ? AND score >= ?", self.id, RECOMMENDATION_THRESHOLD).order("recommendations.score DESC, name ASC")
+    Funder.joins(:recommendations).where("recipient_id = ? AND score >= ? AND eligibility is NULL OR eligibility != ?", self.id, RECOMMENDATION_THRESHOLD, 'Ineligible').order("recommendations.eligibility ASC, recommendations.score DESC, name ASC")
   end
 
   def recommended_funder?(funder)

@@ -9,7 +9,7 @@ module RecipientsHelper
   def recipients_navbar_my_nonprofit_active
     current_page?(recipient_profiles_path(current_user.organisation)) ||
     current_page?(edit_recipient_profile_path(current_user.organisation, current_user.organisation.profiles.first)) ||
-    current_page?(recipient_eligibilities_path(current_user.organisation))
+    current_page?(recipient_eligibility_path)
   end
 
   def funder_card_cta_button_copy(recipient, funder)
@@ -19,7 +19,7 @@ module RecipientsHelper
       if recipient.eligible?(funder)
         content_tag(:a, link_to('Apply', '#', class: classes))
       else
-        content_tag(:a, link_to('Why ineligible?', '#', class: classes))
+        content_tag(:a, link_to('Why ineligible?', recipient_eligibility_path(funder), class: classes))
       end
     else
       content_tag(:a, link_to('Check eligibility', recipient_eligibility_path(funder), class: classes))

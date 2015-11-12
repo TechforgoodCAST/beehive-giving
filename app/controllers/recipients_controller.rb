@@ -40,6 +40,7 @@ class RecipientsController < ApplicationController
     @profile = @recipient.profiles.where('year = ?', 2015).first
   end
 
+  # refactor
   def vote
     vote = Feature.find_or_initialize_by(recipient_id: params[:recipient_id], funder_id: params[:funder_id])
 
@@ -63,6 +64,7 @@ class RecipientsController < ApplicationController
     end
   end
 
+  # refactor
   def show
     @recipient = Recipient.find_by_slug(params[:id])
   end
@@ -72,11 +74,10 @@ class RecipientsController < ApplicationController
 
     if current_user.feedbacks.count < 1 && @recipient.unlocked_funders.count == 2
       redirect_to new_feedback_path(:redirect_to_funder => @funder)
-    elsif @recipient.eligible?(@funder)
-      redirect_to recipient_comparison_path(@funder)
-    elsif @recipient.ineligible?(@funder)
-      flash[:alert] = "Sorry you're ineligible"
-      redirect_to recipient_comparison_path(@funder)
+    # Subscription logic?
+    elsif @recipient.unlocked_funders.count >= Recipient::MAX_FREE_LIMIT && @recipient.locked_funder?(@funder)
+      flash[:alert] = 'You need to upgrade to check more funders.'
+      redirect_to root_path
     else
       @eligibility =  1.times { @restrictions.each { |r| @recipient.eligibilities.new(restriction_id: r.id) unless @recipient.eligibilities.where('restriction_id = ?', r.id).count > 0 } }
     end
@@ -88,31 +89,9 @@ class RecipientsController < ApplicationController
     if @recipient.update_attributes(eligibility_params)
       @recipient.unlock_funder!(@funder) if @recipient.locked_funder?(@funder)
       @recipient.check_eligibility(@funder)
-      if @recipient.eligible?(@funder)
-        FunderMailer.eligible_email(@recipient, @funder).deliver
-        flash[:notice] = "You're eligible"
-        redirect_to recipient_comparison_path(@funder)
-      else
-        FunderMailer.not_eligible_email(@recipient, @funder).deliver
-        flash[:alert] = "Sorry you're ineligible"
-        redirect_to recipient_comparison_path(@funder)
-      end
+      render :eligibility
     else
       render :eligibility
-    end
-  end
-
-  def eligibilities
-    session[:return_to] ||= request.referer
-  end
-
-  def update_eligibilities
-    if @recipient.update_attributes(eligibility_params)
-      @recipient.check_eligibilities
-      flash[:notice] = "Updated!"
-      redirect_to session.delete(:return_to)
-    else
-      render :eligibilities
     end
   end
 
