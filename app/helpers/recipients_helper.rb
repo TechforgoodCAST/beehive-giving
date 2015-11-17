@@ -46,7 +46,7 @@ module RecipientsHelper
   end
 
   def percentage(percent, total)
-    (percent.to_d / total.to_d).round(1)
+    "#{((percent.to_d / total.to_d).round(3) * 100)}%"
   end
 
 end

@@ -4,6 +4,7 @@ class Funder < Organisation
   has_many :districts, :through => :grants
   has_many :countries, :through => :grants
   has_many :countries_by_year, -> (object) { where('grants.approved_on <= ? AND grants.approved_on >= ?', "#{object.current_attribute.year}-12-31", "#{object.current_attribute.year}-01-01") }, :through => :grants, :source => :countries
+  has_many :districts_by_year, -> (object) { where('grants.approved_on <= ? AND grants.approved_on >= ?', "#{object.current_attribute.year}-12-31", "#{object.current_attribute.year}-01-01") }, :through => :grants, :source => :districts
 
   has_many :features
   has_many :enquiries
@@ -42,7 +43,12 @@ class Funder < Organisation
   end
 
   def current_attribute
-    self.attributes.where('funding_stream = ? AND grant_count > ?', 'All', 0).order(year: :desc).first
+    # self.attributes.where('funding_stream = ? AND grant_count > ?', 'All', 0).order(year: :desc).first
+    self.attributes.where(funding_stream: 'All').order(year: :desc).first
+  end
+
+  def recent_grants
+    self.grants.where('approved_on < ? AND approved_on >= ?', "#{self.current_attribute.year + 1}-01-01", "#{self.current_attribute.year}-01-01")
   end
 
 end

@@ -38,22 +38,8 @@
             in
             = @funder.current_attribute.year
 
-        %ul.insights
-          - if @recipient.load_recommendation(@funder).eligibility
-            %li{ class: (@recipient.eligible?(@funder) ? 'eligible' : 'ineligible')}
-              - if @recipient.eligible?(@funder)
-                %a.badge{href: eligible_funders_path} Eligible
-                You are eligible for funding.
-                %a.action See criteria
-              - else
-                %a.badge{href: ineligible_funders_path} Ineligible
-                You are ineligible for funding.
-                %a.action Find out why
+        = render partial: 'recipients/funders/insights', locals: {funder: @funder}
 
-          %li
-            Awarded funding in
-            = succeed '.' do
-              %span.uk-text-bold April, August, and October
         %hr.thick
 
       %section

@@ -17,19 +17,4 @@
         in
         = funder.current_attribute.year
 
-    %ul.insights
-      - if @recipient.load_recommendation(funder).eligibility
-        %li{ class: (@recipient.eligible?(funder) ? 'eligible' : 'ineligible')}
-          - if @recipient.eligible?(funder)
-            %a.badge{href: eligible_funders_path} Eligible
-            You are eligible for funding.
-            %a.action{href: recipient_eligibility_path(funder)} See criteria
-          - else
-            %a.badge{href: ineligible_funders_path} Ineligible
-            You are ineligible for funding.
-            %a.action{href: recipient_eligibility_path(funder)} Find out why
-
-      %li
-        Awarded funding in
-        = succeed '.' do
-          %span.uk-text-bold April, August, and October
+    = render partial: 'recipients/funders/insights', locals: {funder: funder}

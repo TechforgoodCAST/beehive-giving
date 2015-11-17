@@ -239,7 +239,11 @@ class Recipient < Organisation
   end
 
   def recommended_funders
-    Funder.joins(:recommendations).where("recipient_id = ? AND score >= ? AND eligibility is NULL OR eligibility != ?", self.id, RECOMMENDATION_THRESHOLD, 'Ineligible').order("recommendations.eligibility ASC, recommendations.score DESC, name ASC")
+    Funder.joins(:recommendations)
+      .where('recipient_id = ? AND score >= ?', self.id, RECOMMENDATION_THRESHOLD)
+      .order('recommendations.eligibility ASC, recommendations.score DESC, name ASC')
+      .where('eligibility is NULL OR eligibility != ?', 'Ineligible')
+      .limit(Recipient::RECOMMENDATION_LIMIT - self.get_funders_by_eligibility('Ineligible').count)
   end
 
   def recommended_funder?(funder)

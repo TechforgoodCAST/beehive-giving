@@ -7,7 +7,7 @@ class RecipientsController < ApplicationController
   before_filter :funder_attribute, :only => [:comparison, :eligibility, :update_eligibility]
 
   def recommended_funders
-    @funders = @recipient.recommended_funders.limit(Recipient::RECOMMENDATION_LIMIT)
+    @funders = @recipient.recommended_funders
 
     render 'recipients/funders/recommended_funders'
   end
@@ -26,7 +26,7 @@ class RecipientsController < ApplicationController
 
   def all_funders
     @search = Funder.where(active_on_beehive: true).where('recommendations.recipient_id = ?', @recipient.id).ransack(params[:q])
-    @search.sorts = ['recommendations_score desc', 'name asc'] if @search.sorts.empty?
+    @search.sorts = ['recommendations_eligibility asc', 'recommendations_score desc', 'name asc'] if @search.sorts.empty?
     @funders = @search.result
 
     respond_to do |format|
