@@ -43,9 +43,14 @@
         - else
           = render partial: 'recipients/funders/summary', locals: { funder: funder }
       - if i == 5
-        .cta.wide
-          Add a project to improve your matches.
-          .uk-button.uk-button-large.uk-button-primary.invert Add a project
+        %hr.thick
+        -# .cta.wide
+        -#   Add a project to improve your matches.
+        -#   .uk-button.uk-button-large.uk-button-primary.invert Add a project
       - elsif i == @funders.count-1
+        .cta.wide
+          More funders coming soon. Drop us an
+          = link_to 'email', 'mailto:support@beehivegiving.org'
+          if you'd like to see any in particular.
       - else
         %hr.thick

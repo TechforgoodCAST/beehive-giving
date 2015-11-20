@@ -15,6 +15,8 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
   end
 
   test 'recipient no eligibility data has to complete all questions' do
+    Capybara.match = :first
+
     @funding_stream = create(:funding_stream, :restrictions => @restrictions, :funders => [@funder])
     Eligibility.destroy_all
 
@@ -48,12 +50,14 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
   end
 
   test 'cannot check eligibility if max free limit reached unless subscribed' do
-    3.times { |f| create(:funder) }
-    Funder.all.order(id: :desc).limit(3).each { |f| @recipient.unlock_funder!(f) }
+    4.times { |f| create(:funder) }
+    Funder.all.limit(3).each { |f| @recipient.unlock_funder!(f) }
     @recipient.refined_recommendation
 
     visit recipient_eligibility_path(Funder.first)
-    click_button('Check eligibility (0 left)')
+    assert_equal recipient_eligibility_path(Funder.first), current_path
+
+    visit recipient_eligibility_path(Funder.last)
     assert_equal recommended_funders_path, current_path
 
     # refactor test unless subscribed

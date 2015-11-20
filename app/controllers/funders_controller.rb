@@ -3,6 +3,7 @@ class FundersController < ApplicationController
   before_filter :ensure_logged_in
   before_filter :ensure_admin, only: [:comparison]
   before_filter :ensure_funder, only: [:explore, :eligible]
+  before_filter :ensure_profile_for_current_year, only: [:show]
   before_filter :load_funder, except: [:new, :create]
   before_filter :load_recipient
 

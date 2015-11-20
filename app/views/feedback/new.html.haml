@@ -1,56 +1,56 @@
 .uk-container.uk-container-center
   .uk-grid.uk-margin-large.uk-margin-large-top
     .uk-width-medium-1-1.uk-animation-fade
-      %h2.uk-text-center.upcase Before you continue...
+      %h2.uk-text-center Before you continue...
       .uk-width-large-1-2.uk-text-left.uk-container-center
         .uk-animation-fade.uk-form.uk-form-stacked.uk-panel.uk-panel-box#panel.shadow
-          .uk-panel-title Let us know what you think
+          %h4.uk-text-bold Let us know what you think
           %fieldset
           = simple_form_for @feedback, :url => feedback_index_path do |f|
             - if @redirect_to_funder
               = f.hidden_field :redirect_to_funder, value: @redirect_to_funder
             .uk-form.uk-form-stacked
               .uk-width-1-1.uk-margin-bottom
-                %label.uk-form-label
+                %label
                   1. How likely is it that you would recommend Beehive to a friend or colleague?
                 = f.input :nps, as: :select, collection: (0..10).to_a.reverse, :label_method => lambda { |n| "#{n} #{Feedback::NPS[n]}" }, input_html: {class: 'uk-width-1-1'}
                 = f.error :nps, class: 'uk-text-small uk-text-warning'
 
               .uk-width-1-1.uk-margin-bottom
-                %label.uk-form-label
+                %label
                   2. How would you feel if this service was taken away?
                 = f.input :taken_away, as: :select, collection: (0..10).to_a.reverse, :label_method => lambda { |n| "#{n} #{Feedback::TAKEN_AWAY[n]}" }, input_html: {class: 'uk-width-1-1'}
                 = f.error :taken_away, class: 'uk-text-small uk-text-warning'
 
               .uk-width-1-1.uk-margin-bottom
-                %label.uk-form-label
+                %label
                   3. Beehive informs the decisions I make around fundraising
                 = f.input :informs_decision, as: :select, collection: (0..10).to_a.reverse, :label_method => lambda { |n| "#{n} #{Feedback::INFORMS_DECISION[n]}" }, input_html: {class: 'uk-width-1-1'}
                 = f.error :informs_decision, class: 'uk-text-small uk-text-warning'
 
               .uk-width-1-1.uk-margin-bottom
-                %label.uk-form-label
+                %label
                   4. How many funding applications did you submit in the past 12 months?
                 = f.input :application_frequency, as: :select, collection: Feedback::APP_AND_GRANT_FREQUENCY, input_html: {class: 'uk-width-1-1'}
                 = f.error :application_frequency, class: 'uk-text-small uk-text-warning'
 
               .uk-width-1-1.uk-margin-bottom
-                %label.uk-form-label
+                %label
                   5. How many grants did you recieve in the past 12 months?
                 = f.input :grant_frequency, as: :select, collection: Feedback::APP_AND_GRANT_FREQUENCY, input_html: {class: 'uk-width-1-1'}
                 = f.error :grant_frequency, class: 'uk-text-small uk-text-warning'
 
               .uk-width-1-1.uk-margin-bottom
-                %label.uk-form-label
+                %label
                   6. How often would you like to be informed about new funders and funding rounds?
                 = f.input :marketing_frequency, as: :select, collection: Feedback::MARKETING_FREQUENCY, input_html: {class: 'uk-width-1-1'}
                 = f.error :marketing_frequency, class: 'uk-text-small uk-text-warning'
 
               .uk-width-1-1.uk-margin-bottom
-                %label.uk-form-label
+                %label
                   7. Any other feedback?
                 = f.input :other, as: :text, input_html: {class: 'uk-width-1-1'}
                 = f.error :other, class: 'uk-text-small uk-text-warning'
 
             .uk-modal-footer.uk-text-right
-              = f.submit 'Submit feedback', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'
+              = f.submit 'Submit feedback', class: 'uk-button uk-button-primary uk-button-large uk-width-1-1'

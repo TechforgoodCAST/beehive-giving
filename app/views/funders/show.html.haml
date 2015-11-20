@@ -13,24 +13,10 @@
           .thumbnail
             .funder{class: @funder.slug}
         .details
-          -# .content.center
-          -#   %h3= @funder.name
-          -#   = @funder.mission
           .content.center
             = funder_card_cta_button_copy(@recipient, @funder)
 
     .uk-width-medium-2-3
-
-      -# - if @recipient.load_recommendation(@funder).eligibility
-      -#   - if @recipient.eligible?(@funder)
-      -#     .cta.wide.tight.green
-      -#       You are eligible for funding.
-      -#       .uk-button.uk-button-large.uk-button-success.invert See criteria
-      -#   - else
-      -#     .cta.wide.tight.red
-      -#       You are ineligible for funding.
-      -#       .uk-button.uk-button-large.uk-button-danger.invert Find out why
-
       %section
         %h3.uk-margin-top
           Summary
@@ -42,28 +28,75 @@
 
         %hr.thick
 
-      %section
+      %section#how-was-funding-distributed.offset
         %h3.uk-margin-top
-          How much funding was awarded?
+          How was funding distributed?
           %span.year.muted
             in
             = @funder.current_attribute.year
+
+        %p
+          - if @funder.current_attribute.application_count
+            Recieved
+            %span.uk-text-bold= number_with_delimiter(@funder.current_attribute.application_count)
+            applications and awarded
+            = succeed '.' do
+              %span.uk-text-bold= number_with_delimiter(@funder.current_attribute.grant_count)
+            grants
+          - else
+            Awarded
+            %span.uk-text-bold= number_with_delimiter(@funder.current_attribute.grant_count)
+            grants.
+          - if @funder.current_attribute.application_count
+            That's a
+            %span.uk-text-bold= percentage(@funder.current_attribute.grant_count, @funder.current_attribute.application_count)
+            success rate.
+
         #funding_frequency_distribution.chart{ data: {data: funding_frequency_distribution(@funder, @funder.current_attribute.year).to_json} }
         %hr.thick
 
-      %section
-        %h3.uk-margin-top
-          When was funding awarded?
-          %span.year.muted
-            in
-            = @funder.current_attribute.year
-        -# #funding_frequency_distribution.chart{ data: {data: funding_frequency_distribution(@funder, @funder.current_attribute.year).to_json} }
+      - if @funder.current_attribute.approval_months_by_count
+        %section#when-was-funding-awarded.offset
+          %h3.uk-margin-top
+            When was funding awarded?
+            %span.year.muted
+              in
+              = @funder.current_attribute.year
+
+          %p
+            Awarded funding in
+            = succeed '.' do
+              %strong= raw(@funder.current_attribute.approval_months_by_count)
+
+          #funding_by_month.chart{ data: {data: funding_by_month(@funder).to_json} }
+          -# #amount_by_month.chart{ data: {data: amount_by_month(@funder).to_json} }
+
         %hr.thick
 
-      %section
+      %section#where-was-funding-awarded.offset
         %h3.uk-margin-top
           Where was funding awarded?
           %span.year.muted
             in
             = @funder.current_attribute.year
+
+        - if @funder.current_attribute.countries_by_count
+          %p
+            The most funded countries were
+            = succeed '.' do
+              %strong= raw(@funder.current_attribute.countries_by_count)
+
         = geo_chart @funder.countries_by_year.group(:name).count, library: {colorAxis: {colors: ['#f5e8c4', '#fadc89', '#f5b918']}, tooltip: {textStyle: {color: '#353f45'}}}
+
+        -# - if @funder.current_attribute.regions_by_count
+        -#   %p
+        -#     The most funded regions were
+        -#     = succeed '.' do
+        -#       %strong= raw(@funder.current_attribute.regions_by_count)
+        -#
+        -# #funding_by_regions.chart{ data: {data: funding_by_regions(@funder).to_json} }
+
+      - if @recipient.can_unlock_funder?(@funder) && !@recipient.load_recommendation(@funder).eligibility
+        .cta.wide
+          See if you are eligible for funding.
+          %a.uk-button.uk-button-large.uk-button-primary.invert{href: recipient_eligibility_path(@funder)} Check eligibility

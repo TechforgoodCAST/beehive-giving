@@ -2,6 +2,7 @@ class RecipientsController < ApplicationController
 
   before_filter :check_organisation_ownership_or_funder, :only => :show
   before_filter :ensure_logged_in, :load_recipient, :years_ago
+  before_filter :ensure_profile_for_current_year, only: [:eligibility, :update_eligibility, :apply]
   before_filter :load_funder, :only => [:comparison, :eligibility, :update_eligibility, :apply]
   before_filter :load_feedback, :except => [:unlock_funder, :vote]
   before_filter :funder_attribute, :only => [:comparison, :eligibility, :update_eligibility]
@@ -75,9 +76,10 @@ class RecipientsController < ApplicationController
 
     if current_user.feedbacks.count < 1 && @recipient.unlocked_funders.count == 2
       redirect_to new_feedback_path(redirect_to_funder: @funder)
-    elsif @recipient.is_subscribed? || @recipient.recommended_funder?(@funder)
+    elsif @recipient.is_subscribed? || (@recipient.recommended_funder?(@funder) && (@recipient.unlocked_funder_ids.include?(@funder.id) || @recipient.can_unlock_funder?(@funder)))
       render :eligibility
     else
+      # refactor redirect to upgrade path
       flash[:alert] = 'You need to upgrade to check more funders.'
       redirect_to root_path
     end
@@ -86,18 +88,12 @@ class RecipientsController < ApplicationController
   def update_eligibility
     @restrictions = @funder.restrictions
 
-    if @recipient.can_unlock_funder?(@funder)
-      if @recipient.update_attributes(eligibility_params)
-        @recipient.unlock_funder!(@funder) if @recipient.locked_funder?(@funder)
-        @recipient.check_eligibility(@funder)
-        render :eligibility
-      else
-        render :eligibility
-      end
+    if @recipient.update_attributes(eligibility_params)
+      @recipient.unlock_funder!(@funder) if @recipient.locked_funder?(@funder)
+      @recipient.check_eligibility(@funder)
+      render :eligibility
     else
-      # refactor redirect to upgrade path
-      flash[:alert] = 'Bazinga!'
-      redirect_to root_path
+      render :eligibility
     end
   end
 

@@ -48,7 +48,7 @@ class Funder < Organisation
   end
 
   def recent_grants
-    self.grants.where('approved_on < ? AND approved_on >= ?', "#{self.current_attribute.year + 1}-01-01", "#{self.current_attribute.year}-01-01")
+    self.grants.where('approved_on <= ? AND approved_on >= ?', "#{self.current_attribute.year}-12-31", "#{self.current_attribute.year}-01-01")
   end
 
 end

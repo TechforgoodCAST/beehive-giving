@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151113135402) do
+ActiveRecord::Schema.define(version: 20151120150613) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -276,6 +276,7 @@ ActiveRecord::Schema.define(version: 20151113135402) do
     t.string   "regions_by_giving"
     t.string   "funding_streams_by_count"
     t.string   "funding_streams_by_giving"
+    t.text     "description"
   end
 
   add_index "funder_attributes", ["funder_id"], name: "index_funder_attributes_on_funder_id", using: :btree

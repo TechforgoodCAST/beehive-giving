@@ -30,7 +30,7 @@ FactoryGirl.define do
   end
 
   factory :profile do
-    year 2014
+    year Date.today.year
     gender 'All genders'
     min_age 14
     max_age 28

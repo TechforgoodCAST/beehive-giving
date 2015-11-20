@@ -29,6 +29,42 @@ $(document).ready ->
       resize: true
       hideHover: 'auto'
 
+  if $('#funding_by_month').length
+    Morris.Bar
+      element: 'funding_by_month'
+      data: $('#funding_by_month').data('data')
+      xkey: 'month'
+      ykeys: ['grant_count']
+      postUnits: ' grants'
+      labels: ['Awarded']
+      barColors: ['#F7BA0E']
+      resize: true
+      hideHover: 'auto'
+
+  if $('#amount_by_month').length
+    Morris.Bar
+      element: 'amount_by_month'
+      data: $('#amount_by_month').data('data')
+      xkey: 'month'
+      ykeys: ['amount_awarded']
+      preUnits: '£'
+      labels: ['Awarded']
+      barColors: ['#F7BA0E']
+      resize: true
+      hideHover: 'auto'
+
+  if $('#funding_by_regions').length
+    Morris.Bar
+      element: 'funding_by_regions'
+      data: $('#funding_by_regions').data('data')
+      xkey: 'region'
+      ykeys: ['grant_count']
+      postUnits: ' grants'
+      labels: ['Awarded']
+      barColors: ['#F7BA0E']
+      resize: true
+      hideHover: 'auto'
+
 # refactor?
 $(document).ready ->
   if $('#multiple_funding_frequency_distribution').length

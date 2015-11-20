@@ -19,7 +19,7 @@ class FunderAttribute < ActiveRecord::Base
   has_and_belongs_to_many :approval_months
   has_and_belongs_to_many :beneficiaries
 
-  validates :funder, :year, :countries, :funding_stream, presence: true
+  validates :funder, :year, :countries, :funding_stream, :description, presence: true
   validates :soft_restrictions, presence: true
 
   validates :year, inclusion: {in: Profile::VALID_YEARS}
@@ -197,6 +197,12 @@ class FunderAttribute < ActiveRecord::Base
     end
   end
 
+  def set_countries_by_count
+    build_insights(:countries_by_count,
+      order_by_count(self.funder.countries_by_year.group(:name).count).keys.take(3)
+    )
+  end
+
   def set_regions_by_count
     build_insights(:regions_by_count,
       order_by_count(self.funder.districts_by_year.group(:district).count).keys.take(3)
@@ -217,6 +223,7 @@ class FunderAttribute < ActiveRecord::Base
 
   def set_insights
     self.set_approval_months_by_count
+    self.set_countries_by_count
     self.set_regions_by_count
     self.set_funding_streams_by_count
     self.set_funding_streams_by_giving
