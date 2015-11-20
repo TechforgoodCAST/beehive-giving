@@ -178,7 +178,7 @@ class FunderAttribute < ActiveRecord::Base
   end
 
   def build_insights(column, array)
-    update_column(column, (array.count > 0 ? array.to_sentence : nil))
+    update_attribute(column, (array.count > 0 ? array.to_sentence : nil))
   end
 
   def set_approval_months_by_count
@@ -187,10 +187,10 @@ class FunderAttribute < ActiveRecord::Base
       array << k.strftime('%b')
     end
     if array.count == 1 && array[0] == 'Jan'
-      update_column(:approval_months_by_count, nil)
+      update_attribute(:approval_months_by_count, nil)
     else
       if array.count == 12
-        update_column(:approval_months_by_count, 'every month of the year')
+        update_attribute(:approval_months_by_count, 'every month of the year')
       else
         build_insights(:approval_months_by_count, array.take(3))
       end

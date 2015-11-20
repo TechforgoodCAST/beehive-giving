@@ -6,18 +6,18 @@ module RecipientsHelper
       |k,v| v > 0 }.inject({}) { |r, e| r[e.first] = e.last; r }
   end
 
-  def recipients_navbar_my_nonprofit_active
-    current_page?(recipient_profiles_path(current_user.organisation)) ||
-    current_page?(edit_recipient_profile_path(current_user.organisation, current_user.organisation.profiles.first)) ||
-    current_page?(recipient_eligibility_path)
-  end
+  # def recipients_navbar_my_nonprofit_active
+  #   current_page?(recipient_profiles_path(current_user.organisation)) ||
+  #   current_page?(edit_recipient_profile_path(current_user.organisation, current_user.organisation.profiles.first)) ||
+  #   current_page?(recipient_eligibility_path)
+  # end
 
   def funder_card_cta_button_copy(recipient, funder)
     # Must run Recipient.joins(:users).find_each { |r| r.check_eligibilities } before
     classes = 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
     if recipient.load_recommendation(funder).eligibility
       if recipient.eligible?(funder)
-        content_tag(:a, link_to('Apply', '#', class: classes))
+        content_tag(:a, link_to('Apply', recipient_apply_path(funder), class: classes))
       else
         content_tag(:a, link_to('Why ineligible?', recipient_eligibility_path(funder), class: classes))
       end

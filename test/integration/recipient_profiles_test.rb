@@ -109,9 +109,9 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
     assert_equal 'complete', @recipient.profiles.first.state
   end
 
-  test 'initial profile completion redirects to recommendations on funders index' do
+  test 'initial profile completion redirects to recommended funders path' do
     complete_finance_section
-    assert_equal funders_path, current_path
+    assert_equal recommended_funders_path, current_path
   end
 
   test 'editing complete profile shows entire form' do

@@ -8,33 +8,31 @@ class RecommendationTest < ActiveSupport::TestCase
     @recommendation = create(:recommendation, :recipient => @recipient, :funder => @funder)
   end
 
-  test "valid recommendation" do
+  test 'valid recommendation' do
     assert @recommendation.valid?
   end
 
-  test "recommended recommendation is valid" do
+  test 'recommended recommendation is valid' do
     @recommendation.score = 10
-    @recommendation.recommendation_quality = "Good suggestion"
     @recommendation.save
     assert @recommendation.valid?
   end
 
-  test "recommended recommendation is invalid" do
-    @recommendation.score = 10
-    @recommendation.recommendation_quality = nil
+  test 'recommended recommendation is invalid' do
+    @recommendation.score = nil
     @recommendation.save
     assert_not @recommendation.valid?
   end
 
-  test "recommendation belongs to recipient" do
+  test 'recommendation belongs to recipient' do
     assert_equal @recommendation.recipient, @recipient
   end
 
-  test "recommendation belongs to funder" do
+  test 'recommendation belongs to funder' do
     assert_equal @recommendation.funder, @funder
   end
 
-  test "only one recommendation per recipient funder relationship" do
+  test 'only one recommendation per recipient funder relationship' do
     assert_not build(:recommendation, :recipient => @recipient, :funder => @funder).valid?
   end
 

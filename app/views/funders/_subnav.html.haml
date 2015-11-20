@@ -12,12 +12,18 @@
 
           %a{href: recipient_eligibility_path(funder)}
             %li{ class: ('active' if params[:controller] == 'recipients' && %w(eligibility update_eligibility).include?(params[:action])) }
-              Check eligiblity
+              Eligiblity
               .highlight
           %span &rsaquo;
 
-          %li.muted
-            Apply
+          - if @recipient.eligible?(funder)
+            %a{href: recipient_apply_path(funder)}
+              %li.last{ class: ('active' if current_page?(recipient_apply_path(funder))) }
+                Apply
+                .highlight
+          - else
+            %li.muted
+              Apply
 
       -# .uk-width-1-3
       -#   %div{style: 'float: right; padding-right: 10px;'}

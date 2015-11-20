@@ -390,6 +390,38 @@ input::-webkit-inner-spin-button
   color: $color
   font-size: 18px
 
+=green-badge
+  border-color: $green-base
+  color: $green-base !important
+  &:hover
+    background: $green-alert
+  &:active
+    color: $green-active !important
+
+=red-badge
+  border-color: $red-base
+  color: $red-base !important
+  &:hover
+    background: $red-alert
+  &:active
+    color: $red-active !important
+
+.badge
+  display: inline-block
+  text-transform: uppercase
+  text-decoration: none !important
+  font-weight: bold
+  font-size: 11px
+  border: 2px solid $dark-brown
+  border-radius: 3px
+  padding: 0 12px
+  margin-right: 4px
+  transition: all .25s
+  &.eligible
+    +green-badge
+  &.ineligible
+    +red-badge
+
 ul.insights
   list-style: none
   display: block
@@ -404,36 +436,14 @@ ul.insights
       +custom_bullet('\f05a', $light-grey)
     &.eligible
       .badge
-        border-color: $green-base
-        color: $green-base !important
-        &:hover
-          background: $green-alert
-        &:active
-          color: $green-active !important
+        +green-badge
       &:before
         +custom_bullet('\f058', $green-base)
     &.ineligible
       .badge
-        border-color: $red-base
-        color: $red-base !important
-        &:hover
-          background: $red-alert
-        &:active
-          color: $red-active !important
+        +red-badge
       &:before
         +custom_bullet('\f057', $red-base)
-
-.badge
-  display: inline-block
-  text-transform: uppercase
-  text-decoration: none !important
-  font-weight: bold
-  font-size: 11px
-  border: 2px solid $dark-brown
-  border-radius: 3px
-  padding: 0 12px
-  margin-right: 4px
-  transition: all .25s
 
 /* Charts
  ========================================================================== */

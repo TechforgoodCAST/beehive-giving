@@ -20,8 +20,8 @@
       - if @recipient.load_recommendation(@funder).eligibility
         - if @recipient.eligible?(@funder)
           .cta.wide.green
-            You are eligible!
-            .uk-button.uk-button-large.uk-button-success.invert Apply for funding
+            You are eligible for at least one funding programme.
+            = link_to 'Apply for funding', recipient_apply_path(@funder), class: 'uk-button uk-button-large uk-button-success invert'
         - else
           .cta.wide.red
             You are ineligible, and did not meet

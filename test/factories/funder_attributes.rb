@@ -7,7 +7,7 @@ FactoryGirl.define do
   end
 
   factory :funder_attribute, class: FunderAttribute do
-    year 2014
+    year Date.today.year
     association :funder, :factory => :funder
     countries { FactoryGirl.create_list(:country, 2) }
     districts { FactoryGirl.create_list(:district, 2) }
@@ -17,7 +17,7 @@ FactoryGirl.define do
     after(:build) { |a| a.funding_size_and_duration_from_grants }
     funding_types { FactoryGirl.create_list(:funding_types, 2) }
     funding_stream "All"
-    approval_months { FactoryGirl.create_list(:approval_months, 2) }
+    approval_months { FactoryGirl.create_list(:approval_months, 1) }
     funded_average_age { |a| a.funded_organisation_age }
     # funded_average_income 1234
     # funded_average_paid_staff 1234

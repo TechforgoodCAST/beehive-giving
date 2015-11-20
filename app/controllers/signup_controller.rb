@@ -51,8 +51,8 @@ class SignupController < ApplicationController
   end
 
   def organisation
-    if current_user.organisation_id
-      redirect_to new_recipient_profile_path
+    if current_user.organisation
+      redirect_to new_recipient_profile_path(current_user.organisation)
     else
       @organisation = Recipient.new
     end

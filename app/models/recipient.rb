@@ -20,9 +20,13 @@ class Recipient < Organisation
   has_many :implementors, :through => :profiles
   has_many :implementations, :through => :profiles
 
-  MAX_FREE_LIMIT = 3
   RECOMMENDATION_THRESHOLD = 1
+  MAX_FREE_LIMIT = 3
   RECOMMENDATION_LIMIT = 6
+
+  def is_subscribed?
+    self.subscription.present?
+  end
 
   def recipient_profile_limit
     if (Date.today.year - self.founded_on.year) < 4
@@ -36,7 +40,7 @@ class Recipient < Organisation
     if self.subscription.present?
       true
     else
-      unlocked_funders.size < MAX_FREE_LIMIT && self.profiles.count > 0
+      unlocked_funders.size < MAX_FREE_LIMIT
     end
   end
 
@@ -242,6 +246,10 @@ class Recipient < Organisation
     Funder.joins(:recommendations)
       .where('recipient_id = ? AND score >= ?', self.id, RECOMMENDATION_THRESHOLD)
       .order('recommendations.eligibility ASC, recommendations.score DESC, name ASC')
+  end
+
+  def recommended_with_eligible_funders
+    recommended_funders
       .where('eligibility is NULL OR eligibility != ?', 'Ineligible')
       .limit(Recipient::RECOMMENDATION_LIMIT - self.get_funders_by_eligibility('Ineligible').count)
   end

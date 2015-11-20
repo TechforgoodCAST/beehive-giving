@@ -5,7 +5,6 @@ class FundersController < ApplicationController
   before_filter :ensure_funder, only: [:explore, :eligible]
   before_filter :load_funder, except: [:new, :create]
   before_filter :load_recipient
-  before_filter :funder_attribute, :only => [:show]
 
   respond_to :html
 
@@ -28,7 +27,8 @@ class FundersController < ApplicationController
 
   def show
     @restrictions = @funder.restrictions.uniq
-    unless @funder.active_on_beehive
+
+    unless @recipient.is_subscribed? || @recipient.recommended_funder?(@funder)
       flash[:alert] = "Sorry, you don't have access to that"
       redirect_to recommended_funders_path
     end
@@ -61,16 +61,6 @@ class FundersController < ApplicationController
   #refactor?
   def load_recipient
     @recipient = current_user.organisation if logged_in?
-  end
-
-  #refactor?
-  def funder_attribute
-    @funding_stream = params[:funding_stream] || 'All'
-
-    if @funder.attributes.any?
-      @year_of_funding = @funder.attributes.where('grant_count > ?', 0).order(year: :desc).first.year
-      @funder_attribute = @funder.attributes.where('year = ? AND funding_stream = ?', @year_of_funding, @funding_stream).first
-    end
   end
 
 end

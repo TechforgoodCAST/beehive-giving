@@ -48,7 +48,7 @@
           %span.year.muted
             in
             = @funder.current_attribute.year
-        #funding_frequency_distribution.chart{ data: {data: funding_frequency_distribution(@funder, @year_of_funding).to_json} }
+        #funding_frequency_distribution.chart{ data: {data: funding_frequency_distribution(@funder, @funder.current_attribute.year).to_json} }
         %hr.thick
 
       %section
@@ -57,7 +57,7 @@
           %span.year.muted
             in
             = @funder.current_attribute.year
-        #funding_frequency_distribution.chart{ data: {data: funding_frequency_distribution(@funder, @year_of_funding).to_json} }
+        -# #funding_frequency_distribution.chart{ data: {data: funding_frequency_distribution(@funder, @funder.current_attribute.year).to_json} }
         %hr.thick
 
       %section

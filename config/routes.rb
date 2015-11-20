@@ -47,7 +47,8 @@ Rails.application.routes.draw do
   match '/funders/(:id)/eligibility', to: 'recipients#update_eligibility', via: :patch
 
   # Enquiries
-  match '/comparison/(:id)/apply', to: 'enquiries#apply', via: :post, as: 'recipient_apply'
+  match '/funders/(:id)/apply', to: 'recipients#apply', via: :get, as: 'recipient_apply'
+  match '/funders/(:id)/apply', to: 'enquiries#apply', via: :post
 
   # Compare funders
   match '/funders/comparison', to: 'funders#comparison', via: :get, as: 'funders_comparison'

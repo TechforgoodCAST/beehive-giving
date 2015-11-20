@@ -8,11 +8,11 @@
               Funders
               .highlight
               .caret
-          %a{href: recipient_profiles_path(current_user.organisation)}
-            %li.last{ class: ('active' if recipients_navbar_my_nonprofit_active) }
-              My non-profit
-              .highlight
-              .caret
+          -# %a{href: recipient_profiles_path(current_user.organisation)}
+          -#   %li.last{ class: ('active' if recipients_navbar_my_nonprofit_active) }
+          -#     My non-profit
+          -#     .highlight
+          -#     .caret
       - if content_for?(:public)
         .uk-navbar-content
           %a.logo{:href => root_path, title: 'Beehive'}
@@ -45,14 +45,13 @@
         .uk-navbar-content.uk-navbar-center
           %a.logo{:href => root_path, title: 'Beehive'}
 
-#offcanvas.uk-offcanvas
-  .uk-offcanvas-bar.uk-offcanvas-bar-flip.uk-offcanvas-bar-show{style: 'z-index:1000;'}
-    - if logged_in?
-      %ul.uk-nav.uk-nav-offcanvas
-        %li.uk-nav-header.uk-margin-top.uk-text-center Menu
-        %li
-          %a{:href => recipient_profiles_path(current_user.organisation)} Edit my profile
-        -# %li
-        -#   %a{:href => recipient_eligibilities_path(current_user.organisation), :"data-no-turbolink" => true} Manage eligibility
-        %li
-          %a{href: logout_path, method: :destroy} Sign out
+- unless content_for?(:public) || content_for?(:signup)
+  #offcanvas.uk-offcanvas
+    .uk-offcanvas-bar.uk-offcanvas-bar-flip.uk-offcanvas-bar-show{style: 'z-index:1000;'}
+      - if logged_in?
+        %ul.uk-nav.uk-nav-offcanvas
+          %li.uk-nav-header.uk-margin-top.uk-text-center Menu
+          %li
+            %a{:href => recipient_profiles_path(current_user.organisation)} Edit my profile
+          %li
+            %a{href: logout_path, method: :destroy} Sign out
