@@ -1,11 +1,5 @@
 module RecipientsHelper
 
-  # refactor?
-  def dup_hash(ary)
-    ary.inject(Hash.new(0)) { |h,e| h[e] += 1; h }.select {
-      |k,v| v > 0 }.inject({}) { |r, e| r[e.first] = e.last; r }
-  end
-
   # def recipients_navbar_my_nonprofit_active
   #   current_page?(recipient_profiles_path(current_user.organisation)) ||
   #   current_page?(edit_recipient_profile_path(current_user.organisation, current_user.organisation.profiles.first)) ||

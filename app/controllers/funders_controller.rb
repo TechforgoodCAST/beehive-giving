@@ -30,7 +30,12 @@ class FundersController < ApplicationController
     @restrictions = @funder.restrictions.uniq
 
     unless @recipient.is_subscribed? || @recipient.recommended_funder?(@funder)
-      redirect_to edit_feedback_path(current_user.feedbacks.last)
+      if current_user.feedbacks.count > 0
+        redirect_to edit_feedback_path(current_user.feedbacks.last)
+      else
+        flash[:alert] = "Sorry, you don't have access to that"
+        redirect_to recommended_funders_path
+      end
     end
   end
 

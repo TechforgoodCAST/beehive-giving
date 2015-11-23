@@ -42,4 +42,13 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
     assert_equal recipient_eligibility_path(@funders[3]), current_path
   end
 
+  test 'no price feedback request if initial feedback not given' do
+    setup_funders(1)
+    @recipient.load_recommendation(@funders.last).update_attribute(:score, 0)
+    visit funders_path
+    assert page.has_css?('#why-hidden')
+    visit funder_path(@funders.last)
+    assert_equal recommended_funders_path, current_path
+  end
+
 end
