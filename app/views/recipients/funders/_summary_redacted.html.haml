@@ -6,7 +6,7 @@
           .funder{class: funder.slug}
       .details
         .content.center
-          %a.uk-width-1-1.uk-button.uk-button-primary.uk-button-large Show funder
+          %a.uk-width-1-1.uk-button.uk-button-primary.uk-button-large{href: funder_path(funder)} Show funder
         .content.center
           = link_to 'Why is this hidden?', funder_path(funder)
 

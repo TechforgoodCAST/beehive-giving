@@ -80,8 +80,7 @@ class RecipientsController < ApplicationController
       render :eligibility
     else
       # refactor redirect to upgrade path
-      flash[:alert] = 'You need to upgrade to check more funders.'
-      redirect_to root_path
+      redirect_to edit_feedback_path(current_user.feedbacks.last)
     end
   end
 

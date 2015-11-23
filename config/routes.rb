@@ -54,7 +54,7 @@ Rails.application.routes.draw do
   match '/funders/comparison', to: 'funders#comparison', via: :get, as: 'funders_comparison'
 
   resources :users
-  resources :feedback, :only => [:new, :create]
+  resources :feedback, :only => [:new, :create, :edit, :update]
   resources :password_resets, :only => [:new, :create, :edit, :update]
 
   resources :recipients, :except => [:new, :index] do

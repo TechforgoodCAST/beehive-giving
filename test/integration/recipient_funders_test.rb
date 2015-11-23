@@ -10,9 +10,10 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
   test 'cannot view funder if not active' do
     funder = create(:funder, active_on_beehive: false)
     create_and_auth_user!(organisation: @recipient)
+    create(:feedback, user: @user)
 
     visit funder_path(funder)
-    assert_equal recommended_funders_path, current_path
+    assert_equal edit_feedback_path(@user.feedbacks.last), current_path
   end
 
   test 'recommended funders path only shows recommended and eligible funders' do
@@ -48,15 +49,17 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
 
   test 'cannot visit redacted funder unless subscribed' do
     setup_funders(7)
+    create(:feedback, user: @user)
     visit funder_path(@funders.last)
-    assert_equal recommended_funders_path, current_path
+    assert_equal edit_feedback_path(@user.feedbacks.last), current_path
     # refactor unless subscribed
   end
 
   test 'cannot check redacted funder unless subscribed' do
     setup_funders(7)
+    create(:feedback, user: @user)
     visit recipient_eligibility_path(@funders.last)
-    assert_equal recommended_funders_path, current_path
+    assert_equal edit_feedback_path(@user.feedbacks.last), current_path
     # refactor unless subscribed
   end
 

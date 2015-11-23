@@ -1,3 +1,5 @@
+= content_for :title, 'Target'
+
 = simple_form_for [@recipient, @profile], method: :post, remote: true do |f|
   - unless @profile.state == 'complete'
     %ul.progress-indicator

@@ -14,16 +14,26 @@ class FeedbackController < ApplicationController
     @feedback = current_user.feedbacks.new(feedback_params)
     @funder = Funder.find_by_slug(@redirect_to_funder)
 
-    respond_to do |format|
-      format.html {
-        if @feedback.save
-          flash[:notice] = "You're a star! Thanks for the feedback."
-          redirect_to recipient_eligibility_path(Funder.find_by_slug(@redirect_to_funder))
-        else
-          render :new
-        end
-      }
-      format.js
+    if @feedback.save
+      flash[:notice] = "You're a star! Thanks for the feedback."
+      redirect_to recipient_eligibility_path(Funder.find_by_slug(@redirect_to_funder))
+    else
+      render :new
+    end
+  end
+
+  def edit
+    @feedback = Feedback.find(params[:id])
+    session[:return_to] ||= request.referer
+  end
+
+  def update
+    @feedback = Feedback.find(params[:id])
+    if @feedback.update_attributes(params.require(:feedback).permit(:price))
+      flash[:notice] = 'Thanks for the feedback!'
+      redirect_to session.delete(:return_to)
+    else
+      render :edit
     end
   end
 

@@ -1,3 +1,5 @@
+= content_for :title, 'Location'
+
 = simple_form_for [@recipient, @profile], method: :patch, remote: true do |f|
   - unless @profile.state == 'complete'
     %ul.progress-indicator
