@@ -7,7 +7,6 @@ module RecipientsHelper
   # end
 
   def funder_card_cta_button_copy(recipient, funder)
-    # Must run Recipient.joins(:users).find_each { |r| r.check_eligibilities } before
     classes = 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
     if recipient.load_recommendation(funder).eligibility
       if recipient.eligible?(funder)

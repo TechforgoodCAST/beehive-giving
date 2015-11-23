@@ -53,7 +53,6 @@ class ProfilesController < ApplicationController
 
           if @profile.state == 'complete'
             @recipient.refined_recommendation
-            UserMailer.notify_funder(@profile).deliver
             render :js => "mixpanel.identify('#{current_user.id}');
                           mixpanel.people.set({
                             'Profile State': '#{@profile.state}'
@@ -75,7 +74,6 @@ class ProfilesController < ApplicationController
           @profile.next_step! unless @profile.state == 'complete'
           if @profile.state == 'complete'
             @recipient.refined_recommendation
-            UserMailer.notify_funder(@profile).deliver
             redirect_to recommended_funders_path
           else
             redirect_to edit_recipient_profile_path(@recipient, @profile)
