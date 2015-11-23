@@ -11,19 +11,22 @@
             .funder{class: funder.slug}
       .details
         .content.center
-          %a.uk-width-1-1.uk-button.uk-button-primary.uk-button-large{href: funder_path(funder)} Show funder
+          - if current_user.feedbacks.count > 0
+            %a.uk-width-1-1.uk-button.uk-button-primary.uk-button-large{href: funder_path(funder)} Show funder
+          - else
+            = link_to 'Show funder', '#why-hidden', class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large', onclick: '$.UIkit.modal("#why-hidden").show();'
         .content.center
           - if current_user.feedbacks.count > 0
             = link_to 'Why is this hidden?', funder_path(funder)
           - else
-            = link_to 'Why is this hidden?', '', onclick: '$.UIkit.modal("#why-hidden").show();'
+            = link_to 'Why is this hidden?', '#why-hidden', onclick: '$.UIkit.modal("#why-hidden").show();'
 
   .uk-width-medium-2-3
     %h3.uk-margin-top
       - if current_user.feedbacks.count > 0
         = link_to funder.name, funder_path(funder), class: 'yellow'
       - else
-        = link_to funder.name, '', class: 'yellow', onclick: '$.UIkit.modal("#why-hidden").show();'
+        = link_to funder.name, '#why-hidden', class: 'yellow', onclick: '$.UIkit.modal("#why-hidden").show();'
       %span.year.muted
         in
         = funder.current_attribute.year
