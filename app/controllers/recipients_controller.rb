@@ -2,23 +2,46 @@ class RecipientsController < ApplicationController
 
   before_filter :check_organisation_ownership_or_funder, :only => :show
   before_filter :ensure_logged_in, :load_recipient, :years_ago
-  before_filter :load_funder, :only => [:comparison, :eligibility, :update_eligibility]
+  before_filter :ensure_profile_for_current_year, only: [:eligibility, :update_eligibility, :apply]
+  before_filter :load_funder, :only => [:comparison, :eligibility, :update_eligibility, :apply]
   before_filter :load_feedback, :except => [:unlock_funder, :vote]
   before_filter :funder_attribute, :only => [:comparison, :eligibility, :update_eligibility]
+
+  def recommended_funders
+    @funders = @recipient.recommended_with_eligible_funders
+
+    render 'recipients/funders/recommended_funders'
+  end
+
+  def eligible_funders
+    @funders = Funder.find(@recipient.recommendations.where(eligibility: 'Eligible').pluck(:funder_id))
+
+    render 'recipients/funders/eligible_funders'
+  end
+
+  def ineligible_funders
+    @funders = Funder.find(@recipient.recommendations.where(eligibility: 'Ineligible').pluck(:funder_id))
+
+    render 'recipients/funders/ineligible_funders'
+  end
+
+  def all_funders
+    @search = Funder.where(active_on_beehive: true).where('recommendations.recipient_id = ?', @recipient.id).ransack(params[:q])
+    @search.sorts = ['recommendations_eligibility asc', 'recommendations_score desc', 'name asc'] if @search.sorts.empty?
+    @funders = @search.result
+
+    respond_to do |format|
+      format.html { render 'recipients/funders/all_funders' }
+      format.js
+    end
+  end
 
   def dashboard
     @search = Funder.ransack(params[:q])
     @profile = @recipient.profiles.where('year = ?', 2015).first
   end
 
-  def comparison
-    @restrictions = @funder.restrictions.uniq
-    unless @funder.active_on_beehive
-      flash[:alert] = "Sorry, you don't have access to that"
-      redirect_to funders_path
-    end
-  end
-
+  # refactor
   def vote
     vote = Feature.find_or_initialize_by(recipient_id: params[:recipient_id], funder_id: params[:funder_id])
 
@@ -42,22 +65,22 @@ class RecipientsController < ApplicationController
     end
   end
 
+  # refactor
   def show
     @recipient = Recipient.find_by_slug(params[:id])
   end
 
   def eligibility
     @restrictions = @funder.restrictions.order(:id).uniq
+    @eligibility =  1.times { @restrictions.each { |r| @recipient.eligibilities.new(restriction_id: r.id) unless @recipient.eligibilities.where('restriction_id = ?', r.id).count > 0 } }
 
     if current_user.feedbacks.count < 1 && @recipient.unlocked_funders.count == 2
-      redirect_to new_feedback_path(:redirect_to_funder => @funder)
-    elsif @recipient.questions_remaining?(@funder)
-      @eligibility =  1.times { @restrictions.each { |r| @recipient.eligibilities.new(restriction_id: r.id) unless @recipient.eligibilities.where('restriction_id = ?', r.id).count > 0 } }
-    elsif @recipient.eligible?(@funder)
-      redirect_to recipient_comparison_path(@funder)
+      redirect_to new_feedback_path(redirect_to_funder: @funder)
+    elsif @recipient.is_subscribed? || (@recipient.recommended_funder?(@funder) && (@recipient.unlocked_funder_ids.include?(@funder.id) || @recipient.can_unlock_funder?(@funder)))
+      render :eligibility
     else
-      flash[:alert] = "Sorry you're ineligible"
-      redirect_to recipient_comparison_path(@funder)
+      # refactor redirect to upgrade path
+      redirect_to edit_feedback_path(current_user.feedbacks.last)
     end
   end
 
@@ -66,30 +89,19 @@ class RecipientsController < ApplicationController
 
     if @recipient.update_attributes(eligibility_params)
       @recipient.unlock_funder!(@funder) if @recipient.locked_funder?(@funder)
-      if @recipient.eligible?(@funder)
-        FunderMailer.eligible_email(@recipient, @funder).deliver
-        flash[:notice] = "You're eligible"
-        redirect_to recipient_comparison_path(@funder)
-      else
-        FunderMailer.not_eligible_email(@recipient, @funder).deliver
-        flash[:alert] = "Sorry you're ineligible"
-        redirect_to recipient_comparison_path(@funder)
-      end
+      @recipient.check_eligibility(@funder)
+      render :eligibility
     else
       render :eligibility
     end
   end
 
-  def eligibilities
-    session[:return_to] ||= request.referer
-  end
-
-  def update_eligibilities
-    if @recipient.update_attributes(eligibility_params)
-      flash[:notice] = "Updated!"
-      redirect_to session.delete(:return_to)
+  def apply
+    if @recipient.eligible?(@funder)
+      render 'recipients/funders/apply'
     else
-      render :eligibilities
+      flash[:alert] = 'You need to check your eligibility before applying.'
+      redirect_to recipient_eligibility_path(@funder)
     end
   end
 
@@ -115,6 +127,7 @@ class RecipientsController < ApplicationController
     end
   end
 
+  #refactor?
   def funder_attribute
     @funding_stream = params[:funding_stream] || 'All'
 
@@ -125,7 +138,7 @@ class RecipientsController < ApplicationController
   end
 
   def eligibility_params
-    params.require(:recipient).permit(:eligibilities_attributes => [:id, :eligible, :restriction_id, :recipient_id])
+    params.require(:recipient).permit(eligibilities_attributes: [:id, :eligible, :restriction_id, :recipient_id])
   end
 
 end

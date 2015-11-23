@@ -1,73 +1,104 @@
-.uk-container.uk-container-center
-  .uk-grid.uk-margin.uk-margin-top
-    .uk-width-1-1.uk-margin
-      %h1= @funder.name
-    .uk-width-medium-1-2
-      %h3.uk-text-bold Grants awarded
+= content_for :title, "More info for #{@funder.name}"
 
-      = paginate @grants
+= stylesheet_link_tag 'overrides/morris_overrides'
+= javascript_include_tag 'raphael'
+= javascript_include_tag 'morris'
+= javascript_include_tag '//www.google.com/jsapi', 'chartkick'
 
-      %a.uk-button.uk-button-primary{ href: new_funder_grant_path(@funder) }
-        %i.uk-icon-plus
-        Add grant
+= render partial: 'funders/subnav', locals: {funder: @funder}
 
-      %ul#padding-remove
-        - @grants.each do |grant|
-          %li.uk-panel.uk-panel-box.uk-margin-bottom
-            .uk-panel-badge.uk-badge
-              = grant.start_on.strftime("%b %Y")
-            %h3.uk-panel-title.uk-margin-remove
-              %a{"data-uk-toggle" => "{target:'#toggle#{grant.id}'}"}
-                = grant.recipient.name
-            %q.uk-text-muted= grant.recipient.mission
-            .uk-hidden.uk-grid.uk-margin-top{:id => "toggle#{grant.id}", :style => "-webkit-animation-duration: 200ms;"}
-              .uk-width-medium-1-1.uk-margin-bottom
-                %h4 Summary
-                .uk-grid
-                  %dl.uk-description-list.uk-description-list-horizontal.uk-width-medium-1-1
-                    %dt Funding stream
-                    %dd= grant.funding_stream
-                    %dt Grant type
-                    %dd= grant.grant_type
-                    %dt Attention how
-                    %dd= grant.attention_how
-                    %dt Amount awarded
-                    %dd= number_to_currency(grant.amount_awarded, unit: '£', precision: 0)
-                    %dt Amount applied for
-                    %dd= number_to_currency(grant.amount_applied, unit: '£', precision: 0)
-                    %dt Installments
-                    %dd= grant.installments
-                    %dt Attention on
-                    %dd= grant.attention_on.strftime("%d %b %Y")
-                    %dt Applied on
-                    %dd
-                      = grant.applied_on.strftime("%d %b %Y")
-                      = surround '(', ')' do
-                        = ((grant.attention_on - grant.applied_on).to_f / 356).round(1)
-                        years
-                    %dt Approved on
-                    %dd
-                      = grant.approved_on.strftime("%d %b %Y")
-                      = surround '(', ')' do
-                        = ((grant.approved_on - grant.applied_on).to_f / 356).round(1)
-                        years
-                    %dt Start on
-                    %dd
-                      = grant.start_on.strftime("%d %b %Y")
-                      = surround '(', ')' do
-                        = ((grant.start_on - grant.approved_on).to_f / 356).round(1)
-                        years
-                    %dt End on
-                    %dd
-                      = grant.end_on.strftime("%d %b %Y")
-                      = surround '(', ')' do
-                        = ((grant.end_on - grant.start_on).to_f / 356).round(1)
-                        years
+.uk-container.uk-container-center.uk-margin-large.uk-margin-large-top.uk-animation-fade
+  .uk-grid
+    .uk-width-medium-1-3
+      .card{"data-uk-sticky" => "{top:120, media: 767}"}
+        %a{href: funder_path(@funder), alt: @funder.name}
+          .thumbnail
+            .funder{class: @funder.slug}
+        .details
+          .content.center
+            = funder_card_cta_button_copy(@recipient, @funder)
 
-              .uk-width-medium-1-2
-                = link_to 'Edit', edit_funder_grant_path(@funder, grant), class: 'uk-button uk-button-small uk-width-1-1'
-              .uk-width-medium-1-2
-                = link_to 'Explore', explore_funder_path(grant.recipient), class: 'uk-button uk-button-primary uk-button-small uk-width-1-1', :"data-no-turbolink" => true
+    .uk-width-medium-2-3
+      %section
+        %h3.uk-margin-top
+          Summary
+          %span.year.muted
+            in
+            = @funder.current_attribute.year
 
-    .uk-width-medium-1-2
-      %h3.uk-text-bold Potential partners
+        = render partial: 'recipients/funders/insights', locals: {funder: @funder}
+
+        %hr.thick
+
+      %section#how-was-funding-distributed.offset
+        %h3.uk-margin-top
+          How was funding distributed?
+          %span.year.muted
+            in
+            = @funder.current_attribute.year
+
+        %p
+          - if @funder.current_attribute.application_count
+            Recieved
+            %span.uk-text-bold= number_with_delimiter(@funder.current_attribute.application_count)
+            applications and awarded
+            = succeed '.' do
+              %span.uk-text-bold= number_with_delimiter(@funder.current_attribute.grant_count)
+            grants
+          - else
+            Awarded
+            %span.uk-text-bold= number_with_delimiter(@funder.current_attribute.grant_count)
+            grants.
+          - if @funder.current_attribute.application_count
+            That's a
+            %span.uk-text-bold= percentage(@funder.current_attribute.grant_count, @funder.current_attribute.application_count)
+            success rate.
+
+        #funding_frequency_distribution.chart{ data: {data: funding_frequency_distribution(@funder, @funder.current_attribute.year).to_json} }
+        %hr.thick
+
+      - if @funder.current_attribute.approval_months_by_count
+        %section#when-was-funding-awarded.offset
+          %h3.uk-margin-top
+            When was funding awarded?
+            %span.year.muted
+              in
+              = @funder.current_attribute.year
+
+          %p
+            Awarded funding in
+            = succeed '.' do
+              %strong= raw(@funder.current_attribute.approval_months_by_count)
+
+          #funding_by_month.chart{ data: {data: funding_by_month(@funder).to_json} }
+          -# #amount_by_month.chart{ data: {data: amount_by_month(@funder).to_json} }
+
+        %hr.thick
+
+      %section#where-was-funding-awarded.offset
+        %h3.uk-margin-top
+          Where was funding awarded?
+          %span.year.muted
+            in
+            = @funder.current_attribute.year
+
+        - if @funder.current_attribute.countries_by_count
+          %p
+            The most funded countries were
+            = succeed '.' do
+              %strong= raw(@funder.current_attribute.countries_by_count)
+
+        = geo_chart @funder.countries_by_year.group(:name).count, library: {colorAxis: {colors: ['#f5e8c4', '#fadc89', '#f5b918']}, tooltip: {textStyle: {color: '#353f45'}}}
+
+        -# - if @funder.current_attribute.regions_by_count
+        -#   %p
+        -#     The most funded regions were
+        -#     = succeed '.' do
+        -#       %strong= raw(@funder.current_attribute.regions_by_count)
+        -#
+        -# #funding_by_regions.chart{ data: {data: funding_by_regions(@funder).to_json} }
+
+      - if @recipient.can_unlock_funder?(@funder) && !@recipient.load_recommendation(@funder).eligibility
+        .cta.wide
+          See if you are eligible for funding.
+          %a.uk-button.uk-button-large.uk-button-primary.invert{href: recipient_eligibility_path(@funder)} Check eligibility

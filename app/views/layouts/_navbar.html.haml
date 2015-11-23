@@ -1,0 +1,57 @@
+- unless content_for?(:sign_in)
+  %nav.uk-navbar.navbar.recipient
+    .uk-container.uk-container-center
+      - unless content_for?(:public) || content_for?(:signup)
+        %ul.nav
+          %a{href: recommended_funders_path}
+            %li.first{ class: ('active' if params[:funders_navbar]) }
+              Funders
+              .highlight
+              .caret
+          -# %a{href: recipient_profiles_path(current_user.organisation)}
+          -#   %li.last{ class: ('active' if recipients_navbar_my_nonprofit_active) }
+          -#     My non-profit
+          -#     .highlight
+          -#     .caret
+      - if content_for?(:public)
+        .uk-navbar-content
+          %a.logo{:href => root_path, title: 'Beehive'}
+
+      .uk-navbar-flip
+        - if logged_in?
+          - unless content_for?(:signup) || content_for?(:public)
+            .uk-hidden-small
+              %ul.nav
+                %li.uk-parent{"data-uk-dropdown" => "{mode:'click'}"}
+                  %a.white
+                    %i.uk-icon-cog.uk-icon-small
+                    %i.uk-icon-caret-down
+                  .uk-dropdown.uk-dropdown-navbar.uk-dropdown-flip
+                    %ul.uk-nav.uk-nav-navbar
+                      %li
+                        %a{:href => recipient_profiles_path(current_user.organisation)} Update profile
+                      -# %li
+                        -# %a{:href => recipient_eligibility_path(current_user.organisation), :"data-no-turbolink" => true} Manage eligibility
+                      %li
+                        %a{href: logout_path, method: :destroy} Sign out
+
+          %a.white.last.uk-navbar-toggle.uk-visible-small{"data-uk-offcanvas" => "{target:'#offcanvas'}"}
+
+        - else
+          .uk-navbar-content{:style => "padding-right: 0;"}
+            = link_to 'Sign in', sign_in_path, class: 'uk-button uk-button-primary'
+
+      - unless content_for?(:public)
+        .uk-navbar-content.uk-navbar-center
+          %a.logo{:href => root_path, title: 'Beehive'}
+
+- unless content_for?(:public) || content_for?(:signup)
+  #offcanvas.uk-offcanvas
+    .uk-offcanvas-bar.uk-offcanvas-bar-flip.uk-offcanvas-bar-show{style: 'z-index:1000;'}
+      - if logged_in?
+        %ul.uk-nav.uk-nav-offcanvas
+          %li.uk-nav-header.uk-margin-top.uk-text-center Menu
+          %li
+            %a{:href => recipient_profiles_path(current_user.organisation)} Update profile
+          %li
+            %a{href: logout_path, method: :destroy} Sign out

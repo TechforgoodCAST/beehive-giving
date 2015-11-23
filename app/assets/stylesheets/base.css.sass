@@ -5,9 +5,14 @@
  ========================================================================== */
 
 @font-face
-  font-family: "Redacted"
-  src: font-url("redacted-script-bold.eot")
-  src: font-url("redacted-script-bold.woff2") format("woff2"), font-url("redacted-script-bold.woff") format("woff"), font-url("redacted-script-bold.otf") format("opentype"), font-url("redacted-script-bold.svg#filename") format("svg")
+  font-family: 'Redacted'
+  src: font-url('redacted-script-bold.eot')
+  src: font-url('redacted-script-bold.woff2') format('woff2'), font-url('redacted-script-bold.woff') format('woff'), font-url('redacted-script-bold.otf') format('opentype'), font-url('redacted-script-bold.svg#filename') format('svg')
+
+.redacted
+  font-family: 'Redacted' !important
+  font-size: 16px
+  line-height: 14px
 
 /* Layout
  ========================================================================== */
@@ -18,7 +23,7 @@ html, body
 
 .full-height
   min-height: 340px
-  height: calc(100% - 42px)
+  height: calc(100% - 50px)
   width: 100%
   display: table
   &.max
@@ -30,36 +35,54 @@ html, body
 /* Utility
  ========================================================================== */
 
-.base
-  &.background
-    background-color: $background-base
-
-.dark
-  &.background
-    background-color: $background-dark
+hr
+  &.thick
+    border-width: 3px !important
+    margin: 30px auto
 
 .background-image
   +background-image
 
 .white, .white:hover
-  color: $white
+  color: $white !important
+
+.muted, .muted:hover
+  color: $mid-grey !important
 
 .yellow, .yellow:hover
-  color: $yellow
+  color: $yellow-base !important
   &.background
-    background: $yellow
+    background: $yellow-base !important
 
 .blue
-  color: $blue
+  color: $blue-base !important
 .blue:hover
-  color: $blue-hover
+  color: $blue-hover !important
 
 .upcase
   text-transform: uppercase
 
-// refactor
-#padding-remove
-  padding: 0 0 0 0
+.x1-5
+  font-size: 1.5em
+  line-height: 0
+
+.first
+  margin-left: 0 !important
+  padding-left: 0 !important
+
+.last
+  margin-right: 0 !important
+  padding-right: 0 !important
+
+.offset:before
+  display: block
+  content: ''
+  height: 120px
+  margin-top: -120px
+  visibility: hidden
+  @media screen and (max-width: 480px)
+    height: 60px
+    margin-top: -60px
 
 // refactor
 .shadow
@@ -128,27 +151,104 @@ html, body
 /* Navbar
  ========================================================================== */
 
+.navbar, .subnav
+  &.recipient
+    background: $yellow-base
+  &.funder
+    background: $blue-base
+
+  ul.nav
+    list-style: none
+    display: block
+    margin: 0
+    padding: 0
+    font-size: 15px
+    float: left
+    @media screen and (max-width: 480px)
+      font-size: 13px
+    a
+      text-decoration: none !important
+    li
+      position: relative
+      color: $white
+      display: inline-block
+      height: 20px
+      padding: 15px 10px
+      @media screen and (max-width: 480px)
+        padding: 10px 5px
+      &:hover
+        .highlight
+          display: block
+      &.active
+        font-weight: bold
+        .highlight, .caret
+          display: block
+      .highlight
+        position: relative
+        top: -1px
+        width: 100%
+        height: 2px
+        background: $white
+        display: none
+      .caret
+        position: relative
+        display: none
+        &:after
+          top: 12px
+          @media screen and (max-width: 480px)
+            top: 6px
+          left: 50%
+          content: ''
+          height: 0
+          width: 0
+          position: absolute
+          pointer-events: none
+          border-top: 6px solid $yellow-base
+          border-left: 10px solid transparent
+          border-right: 10px solid transparent
+          margin-left: -10px
+
 .logo
+  display: inline-block
   position: relative
   width: 95px
-  height: 17px
+  height: 50px
   background: image-url('logo.svg') no-repeat
-  background-size: 95px 40px
+  background-size: 95px 50px
+  margin: 0 auto
+  @media screen and (max-width: 480px)
+    width: 24px
+    height: 20px
+    margin: 10px auto
+    background: image-url('logo-hex.svg') no-repeat
+  &:hover
+    text-decoration: none !important
+  @media screen and (min-width: 480px)
+    &:after
+      content: 'Beta'
+      color: $white
+      font-size: 10px
+      font-weight: bold
+      position: absolute
+      right: -25px
+      top: 14px
 
-.logo-label
-  position: relative
-  left: 82px
-  top: -29px
-  font-size: 12px
-  font-weight: bold
-  color: $yellow
+/* Subnav
+ ========================================================================== */
 
-.border
-  border-bottom: 2px solid $yellow
-
-// refactor
-.bh-button-group
-  top: 5px
+.subnav
+  background: $off-white
+  border-bottom: 1px solid $lightest-grey
+  ul.nav
+    span
+      color: $mid-grey
+    li
+      color: $yellow-base
+      padding: 25px 2px
+      @media screen and (max-width: 480px)
+        padding: 15px 2px
+      .highlight
+        background: $yellow-base
 
 /* Panel
  ========================================================================== */
@@ -160,17 +260,76 @@ html, body
 /* Inputs
  ========================================================================== */
 
+.radio
+  margin: 0
+  color: $cta-base
+  label
+    border-radius: 3px
+    border: 2px solid $cta-base
+    padding: 6px 8px 5px 8px
+    margin: 4px
+    display: inline-block
+    cursor: pointer
+    transition: all 0.25s ease
+    top: 0px
+    width: 50px
+    input
+      margin-right: 4px
+      border: 2px solid $cta-base !important
+      background: $white !important
+      width: 18px !important
+      height: 18px !important
+      transition: all 0.25s ease
+      &:before
+        background: $cta-active !important
+        width: 10px !important
+        height: 10px !important
+    &:hover
+      background: $cta-alert
+      border-color: $cta-active
+      color: $cta-active
+      input
+        border-color: $cta-active !important
+
+.radio label.radio-checked, .field_with_errors .radio label.radio-checked
+  background: $cta-active !important
+  border-color: $cta-active !important
+  color: $white !important
+  &:hover
+    background: $cta-active !important
+    border-color: $cta-base !important
+    color: $white !important
+  input
+    border-color: $cta-active !important
+    &:hover
+      border-color: $cta-base !important
+
+    // refactpr
+    // -webkit-transition: all 0.25s ease
+    // -o-transition: all 0.25s ease
+    // -moz-transition: all 0.25s ease
+    // -ms-transition: all 0.25s ease
+    // -kthtml-transition: all 0.25s ease
+
 .field_with_errors
   .string, .numeric, select, .checkbox label, .radio label, .chosen-container .chosen-single, .chosen-container .chosen-choices, .password
-    border: 1px #e28327 solid !important
-    background: #fff7f8 !important
-    color: #d85030 !important
+    border: 2px $red-base solid !important
+    background: $red-alert !important
+    color: $red-base !important
+  .radio label
+    &:hover
+      background: $cta-alert !important
+      border-color: $cta-active !important
+      color: $cta-active !important
+  .radio input
+    border-color: $red-base !important
+
   .chosen-with-drop .chosen-drop
     background: #fff7f8 !important
     color: #d85030 !important
-    border-right: 1px solid #e28327 !important
-    border-bottom: 1px solid #e28327 !important
-    border-left: 1px solid #e28327 !important
+    border-right: 1px solid $red-base !important
+    border-bottom: 1px solid $red-base !important
+    border-left: 1px solid $red-base !important
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button
@@ -181,42 +340,141 @@ input::-webkit-inner-spin-button
  ========================================================================== */
 
 .cta
-  padding: 15px
-  background: #F7BA0E
-  color: #fff
-  font-size: 1.1em
-  &.primary
-    background: $blue
-  &.success
-    background: $green
-  &.danger
-    background: $red
-.cta-hover
+  padding: 10px 12px
+  background: $off-white
+  font-size: 16px
+  margin: 30px 0
+  border-left: 4px solid $cta-base
+  +shadow
+  &.wide
+    padding: 12px
+    text-align: center
+  &.tight
+    margin: 0
+  &.red
+    background: $red-alert
+    border-left: 4px solid $red-base
+    color: $red-active
+  &.green
+    background: $green-alert
+    border-left: 4px solid $green-base
+    color: $green-active
+
+/* Card
+ ========================================================================== */
+
+.card
+  border-radius: 3px
+  border: 1px solid $light-grey
+  +shadow
+  .thumbnail
+    padding: 10px
+    border-bottom: 1px solid $light-grey
+    text-indent: -9999px
+    .funder
+      margin: 20px auto
+  .details
+    background: $off-white
+    padding-top: 10px
+    hr
+      color: $light-grey
+      margin: 0
+    .content
+      padding: 0 10px 10px 10px
+      &.center
+        text-align: center
+
+.year
+  font-weight: normal
+  font-size: 14px
+
+/* Insights
+ ========================================================================== */
+
+=custom_bullet($bullet, $color)
+  font-family: 'FontAwesome'
+  content: $bullet
+  position: relative
+  top: 2px
+  margin: 0 5px 0 -25px
+  color: $color
+  font-size: 18px
+
+=green-badge
+  border-color: $green-base
+  color: $green-base !important
   &:hover
-    background: #FFC728
-    color: #fff
-    text-decoration: none
-.cta p a
-  color: #00a8e6
+    background: $green-alert
+  &:active
+    color: $green-active !important
+
+=red-badge
+  border-color: $red-base
+  color: $red-base !important
+  &:hover
+    background: $red-alert
+  &:active
+    color: $red-active !important
+
+.badge
+  display: inline-block
+  text-transform: uppercase
+  text-decoration: none !important
   font-weight: bold
-  &:hover
-    color: #35b3ee
+  font-size: 11px
+  border: 2px solid $dark-brown
+  border-radius: 3px
+  padding: 0 12px
+  margin-right: 4px
+  transition: all .25s
+  &.eligible
+    +green-badge
+  &.ineligible
+    +red-badge
+
+ul.insights
+  list-style: none
+  display: block
+  margin-top: 0
+  li
+    padding: 5px 0
+    .action, .highlight
+      display: inline-block
+    .highlight
+      font-weight: bold
+    &:before
+      +custom_bullet('\f05a', $light-grey)
+    &.eligible
+      .badge
+        +green-badge
+      &:before
+        +custom_bullet('\f058', $green-base)
+    &.ineligible
+      .badge
+        +red-badge
+      &:before
+        +custom_bullet('\f057', $red-base)
+
+/* Charts
+ ========================================================================== */
+
+.chart
+  +shadow
 
 /* Footer
  ========================================================================== */
 
-.footer-left
-  float: left
-.footer-right
-  float: right
-.footer-left, .footer-right
-  @media only screen and (max-width: 767px)
-    float: none
-    text-align: center
-
-.powered-by
-  position: relative
-  right: 58px
-  top: -18px
-  font-size: 10px
-  color: #F7BA0E
+.footer
+  background: $dark-brown
+  text-align: center
+  font-size: 12px
+  color: $white
+  padding: 45px 0
+  border-top: 3px solid $yellow-base
+  .logo-hex
+    background: image-url('logo-hex.svg') no-repeat
+    margin: 0 auto
+    width: 45px
+    height: 41px
+  p
+    margin: 10px auto

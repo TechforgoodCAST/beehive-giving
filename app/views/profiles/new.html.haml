@@ -23,7 +23,7 @@
 #new-profile-modal.uk-modal
   .uk-modal-dialog
     = render partial: "profiles/states/#{@profile.state}"
-  = render 'snippets/need_help'
+  = render partial: 'snippets/need_help'
 
 :javascript
   var modal = $.UIkit.modal('#new-profile-modal');

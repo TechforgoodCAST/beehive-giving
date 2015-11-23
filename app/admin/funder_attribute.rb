@@ -1,6 +1,6 @@
 ActiveAdmin.register FunderAttribute do
 
-  permit_params :funder_id, :year, :grant_count, :application_count,
+  permit_params :funder_id, :year, :grant_count, :application_count, :description,
   :enquiry_count, :funding_stream, :funding_size_average, :funding_size_min,
   :funding_size_max, :funding_duration_average, :funding_duration_min,
   :funding_duration_max, :funded_average_age, :funded_average_income,
@@ -40,6 +40,7 @@ ActiveAdmin.register FunderAttribute do
         attribute.funder
       end
       row :funding_stream
+      row :description
       row :grant_count
       row :application_count
       row :enquiry_count
@@ -92,6 +93,7 @@ ActiveAdmin.register FunderAttribute do
       f.input :year, as: :select, collection: Profile::VALID_YEARS
       f.input :funder, input_html: {class: 'chosen-select'}
       f.input :funding_stream, collection: Grant.pluck(:funding_stream).uniq << 'All', input_html: {class: 'chosen-select'}
+      f.input :description
       f.input :countries, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :name, label: "Countries"
       f.input :districts, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: "Districts"
       f.input :soft_restrictions

@@ -6,9 +6,9 @@ class RecipientNavbarTest < ActionDispatch::IntegrationTest
   end
 
   test 'logo click whilst unregistered sends to user#signup' do
-    visit '/about'
-    find(:css, '.logo.uk-hidden-small').click
-    assert_equal '/welcome', current_path
+    visit about_path
+    find(:css, '.logo').click
+    assert_equal signup_user_path, current_path
   end
 
   test 'logo click with user sends to find?' do

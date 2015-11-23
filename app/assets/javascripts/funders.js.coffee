@@ -16,6 +16,56 @@ $(document).ready ->
 #       }
 #   )
 
+# refactor
+$(document).ready ->
+  if $('#funding_frequency_distribution').length
+    Morris.Bar
+      element: 'funding_frequency_distribution'
+      data: $('#funding_frequency_distribution').data('data')
+      xkey: 'target'
+      ykeys: ['grant_count']
+      labels: ['No. of grants']
+      barColors: ['#F7BA0E']
+      resize: true
+      hideHover: 'auto'
+
+  if $('#funding_by_month').length
+    Morris.Bar
+      element: 'funding_by_month'
+      data: $('#funding_by_month').data('data')
+      xkey: 'month'
+      ykeys: ['grant_count']
+      postUnits: ' grants'
+      labels: ['Awarded']
+      barColors: ['#F7BA0E']
+      resize: true
+      hideHover: 'auto'
+
+  if $('#amount_by_month').length
+    Morris.Bar
+      element: 'amount_by_month'
+      data: $('#amount_by_month').data('data')
+      xkey: 'month'
+      ykeys: ['amount_awarded']
+      preUnits: '£'
+      labels: ['Awarded']
+      barColors: ['#F7BA0E']
+      resize: true
+      hideHover: 'auto'
+
+  if $('#funding_by_regions').length
+    Morris.Bar
+      element: 'funding_by_regions'
+      data: $('#funding_by_regions').data('data')
+      xkey: 'region'
+      ykeys: ['grant_count']
+      postUnits: ' grants'
+      labels: ['Awarded']
+      barColors: ['#F7BA0E']
+      resize: true
+      hideHover: 'auto'
+
+# refactor?
 $(document).ready ->
   if $('#multiple_funding_frequency_distribution').length
     Morris.Bar
@@ -29,6 +79,7 @@ $(document).ready ->
       hideHover: 'auto'
       gridTextSize: 10
 
+# refactor?
 FundersIndex = ((w, d) ->
   triggerFundersToggle = ->
     $('#toggle_funders').on 'click', ->

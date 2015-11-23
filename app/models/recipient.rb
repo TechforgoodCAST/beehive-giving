@@ -17,10 +17,16 @@ class Recipient < Organisation
   has_many :countries, :through => :profiles
   has_many :districts, :through => :profiles
   has_many :beneficiaries, :through => :profiles
+  has_many :implementors, :through => :profiles
+  has_many :implementations, :through => :profiles
 
-  MAX_FREE_LIMIT = 3
   RECOMMENDATION_THRESHOLD = 1
+  MAX_FREE_LIMIT = 3
   RECOMMENDATION_LIMIT = 6
+
+  def is_subscribed?
+    self.subscription.present?
+  end
 
   def recipient_profile_limit
     if (Date.today.year - self.founded_on.year) < 4
@@ -34,7 +40,7 @@ class Recipient < Organisation
     if self.subscription.present?
       true
     else
-      unlocked_funders.size < MAX_FREE_LIMIT && self.profiles.count > 0
+      unlocked_funders.size < MAX_FREE_LIMIT
     end
   end
 
@@ -88,6 +94,7 @@ class Recipient < Organisation
     ].join(", ")
   end
 
+  # refactor
   def eligibility_count(funder)
     count = 0
 
@@ -100,6 +107,7 @@ class Recipient < Organisation
     count
   end
 
+  # refactor?
   def funding_stream_eligible?(funding_stream, funder)
     count = 0
 
@@ -112,16 +120,51 @@ class Recipient < Organisation
     funder.funding_streams.where('label = ?', funding_stream).first.restrictions.count == count ? true : false
   end
 
-  def eligible?(funder)
+  def load_recommendation(funder)
+    Recommendation.where(recipient: self, funder: funder).first
+  end
+
+  def set_eligibility(funder, eligibility)
+    self.load_recommendation(funder).update_attributes(eligibility: eligibility)
+  end
+
+  def check_eligibility(funder)
     count = 0
 
     funder.funding_streams.each do |f|
       count += 1 if self.funding_stream_eligible?(f.label, funder)
     end
 
-    count > 0 ? true : false
+    count > 0 ? self.set_eligibility(funder, 'Eligible') : self.set_eligibility(funder, 'Ineligible')
   end
 
+  def check_eligibilities
+    self.recipient_funder_accesses.each do |unlocked_funder|
+      funder = Funder.find(unlocked_funder.funder_id)
+      self.check_eligibility(funder)
+    end
+  end
+
+  def eligible?(funder)
+    return true if self.load_recommendation(funder).eligibility == 'Eligible'
+  end
+
+  def get_funders_by_eligibility(eligibility)
+    Funder.find(self.recommendations.where(eligibility: eligibility).pluck(:funder_id))
+  end
+
+  def ineligible?(funder)
+    return true if self.load_recommendation(funder).eligibility == 'Ineligible'
+  end
+
+  def eligibility_restrictions(funder)
+    Eligibility.where(
+      recipient_id: self,
+      restriction_id: funder.restrictions
+    ).order(:id)
+  end
+
+  # refactor
   def questions_remaining?(funder)
     self.eligibility_count(funder) < funder.restrictions.uniq.count
   end
@@ -200,7 +243,15 @@ class Recipient < Organisation
   end
 
   def recommended_funders
-    Funder.joins(:recommendations).where("recipient_id = ? AND score >= ?", self.id, RECOMMENDATION_THRESHOLD).order("recommendations.score DESC, name ASC")
+    Funder.joins(:recommendations)
+      .where('recipient_id = ? AND score >= ?', self.id, RECOMMENDATION_THRESHOLD)
+      .order('recommendations.eligibility ASC, recommendations.score DESC, name ASC')
+  end
+
+  def recommended_with_eligible_funders
+    recommended_funders
+      .where('eligibility is NULL OR eligibility != ?', 'Ineligible')
+      .limit(Recipient::RECOMMENDATION_LIMIT - self.get_funders_by_eligibility('Ineligible').count)
   end
 
   def recommended_funder?(funder)

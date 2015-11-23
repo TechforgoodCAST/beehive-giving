@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150928120756) do
+ActiveRecord::Schema.define(version: 20151120163921) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -238,6 +238,7 @@ ActiveRecord::Schema.define(version: 20150928120756) do
     t.string   "application_frequency"
     t.string   "grant_frequency"
     t.string   "marketing_frequency"
+    t.integer  "price"
   end
 
   add_index "feedbacks", ["user_id"], name: "index_feedbacks_on_user_id", using: :btree
@@ -268,6 +269,15 @@ ActiveRecord::Schema.define(version: 20150928120756) do
     t.string   "application_link"
     t.string   "application_details"
     t.text     "soft_restrictions"
+    t.text     "approval_months_by_count"
+    t.string   "approval_months_by_giving"
+    t.string   "countries_by_count"
+    t.string   "countries_by_giving"
+    t.string   "regions_by_count"
+    t.string   "regions_by_giving"
+    t.string   "funding_streams_by_count"
+    t.string   "funding_streams_by_giving"
+    t.text     "description"
   end
 
   add_index "funder_attributes", ["funder_id"], name: "index_funder_attributes_on_funder_id", using: :btree
@@ -464,6 +474,7 @@ ActiveRecord::Schema.define(version: 20150928120756) do
     t.datetime "created_at",                           null: false
     t.datetime "updated_at",                           null: false
     t.string   "recommendation_quality"
+    t.string   "eligibility"
   end
 
   add_index "recommendations", ["funder_id"], name: "index_recommendations_on_funder_id", using: :btree

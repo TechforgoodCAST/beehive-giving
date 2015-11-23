@@ -5,86 +5,63 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
   setup do
     @recipient = create(:recipient)
     @funder = create(:funder)
-    @recipient.unlock_funder!(@funder)
-    @attribute = create(:recipient_attribute, recipient: @recipient)
-    @profile = create(:profile, :organisation => @recipient, :year => Date.today.year)
+    3.times { |g| create(:grant, funder: @funder) }
+    create(:funder_attribute, funder: @funder)
+    create(:profile, organisation: @recipient, year: Date.today.year, state: 'complete')
     @restrictions = Array.new(3) { |i| create(:restriction) }
-    @eligibilities = Array.new(3) { |i| create(:eligibility, :recipient => @recipient, :restriction => @restrictions[i]) }
+    Array.new(3) { |i| create(:eligibility, recipient: @recipient, restriction: @restrictions[i]) }
+    create_and_auth_user!(organisation: @recipient)
+    @recipient.recommendations.first.update_attribute(:score, 2)
   end
 
-  test "recipient no eligibility data has to complete all questions" do
+  test 'recipient no eligibility data has to complete all questions' do
+    Capybara.match = :first
+
     @funding_stream = create(:funding_stream, :restrictions => @restrictions, :funders => [@funder])
+    Eligibility.destroy_all
 
-    @eligibilities.each { |e| e.destroy }
-
-    create_and_auth_user!(:organisation => @recipient)
-    visit recipient_comparison_path(@funder)
+    visit funder_path(@funder)
     click_link('Check eligibility')
 
     assert_equal recipient_eligibility_path(@funder), current_path
-    assert page.has_content?("Are you seeking funding for", count: 3)
+    assert page.has_content?('Yes', count: 3)
   end
 
-  test "recipient with partial eligibility data able to fill gaps" do
-    @funding_stream = create(:funding_stream, :restrictions => @restrictions, :funders => [@funder])
+  test 'recipient with partial eligibility data able to fill gaps' do
+    create(:funding_stream, restrictions: @restrictions, funders: [@funder])
+    Eligibility.last.destroy
 
-    @eligibilities.last.destroy
+    visit recipient_eligibility_path(@funder)
+    assert page.has_content?('Yes', count: 1)
+  end
 
-    create_and_auth_user!(:organisation => @recipient)
-    visit recipient_comparison_path(@funder)
-    click_link('Check eligibility')
+  test 'eligible recipient can apply for funding' do
+    @recipient.recommendations.last.update_attribute(:eligibility, 'Eligible')
 
+    visit recipient_apply_path(@funder)
+    assert_equal recipient_apply_path(@funder), current_path
+  end
+
+  test 'ineligible recipient cannot visit apply for funding page' do
+    @recipient.recommendations.last.update_attributes(eligibility: 'Ineligible')
+
+    visit recipient_apply_path(@funder)
     assert_equal recipient_eligibility_path(@funder), current_path
-    assert page.has_content?("Are you seeking funding for", count: 1)
   end
 
-  test "recipient with all eligibility data has eligibility modal" do
-    @funding_stream = create(:funding_stream, :restrictions => @restrictions, :funders => [@funder], :label => 'All')
-    @funder_attribute = create(:funder_attribute, :funder => @funder, :funding_stream => 'All', :grant_count => 1)
+  test 'cannot check eligibility if max free limit reached unless subscribed' do
+    create(:feedback, user: @user)
+    4.times { |f| create(:funder) }
+    Funder.all.limit(3).each { |f| @recipient.unlock_funder!(f) }
+    @recipient.refined_recommendation
 
-    create_and_auth_user!(:organisation => @recipient)
-    visit recipient_comparison_path(@funder)
-    assert page.has_content?("Things to consider")
-  end
+    visit recipient_eligibility_path(Funder.first)
+    assert_equal recipient_eligibility_path(Funder.first), current_path
 
-  test "ineligible recipient cannot visit eligibility check page" do
-    @funding_stream = create(:funding_stream, :restrictions => @restrictions, :funders => [@funder])
+    visit recipient_eligibility_path(Funder.last)
+    assert_equal edit_feedback_path(@user.feedbacks.last), current_path
 
-    @eligibilities[0].update_column(:eligible, false)
-
-    create_and_auth_user!(:organisation => @recipient)
-    visit recipient_eligibility_path(@funder)
-
-    assert_equal recipient_comparison_path(@funder), current_path
-  end
-
-  test "cannot check eligibility if funder locked" do
-    create_and_auth_user!(:organisation => @recipient)
-    RecipientFunderAccess.where(recipient_id: @recipient.id, funder_id: @funder.id).first.destroy
-    visit recipient_eligibility_path(@funder)
-    assert_equal recipient_comparison_path(@funder), current_path
-  end
-
-  test "inverted restrictions set yes as true" do
-    create(:profile, :organisation => @recipient)
-
-    @restrictions[1].update_column(:invert, true)
-    @eligibilities.each { |e| e.destroy }
-
-    @funding_stream = create(:funding_stream, :restrictions => @restrictions, :funders => [@funder], :label => 'All')
-    @funder_attribute = create(:funder_attribute, :funder => @funder, :funding_stream => 'All', :grant_count => 1)
-
-    create_and_auth_user!(:organisation => @recipient)
-    visit recipient_eligibility_path(@funder)
-
-    within("#edit_recipient_#{@recipient.id}") do
-      select('No', :from => "recipient_eligibilities_attributes_0_eligible")
-      select('Yes', :from => "recipient_eligibilities_attributes_1_eligible")
-      select('No', :from => "recipient_eligibilities_attributes_2_eligible")
-    end
-    click_button('Check eligibility')
-
-    assert page.has_content?("You're eligible", count: 1)
+    # refactor test unless subscribed
   end
 
 end

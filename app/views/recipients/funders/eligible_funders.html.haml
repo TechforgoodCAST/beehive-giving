@@ -1,0 +1,18 @@
+= content_for :title, 'Eligible funders'
+
+= render partial: 'recipients/funders/subnav'
+
+.uk-container.uk-container-center.uk-margin-large
+  %h2 Eligible funders
+  %h4 You are seeing funders which you are eligible to apply for funds from.
+
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+    - if @funders.count == 0
+      .cta.wide
+        You don't have any eligible funders.
+        = link_to 'Find a funder', recommended_funders_path, class: 'uk-button uk-button-large uk-button-primary invert'
+
+    - @funders.each_with_index do |funder, i|
+      = render partial: 'recipients/funders/summary', locals: { funder: funder }
+      - unless i == @funders.count-1
+        %hr.thick

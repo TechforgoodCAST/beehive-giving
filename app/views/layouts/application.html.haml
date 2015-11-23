@@ -2,14 +2,14 @@
 %html
   %head
     %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
-      %title Beehive
+      %title= content_for?(:title) ? "#{yield(:title)} | Beehive" : 'Beehive'
       = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
       = stylesheet_link_tag    params[:controller]
       = javascript_include_tag 'application', 'data-turbolinks-track' => true
       = javascript_include_tag params[:controller]
       = csrf_meta_tags
       = Gon::Base.render_data({})
-    = google_webfonts_init({google: ['Roboto Slab', 'Roboto']})
+    = google_webfonts_init({google: ['Roboto+Slab::latin', 'Noto+Sans:400,700:latin']})
 
     / Google Analytics
     :javascript
@@ -43,66 +43,7 @@
       = intercom_script_tag({:email => current_user.user_email, :name => current_user.full_name, :job_role => current_user.job_role})
 
   %body#top
-    - unless content_for?(:sign_in)
-      %nav.uk-navbar#bg.border{"data-uk-sticky" => ""}
-        .uk-container.uk-container-center
-          %a.uk-navbar-brand.uk-hidden-small.logo{:href => root_path, title: 'Beehive'}
-            .logo-label Beta
-          .uk-navbar-flip
-            - if logged_in?
-              - unless content_for?(:signup) || content_for?(:public)
-                - if current_user.organisation.type == 'Funder'
-                  .uk-navbar-content.uk-text-muted.uk-hidden-small
-                    Welcome,
-                    = current_user.organisation.name
-                  .uk-button-group.bh-button-group
-                    %div{"data-uk-dropdown" => "{mode:'click'}"}
-                      %button.uk-button
-                        %i.uk-icon-caret-down
-                      .uk-dropdown
-                        %ul.uk-nav.uk-nav-dropdown
-                          %li
-                            %a{href: logout_path, method: :destroy} Sign out
-
-                - else current_user.organisation.type == 'Recipient'
-                  - if current_user_should_render_feedback?
-                    .uk-navbar-content.uk-hidden-small{style: 'padding-top: 2px'}
-                      %a.uk-text-primary#feedback-button{href: "", "data-uk-modal" => "{target:'#feedback'}"} Feedback
-                  .uk-navbar-flip.uk-hidden-small
-                    %ul.uk-navbar-nav
-                      - if current_page?(funders_path)
-                        %li.uk-active
-                          %a{href: funders_path} Funders
-                      - else
-                        %li
-                          %a{href: funders_path} Back to funders
-                      %li.uk-parent{"data-uk-dropdown" => "{mode:'click'}"}
-                        %a
-                          %i.uk-icon-cog.uk-icon-small
-                          %i.uk-icon-caret-down
-                        .uk-dropdown.uk-dropdown-navbar.uk-dropdown-flip#panel
-                          %ul.uk-nav.uk-nav-navbar
-                            %li
-                              %a{:href => recipient_profiles_path(current_user.organisation)} Edit my profile
-                            %li
-                              %a{:href => recipient_eligibilities_path(current_user.organisation), :"data-no-turbolink" => true} Manage eligibility
-                            %li.uk-nav-divider
-                            %li
-                              %a{href: logout_path, method: :destroy} Sign out
-
-              - else
-                %ul.uk-navbar-nav.uk-hidden-small
-                  %li
-                    %a{href: logout_path, method: :destroy} Sign out
-
-              %a.uk-navbar-toggle.uk-visible-small#padding-remove{"data-uk-offcanvas" => "{target:'#offcanvas'}"}
-
-            - else
-              .uk-navbar-content{:style => "padding-right: 0;"}
-                = link_to 'Sign in', sign_in_path, class: 'uk-button uk-button-primary'
-
-          %a.uk-navbar-brand.uk-visible-small.logo{:href => root_path}
-            .logo-label Beta
+    = render partial: 'layouts/navbar'
 
     .uk-container.uk-container-center
       - if flash[:notice]
@@ -137,47 +78,8 @@
     = yield(:sign_in) if content_for?(:sign_in)
     = yield
 
-  %div{style: 'border-top: #EAEAEA 1px solid;'}
-    .uk-container.uk-container-center.uk-margin
-      .uk-grid.uk-margin-top
-        .uk-width-small-1-1.uk-width-medium-1-2
-          .footer-left
-            %div
-              %a.uk-button.uk-button-mini{:href => about_path, style: 'margin-bottom: 3px;'} About
-              %a.uk-button.uk-button-mini{:href => privacy_path, style: 'margin-bottom: 3px;'} Privacy
-              %a.uk-button.uk-button-mini{:href => terms_path, style: 'margin-bottom: 3px;'} Terms
-              %a.uk-button.uk-button-mini{:href => "mailto:support@beehivegiving.org", style: 'margin-bottom: 3px;'} Contact
-            %small
-              %a.yellow{href: "http://www.forwardfoundation.org.uk/?utm_source=Beehive&utm_medium=Link&utm_campaign=Beehive%2Bto%2BFoundation", target: "_blank"} &copy; The Foundation People #{Date.today.year}, Registered Charity No: 1144526.
+  = render partial: 'layouts/footer'
 
-        .uk-width-small-1-1.uk-width-medium-1-2.uk-hidden-small
-          .footer-right
-            = link_to image_tag("tf-logo-light.png", size: "100"), "http://www.thefoundation.org/?utm_source=Beehive&utm_medium=Link&utm_campaign=Beehive%2Bto%2BFoundation", target: "_blank"
-            .powered-by Powered by
-
-    #offcanvas.uk-offcanvas
-      .uk-offcanvas-bar.uk-offcanvas-bar-flip.uk-offcanvas-bar-show{style: 'z-index:1000;'}
-        - if logged_in?
-          - if current_user.organisation
-            %ul.uk-nav.uk-nav-offcanvas
-              %li.uk-nav-header.uk-margin-top.uk-text-center Navigation
-              %li
-                - if current_user.organisation.type == 'Funder'
-                  %a{href: funder_path(current_user.organisation)} Dashboard
-                - else
-                  %a{href: funders_path} Funders
-                  %a{:href => recipient_profiles_path(current_user.organisation)} Edit my profile
-                  %a{:href => recipient_eligibilities_path(current_user.organisation)} Manage eligibility
-                  - if current_user_should_render_feedback?
-                    %a#feedback-button-mobile{"data-uk-modal" => "{target:'#feedback'}"} Feedback
-              %li
-                %a{href: logout_path, method: :destroy} Sign out
-          - else
-            %ul.uk-nav.uk-nav-offcanvas
-              %li.uk-nav-header.uk-margin-top.uk-text-center
-                Welcome to Beehive
-              %li
-                %a{href: logout_path, method: :destroy} Sign out
-
-    - if current_user_should_render_feedback?
-      = render partial: 'recipients/feedback'
+  -# refactor
+  -# - if current_user_should_render_feedback?
+  -#   = render partial: 'recipients/feedback'

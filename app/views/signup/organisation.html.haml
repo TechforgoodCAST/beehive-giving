@@ -1,3 +1,5 @@
+= content_for :title, 'Basics'
+
 = javascript_include_tag 'chosen-jquery'
 = javascript_include_tag 'chosen'
 = stylesheet_link_tag 'chosen'
@@ -67,9 +69,9 @@
           Finance
 
       .uk-form.uk-form-stacked
-        = render 'organisations/form'
+        = render partial: 'organisations/form'
 
-  = render 'snippets/need_help'
+  = render partial: 'snippets/need_help'
 
 :javascript
   var modal = $.UIkit.modal("#your-organisation");

@@ -1,0 +1,75 @@
+%p= raw(funder.current_attribute.description)
+
+%ul.insights
+  - unless params[:controller] == 'recipients' && %w(eligibility update_eligibility apply).include?(params[:action])
+    - if @recipient.load_recommendation(funder).eligibility
+      %li{ class: (@recipient.eligible?(funder) ? 'eligible' : 'ineligible')}
+        - if @recipient.eligible?(funder)
+          %a.badge{href: eligible_funders_path} Eligible
+          You are eligible for funding.
+          %a.action{href: recipient_eligibility_path(funder)} See criteria
+        - else
+          %a.badge{href: ineligible_funders_path} Ineligible
+          You are ineligible for funding.
+          %a.action{href: recipient_eligibility_path(funder)} Find out why
+
+  %li
+    - if funder.current_attribute.application_count
+      Recieved
+      .highlight= number_with_delimiter(funder.current_attribute.application_count)
+      applications and awarded
+      = succeed '.' do
+        .highlight= number_with_delimiter(funder.current_attribute.grant_count)
+      grants
+    - else
+      Awarded
+      .highlight= number_with_delimiter(funder.current_attribute.grant_count)
+      grants.
+    - if funder.current_attribute.application_count
+      That's a
+      .highlight= percentage(funder.current_attribute.grant_count, funder.current_attribute.application_count)
+      success rate.
+    %a.action{href: funder_path(funder, anchor: 'how-was-funding-distributed')} More info
+
+  - if funder.current_attribute.approval_months_by_count
+    %li
+      Awarded funding in
+      = succeed '.' do
+        %strong= raw(funder.current_attribute.approval_months_by_count)
+      %a.action{href: funder_path(funder, anchor: 'when-was-funding-awarded')} More info
+
+  - if funder.current_attribute.countries_by_count
+    %li
+      The most funded countries were
+      = succeed '.' do
+        %strong= raw(funder.current_attribute.countries_by_count)
+      %a.action{href: funder_path(funder, anchor: 'where-was-funding-awarded')} More info
+
+  - if funder.current_attribute.regions_by_count
+    %li
+      The most funded regions were
+      = succeed '.' do
+        %strong= raw(funder.current_attribute.regions_by_count)
+
+  - if funder.current_attribute.funding_streams_by_count
+    %li
+      Awarded the most grants in
+      = succeed '.' do
+        %strong=raw(funder.current_attribute.funding_streams_by_count)
+
+  -# - if funder.current_attribute.funding_streams_by_giving
+  -#   %li
+  -#     Gave the most funding in
+  -#     = succeed '.' do
+  -#       %strong=raw(funder.current_attribute.funding_streams_by_giving)
+
+  -# %li
+  -#   The most common grant size was
+  -#   .highlight
+  -#     = funder.grants.group(:amount_awarded).count.sort_by {|k, v| v}.reverse.to_h.first
+  -#
+  -# %li
+  -#   Most funding lasted for
+  -#   .highlight
+  -#     = funder.grants.group(:days_from_start_to_end).count.sort_by {|k, v| v}.reverse.to_h.take(3)
+  -#   -# = funder.funding_streams.pluck(:label)

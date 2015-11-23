@@ -13,4 +13,7 @@ class Feedback < ActiveRecord::Base
   validates :application_frequency, inclusion: {in: APP_AND_GRANT_FREQUENCY}
   validates :grant_frequency, inclusion: {in: APP_AND_GRANT_FREQUENCY}
   validates :marketing_frequency, inclusion: {in: MARKETING_FREQUENCY}
+
+  validates :price, presence: true, on: :update
+  validates :price, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, on: :update
 end
