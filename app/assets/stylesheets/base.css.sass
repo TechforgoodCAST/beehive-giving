@@ -260,6 +260,21 @@ hr
 /* Inputs
  ========================================================================== */
 
+.form
+  label
+    font-size: 15px
+    font-weight: bold
+    display: block
+    margin-bottom: 4px !important
+  input:not([type="radio"]):not([type="checkbox"]), select
+    border: solid 2px $light-grey !important
+    border-radius: 3px
+    &:focus
+      border-color: $cta-base !important
+      background-color: $cta-alert !important
+    &.large
+      height: 40px !important
+
 .radio
   margin: 0
   color: $cta-base
@@ -311,8 +326,14 @@ hr
     // -ms-transition: all 0.25s ease
     // -kthtml-transition: all 0.25s ease
 
+.field_with_errors + .error-message
+  color: $red-base
+  font-size: 12px
+  margin: 4px 0
+  border-top: 3px solid $red-alert
+
 .field_with_errors
-  .string, .numeric, select, .checkbox label, .radio label, .chosen-container .chosen-single, .chosen-container .chosen-choices, .password
+  input:not([type="radio"]):not([type="checkbox"]), .string, .numeric, select, .checkbox label, .radio label, .chosen-container .chosen-single, .chosen-container .chosen-choices, .password
     border: 2px $red-base solid !important
     background: $red-alert !important
     color: $red-base !important

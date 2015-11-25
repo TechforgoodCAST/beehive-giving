@@ -23,58 +23,38 @@
     %img{:alt => "", :height => "1", :src => "//www.googleadservices.com/pagead/conversion/958190855/?label=oXACCPCrr18Qh6rzyAM&amp;guid=ON&amp;script=0", :style => "border-style:none;", :width => "1"}/
 
 - content_for :signup do
-  = render partial: 'funders/static_background'
+  = render partial: 'subnav'
+  .uk-container.uk-container-center.uk-margin-large
+    %h2 Basics
+    %h4 If you’re operating as a non-profit, or just have an idea for a project let's start with the basics.
 
-#your-organisation.uk-modal.modal-scroll-touch
-  .uk-modal-dialog
-    #welcome-message
+    .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+      = render partial: 'organisations/form'
+
+- unless cookies['_beehiveWelcomeClose'].present?
+  #your-organisation.uk-modal.modal-scroll-touch
+    .uk-modal-dialog
       .uk-modal-header
         %h2
           Welcome to Beehive
           = succeed '!' do
             = current_user.first_name.titleize
-      %p.uk-text-large Beehive helps you quickly and easily understand which funders to approach, it's simple...
+      %p.uk-text-large Beehive intelligently connects you with the right funders, in three simple steps...
       .uk-grid.uk-text-center
         .uk-width-small-1-3.uk-margin-bottom
           .illus.small.profile
-          %p.uk-margin-top-remove Create a unique profile for your non-profit.
+          %p.uk-margin-top-remove 1. Tell Beehive about your organisation.
         .uk-width-small-1-3.uk-margin-bottom
           .illus.small.recommendation
-          %p.uk-margin-top-remove Get recommendations of suitable funders.
+          %p.uk-margin-top-remove 2. Beehive identifies suitable funders.
         .uk-width-small-1-3.uk-margin-bottom
           .illus.small.eligibility
-          %p.uk-margin-top-remove Check to see if you’re eligible for support.
+          %p.uk-margin-top-remove 3. Review your matches and check your eligibility.
 
-      %a.uk-button.uk-button-primary.uk-width-1-1.js-record-welcome-close Let's get started
+      %a.uk-button.uk-button-primary.uk-button-large.uk-width-1-1.uk-modal-close.js-welcome-close Let's get started
 
-    #new-organisation-form.uk-hidden
-      %ul.progress-indicator
-        %li.warning
-          %span.bubble
-          Basics
-        %li
-          %span.bubble
-          Target
-        %li
-          %span.bubble
-          Location
-        %li
-          %span.bubble
-          Team
-        %li
-          %span.bubble
-          Work
-        %li
-          %span.bubble
-          Finance
-
-      .uk-form.uk-form-stacked
-        = render partial: 'organisations/form'
-
-  = render partial: 'snippets/need_help'
-
-:javascript
-  var modal = $.UIkit.modal("#your-organisation");
-  modal.options.bgclose = false;
-  modal.options.keyboard = false;
-  modal.show();
+  :javascript
+    var modal = $.UIkit.modal("#your-organisation");
+    modal.options.bgclose = false;
+    modal.options.keyboard = false;
+    modal.show();

@@ -27,7 +27,6 @@
   #edit-profile-modal.uk-modal
     .uk-modal-dialog
       = render partial: "profiles/states/#{@profile.state}"
-    = render 'snippets/need_help'
 
   :javascript
     var modal = $.UIkit.modal('#edit-profile-modal');
