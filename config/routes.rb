@@ -31,6 +31,12 @@ Rails.application.routes.draw do
   match '/new-funder', to: 'signup#funder', via: :get, as: 'new_funder'
   match '/new-funder', to: 'signup#create_funder', via: :post
 
+  # Profiles
+  match '/(:id)/profile', to: 'profiles#new', via: :get, as: 'new_recipient_profile'
+  match '/(:id)/profile', to: 'profiles#create', via: :post
+  match '/(:recipient_id)/profile/(:id)', to: 'profiles#edit', via: :get, as: 'edit_recipient_profile'
+  match '/(:recipient_id)/profile/(:id)', to: 'profiles#update', via: :patch
+
   # Funders
   match '/funders/recommended', to: 'recipients#recommended_funders', via: :get, as: 'recommended_funders'
   match '/funders/eligible', to: 'recipients#eligible_funders', via: :get, as: 'eligible_funders'
@@ -62,7 +68,7 @@ Rails.application.routes.draw do
       post :vote
       post :approach_funder
     end
-    resources :profiles, :only => [:new, :create, :index, :edit, :update]
+    resources :profiles, :only => [:create, :update, :index]
     resources :recipient_attribute, :as => :attribute, :only => [:new, :create, :edit, :update]
   end
 

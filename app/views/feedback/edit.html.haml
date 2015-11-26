@@ -18,17 +18,19 @@
             Creator of Beehive
         %p P.S. You'll be returned to where you left off once you save your feedback.
 
+        %hr.thick
+
       .uk-width-large-1-2.uk-container-center
-        .uk-animation-fade.uk-form.uk-form-stacked.uk-panel.uk-panel-box#panel.shadow
+        .uk-animation-fade.cta.tight
           %h4.uk-text-bold Give us some feedback
           = simple_form_for @feedback, url: feedback_path, method: :patch do |f|
-            .uk-form.uk-form-stacked
+            .uk-form.uk-form-stacked.form
               .uk-width-1-1.uk-margin-bottom
-                %label
+                %p{style: 'font-size: 14px;'}
                   How much would you pay
                   %strong a year
                   to have unlimited access to all of the funders on Beehive?
-                = f.input :price, as: :currency, input_html: { class: 'uk-form-large numeric integer', style: 'width: 94%;', min: 0 }, placeholder: 'e.g. 50'
-                = f.error :price, class: 'uk-text-small uk-text-warning'
+                = f.input :price, as: :currency, input_html: { class: 'large numeric integer uk-width-1-1', min: 0 }, placeholder: 'e.g. 50'
+                = f.error :price, class: 'error-message'
 
             = f.submit 'Save feedback', class: 'uk-button uk-button-primary uk-button-large uk-width-1-1'
