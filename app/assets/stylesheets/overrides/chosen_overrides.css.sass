@@ -8,6 +8,11 @@
     margin-top: 7px !important
   abbr
     top: 12px !important
+  .chosen-choices
+    min-height: 40px
+  .search-choice
+    background: $cta-alert
+    border: 1px solid $light-grey !important
 
 .chosen-container
   .chosen-single
@@ -43,19 +48,23 @@
     z-index: 1 !important
     .highlighted
       background: $cta-base !important
+      border-radius: 3px
 
 .chosen-choices
-  border: 1px solid #ddd !important
-  border-radius: 4px !important
+  border: 2px solid $light-grey !important
+  border-radius: 3px !important
   box-shadow: none !important
   background-image: none !important
+  transition: all .25s
+  &:active
+    border: 2px solid $cta-base !important
 
 .chosen-container-multi .chosen-choices li.search-choice
   border: none !important
 
 .chosen-container-active .chosen-choices
-  border: 1px solid #99baca !important
-  border-radius: 4px !important
+  border: 2px solid $cta-base !important
+  border-radius: 3px !important
   box-sizing: border-box !important
   background: #f5fbfe !important
   transition-delay: 0s !important

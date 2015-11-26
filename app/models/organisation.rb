@@ -32,7 +32,7 @@ class Organisation < ActiveRecord::Base
   validate  :founded_on_before_registered_on, if: :registered?,
             unless: Proc.new { |organisation| organisation.founded_on.nil? }
   validates :charity_number, :company_number,
-            presence: { message: "charity number of company required if registered" },
+            presence: { message: 'charity OR company number required if legally registered' },
             if: Proc.new { |o|
               o.registered == true && (o.charity_number.blank? && o.company_number.blank?)
             }

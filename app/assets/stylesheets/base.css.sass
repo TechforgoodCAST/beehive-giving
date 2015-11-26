@@ -261,7 +261,7 @@ hr
  ========================================================================== */
 
 .form
-  label
+  .label
     font-size: 15px
     font-weight: bold
     display: block
@@ -296,7 +296,7 @@ hr
       height: 18px !important
       transition: all 0.25s ease
       &:before
-        background: $cta-active !important
+        background: $cta-base !important
         width: 10px !important
         height: 10px !important
     &:hover
@@ -306,7 +306,8 @@ hr
       input
         border-color: $cta-active !important
 
-.radio label.radio-checked, .field_with_errors .radio label.radio-checked
+.radio label.radio-checked, .field_with_errors .radio label.radio-checked,
+.checkbox label.checkbox-checked, .field_with_errors .checkbox label.checkbox-checked
   background: $cta-active !important
   border-color: $cta-active !important
   color: $white !important
@@ -318,6 +319,10 @@ hr
     border-color: $cta-active !important
     &:hover
       border-color: $cta-base !important
+
+.checkbox label.checkbox-checked, .field_with_errors .checkbox label.checkbox-checked
+  input
+    background: $white !important
 
     // refactpr
     // -webkit-transition: all 0.25s ease
@@ -333,7 +338,8 @@ hr
   border-top: 3px solid $red-alert
 
 .field_with_errors
-  input:not([type="radio"]):not([type="checkbox"]), .string, .numeric, select, .checkbox label, .radio label, .chosen-container .chosen-single, .chosen-container .chosen-choices, .password
+  input:not([type="radio"]):not([type="checkbox"]), .string, .numeric, select, .checkbox label, .radio label, .chosen-container .chosen-single, .chosen-container .chosen-choices, .password,
+  .checkbox input
     border: 2px $red-base solid !important
     background: $red-alert !important
     color: $red-base !important
@@ -366,6 +372,7 @@ input::-webkit-inner-spin-button
   font-size: 16px
   margin: 30px 0
   border-left: 4px solid $cta-base
+  color: $cta-active
   +shadow
   &.wide
     padding: 12px

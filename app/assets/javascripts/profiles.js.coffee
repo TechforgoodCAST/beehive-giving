@@ -42,15 +42,11 @@ ProfileForm = ((w, d) ->
   # bindGetTooltip = ->
   #   return $('.checkbox label').append('<i class="uk-icon-question-circle" style="float: right;" data-uk-tooltip="{pos:"top"}" title="Tooltip"></i>')
 
-  bindCheckedItemsHighlight = ->
-    return unless $('.checkbox label input:checked')
-    $('.checkbox label input:checked').parent().css('background-color', '#f5fbfe')
-    $('.checkbox label input').change ->
-      if $(this).is(':checked')
-        $(this).parent().css('background-color', '#f5fbfe')
-      else
-        $(this).parent().css('background-color', '#fafafa')
-      return
+  highlightChecked = (elem) ->
+    $('.' + elem + ' label :checked').closest('label').addClass(elem + '-checked')
+    $('.' + elem + ' label input').change ->
+      $('.' + elem + ' label').closest('label').removeClass(elem + '-checked')
+      $('.' + elem + ' label :checked').closest('label').addClass(elem + '-checked')
 
   toggleMoreBeneficiaryOptions = ->
     $(d).on 'click', '.more-options', ->
@@ -61,20 +57,22 @@ ProfileForm = ((w, d) ->
     bindCountryRegions: bindCountryRegions,
     # bindHiddenQuestionsToggle: bindHiddenQuestionsToggle,
     # bindGetTooltip: bindGetTooltip,
-    bindCheckedItemsHighlight: bindCheckedItemsHighlight,
-    toggleMoreBeneficiaryOptions: toggleMoreBeneficiaryOptions
+    toggleMoreBeneficiaryOptions: toggleMoreBeneficiaryOptions,
+    highlightChecked: highlightChecked
   }
 )(window, document)
 
 $(document).ready ->
   ProfileForm.bindCountryRegions()
+  ProfileForm.toggleMoreBeneficiaryOptions()
+  ProfileForm.highlightChecked('checkbox')
+  ProfileForm.highlightChecked('radio')
   # ProfileForm.bindHiddenQuestionsToggle()
   # ProfileForm.bindGetTooltip()
-  ProfileForm.bindCheckedItemsHighlight()
-  ProfileForm.toggleMoreBeneficiaryOptions()
 
 $(document).ajaxComplete ->
   ProfileForm.bindCountryRegions()
+  ProfileForm.highlightChecked('checkbox')
+  ProfileForm.highlightChecked('radio')
   # ProfileForm.bindHiddenQuestionsToggle()
   # ProfileForm.bindGetTooltip()
-  ProfileForm.bindCheckedItemsHighlight()

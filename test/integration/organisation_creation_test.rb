@@ -60,7 +60,7 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
 
   test 'unregistered organistion only needs founded on' do
     create_and_auth_user!
-    visit '/your-organisation'
+    visit signup_organisation_path
     full_form(false)
     click_button('Next')
     assert_equal new_recipient_profile_path(Recipient.first), current_path

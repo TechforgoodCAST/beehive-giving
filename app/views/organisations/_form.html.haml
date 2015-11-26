@@ -3,29 +3,32 @@
     = f.hidden_field :status, value: 'Active - currently operational'
 
     .uk-width-medium-1-1
-      %label Which organisation are you seeking funds for?
+      .label
+        Which organisation or project are you seeking funds for?
+        -# %span
+        -#   %a.yellow I don't have an organisation
       = f.input :name, type: 'text', input_html: { class: 'large uk-width-1-1' }
       = f.error :name, class: 'error-message'
     .uk-width-medium-1-1.uk-margin-top
-      %label Where is your organisation based?
+      .label Where is your organisation or project based?
       = f.input :country, error: false, type: 'text', input_html: { class: 'large uk-width-1-1 chosen-select' }, include_blank: true, priority: ['United Kingdom']
       = f.error :country, class: 'error-message'
 
     .uk-width-medium-1-1.uk-margin-top
-      %label Does your organisation have a charity or company number?
+      .label Does your organisation or project have a charity or company number?
       = f.input :registered, as: :select, input_html: { class: 'large uk-width-1-1 js-registered-toggle', id: 'registered'}
       = f.error :registered, class: 'error-message'
 
     .uk-width-medium-1-1
       .uk-grid
         .uk-width-medium-1-2.uk-margin-top.js-founded-toggle-target.uk-hidden
-          %label.uk-form-label When was your organisation founded?
+          .label.uk-form-label When was your organisation or project founded?
           .uk-form-controls
             = f.input :founded_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-250, discard_day: true, order: [:month, :year], include_blank: true, default: nil, input_html: { class: 'large' }
             = f.error :founded_on, class: 'error-message'
 
         .uk-width-medium-1-2.uk-margin-top.js-registered-toggle-target.uk-hidden
-          %label.uk-form-label When was your organisation legally registered?
+          .label.uk-form-label When was your organisation legally registered?
           .uk-form-controls
             = f.input :registered_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-250, discard_day: true, order: [:month, :year], include_blank: true, default: nil, input_html: { class: 'large' }
             = f.error :registered_on, class: 'error-message'
@@ -44,4 +47,4 @@
             %a{"data-uk-tooltip" => "{pos:'top'}", :title => "If you have difficulties entering a charity number it probably means we have your details on our records. Simply click this link to get in touch with support@beehivegiving.org who will be happy to help you.", :href => "mailto:support@beehivegiving.org"} Having trouble with your charity number?
 
     .uk-width-medium-1-1.uk-margin-top
-      = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-button-large uk-width-medium-1-2 uk-float-right', style: 'color: #fff;', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> We're off the mark...</span>"}
+      = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-button-large uk-width-medium-1-2 uk-float-right', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> We're off the mark...</span>"}

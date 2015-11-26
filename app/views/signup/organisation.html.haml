@@ -23,7 +23,7 @@
     %img{:alt => "", :height => "1", :src => "//www.googleadservices.com/pagead/conversion/958190855/?label=oXACCPCrr18Qh6rzyAM&amp;guid=ON&amp;script=0", :style => "border-style:none;", :width => "1"}/
 
 - content_for :signup do
-  = render partial: 'subnav'
+  = render partial: 'subnav', locals: { current_step: 0 }
   .uk-container.uk-container-center.uk-margin-large
     %h2 Basics
     %h4 If you’re operating as a non-profit, or just have an idea for a project let's start with the basics.
