@@ -17,14 +17,14 @@
           .uk-panel.uk-panel-box#panel.shadow
             .uk-panel-title.uk-text-center Sign in to continue to Beehive
 
-            = form_tag sign_in_path, method: 'post', class: 'uk-panel uk-form', id: 'sign-in' do
+            = form_tag sign_in_path, method: 'post', class: 'uk-panel uk-form form', id: 'sign-in' do
               .uk-form-row
-                = text_field_tag :email, nil, placeholder: 'Email', type: 'email', class: 'uk-form-large uk-width-1-1'
+                = text_field_tag :email, nil, placeholder: 'Email', type: 'email', class: 'large uk-width-1-1'
               .uk-form-row{style: 'position: relative;'}
-                = password_field_tag :password, nil, placeholder: 'Password', type: 'password', class: 'uk-form-large uk-form-password uk-width-1-1'
+                = password_field_tag :password, nil, placeholder: 'Password', type: 'password', class: 'large uk-form-password uk-width-1-1'
                 %a.uk-form-password-toggle{"data-uk-form-password" => "", :href => ""} Show
               .uk-form-row
-                = submit_tag 'Sign in', class: 'uk-width-1-1 uk-button uk-button-large uk-button-primary shadow bounce', style: 'color: #fff; font-size: 16px;'
+                = submit_tag 'Sign in', class: 'uk-width-1-1 uk-button uk-button-large uk-button-primary'
               .uk-form-row.uk-text-small
                 %label.uk-float-left
                   = check_box_tag :remember_me, 1, params[:remember_me]
