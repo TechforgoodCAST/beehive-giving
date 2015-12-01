@@ -5,6 +5,9 @@
 = javascript_include_tag 'morris'
 = javascript_include_tag '//www.google.com/jsapi', 'chartkick'
 
+:javascript
+  mixpanel.track("View Funder Page", {"Funder": "#{@funder.name}"});
+
 = render partial: 'funders/subnav', locals: {funder: @funder}
 
 .uk-container.uk-container-center.uk-margin-large.uk-margin-large-top.uk-animation-fade
