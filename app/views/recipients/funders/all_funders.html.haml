@@ -1,32 +1,7 @@
 = content_for :title, 'All funders'
 
--# Update tracking START
 :javascript
-  mixpanel.track("View Funders Index Page");
-  mixpanel.identify('#{current_user.id}');
-  mixpanel.people.set({
-    'Funder Unlocks': '#{@recipient.recipient_funder_accesses_count}',
-  });
-
-- if @recipient.recipient_funder_accesses.any?
-  :javascript
-    mixpanel.people.set({
-      'Last Unlocked Funder': '#{Funder.find(@recipient.recipient_funder_accesses.last.funder_id).name}',
-      'Last Funder Eligibility': '#{@recipient.eligible?(Funder.find(@recipient.recipient_funder_accesses.last.funder_id))}'
-    });
-
-:javascript
-  var google_conversion_id = 958190855;
-  var google_conversion_language = "en";
-  var google_conversion_format = "3";
-  var google_conversion_color = "ffffff";
-  var google_conversion_label = "RAlQCI7Qp18Qh6rzyAM";
-  var google_remarketing_only = false;
-%script{:src => "//www.googleadservices.com/pagead/conversion.js", :type => "text/javascript"}
-%noscript
-  %div{:style => "display:inline;"}
-    %img{:alt => "", :height => "1", :src => "//www.googleadservices.com/pagead/conversion/958190855/?label=RAlQCI7Qp18Qh6rzyAM&amp;guid=ON&amp;script=0", :style => "border-style:none;", :width => "1"}/
--# Update tracking END
+  mixpanel.track("View All Funders Page");
 
 = render partial: 'recipients/funders/subnav'
 

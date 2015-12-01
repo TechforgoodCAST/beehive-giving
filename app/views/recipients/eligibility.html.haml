@@ -1,8 +1,18 @@
 = content_for :title, "Eligibility for #{@funder.name}"
 
--# refactor
 :javascript
-  mixpanel.track("View New Eligibility Page", {"Funder": "#{@funder.name}"});
+  mixpanel.track("View Eligibility Page", {"Funder": "#{@funder.name}"});
+  mixpanel.identify('#{current_user.id}');
+  mixpanel.people.set({
+    'Funder Unlocks': '#{@recipient.recipient_funder_accesses_count}',
+  });
+
+- if @recipient.recipient_funder_accesses.any?
+  :javascript
+    mixpanel.people.set({
+      'Last Unlocked Funder': '#{Funder.find(@recipient.recipient_funder_accesses.last.funder_id).name}',
+      'Last Funder Eligibility': '#{@recipient.eligible?(Funder.find(@recipient.recipient_funder_accesses.last.funder_id))}'
+    });
 
 = render partial: 'funders/subnav', locals: {funder: @funder}
 
