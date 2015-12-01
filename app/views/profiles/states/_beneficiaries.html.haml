@@ -28,5 +28,10 @@
       #more-beneficiary-options.uk-margin-top.uk-hidden
         = f.association :beneficiaries, as: :check_boxes, collection: Beneficiary.order(:sort).where(category: 'Other'), label_method: :label, value_method: :id
 
+        .uk-width-medium-1-2
+          .checkbox.wide= f.input :beneficiaries_other_required, as: :boolean, inline_label: 'Other'
+
+        #beneficiaries_other.uk-hidden= f.input :beneficiaries_other, input_html: { class: 'large uk-width-medium-1-2' }
+
   - unless @profile.state == 'complete'
     = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-margin-top uk-button-large uk-width-medium-1-2 uk-float-right', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> That wasn't so bad...</span>"}

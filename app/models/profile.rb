@@ -34,6 +34,8 @@ class Profile < ActiveRecord::Base
     state :complete
   end
 
+  validates :beneficiaries_other, presence: true, if: :beneficiaries_other_required
+
   ## beneficiaries state validations
 
   validates :year, uniqueness: { scope: :organisation_id,

@@ -14,6 +14,7 @@ en:
         trustee_count: 'e.g. 3'
         expenditure: 'e.g. 1560'
         beneficiaries_count: 'e.g. 50'
+        beneficiaries_other: 'Please specify'
       recipient:
         name: 'Organisation name'
         website: 'Website (optional)'

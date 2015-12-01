@@ -24,6 +24,21 @@ ProfileForm = ((w, d) ->
         return
       $('#profile_district_ids').html(options).trigger("chosen:updated")
 
+  triggerOtherFieldToggle = ->
+    hiddenQuestions = $('#beneficiaries_other')
+    if $('#profile_beneficiaries_other_required:checked').length > 0
+      hiddenQuestions.removeClass 'uk-hidden'
+    else
+      hiddenQuestions.addClass 'uk-hidden'
+
+  otherFieldToggle = ->
+    selector = '#profile_beneficiaries_other_required'
+    elem     = $(selector)
+    return unless elem.length > 0
+    triggerOtherFieldToggle(elem.val())
+    $(document).on 'change', selector, ->
+      triggerOtherFieldToggle(elem.val())
+
   # triggerHiddenQuestionsToggle = ->
   #   hiddenQuestions = $('#hidden_questions')
   #   if $('#people:checked').length > 0
@@ -55,7 +70,7 @@ ProfileForm = ((w, d) ->
 
   return {
     bindCountryRegions: bindCountryRegions,
-    # bindHiddenQuestionsToggle: bindHiddenQuestionsToggle,
+    otherFieldToggle: otherFieldToggle,
     # bindGetTooltip: bindGetTooltip,
     toggleMoreBeneficiaryOptions: toggleMoreBeneficiaryOptions,
     highlightChecked: highlightChecked
@@ -67,12 +82,12 @@ $(document).ready ->
   ProfileForm.toggleMoreBeneficiaryOptions()
   ProfileForm.highlightChecked('checkbox')
   ProfileForm.highlightChecked('radio')
-  # ProfileForm.bindHiddenQuestionsToggle()
+  ProfileForm.otherFieldToggle()
   # ProfileForm.bindGetTooltip()
 
 $(document).ajaxComplete ->
   ProfileForm.bindCountryRegions()
   ProfileForm.highlightChecked('checkbox')
   ProfileForm.highlightChecked('radio')
-  # ProfileForm.bindHiddenQuestionsToggle()
+  ProfileForm.otherFieldToggle()
   # ProfileForm.bindGetTooltip()
