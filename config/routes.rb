@@ -43,6 +43,8 @@ Rails.application.routes.draw do
   match '/funders/ineligible', to: 'recipients#ineligible_funders', via: :get, as: 'ineligible_funders'
   match '/funders', to: 'recipients#all_funders', via: :get, as: 'all_funders'
 
+  match '/dashboard', to: 'funders#dashboard', via: :get, as: 'funder_dashboard'
+
   # Recipients
   match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
   # match '/(:id)/edit', to: 'recipients#edit', via: :get, as: 'recipient_edit'

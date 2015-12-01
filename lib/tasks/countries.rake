@@ -291,4 +291,14 @@ namespace :import do
     puts @messages
 
   end
+
+  desc "Import regions geometry data from file"
+  task :districts => :environment do
+    require 'csv'
+    @filename = ENV['FILE']
+
+    CSV.parse(open(@filename).read, encoding:'iso-8859-1:utf-8') do |row|
+      District.find_by_district(row[0]).update_column(:geometry, row[1])
+    end
+  end
 end

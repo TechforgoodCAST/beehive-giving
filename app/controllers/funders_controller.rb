@@ -9,6 +9,30 @@ class FundersController < ApplicationController
 
   respond_to :html
 
+  def show
+    @restrictions = @funder.restrictions.uniq
+
+    unless @recipient.is_subscribed? || @recipient.recommended_funder?(@funder)
+      if current_user.feedbacks.count > 0
+        redirect_to edit_feedback_path(current_user.feedbacks.last)
+      else
+        flash[:alert] = "Sorry, you don't have access to that"
+        redirect_to recommended_funders_path
+      end
+    end
+  end
+
+  def dashboard
+    features = []
+    Funder.find_by_name('Westminster Foundation').districts_by_year.group(:district).count.each do |k, v|
+      features << { type: "Feature", properties: { name: k, grant_count: v }, geometry: { type: "Polygon", coordinates: District.find_by_district(k).geometry || {} } }
+    end
+
+    @map_data = { type: "FeatureCollection", features: features }.to_json
+
+    render 'funders/recipients/dashboard'
+  end
+
   # def index
   #   @search = Funder.where(active_on_beehive: true).where('recommendations.recipient_id = ?', @recipient.id).ransack(params[:q])
   #   @search.sorts = ['recommendations_score desc', 'name asc'] if @search.sorts.empty?
@@ -24,19 +48,6 @@ class FundersController < ApplicationController
     @recipient = Recipient.find_by_slug(params[:id])
     @grants = @recipient.grants
     @funder = current_user.organisation
-  end
-
-  def show
-    @restrictions = @funder.restrictions.uniq
-
-    unless @recipient.is_subscribed? || @recipient.recommended_funder?(@funder)
-      if current_user.feedbacks.count > 0
-        redirect_to edit_feedback_path(current_user.feedbacks.last)
-      else
-        flash[:alert] = "Sorry, you don't have access to that"
-        redirect_to recommended_funders_path
-      end
-    end
   end
 
   def eligible

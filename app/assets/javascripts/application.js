@@ -8,7 +8,6 @@
 //= require vex.combined.min.js
 //= require vex
 
-
 NProgress.configure({
   showSpinner: false,
 });
