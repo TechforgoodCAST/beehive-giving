@@ -1,10 +1,5 @@
 = content_for :title, 'Recommended funders'
 
-= stylesheet_link_tag 'overrides/morris_overrides'
-= javascript_include_tag 'raphael'
-= javascript_include_tag 'morris'
-= javascript_include_tag "//www.google.com/jsapi", "chartkick"
-
 :javascript
   mixpanel.track("View Recommended Funders Page");
   mixpanel.identify('#{current_user.id}');
@@ -18,18 +13,6 @@
       'Last Unlocked Funder': '#{Funder.find(@recipient.recipient_funder_accesses.last.funder_id).name}',
       'Last Funder Eligibility': '#{@recipient.eligible?(Funder.find(@recipient.recipient_funder_accesses.last.funder_id))}'
     });
-
-:javascript
-  var google_conversion_id = 958190855;
-  var google_conversion_language = "en";
-  var google_conversion_format = "3";
-  var google_conversion_color = "ffffff";
-  var google_conversion_label = "RAlQCI7Qp18Qh6rzyAM";
-  var google_remarketing_only = false;
-%script{:src => "//www.googleadservices.com/pagead/conversion.js", :type => "text/javascript"}
-%noscript
-  %div{:style => "display:inline;"}
-    %img{:alt => "", :height => "1", :src => "//www.googleadservices.com/pagead/conversion/958190855/?label=RAlQCI7Qp18Qh6rzyAM&amp;guid=ON&amp;script=0", :style => "border-style:none;", :width => "1"}/
 
 = render partial: 'recipients/funders/subnav'
 
@@ -52,3 +35,15 @@
           %a.uk-button.uk-button-large.uk-button-primary.invert{href: funders_path} All funders
       - else
         %hr.thick
+
+:javascript
+  var google_conversion_id = 958190855;
+  var google_conversion_language = "en";
+  var google_conversion_format = "3";
+  var google_conversion_color = "ffffff";
+  var google_conversion_label = "RAlQCI7Qp18Qh6rzyAM";
+  var google_remarketing_only = false;
+%script{:src => "//www.googleadservices.com/pagead/conversion.js", :type => "text/javascript"}
+%noscript
+  %div{:style => "display:inline;"}
+    %img{:alt => "", :height => "1", :src => "//www.googleadservices.com/pagead/conversion/958190855/?label=RAlQCI7Qp18Qh6rzyAM&amp;guid=ON&amp;script=0", :style => "border-style:none;", :width => "1"}
