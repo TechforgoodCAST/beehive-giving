@@ -48,6 +48,14 @@ ProfileForm = ((w, d) ->
       $('.' + elem + ' label').closest('label').removeClass(elem + '-checked')
       $('.' + elem + ' label :checked').closest('label').addClass(elem + '-checked')
 
+  setCookie = (name, value) ->
+    document.cookie = name + '=' + value + '; Path=/;'
+    return
+
+  deleteCookie = (name) ->
+    document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+    return
+
   toggleMoreBeneficiaryOptions = ->
     _cookieName = '_beehiveMoreOptions'
     if d.cookie.indexOf(_cookieName) >= 0
@@ -56,13 +64,11 @@ ProfileForm = ((w, d) ->
 
     $('.more-options').on 'click', ->
       if d.cookie.indexOf(_cookieName) >= 0
-        d.cookie = _cookieName + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;'
-        # console.log(d.cookie.indexOf(_cookieName) >= 0)
+        deleteCookie(_cookieName)
         $('#more-beneficiary-options').addClass('uk-hidden')
         $('.more-options').html('More options <i class="uk-icon-caret-down"></i>')
       else
-        console.log('set cookie')
-        d.cookie = _cookieName + "=true"
+        setCookie(_cookieName, true)
         $('#more-beneficiary-options').removeClass('uk-hidden')
         $('#more-beneficiary-options').addClass 'fade-in'
         $('.more-options').html('Less options <i class="uk-icon-caret-up"></i>')
