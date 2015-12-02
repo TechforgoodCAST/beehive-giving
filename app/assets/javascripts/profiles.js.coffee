@@ -25,19 +25,21 @@ ProfileForm = ((w, d) ->
       $('#profile_district_ids').html(options).trigger("chosen:updated")
 
   triggerOtherFieldToggle = ->
-    hiddenQuestions = $('#beneficiaries_other')
-    if $('#profile_beneficiaries_other_required:checked').length > 0
+    hiddenQuestions = $('.other')
+    if $('.toggle-other:checked').length > 0
       hiddenQuestions.removeClass 'uk-hidden'
     else
       hiddenQuestions.addClass 'uk-hidden'
 
   otherFieldToggle = ->
-    selector = '#profile_beneficiaries_other_required'
+    selector = '.toggle-other'
     elem     = $(selector)
     return unless elem.length > 0
     triggerOtherFieldToggle(elem.val())
     $(document).on 'change', selector, ->
       triggerOtherFieldToggle(elem.val())
+      unless $('.toggle-other:checked').length > 0
+        $('.other').val('')
 
   # triggerHiddenQuestionsToggle = ->
   #   hiddenQuestions = $('#hidden_questions')
@@ -65,8 +67,9 @@ ProfileForm = ((w, d) ->
 
   toggleMoreBeneficiaryOptions = ->
     $(d).on 'click', '.more-options', ->
-      $('#more-beneficiary-options').toggleClass('uk-hidden')
+      $('#more-beneficiary-options').removeClass('uk-hidden')
       $('#more-beneficiary-options').addClass 'fade-in'
+      $('.more-options').hide()
 
   return {
     bindCountryRegions: bindCountryRegions,
@@ -87,6 +90,7 @@ $(document).ready ->
 
 $(document).ajaxComplete ->
   ProfileForm.bindCountryRegions()
+  ProfileForm.toggleMoreBeneficiaryOptions()
   ProfileForm.highlightChecked('checkbox')
   ProfileForm.highlightChecked('radio')
   ProfileForm.otherFieldToggle()

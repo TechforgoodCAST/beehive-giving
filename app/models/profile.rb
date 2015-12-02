@@ -1,6 +1,7 @@
 class Profile < ActiveRecord::Base
 
   before_validation :allowed_years, unless: Proc.new { |profile| profile.year.nil? }
+  before_save :clear_other_options
 
   belongs_to :organisation
 
@@ -34,8 +35,6 @@ class Profile < ActiveRecord::Base
     state :complete
   end
 
-  validates :beneficiaries_other, presence: true, if: :beneficiaries_other_required
-
   ## beneficiaries state validations
 
   validates :year, uniqueness: { scope: :organisation_id,
@@ -45,8 +44,14 @@ class Profile < ActiveRecord::Base
 
   validates :gender, inclusion: { in: GENDERS }, if: ('self.beneficiaries? || self.complete?')
 
-  validates :organisation, :year, :gender, :min_age, :max_age, :beneficiaries,
+  validates :organisation, :year, :gender, :min_age, :max_age,
             presence: true, if: ('self.beneficiaries? || self.complete?')
+
+  validates :beneficiaries, presence: true, if: ('self.beneficiaries? || self.complete?'), unless: 'self.beneficiaries_other.present?'
+
+  # validates :beneficiaries_other_required, presence: true, unless: 'self.beneficiaries.present?'
+
+  validates :beneficiaries_other, presence: true, if: :beneficiaries_other_required
 
   validates :min_age, :max_age, numericality: { only_integer: true,
             greater_than_or_equal_to: 0, if: ('self.beneficiaries? || self.complete?') }
@@ -67,8 +72,12 @@ class Profile < ActiveRecord::Base
 
   ## team state validations
 
-  validates :staff_count, :volunteer_count, :trustee_count, :implementors,
+  validates :staff_count, :volunteer_count, :trustee_count,
             presence: true, if: ('self.team? || self.complete?')
+
+  validates :implementors, presence: true, if: ('self.team? || self.complete?'), unless: 'self.implementors_other.present?'
+
+  validates :implementors_other, presence: true, if: :implementors_other_required
 
   validates :staff_count, :volunteer_count, :trustee_count,
             numericality: { only_integer: true, greater_than_or_equal_to: 0,
@@ -86,8 +95,12 @@ class Profile < ActiveRecord::Base
 
   ## work state validations
 
-  validates :implementations, :beneficiaries_count, presence: true,
+  validates :beneficiaries_count, presence: true,
             if: ('self.work? || self.complete?')
+
+  validates :implementations, presence: true, if: ('self.work? || self.complete?'), unless: 'self.implementations_other.present?'
+
+  validates :implementations_other, presence: true, if: :implementations_other_required
 
   validates :does_sell, inclusion: { in: [true, false] }, if: ('self.work? || self.complete?')
 
@@ -108,6 +121,18 @@ class Profile < ActiveRecord::Base
       if organisation.founded_on.year.to_i > year
         errors.add(:year, "you can't make a profile before #{organisation.founded_on.year} because that's when your organisation was founded")
       end
+    end
+  end
+
+  def clear_other_options
+    unless self.beneficiaries_other_required?
+      self.beneficiaries_other = nil
+    end
+    unless self.implementors_other_required?
+      self.implementors_other = nil
+    end
+    unless self.implementations_other_required?
+      self.implementations_other = nil
     end
   end
 

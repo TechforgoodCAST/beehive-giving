@@ -93,7 +93,9 @@ class ProfilesController < ApplicationController
     :income, :expenditure, :volunteer_count, :staff_count, :trustee_count,
     :does_sell, :beneficiaries_count, :beneficiaries_count_actual,
     :income_actual, :expenditure_actual, :beneficiaries_other,
-    :beneficiaries_other_required, beneficiary_ids: [], country_ids: [],
+    :beneficiaries_other_required, :implementors_other,
+    :implementors_other_required, :implementations_other,
+    :implementations_other_required, beneficiary_ids: [], country_ids: [],
     district_ids: [], implementation_ids: [], implementor_ids: [])
   end
 
