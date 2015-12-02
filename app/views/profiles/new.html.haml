@@ -23,6 +23,15 @@
   = render partial: 'signup/subnav', locals: { current_step: 1 }
 
   .uk-container.uk-container-center.uk-margin-large
+
+    - if @recipient.profiles.count > 0
+      .cta.red.tight.uk-margin-large-bottom.uk-animation-slide-top
+        %strong Your profile is out of date.
+
+        Please follow the steps on the next few pages to update your profile for
+        = succeed '.' do
+          = Date.today.year
+
     %h2 Target
     %h4= profile_state_step_helper(@profile.state)[:message]
 

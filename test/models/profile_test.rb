@@ -75,4 +75,19 @@ class ProfileTest < ActiveSupport::TestCase
     assert_equal 'complete', @profile.state
   end
 
+  test 'beneficiaries other if beneficiaries other required' do
+    @profile.beneficiaries_other_required = true
+    assert_not @profile.valid?
+  end
+
+  test 'implementors other if implementors other required' do
+    @profile.implementors_other_required = true
+    assert_not @profile.valid?
+  end
+
+  test 'implementations other if implementations other required' do
+    @profile.implementations_other_required = true
+    assert_not @profile.valid?
+  end
+
 end

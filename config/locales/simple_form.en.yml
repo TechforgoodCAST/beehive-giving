@@ -14,6 +14,9 @@ en:
         trustee_count: 'e.g. 3'
         expenditure: 'e.g. 1560'
         beneficiaries_count: 'e.g. 50'
+        beneficiaries_other: 'Please specify'
+        implementors_other: 'Please specify'
+        implementations_other: 'Please specify'
       recipient:
         name: 'Organisation name'
         website: 'Website (optional)'
@@ -32,32 +35,8 @@ en:
         company_number: 'Company number'
       feedback:
         other: "We're commited to delivering a service which is useful for non-profits, and we'd love feedback good or bad."
-    # "yes": 'Yes'
-    # "no": 'No'
     required:
       text: 'required'
       mark: '*'
-      # You can uncomment the line below if you need to overwrite the whole required html.
-      # When using html, text and mark won't be used.
-      # html: '<abbr title="required">*</abbr>'
     error_notification:
       default_message: "Please review the problems below:"
-    # Examples
-    # labels:
-    #   defaults:
-    #     password: 'Password'
-    #   user:
-    #     new:
-    #       email: 'E-mail to sign in.'
-    #     edit:
-    #       email: 'E-mail.'
-    # hints:
-    #   defaults:
-    #     username: 'User name to sign in.'
-    #     password: 'No special characters, please.'
-    # include_blanks:
-    #   defaults:
-    #     age: 'Rather not say'
-    # prompts:
-    #   defaults:
-    #     age: 'Select your age'

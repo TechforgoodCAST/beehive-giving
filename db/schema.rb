@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151120163921) do
+ActiveRecord::Schema.define(version: 20151201121419) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -421,8 +421,8 @@ ActiveRecord::Schema.define(version: 20151120163921) do
 
   create_table "profiles", force: :cascade do |t|
     t.integer  "organisation_id"
-    t.string   "gender",                     limit: 255
-    t.string   "currency",                   limit: 255
+    t.string   "gender",                         limit: 255
+    t.string   "currency",                       limit: 255
     t.integer  "year"
     t.integer  "min_age"
     t.integer  "max_age"
@@ -440,11 +440,17 @@ ActiveRecord::Schema.define(version: 20151120163921) do
     t.boolean  "expenditure_actual"
     t.boolean  "beneficiaries_count_actual"
     t.boolean  "units_count_actual"
-    t.datetime "created_at",                             null: false
-    t.datetime "updated_at",                             null: false
+    t.datetime "created_at",                                 null: false
+    t.datetime "updated_at",                                 null: false
     t.boolean  "does_sell"
     t.integer  "trustee_count"
     t.string   "state"
+    t.boolean  "beneficiaries_other_required"
+    t.string   "beneficiaries_other"
+    t.boolean  "implementors_other_required"
+    t.string   "implementors_other"
+    t.boolean  "implementations_other_required"
+    t.string   "implementations_other"
   end
 
   add_index "profiles", ["organisation_id"], name: "index_profiles_on_organisation_id", using: :btree

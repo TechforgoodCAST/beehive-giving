@@ -25,6 +25,39 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
     assert_equal edit_recipient_profile_path(@recipient, @profile), current_path
   end
 
+  test 'profile missing for current year redirects to new profile page' do
+    @profile = create(:profile, :organisation => @recipient, :year => Date.today.year-1)
+    @funder = create(:funder)
+
+    visit recommended_funders_path
+    assert_equal new_recipient_profile_path(@recipient), current_path
+    assert page.has_content?('Your profile is out of date')
+
+    visit eligible_funders_path
+    assert_equal new_recipient_profile_path(@recipient), current_path
+
+    visit ineligible_funders_path
+    assert_equal new_recipient_profile_path(@recipient), current_path
+
+    visit all_funders_path
+    assert_equal new_recipient_profile_path(@recipient), current_path
+
+    visit recipient_eligibility_path(@funder)
+    assert_equal new_recipient_profile_path(@recipient), current_path
+
+    visit recipient_apply_path(@funder)
+    assert_equal new_recipient_profile_path(@recipient), current_path
+
+    visit funder_path(@funder)
+    assert_equal new_recipient_profile_path(@recipient), current_path
+
+    visit recipient_profiles_path(@recipient)
+    assert_equal new_recipient_profile_path(@recipient), current_path
+
+    visit edit_recipient_profile_path(@recipient, @profile)
+    assert_equal new_recipient_profile_path(@recipient), current_path
+  end
+
   def complete_beneficiaries_section
     @beneficiaries = Array.new(3) { create(:beneficiary) }
     visit new_recipient_profile_path(@recipient)

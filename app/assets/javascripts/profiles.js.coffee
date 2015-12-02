@@ -24,23 +24,23 @@ ProfileForm = ((w, d) ->
         return
       $('#profile_district_ids').html(options).trigger("chosen:updated")
 
-  # triggerHiddenQuestionsToggle = ->
-  #   hiddenQuestions = $('#hidden_questions')
-  #   if $('#people:checked').length > 0
-  #     hiddenQuestions.removeClass 'uk-hidden'
-  #   else
-  #     hiddenQuestions.addClass 'uk-hidden'
-  #
-  # bindHiddenQuestionsToggle = ->
-  #   selector = '#people'
-  #   elem     = $(selector)
-  #   return unless elem.length > 0
-  #   triggerHiddenQuestionsToggle(elem.val())
-  #   $(document).on 'change', selector, ->
-  #     triggerHiddenQuestionsToggle(elem.val())
+  triggerOtherFieldToggle = ->
+    $.each $('.toggle-other'), ( index, value ) ->
+      hiddenQuestions = $(value).parent().parent().parent().next()
+      if $(value).is(':checked')
+        hiddenQuestions.removeClass('uk-hidden')
+      else
+        hiddenQuestions.addClass 'uk-hidden'
 
-  # bindGetTooltip = ->
-  #   return $('.checkbox label').append('<i class="uk-icon-question-circle" style="float: right;" data-uk-tooltip="{pos:"top"}" title="Tooltip"></i>')
+  otherFieldToggle = ->
+    selector = '.toggle-other'
+    elem     = $(selector)
+    return unless elem.length > 0
+    triggerOtherFieldToggle(elem.val())
+    $(document).on 'change', selector, ->
+      triggerOtherFieldToggle(elem.val())
+      unless $('.toggle-other:checked').length > 0
+        $('.other').val('')
 
   highlightChecked = (elem) ->
     $('.' + elem + ' label :checked').closest('label').addClass(elem + '-checked')
@@ -49,16 +49,33 @@ ProfileForm = ((w, d) ->
       $('.' + elem + ' label :checked').closest('label').addClass(elem + '-checked')
 
   toggleMoreBeneficiaryOptions = ->
-    $(d).on 'click', '.more-options', ->
-      $('#more-beneficiary-options').toggleClass('uk-hidden')
-      $('#more-beneficiary-options').addClass 'fade-in'
+    _cookieName = '_beehiveMoreOptions'
+    if d.cookie.indexOf(_cookieName) >= 0
+      $('#more-beneficiary-options').removeClass('uk-hidden')
+      $('.more-options').html('Less options <i class="uk-icon-caret-up"></i>')
+
+    $('.more-options').on 'click', ->
+      if d.cookie.indexOf(_cookieName) >= 0
+        d.cookie = _cookieName + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;'
+        # console.log(d.cookie.indexOf(_cookieName) >= 0)
+        $('#more-beneficiary-options').addClass('uk-hidden')
+        $('.more-options').html('More options <i class="uk-icon-caret-down"></i>')
+      else
+        console.log('set cookie')
+        d.cookie = _cookieName + "=true"
+        $('#more-beneficiary-options').removeClass('uk-hidden')
+        $('#more-beneficiary-options').addClass 'fade-in'
+        $('.more-options').html('Less options <i class="uk-icon-caret-up"></i>')
+
+  # bindGetTooltip = ->
+  #   return $('.checkbox label').append('<i class="uk-icon-question-circle" style="float: right;" data-uk-tooltip="{pos:"top"}" title="Tooltip"></i>')
 
   return {
     bindCountryRegions: bindCountryRegions,
-    # bindHiddenQuestionsToggle: bindHiddenQuestionsToggle,
-    # bindGetTooltip: bindGetTooltip,
+    otherFieldToggle: otherFieldToggle,
     toggleMoreBeneficiaryOptions: toggleMoreBeneficiaryOptions,
     highlightChecked: highlightChecked
+    # bindGetTooltip: bindGetTooltip,
   }
 )(window, document)
 
@@ -67,12 +84,13 @@ $(document).ready ->
   ProfileForm.toggleMoreBeneficiaryOptions()
   ProfileForm.highlightChecked('checkbox')
   ProfileForm.highlightChecked('radio')
-  # ProfileForm.bindHiddenQuestionsToggle()
+  ProfileForm.otherFieldToggle()
   # ProfileForm.bindGetTooltip()
 
 $(document).ajaxComplete ->
   ProfileForm.bindCountryRegions()
+  ProfileForm.toggleMoreBeneficiaryOptions()
   ProfileForm.highlightChecked('checkbox')
   ProfileForm.highlightChecked('radio')
-  # ProfileForm.bindHiddenQuestionsToggle()
+  ProfileForm.otherFieldToggle()
   # ProfileForm.bindGetTooltip()
