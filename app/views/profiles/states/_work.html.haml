@@ -6,7 +6,6 @@
       .label What does your organisation or project provide?
       %small.muted Select as many as applicable
       = f.association :implementations, as: :check_boxes, label_method: :label, value_method: :id
-      = f.error :implementations, class: 'error-message'
       .uk-width-medium-1-2
         .checkbox.wide= f.input :implementations_other_required, as: :boolean, inline_label: 'Other', input_html: { class: 'toggle-other' }
         .other.uk-hidden

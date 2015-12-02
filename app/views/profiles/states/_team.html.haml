@@ -23,7 +23,6 @@
       .label Who implements your work?
       %small.muted Select as many as applicable
       = f.association :implementors, as: :check_boxes, label_method: :label, value_method: :id
-      = f.error :implementors, class: 'error-message'
       .uk-width-medium-1-2
         .checkbox.wide= f.input :implementors_other_required, as: :boolean, inline_label: 'Other', input_html: { class: 'toggle-other' }
         .other.uk-hidden

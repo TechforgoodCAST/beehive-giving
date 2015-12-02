@@ -42,16 +42,14 @@ class Profile < ActiveRecord::Base
 
   validates :year, inclusion: { in: VALID_YEARS }, if: ('self.beneficiaries? || self.complete?')
 
-  validates :gender, inclusion: { in: GENDERS }, if: ('self.beneficiaries? || self.complete?')
+  validates :gender, inclusion: { in: GENDERS, message: 'please select an option'}, if: ('self.beneficiaries? || self.complete?')
 
   validates :organisation, :year, :gender, :min_age, :max_age,
             presence: true, if: ('self.beneficiaries? || self.complete?')
 
   validates :beneficiaries, presence: true, if: ('self.beneficiaries? || self.complete?'), unless: 'self.beneficiaries_other.present?'
 
-  # validates :beneficiaries_other_required, presence: true, unless: 'self.beneficiaries.present?'
-
-  validates :beneficiaries_other, presence: true, if: :beneficiaries_other_required
+  validates :beneficiaries_other, presence: { message: "must uncheck 'Other' or specify details" }, if: :beneficiaries_other_required
 
   validates :min_age, :max_age, numericality: { only_integer: true,
             greater_than_or_equal_to: 0, if: ('self.beneficiaries? || self.complete?') }
@@ -77,7 +75,7 @@ class Profile < ActiveRecord::Base
 
   validates :implementors, presence: true, if: ('self.team? || self.complete?'), unless: 'self.implementors_other.present?'
 
-  validates :implementors_other, presence: true, if: :implementors_other_required
+  validates :implementors_other, presence: { message: "must uncheck 'Other' or specify details" }, if: :implementors_other_required
 
   validates :staff_count, :volunteer_count, :trustee_count,
             numericality: { only_integer: true, greater_than_or_equal_to: 0,
@@ -100,9 +98,9 @@ class Profile < ActiveRecord::Base
 
   validates :implementations, presence: true, if: ('self.work? || self.complete?'), unless: 'self.implementations_other.present?'
 
-  validates :implementations_other, presence: true, if: :implementations_other_required
+  validates :implementations_other, presence: { message: "must uncheck 'Other' or specify details" }, if: :implementations_other_required
 
-  validates :does_sell, inclusion: { in: [true, false] }, if: ('self.work? || self.complete?')
+  validates :does_sell, inclusion: { message: 'please select an option', in: [true, false] }, if: ('self.work? || self.complete?')
 
   validates :beneficiaries_count,
             numericality: { only_integer: true, greater_than_or_equal_to: 0,

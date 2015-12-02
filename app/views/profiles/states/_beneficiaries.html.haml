@@ -24,7 +24,9 @@
           = f.error :max_age, class: 'error-message'
 
     .uk-width-1-1.uk-margin-top
-      %a.uk-button.uk-button-primary.uk-button-small.more-options More options
+      %a.uk-button.uk-button-primary.uk-button-small.more-options
+        More options
+        %i.uk-icon-caret-down
       #more-beneficiary-options.uk-margin-top.uk-hidden
         = f.association :beneficiaries, as: :check_boxes, collection: Beneficiary.order(:sort).where(category: 'Other'), label_method: :label, value_method: :id
 
