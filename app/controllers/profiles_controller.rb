@@ -1,6 +1,7 @@
 class ProfilesController < ApplicationController
 
   before_filter :ensure_logged_in, :load_recipient
+  before_filter :ensure_profile_for_current_year, only: [:index, :edit, :update]
   before_filter :load_profile, :only => [:edit, :update, :destroy]
 
   def new
