@@ -14,7 +14,7 @@ class SignInTest < ActionDispatch::IntegrationTest
 
   test 'Sign in page should have sign in form' do
     visit sign_in_path
-    assert page.has_content?('Sign in to continue to Beehive')
+    assert page.has_content?('Sign in to continue')
   end
 
   test 'Valid details redirect to funders path' do
