@@ -11,7 +11,7 @@ class PasswordResetsController < ApplicationController
     if User.find_by_password_reset_token(params[:id])
       @user = User.find_by_password_reset_token(params[:id])
     else
-      redirect_to welcome_path
+      redirect_to new_password_reset_path, alert: 'Password reset has expired, please request a new password reset.'
     end
   end
 
