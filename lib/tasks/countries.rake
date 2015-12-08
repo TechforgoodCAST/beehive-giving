@@ -1,6 +1,5 @@
-# usage: be rake import:countries
-
 namespace :import do
+  # usage: be rake import:countries
   desc "Import countries data from file"
   task :countries => :environment do
 
@@ -293,12 +292,14 @@ namespace :import do
   end
 
   desc "Import regions geometry data from file"
+  # usage: be rake import:districts FILE=~/path/to/file.json
   task :districts => :environment do
-    require 'csv'
+    require 'json'
     @filename = ENV['FILE']
-
-    CSV.parse(open(@filename).read, encoding:'iso-8859-1:utf-8') do |row|
-      District.find_by_district(row[0]).update_column(:geometry, row[1])
+    file = File.read(@filename)
+    data_hash = JSON.parse(file)
+    data_hash.each do |obj|
+      District.find_by_district(obj['name']).update_column(:geometry, obj['geometry'])
     end
   end
 end

@@ -24,10 +24,9 @@ class FundersController < ApplicationController
 
   def dashboard
     features = []
-    Funder.find_by_name('Westminster Foundation').districts_by_year.group(:district).count.each do |k, v|
-      features << { type: "Feature", properties: { name: k, grant_count: v }, geometry: { type: "Polygon", coordinates: District.find_by_district(k).geometry || {} } }
+    Funder.find_by_name('Garfield Weston Foundation').districts_by_year.group(:district).count.each do |k, v|
+      features << { type: "Feature", properties: { name: k, grant_count: v }, geometry: District.find_by_district(k).geometry }
     end
-
     @map_data = { type: "FeatureCollection", features: features }.to_json
 
     render 'funders/recipients/dashboard'
