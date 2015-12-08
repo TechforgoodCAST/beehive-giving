@@ -8,11 +8,15 @@ class PasswordResetsController < ApplicationController
   end
 
   def edit
-    @user = User.find_by_password_reset_token!(params[:id])
+    if User.find_by_password_reset_token(params[:id])
+      @user = User.find_by_password_reset_token(params[:id])
+    else
+      redirect_to welcome_path
+    end
   end
 
   def update
-    @user = User.find_by_password_reset_token!(params[:id])
+    @user = User.find_by_password_reset_token(params[:id])
     if @user.password_reset_sent_at < 1.hours.ago
       redirect_to new_password_reset_path, alert: 'Password reset has expired, please request a new password reset.'
     elsif @user.update_attributes(params.require(:user).permit(:password, :password_confirmation))
@@ -21,5 +25,5 @@ class PasswordResetsController < ApplicationController
       render :edit
     end
   end
-  
+
 end
