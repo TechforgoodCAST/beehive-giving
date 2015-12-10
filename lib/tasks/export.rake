@@ -80,4 +80,24 @@ namespace :export do
     end
   end
 
+  # usage: be rake export:enquiries DESTINATON=/path
+  desc 'Export nonprofit data for analysis'
+  task :enquiries => :environment do
+    require 'csv'
+    @destination = ENV['DESTINATION']
+
+    Enquiry.all.each_with_index do |e, i|
+      data = {
+        organisation: Recipient.find(e.recipient_id).name,
+        funder: Funder.find(e.funder_id).name,
+        approach_funder_count: e.approach_funder_count,
+        funding_stream: e.funding_stream,
+        created_at: e.created_at,
+        updated_at: e.updated_at
+      }
+      CSV.open(@destination, 'w') { |csv| csv << data.keys } if i < 1
+      CSV.open(@destination, 'a+') { |csv| csv << data.values }
+    end
+  end
+
 end
