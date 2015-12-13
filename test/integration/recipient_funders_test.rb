@@ -67,7 +67,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     # refactor unless subscribed
   end
 
-  test 'recipients without a profile for current year must update profiles' do
+  test 'recipients without a profile and with a proposal for current year must update profiles' do
     setup_funders(3)
 
     visit funder_path(@funders.first)
@@ -77,6 +77,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     assert_equal recipient_eligibility_path(@funders.first), current_path
 
     @recipient.recommendations.first.update_attribute(:eligibility, 'Eligible')
+    create(:proposal, recipient: @recipient)
     visit recipient_apply_path(@funders.first)
     assert_equal recipient_apply_path(@funders.first), current_path
 

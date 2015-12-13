@@ -7,22 +7,22 @@ $(document).ready ->
 ProfileForm = ((w, d) ->
 
   bindCountryRegions = ->
-    districts = $('#profile_district_ids').html()
+    districts = $('.district_field').html()
 
-    country = $('#profile_country_ids :selected')
+    country = $('.country_field :selected')
     options = []
     $.each country, (index, value) ->
       options.push($(districts).filter("optgroup[label='#{$(value).text()}']").html())
       return
-    $('#profile_district_ids').html(options).trigger("chosen:updated")
+    $('.district_field').html(options).trigger("chosen:updated")
 
-    $('#profile_country_ids').change ->
-      country = $('#profile_country_ids :selected')
+    $('.country_field').change ->
+      country = $('.country_field :selected')
       options = []
       $.each country, (index, value) ->
         options.push($(districts).filter("optgroup[label='#{$(value).text()}']").html())
         return
-      $('#profile_district_ids').html(options).trigger("chosen:updated")
+      $('.district_field').html(options).trigger("chosen:updated")
 
   triggerOtherFieldToggle = ->
     $.each $('.toggle-other'), ( index, value ) ->

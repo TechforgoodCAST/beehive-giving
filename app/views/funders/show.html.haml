@@ -22,6 +22,9 @@
             = funder_card_cta_button_copy(@recipient, @funder)
 
     .uk-width-medium-2-3
+
+      = render partial: 'cta/proposal_cta', locals: { recipient: @recipient }
+
       %section
         %h3.uk-margin-top
           Summary

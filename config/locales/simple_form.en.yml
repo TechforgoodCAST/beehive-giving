@@ -35,6 +35,17 @@ en:
         company_number: 'Company number'
       feedback:
         other: "We're commited to delivering a service which is useful for non-profits, and we'd love feedback good or bad."
+      proposal:
+        title: "Proposal title - e.g. 'Beehive'"
+        tagline: "Proposal tagline - e.g. 'An online platform that intelligently connects non-profits with the right funders. Saving them time, and informing their fundraising.'"
+        min_age: 'e.g. 0'
+        max_age: 'e.g. 120'
+        beneficiaries_count: 'e.g. 20'
+        outcome1: "Outcome 1 - e.g. '8,000 non-profits will be connected to the right funders, saving the sector a years worth of labour.'"
+        outcome2: 'Outcome 2 - optional'
+        outcome3: 'Outcome 3 - optional'
+        outcome4: 'Outcome 4 - optional'
+        outcome5: 'Outcome 5 - optional'
     required:
       text: 'required'
       mark: '*'

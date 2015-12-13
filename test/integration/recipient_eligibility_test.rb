@@ -35,15 +35,17 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
     assert page.has_content?('Yes', count: 1)
   end
 
-  test 'eligible recipient can apply for funding' do
+  test 'eligible recipient with a funding proposal can apply for funding' do
     @recipient.recommendations.last.update_attribute(:eligibility, 'Eligible')
+    create(:proposal, recipient: @recipient)
 
     visit recipient_apply_path(@funder)
     assert_equal recipient_apply_path(@funder), current_path
   end
 
-  test 'ineligible recipient cannot visit apply for funding page' do
+  test 'ineligible recipient with a funding proposal cannot visit apply for funding page' do
     @recipient.recommendations.last.update_attributes(eligibility: 'Ineligible')
+    create(:proposal, recipient: @recipient)
 
     visit recipient_apply_path(@funder)
     assert_equal recipient_eligibility_path(@funder), current_path
