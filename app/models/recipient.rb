@@ -3,6 +3,7 @@ class Recipient < Organisation
   has_many :grants
   has_many :features, dependent: :destroy
   has_many :enquiries, dependent: :destroy
+  has_many :proposals
   has_many :recipient_funder_accesses
   has_many :restrictions, :through => :eligibilities
   has_many :eligibilities, dependent: :destroy
@@ -164,6 +165,10 @@ class Recipient < Organisation
     ).order(:id)
   end
 
+  def has_proposal?
+    proposals.count > 0
+  end
+
   # refactor
   def questions_remaining?(funder)
     self.eligibility_count(funder) < funder.restrictions.uniq.count
@@ -244,8 +249,8 @@ class Recipient < Organisation
 
   def recommended_funders
     Funder.joins(:recommendations)
-      .where('recipient_id = ? AND score >= ?', self.id, RECOMMENDATION_THRESHOLD)
-      .order('recommendations.eligibility ASC, recommendations.score DESC, name ASC')
+      .where("recipient_id = ? AND #{has_proposal? ? 'total_recommendation' : 'score'} >= ?", self.id, RECOMMENDATION_THRESHOLD)
+      .order("recommendations.eligibility ASC, #{has_proposal? ? 'recommendations.total_recommendation' : 'recommendations.score'} DESC, name ASC")
   end
 
   def recommended_with_eligible_funders

@@ -52,6 +52,12 @@ Rails.application.routes.draw do
   match '/funders/(:id)/eligibility', to: 'recipients#eligibility', via: :get, as: 'recipient_eligibility'
   match '/funders/(:id)/eligibility', to: 'recipients#update_eligibility', via: :patch
 
+  # Proposals
+  match '/(:id)/proposal', to: 'proposals#new', via: :get, as: 'new_recipient_proposal'
+  match '/(:id)/proposal', to: 'proposals#create', via: :post
+  match '/(:recipient_id)/proposals/(:id)', to: 'proposals#edit', via: :get, as: 'edit_recipient_proposal'
+  match '/(:recipient_id)/proposals/(:id)', to: 'proposals#update', via: :patch
+
   # Enquiries
   match '/funders/(:id)/apply', to: 'recipients#apply', via: :get, as: 'recipient_apply'
   match '/funders/(:id)/apply', to: 'enquiries#apply', via: :post
@@ -69,6 +75,7 @@ Rails.application.routes.draw do
       post :approach_funder
     end
     resources :profiles, :only => [:create, :update, :index]
+    resources :proposals, :only => [:create, :update, :index]
     resources :recipient_attribute, :as => :attribute, :only => [:new, :create, :edit, :update]
   end
 

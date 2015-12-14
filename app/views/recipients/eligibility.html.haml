@@ -28,7 +28,6 @@
             = render partial: 'recipients/funders/insights', locals: {funder: @funder}
 
     .uk-width-medium-2-3
-
       - if @recipient.load_recommendation(@funder).eligibility
         - if @recipient.eligible?(@funder)
           .cta.wide.green

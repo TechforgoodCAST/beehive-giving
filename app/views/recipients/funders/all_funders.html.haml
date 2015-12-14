@@ -10,21 +10,24 @@
   %h4 You are seeing all of the funders currently on Beehive.
 
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+
+    = render partial: 'cta/proposal_cta', locals: { recipient: @recipient }
+
     - @funders.each_with_index do |funder, i|
       -# refactor
       - if @recipient.is_subscribed?
         = render partial: 'recipients/funders/summary', locals: { funder: funder }
       - else
+        - if i == 6
+          .cta.wide
+            = link_to 'Why are the funders below hidden?', '#why-hidden', onclick: '$.UIkit.modal("#why-hidden").show();', class: 'invert uk-button uk-button-large uk-button-primary'
+          %hr.thick
         - if i > 5
           = render partial: 'recipients/funders/summary_redacted', locals: { funder: funder }
         - else
           = render partial: 'recipients/funders/summary', locals: { funder: funder }
-      - if i == 5
-        %hr.thick
-        -# .cta.wide
-        -#   Add a project to improve your matches.
-        -#   .uk-button.uk-button-large.uk-button-primary.invert Add a project
-      - elsif i == @funders.count-1
+
+      - if i == @funders.count-1
         .cta.wide
           More funders coming soon. Drop us an
           = link_to 'email', 'mailto:support@beehivegiving.org'

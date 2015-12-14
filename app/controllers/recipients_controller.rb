@@ -96,8 +96,11 @@ class RecipientsController < ApplicationController
   end
 
   def apply
-    if @recipient.eligible?(@funder)
+    if @recipient.eligible?(@funder) && @recipient.has_proposal?
       render 'recipients/funders/apply'
+    elsif !@recipient.has_proposal?
+      flash[:alert] = 'Please provide details of your funding request before applying.'
+      redirect_to new_recipient_proposal_path(@recipient, return_to: @funder)
     else
       flash[:alert] = 'You need to check your eligibility before applying.'
       redirect_to recipient_eligibility_path(@funder)
