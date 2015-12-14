@@ -8,6 +8,7 @@ class ProposalsController < ApplicationController
       flash[:alert] = 'Sorry, you can only create one funding proposal at the moment'
       redirect_to recipient_proposals_path(@recipient)
     else
+      session[:return_to] ||= params[:return_to]
       @proposal = @recipient.proposals.new
     end
   end
@@ -15,8 +16,13 @@ class ProposalsController < ApplicationController
   def create
     @proposal = @recipient.proposals.new(proposal_params)
     if @proposal.save
-      flash[:notice] = 'Your funder recommendations have been updated!'
-      redirect_to recommended_funders_path
+      if session[:return_to]
+        flash[:notice] = 'Funding proposal saved'
+        redirect_to recipient_apply_path(Funder.find_by_slug(session.delete(:return_to)))
+      else
+        flash[:notice] = 'Your funder recommendations have been updated!'
+        redirect_to recommended_funders_path
+      end
     else
       render :new
     end

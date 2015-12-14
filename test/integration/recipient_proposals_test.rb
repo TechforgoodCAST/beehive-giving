@@ -11,22 +11,12 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   test 'add proposal cta visible if no proposal' do
     visit recommended_funders_path
     assert page.has_content? 'Did you know?', count: 1
-    click_link 'Improve results'
+    click_link 'Improve my funding'
     assert_equal new_recipient_proposal_path(@recipient), current_path
 
     visit all_funders_path
     assert page.has_content? 'Did you know?', count: 1
-    click_link 'Improve results'
-    assert_equal new_recipient_proposal_path(@recipient), current_path
-
-    visit funder_path(@funders.first)
-    assert page.has_content? 'Did you know?', count: 1
-    click_link 'Improve results'
-    assert_equal new_recipient_proposal_path(@recipient), current_path
-
-    visit recipient_eligibility_path(@funders.first)
-    assert page.has_content? 'Did you know?', count: 1
-    click_link 'Improve results'
+    click_link 'Improve my funding'
     assert_equal new_recipient_proposal_path(@recipient), current_path
   end
 
@@ -37,12 +27,6 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
     assert_not page.has_content? 'Did you know?', count: 1
 
     visit all_funders_path
-    assert_not page.has_content? 'Did you know?', count: 1
-
-    visit funder_path(@funders.first)
-    assert_not page.has_content? 'Did you know?', count: 1
-
-    visit recipient_eligibility_path(@funders.first)
     assert_not page.has_content? 'Did you know?', count: 1
   end
 
@@ -75,7 +59,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
     click_button 'Improve my results'
 
     assert_equal recommended_funders_path, current_path
-    assert page.has_content? 'Funding recommendations for'
+    assert page.has_content? 'Recommendations for'
   end
 
   test 'adding proposal updates recommendations' do
@@ -136,10 +120,17 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   end
 
   test 'must add proposal to apply to funder' do
+    @proposal = build(:proposal, recipient: @recipient)
     assert_equal 0, @recipient.proposals.count
     @recipient.set_eligibility(@funders.first, 'Eligible')
     visit recipient_apply_path(@funders.first)
     assert_equal new_recipient_proposal_path(@recipient), current_path
+
+    within('#new_proposal') do
+      complete_form
+    end
+    click_button 'Improve my results'
+    assert_equal recipient_apply_path(@funders.first), current_path
   end
 
   test 'can only create one funding proposal' do

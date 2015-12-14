@@ -13,7 +13,7 @@
 
     .uk-width-1-1.uk-margin-top
       .label List the regions where your organisation or project has impact
-      = f.association :districts, collection: Country.includes(:districts), as: :grouped_select, group_method: :districts, label_method: :label, value_method: :id, input_html: { multiple: true, class: 'district_field chosen-select large' }
+      = f.association :districts, collection: Country.includes(:districts).order('districts.id'), as: :grouped_select, group_method: :districts, label_method: :label, value_method: :id, input_html: { multiple: true, class: 'district_field chosen-select large' }
       = f.error :districts, class: 'error-message'
       %small.muted This list will populate once you've selected some countries
 
