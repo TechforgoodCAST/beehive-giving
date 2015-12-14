@@ -8,7 +8,7 @@
             %p
               Your funding recommendations are based on your organisations
               = succeed ',' do
-                = link_to 'profile', recipient_profile_path(@recipient, @recipient.profiles.last)
+                = link_to 'profile', edit_recipient_profile_path(@recipient, @recipient.profiles.last)
               and you can tell Beehive what you're seeking funds for to improve them.
       .uk-width-medium-1-2.uk-margin-bottom
         %div.shadow{style: 'border: 1px solid #ddd; border-radius: 3px; padding: 10px; color: #333; font-size: 14px; background: white;'}
