@@ -1,11 +1,4 @@
-= stylesheet_link_tag 'profiles'
-= javascript_include_tag 'profiles'
-= javascript_include_tag 'chosen-jquery'
-= javascript_include_tag 'chosen'
-= stylesheet_link_tag 'chosen'
-= stylesheet_link_tag 'overrides/chosen_overrides'
-
-= simple_form_for [@recipient, @proposal] do |f|
+= simple_form_for [@recipient, @proposal], remote: true do |f|
   .uk-grid.uk-form.form
     = f.error :recipient
     = f.error :recipient_id

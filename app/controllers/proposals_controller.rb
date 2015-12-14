@@ -15,30 +15,36 @@ class ProposalsController < ApplicationController
 
   def create
     @proposal = @recipient.proposals.new(proposal_params)
-    if @proposal.save
-      if session[:return_to]
-        flash[:notice] = 'Funding proposal saved'
-        redirect_to recipient_apply_path(Funder.find_by_slug(session.delete(:return_to)))
+
+    respond_to do |format|
+      if @proposal.save
+        format.js   {
+          if session[:return_to]
+            flash[:notice] = 'Funding proposal saved'
+            render :js => "window.location.href = '#{recipient_apply_path(Funder.find_by_slug(session.delete(:return_to)))}';
+                          $('button[type=submit]').prop('disabled', true)
+                          .removeAttr('data-disable-with');"
+          else
+            flash[:notice] = 'Your funder recommendations have been updated!'
+            render :js => "window.location.href = '#{recommended_funders_path}';
+                          $('button[type=submit]').prop('disabled', true)
+                          .removeAttr('data-disable-with');"
+          end
+        }
+        format.html {
+          if session[:return_to]
+            flash[:notice] = 'Funding proposal saved'
+            redirect_to recipient_apply_path(Funder.find_by_slug(session.delete(:return_to)))
+          else
+            flash[:notice] = 'Your funder recommendations have been updated!'
+            redirect_to recommended_funders_path
+          end
+        }
       else
-        flash[:notice] = 'Your funder recommendations have been updated!'
-        redirect_to recommended_funders_path
+        format.js
+        format.html { render :new }
       end
-    else
-      render :new
     end
-    # if @proposal.save
-    #   format.js   {
-    #     render :js => "window.location.href = '#{recommended_funders_path}';
-    #                   $('button[type=submit]').prop('disabled', true)
-    #                   .removeAttr('data-disable-with');"
-    #   }
-    #   format.html {
-    #     redirect_to recommended_funders_path
-    #   }
-    # else
-    #   format.js
-    #   format.html { render :new }
-    # end
   end
 
   def index
@@ -54,11 +60,22 @@ class ProposalsController < ApplicationController
   end
 
   def update
-    if @proposal.update_attributes(proposal_params)
-      flash[:notice] = 'Funding proposal updated!'
-      redirect_to recipient_proposals_path(@recipient)
-    else
-      render :edit
+    respond_to do |format|
+      if @proposal.update_attributes(proposal_params)
+        format.js   {
+          flash[:notice] = 'Funding proposal updated!'
+          render :js => "window.location.href = '#{recipient_proposals_path(@recipient)}';
+                        $('button[type=submit]').prop('disabled', true)
+                        .removeAttr('data-disable-with');"
+        }
+        format.html {
+          flash[:notice] = 'Funding proposal updated!'
+          redirect_to recipient_proposals_path(@recipient)
+        }
+      else
+        format.js
+        format.html { render :edit }
+      end
     end
   end
 
