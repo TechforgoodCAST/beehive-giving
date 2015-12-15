@@ -14,7 +14,7 @@
           %a.action{href: recipient_eligibility_path(funder)} Find out why
 
   - if @recipient.has_proposal?
-    - if @recipient.load_recommendation(funder).grant_amount_recommendation > 0
+    - if @recipient.load_recommendation(funder).grant_amount_recommendation > 0.01
       %li
         %strong= number_to_percentage((@recipient.load_recommendation(funder).grant_amount_recommendation * 100), precision: 0)
         of funding was similar to the

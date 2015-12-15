@@ -153,6 +153,27 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
     assert page.has_content?('countries')
   end
 
+  test 'updating profile updates proposal recommendation if present' do
+    setup_funders(3)
+    @funders[0].grants.each { |g| g.update_column(:amount_awarded, 1000) }
+    @funders[1].grants.each { |g| g.update_column(:amount_awarded, 1000) }
+    @profile = create(:profile, :organisation => @recipient, :year => Date.today.year, :state => 'complete')
+    @recipient.refined_recommendation
+
+    assert_equal 2, @recipient.load_recommendation(@funders.last).score
+
+    create(:proposal, recipient: @recipient, activity_costs: 2500, people_costs: 2500, capital_costs: 2500, other_costs: 2500)
+
+    assert_equal 1, @recipient.load_recommendation(@funders.last).grant_amount_recommendation
+    assert_equal 3, @recipient.load_recommendation(@funders.last).total_recommendation
+
+    @profile.countries.last.destroy
+    @recipient.refined_recommendation
+
+    assert_equal 1.1, @recipient.load_recommendation(@funders.last).score
+    assert_equal 2.1, @recipient.load_recommendation(@funders.last).total_recommendation
+  end
+
   test 'editing complete profile redirects to previous path on success' do
     # @profile = create(:profile, :organisation => @recipient, :year => Date.today.year, :state => 'complete')
     # visit recipient_profiles_path(@recipient)

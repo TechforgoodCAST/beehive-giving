@@ -23,7 +23,8 @@ class Proposal < ActiveRecord::Base
 
   validates :gender, inclusion: { in: Profile::GENDERS, message: 'please select an option' }
 
-  validates :funding_duration, :beneficiaries_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :funding_duration, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
+  validates :beneficiaries_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validates :activity_costs, :people_costs, :capital_costs,
             :other_costs, :total_costs, numericality: { greater_than_or_equal_to: 0 },
             format: { with: /\A\d+\.?\d{0,2}\z/, message: 'only two decimal places allowed' }

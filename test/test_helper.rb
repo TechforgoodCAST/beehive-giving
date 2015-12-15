@@ -38,7 +38,7 @@ class ActionDispatch::IntegrationTest
     @attributes = Array.new(num) { |i| create(:funder_attribute, funder: @funders[i]) }
     @restrictions = Array.new(3) { |i| create(:restriction) }
     @funding_streams = Array.new(num) { |i| create(:funding_stream, restrictions: @restrictions, funders: [@funders[i]]) }
-    create_and_auth_user!(organisation: @recipient)
+    create_and_auth_user!(organisation: @recipient, user_email: 'email@email.com')
     @recipient.refined_recommendation
   end
 end
