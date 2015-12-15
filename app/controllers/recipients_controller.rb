@@ -1,8 +1,7 @@
 class RecipientsController < ApplicationController
 
   before_filter :check_organisation_ownership_or_funder, :only => :show
-  before_filter :ensure_logged_in, :load_recipient, :years_ago
-  before_filter :ensure_profile_for_current_year, only: [:eligibility, :update_eligibility, :apply]
+  before_filter :ensure_logged_in, :load_recipient, :years_ago, :ensure_profile_for_current_year
   before_filter :load_funder, :only => [:comparison, :eligibility, :update_eligibility, :apply]
   before_filter :load_feedback, :except => [:unlock_funder, :vote]
   before_filter :funder_attribute, :only => [:comparison, :eligibility, :update_eligibility]
@@ -97,8 +96,11 @@ class RecipientsController < ApplicationController
   end
 
   def apply
-    if @recipient.eligible?(@funder)
+    if @recipient.eligible?(@funder) && @recipient.has_proposal?
       render 'recipients/funders/apply'
+    elsif !@recipient.has_proposal?
+      flash[:alert] = 'Please provide details of your funding request before applying.'
+      redirect_to new_recipient_proposal_path(@recipient, return_to: @funder)
     else
       flash[:alert] = 'You need to check your eligibility before applying.'
       redirect_to recipient_eligibility_path(@funder)

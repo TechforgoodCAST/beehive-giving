@@ -5,7 +5,7 @@
 
         .uk-text-center.uk-margin-bottom
           %a.logo-large{href: welcome_path, alt: 'Beehive'}
-          %h2.white.uk-margin-top-remove Intelligently matching non-profits with funders
+          %h3.white.uk-margin-top-remove Intelligently connecting non-profits with funders
         .sign-in-container.uk-container-center
 
           - if flash[:error]
@@ -15,7 +15,7 @@
               = flash[:error]
 
           .uk-panel.uk-panel-box#panel.shadow
-            .uk-panel-title.uk-text-center Sign in to continue to Beehive
+            .uk-panel-title.uk-text-center Sign in to continue
 
             = form_tag sign_in_path, method: 'post', class: 'uk-panel uk-form form', id: 'sign-in' do
               .uk-form-row
@@ -32,4 +32,4 @@
                 = link_to 'Forgot Password?', new_password_reset_path, class: 'uk-float-right uk-link'
 
         .uk-text-center.uk-margin-top
-          = link_to 'Create account', welcome_path, class: 'white', style: 'font-size: 16px;'
+          = link_to 'Create account', welcome_path, style: 'font-size: 16px;'

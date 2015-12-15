@@ -53,6 +53,8 @@ ActiveAdmin.register_page "Dashboard" do
           h3 'Funders'
           h5 'Grants'
           h1 number_with_delimiter(Grant.all.count)
+          h5 'Proposals'
+          h1 Proposal.all.count
         end
 
         span class: "blank_slate" do

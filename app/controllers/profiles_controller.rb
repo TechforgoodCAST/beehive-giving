@@ -1,6 +1,7 @@
 class ProfilesController < ApplicationController
 
   before_filter :ensure_logged_in, :load_recipient
+  before_filter :ensure_profile_for_current_year, only: [:index, :edit, :update]
   before_filter :load_profile, :only => [:edit, :update, :destroy]
 
   def new
@@ -92,7 +93,10 @@ class ProfilesController < ApplicationController
     params.require(:profile).permit(:year, :gender, :min_age, :max_age,
     :income, :expenditure, :volunteer_count, :staff_count, :trustee_count,
     :does_sell, :beneficiaries_count, :beneficiaries_count_actual,
-    :income_actual, :expenditure_actual, beneficiary_ids: [], country_ids: [],
+    :income_actual, :expenditure_actual, :beneficiaries_other,
+    :beneficiaries_other_required, :implementors_other,
+    :implementors_other_required, :implementations_other,
+    :implementations_other_required, beneficiary_ids: [], country_ids: [],
     district_ids: [], implementation_ids: [], implementor_ids: [])
   end
 

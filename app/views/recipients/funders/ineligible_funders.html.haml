@@ -1,5 +1,9 @@
 = content_for :title, 'Ineligible funders'
 
+:javascript
+  mixpanel.track("View Ineligible Funders Page");
+  mixpanel.identify('#{current_user.id}');
+
 = render partial: 'recipients/funders/subnav'
 
 .uk-container.uk-container-center.uk-margin-large
