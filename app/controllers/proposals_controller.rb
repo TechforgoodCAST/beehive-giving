@@ -88,7 +88,7 @@ class ProposalsController < ApplicationController
       :activity_costs_estimated, :people_costs_estimated,
       :capital_costs_estimated, :other_costs_estimated, :all_funding_required,
       :outcome1, :outcome2, :outcome3, :outcome4, :outcome5, :beneficiaries_other,
-      :beneficiaries_other_required, beneficiary_ids: [],
+      :beneficiaries_other_required, :type_of_support, beneficiary_ids: [],
       country_ids: [],district_ids: [])
   end
 

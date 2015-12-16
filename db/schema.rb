@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151209152604) do
+ActiveRecord::Schema.define(version: 20151216110109) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -153,6 +153,7 @@ ActiveRecord::Schema.define(version: 20151209152604) do
     t.string  "label",       limit: 255
     t.string  "district",    limit: 255
     t.string  "subdivision", limit: 255
+    t.text    "geometry"
   end
 
   add_index "districts", ["country_id"], name: "index_districts_on_country_id", using: :btree
@@ -508,6 +509,7 @@ ActiveRecord::Schema.define(version: 20151209152604) do
     t.boolean  "beneficiaries_other_required"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+    t.string   "type_of_support"
   end
 
   add_index "proposals", ["recipient_id"], name: "index_proposals_on_recipient_id", using: :btree
