@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
+  # Google Analytics
+  get '/ga', to: 'pages#ga'
+
   # Sessions
   root :to => 'sessions#check'
   get '/logout'  => 'sessions#destroy'
@@ -42,6 +45,8 @@ Rails.application.routes.draw do
   match '/funders/eligible', to: 'recipients#eligible_funders', via: :get, as: 'eligible_funders'
   match '/funders/ineligible', to: 'recipients#ineligible_funders', via: :get, as: 'ineligible_funders'
   match '/funders', to: 'recipients#all_funders', via: :get, as: 'all_funders'
+
+  match '/dashboard', to: 'funders#dashboard', via: :get, as: 'funder_dashboard'
 
   # Recipients
   match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'

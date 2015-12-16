@@ -1,5 +1,7 @@
 class PagesController < ApplicationController
 
+  def ga; end
+
   def about
     redirect_to signup_user_path
   end
