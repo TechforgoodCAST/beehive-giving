@@ -9,9 +9,6 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
-  # Google Analytics
-  get '/ga', to: 'pages#ga'
-
   # Sessions
   root :to => 'sessions#check'
   get '/logout'  => 'sessions#destroy'
