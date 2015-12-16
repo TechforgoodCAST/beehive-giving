@@ -83,6 +83,10 @@ ActiveAdmin.register_page "Dashboard" do
       Recipient.joins(:recipient_funder_accesses).where('recipient_funder_accesses_count = ?', count).uniq.group_by_week('recipient_funder_accesses.created_at', week_start: :mon, last: 6).count
     end
 
+    def proposal_count(count)
+      Proposal.group_by_week(:created_at, week_start: :mon, last: 6).count
+    end
+
     def percentage(count, i)
       "#{count[1]} (#{number_to_percentage((count[1].to_d / user_count.to_a[i][1].to_d)*100, precision: 0)})"
     end
@@ -128,6 +132,12 @@ ActiveAdmin.register_page "Dashboard" do
             td '3 Funder unlocks'
             unlock_count(3).each_with_index do |count, i|
               td percentage(count, i) if count[1] > 0
+            end
+          end
+          tr do
+            td 'Proposals'
+            proposal_count(3).each_with_index do |count, i|
+              td count[1] > 0 ? percentage(count, i) : '-'
             end
           end
         end

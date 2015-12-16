@@ -40,6 +40,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
     fill_in 'proposal_beneficiaries_count', with: @proposal.beneficiaries_count
     select('United Kingdom', from: 'proposal_country_ids', match: :first)
     select('Other', from: 'proposal_district_ids', match: :first)
+    select(Proposal::TYPE_OF_SUPPORT.sample, from: 'proposal_type_of_support')
     fill_in 'proposal_funding_duration', with: @proposal.funding_duration
     fill_in 'proposal_activity_costs', with: @proposal.activity_costs
     fill_in 'proposal_people_costs', with: @proposal.people_costs

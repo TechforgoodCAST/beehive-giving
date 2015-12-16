@@ -7,12 +7,15 @@ class Proposal < ActiveRecord::Base
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
 
+  TYPE_OF_SUPPORT = ['Only financial', 'Mostly financial', 'Equal financial and non-financial', 'Mostly non-financial', 'Only non-financial']
+
   validates :title, uniqueness: { scope: :recipient, message: 'cannot have two proposals with the same name' }
 
   validates :recipient, :title, :tagline, :gender, :min_age,
             :max_age, :beneficiaries_count, :countries, :districts,
             :funding_duration, :activity_costs, :people_costs, :capital_costs,
             :other_costs, :total_costs, :all_funding_required, :outcome1,
+            :type_of_support,
             presence: true
 
   validates :beneficiaries, presence: true, unless: 'self.beneficiaries_other.present?'
@@ -22,6 +25,7 @@ class Proposal < ActiveRecord::Base
   validates :title, :tagline, length: { maximum: 140 }
 
   validates :gender, inclusion: { in: Profile::GENDERS, message: 'please select an option' }
+  validates :type_of_support, inclusion: { in: TYPE_OF_SUPPORT, message: 'please select an option' }
 
   validates :funding_duration, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
   validates :beneficiaries_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }

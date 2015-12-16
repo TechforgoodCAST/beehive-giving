@@ -31,5 +31,6 @@ FactoryGirl.define do
     outcome3 'Outcome 3'
     outcome4 'Outcome 4'
     outcome5 'Outcome 5'
+    type_of_support Proposal::TYPE_OF_SUPPORT.sample
   end
 end
