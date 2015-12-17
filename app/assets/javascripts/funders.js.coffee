@@ -101,8 +101,8 @@ $(document).ready ->
         geometry:
           type: 'Point'
           coordinates: [
-            -1.437032
-            52.42611290000001
+            -1.890401
+            52.48624299999999
           ]
       }
     ]
