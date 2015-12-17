@@ -210,6 +210,9 @@ hr
           border-left: 10px solid transparent
           border-right: 10px solid transparent
           margin-left: -10px
+        &.funder
+          &:after
+            border-top: 6px solid $blue-base
 
 .logo
   display: inline-block
@@ -244,15 +247,22 @@ hr
   background: $off-white
   border-bottom: 1px solid $lightest-grey
   ul.nav
+    &.recipient
+      li
+        color: $yellow-base
+        .highlight
+          background: $yellow-base
+    &.funder
+      li
+        color: $blue-base
+        .highlight
+          background: $blue-base
     span
       color: $mid-grey
     li
-      color: $yellow-base
       padding: 25px 2px
       @media screen and (max-width: 480px)
         padding: 15px 2px
-      .highlight
-        background: $yellow-base
 
 /* Panel
  ========================================================================== */

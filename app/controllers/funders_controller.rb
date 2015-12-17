@@ -2,14 +2,15 @@ class FundersController < ApplicationController
 
   before_filter :ensure_logged_in
   before_filter :ensure_admin, only: [:comparison]
-  before_filter :ensure_funder, only: [:explore, :eligible]
+  before_filter :ensure_funder, only: [:recent, :map, :explore, :eligible]
   before_filter :ensure_profile_for_current_year, only: [:show]
   before_filter :load_funder, except: [:new, :create]
-  before_filter :load_recipient
 
   respond_to :html
 
   def show
+    @recipient = current_user.organisation # refactor
+
     @restrictions = @funder.restrictions.uniq
 
     unless @recipient.is_subscribed? || @recipient.recommended_funder?(@funder)
@@ -22,14 +23,25 @@ class FundersController < ApplicationController
     end
   end
 
-  def dashboard
-    features = []
-    Funder.find_by_name('Garfield Weston Foundation').districts_by_year.group(:district).count.each do |k, v|
-      features << { type: "Feature", properties: { name: k, grant_count: v }, geometry: District.find_by_district(k).geometry }
-    end
-    @map_data = { type: "FeatureCollection", features: features }.to_json
+  def recent
+    @funder = Funder.find_by_name('Esmee Fairbairn Foundation') # refactor
 
-    render 'funders/recipients/dashboard'
+    @recipients = @funder.recommended_recipients
+
+    render 'funders/recipients/recent'
+  end
+
+  def map
+    @funder = Funder.find_by_name('Garfield Weston Foundation') # refactor
+    if @funder.districts.any?
+      features = []
+      @funder.districts_by_year.group(:district).count.each do |k, v|
+        features << { type: "Feature", properties: { name: k, grant_count: v }, geometry: District.find_by_district(k).geometry }
+      end
+      @map_data = { type: "FeatureCollection", features: features }.to_json
+    end
+
+    render 'funders/funding/map'
   end
 
   # def index
@@ -71,11 +83,6 @@ class FundersController < ApplicationController
 
   def load_funder
     @funder = Funder.find_by_slug(params[:id])
-  end
-
-  #refactor?
-  def load_recipient
-    @recipient = current_user.organisation if logged_in?
   end
 
 end

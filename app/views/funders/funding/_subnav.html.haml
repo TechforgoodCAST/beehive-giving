@@ -1,10 +1,10 @@
-- params[:proposals_navbar] = true
+- params[:funding_navbar] = true
 .subnav{"data-uk-sticky" => ""}
   .uk-container.uk-container-center
     %ul.nav{ class: current_user.role == 'Funder' ? 'funder' : 'recipient' }
-      %a{href: funder_recent_path(@funder)}
+      %a{href: funder_map_path(@funder)}
         %li.first.active
-          Recent
+          Map
           .highlight
       %span &middot;
 

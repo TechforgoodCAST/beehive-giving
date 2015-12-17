@@ -3,7 +3,7 @@
   .uk-container.uk-container-center
     .uk-grid
       .uk-width-2-3
-        %ul.nav
+        %ul.nav{ class: current_user.role == 'Funder' ? 'funder' : 'recipient' }
           %a{href: funder_path(funder)}
             %li.first{ class: ('active' if current_page?(funder_path(funder))) }
               = funder.name.truncate(14)

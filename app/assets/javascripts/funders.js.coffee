@@ -85,6 +85,36 @@ $(document).ready ->
   closeTooltip = undefined
   map.legendControl.addLegend getLegendHTML()
 
+  markerLayer = L.mapbox.featureLayer().addTo(map)
+
+  geojson =
+    type: 'FeatureCollection'
+    features: [
+      {
+        type: 'Feature'
+        properties:
+          title: 'My organisation'
+          'marker-color': '#afbc30'
+          'marker-size': 'large'
+          'marker-symbol': 'star'
+          # url: 'http://how.does.this.work'
+        geometry:
+          type: 'Point'
+          coordinates: [
+            -1.437032
+            52.42611290000001
+          ]
+      }
+    ]
+
+  markerLayer.setGeoJSON geojson
+  markerLayer.on 'mouseover', (e) ->
+    e.layer.openPopup()
+    return
+  markerLayer.on 'mouseout', (e) ->
+    e.layer.closePopup()
+    return
+
 #
 #
 #

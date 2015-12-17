@@ -25,13 +25,6 @@ class Funder < Organisation
 
   scope :active, -> {where(active_on_beehive: true)}
 
-  FUNDERS_WITH_WIDE_LAYOUT = ['Big Lottery Fund',
-                              'City Bridge Trust',
-                              'The Joseph Rowntree Charitable Trust',
-                              'Oak Foundation',
-                              'The Rayne Foundation',
-                              'The Trusthouse Charitable Foundation']
-
   CLOSED_FUNDERS = ['Cripplegate Foundation']
 
   def eligible_organisations
@@ -49,6 +42,17 @@ class Funder < Organisation
 
   def recent_grants
     self.grants.where('approved_on <= ? AND approved_on >= ?', "#{self.current_attribute.year}-12-31", "#{self.current_attribute.year}-01-01")
+  end
+
+  def recommended_recipients
+    Recipient.joins(:recommendations)
+      .where("recommendations.funder_id = ? AND
+              recommendations.total_recommendation >= ? AND
+              recommendations.eligibility = ?",
+              self.id,
+              Recipient::RECOMMENDATION_THRESHOLD,
+              'Eligible')
+      .order("recommendations.eligibility ASC, recommendations.total_recommendation DESC, name ASC")
   end
 
 end
