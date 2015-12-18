@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151216110109) do
+ActiveRecord::Schema.define(version: 20151217131628) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -428,6 +428,33 @@ ActiveRecord::Schema.define(version: 20151216110109) do
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
     t.integer  "recipient_funder_accesses_count"
+    t.string   "org_type"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "contact_email"
+    t.string   "charity_name"
+    t.string   "charity_status"
+    t.float    "charity_income"
+    t.float    "charity_spending"
+    t.string   "charity_recent_accounts_link"
+    t.string   "charity_trustees"
+    t.string   "charity_employees"
+    t.string   "charity_volunteers"
+    t.string   "charity_year_ending"
+    t.string   "charity_days_overdue"
+    t.string   "charity_registered_date"
+    t.string   "company_name"
+    t.string   "company_type"
+    t.string   "company_status"
+    t.date     "company_incorporated_date"
+    t.date     "company_last_accounts_date"
+    t.date     "company_next_accounts_date"
+    t.date     "company_accounts_due_date"
+    t.date     "company_next_annual_return_date"
+    t.date     "company_last_annual_return_date"
+    t.date     "company_annual_return_due_date"
+    t.text     "company_sic",                                              array: true
+    t.string   "company_recent_accounts_link"
   end
 
   add_index "organisations", ["id", "type"], name: "index_organisations_on_id_and_type", using: :btree
@@ -580,6 +607,7 @@ ActiveRecord::Schema.define(version: 20151216110109) do
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
     t.boolean  "agree_to_terms"
+    t.integer  "seeking"
   end
 
   add_index "users", ["organisation_id"], name: "index_users_on_organisation_id", using: :btree

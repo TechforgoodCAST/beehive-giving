@@ -1,15 +1,23 @@
 SignupHelpers = ((w, d) ->
 
   toggleNoOrg = ->
-    $('#user_job_role').change (e) ->
-      if $('#user_job_role').val() == 'None, I don\'t work/volunteer for a non-profit'
-        $('.organisation-declared').addClass('fade-out').addClass 'fade-in'
-        $('.organisation-not-declared').removeClass('fade-out').addClass 'fade-in'
-        $('.arrow-container').css 'margin-top', 29
+    selector = $('#user_seeking')
+    charity_number = $('#charity_number')
+    company_number = $('#company_number')
+
+    selector.change (e) ->
+      if $('#user_seeking').val() == '1'
+        company_number.addClass 'fade-out'
+        charity_number.removeClass('fade-out').addClass 'fade-in'
+      else if selector.val() == '2'
+        charity_number.addClass 'fade-out'
+        company_number.removeClass('fade-out').addClass 'fade-in'
+      else if selector.val() == '3'
+        charity_number.removeClass('fade-out').addClass 'fade-in'
+        company_number.removeClass('fade-out').addClass 'fade-in'
       else
-        $('.organisation-declared').removeClass 'fade-out'
-        $('.organisation-not-declared').addClass 'fade-out'
-        $('.arrow-container').css 'margin-top', 0
+        charity_number.addClass 'fade-out'
+        company_number.addClass 'fade-out'
       return
 
   hideWelcomeMessage = ->

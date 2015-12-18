@@ -2,9 +2,7 @@ require 'test_helper'
 
 class SignUpTest < ActionDispatch::IntegrationTest
 
-  setup do
-
-  end
+  setup do; end
 
   test 'Landing page should have sign up form' do
     visit signup_user_path
@@ -51,6 +49,26 @@ class SignUpTest < ActionDispatch::IntegrationTest
     end
     click_button('Create an account')
     assert_equal signup_user_path, current_path
+  end
+
+  test 'funding seeking param transfered to new organisation form' do
+
+  end
+
+  test 'unincorporated association and other orgs have to compelte all data' do
+
+  end
+
+  test 'charity has charity data populated, with help messages' do
+
+  end
+
+  test 'company has company data populated, with help messages' do
+
+  end
+
+  test 'both has both data populated, with help messages' do
+
   end
 
 end

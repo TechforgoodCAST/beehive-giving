@@ -6,12 +6,15 @@ class SignupController < ApplicationController
     if logged_in?
       redirect_to root_path
     else
+      reset_session
       @user = User.new
     end
   end
 
   def create_user
     @user = User.new(user_params)
+    session[:charity_number] = @user.charity_number
+    session[:company_number] = @user.company_number
 
     respond_to do |format|
       if @user.save
@@ -55,14 +58,26 @@ class SignupController < ApplicationController
       redirect_to new_recipient_profile_path(current_user.organisation)
     else
       @organisation = Recipient.new
+      @organisation.org_type = current_user.seeking
+      @organisation.charity_number = session[:charity_number]
+      @organisation.company_number = session[:company_number]
+
+      @organisation.get_charity_data
+      @organisation.get_company_data if @organisation.company_number
     end
   end
 
   def create_organisation
     @organisation = Recipient.new(organisation_params)
+    session[:charity_number] = @organisation.charity_number
+    session[:company_number] = @organisation.company_number
+
+    @organisation.get_charity_data
+    @organisation.get_company_data if @organisation.company_number
 
     respond_to do |format|
       if @organisation.save
+        reset_session
         format.js   {
           current_user.update_attribute(:organisation_id, @organisation.id)
           render :js => "mixpanel.identify('#{current_user.id}');
@@ -105,13 +120,15 @@ class SignupController < ApplicationController
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :job_role,
-    :user_email, :password, :password_confirmation, :role, :agree_to_terms)
+    :user_email, :password, :password_confirmation, :role, :agree_to_terms,
+    :seeking, :charity_number, :company_number)
   end
 
   def organisation_params
     params.require(:recipient).permit(:name, :contact_number, :website,
     :street_address, :city, :region, :postal_code, :country, :charity_number,
-    :company_number, :founded_on, :registered_on, :mission, :status, :registered, organisation_ids: [])
+    :company_number, :founded_on, :registered_on, :mission, :status, :registered,
+    :org_type, organisation_ids: [])
   end
 
   def funder_params
