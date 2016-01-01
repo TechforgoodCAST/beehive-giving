@@ -1,14 +1,36 @@
+@import variables
+
 /* Typography
  ========================================================================== */
 
-.roboto, html, p, a, o, label, input, h6, h5, h4, h3, .uk-panel-title
-  font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif !important
+html, p, a, o, label, input, h6, h5, h4, h3, h2, h1, .uk-panel-title
+  font-family: 'Noto Sans', Helvetica, sans-serif !important
 
-.roboto-slab, h2, h1
-  font-family: "Roboto Slab", "Helvetica Neue", Helvetica, Arial, sans-serif !important
+p, h6, h5, h4, h3, h2, h1
+  color: $dark-brown !important
+
+a
+  color: $yellow-base !important
+
+p, h6, h5, h4, h3, h2
+  margin-bottom: 10px
+  margin-top: 0
+
+h3, h2
+  font-weight: bold
+
+// h4
+//   font-size: 18px
+h3
+  font-size: 22px
+h2
+  font-size: 28px
+
+h1
+  font-family: 'Roboto Slab', Helvetica, sans-serif !important
 
 .redacted
-  font-family: "Redacted" !important
+  font-family: 'Redacted' !important
 
 /* Grid
  ========================================================================== */
@@ -18,31 +40,125 @@
   margin: 0
   padding: 0
 
+.uk-grid-small
+  margin-left: -10px !important
+.uk-grid-small > *
+  padding-left: 10px !important
+
+[class*='uk-width']
+  transition: all .25s
+
+/* Buttons
+ ========================================================================== */
+
+.uk-button
+  border-radius: 3px
+
+.uk-button-primary, .uk-button-success, .uk-button-danger
+  color: $white !important
+  transition: all .25s
+  &.invert
+    background: transparent !important
+
+.uk-button-primary
+  background: $cta-base !important
+  border: 1px solid $cta-base
+  &:hover
+    background: $cta-hover !important
+  &:active
+    background: $cta-active !important
+  &.invert
+    border: 2px solid $cta-base
+    color: $cta-base !important
+    &:hover
+      border-color: $cta-hover
+      color: $cta-hover !important
+      background: $cta-alert !important
+    &:active
+      border-color: $cta-active
+      color: $cta-active !important
+
+.uk-button-success
+  background: $green-base !important
+  border: 1px solid $green-base
+  &:hover
+    background: $green-hover !important
+  &:active
+    background: $green-active !important
+  &.invert
+    border: 2px solid $green-base
+    color: $green-base !important
+    &:hover
+      border-color: $green-hover
+      color: $green-hover !important
+      background: $green-alert !important
+    &:active
+      border-color: $green-active
+      color: $green-active !important
+
+.uk-button-danger
+  background: $red-base !important
+  border: 1px solid $red-base
+  &:hover
+    background: $red-hover !important
+  &:active
+    background: $red-active !important
+  &.invert
+    border: 2px solid $red-base
+    color: $red-base !important
+    &:hover
+      border-color: $red-hover
+      color: $red-hover !important
+      background: $red-alert !important
+    &:active
+      border-color: $red-active
+      color: $red-active !important
+
 /* Navbar
  ========================================================================== */
 
-// refactor
-#bg
-  background-color: rgba(255, 255, 255, 0.9)
-  z-index: 990
+.uk-dropdown
+  padding: 10px 15px !important
+  background: $white
+  border-radius: 0 0 3px 3px
+  border-bottom: 1px solid $lightest-grey
+  border-right: 1px solid $lightest-grey
+  border-left: 1px solid $lightest-grey
+.nav .uk-dropdown li
+  padding: 0 !important
+  width: 100%
+  height: 30px !important
+  a
+    padding: 5px 15px !important
+    &:hover
+      background: $yellow-base !important
+      color: $white !important
+
+.uk-navbar-content
+  padding: 0 !important
+.uk-navbar-toggle, .uk-navbar-content
+  height: 50px !important
+  @media screen and (max-width: 480px)
+    height: 40px !important
 
 /* Panel
  ========================================================================== */
 
 .uk-panel-title
-  font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif !important
+  font-family: 'Noto Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif !important
 
 /* Inputs
  ========================================================================== */
 
 .input .integer, .input .text
-  border-radius: 4px !important
+  border-radius: 3px !important
 
 /* Modals
  ========================================================================== */
 
 .uk-modal-dialog
   margin: 50px auto 10px
+  border-radius: 3px
 
 // refactor
 .modal-scroll-touch
@@ -62,3 +178,12 @@
   color: #fff !important
   &:hover
     background: #35b3ee !important
+
+/* Tooltip
+ ========================================================================== */
+
+.uk-tooltip
+  border-radius: 3px
+  color: $white
+  background: $dark-brown
+  padding: 12px 7px

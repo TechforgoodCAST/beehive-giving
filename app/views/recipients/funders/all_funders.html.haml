@@ -1,0 +1,59 @@
+= content_for :title, 'All funders'
+
+:javascript
+  mixpanel.track("View All Funders Page");
+
+= render partial: 'recipients/funders/subnav'
+
+.uk-container.uk-container-center.uk-margin-large
+  %h2 All funders
+  %h4 You are seeing all of the funders currently on Beehive.
+
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+
+    = render partial: 'cta/proposal_cta', locals: { recipient: @recipient }
+
+    - @funders.each_with_index do |funder, i|
+      -# refactor
+      - if @recipient.is_subscribed?
+        = render partial: 'recipients/funders/summary', locals: { funder: funder }
+      - else
+        - if i == 6
+          .cta.wide
+            = link_to 'Why are the funders below hidden?', '#why-hidden', onclick: '$.UIkit.modal("#why-hidden").show();', class: 'invert uk-button uk-button-large uk-button-primary'
+          %hr.thick
+        - if i > 5
+          = render partial: 'recipients/funders/summary_redacted', locals: { funder: funder }
+        - else
+          = render partial: 'recipients/funders/summary', locals: { funder: funder }
+
+      - if i == @funders.count-1
+        .cta.wide
+          More funders coming soon. Drop us an
+          = link_to 'email', 'mailto:support@beehivegiving.org'
+          if you'd like to see any in particular.
+      - else
+        %hr.thick
+
+- unless current_user.feedbacks.count > 0
+  .uk-modal#why-hidden
+    .uk-modal-dialog
+      .uk-modal-close.uk-close
+      %h2 Coming soon
+      %p
+        Dear
+        = succeed ',' do
+          = current_user.first_name
+      %p Thank you for using the Beehive Beta! We're working hard to add new features and funders every week.
+      %p
+        Currently we've restricted access to some parts of the site, and by March 2016 we'll be ready to give full access to all areas. In the meantime be sure to check out your
+        = succeed ',' do
+          = link_to 'recommended funders', recommended_funders_path
+        as there are no restrictions.
+      %p Thank you.
+      %p
+        Suraj
+        %br
+          Creator of Beehive
+      .uk-modal-footer
+        .uk-width-1-1.uk-button.uk-button-large.uk-button-primary.uk-modal-close Got it

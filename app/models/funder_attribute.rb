@@ -8,7 +8,8 @@ class FunderAttribute < ActiveRecord::Base
                     :funding_type_from_grants,
                     :funding_size_and_duration_from_grants,
                     :funded_organisation_age,
-                    :funded_organisation_income_and_staff
+                    :funded_organisation_income_and_staff,
+                    :set_insights
 
   belongs_to :funder
 
@@ -18,7 +19,7 @@ class FunderAttribute < ActiveRecord::Base
   has_and_belongs_to_many :approval_months
   has_and_belongs_to_many :beneficiaries
 
-  validates :funder, :year, :countries, :funding_stream, presence: true
+  validates :funder, :year, :countries, :funding_stream, :description, presence: true
   validates :soft_restrictions, presence: true
 
   validates :year, inclusion: {in: Profile::VALID_YEARS}
@@ -164,6 +165,68 @@ class FunderAttribute < ActiveRecord::Base
         end
       end
     end
+  end
+
+  # v2
+
+  def recent_grants
+    self.funder.grants.where('approved_on < ? AND approved_on >= ?', "#{self.year + 1}-01-01", "#{self.year}-01-01")
+  end
+
+  def order_by_count(data)
+    data.sort_by {|k, v| v}.reverse.to_h
+  end
+
+  def build_insights(column, array)
+    update_attribute(column, (array.count > 0 ? array.to_sentence : nil))
+  end
+
+  def set_approval_months_by_count
+    array = []
+    order_by_count(self.recent_grants.group_by_month(:approved_on).count).keys.each do |k|
+      array << k.strftime('%b')
+    end
+    if array.count == 1 && array[0] == 'Jan'
+      update_attribute(:approval_months_by_count, nil)
+    else
+      if array.count == 12
+        update_attribute(:approval_months_by_count, 'every month of the year')
+      else
+        build_insights(:approval_months_by_count, array.take(3))
+      end
+    end
+  end
+
+  def set_countries_by_count
+    build_insights(:countries_by_count,
+      order_by_count(self.funder.countries_by_year.group(:name).count).keys.take(3)
+    )
+  end
+
+  def set_regions_by_count
+    build_insights(:regions_by_count,
+      order_by_count(self.funder.districts_by_year.group(:district).count).keys.take(3)
+    )
+  end
+
+  def set_funding_streams_by_count
+    build_insights(:funding_streams_by_count,
+      order_by_count(self.funder.grants.group(:funding_stream).count).keys.take(3)
+    )
+  end
+
+  def set_funding_streams_by_giving
+    build_insights(:funding_streams_by_giving,
+      order_by_count(self.funder.grants.group(:funding_stream).calculate(:sum, :amount_awarded)).keys.take(3)
+    )
+  end
+
+  def set_insights
+    self.set_approval_months_by_count
+    self.set_countries_by_count
+    self.set_regions_by_count
+    self.set_funding_streams_by_count
+    self.set_funding_streams_by_giving
   end
 
 end

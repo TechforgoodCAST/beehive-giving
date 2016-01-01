@@ -38,6 +38,7 @@ ActiveAdmin.register Recipient do
         li "#{Funder.find(f.funder_id).name} (#{Recipient.find(f.recipient_id).created_at.strftime("%d-%b")}) / (#{f.created_at.strftime("%d-%b")})"
       end
     end
+    column ("Proposals"){|f| f.proposals.count }
     column ("Grants"){|f| f.grants.count }
     column ("Requests"){|f| f.features.count }
   end

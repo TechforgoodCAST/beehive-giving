@@ -208,7 +208,7 @@
                                       %table.mcnImageContentContainer{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "0", :style => "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :width => "100%"}
                                         %tbody
                                           %tr
-                                            %td.mcnImageContent{:style => "padding-right: 4px;padding-left: 14px;padding-top: 0;padding-bottom: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :valign => "top"}
+                                            %td.mcnImageContent{:style => "padding-right: 4px;padding-left: 14px;padding-top: 0;padding-bottom: 0;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%; text-align: center;", :valign => "top"}
                                               = link_to image_tag("email/beehive-email-logo.png"), "http://www.beehivegiving.org", target: "_blank"
 
                   = yield
@@ -229,12 +229,8 @@
                                       %table.mcnTextContentContainer{:align => "left", :border => "0", :cellpadding => "0", :cellspacing => "0", :style => "border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;", :width => "600"}
                                         %tbody
                                           %tr
-                                            %td.mcnTextContent{:style => "padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #888;font-family: Helvetica;font-size: 11px;line-height: 125%;text-align: left;", :valign => "top"}
+                                            %td.mcnTextContent{:style => "padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #888;font-family: Helvetica;font-size: 11px;line-height: 125%;text-align: center;", :valign => "top"}
                                               %p
                                                 You are recieving this email because you signed up to
-                                                = link_to 'Beehive', 'http://www.beehivegiving.org', target: '_blank', style: "color: #888; text-decoration:none;"
-                                                by
-                                                = link_to 'The Foundation','http://www.thefoundation.org', target: '_blank', style: "color: #888; text-decoration:none;"
-                                                ©
-                                                = succeed '.' do
-                                                  = Date.today.year
+                                                = link_to 'Beehive', 'http://www.beehivegiving.org/?utm_source=Notification&utm_medium=Email&utm_campaign=Footer', target: '_blank', style: "color: #888; text-decoration:none;"
+                                                &copy; #{Date.today.year}.

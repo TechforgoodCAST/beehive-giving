@@ -13,10 +13,9 @@ SignupHelpers = ((w, d) ->
       return
 
   hideWelcomeMessage = ->
-    $(d).on 'click', '.js-record-welcome-close', ->
-      $('#welcome-message').addClass('fade-out')
-      $('#new-organisation-form').removeClass('uk-hidden')
-      $('#new-organisation-form').addClass('fade-in')
+    _cookieName = '_beehiveWelcomeClose'
+    $(document).on 'click', '.js-welcome-close', ->
+      d.cookie = _cookieName + "=true";
 
   triggerRegisteredToggle = (state)->
     founded = $('.js-founded-toggle-target')
@@ -41,17 +40,17 @@ SignupHelpers = ((w, d) ->
 
   return {
     toggleNoOrg: toggleNoOrg,
-    hideWelcomeMessage: hideWelcomeMessage,
-    bindRegistrationToggle: bindRegistrationToggle
+    bindRegistrationToggle: bindRegistrationToggle,
+    hideWelcomeMessage: hideWelcomeMessage
   }
 )(window, document)
 
 $(document).ready ->
   SignupHelpers.toggleNoOrg()
-  SignupHelpers.hideWelcomeMessage()
   SignupHelpers.bindRegistrationToggle()
+  SignupHelpers.hideWelcomeMessage()
 
 $(document).ajaxComplete ->
   SignupHelpers.toggleNoOrg()
-  SignupHelpers.hideWelcomeMessage()
   SignupHelpers.bindRegistrationToggle()
+  SignupHelpers.hideWelcomeMessage()

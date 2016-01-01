@@ -2,22 +2,23 @@ class FundersController < ApplicationController
 
   before_filter :ensure_logged_in
   before_filter :ensure_admin, only: [:comparison]
-  before_filter :ensure_funder, only: [:explore, :show, :eligible]
+  before_filter :ensure_funder, only: [:explore, :eligible]
+  before_filter :ensure_profile_for_current_year, only: [:show]
   before_filter :load_funder, except: [:new, :create]
   before_filter :load_recipient
 
   respond_to :html
 
-  def index
-    @search = Funder.where('recommendations.recipient_id = ?', @recipient.id).ransack(params[:q])
-    @search.sorts = ['recommendations_score desc', 'name asc'] if @search.sorts.empty?
-    @funders = @search.result
-
-    respond_to do |format|
-      format.html
-      format.js
-    end
-  end
+  # def index
+  #   @search = Funder.where(active_on_beehive: true).where('recommendations.recipient_id = ?', @recipient.id).ransack(params[:q])
+  #   @search.sorts = ['recommendations_score desc', 'name asc'] if @search.sorts.empty?
+  #   @funders = @search.result
+  #
+  #   respond_to do |format|
+  #     format.html
+  #     format.js
+  #   end
+  # end
 
   def explore
     @recipient = Recipient.find_by_slug(params[:id])
@@ -26,7 +27,16 @@ class FundersController < ApplicationController
   end
 
   def show
-    @grants = @funder.grants.order("created_at").page(params[:page]).per(10)
+    @restrictions = @funder.restrictions.uniq
+
+    unless @recipient.is_subscribed? || @recipient.recommended_funder?(@funder)
+      if current_user.feedbacks.count > 0
+        redirect_to edit_feedback_path(current_user.feedbacks.last)
+      else
+        flash[:alert] = "Sorry, you don't have access to that"
+        redirect_to recommended_funders_path
+      end
+    end
   end
 
   def eligible

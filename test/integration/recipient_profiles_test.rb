@@ -25,6 +25,39 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
     assert_equal edit_recipient_profile_path(@recipient, @profile), current_path
   end
 
+  test 'profile missing for current year redirects to new profile page' do
+    @profile = create(:profile, :organisation => @recipient, :year => Date.today.year-1)
+    @funder = create(:funder)
+
+    visit recommended_funders_path
+    assert_equal new_recipient_profile_path(@recipient), current_path
+    assert page.has_content?('Your profile is out of date')
+
+    visit eligible_funders_path
+    assert_equal new_recipient_profile_path(@recipient), current_path
+
+    visit ineligible_funders_path
+    assert_equal new_recipient_profile_path(@recipient), current_path
+
+    visit all_funders_path
+    assert_equal new_recipient_profile_path(@recipient), current_path
+
+    visit recipient_eligibility_path(@funder)
+    assert_equal new_recipient_profile_path(@recipient), current_path
+
+    visit recipient_apply_path(@funder)
+    assert_equal new_recipient_profile_path(@recipient), current_path
+
+    visit funder_path(@funder)
+    assert_equal new_recipient_profile_path(@recipient), current_path
+
+    visit recipient_profiles_path(@recipient)
+    assert_equal new_recipient_profile_path(@recipient), current_path
+
+    visit edit_recipient_profile_path(@recipient, @profile)
+    assert_equal new_recipient_profile_path(@recipient), current_path
+  end
+
   def complete_beneficiaries_section
     @beneficiaries = Array.new(3) { create(:beneficiary) }
     visit new_recipient_profile_path(@recipient)
@@ -109,15 +142,36 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
     assert_equal 'complete', @recipient.profiles.first.state
   end
 
-  test 'initial profile completion redirects to recommendations on funders index' do
+  test 'initial profile completion redirects to recommended funders path' do
     complete_finance_section
-    assert_equal funders_path, current_path
+    assert_equal recommended_funders_path, current_path
   end
 
   test 'editing complete profile shows entire form' do
     @profile = create(:profile, :organisation => @recipient, :year => Date.today.year, :state => 'complete')
     visit edit_recipient_profile_path(@recipient, @profile)
     assert page.has_content?('countries')
+  end
+
+  test 'updating profile updates proposal recommendation if present' do
+    setup_funders(3)
+    @funders[0].grants.each { |g| g.update_column(:amount_awarded, 1000) }
+    @funders[1].grants.each { |g| g.update_column(:amount_awarded, 1000) }
+    @profile = create(:profile, :organisation => @recipient, :year => Date.today.year, :state => 'complete')
+    @recipient.refined_recommendation
+
+    assert_equal 2, @recipient.load_recommendation(@funders.last).score
+
+    create(:proposal, recipient: @recipient, activity_costs: 2500, people_costs: 2500, capital_costs: 2500, other_costs: 2500)
+
+    assert_equal 1, @recipient.load_recommendation(@funders.last).grant_amount_recommendation
+    assert_equal 3, @recipient.load_recommendation(@funders.last).total_recommendation
+
+    @profile.countries.last.destroy
+    @recipient.refined_recommendation
+
+    assert_equal 1.1, @recipient.load_recommendation(@funders.last).score
+    assert_equal 2.1, @recipient.load_recommendation(@funders.last).total_recommendation
   end
 
   test 'editing complete profile redirects to previous path on success' do

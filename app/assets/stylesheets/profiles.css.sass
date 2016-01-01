@@ -1,3 +1,5 @@
+@import variables
+
 /* Modals
  ========================================================================== */
 
@@ -8,192 +10,87 @@
  ========================================================================== */
 
 .boolean
+  margin-top: 10px
+  margin-left: 8px
   label
     cursor: pointer
+    color: $cta-base
+    transition: all .25s
+  input
+    border: 2px solid $cta-base !important
+    border-radius: 3px
+    width: 18px !important
+    height: 18px !important
+    transition: all .25s
+    &:before
+      color: $cta-base !important
+      line-height: 15px !important
+      margin-left: 1px
+    &:checked
+  &:hover
+    label
+      color: $cta-hover
+    input
+      border-color: $cta-hover !important
+.boolean input:checked
+  border: 2px solid $cta-active !important
 .boolean-padding
   @media screen and (min-width: 960px)
     padding-left: 2px !important
   @media screen and (min-width: 768px)
     padding-left: 4px !important
+
 .radio
   margin: 0
 .checkbox label, .radio label
-  input
-    margin-right: 4px
-  background-color: #fafafa
-  border: 1px solid #cacece
-  padding: 6px 8px 5px 8px
-  margin: 4px 8px 4px 0
+  box-sizing: border-box
+  border-radius: 3px
+  border: 2px solid $cta-base
+  color: $cta-base
+  background: $white
+  padding: 9px 8px 7px 34px
+  margin: 4px
   display: inline-block
   cursor: pointer
-  -webkit-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05)
-  -moz-box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05)
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.05)
+  input
+    margin: 0 8px 0 -26px
+    border-radius: 3px
+    width: 18px !important
+    height: 18px !important
+    border: 2px solid $cta-base !important
+    color: $cta-active
+    transition: all .25s
+    &:before
+      color: $cta-base !important
+      line-height: 15px !important
+  // refactor
   -webkit-transition: all 0.25s ease
   -o-transition: all 0.25s ease
   -moz-transition: all 0.25s ease
   -ms-transition: all 0.25s ease
   -kthtml-transition: all 0.25s ease
-  transition: all 0.25s ease
+  transition: all .25s
   top: 0px
-  width: 44%
+  width: calc(50% - 8px)
   @media screen and (max-width: 768px)
-    width: 90%
+    width: calc(100% - 8px)
   &:hover
-    -webkit-box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.15)
-    -moz-box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.15)
-    box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.15)
-    border-color: #99baca
+    background: $cta-alert
+    border-color: $cta-active
+    color: $cta-active
+    input
+      border-color: $cta-active !important
+      background: $white
 
-/* Progress bar
- ========================================================================== */
-
-$inactive: #bbbbbb
-$active: #5BBA6F
-$hover: #5671d0
-$step-current: #35b3ee
-$step-danger: #d3140f
-$step-warning: #F7BA0E
-$step-info: #5b32d6
-
-$bubble-size: 20px
-$bubble-line-thickness: 3px
-$border-thickness: 1px
-$darken-amount: 30%
-
-$mobile-size: 400px
-
-=bubble-style($color)
-  background-color: $color
-  color: $color
-  border-color: darken($color, $darken-amount)
-  &:before,
-  &:after
-    background-color: $color
-    border-color: darken($color, $darken-amount)
-
-.flexer
-  display: -webkit-box
-  display: -moz-box
-  display: -ms-flexbox
-  display: -webkit-flex
-  display: flex
-
-.no-flexer
-  display: block
-
-.no-flexer-element
-  -ms-flex: 0
-  -webkit-flex: 0
-  -moz-flex: 0
-  flex: 0
-
-.flexer-element
-  -ms-flex: 1
-  -webkit-flex: 1
-  -moz-flex: 1
-  flex: 1
-
-.progress-indicator
-  @extend .flexer
+.checkbox
+  &.wide
+    label
+      width: calc(100% - 8px)
+.profile_beneficiaries_other_required, .profile_implementors_other_required,
+.profile_implementations_other_required, .proposal_beneficiaries_other_required
   margin: 0
-  padding: 0
-  font-size: 80%
-  text-transform: uppercase
-  margin-bottom: 1em
-  > li
-    @extend .flexer-element
-    list-style: none
-    text-align: center
-    width: auto
-    padding: 0
-    margin: 0
-    position: relative
-    text-overflow: ellipsis
-    color: $inactive
-    display: block
-    // &:hover
-    //   color: darken($inactive, $darken-amount)
-  > li .bubble
-    border-radius: 1000px
-    width: $bubble-size
-    height: $bubble-size
-    background-color: $inactive
-    display: block
-    margin: 0 auto 0.5em auto
-    // border-bottom: $border-thickness solid darken($inactive, 20%)
-  // line connectors
-  > li .bubble:after
-    display: block
-    position: absolute
-    top: $bubble-size / 2 - $border-thickness
-    width: 100%
-    height: $bubble-line-thickness
-    content: ''
-    background-color: $inactive
-    z-index: -1
-  > li .bubble:before
-    left: 0
-  > li .bubble:after
-    right: 0
-  // completed state
-  > li.completed
-    color: $active
-    .bubble
-      +bubble-style($active)
-      &:before
-        content: '\2714'
-        color: white
-        font-size: 12px
-        font-size-adjust: .8
-        background: none
-  // button states
-  > li a:hover .bubble
-    +bubble-style($hover)
-  // override states
-  > li.current
-    color: $step-current
-    .bubble
-      +bubble-style($step-current)
-  > li.danger .bubble
-    +bubble-style($step-danger)
-  > li.warning
-    color: $step-warning
-    .bubble
-      +bubble-style($step-warning)
-  > li.info .bubble
-    +bubble-style($step-info)
-  // // stacked version
-  // &.stacked
-  //   @extend .no-flexer
-  //   > li
-  //     text-indent: -10px
-  //     text-align: center
-  //     display: block
-  //   > li .bubble:before,
-  //   > li .bubble:after
-  //     left: 50%
-  //     margin-left: -$bubble-line-thickness / 2
-  //     width: $bubble-line-thickness
-  //     height: 100%
-  //   .stacked-text
-  //     position: relative
-  //     z-index: 10
-  //     top: 0
-  //     margin-left: 60% !important
-  //     width: 45% !important
-  //     display: inline-block
-  //     text-align: left
-  //     line-height: 1.2em
-  //   > li a
-  //     border: none
 
-@media handheld, screen and (max-width: $mobile-size)
-  .progress-indicator
-    font-size: 60%
-    > li .bubble
-      width: $bubble-size * .6
-      height: $bubble-size * .6
-    > li .bubble:before,
-    > li .bubble:after
-      top: $bubble-size * .6 / 2 - $border-thickness
+.profile_beneficiaries_other, .profile_implementors_other,
+.profile_implementations_other, .error-message.other, .proposal_beneficiaries_other
+  width: calc(100% - 16px)
+  margin-left: 8px

@@ -22,6 +22,7 @@ ActiveAdmin.register Feedback do
     column "Net Promoter Score", :nps
     column :taken_away
     column :informs_decision
+    column :price
     column :application_frequency
     column :grant_frequency
     column :marketing_frequency

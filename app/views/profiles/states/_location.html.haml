@@ -1,41 +1,21 @@
+= content_for :title, 'Location'
+
 = simple_form_for [@recipient, @profile], method: :patch, remote: true do |f|
-  - unless @profile.state == 'complete'
-    %ul.progress-indicator
-      %li.completed
-        %span.bubble
-        Basics
-      %li.completed
-        %span.bubble
-        Target
-      %li.warning
-        %span.bubble
-        Location
-      %li
-        %span.bubble
-        Team
-      %li
-        %span.bubble
-        Work
-      %li
-        %span.bubble
-        Finance
+  .cta
+    %strong Remember:
+    You can choose multiple countries and regions, and easily filter them by typing in the boxes below. Importantly, being specific will improve your funder matches.
 
-  .uk-form.uk-form-stacked
+  .uk-form.uk-form-stacked.form
     .uk-width-1-1
-      .uk-alert
-        %h4.uk-margin-remove Remember
-        %p.uk-margin-remove The more specific you are, the more specific your results will be.
-      %label.uk-form-label The countries where my organisation has impact...
-      .uk-form-controls
-        = f.association :countries, collection: Country.order('priority DESC'), input_html: {class: 'chosen-select'}
-        = f.error :countries, class: 'uk-text-small uk-text-warning'
+      .label List the countries where your organisation or project has impact
+      = f.association :countries, collection: Country.order('priority DESC'), input_html: { class: 'country_field chosen-select large' }
+      = f.error :countries, class: 'error-message'
+
     .uk-width-1-1.uk-margin-top
-      %label.uk-form-label The regions where my organisation has impact...
-      .uk-form-controls
-        = f.association :districts, collection: Country.includes(:districts), as: :grouped_select, group_method: :districts, label_method: :label, value_method: :id, input_html: {multiple: true, class: 'chosen-select'}
-        = f.error :districts, class: 'uk-text-small uk-text-warning'
-      %small.uk-text-muted This list will populate once you've selected some countries
+      .label List the regions where your organisation or project has impact
+      = f.association :districts, collection: Country.includes(:districts).order('districts.id'), as: :grouped_select, group_method: :districts, label_method: :label, value_method: :id, input_html: { multiple: true, class: 'district_field chosen-select large' }
+      = f.error :districts, class: 'error-message'
+      %small.muted This list will populate once you've selected some countries
 
   - unless @profile.state == 'complete'
-    .uk-modal-footer
-      = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-margin-top uk-width-1-1', style: 'color: #fff;', data: {disable_with: "<i style='color: #999;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #999;'> Now we're cooking...</span>"}
+    = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-margin-top uk-button-large uk-width-medium-1-2 uk-float-right', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> Now we're cooking...</span>"}

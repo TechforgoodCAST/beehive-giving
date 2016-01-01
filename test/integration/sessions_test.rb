@@ -64,12 +64,11 @@ class SessionsTest < ActionDispatch::IntegrationTest
       recipient_path(@recipient),
 
       # Non-profit
-      recipient_comparison_path(@recipient, @funder),
+      funder_path(@funder),
       recipient_public_path(@recipient),
 
       # Eligibility
-      recipient_eligibility_path(@recipient),
-      recipient_eligibilities_path(@recipient)
+      recipient_eligibility_path(@recipient)
     ])
   end
 

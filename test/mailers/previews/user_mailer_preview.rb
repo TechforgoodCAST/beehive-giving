@@ -1,5 +1,6 @@
 # Preview all emails at http://localhost:3000/rails/mailers/user_mailer
 class UserMailerPreview < ActionMailer::Preview
+
   def welcome
     UserMailer.welcome_email(User.first)
   end
@@ -18,5 +19,8 @@ class UserMailerPreview < ActionMailer::Preview
 
   def unlock
     UserMailer.notify_unlock(User.first)
+  def admin_summary
+    UserMailer.admin_summary(AdminUser.first)
   end
+
 end

@@ -1,0 +1,81 @@
+@import variables
+
+.progress
+  list-style-type: none
+  margin: 25px 0
+  padding: 0
+  height: 20px
+
+.progress-item
+  border-radius: 50%
+  border: 4px solid $light-grey
+  box-sizing: border-box
+  color: #fff
+  display: inline-block
+  float: left
+  height: 22px
+  margin-bottom: 0
+  margin-right: 12px
+  position: relative
+  width: 22px
+  transition: all .25s
+  &:before
+    background-color: $light-grey
+    content: ''
+    height: 4px
+    pointer-events: none
+    position: absolute
+    right: calc(100% + 4px)
+    top: calc(50% - 2px)
+    width: 12px
+  &:first-child:before
+    content: none
+  &:last-child
+    margin-right: 0
+  &.is-active
+    z-index: 1
+    border-color: $yellow-base
+    &:before
+      background-color: $yellow-base
+  &.is-completed
+    background-color: $green-base
+    border-color: $green-base
+    &:before
+      background-color: $green-base
+    &:after
+      content: '\f00c'
+      font-family: 'FontAwesome'
+      position: relative
+      left: 1px
+      top: -3px
+      color: $white
+      font-size: 12px
+  &.destination
+    border: none
+    color: $mid-grey
+    font-weight: bold
+
+@media screen and (min-width: 50em)
+  .progress-item
+    margin-right: 30px
+    &:before
+      width: 30px
+
+@media screen and (min-width: 30em)
+  .progress-item
+    margin-right: 20px
+    &:before
+      width: 20px
+
+@media screen and (max-width: 30em)
+  .progress-item
+    &.destination
+      display: none
+
+.progress-item-link
+  bottom: -4px
+  cursor: pointer
+  left: -4px
+  position: absolute
+  right: -4px
+  top: -4px

@@ -1,0 +1,18 @@
+= stylesheet_link_tag 'profiles'
+= javascript_include_tag 'profiles'
+= javascript_include_tag 'chosen-jquery'
+= javascript_include_tag 'chosen'
+= stylesheet_link_tag 'chosen'
+= stylesheet_link_tag 'overrides/chosen_overrides'
+
+= content_for :title, 'Edit funding proposal'
+
+:javascript
+  mixpanel.track('View Edit Proposal Page');
+
+.uk-container.uk-container-center.uk-margin-large
+  %h2 Tell Beehive what you're seeking funds for
+  %h4 And Beehive will use this information to improve your funding recommendations.
+
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+    = render partial: 'form'

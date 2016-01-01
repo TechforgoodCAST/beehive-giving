@@ -1,5 +1,7 @@
 class Recommendation < ActiveRecord::Base
 
+  before_save :calculate_total_recommendation
+
   RECOMMENDATION_QUALITY = ["Good suggestion", "Neutral suggestion", "Poor suggestion"]
 
   belongs_to :funder
@@ -7,10 +9,10 @@ class Recommendation < ActiveRecord::Base
 
   validates :funder, :recipient, :score, presence: true
   validates_uniqueness_of :funder_id, scope: :recipient_id, :message => 'only one per funder and recipient'
+  validates :eligibility, inclusion: {in: ['Eligible', 'Ineligible']}
 
-  validates :recommendation_quality, presence: true,
-            if: Proc.new { |recommendation| recommendation.recipient.recommended_funder?(recommendation.funder) if recommendation.recipient }
-  validates :recommendation_quality, :inclusion => { in: RECOMMENDATION_QUALITY },
-            if: Proc.new { |recommendation| recommendation.recipient.recommended_funder?(recommendation.funder) if recommendation.recipient}
+  def calculate_total_recommendation
+    self.total_recommendation = self.score + self.grant_amount_recommendation + self.grant_duration_recommendation if self.grant_amount_recommendation && self.grant_duration_recommendation
+  end
 
 end
