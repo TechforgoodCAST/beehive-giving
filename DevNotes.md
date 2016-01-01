@@ -25,3 +25,4 @@ Bulk authorise?
 ========
 Notify access by email
 If multiple people try to authorise? 
+No navbar for unauthorised

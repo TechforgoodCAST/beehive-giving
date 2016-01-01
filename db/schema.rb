@@ -153,7 +153,6 @@ ActiveRecord::Schema.define(version: 20151216110109) do
     t.string  "label",       limit: 255
     t.string  "district",    limit: 255
     t.string  "subdivision", limit: 255
-    t.text    "geometry"
   end
 
   add_index "districts", ["country_id"], name: "index_districts_on_country_id", using: :btree

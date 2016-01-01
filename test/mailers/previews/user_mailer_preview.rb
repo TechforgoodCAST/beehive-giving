@@ -19,6 +19,8 @@ class UserMailerPreview < ActionMailer::Preview
 
   def unlock
     UserMailer.notify_unlock(User.first)
+  end
+  
   def admin_summary
     UserMailer.admin_summary(AdminUser.first)
   end

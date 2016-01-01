@@ -30,7 +30,7 @@
                     %ul.uk-nav.uk-nav-navbar
                       %li
                         %a{:href => recipient_profiles_path(current_user.organisation)} Update profile
-                      - if @recipient.has_proposal?
+                      - if @recipient && @recipient.has_proposal?
                         %li
                           %a{:href => recipient_proposals_path(current_user.organisation)} Funding proposals
                       -# %li
@@ -49,7 +49,7 @@
         .uk-navbar-content.uk-navbar-center
           %a.logo{:href => root_path, title: 'Beehive'}
 
-- unless content_for?(:public) || content_for?(:signup)
+- unless content_for?(:public) || content_for?(:signup) || content_for?(:unauthorised)
   #offcanvas.uk-offcanvas
     .uk-offcanvas-bar.uk-offcanvas-bar-flip.uk-offcanvas-bar-show{style: 'z-index:1000;'}
       - if logged_in?
@@ -57,7 +57,7 @@
           %li.uk-nav-header.uk-margin-top.uk-text-center Menu
           %li
             %a{:href => recipient_profiles_path(current_user.organisation)} Update profile
-          - if @recipient.has_proposal?
+          - if @recipient && @recipient.has_proposal?
             %li
               %a{:href => recipient_proposals_path(current_user.organisation)} Funding proposals
           %hr
