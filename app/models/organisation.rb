@@ -59,13 +59,13 @@ class Organisation < ActiveRecord::Base
     generate_slug(n+1)
   end
 
-  def send_authorisation_email(to_authorise)
+  def send_authorisation_email(user_to_authorise)
     if self.users.empty?
       logger.debug ("No users registered for this organisation")
-      send_authorisation_email_to_admin(to_authorise)
+      send_authorisation_email_to_admin(user_to_authorise)
     else
       logger.debug ("Sending authorisation email to users")
-      send_authorisation_email_to_users(to_authorise)
+      send_authorisation_email_to_users(user_to_authorise)
     end
   end
 

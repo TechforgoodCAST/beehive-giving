@@ -81,7 +81,6 @@ class SignupController < ApplicationController
         }    
       elsif ((@organisation.errors.added? :charity_number, :taken) ||
             (@organisation.errors.added? :company_number, :taken)) 
-
         # If company/charity number has already been taken
         format.js {
           charity_number = @organisation.charity_number
@@ -91,7 +90,8 @@ class SignupController < ApplicationController
 
           current_user.lock_access_to_organisation(organisation.id)
 
-          render :js => "window.location = '#{unauthorised_path}';"
+          # TODO: redirect not working
+          render :js => "window.location.href = '#{unauthorised_path}';"
         }
         format.html {
           charity_number = @organisation.charity_number

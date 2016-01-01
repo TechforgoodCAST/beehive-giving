@@ -47,7 +47,7 @@ class User < ActiveRecord::Base
     update_attribute(:authorised, false)
     update_attribute(:organisation_id, organisation_id)
     organisation = Organisation.find(organisation_id)
-    organisation.send_authorisation_email(self.id)
+    organisation.send_authorisation_email(self)
   end
 
   def unlock
