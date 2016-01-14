@@ -16,7 +16,9 @@ class Organisation < ActiveRecord::Base
   has_many :profiles, dependent: :destroy
 
   geocoded_by :postal_code
-  after_validation :geocode, if: -> (o) { o.postal_code.present? and o.postal_code? }
+  after_validation :geocode, if: -> (o) { o.postal_code.present? and o.postal_code_changed? }
+  geocoded_by :search_address
+  after_validation :geocode, if: -> (o) { (o.street_address.present? and o.street_address_changed?) and (o.country.present? and o.country_changed?) }
 
   attr_accessor :skip_validation
 
@@ -26,6 +28,8 @@ class Organisation < ActiveRecord::Base
   validates :org_type, inclusion: { in: 0..4, message: 'please select a valid option' },
     unless: :skip_validation
 
+  validates :street_address, presence: true, if: Proc.new { |o| o.org_type == 0 || o.org_type == 4 },
+    unless: :skip_validation
   validates :charity_number, presence: true, if: Proc.new { |o| o.org_type == 1 || o.org_type == 3 },
     unless: :skip_validation
   validates :company_number, presence: true, if: Proc.new { |o| o.org_type == 2 || o.org_type == 3 },
@@ -54,6 +58,12 @@ class Organisation < ActiveRecord::Base
 
   def name=(s)
     write_attribute(:name, s.sub(s.first, s.first.upcase))
+  end
+
+  def search_address
+    [ "#{self.street_address}",
+      "#{Country.find_by_alpha2(self.country).name if self.country.present?}"
+    ].join(", ")
   end
 
   def to_param

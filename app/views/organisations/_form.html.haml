@@ -51,6 +51,9 @@
 
     .uk-width-medium-1-1.uk-margin-top.country
       .label Where is your organisation or project based?
+      .street-address.uk-margin-bottom.fade-out
+        = f.input :street_address, type: 'text', input_html: { class: 'large uk-width-1-1' }
+        = f.error :street_address, class: 'error-message'
       = f.input :country, error: false, type: 'text', input_html: { class: 'large uk-width-1-1 chosen-select' }, include_blank: true, priority: ['United Kingdom']
       = f.error :country, class: 'error-message'
 

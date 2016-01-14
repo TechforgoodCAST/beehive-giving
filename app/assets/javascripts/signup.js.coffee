@@ -31,12 +31,14 @@ SignupHelpers = ((w, d) ->
     $(document).on 'click', '.js-welcome-close', ->
       d.cookie = _cookieName + "=true";
 
+  # refactor
   triggerOrgFieldToggle = (state) ->
     required       = 'hr, .name, .founded-on, .website, .next'
     country        = $('.country')
     registerd_on   = $('.registered-on')
     charity_number = $('.charity-number')
     company_number = $('.company-number')
+    street_address = $('.street-address')
 
     if parseInt(state) > -1
       $(required).removeClass('fade-out').addClass 'fade-in'
@@ -45,24 +47,30 @@ SignupHelpers = ((w, d) ->
         registerd_on.addClass 'fade-out'
         charity_number.addClass 'fade-out'
         company_number.addClass 'fade-out'
+        street_address.removeClass('fade-out').addClass 'fade-in'
       else if parseInt(state) == 1
         registerd_on.removeClass('fade-out').addClass 'fade-in'
         charity_number.removeClass('fade-out').addClass 'fade-in'
         company_number.addClass 'fade-out'
+        street_address.addClass 'fade-out'
       else if parseInt(state) == 2
         registerd_on.removeClass('fade-out').addClass 'fade-in'
         company_number.removeClass('fade-out').addClass 'fade-in'
         charity_number.addClass 'fade-out'
+        street_address.addClass 'fade-out'
       else if parseInt(state) == 4
         registerd_on.addClass 'fade-out'
         charity_number.addClass 'fade-out'
         company_number.addClass 'fade-out'
+        street_address.removeClass('fade-out').addClass 'fade-in'
       else if parseInt(state) > 0
         registerd_on.removeClass('fade-out').addClass 'fade-in'
         charity_number.removeClass('fade-out').addClass 'fade-in'
         company_number.removeClass('fade-out').addClass 'fade-in'
+        street_address.addClass 'fade-out'
       else
         registerd_on.addClass 'fade-out'
+        street_address.addClass 'fade-out'
     else
       $(required).addClass 'fade-out'
       country.addClass 'fade-out'
