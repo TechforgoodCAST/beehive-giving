@@ -1,8 +1,6 @@
 class AddCoordsToOrganisations < ActiveRecord::Migration
   def change
-    add_column :users, :seeking, :integer, required: true
-
-    add_column :organisations, :org_type, :string, required: true
+    add_column :organisations, :org_type, :integer, required: true
     add_column :organisations, :latitude, :float
     add_column :organisations, :longitude, :float
     add_column :organisations, :contact_email, :string

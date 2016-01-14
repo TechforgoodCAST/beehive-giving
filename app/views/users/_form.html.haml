@@ -14,17 +14,17 @@
     %label.uk-label.uk-float-left Are you seeking funds for...
     .uk-width-medium-1-1.uk-margin-bottom
       .uk-form-controls{style: 'position: relative;'}
-        = f.input :seeking, error: false, as: :select, collection: User::SEEKING, input_html: { class: 'uk-width-1-1' }
+        = f.input :org_type, error: false, as: :select, collection: Organisation::ORG_TYPE, input_html: { class: 'uk-width-1-1' }
         .uk-form-password-toggle
-          = f.error :seeking, class: 'uk-text-small uk-text-warning', style: 'margin-right: 8px'
+          = f.error :org_type, class: 'uk-text-small uk-text-warning', style: 'margin-right: 8px'
 
-    #charity_number.uk-width-medium-1-1.uk-margin-bottom{ class: ('fade-out' unless charity_hidden?(@user.seeking)) }
+    #charity-number.uk-width-medium-1-1.uk-margin-bottom{ class: ('fade-out' unless charity_hidden?(@user.org_type)) }
       .uk-form-controls{style: 'position: relative;'}
         = f.input :charity_number, placeholder: 'Charity no.', input_html: { class: 'uk-width-1-1' }
         .uk-form-password-toggle
           = f.error :charity_number, class: 'uk-text-small uk-text-warning', style: 'margin-right: 8px'
 
-    #company_number.uk-width-medium-1-1.uk-margin-bottom{ class: ('fade-out' unless company_hidden?(@user.seeking)) }
+    #company-number.uk-width-medium-1-1.uk-margin-bottom{ class: ('fade-out' unless company_hidden?(@user.org_type)) }
       .uk-form-controls{style: 'position: relative;'}
         = f.input :company_number, placeholder: 'Company no.', input_html: { class: 'uk-width-1-1' }
         .uk-form-password-toggle

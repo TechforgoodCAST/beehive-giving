@@ -1,6 +1,6 @@
 module SignupHelper
 
-  def seeking_hidden(state, type)
+  def org_type_hidden(state, type)
     if !state.present?
       false
     elsif state == type
@@ -11,11 +11,15 @@ module SignupHelper
   end
 
   def charity_hidden?(state)
-    seeking_hidden(state, 1)
+    org_type_hidden(state, 1)
   end
 
   def company_hidden?(state)
-    seeking_hidden(state, 2)
+    org_type_hidden(state, 2)
+  end
+
+  def scrape_success?
+    @organisation.get_charity_data || @organisation.get_company_data
   end
 
   def progress_step_helper(step, current)

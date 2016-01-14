@@ -428,7 +428,7 @@ ActiveRecord::Schema.define(version: 20151217131628) do
     t.datetime "created_at",                                  null: false
     t.datetime "updated_at",                                  null: false
     t.integer  "recipient_funder_accesses_count"
-    t.string   "org_type"
+    t.integer  "org_type"
     t.float    "latitude"
     t.float    "longitude"
     t.string   "contact_email"
@@ -607,7 +607,6 @@ ActiveRecord::Schema.define(version: 20151217131628) do
     t.datetime "created_at",                                          null: false
     t.datetime "updated_at",                                          null: false
     t.boolean  "agree_to_terms"
-    t.integer  "seeking"
   end
 
   add_index "users", ["organisation_id"], name: "index_users_on_organisation_id", using: :btree

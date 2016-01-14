@@ -3,10 +3,11 @@ FactoryGirl.define do
     transient do
       n  { rand(9999) }
     end
+    org_type 3
     name "ACME"
     mission "mission"
     contact_number "01234 567 890"
-    website "www.acme.com"
+    website "http://www.acme.com"
     street_address "123 street address"
     city "City"
     region "Region"

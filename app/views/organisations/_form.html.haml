@@ -1,155 +1,167 @@
 = simple_form_for @organisation, url: signup_organisation_path, remote: true do |f|
   .uk-grid.uk-form.form
     = f.hidden_field :status, value: 'Active - currently operational'
-    = f.input :org_type, as: :select, collection: User::SEEKING
-
-    .uk-width-medium-1-1.uk-margin-large-bottom
-      .uk-grid
-        .uk-width-1-2
-          %li
-            %strong Charity name:
-            = @organisation.charity_name
-          %li
-            %strong Status:
-            = @organisation.charity_status
-          %li
-            %strong Year ending:
-            = @organisation.charity_year_ending
-          %li
-            %strong Days Overdue:
-            = @organisation.charity_days_overdue
-          %li
-            %strong Website:
-            = @organisation.website
-          %li
-            %strong Email:
-            = @organisation.contact_email
-          %li
-            %strong Income:
-            = @organisation.charity_income
-          %li
-            %strong Spending:
-            = @organisation.charity_spending
-          %li
-            %strong Trustees:
-            = @organisation.charity_trustees
-          %li
-            %strong Employees:
-            = @organisation.charity_employees
-          %li
-            %strong Volunteers:
-            = @organisation.charity_volunteers
-          %li
-            %strong Accounts link:
-            = @organisation.charity_recent_accounts_link
-        .uk-width-1-2
-          %li
-            %strong Company No.:
-            = @organisation.company_number
-          %li
-            %strong Company name:
-            = @organisation.company_name
-          %li
-            %strong Company type:
-            = @organisation.company_type
-          %li
-            %strong Company status:
-            = @organisation.company_status
-          %li
-            %strong Company incorporated date:
-            = @organisation.company_incorporated_date
-          %li
-            %strong Company last accounts date:
-            = @organisation.company_last_accounts_date
-          %li
-            %strong Company next accounts date:
-            = @organisation.company_next_accounts_date
-          %li
-            %strong Company accounts due date:
-            = @organisation.company_accounts_due_date
-          %li
-            %strong Company next annual return date:
-            = @organisation.company_next_annual_return_date
-          %li
-            %strong Company last annual return date:
-            = @organisation.company_last_annual_return_date
-          %li
-            %strong Company last annual due date:
-            = @organisation.company_annual_return_due_date
-          %li
-            %strong Company SIC:
-            = @organisation.company_sic
-      %hr
-      %li
-        %strong Long:
-        = @organisation.longitude
-      %li
-        %strong Lat:
-        = @organisation.latitude
-      .uk-grid
-        - if charity_hidden?(current_user.seeking)
-          .uk-width-large-1-2.uk-margin-top
-            .uk-form-controls
-              = f.input :charity_number, type: 'text', input_html: { class: 'large uk-width-1-1' }
-              = f.error :charity_number, class: 'error-message'
-            - unless @organisation.get_charity_data
-              .muted We couldn't find your charity. Please check the charity number is correct, or manually answer the questions below.
-          -# .uk-width-large-1-2.uk-margin-top
-          -#   .uk-form-controls
-          -#     = f.input :postal_code, type: 'text', input_html: { class: 'large uk-width-1-1' }
-          -#     = f.error :postal_code, class: 'error-message'
-        - if company_hidden?(current_user.seeking) || @organisation.company_number.present?
-          .uk-width-large-1-2.uk-margin-top
-            .uk-form-controls
-              = f.input :company_number, type: 'text', input_html: { class: 'large uk-width-1-1' }
-              = f.error :company_number, class: 'error-message'
-
     .uk-width-medium-1-1
+      .uk-grid
+        .uk-width-large-1-2
+          .label.uk-form-label Seeking funds for...
+          = f.input :org_type, as: :select, collection: Organisation::ORG_TYPE, input_html: { class: 'large uk-width-1-1' }
+          = f.error :org_type, class: 'error-message'
+
+    .uk-width-medium-1-1.uk-margin-bottom
+      .uk-grid
+        .uk-width-large-1-2.uk-margin-top.fade-out.charity-number
+          .label Charity No.
+          .uk-form-controls
+            = f.input :charity_number, type: 'text', input_html: { class: 'large uk-width-1-1' }
+            = f.error :charity_number, class: 'error-message'
+          - if @organisation.charity_number.present?
+            .uk-width-1-1.uk-margin-small-top
+              .uk-text-small
+                %a{"data-uk-tooltip" => "{pos:'top'}", :title => "If you have difficulties entering a charity number it probably means we have your details on our records. Simply click this link to get in touch with support@beehivegiving.org who will be happy to help you.", :href => "mailto:support@beehivegiving.org"} Having trouble with your charity number?
+
+        .uk-width-large-1-2.uk-margin-top.fade-out.company-number
+          .label Company No.
+          .uk-form-controls
+            = f.input :company_number, type: 'text', input_html: { class: 'large uk-width-1-1' }
+            = f.error :company_number, class: 'error-message'
+
+        .uk-width-1-1.uk-margin-top.registered-on
+          .cta.tight.green.uk-margin-bottom.find-success{class: ('fade-out' unless scrape_success?) }
+            %strong Success!
+            We found your organisations details, please complete any missing information below and hit 'Next' to continue.
+
+          .cta.tight.red.uk-margin-bottom.find-organisation{class: ('fade-out' if scrape_success?) }
+            .uk-grid
+              .uk-width-medium-2-3
+                %strong Uh oh!
+                We couldn't find your organisations details. Please check your charity/company number is correct and hit 'Find charity/company', or manually answer the questions below.
+              .uk-width-medium-1-3.uk-margin-small-top
+                %a.uk-button.uk-button-primary.uk-button-large.uk-width-1-1.check-numbers Find charity/company
+
+      %hr.thick.uk-margin-bottom
+
+    .uk-width-medium-1-1.fade-out.name
       .label
         Which organisation or project are you seeking funds for?
         -# %span
         -#   %a.yellow I don't have an organisation
       = f.input :name, type: 'text', input_html: { class: 'large uk-width-1-1' }
       = f.error :name, class: 'error-message'
-    -# Get this from scrape or geocode?
-    -# .uk-width-medium-1-1.uk-margin-top
-    -#   .label Where is your organisation or project based?
-    -#   = f.input :country, error: false, type: 'text', input_html: { class: 'large uk-width-1-1 chosen-select' }, include_blank: true, priority: ['United Kingdom']
-    -#   = f.error :country, class: 'error-message'
-    -#
-    -# .uk-width-medium-1-1.uk-margin-top
-    -#   .label Does your organisation or project have a charity or company number?
-    -#   = f.input :registered, as: :radio_buttons, collection: [['Yes, only charity number'], ['Yes, only company number'], ['Yes, both'], ['No']]
-    -#
-    -#   = f.input :registered, as: :select, input_html: { class: 'large uk-width-1-1 js-registered-toggle', id: 'registered'}
-    -#   = f.error :registered, class: 'error-message'
-    -#
-    -# .uk-width-medium-1-1
-    -#   .uk-grid
-    -#     .uk-width-medium-1-2.uk-margin-top.js-founded-toggle-target.uk-hidden
-    -#       .label.uk-form-label When was your organisation or project established?
-    -#       .uk-form-controls
-    -#         = f.input :founded_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-250, discard_day: true, order: [:month, :year], include_blank: true, default: nil, input_html: { class: 'large' }
-    -#         = f.error :founded_on, class: 'error-message'
-    -#
-    -#     .uk-width-medium-1-2.uk-margin-top.js-registered-toggle-target.uk-hidden
-    -#       .label.uk-form-label When was your organisation legally registered?
-    -#       .uk-form-controls
-    -#         = f.input :registered_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-250, discard_day: true, order: [:month, :year], include_blank: true, default: nil, input_html: { class: 'large' }
-    -#         = f.error :registered_on, class: 'error-message'
-    -#
-    -# .uk-width-medium-1-1.js-registered-toggle-target.uk-hidden
-    -#   .uk-grid
-    -#     .uk-width-large-1-2.uk-margin-top
-    -#       .uk-form-controls
-    -#         = f.input :charity_number, type: 'text', input_html: { class: 'large uk-width-1-1' }
-    -#         = f.error :charity_number, class: 'error-message'
-    -#     .uk-width-large-1-2.uk-margin-top
-    -#       = f.input :company_number, type: 'text', input_html: { class: 'large uk-width-1-1' }
-    -#       = f.error :company_number, class: 'error-message'
-    -#     .uk-width-1-1.uk-margin-small-top
-    -#       .uk-text-small
-    -#         %a{"data-uk-tooltip" => "{pos:'top'}", :title => "If you have difficulties entering a charity number it probably means we have your details on our records. Simply click this link to get in touch with support@beehivegiving.org who will be happy to help you.", :href => "mailto:support@beehivegiving.org"} Having trouble with your charity number?
 
-    .uk-width-medium-1-1.uk-margin-top
+    .uk-width-medium-1-1.uk-margin-top.country
+      .label Where is your organisation or project based?
+      = f.input :country, error: false, type: 'text', input_html: { class: 'large uk-width-1-1 chosen-select' }, include_blank: true, priority: ['United Kingdom']
+      = f.error :country, class: 'error-message'
+
+    .uk-width-medium-1-1
+      .uk-grid
+        .uk-width-medium-1-2.uk-margin-top.founded-on
+          .label When was your organisation or project established?
+          .uk-form-controls
+            = f.input :founded_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-250, discard_day: true, order: [:month, :year], include_blank: true, default: nil, input_html: { class: 'large' }
+            = f.error :founded_on, class: 'error-message'
+
+        .uk-width-medium-1-2.uk-margin-top.fade-out.registered-on
+          .label When was your organisation legally registered?
+          .uk-form-controls
+            = f.input :registered_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-250, include_blank: true, discard_day: true, order: [:month, :year], input_html: { class: 'large' }
+            = f.error :registered_on, class: 'error-message'
+
+    .uk-width-medium-1-1
+      .uk-grid
+        .uk-width-medium-1-2.uk-margin-top.website
+          .label Your organisation or projects website
+          .uk-form-controls
+            = f.input :website, as: :url, input_html: { class: 'large uk-width-1-1' }
+            = f.error :website, class: 'error-message'
+
+    .uk-width-medium-1-1.uk-margin-top.next
       = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-button-large uk-width-medium-1-2 uk-float-right', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> We're off the mark...</span>"}
+
+    -# .uk-width-medium-1-1.uk-margin-large
+    -#   .uk-grid
+    -#     .uk-width-1-2
+    -#       %li
+    -#         %strong Charity name:
+    -#         = @organisation.charity_name
+    -#       %li
+    -#         %strong Postal code:
+    -#         = @organisation.postal_code
+    -#       %li
+    -#         %strong Status:
+    -#         = @organisation.charity_status
+    -#       %li
+    -#         %strong Year ending:
+    -#         = @organisation.charity_year_ending
+    -#       %li
+    -#         %strong Days Overdue:
+    -#         = @organisation.charity_days_overdue
+    -#       %li
+    -#         %strong Website:
+    -#         = @organisation.website
+    -#       %li
+    -#         %strong Email:
+    -#         = @organisation.contact_email
+    -#       %li
+    -#         %strong Income:
+    -#         = @organisation.charity_income
+    -#       %li
+    -#         %strong Spending:
+    -#         = @organisation.charity_spending
+    -#       %li
+    -#         %strong Trustees:
+    -#         = @organisation.charity_trustees
+    -#       %li
+    -#         %strong Employees:
+    -#         = @organisation.charity_employees
+    -#       %li
+    -#         %strong Volunteers:
+    -#         = @organisation.charity_volunteers
+    -#       %li
+    -#         %strong Accounts link:
+    -#         = @organisation.charity_recent_accounts_link
+    -#     .uk-width-1-2
+    -#       %li
+    -#         %strong Company No.:
+    -#         = @organisation.company_number
+    -#       %li
+    -#         %strong Company name:
+    -#         = @organisation.company_name
+    -#       %li
+    -#         %strong Company type:
+    -#         = @organisation.company_type
+    -#       %li
+    -#         %strong Company status:
+    -#         = @organisation.company_status
+    -#       %li
+    -#         %strong Company incorporated date:
+    -#         = @organisation.company_incorporated_date
+    -#       %li
+    -#         %strong Company last accounts date:
+    -#         = @organisation.company_last_accounts_date
+    -#       %li
+    -#         %strong Company next accounts date:
+    -#         = @organisation.company_next_accounts_date
+    -#       %li
+    -#         %strong Company accounts due date:
+    -#         = @organisation.company_accounts_due_date
+    -#       %li
+    -#         %strong Company next annual return date:
+    -#         = @organisation.company_next_annual_return_date
+    -#       %li
+    -#         %strong Company last annual return date:
+    -#         = @organisation.company_last_annual_return_date
+    -#       %li
+    -#         %strong Company last annual due date:
+    -#         = @organisation.company_annual_return_due_date
+    -#       %li
+    -#         %strong Company SIC:
+    -#         = @organisation.company_sic
+    -#   %hr
+    -#   %li
+    -#     %strong Long:
+    -#     = @organisation.longitude
+    -#   %li
+    -#     %strong Lat:
+    -#     = @organisation.latitude

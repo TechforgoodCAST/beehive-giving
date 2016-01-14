@@ -4,21 +4,14 @@ class User < ActiveRecord::Base
   has_many :feedbacks
 
   JOB_ROLES = ['Fundraiser', 'Founder/Leader', 'Trustee', "None, I don't work/volunteer for a non-profit", 'Other']
-  SEEKING = [
-    ['A new project or unincorporated association', 0],
-    ['A registered charity', 1],
-    ['An incorporated company', 2],
-    ['A registered charity and incorporated company', 3],
-    ['Other', 4]
-  ]
 
-  attr_accessor :charity_number, :company_number
+  attr_accessor :org_type, :charity_number, :company_number
 
-  validates :seeking, inclusion: { in: [0, 1, 2, 3, 4], message: 'please select a valid option' }
-  validates :charity_number, presence: true, if: Proc.new { |o| o.seeking == 1 || o.seeking == 3 }
-  validates :company_number, presence: true, if: Proc.new { |o| o.seeking == 2 || o.seeking == 3 }
+  validates :org_type, inclusion: { in: %w[0 1 2 3 4], message: 'please select a valid option' }
+  validates :charity_number, presence: true, if: Proc.new { |o| o.org_type == '1' || o.org_type == '3' }
+  validates :company_number, presence: true, if: Proc.new { |o| o.org_type == '2' || o.org_type == '3' }
 
-  validates :seeking, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :org_type, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   validates :first_name, :last_name, :user_email, :role, :agree_to_terms,
             presence: true, on: :create
