@@ -6,12 +6,16 @@ class SignupController < ApplicationController
     if logged_in?
       redirect_to root_path
     else
+      reset_session
       @user = User.new
     end
   end
 
   def create_user
     @user = User.new(user_params)
+    session[:org_type] = @user.org_type
+    session[:charity_number] = @user.charity_number
+    session[:company_number] = @user.company_number
 
     respond_to do |format|
       if @user.save
@@ -54,15 +58,52 @@ class SignupController < ApplicationController
     if current_user.organisation
       redirect_to new_recipient_profile_path(current_user.organisation)
     else
-      @organisation = Recipient.new
+      @organisation = Recipient.new(
+        org_type: session[:org_type],
+        charity_number: session[:charity_number],
+        company_number: session[:company_number]
+      )
+
+      case @organisation.org_type
+      when 1
+        @organisation.get_charity_data
+      when 2
+        @organisation.get_company_data
+      when 3
+        @organisation.get_charity_data
+        @organisation.get_company_data
+      end
     end
   end
 
   def create_organisation
     @organisation = Recipient.new(organisation_params)
+    session[:org_type] = @organisation.org_type
+    session[:charity_number] = @organisation.charity_number
+    session[:company_number] = @organisation.company_number
+
+    case @organisation.org_type
+    when 1
+      @organisation.destroy
+      @organisation = Recipient.new(organisation_params)
+      @organisation.get_charity_data
+    when 2
+      @organisation.destroy
+      @organisation = Recipient.new(organisation_params)
+      @organisation.get_company_data
+      @organisation.charity_number = nil
+    when 3
+      @organisation.destroy
+      @organisation = Recipient.new(organisation_params)
+      @organisation.get_charity_data if @organisation.charity_number.present?
+      @organisation.get_company_data if @organisation.company_number.present?
+    else
+      @organisation.registered_on = nil
+    end
 
     respond_to do |format|
       if @organisation.save
+        reset_session
         format.js   {
           current_user.update_attribute(:organisation_id, @organisation.id)
           render :js => "mixpanel.identify('#{current_user.id}');
@@ -105,13 +146,15 @@ class SignupController < ApplicationController
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :job_role,
-    :user_email, :password, :password_confirmation, :role, :agree_to_terms)
+    :user_email, :password, :password_confirmation, :role, :agree_to_terms,
+    :org_type, :charity_number, :company_number)
   end
 
   def organisation_params
     params.require(:recipient).permit(:name, :contact_number, :website,
     :street_address, :city, :region, :postal_code, :country, :charity_number,
-    :company_number, :founded_on, :registered_on, :mission, :status, :registered, organisation_ids: [])
+    :company_number, :founded_on, :registered_on, :mission, :status, :registered,
+    :org_type, organisation_ids: [])
   end
 
   def funder_params

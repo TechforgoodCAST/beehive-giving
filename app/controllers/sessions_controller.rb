@@ -48,7 +48,7 @@ class SessionsController < ApplicationController
       return edit_recipient_profile_path(user.organisation, user.organisation.profiles.last) unless user.organisation.profiles.last.state == 'complete'
       recommended_funders_path
     else
-      funder_path(current_user.organisation)
+      funder_recent_path
     end
   end
 

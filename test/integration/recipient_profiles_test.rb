@@ -174,15 +174,23 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
     assert_equal 2.1, @recipient.load_recommendation(@funders.last).total_recommendation
   end
 
-  test 'editing complete profile redirects to previous path on success' do
-    # @profile = create(:profile, :organisation => @recipient, :year => Date.today.year, :state => 'complete')
-    # visit recipient_profiles_path(@recipient)
-    # visit edit_recipient_profile_path(@recipient, @profile)
-    # within("#edit_profile_#{@profile.id}") do
-    #   fill_in('profile_income', :with => 1000000)
-    # end
-    # click_button('Next')
-    # assert_equal recipient_profiles_path(@recipient), current_path
+  def setup_for_scrape
+    # charity must have year ending, employees, volunteers, and trustee data
+    @recipient.charity_number = '1113988'
+    @recipient.get_charity_data
+    @recipient.save
+  end
+
+  test 'team scrape data shown if available' do
+    setup_for_scrape
+    complete_location_section
+    assert page.has_content?('According to the Charity Commission', count: 3)
+  end
+
+  test 'financial scrape data shown if available' do
+    setup_for_scrape
+    complete_work_section
+    assert page.has_content?('According to the Charity Commission', count: 2)
   end
 
 end

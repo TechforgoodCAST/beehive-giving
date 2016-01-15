@@ -1,0 +1,14 @@
+- params[:funding_navbar] = true
+.subnav{"data-uk-sticky" => ""}
+  .uk-container.uk-container-center
+    %ul.nav{ class: current_user.role == 'Funder' ? 'funder' : 'recipient' }
+      %a{href: funder_map_path(@funder)}
+        %li.first.active
+          Map
+          .highlight
+      %span &middot;
+
+      %a
+        %li
+          Browse
+          .highlight

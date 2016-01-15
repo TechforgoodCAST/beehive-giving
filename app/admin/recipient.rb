@@ -47,6 +47,7 @@ ActiveAdmin.register Recipient do
     tabs do
       tab 'Overview' do
         attributes_table do
+          row :id
           row :name
           row :mission
           row :status

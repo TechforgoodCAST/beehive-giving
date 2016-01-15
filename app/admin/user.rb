@@ -1,6 +1,6 @@
 ActiveAdmin.register User do
 
-  permit_params :first_name, :last_name, :job_role,
+  permit_params :first_name, :last_name, :org_type,
   :user_email, :password, :password_confirmation, :role, :organisation_id
 
   controller do
@@ -18,6 +18,7 @@ ActiveAdmin.register User do
     column :first_name
     column :last_name
     column :user_email
+    column :org_type
     column :job_role
     column :role
     column :sign_in_count
@@ -38,6 +39,7 @@ ActiveAdmin.register User do
     f.inputs "User Details" do
       f.input :organisation, required: true, input_html: {class: 'chosen-select'}
       f.input :role
+      f.input :org_type, as: :select, collection: Organisation::ORG_TYPE
       f.input :first_name
       f.input :last_name
       f.input :job_role

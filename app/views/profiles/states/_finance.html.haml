@@ -11,6 +11,13 @@
         .label
           Income in
           = @profile.year || get_year
+        - if @recipient.charity_income && @recipient.charity_year_ending
+          %small
+            According to the Charity Commission you had
+            %strong= number_to_currency(@recipient.charity_income, unit: '£', precision: 0)
+            income in
+            = succeed '.' do
+              %strong= @recipient.charity_year_ending.to_date.year
       .uk-grid
         .uk-width-medium-1-2
           = f.input :income, as: :currency, input_html: { class: 'numeric integer uk-width-1-1 large', min: 0 }, placeholder: 'e.g. 1234'
@@ -22,6 +29,13 @@
         .label
           Expenditure in
           = @profile.year || get_year
+        - if @recipient.charity_spending && @recipient.charity_year_ending
+          %small
+            According to the Charity Commission you had
+            %strong= number_to_currency(@recipient.charity_spending, unit: '£', precision: 0)
+            expenditure in
+            = succeed '.' do
+              %strong= @recipient.charity_year_ending.to_date.year
         .uk-grid
           .uk-width-medium-1-2
             = f.input :expenditure, as: :currency, input_html: { class: 'numeric integer uk-width-1-1 large', min: 0 }, placeholder: 'e.g. 2345'

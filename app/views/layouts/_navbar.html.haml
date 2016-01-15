@@ -1,18 +1,31 @@
 - unless content_for?(:sign_in)
-  %nav.uk-navbar.navbar.recipient
+  %nav.uk-navbar.navbar.recipient-bg{ class: (current_user.role == 'Funder' ? 'funder-bg' : 'recipient-bg' if logged_in?) }
     .uk-container.uk-container-center
-      - unless content_for?(:public) || content_for?(:signup)
-        %ul.nav
-          %a{href: recommended_funders_path}
-            %li.first{ class: ('active' if params[:funders_navbar]) }
-              Funders
-              .highlight
-              .caret
-          -# %a{href: recipient_profiles_path(current_user.organisation)}
-          -#   %li.last{ class: ('active' if recipients_navbar_my_nonprofit_active) }
-          -#     My non-profit
-          -#     .highlight
-          -#     .caret
+      - if logged_in?
+        - unless content_for?(:public) || content_for?(:signup)
+          %ul.nav
+            - if current_user.role == 'Funder'
+              %a{href: funder_recent_path(@funder)}
+                %li.first{ class: ('active' if params[:proposals_navbar]) }
+                  Proposals
+                  .highlight
+                  .caret.funder
+              %a{href: funder_map_path(@funder)}
+                %li.first{ class: ('active' if params[:funding_navbar]) }
+                  Funding
+                  .highlight
+                  .caret.funder
+            - else
+              %a{href: recommended_funders_path}
+                %li.first{ class: ('active' if params[:funders_navbar]) }
+                  Funders
+                  .highlight
+                  .caret
+              -# %a{href: recipient_profiles_path(current_user.organisation)}
+              -#   %li.last{ class: ('active' if recipients_navbar_my_nonprofit_active) }
+              -#     My non-profit
+              -#     .highlight
+              -#     .caret
       - if content_for?(:public)
         .uk-navbar-content
           %a.logo{:href => root_path, title: 'Beehive'}
@@ -30,7 +43,7 @@
                     %ul.uk-nav.uk-nav-navbar
                       %li
                         %a{:href => recipient_profiles_path(current_user.organisation)} Update profile
-                      - if @recipient.has_proposal?
+                      - if current_user.role == 'User' && @recipient.has_proposal?
                         %li
                           %a{:href => recipient_proposals_path(current_user.organisation)} Funding proposals
                       -# %li
@@ -57,7 +70,7 @@
           %li.uk-nav-header.uk-margin-top.uk-text-center Menu
           %li
             %a{:href => recipient_profiles_path(current_user.organisation)} Update profile
-          - if @recipient.has_proposal?
+          - if current_user.role == 'User' && @recipient.has_proposal?
             %li
               %a{:href => recipient_proposals_path(current_user.organisation)} Funding proposals
           %hr

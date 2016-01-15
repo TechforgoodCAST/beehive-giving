@@ -5,13 +5,19 @@ class User < ActiveRecord::Base
 
   JOB_ROLES = ['Fundraiser', 'Founder/Leader', 'Trustee', "None, I don't work/volunteer for a non-profit", 'Other']
 
-  validates :first_name, :last_name, :user_email, :role, :job_role, :agree_to_terms,
+  attr_accessor :org_type, :charity_number, :company_number
+
+  validates :org_type, inclusion: { in: %w[0 1 2 3 4], message: 'please select a valid option' }
+  validates :charity_number, presence: true, if: Proc.new { |o| o.org_type == '1' || o.org_type == '3' }
+  validates :company_number, presence: true, if: Proc.new { |o| o.org_type == '2' || o.org_type == '3' }
+
+  validates :org_type, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+
+  validates :first_name, :last_name, :user_email, :role, :agree_to_terms,
             presence: true, on: :create
 
   validates :first_name, :last_name,
             format: {with: /\A(([a-z]+)*(-)*)+\z/i, message: 'only a-z and -'}, on: :create
-
-  validates :job_role, inclusion: {in: JOB_ROLES}, if: Proc.new { |user| user.job_role.blank? }
 
   validates :user_email,
             format: {with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i,

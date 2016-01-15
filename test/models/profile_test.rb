@@ -90,4 +90,9 @@ class ProfileTest < ActiveSupport::TestCase
     assert_not @profile.valid?
   end
 
+  test 'max age must be less than 150' do
+    @profile.max_age = 151
+    assert_not @profile.valid?
+  end
+
 end

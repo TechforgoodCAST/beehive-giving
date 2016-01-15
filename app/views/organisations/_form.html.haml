@@ -1,50 +1,83 @@
 = simple_form_for @organisation, url: signup_organisation_path, remote: true do |f|
   .uk-grid.uk-form.form
     = f.hidden_field :status, value: 'Active - currently operational'
-
     .uk-width-medium-1-1
+      .uk-grid
+        .uk-width-large-1-2
+          .label.uk-form-label Seeking funds for...
+          = f.input :org_type, as: :select, collection: Organisation::ORG_TYPE, input_html: { class: 'large uk-width-1-1' }
+          = f.error :org_type, class: 'error-message'
+
+    .uk-width-medium-1-1.uk-margin-bottom
+      .uk-grid
+        .uk-width-large-1-2.uk-margin-top.fade-out.charity-number
+          .label Charity No.
+          .uk-form-controls
+            = f.input :charity_number, type: 'text', input_html: { class: 'large uk-width-1-1' }
+            = f.error :charity_number, class: 'error-message'
+          - if @organisation.charity_number.present?
+            .uk-width-1-1.uk-margin-small-top
+              .uk-text-small
+                %a{"data-uk-tooltip" => "{pos:'top'}", :title => "If you have difficulties entering a charity number it probably means we have your details on our records. Simply click this link to get in touch with support@beehivegiving.org who will be happy to help you.", :href => "mailto:support@beehivegiving.org"} Having trouble with your charity number?
+
+        .uk-width-large-1-2.uk-margin-top.fade-out.company-number
+          .label Company No.
+          .uk-form-controls
+            = f.input :company_number, type: 'text', input_html: { class: 'large uk-width-1-1' }
+            = f.error :company_number, class: 'error-message'
+
+        .uk-width-1-1.uk-margin-top.registered-on
+          .cta.tight.green.uk-margin-bottom.find-success{class: ('fade-out' unless scrape_success?) }
+            %strong Success!
+            We found your organisations details, please complete any missing information below and hit 'Next' to continue.
+
+          .cta.tight.red.uk-margin-bottom.find-organisation{class: ('fade-out' if scrape_success?) }
+            .uk-grid
+              .uk-width-medium-2-3
+                %strong Uh oh!
+                We couldn't find your organisations details. Please check your charity/company number is correct and hit 'Find charity/company', OR manually answer the questions below.
+              .uk-width-medium-1-3.uk-margin-small-top
+                %a.uk-button.uk-button-primary.uk-button-large.uk-width-1-1.check-numbers{href: ''} Find charity/company
+
+      %hr.thick.uk-margin-bottom
+
+    .uk-width-medium-1-1.fade-out.name
       .label
         Which organisation or project are you seeking funds for?
         -# %span
         -#   %a.yellow I don't have an organisation
       = f.input :name, type: 'text', input_html: { class: 'large uk-width-1-1' }
       = f.error :name, class: 'error-message'
-    .uk-width-medium-1-1.uk-margin-top
+
+    .uk-width-medium-1-1.uk-margin-top.country
       .label Where is your organisation or project based?
+      .street-address.uk-margin-bottom.fade-out
+        = f.input :street_address, type: 'text', input_html: { class: 'large uk-width-1-1' }
+        = f.error :street_address, class: 'error-message'
       = f.input :country, error: false, type: 'text', input_html: { class: 'large uk-width-1-1 chosen-select' }, include_blank: true, priority: ['United Kingdom']
       = f.error :country, class: 'error-message'
 
-    .uk-width-medium-1-1.uk-margin-top
-      .label Does your organisation or project have a charity or company number?
-      = f.input :registered, as: :select, input_html: { class: 'large uk-width-1-1 js-registered-toggle', id: 'registered'}
-      = f.error :registered, class: 'error-message'
-
     .uk-width-medium-1-1
       .uk-grid
-        .uk-width-medium-1-2.uk-margin-top.js-founded-toggle-target.uk-hidden
-          .label.uk-form-label When was your organisation or project founded?
+        .uk-width-medium-1-2.uk-margin-top.founded-on
+          .label When was your organisation or project established?
           .uk-form-controls
             = f.input :founded_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-250, discard_day: true, order: [:month, :year], include_blank: true, default: nil, input_html: { class: 'large' }
             = f.error :founded_on, class: 'error-message'
 
-        .uk-width-medium-1-2.uk-margin-top.js-registered-toggle-target.uk-hidden
-          .label.uk-form-label When was your organisation legally registered?
+        .uk-width-medium-1-2.uk-margin-top.fade-out.registered-on
+          .label When was your organisation legally registered?
           .uk-form-controls
-            = f.input :registered_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-250, discard_day: true, order: [:month, :year], include_blank: true, default: nil, input_html: { class: 'large' }
+            = f.input :registered_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-250, include_blank: true, discard_day: true, order: [:month, :year], input_html: { class: 'large' }
             = f.error :registered_on, class: 'error-message'
 
-    .uk-width-medium-1-1.js-registered-toggle-target.uk-hidden
+    .uk-width-medium-1-1
       .uk-grid
-        .uk-width-large-1-2.uk-margin-top
+        .uk-width-medium-1-2.uk-margin-top.website
+          .label Your organisation or projects website
           .uk-form-controls
-            = f.input :charity_number, type: 'text', input_html: { class: 'large uk-width-1-1' }
-            = f.error :charity_number, class: 'error-message'
-        .uk-width-large-1-2.uk-margin-top
-          = f.input :company_number, type: 'text', input_html: { class: 'large uk-width-1-1' }
-          = f.error :company_number, class: 'error-message'
-        .uk-width-1-1.uk-margin-small-top
-          .uk-text-small
-            %a{"data-uk-tooltip" => "{pos:'top'}", :title => "If you have difficulties entering a charity number it probably means we have your details on our records. Simply click this link to get in touch with support@beehivegiving.org who will be happy to help you.", :href => "mailto:support@beehivegiving.org"} Having trouble with your charity number?
+            = f.input :website, as: :url, input_html: { class: 'large uk-width-1-1' }
+            = f.error :website, class: 'error-message'
 
-    .uk-width-medium-1-1.uk-margin-top
+    .uk-width-medium-1-1.uk-margin-top.next
       = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-button-large uk-width-medium-1-2 uk-float-right', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> We're off the mark...</span>"}
