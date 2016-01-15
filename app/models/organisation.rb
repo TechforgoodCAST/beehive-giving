@@ -106,9 +106,9 @@ class Organisation < ActiveRecord::Base
       out_of_date_scrape = response.at_css('#global-breadcrumb .out-of-date')
       income_scrape = response.at_css('.detail-33:nth-child(1) .big-money')
       spending_scrape = response.at_css('.detail-33:nth-child(2) .big-money')
-      trustee_scrape = response.at_css('li:nth-child(1) .mid-money')
-      employee_scrape = response.at_css('li:nth-child(2) .mid-money')
-      volunteer_scrape = response.at_css('li:nth-child(3) .mid-money')
+      trustee_scrape = response.at_css('#tpPeople li:nth-child(1) .mid-money')
+      employee_scrape = response.at_css('#tpPeople li:nth-child(2) .mid-money')
+      volunteer_scrape = response.at_css('#tpPeople li:nth-child(3) .mid-money')
       link_scrape = response.at_css('.detail-33:nth-child(2) .doc')
 
       self.company_number = company_no_scrape.text.strip.sub(/Company no. 0|Company no. /, '0') if company_no_scrape.present?
@@ -127,8 +127,8 @@ class Organisation < ActiveRecord::Base
       self.charity_status = out_of_date_scrape.text.gsub('-',' ').capitalize if out_of_date_scrape.present?
       self.charity_year_ending = year_ending_scrape.text.gsub('Data for financial year ending ','').to_date if year_ending_scrape.present?
       self.charity_days_overdue = days_overdue_scrape.text.gsub('Documents ','').gsub(' days overdue','') if days_overdue_scrape.present?
-      self.charity_income = income_scrape.text.gsub('£','').gsub('K','').to_f * 1000 if income_scrape.present?
-      self.charity_spending = spending_scrape.text.gsub('£','').gsub('K','').to_f * 1000 if spending_scrape.present?
+      self.charity_income = income_scrape.text.sub('£','').to_f * financials_multiplier(income_scrape) if income_scrape.present?
+      self.charity_spending = spending_scrape.text.sub('£','').to_f * financials_multiplier(spending_scrape) if spending_scrape.present?
       self.charity_trustees = trustee_scrape.text if trustee_scrape.present?
       self.charity_employees = employee_scrape.text if employee_scrape.present?
       self.charity_volunteers = volunteer_scrape.text if volunteer_scrape.present?
@@ -144,6 +144,17 @@ class Organisation < ActiveRecord::Base
       return true
     else
       return false
+    end
+  end
+
+  def financials_multiplier(scrape)
+    if scrape.present?
+      case scrape.text.last
+      when 'K'
+        return 1000
+      when 'M'
+        return 1000000
+      end
     end
   end
 

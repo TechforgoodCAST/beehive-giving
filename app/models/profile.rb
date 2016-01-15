@@ -63,6 +63,9 @@ class Profile < ActiveRecord::Base
             message: 'maximum age must be greater than minimum age',
             unless: Proc.new { |profile| profile.min_age.nil? || profile.max_age.nil? },
             if: ('self.beneficiaries? || self.complete?') }
+  validates :max_age, numericality: { less_than_or_equal_to: 150,
+            message: 'maximum age must less than 150 years old',
+            if: ('self.beneficiaries? || self.complete?') }
 
   ## location state validations
 
@@ -79,16 +82,6 @@ class Profile < ActiveRecord::Base
 
   validates :staff_count, :volunteer_count, :trustee_count,
             numericality: { only_integer: true, greater_than_or_equal_to: 0,
-            if: ('self.team? || self.complete?') }
-
-  validates :volunteer_count, numericality: { greater_than: 0,
-            message: 'must have at least one volunteer if no employees',
-            unless: Proc.new { |profile| (profile.staff_count.nil? || profile.staff_count != 0) },
-            if: ('self.team? || self.complete?') }
-
-  validates :staff_count, numericality: { greater_than: 0,
-            message: 'must have at least one employee if no volunteers',
-            unless: Proc.new { |profile| (profile.volunteer_count.nil? || profile.volunteer_count != 0) },
             if: ('self.team? || self.complete?') }
 
   ## work state validations
