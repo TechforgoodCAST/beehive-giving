@@ -35,9 +35,9 @@
             .uk-grid
               .uk-width-medium-2-3
                 %strong Uh oh!
-                We couldn't find your organisations details. Please check your charity/company number is correct and hit 'Find charity/company', or manually answer the questions below.
+                We couldn't find your organisations details. Please check your charity/company number is correct and hit 'Find charity/company', OR manually answer the questions below.
               .uk-width-medium-1-3.uk-margin-small-top
-                %a.uk-button.uk-button-primary.uk-button-large.uk-width-1-1.check-numbers Find charity/company
+                %a.uk-button.uk-button-primary.uk-button-large.uk-width-1-1.check-numbers{href: ''} Find charity/company
 
       %hr.thick.uk-margin-bottom
 
@@ -81,90 +81,3 @@
 
     .uk-width-medium-1-1.uk-margin-top.next
       = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-button-large uk-width-medium-1-2 uk-float-right', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> We're off the mark...</span>"}
-
-    -# .uk-width-medium-1-1.uk-margin-large
-    -#   .uk-grid
-    -#     .uk-width-1-2
-    -#       %li
-    -#         %strong Charity name:
-    -#         = @organisation.charity_name
-    -#       %li
-    -#         %strong Postal code:
-    -#         = @organisation.postal_code
-    -#       %li
-    -#         %strong Status:
-    -#         = @organisation.charity_status
-    -#       %li
-    -#         %strong Year ending:
-    -#         = @organisation.charity_year_ending
-    -#       %li
-    -#         %strong Days Overdue:
-    -#         = @organisation.charity_days_overdue
-    -#       %li
-    -#         %strong Website:
-    -#         = @organisation.website
-    -#       %li
-    -#         %strong Email:
-    -#         = @organisation.contact_email
-    -#       %li
-    -#         %strong Income:
-    -#         = @organisation.charity_income
-    -#       %li
-    -#         %strong Spending:
-    -#         = @organisation.charity_spending
-    -#       %li
-    -#         %strong Trustees:
-    -#         = @organisation.charity_trustees
-    -#       %li
-    -#         %strong Employees:
-    -#         = @organisation.charity_employees
-    -#       %li
-    -#         %strong Volunteers:
-    -#         = @organisation.charity_volunteers
-    -#       %li
-    -#         %strong Accounts link:
-    -#         = @organisation.charity_recent_accounts_link
-    -#     .uk-width-1-2
-    -#       %li
-    -#         %strong Company No.:
-    -#         = @organisation.company_number
-    -#       %li
-    -#         %strong Company name:
-    -#         = @organisation.company_name
-    -#       %li
-    -#         %strong Company type:
-    -#         = @organisation.company_type
-    -#       %li
-    -#         %strong Company status:
-    -#         = @organisation.company_status
-    -#       %li
-    -#         %strong Company incorporated date:
-    -#         = @organisation.company_incorporated_date
-    -#       %li
-    -#         %strong Company last accounts date:
-    -#         = @organisation.company_last_accounts_date
-    -#       %li
-    -#         %strong Company next accounts date:
-    -#         = @organisation.company_next_accounts_date
-    -#       %li
-    -#         %strong Company accounts due date:
-    -#         = @organisation.company_accounts_due_date
-    -#       %li
-    -#         %strong Company next annual return date:
-    -#         = @organisation.company_next_annual_return_date
-    -#       %li
-    -#         %strong Company last annual return date:
-    -#         = @organisation.company_last_annual_return_date
-    -#       %li
-    -#         %strong Company last annual due date:
-    -#         = @organisation.company_annual_return_due_date
-    -#       %li
-    -#         %strong Company SIC:
-    -#         = @organisation.company_sic
-    -#   %hr
-    -#   %li
-    -#     %strong Long:
-    -#     = @organisation.longitude
-    -#   %li
-    -#     %strong Lat:
-    -#     = @organisation.latitude

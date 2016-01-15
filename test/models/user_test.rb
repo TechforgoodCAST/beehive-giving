@@ -38,20 +38,26 @@ class UserTest < ActiveSupport::TestCase
     assert_not build(:user, :job_role => "None, I don't work/volunteer for a non-profit").valid?
   end
 
-  test 'no numbers requried if new project or other selected' do
-    assert false
-  end
-
-  test 'charity number required if seeking charity' do
-    assert false
-  end
-
-  test 'company number required if seeking company' do
-    assert false
-  end
-
-  test 'both numbers required if seeking both' do
-    assert false
+  test 'charity and company numbers requried based on org type' do
+    case @user.org_type
+    when 1
+      assert_not @user.valid?
+      @user.charity_number = '123'
+      assert @user.valid?
+    when 2
+      assert_not @user.valid?
+      @user.company_number = '123'
+      assert @user.valid?
+    when 3
+      assert_not @user.valid?
+      @user.charity_number = '123'
+      @user.company_number = '123'
+      assert @user.valid?
+    else
+      assert_equal nil, @user.charity_number
+      assert_equal nil, @user.company_number
+      assert @user.valid?
+    end
   end
 
 end

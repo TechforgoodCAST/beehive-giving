@@ -19,7 +19,7 @@ module SignupHelper
   end
 
   def scrape_success?
-    @organisation.get_charity_data || @organisation.get_company_data
+    (@organisation.charity_number.present? && @organisation.get_charity_data) || (@organisation.company_number.present? && @organisation.get_company_data)
   end
 
   def progress_step_helper(step, current)

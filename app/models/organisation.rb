@@ -1,13 +1,13 @@
 class Organisation < ActiveRecord::Base
 
-  before_validation :clear_registration_numbers_if_unincorporated
+  before_validation :clear_registration_numbers_if_unregistered
 
   STATUS = ['Active - currently operational', 'Closed - no longer operational', 'Merged - operating as a different entity']
   ORG_TYPE = [
     ['A new project or unincorporated association', 0],
     ['A registered charity', 1],
-    ['An incorporated company', 2],
-    ['A registered charity & incorporated company', 3],
+    ['A registered company', 2],
+    ['A registered charity & company', 3],
     ['Other', 4]
   ]
 
@@ -38,8 +38,8 @@ class Organisation < ActiveRecord::Base
   validates :charity_number, uniqueness: { on: [:create], scope: [:company_number] }, allow_nil: true, allow_blank: true
   validates :company_number, uniqueness: { on: [:create], scope: [:charity_number] }, allow_nil: true, allow_blank: true
 
-  validate :founded_on_before_registered_on, if: Proc.new { |o| o.org_type > 0 && o.org_type < 4 }, unless: Proc.new { |o| o.founded_on.nil? }
-  validates :registered_on, presence: true, if: Proc.new { |o| o.org_type > 0 },
+  validate :founded_on_before_registered_on
+  validates :registered_on, presence: true, if: Proc.new { |o| o.org_type != 0 && o.org_type != 4 },
     unless: :skip_validation
 
   validates :status, inclusion: { in: STATUS },
@@ -62,7 +62,7 @@ class Organisation < ActiveRecord::Base
 
   def search_address
     [ "#{self.street_address}",
-      "#{Country.find_by_alpha2(self.country).name if self.country.present?}"
+      "#{self.country}"
     ].join(", ")
   end
 
@@ -151,10 +151,7 @@ class Organisation < ActiveRecord::Base
     require 'open-uri'
     response = Nokogiri::HTML(open(companies_house_url)) rescue nil
     if response
-      company_scrape_data = {}
-      company_scrape_data[:company_incorporated_date] = response.at_css('#company-creation-date').text
-
-      self.name = response.at_css('#company-name').text.downcase.titleize unless self.name.present?
+      self.name = response.at_css('#company-name').text.downcase.titleize unless self.charity_number.present?
       self.country = 'GB' if response.at_css('#company-name')
 
       self.postal_code = response.at_css('.js-tabs+ dl .data').text.split(',').last.strip unless self.postal_code.present?
@@ -175,11 +172,6 @@ class Organisation < ActiveRecord::Base
       self.company_sic = sic_array
 
       self.registered_on = self.company_incorporated_date
-      if self.founded_on.present? && self.registered_on.present?
-        if self.registered_on < self.founded_on
-          self.founded_on = self.registered_on
-        end
-      end
 
       return true
     else
@@ -190,13 +182,16 @@ class Organisation < ActiveRecord::Base
   private
 
   def founded_on_before_registered_on
-    errors.add(:registered_on, "you can't be registered before being founded") if registered_on and registered_on < founded_on
+    if founded_on.present? and registered_on.present?
+      errors.add(:registered_on, "you can't be registered before being founded") if registered_on < founded_on
+    end
   end
 
-  def clear_registration_numbers_if_unincorporated
-    if self.org_type == 0
+  def clear_registration_numbers_if_unregistered
+    if self.org_type == 0 || self.org_type == 4
       self.charity_number = nil
       self.company_number = nil
+      self.registered_on = nil
     end
   end
 

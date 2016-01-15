@@ -95,8 +95,10 @@ class SignupController < ApplicationController
     when 3
       @organisation.destroy
       @organisation = Recipient.new(organisation_params)
-      @organisation.get_charity_data
-      @organisation.get_company_data
+      @organisation.get_charity_data if @organisation.charity_number.present?
+      @organisation.get_company_data if @organisation.company_number.present?
+    else
+      @organisation.registered_on = nil
     end
 
     respond_to do |format|

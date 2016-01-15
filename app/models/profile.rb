@@ -82,12 +82,12 @@ class Profile < ActiveRecord::Base
             if: ('self.team? || self.complete?') }
 
   validates :volunteer_count, numericality: { greater_than: 0,
-            message: 'must have at least one volunteer if no staff',
+            message: 'must have at least one volunteer if no employees',
             unless: Proc.new { |profile| (profile.staff_count.nil? || profile.staff_count != 0) },
             if: ('self.team? || self.complete?') }
 
   validates :staff_count, numericality: { greater_than: 0,
-            message: 'must have at least one member of staff if no volunteers',
+            message: 'must have at least one employee if no volunteers',
             unless: Proc.new { |profile| (profile.volunteer_count.nil? || profile.volunteer_count != 0) },
             if: ('self.team? || self.complete?') }
 
