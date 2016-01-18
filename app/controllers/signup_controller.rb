@@ -153,7 +153,7 @@ class SignupController < ApplicationController
   def organisation_params
     params.require(:recipient).permit(:name, :contact_number, :website,
     :street_address, :city, :region, :postal_code, :country, :charity_number,
-    :company_number, :founded_on, :registered_on, :mission, :status, :registered,
+    :company_number, :founded_on, :registered_on, :mission, :status,
     :org_type, organisation_ids: [])
   end
 
