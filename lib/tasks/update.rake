@@ -38,24 +38,33 @@ namespace :update do
   # usage be rake update:org_scrape
   desc 'Update org details from charity and company number scrape'
   task :org_scrape => :environment do
-    Recipient.joins(:users).where(postal_code: nil).each do |r|
-      puts r.name
-      r.update_attribute(:status, 'Active - currently operational') if r.status.nil?
-
-      if r.charity_number.present? && r.company_number.present?
-        r.org_type = 3
-      elsif r.charity_number.present? && !r.company_number.present?
-        r.org_type = 1
-        r.get_charity_data
-        # r.set_slug
-        r.save if r.get_charity_data
-      elsif !r.charity_number.present? && r.company_number.present?
-        r.org_type = 2
-        r.get_company_data
-        # r.set_slug
-        r.save if r.get_company_data
-      end
-    end
+    # Recipient.joins(:users).order(created_at: :desc).limit(10).each do |r|
+    #   sleep(0.25)
+    #   puts r.name
+    #   r.update_attribute(:status, 'Active - currently operational') if r.status.nil?
+    #
+    #   if r.charity_number.present? && r.company_number.present?
+    #     r.org_type = 3
+    #     r.get_charity_data
+    #     r.save if r.get_charity_data && r.get_company_data
+    #   elsif r.charity_number.present? && !r.company_number.present?
+    #     r.org_type = 1
+    #     r.get_charity_data
+    #     # r.set_slug
+    #     r.save if r.get_charity_data
+    #   elsif !r.charity_number.present? && r.company_number.present?
+    #     r.org_type = 2
+    #     r.get_company_data
+    #     # r.set_slug
+    #     r.save if r.get_company_data
+    #   end
+    #
+    #   if r.search_address.present?
+    #     break if r.geocode == nil
+    #     r.geocode
+    #     r.save
+    #   end
+    # end
   end
 
 end

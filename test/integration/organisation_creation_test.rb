@@ -66,7 +66,7 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
   test 'filling in form correctly submits, saves record and redirects to correct page' do
     create_and_auth_user!
     visit signup_organisation_path
-    full_form('A new project or unincorporated association')
+    full_form('A new project OR unincorporated association')
     click_button('Next')
     assert_equal new_recipient_profile_path(Recipient.first), current_path
     assert page.has_content?('Target')
@@ -118,7 +118,7 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
     # create_and_auth_user!
     # visit signup_organisation_path
     # within('#new_recipient') do
-    #   select('A new project or unincorporated association', from: 'recipient_org_type')
+    #   select('A new project OR unincorporated association', from: 'recipient_org_type')
     #   fill_in('recipient_name', with: 'ACME')
     # end
     # click_button('Next')

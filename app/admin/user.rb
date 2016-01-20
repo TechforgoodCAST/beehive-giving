@@ -18,7 +18,6 @@ ActiveAdmin.register User do
     column :first_name
     column :last_name
     column :user_email
-    column :org_type
     column :job_role
     column :role
     column :sign_in_count

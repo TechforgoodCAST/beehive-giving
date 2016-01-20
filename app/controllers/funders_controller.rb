@@ -41,6 +41,12 @@ class FundersController < ApplicationController
       @map_data = { type: "FeatureCollection", features: features }.to_json
     end
 
+    feat = []
+    Recipient.geocoded.each do |r|
+      feat << { type: 'Feature', properties: { title: r.name, 'marker-color': '#afbc30', 'marker-size': 'small', 'marker-symbol': 'star' }, geometry: { type: 'Point', coordinates: [r.longitude, r.latitude] } }
+    end
+    @geojson = { type: "FeatureCollection", features: feat }.to_json
+
     render 'funders/funding/map'
   end
 

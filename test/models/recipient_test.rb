@@ -1,6 +1,7 @@
 require 'test_helper'
 
 class RecipientTest < ActiveSupport::TestCase
+
   setup do
     3.times { |i| create(:funder, :active_on_beehive => true) }
     @recipient = create(:recipient)
@@ -85,6 +86,33 @@ class RecipientTest < ActiveSupport::TestCase
       assert_equal nil, @recipient.registered_on
       assert_not @recipient.valid?
     end
+  end
+
+  test "geocoded if postal_code" do
+    @recipient.charity_number = '1161998'
+    @recipient.get_charity_data
+    @recipient.save
+    assert_equal true, @recipient.postal_code.present?
+    assert_equal false, @recipient.street_address.present?
+    assert_equal true, @recipient.latitude.present?
+    assert_equal true, @recipient.longitude.present?
+  end
+
+  test "geocoded by street address and country if no postal code" do
+    @recipient.street_address = 'London Road'
+    @recipient.save
+    assert_equal false, @recipient.postal_code.present?
+    assert_equal true, @recipient.street_address.present?
+    assert_equal true, @recipient.country.present?
+    assert_equal true, @recipient.latitude.present?
+    assert_equal true, @recipient.longitude.present?
+  end
+
+  test "only geocode for GB" do
+    @recipient.street_address = 'London Road'
+    @recipient.country = 'KE'
+    @recipient.save
+    assert_equal false, @recipient.latitude.present?
   end
 
 end

@@ -4,7 +4,7 @@ class Organisation < ActiveRecord::Base
 
   STATUS = ['Active - currently operational', 'Closed - no longer operational', 'Merged - operating as a different entity']
   ORG_TYPE = [
-    ['A new project or unincorporated association', 0],
+    ['A new project OR unincorporated association', 0],
     ['A registered charity', 1],
     ['A registered company', 2],
     ['A registered charity & company', 3],
@@ -15,10 +15,8 @@ class Organisation < ActiveRecord::Base
   has_many :users, dependent: :destroy
   has_many :profiles, dependent: :destroy
 
-  geocoded_by :postal_code
-  after_validation :geocode, if: -> (o) { o.postal_code.present? and o.postal_code_changed? }
   geocoded_by :search_address
-  after_validation :geocode, if: -> (o) { (o.street_address.present? and o.street_address_changed?) and (o.country.present? and o.country_changed?) }
+  after_validation :geocode, if: -> (o) { (o.street_address.present?) or (o.postal_code.present? and o.postal_code_changed?) }, unless: -> (o) { o.country != 'GB' }
 
   attr_accessor :skip_validation
 
@@ -61,9 +59,15 @@ class Organisation < ActiveRecord::Base
   end
 
   def search_address
-    [ "#{self.street_address}",
-      "#{self.country}"
-    ].join(", ")
+    if self.postal_code.present?
+      [ "#{self.postal_code}",
+        "#{self.country}"
+      ].join(", ")
+    elsif self.street_address.present?
+      [ "#{self.street_address}",
+        "#{self.country}"
+      ].join(", ")
+    end
   end
 
   def to_param
