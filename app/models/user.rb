@@ -7,11 +7,11 @@ class User < ActiveRecord::Base
 
   attr_accessor :org_type, :charity_number, :company_number
 
-  validates :org_type, inclusion: { in: %w[0 1 2 3 4], message: 'please select a valid option' }
+  validates :org_type, inclusion: { in: %w[0 1 2 3 4], message: 'please select a valid option' }, on: :create
   validates :charity_number, presence: true, if: Proc.new { |o| o.org_type == '1' || o.org_type == '3' }
   validates :company_number, presence: true, if: Proc.new { |o| o.org_type == '2' || o.org_type == '3' }
 
-  validates :org_type, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :org_type, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, on: :create
 
   validates :first_name, :last_name, :user_email, :role, :agree_to_terms,
             presence: true, on: :create
