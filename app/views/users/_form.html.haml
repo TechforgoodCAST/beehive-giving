@@ -18,6 +18,10 @@
         .uk-form-password-toggle
           = f.error :org_type, class: 'uk-text-small uk-text-warning', style: 'margin-right: 8px'
 
+      .cta.tight.red.uk-margin-top.fade-out.org-type-other
+        %strong Important.
+        None of the funders on Beehive provide grants for individuals.
+
     #charity-number.uk-width-medium-1-1.uk-margin-bottom{ class: ('fade-out' unless charity_hidden?(@user.org_type)) }
       .uk-form-controls{style: 'position: relative;'}
         = f.input :charity_number, placeholder: 'Charity no.', input_html: { class: 'uk-width-1-1' }

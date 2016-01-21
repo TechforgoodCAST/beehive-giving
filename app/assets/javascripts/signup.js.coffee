@@ -1,5 +1,17 @@
 SignupHelpers = ((w, d) ->
 
+  toggleNoOrg = ->
+    selector = '#user_org_type'
+    message = $('.org-type-other')
+    if $(selector).val() == '4'
+      message.removeClass('fade-out')
+    $(selector).change (e) ->
+      if $(selector).val() == '4'
+        message.removeClass('fade-out').addClass 'fade-in'
+      else
+        message.addClass 'fade-out'
+      return
+
   triggerSignUpOrgNumbers = (state) ->
     charity_number = $('#charity-number')
     company_number = $('#company-number')
@@ -101,6 +113,7 @@ SignupHelpers = ((w, d) ->
       return
 
   return {
+    toggleNoOrg: toggleNoOrg,
     bindSignUpOrgNumbers: bindSignUpOrgNumbers,
     hideWelcomeMessage: hideWelcomeMessage,
     bindOrgFieldToggle: bindOrgFieldToggle,
@@ -109,12 +122,14 @@ SignupHelpers = ((w, d) ->
 )(window, document)
 
 $(document).ready ->
+  SignupHelpers.toggleNoOrg()
   SignupHelpers.bindSignUpOrgNumbers()
   SignupHelpers.hideWelcomeMessage()
   SignupHelpers.bindOrgFieldToggle()
   SignupHelpers.jsSubmitForm()
 
 $(document).ajaxComplete ->
+  SignupHelpers.toggleNoOrg()
   SignupHelpers.bindSignUpOrgNumbers()
   SignupHelpers.hideWelcomeMessage()
   SignupHelpers.bindOrgFieldToggle()
