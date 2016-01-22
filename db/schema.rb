@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151217131628) do
+ActiveRecord::Schema.define(version: 20160121152341) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -425,8 +425,8 @@ ActiveRecord::Schema.define(version: 20151217131628) do
     t.date     "registered_on"
     t.boolean  "registered"
     t.boolean  "active_on_beehive"
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
     t.integer  "recipient_funder_accesses_count"
     t.integer  "org_type"
     t.float    "latitude"
@@ -453,8 +453,9 @@ ActiveRecord::Schema.define(version: 20151217131628) do
     t.date     "company_next_annual_return_date"
     t.date     "company_last_annual_return_date"
     t.date     "company_annual_return_due_date"
-    t.text     "company_sic",                                              array: true
+    t.text     "company_sic",                                                          array: true
     t.string   "company_recent_accounts_link"
+    t.integer  "grants_count",                                default: 0
   end
 
   add_index "organisations", ["id", "type"], name: "index_organisations_on_id_and_type", using: :btree

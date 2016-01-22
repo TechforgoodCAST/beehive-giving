@@ -12,6 +12,71 @@ namespace :update do
     Recipient.joins(:users).find_each { |r| r.check_eligibilities }
   end
 
+  # usage: be rake update:show_duplicates
+  desc 'Show duplicate recipients'
+  task :show_duplicates => :environment do
+    result = []
+    Recipient.select('lower(name)').group('lower(name)').having("count(*) > 1").count.each do |k, v|
+      result << "Duplicates: #{Recipient.where('lower(name) = ?', k).pluck(:id).count - 1} #{Recipient.where('lower(name) = ?', k).pluck(:id)}, #{k}"
+    end
+    puts result
+    puts "TOTAL: #{result.count}\n"
+  end
+
+  # usage: be rake update:merge_duplicates
+  desc 'Merge duplicate recipients'
+  task :merge_duplicates => :environment do
+    arr = [""]
+    Recipient.select('lower(name)').group('lower(name)').having("count(*) > 1").count.each do |k, v|
+      primary_recipient = nil
+      Recipient.where('lower(name) = ?', k).order(:grants_count).each do |recipient|
+        if recipient.grants_count == recipient.grants.count
+          if recipient.users.count > 0
+            arr << "PRIMARY recipient: #{recipient.id}, Users: #{recipient.users.count}, Grants: #{recipient.grants.count}, Profiles: #{recipient.profiles.count}"
+            primary_recipient = recipient
+          elsif recipient.users.count == 0 && recipient.grants.count == 0
+            if recipient.profiles.count == 0 && recipient.users.count == 0
+              arr << "DELETED recipient #{recipient.id}, had #{recipient.users.count} users, #{recipient.grants.count} grants, and #{recipient.profiles.count} profiles"
+              recipient.destroy
+            else
+              arr << "Did not delete recipient #{recipient.id}, #{recipient.users.count} user(s) exist, and #{recipient.profiles.count} profile(s) exist"
+            end
+          else
+            # no recipients with users get here
+            recipient.grants.each do |grant|
+              grant.recipient_id = recipient.id
+              if primary_recipient
+                arr << "CHANGED grant #{grant.id} from recipient #{recipient.id} to #{primary_recipient.id}"
+                grant.update_column(:recipient_id, primary_recipient.id)
+                if recipient.profiles.count == 0 && recipient.users.count == 0
+                  arr << "DELETED recipient #{recipient.id}, which had #{recipient.users.count} users, #{recipient.grants.count} grants, and #{recipient.profiles.count} profiles"
+                  recipient.destroy
+                end
+              else
+                first_grant_recipient = Recipient.find(Recipient.where('lower(name) = ?', k).order(grants_count: :desc).pluck(:id).first)
+                arr << "CHANGED grant #{grant.id} from recipient #{recipient.id} to #{first_grant_recipient.id}"
+                grant.update_column(:recipient_id, first_grant_recipient.id)
+                if recipient.profiles.count == 0 && recipient.users.count == 0 && recipient.grants.count == 0
+                  arr << "DELETED recipient #{recipient.id}, had #{recipient.users.count} users, #{recipient.grants.count} grants, and #{recipient.profiles.count} profiles"
+                  recipient.destroy
+                end
+              end
+            end
+          end
+        else
+          old_grants_count = recipient.grants_count
+          Recipient.reset_counters(recipient.id, :grants)
+          new_grants_count = recipient.grants_count
+          arr << "UPDATED recipient.grants_count from #{old_grants_count} to #{new_grants_count}"
+        end
+      end
+      arr << "#{Recipient.where('lower(name) = ?', k).first.name}, #{Recipient.where('lower(name) = ?', k).first.users.count} users, #{Recipient.where('lower(name) = ?', k).first.grants.count} grants, and #{Recipient.where('lower(name) = ?', k).first.profiles.count} profiles" if Recipient.where('lower(name) = ?', k).pluck(:id).count == 1
+      arr << "Duplicates: #{Recipient.where('lower(name) = ?', k).pluck(:id).count - 1} #{Recipient.where('lower(name) = ?', k).pluck(:id)}"
+      arr << ""
+    end
+    puts arr
+  end
+
   # usage be rake update:org_type
   desc 'Update org type field with details of charity and company registration'
   task :org_type => :environment do
