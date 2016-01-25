@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :funder, class: Funder do
     transient do
-      n  { rand(9999) }
+      n { rand(9999) }
     end
     org_type 3
     name "ACME"

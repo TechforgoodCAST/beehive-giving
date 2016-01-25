@@ -2,7 +2,7 @@ class FundersController < ApplicationController
 
   before_filter :ensure_logged_in
   before_filter :ensure_admin, only: [:comparison]
-  before_filter :ensure_funder, only: [:recent, :map, :explore, :eligible]
+  before_filter :ensure_funder, only: [:recent, :map, :explore, :eligible, :map_data]
   before_filter :ensure_profile_for_current_year, only: [:show]
   before_filter :load_funder, except: [:new, :create]
 
@@ -32,34 +32,34 @@ class FundersController < ApplicationController
   end
 
   def map
-    @funder = Funder.find_by_name('Garfield Weston Foundation') # refactor
-    if @funder.districts.any?
-      features = []
-      @funder.districts_by_year.group(:district).count.each do |k, v|
-        features << { type: "Feature", properties: { name: k, grant_count: v }, geometry: District.find_by_district(k).geometry }
-      end
-      @map_data = { type: "FeatureCollection", features: features }.to_json
-    end
+    gon.funderSlug = @funder.slug
 
-    feat = []
-    Recipient.geocoded.each do |r|
-      feat << { type: 'Feature', properties: { title: r.name, 'marker-color': '#afbc30', 'marker-size': 'small', 'marker-symbol': 'star' }, geometry: { type: 'Point', coordinates: [r.longitude, r.latitude] } }
-    end
-    @geojson = { type: "FeatureCollection", features: feat }.to_json
+    # feat = []
+    # Recipient.geocoded.each do |r|
+    #   feat << { type: 'Feature', properties: { title: r.name, seeking: (r.proposals.count > 0 ? r.proposals.first.total_costs : ''), 'marker-color': '#afbc30', 'marker-size': 'medium', 'marker-symbol': 'star' }, geometry: { type: 'Point', coordinates: [r.longitude, r.latitude] } }
+    # end
+    # @geojson = { type: "FeatureCollection", features: feat }.to_json
 
     render 'funders/funding/map'
   end
 
-  # def index
-  #   @search = Funder.where(active_on_beehive: true).where('recommendations.recipient_id = ?', @recipient.id).ransack(params[:q])
-  #   @search.sorts = ['recommendations_score desc', 'name asc'] if @search.sorts.empty?
-  #   @funders = @search.result
-  #
-  #   respond_to do |format|
-  #     format.html
-  #     format.js
-  #   end
-  # end
+  def map_data
+    respond_to do |format|
+      # refactor check if map data updated?
+      if @funder.current_attribute.map_data.present?
+        format.json { render json: @funder.current_attribute.map_data }
+      else
+        @funder.save_map_data
+        format.json { render json: @funder.get_map_data }
+      end
+    end
+  end
+
+  def district
+    @district = District.find_by_district(params[:district])
+
+    render 'districts/show'
+  end
 
   def explore
     @recipient = Recipient.find_by_slug(params[:id])

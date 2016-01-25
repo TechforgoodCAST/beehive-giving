@@ -2,7 +2,7 @@
 .subnav{"data-uk-sticky" => ""}
   .uk-container.uk-container-center
     %ul.nav{ class: current_user.role == 'Funder' ? 'funder' : 'recipient' }
-      %a{href: funder_map_path(@funder)}
+      %a{href: funder_map_path(@funder.current_attribute.year, @funder)}
         %li.first.active
           Map
           .highlight

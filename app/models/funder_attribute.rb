@@ -19,6 +19,8 @@ class FunderAttribute < ActiveRecord::Base
   has_and_belongs_to_many :approval_months
   has_and_belongs_to_many :beneficiaries
 
+  serialize :map_data
+
   validates :funder, :year, :countries, :funding_stream, :description, presence: true
   validates :soft_restrictions, presence: true
 

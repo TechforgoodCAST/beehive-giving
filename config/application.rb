@@ -46,6 +46,7 @@ module Beehive
       feedback.js
       password_resets.js
       proposals.js
+      map.js
     )
 
     # vendor assets

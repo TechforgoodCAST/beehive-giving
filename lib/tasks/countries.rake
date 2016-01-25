@@ -292,10 +292,11 @@ namespace :import do
   end
 
   desc "Import regions geometry data from file"
-  # usage: be rake import:districts FILE=~/path/to/file.json
+  # usage: be rake import:districts
   task :districts => :environment do
     require 'json'
-    @filename = ENV['FILE']
+
+    @filename = Rails.root.join('app', 'assets', 'csv', 'lad.json')
     file = File.read(@filename)
     data_hash = JSON.parse(file)
     data_hash.each do |obj|

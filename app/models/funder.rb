@@ -27,6 +27,43 @@ class Funder < Organisation
 
   CLOSED_FUNDERS = ['Cripplegate Foundation']
 
+  def get_map_data
+    if self.districts.any?
+      features = []
+      amount_awarded_max = self.districts_by_year.group(:district).sum(:amount_awarded).sort_by {|k, v| v}.reverse.to_h.values.first
+      grant_count = self.districts_by_year.group(:district).count
+      grant_count_max = self.districts_by_year.group(:district).count.sort_by {|k, v| v}.reverse.to_h.values.first
+      grant_average = self.districts_by_year.group(:district).average(:amount_awarded)
+
+      self.districts_by_year.group(:district).sum(:amount_awarded).each do |k, v|
+        features << {
+          type: "Feature", properties: {
+            name: k,
+            slug: k.downcase.gsub(/[^a-z0-9]+/, '-'),
+            amount_awarded: v,
+            amount_awarded_hue: self.get_hue(v, amount_awarded_max),
+            grant_count: grant_count[k],
+            grant_count_hue: self.get_hue(grant_count[k], grant_count_max),
+            grant_average: grant_average[k]
+          }, geometry: District.find_by_district(k).geometry
+        }
+      end
+
+      return { type: "FeatureCollection", features: features }.to_json
+    end
+  end
+
+  def save_map_data
+    self.current_attribute.update_column(:map_data, self.get_map_data)
+  end
+
+  def get_hue(amount, max, segments=7)
+    segment = max.to_f / segments
+    segments.times do |i|
+      return i+1 if amount > segment * i && amount <= segment * (i+1)
+    end
+  end
+
   def eligible_organisations
     array = []
     Recipient.joins(:eligibilities).order(:id).uniq.each do |recipient|

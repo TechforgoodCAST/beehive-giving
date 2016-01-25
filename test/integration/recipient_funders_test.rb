@@ -55,14 +55,6 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     # refactor unless subscribed
   end
 
-  test 'cannot check redacted funder unless subscribed' do
-    setup_funders(7)
-    create(:feedback, user: @user)
-    visit recipient_eligibility_path(@funders.last)
-    assert_equal edit_feedback_path(@user.feedbacks.last), current_path
-    # refactor unless subscribed
-  end
-
   test 'redacted funder redirects to upgrade path unless subscribed' do
     # refactor unless subscribed
   end
