@@ -303,4 +303,42 @@ namespace :import do
       District.find_by_district(obj['name']).update_column(:geometry, obj['geometry'])
     end
   end
+
+  desc "Generate slug for districts"
+  # usage: be rake import:districts_slug
+  task :districts_slug => :environment do
+    District.where(country_id: 741).each do |district|
+      district.update_attribute(:slug, district.district.downcase.gsub(/[^a-z0-9]+/, '-'))
+    end
+  end
+
+  desc "Add indices of multiple deprivation data to districts from file"
+  # usage: be rake import:imd FILE=~/filename.csv
+  task :imd => :environment do
+    require 'csv'
+    @filename = ENV['FILE']
+    CSV.parse(open(@filename).read, :headers => true, encoding:'iso-8859-1:utf-8') do |row|
+      imd_data = {
+        district: row['district'],
+        indices_year: row['year'],
+        indices_rank: row['rank'],
+        indices_rank_proportion_most_deprived_ten_percent: row['rank_proportion'],
+        indices_income_rank: row['income'],
+        indices_income_proportion_most_deprived_ten_percent: row['income_proportion'],
+        indices_employment_rank: row['employment'],
+        indices_employment_proportion_most_deprived_ten_percent: row['employment_proportion'],
+        indices_education_rank: row['education'],
+        indices_education_proportion_most_deprived_ten_percent: row['education_proportion'],
+        indices_health_rank: row['health'],
+        indices_health_proportion_most_deprived_ten_percent: row['health_proportion'],
+        indices_crime_rank: row['crime'],
+        indices_crime_proportion_most_deprived_ten_percent: row['crime_proportion'],
+        indices_barriers_rank: row['barriers'],
+        indices_barriers_proportion_most_deprived_ten_percent: row['barriers_proportion'],
+        indices_living_rank: row['living'],
+        indices_living_proportion_most_deprived_ten_percent: row['living_proportion']
+      }
+      District.find_by_district(row['district']).update_attributes(imd_data)
+    end
+  end
 end

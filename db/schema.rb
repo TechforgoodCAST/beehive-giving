@@ -150,10 +150,28 @@ ActiveRecord::Schema.define(version: 20160122145626) do
 
   create_table "districts", force: :cascade do |t|
     t.integer "country_id"
-    t.string  "label",       limit: 255
-    t.string  "district",    limit: 255
-    t.string  "subdivision", limit: 255
+    t.string  "label",                                                   limit: 255
+    t.string  "district",                                                limit: 255
+    t.string  "subdivision",                                             limit: 255
     t.text    "geometry"
+    t.string  "slug"
+    t.string  "indices_year"
+    t.integer "indices_rank"
+    t.float   "indices_rank_proportion_most_deprived_ten_percent"
+    t.integer "indices_income_rank"
+    t.float   "indices_income_proportion_most_deprived_ten_percent"
+    t.integer "indices_employment_rank"
+    t.float   "indices_employment_proportion_most_deprived_ten_percent"
+    t.integer "indices_education_rank"
+    t.float   "indices_education_proportion_most_deprived_ten_percent"
+    t.integer "indices_health_rank"
+    t.float   "indices_health_proportion_most_deprived_ten_percent"
+    t.integer "indices_crime_rank"
+    t.float   "indices_crime_proportion_most_deprived_ten_percent"
+    t.integer "indices_barriers_rank"
+    t.float   "indices_barriers_proportion_most_deprived_ten_percent"
+    t.integer "indices_living_rank"
+    t.float   "indices_living_proportion_most_deprived_ten_percent"
   end
 
   add_index "districts", ["country_id"], name: "index_districts_on_country_id", using: :btree
@@ -304,6 +322,8 @@ ActiveRecord::Schema.define(version: 20160122145626) do
     t.string   "funding_streams_by_giving"
     t.text     "description"
     t.text     "map_data"
+    t.text     "shared_recipient_ids"
+    t.integer  "no_of_recipients_funded"
   end
 
   add_index "funder_attributes", ["funder_id"], name: "index_funder_attributes_on_funder_id", using: :btree

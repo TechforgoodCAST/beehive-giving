@@ -1,1 +1,48 @@
-%h2= @district.district
+= content_for :title, 'All funders'
+
+= render partial: 'funders/funding/subnav'
+
+.uk-container.uk-container-center.uk-margin-large
+  %h2= @district.district
+  %h4
+    In
+    = succeed '.' do
+      = @funder.current_attribute.year
+
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+    %ul
+      %li Top funded organisation
+      %li Top funded beneficiaries
+      %li Type of funding
+      %li Type of funding requested
+      %li IMD data
+      %li Funding amount
+      %li Funding duration
+      %li By cause/theme - from funding streams
+
+    .uk-overflow-container
+      %table.uk-table.uk-table-striped
+        %caption Table caption
+        %thead
+          %tr
+            %th Funder
+            %th Amount awarded
+            %th No. of grants
+        %tfoot
+          %tr
+            %td
+            %td £407,000
+            %td 63
+        %tbody
+          %tr
+            %td= @funder.name
+            %td= number_to_currency(@amount_awarded, unit: '£', precision: 0)
+            %td= number_with_delimiter(@grant_count)
+          %tr
+            %td Another funder
+            %td £00,000
+            %td 55
+          %tr
+            %td Some funder
+            %td £0,000
+            %td 4

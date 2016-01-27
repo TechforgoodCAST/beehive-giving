@@ -1,14 +1,28 @@
 - params[:funding_navbar] = true
 .subnav{"data-uk-sticky" => ""}
   .uk-container.uk-container-center
-    %ul.nav{ class: current_user.role == 'Funder' ? 'funder' : 'recipient' }
-      %a{href: funder_map_path(@funder.current_attribute.year, @funder)}
-        %li.first.active
-          Map
-          .highlight
-      %span &middot;
+    .uk-grid
+      .uk-width-1-2
+        %ul.nav{ class: current_user.role == 'Funder' ? 'funder' : 'recipient' }
+          %a{href: funder_overview_path(@funder)}
+            %li.first{ class: ('active' if params[:controller] == 'funders' && params[:action] == 'overview') }
+              Overview
+              .highlight
+          %span &middot;
 
-      %a
-        %li
-          Browse
-          .highlight
+          %a{href: funder_map_path(@funder)}
+            %li{ class: ('active' if params[:controller] == 'funders' && params[:action] == 'map') }
+              Map
+              .highlight
+          %span &middot;
+
+          %a{"data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"}
+            %li
+              Browse
+              .highlight
+
+      .uk-width-1-2.uk-text-right
+        %p{style: 'padding: 25px 0;'}
+          = (params[:id] == 'all' ? 'All funding' : @funder.name)
+          in
+          = (params[:id] == 'all' ? '2014' : @funder.current_attribute.year)

@@ -13,29 +13,7 @@ Number::formatMoney = (c, d, t) ->
 
 $(document).ready ->
 
-  $.getJSON('/map-data/' + gon.funderSlug, (data) ->
-    # $('h2').append('<p>loading...</p>')
-  ).done (data) ->
-
-    # mapData = JSON.parse($('#map').attr('data'))
-
-    # mapData = ''
-    # $.ajax
-    #   type: 'GET'
-    #   url: '/map-data/garfield-weston-foundation'
-    #   async: false
-    #   success: (text) ->
-    #     mapData = text
-    #     return
-    #
-    # mapData2 = ''
-    # $.ajax
-    #   type: 'GET'
-    #   url: '/map-data/esmee-fairbairn-foundation'
-    #   async: false
-    #   success: (text) ->
-    #     mapData2 = text
-    #     return
+  $.getJSON('/map-data/' + gon.funderSlug).done (data) ->
 
     getStyle = (feature) ->
       {
@@ -48,17 +26,25 @@ $(document).ready ->
 
     getGrantCount = (feature) ->
       {
-        weight: 2
-        opacity: 0.1
-        color: '#333'
-        fillOpacity: 0.8
         fillColor: getColor(feature.properties.grant_count_hue)
       }
 
-    # get colour depending on segment
+    getRankHue = (feature) ->
+      {
+        fillColor: getColor(feature.properties.rank_hue)
+      }
 
     getColor = (d) ->
-      if d == 7 then '#8c2d04' else if d == 6 then '#cc4c02' else if d == 5 then '#ec7014' else if d == 4 then '#fe9929' else if d == 3 then '#fec44f' else if d == 2 then '#fee391' else if d == 1 then '#fff7bc' else '#ffffe5'
+      if d == 9 then '#b00026'
+      else if d == 8 then '#bd0026'
+      else if d == 7 then '#e31a1c'
+      else if d == 6 then '#fc4e2a'
+      else if d == 5 then '#fd8d3c'
+      else if d == 4 then '#feb24c'
+      else if d == 3 then '#fed976'
+      else if d == 2 then '#ffeda0'
+      else if d == 1 then '#ffffcc'
+      else '#ffffe5'
 
     onEachFeature = (feature, layer) ->
       layer.on
@@ -84,8 +70,10 @@ $(document).ready ->
       return
 
     mouseout = (e) ->
-      # refactor
-      mapLayer.resetStyle e.target
+      e.target.setStyle
+        weight: 2
+        opacity: 0.1
+        fillOpacity: 0.8
       closeTooltip = window.setTimeout((->
         map.closePopup()
         return
@@ -95,54 +83,24 @@ $(document).ready ->
     zoomToFeature = (e) ->
       map.fitBounds e.target.getBounds()
       layer = e.target
+      rank = ''
+      rank = '<li>Indices rank <strong>' + layer.feature.properties.rank + '</strong> in 2015.</li><li><strong>' + layer.feature.properties.rank_proportion + '%</strong> of residents living in highly deprived areas in 2015.</li>' if layer.feature.properties.rank
+
       content = '<div><strong>' + layer.feature.properties.name + '</strong>' +
         '<ul><li><strong>£' + (layer.feature.properties.amount_awarded).formatMoney(0) + '</strong> in <strong>' +
         layer.feature.properties.grant_count + '</strong> grant(s).</li>' +
-        '<li>Average grant of <strong>£' + layer.feature.properties.grant_average + '</strong>.</li></ul>'
+        '<li>Average grant of <strong>£' + layer.feature.properties.grant_average + '</strong>.</li>' + rank + '</ul><a href="/funding/' + gon.funderSlug + '/' + layer.feature.properties.slug + '">More info</a>'
       info.innerHTML = content
       return
-
-    getLegendHTML = ->
-      grades = [0, 1, 2, 3, 4, 5, 6, 7]
-      labels = []
-      from = undefined
-      to = undefined
-      i = 0
-      while i < grades.length
-        from = grades[i]
-        to = grades[i + 1]
-        labels.push('<li><span class="swatch" style="background:' + getColor(from + 1) + '"></span> ' + from + (if to then '&ndash;' + to else '+')) + '</li>'
-        i++
-      '<span>No. of grants given</span><ul>' + labels.join('') + '</ul>'
 
     L.mapbox.accessToken = 'pk.eyJ1IjoiYmVlaGl2ZWdpdmluZyIsImEiOiJjaWZma3IyM3cwMGp6dGprbnZ1ZnVubTY1In0.sAccvZGdUQt3fHhWhrpGfw'
     map = L.mapbox.map('map', 'mapbox.light').addControl(L.mapbox.geocoderControl('mapbox.places')).setView([54.515, -4.296], 6)
     popup = new (L.Popup)(autoPan: false)
 
-    # mapLayer = L.geoJson(mapData,
-    #   style: getStyle
-    #   onEachFeature: onEachFeature).addTo(map)
-    closeTooltip = undefined
-
-    # $('#esmee').on 'click', (e) ->
-    #   mapLayer = L.geoJson(mapData2,
-    #     style: getStyle
-    #     onEachFeature: onEachFeature).addTo(map)
-
     mapLayer = L.geoJson(data,
       style: getStyle
       onEachFeature: onEachFeature).addTo(map)
-
-    # $('#count').on 'click', (e) ->
-    #   $.getJSON('/map-data/esmee-fairbairn-foundation', (data) ->
-    #     console.log 'loading...'
-    #     return
-    #   ).done( (data) ->
-    #     mapLayer = L.geoJson(data,
-    #       style: getStyle
-    #       onEachFeature: onEachFeature).addTo(map)
-    #     return
-    #   )
+    closeTooltip = undefined
 
     $('#all').on 'click', (e) ->
       mapLayer.setStyle getStyle
@@ -150,40 +108,13 @@ $(document).ready ->
     $('#count').on 'click', (e) ->
       mapLayer.setStyle getGrantCount
 
-    # map.legendControl.addLegend getLegendHTML()
-
-    # markerLayer = L.mapbox.featureLayer().addTo(map)
-
-    # markers = new (L.MarkerClusterGroup)
-
-    # geojson = JSON.parse($('#geojson').attr('data'))
-
-    # markers.addLayer(L.geoJson(geojson));
-    # map.addLayer(markers)
-
-    # markerLayer.setGeoJSON geojson
-    # markerLayer.on 'mouseover', (e) ->
-    #   e.layer.openPopup()
-    #   return
-    # markerLayer.on 'mouseout', (e) ->
-    #   e.layer.closePopup()
-    #   return
+    $('#rank').on 'click', (e) ->
+      mapLayer.setStyle getRankHue
 
     info = document.getElementById('info')
-    # myLayer = L.mapbox.featureLayer().addTo(map)
-    # myLayer.setGeoJSON(geojson)
     empty = ->
       info.innerHTML = '<div><strong>Click a region for more details</strong></div>'
       return
-
-    # myLayer.on 'click', (e) ->
-    #   e.layer.closePopup()
-    #   feature = e.layer.feature
-    #   content = '<div><strong>' + feature.properties.title + '</strong>' + '<p>Seeking: £' + feature.properties.seeking + '</p><p><a>More details</a></p></div>'
-    #   info.innerHTML = content
-    #   return
-    map.on 'move', empty
     empty()
 
-#   return
-# )
+    # map.on 'move', empty

@@ -1,3 +1,5 @@
+= content_for :title, (params[:id] == 'all' ? "Map of all funding in 2014" : "Map of #{@funder.name} in #{@funder.current_attribute.year}")
+
 %script{:src => "https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js"}
 %link{:href => "https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css", :rel => "stylesheet"}
 
@@ -8,45 +10,43 @@
 = javascript_include_tag 'map'
 
 :css
-  .info {
+  #map-buttons {
     position: absolute;
     top: 10px;
-    right: 10px;
+    right: 75px;
+    z-index: 999;
+  }
+  .info {
+    position: absolute;
+    top: 50px;
+    right: 75px;
     z-index: 999;
   }
   .info div {
     background: #fafafa;
     padding: 10px;
+    border: 1px solid #ccc;
     border-radius: 3px;
     width: 200px;
-    height: 100px;
+    height: 100%;
   }
 
 = render partial: 'funders/funding/subnav'
 
-.uk-container.uk-container-center.uk-margin-large
-
-  = render partial: 'funders/prototype'
-
-  %h2 Map
-  %h4
-    A map of
-    = @funder.name.pluralize
-    funding distribution in
-    = @funder.current_attribute.year
-    by UK Local Autority Districts.
-
-    %a#all amount_awarded_hue
-    %a#count grant_count_hue
-
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
-    - if @funder.districts.any?
+.full-height.map.uk-animation-fade
+  .full-height-content
+    - if params[:id] == 'all' || @funder.districts.any?
 
       #map
-        Map loading...
+        #map-buttons{"data-uk-button-radio" => ""}
+          %button.uk-button.uk-button-small.uk-button-primary.uk-active#all{"data-uk-tooltip" => "{pos:'top'}", :title => "Colour map by the amount of funding awarded."} Amount given
+          %button.uk-button.uk-button-small.uk-button-primary#count{"data-uk-tooltip" => "{pos:'top'}", :title => "Colour map by the number of grants awarded."} No. of grants
+          %button.uk-button.uk-button-small.uk-button-primary#rank{"data-uk-tooltip" => "{pos:'top'}", :title => "Colour map by the amount of highly deprived residents."} IMD rank
         #info.info
-        #variables.info
-      #geojson{data: @geojson}
+        .cta{style: 'margin: 10%;'}
+          %strong Map loading...
+          .uk-progress.uk-progress-striped.uk-active
+            .uk-progress-bar{:style => "width: 100%;"}
     - else
       .cta.red
         %strong Sorry, missing information.

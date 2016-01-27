@@ -79,18 +79,15 @@ $(document).ready ->
       hideHover: 'auto'
       gridTextSize: 10
 
-# refactor?
-FundersIndex = ((w, d) ->
-  triggerFundersToggle = ->
-    $('#toggle_funders').on 'click', ->
-      $('#search_results').removeClass 'uk-hidden'
-      $(this).bind 'ajax:complete', ->
-        $('#suitable_funders').addClass 'uk-hidden'
-        $(this).prop('disabled', true).removeAttr('data-disable-with')
-        $(this).addClass 'uk-hidden'
+FundersHelper = ((w, d) ->
 
-  return { triggerFundersToggle: triggerFundersToggle }
+  toggleSharedRecipients = ->
+    $('.more-shared-recipients').on 'click', ->
+      $('tr').removeClass 'uk-hidden'
+      $('.more-shared-recipients').addClass 'uk-hidden'
+
+  return { toggleSharedRecipients: toggleSharedRecipients }
 )(window, document)
 
 $(document).ready ->
-  FundersIndex.triggerFundersToggle()
+  FundersHelper.toggleSharedRecipients()

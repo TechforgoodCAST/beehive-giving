@@ -1,0 +1,218 @@
+= content_for :title, "Funding overview for #{@funder.name} in #{@funder.current_attribute.year}"
+
+= stylesheet_link_tag 'overrides/morris_overrides'
+= javascript_include_tag 'raphael'
+= javascript_include_tag 'morris'
+= javascript_include_tag '//www.google.com/jsapi', 'chartkick'
+
+-# uikit modal fix
+:javascript
+  $('html').css('height', 'auto');
+
+= render partial: 'funders/funding/subnav'
+
+.uk-container.uk-container-center.uk-margin-large.uk-margin-large-top.uk-animation-fade
+
+  -# = @funder.current_attribute.shared_recipient_ids
+  -# %ol
+  -#   - Recipient.where(id: @funder.current_attribute.shared_recipient_ids['sport-england']).each do |r|
+  -#     %li= r.recent_grants(2014).map(&:funder_id)
+
+  -# %ol
+  -#   - @funder.current_attribute.shared_recipient_ids.each do |k, v|
+  -#     - if v.count > 0
+  -#       %li
+  -#         = "#{k} | #{v.count} recipients shared"
+  -#         | from me
+  -#         = Recipient.joins(:grants).where(id: @funder.current_attribute.shared_recipient_ids[k]).where('grants.funder_id = ?', @funder.id).sum(:amount_awarded)
+  -#         | from them
+  -#         = Recipient.joins(:grants).where(id: @funder.current_attribute.shared_recipient_ids[k]).where('grants.funder_id = ?', Funder.find_by_slug(k).id).sum(:amount_awarded)
+  -#         |
+  -#         = Recipient.where(id: @funder.current_attribute.shared_recipient_ids[k]).map(&:name)
+
+  = render partial: 'funders/prototype'
+
+  .uk-grid
+    .uk-width-medium-1-3
+      .card{"data-uk-sticky" => "{top:120, media: 767}"}
+        %a{href: funder_overview_path(@funder), alt: @funder.name}
+          .thumbnail
+            .funder{class: @funder.slug}
+
+        %ul.uk-nav.uk-nav-side.details{"data-uk-scrollspy-nav" => "{closest:'li', smoothscroll:true}"}
+          %li.uk-active
+            %a{:href => "#summary"} Summary
+          %li
+            %a{:href => "#how-was-funding-distributed"} How was funding distributed?
+          %li
+            %a{:href => "#shared-recipients"} Shared recipients
+          %li
+            %a{:href => "#most-funded-organisations"} Most funded organisations
+
+    .uk-width-medium-2-3
+      %section#summary.offset
+        %h3.uk-margin-top
+          Summary
+          %span.year.muted
+            in
+            = @funder.current_attribute.year
+
+        = render partial: 'funders/funding/insights', locals: {funder: @funder}
+
+        %div.uk-margin-top.shadow{style: 'border: 1px solid #ddd; border-radius: 3px; padding: 10px; color: #333; font-size: 14px; background: white;'}
+          %h4.uk-text-bold Coming soon
+          %ul.insights.uk-margin-bottom-remove.uk-text-left
+            %li
+              %strong 7
+              of the organisations you funded in
+              = @funder.current_attribute.year
+              are currently seeking funding.
+              %a More info
+
+        %hr.thick
+
+      %section#how-was-funding-distributed.offset
+        %h3.uk-margin-top
+          How was funding distributed?
+          %span.year.muted
+            in
+            = @funder.current_attribute.year
+
+        %p
+          - if @funder.current_attribute.application_count
+            Recieved
+            %span.uk-text-bold= number_with_delimiter(@funder.current_attribute.application_count)
+            applications and awarded
+            = succeed '.' do
+              %span.uk-text-bold= number_with_delimiter(@funder.current_attribute.grant_count)
+            grants
+          - else
+            Awarded
+            %span.uk-text-bold= number_with_delimiter(@funder.current_attribute.grant_count)
+            grants.
+          - if @funder.current_attribute.application_count
+            That's a
+            %span.uk-text-bold= percentage(@funder.current_attribute.grant_count, @funder.current_attribute.application_count)
+            success rate.
+
+        #funding_frequency_distribution.chart{ data: {data: funding_frequency_distribution(@funder, @funder.current_attribute.year).to_json} }
+        %hr.thick
+
+      - if @funder.current_attribute.approval_months_by_count
+        %section#when-was-funding-awarded.offset
+          %h3.uk-margin-top
+            When was funding awarded?
+            %span.year.muted
+              in
+              = @funder.current_attribute.year
+
+          %p
+            Awarded funding in
+            = succeed '.' do
+              %strong= raw(@funder.current_attribute.approval_months_by_count)
+
+          #funding_by_month.chart{ data: {data: funding_by_month(@funder).to_json} }
+          -# #amount_by_month.chart{ data: {data: amount_by_month(@funder).to_json} }
+
+        %hr.thick
+
+      %section#shared-recipients.offset
+        %h3.uk-margin-top
+          Shared recipients
+          %span.year.muted
+            in
+            = @funder.current_attribute.year
+
+        %p
+          = @funder.name
+          funded
+          %strong= @funder.current_attribute.shared_recipient_ids.values.flatten.uniq.count
+          of the same organisations as
+          %strong= @funder.current_attribute.shared_recipient_ids.keys.count
+          other funders.
+
+        .uk-overflow-container
+          %table.uk-table.uk-table-hover.uk-table-striped
+            %thead
+              %tr
+                %th #
+                %th Funder
+                %th No. of shared recipients
+                %th % of funded organisations
+            %tbody.shared_recipients
+              - @funder.current_attribute.shared_recipient_ids.each_with_index do |(k, v), i|
+                %tr{class: ('uk-hidden' if i > 2), "data-uk-modal" => "{target: '##{k}-modal'}"}
+                  %td= i+1
+                  %td= Funder.find(k).name
+                  %td= v.count
+                  %td= number_to_percentage((v.count.to_f / @funder.current_attribute.no_of_recipients_funded.to_f)*100, precision: 1)
+
+          .uk-text-center
+            %a.uk-button.uk-button-primary.uk-button-small.more-shared-recipients Show more
+
+      %hr.thick
+
+      %section#most-funded-organisations.offset
+        %h3.uk-margin-top
+          Most funded organisations
+          %span.year.muted
+            in
+            = @funder.current_attribute.year
+
+        %p
+          %strong= @funder.multiple_funding_from_funder.count
+          organisations were funded more than once by
+          = succeed '.' do
+            = @funder.name
+
+        .uk-overflow-container
+          %table.uk-table.uk-table-striped
+            %thead
+              %tr
+                %th No. of times funded
+                %th Number of organisations
+                %th % of funded organisations
+            %tbody
+              - @funder.no_of_grants_per_recipient.each do |k, v|
+                %tr
+                  %td= k
+                  %td= v
+                  %td= number_to_percentage((v.to_f / @funder.current_attribute.no_of_recipients_funded.to_f)*100, precision: 1)
+
+        %div.uk-margin-top.shadow{style: 'border: 1px solid #ddd; border-radius: 3px; padding: 10px; color: #333; font-size: 14px; background: white;'}
+          %h4.uk-text-bold Coming soon
+          %ul.insights.uk-margin-bottom-remove.uk-text-left
+            %li
+              Most organisations were funded
+              %strong 1
+              time in
+              = succeed '.' do
+                = @funder.current_attribute.year
+            %li
+              Organisations with
+              %strong 0-3
+              employees made up
+              %strong 49%
+              of those funded.
+            %li
+              %strong 78%
+              of funded organisations had an income less than
+              = succeed '.' do
+                %strong £300,000
+            %li
+              Organisations funded
+              %strong more than once
+              had
+              %strong NUM
+              income.
+            %li
+              Organisations funded
+              %strong more than once
+              had
+              %strong 2 times more
+              employees than average.
+
+      %hr.thick
+
+- @funder.current_attribute.shared_recipient_ids.each do |k, v|
+  = render partial: 'funders/funding/shared_recipients', locals: {k: k}

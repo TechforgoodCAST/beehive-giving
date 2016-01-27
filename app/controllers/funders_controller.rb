@@ -31,8 +31,12 @@ class FundersController < ApplicationController
     render 'funders/recipients/recent'
   end
 
+  def overview
+    render 'funders/funding/overview'
+  end
+
   def map
-    gon.funderSlug = @funder.slug
+    params[:id] == 'all' ? gon.funderSlug = 'all' : gon.funderSlug = @funder.slug
 
     # feat = []
     # Recipient.geocoded.each do |r|
@@ -45,18 +49,33 @@ class FundersController < ApplicationController
 
   def map_data
     respond_to do |format|
-      # refactor check if map data updated?
-      if @funder.current_attribute.map_data.present?
-        format.json { render json: @funder.current_attribute.map_data }
+      if params[:id] == 'all'
+        # @map_all_data = Rails.cache.clear("map_all_data")
+        @map_all_data = Rails.cache.fetch("map_all_data") do
+          Funder.first.get_map_all_data
+        end
+        format.json { render json: @map_all_data }
       else
-        @funder.save_map_data
-        format.json { render json: @funder.get_map_data }
+        # refactor check if map data updated?
+        if @funder.current_attribute.map_data.present?
+          format.json { render json: @funder.current_attribute.map_data }
+        else
+          @funder.save_map_data
+          format.json { render json: @funder.get_map_data }
+        end
       end
     end
   end
 
   def district
-    @district = District.find_by_district(params[:district])
+    @funder = Funder.find_by_slug(params[:id]) # refactor
+    @district = District.find_by_slug(params[:district])
+
+    # @top_funders_for_district = '?'
+
+    @amount_awarded = @funder.districts_by_year.group(:district).sum(:amount_awarded)[@district.district]
+    @grant_count = @funder.districts_by_year.group(:district).count[@district.district]
+
 
     render 'districts/show'
   end

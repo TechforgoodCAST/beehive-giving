@@ -20,6 +20,7 @@ class FunderAttribute < ActiveRecord::Base
   has_and_belongs_to_many :beneficiaries
 
   serialize :map_data
+  serialize :shared_recipient_ids
 
   validates :funder, :year, :countries, :funding_stream, :description, presence: true
   validates :soft_restrictions, presence: true
@@ -36,8 +37,10 @@ class FunderAttribute < ActiveRecord::Base
     if self.funder && self.funder.grants.count > 0
       if self.funding_stream == 'All'
         self.grant_count = funder.grants.where('approved_on < ? AND approved_on >= ?', "#{self.year + 1}-01-01", "#{self.year}-01-01").count
+        self.no_of_recipients_funded = funder.recent_grants.pluck(:recipient_id).uniq.count
       else
         self.grant_count = funder.grants.where('approved_on < ? AND approved_on >= ?', "#{self.year  + 1}-01-01", "#{self.year}-01-01").where('funding_stream = ?', self.funding_stream).count
+        self.no_of_recipients_funded = funder.recent_grants.where('funding_stream = ?', self.funding_stream).pluck(:recipient_id).uniq.count
       end
     end
   end
@@ -223,12 +226,17 @@ class FunderAttribute < ActiveRecord::Base
     )
   end
 
+  def set_shared_recipient_ids
+    self.update_column(:shared_recipient_ids, self.funder.shared_recipient_ids)
+  end
+
   def set_insights
     self.set_approval_months_by_count
     self.set_countries_by_count
     self.set_regions_by_count
     self.set_funding_streams_by_count
     self.set_funding_streams_by_giving
+    self.set_shared_recipient_ids
   end
 
 end
