@@ -8,4 +8,6 @@ class PagesController < ApplicationController
     redirect_to "/welcome#tell-me-more"
   end
 
+  def faq; end
+
 end

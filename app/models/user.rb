@@ -24,10 +24,10 @@ class User < ActiveRecord::Base
             message: 'please enter a valid email'}, on: :create
   validates :user_email, uniqueness: true, on: :create
 
-  validates :password, presence: true, length: {:within => 6..25}, on: :create
+  validates :password, presence: true, length: {:within => 6..25}, on: [:create, :update]
   validates :password,
             format: {with: /\A(?=.*\d)(?=.*[a-zA-Z]).{6,25}\z/,
-            message: 'must include 6 characters with 1 number'}, on: :create
+            message: 'must include 6 characters with 1 number'}, on: [:create, :update]
 
   validate  :no_organisation_declared
 
@@ -50,7 +50,7 @@ class User < ActiveRecord::Base
   def send_password_reset
     generate_token(:password_reset_token)
     self.password_reset_sent_at = Time.zone.now
-    save!
+    save(validate: false)
     UserMailer.password_reset(self).deliver
   end
 
