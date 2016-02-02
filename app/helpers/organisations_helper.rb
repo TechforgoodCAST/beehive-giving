@@ -2,7 +2,7 @@ module OrganisationsHelper
 
   def funding_by_month(funder)
     data = []
-    grants = funder.recent_grants.group_by_month(:approved_on, format: '%b').count
+    grants = funder.recent_grants(funder.current_attribute.year).group_by_month(:approved_on, format: '%b').count
     %w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec].each do |month|
       data << {
         month: month,

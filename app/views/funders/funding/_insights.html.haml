@@ -17,28 +17,28 @@
       That's a
       .highlight= percentage(funder.current_attribute.grant_count, funder.current_attribute.application_count)
       success rate.
-    %a.action{href: funder_overview_path(funder, anchor: 'how-was-funding-distributed')} More info
+    %a.action.blue{href: funder_overview_path(funder, anchor: 'how-was-funding-distributed')} More info
 
   - if funder.current_attribute.approval_months_by_count
     %li
       Awarded funding in
       = succeed '.' do
         %strong= raw(funder.current_attribute.approval_months_by_count)
-      %a.action{href: funder_overview_path(funder, anchor: 'when-was-funding-awarded')} More info
+      %a.action.blue{href: funder_overview_path(funder, anchor: 'when-was-funding-awarded')} More info
 
   - if funder.current_attribute.countries_by_count
     %li
       The most funded countries were
       = succeed '.' do
         %strong= raw(funder.current_attribute.countries_by_count)
-      -# %a.action{href: funder_overview_path(funder, anchor: 'where-was-funding-awarded')} More info
+      -# %a.action.blue{href: funder_overview_path(funder, anchor: 'where-was-funding-awarded')} More info
 
   - if funder.current_attribute.regions_by_count
     %li
       The most funded regions were
       = succeed '.' do
         %strong= raw(funder.current_attribute.regions_by_count)
-      %a.action{href: funder_map_path(funder)} More info
+      %a.action.blue{href: funder_map_path(funder)} More info
 
   - if funder.current_attribute.funding_streams_by_count
     %li

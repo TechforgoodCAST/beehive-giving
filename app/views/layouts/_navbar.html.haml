@@ -5,14 +5,14 @@
         - unless content_for?(:public) || content_for?(:signup)
           %ul.nav
             - if current_user.role == 'Funder'
-              %a{href: funder_recent_path(@funder)}
-                %li.first{ class: ('active' if params[:proposals_navbar]) }
-                  Proposals
-                  .highlight
-                  .caret.funder
               %a{href: funder_overview_path(@funder)}
                 %li.first{ class: ('active' if params[:funding_navbar]) }
                   Funding
+                  .highlight
+                  .caret.funder
+              %a{href: funder_recent_path(@funder)}
+                %li.first{ class: ('active' if params[:proposals_navbar]) }
+                  Proposals
                   .highlight
                   .caret.funder
             - else

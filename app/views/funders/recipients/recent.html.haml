@@ -1,3 +1,5 @@
+= content_for :title, "Recent funding proposals for #{@funder.name}"
+
 %script{:src => "https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js"}
 %link{:href => "https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css", :rel => "stylesheet"}
 
@@ -11,42 +13,91 @@
   %h4 You are seeing recent proposals that Beehive thinks would be suitable for you.
 
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+
+    .uk-width-1-1.uk-margin-bottom.uk-text-right
+
+      %strong Sort:
+
+      %a.blue{"data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"}
+        %strong Date
+        %i.uk-icon.uk-icon-caret-down
+
+      %span &middot;
+
+      %a.blue{"data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"}
+        Amount
+
+      |
+
+      %strong Filter:
+
+      %a.blue{"data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"}
+        Location
+
     - @recipients.each do |recipient|
       - if recipient.proposals.count > 0
+        %hr.thick
         .uk-grid
           .uk-width-medium-1-3
             .card
               .details
                 .content
-                  %h3= link_to recipient.name, '#', class: 'blue', style: 'font-size: 18px;'
+                  %h3= link_to recipient.name, '#', class: 'blue', style: 'font-size: 18px;', "data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"
                 %hr
+
+              - if recipient.charity_number.present? || recipient.company_number.present?
+                .details
+                  .content.center
+                    .uk-grid.uk-grid-small
+                      .uk-width-1-2
+                        - if recipient.charity_number.present?
+                          %strong Charity No.
+                          = recipient.charity_number
+                      .uk-width-1-2
+                        - if recipient.company_number.present?
+                          %strong Company No.
+                          = recipient.company_number
+                  %hr
+
               .details
-                .content.center
-                  .uk-grid.uk-grid-small
-                    .uk-width-1-2
-                      - if recipient.charity_number.present?
-                        %strong Charity No.
-                        = recipient.charity_number
-                    .uk-width-1-2
-                      - if recipient.company_number.present?
-                        %strong Company No.
-                        = recipient.company_number
-                %hr
-                  -# = funder_card_cta_button_copy(@recipient, funder)
-              .details
-                .content.center
+                .content
                   %i.uk-icon.uk-icon-map-marker
                   = Country.find_by_alpha2(recipient.country).name
                   - if recipient.website.present?
-                    %i.uk-icon.uk-icon-globe
-                    = recipient.website
+                    .uk-float-right
+                      %a.blue{href: recipient.website, target: '_blank', "data-uk-tooltip" => "{pos:'top'}", :title => "Opens in a new window."}
+                        %i.uk-icon.uk-icon-globe
+                        Website
+                %hr
+
+              .details
+                .content.center
+                  .uk-button.uk-button-large.uk-button-primary{"data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"}
+                    Connect
+                    -# %i.uk-icon.uk-icon-cube
+                  .uk-button.uk-button-large.uk-button-primary.invert{"data-uk-tooltip" => "{pos:'top'}", :title => "Download summary (coming soon)"}
+                    %i.uk-icon.uk-icon-download
+                  .uk-button.uk-button-large.uk-button-primary.invert{"data-uk-tooltip" => "{pos:'top'}", :title => "Print summary (coming soon)"}
+                    %i.uk-icon.uk-icon-print
 
           .uk-width-medium-2-3
             %h3.uk-margin-top
-              = link_to recipient.proposals.first.title, '#', class: 'blue'
+              = link_to recipient.proposals.first.title, '#', class: 'blue', "data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"
+              %span.year.muted
+                = time_ago_in_words(recipient.proposals.first.created_at)
+                ago
             -# %p= some_scope.tagline
             %p= recipient.proposals.first.tagline
+
+            = render partial: 'funders/recipients/data_table', locals: {recipient: recipient}
+
             %ul.insights
+              %li{ class: (recipient.eligible?(@funder) ? 'eligible' : 'ineligible')}
+                - if recipient.eligible?(@funder)
+                  %a.badge.no-click Eligible
+                  Eligible for
+                  = succeed '.' do
+                    %strong= recipient.enquiries.where(funder_id: @funder.id).first.funding_stream
               %li
                 Also suggested to
                 = succeed '.' do
@@ -61,9 +112,14 @@
               -#   %strong= recipient.enquiries.first.approach_funder_count
               -#   time(s).
               %li
-                Seeking funds to affect
-                = succeed '.' do
-                  %strong= recipient.proposals.first.beneficiaries.pluck(:label).to_sentence
+                - if recipient.proposals.first.beneficiaries.where(category: 'People').pluck(:label).count > 0
+                  Seeking funds to affect people
+                  = succeed '.' do
+                    %strong= recipient.proposals.first.beneficiaries.where(category: 'People').pluck(:label).to_sentence.downcase
+                - if recipient.proposals.first.beneficiaries.where(category: 'Other').pluck(:label).count > 0
+                  As well as
+                  = succeed '.' do
+                    %strong= recipient.proposals.first.beneficiaries.where(category: 'Other').pluck(:label).to_sentence.downcase
               %li
                 Seeking funds to affect
                 = succeed '.' do
@@ -94,4 +150,13 @@
                 %strong duration
                 sought.
 
-            -# = render partial: 'recipients/funders/insights', locals: {funder: funder}
+            %div.uk-margin-top.shadow{style: 'border: 1px solid #ddd; border-radius: 3px; padding: 10px; color: #333; font-size: 14px; background: white;', "data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"}
+              %h4.uk-text-bold Coming soon
+              %ul.insights
+                %li Previously funded by
+
+            %div.uk-margin-top.shadow{style: 'border: 1px solid #ddd; border-radius: 3px; padding: 10px; color: #333; font-size: 14px; background: white;', "data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"}
+              %h4.uk-text-bold Improve your recommendations and help Beehive learn
+              Was this proposal suitable?
+              .uk-button.uk-button-small.uk-button-primary Yes
+              .uk-button.uk-button-small.uk-button-primary No

@@ -24,8 +24,6 @@ class FundersController < ApplicationController
   end
 
   def recent
-    @funder = Funder.find_by_name('Esmee Fairbairn Foundation') # refactor
-
     @recipients = @funder.recommended_recipients
 
     render 'funders/recipients/recent'

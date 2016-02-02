@@ -47,7 +47,7 @@ Rails.application.routes.draw do
   match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
   # match '/(:id)/edit', to: 'recipients#edit', via: :get, as: 'recipient_edit'
   # match '/(:id)/edit', to: 'recipients#edit', via: :patch
-  match '/(:id)/proposals/recent', to: 'funders#recent', via: :get, as: 'funder_recent'
+  match '/proposals/(:id)/recent', to: 'funders#recent', via: :get, as: 'funder_recent'
 
   match '/funding/(:id)/overview', to: 'funders#overview', via: :get, as: 'funder_overview'
   # match '/funding/(:id)/overview/(:year)', to: 'funders#overview', via: :get, as: 'funder_overview'

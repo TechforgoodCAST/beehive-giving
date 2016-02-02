@@ -1,4 +1,4 @@
-= content_for :title, 'All funders'
+= content_for :title, "#{@district.district} in #{@funder.current_attribute.year}"
 
 = render partial: 'funders/funding/subnav'
 
@@ -10,6 +10,63 @@
       = @funder.current_attribute.year
 
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+
+    %section#most-active-funders.offset
+      %h3.uk-margin-top
+        Most active funders
+        %span.year.muted
+          in
+          = @funder.current_attribute.year
+
+      %table.uk-table.uk-table-striped
+        %thead
+          %tr
+            %th Funder
+            %th No. of grants
+            %th Total amount awarded
+            %th % of funded organisations
+        %tfoot
+          %tr.uk-hidden
+            %td Total
+            %td= @district.ids_by_grant_count('funder', @funder.current_attribute.year).values.sum
+            %td= number_to_currency(Grant.joins(:districts).recent(@funder.current_attribute.year).where('districts.district': @district.district).sum(:amount_awarded), unit: '£', precision: 0)
+        %tbody
+          - @district.ids_by_grant_count('funder', @funder.current_attribute.year).each_with_index do |(k, v), i|
+            %tr{class: ('uk-hidden' if i > 4)}
+              %td= Funder.find(k).name
+              %td= v
+              %td= number_to_currency(Funder.find(k).recent_grants(@funder.current_attribute.year).joins(:districts).where('districts.district': @district.district).sum(:amount_awarded), unit: '£', precision: 0)
+              %td
+                = number_to_percentage((v.to_f / Funder.find(k).recent_grants(@funder.current_attribute.year).count.to_f)*100, precision: 1)
+
+      .uk-text-center
+        %a.uk-button.uk-button-primary.uk-button-small.show-more Show more
+
+    %hr.thick
+
+    %section#summary.offset
+      %h3.uk-margin-top
+        Most funded organisations
+        %span.year.muted
+          in
+          = @funder.current_attribute.year
+
+      %table.uk-table.uk-table-striped
+        %thead
+          %tr
+            %th Funder
+            %th Total amount awarded
+            %th No. of grants
+        %tbody
+          - @district.ids_by_grant_sum('recipient', @funder.current_attribute.year).each_with_index do |(k, v), i|
+            %tr{class: ('uk-hidden' if i > 4)}
+              %td= Recipient.find(k).name
+              %td= number_to_currency(v, unit: '£', precision: 0)
+              %td= @district.ids_by_grant_count('recipient', @funder.current_attribute.year)[k]
+
+      .uk-text-center
+        %a.uk-button.uk-button-primary.uk-button-small.show-more Show more
+
     %ul
       %li Top funded organisation
       %li Top funded beneficiaries
@@ -19,30 +76,3 @@
       %li Funding amount
       %li Funding duration
       %li By cause/theme - from funding streams
-
-    .uk-overflow-container
-      %table.uk-table.uk-table-striped
-        %caption Table caption
-        %thead
-          %tr
-            %th Funder
-            %th Amount awarded
-            %th No. of grants
-        %tfoot
-          %tr
-            %td
-            %td £407,000
-            %td 63
-        %tbody
-          %tr
-            %td= @funder.name
-            %td= number_to_currency(@amount_awarded, unit: '£', precision: 0)
-            %td= number_with_delimiter(@grant_count)
-          %tr
-            %td Another funder
-            %td £00,000
-            %td 55
-          %tr
-            %td Some funder
-            %td £0,000
-            %td 4

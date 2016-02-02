@@ -1,6 +1,6 @@
 .uk-modal{id: "#{k}-modal"}
-  .uk-modal-dialog
-    %a.uk-modal-close.uk-close
+  .uk-modal-dialog.uk-modal-dialog-medium
+    .uk-modal-close.uk-close
     .uk-modal-header
       %h3.uk-text-bold
         Recipients shared with
@@ -12,12 +12,13 @@
     - Recipient.where(id: @funder.current_attribute.shared_recipient_ids[k]).each do |r|
       %hr.thick
       %h4.uk-text-bold.uk-margin-remove
-        %a{"data-uk-tooltip" => "{pos:'right'}", :title => "Recipients profiles coming soon."}= r.name
+        %a.blue{"data-uk-tooltip" => "{pos:'right'}", :title => "Recipients profiles coming soon."}= r.name
       %table.uk-table.uk-table-striped.uk-margin-top-remove
         %thead
           %tr
             %th Funder
             %th Amount awarded
+            %th Funding stream
         %tfoot
           %tr
             %td Total
@@ -27,5 +28,6 @@
             %tr
               %td= Funder.find(g.funder_id).name
               %td= number_to_currency(g.amount_awarded, unit: '£', precision: 0)
+              %td= g.funding_stream
               %td
-                %a{"data-uk-tooltip" => "{pos:'left'}", :title => "Coming soon"} More info
+                %a.blue{"data-uk-tooltip" => "{pos:'left'}", :title => "Coming soon"} More info

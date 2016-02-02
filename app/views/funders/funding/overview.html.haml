@@ -9,6 +9,31 @@
 :javascript
   $('html').css('height', 'auto');
 
+.uk-modal#welcome
+  .uk-modal-dialog
+    .uk-modal-header
+      %h3.uk-text-bold Welcome to Beehive
+      %p This is a very early prototype we've built for funders to gain insights from their data, and we'd love your feedback. Get started by selecting one of the options below.
+      %p
+        %strong What would you like to do?
+      .uk-width-1-1{style: 'padding-left: 15px;'}
+        %ul.uk-list.uk-margin-remove
+          %li{style: 'margin-bottom: 10px;'}
+            %a.blue.uk-modal-close#overview{onclick: "ga('send', 'event', 'Funders', 'click overview in welcome', 'Overview');"} Compare previous funding
+          %li{style: 'margin-bottom: 10px;'}
+            %a.blue#map{href: funder_map_path(@funder), onclick: "ga('send', 'event', 'Funders', 'click map in welcome', 'Map');"} Explore a map of previous funding
+          %li{style: 'margin-bottom: 10px;'}
+            %a.blue#connect{href: funder_recent_path(@funder), onclick: "ga('send', 'event', 'Funders', 'click connect in welcome', 'Connect');"} Connect with organisations seeking funding
+          %li
+            %a.blue#region{href: funders_district_path(@funder, @funder.districts.group(:slug).count.sort_by {|k, v| v}.reverse.to_h.keys.first), onclick: "ga('send', 'event', 'Funders', 'click region in welcome', 'Region');"} Understand the previous funding in a specific region
+
+- unless cookies['_beehiveFunderWelcomeClose'].present?
+  :javascript
+    var modal = $.UIkit.modal("#welcome");
+    modal.options.bgclose = false;
+    modal.options.keyboard = false;
+    modal.show();
+
 = render partial: 'funders/funding/subnav'
 
 .uk-container.uk-container-center.uk-margin-large.uk-margin-large-top.uk-animation-fade
@@ -67,7 +92,7 @@
               of the organisations you funded in
               = @funder.current_attribute.year
               are currently seeking funding.
-              %a More info
+              %a.blue More info
 
         %hr.thick
 
@@ -148,7 +173,7 @@
                   %td= number_to_percentage((v.count.to_f / @funder.current_attribute.no_of_recipients_funded.to_f)*100, precision: 1)
 
           .uk-text-center
-            %a.uk-button.uk-button-primary.uk-button-small.more-shared-recipients Show more
+            %a.uk-button.uk-button-primary.uk-button-small.show-more Show more
 
       %hr.thick
 
@@ -203,8 +228,8 @@
               Organisations funded
               %strong more than once
               had
-              %strong NUM
-              income.
+              %strong £454,000 more
+              income than average.
             %li
               Organisations funded
               %strong more than once

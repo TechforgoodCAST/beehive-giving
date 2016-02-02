@@ -131,12 +131,12 @@ class Funder < Organisation
   end
 
   def multiple_funding_from_funder
-    self.recent_grants.group(:recipient_id).having("count(*) > 1").count
+    self.recent_grants(self.current_attribute.year).group(:recipient_id).having("count(*) > 1").count
   end
 
   def no_of_grants_per_recipient
     result = {}
-    self.recent_grants.group(:recipient_id).count.each do |k, v|
+    self.recent_grants(self.current_attribute.year).group(:recipient_id).count.each do |k, v|
       result[v] = result[v] || 0
       result[v] += 1
     end
@@ -144,14 +144,16 @@ class Funder < Organisation
   end
 
   def recommended_recipients
-    Recipient.joins(:recommendations)
+    Recipient.joins(:recommendations, :proposals, :enquiries)
       .where("recommendations.funder_id = ? AND
               recommendations.total_recommendation >= ? AND
-              recommendations.eligibility = ?",
+              recommendations.eligibility = ? AND
+              enquiries.funder_id = ?",
               self.id,
               Recipient::RECOMMENDATION_THRESHOLD,
-              'Eligible')
-      .order("recommendations.eligibility ASC, recommendations.total_recommendation DESC, name ASC")
+              'Eligible',
+              self.id)
+      .order("proposals.created_at DESC, recommendations.eligibility ASC, recommendations.total_recommendation DESC, name ASC")
   end
 
 end

@@ -81,13 +81,35 @@ $(document).ready ->
 
 FundersHelper = ((w, d) ->
 
-  toggleSharedRecipients = ->
-    $('.more-shared-recipients').on 'click', ->
-      $('tr').removeClass 'uk-hidden'
-      $('.more-shared-recipients').addClass 'uk-hidden'
+  hideWelcomeMessage = ->
+    _cookieName = '_beehiveFunderWelcomeClose'
+    $(document).on 'click', 'li a.blue', ->
+      d.cookie = _cookieName + "=true";
 
-  return { toggleSharedRecipients: toggleSharedRecipients }
+  showMoreRows = ->
+    $('.show-more').on 'click', ->
+      $(this).parent().prev().find('tr').removeClass('uk-hidden')
+      $(this).addClass 'uk-hidden'
+
+  switchFunders = ->
+    $('#funder-select').on 'change', ->
+      slug = $(this).val()
+      if slug
+        window.location = '/funding/' + slug + '/overview'
+
+  toggleWelcomeOptions = ->
+    $('#understand').on 'click', ->
+      $('#understand-options').toggle()
+      $('#connect').toggle()
+
+  return {
+    hideWelcomeMessage: hideWelcomeMessage,
+    showMoreRows: showMoreRows,
+    switchFunders: switchFunders
+  }
 )(window, document)
 
 $(document).ready ->
-  FundersHelper.toggleSharedRecipients()
+  FundersHelper.hideWelcomeMessage()
+  FundersHelper.showMoreRows()
+  FundersHelper.switchFunders()

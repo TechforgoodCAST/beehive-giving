@@ -23,6 +23,15 @@
 
       .uk-width-1-2.uk-text-right
         %p{style: 'padding: 25px 0;'}
-          = (params[:id] == 'all' ? 'All funding' : @funder.name)
+          %span.uk-form-select{"data-uk-form-select" => "{target:'span'}"}
+            %a.blue
+              %span
+              %i.uk-icon.uk-icon-caret-down
+            %select#funder-select
+              %option{value: 'all'} All funding
+              - Funder.order(:name).where(active_on_beehive: true).each do |f|
+                %option{value: "#{f.slug}", selected: ('selected' if params[:id] == f.slug)}= f.name
           in
-          = (params[:id] == 'all' ? '2014' : @funder.current_attribute.year)
+          %a.blue{"data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"}
+            = (params[:id] == 'all' ? '2014' : @funder.current_attribute.year)
+            %i.uk-icon.uk-icon-caret-down
