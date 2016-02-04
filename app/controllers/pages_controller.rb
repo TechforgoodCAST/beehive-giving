@@ -8,6 +8,8 @@ class PagesController < ApplicationController
     redirect_to "/welcome#tell-me-more"
   end
 
-  def faq; end
+  def faq
+    @recipient = current_user.organisation if logged_in?
+  end
 
 end
