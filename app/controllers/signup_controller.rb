@@ -1,6 +1,7 @@
 class SignupController < ApplicationController
 
   before_filter :ensure_logged_in, except: [:user, :create_user]
+  before_filter :get_districts, only: [:user, :create_user]
 
   def user
     if logged_in?
@@ -143,6 +144,11 @@ class SignupController < ApplicationController
   end
 
   private
+
+  def get_districts
+    @districts_count = Funder.active.joins(:countries).group('countries.id').uniq.count
+    @districts = Country.order(priority: :desc).order(:name).find(@districts_count.keys)
+  end
 
   def user_params
     params.require(:user).permit(:first_name, :last_name, :job_role,
