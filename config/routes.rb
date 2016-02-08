@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   match '/about', to: 'pages#about', via: :get, as: 'about'
   match '/privacy', to: 'pages#privacy', via: :get, as: 'privacy'
   match '/terms', to: 'pages#terms', via: :get, as: 'terms'
+  match '/faq', to: 'pages#faq', via: :get, as: 'faq'
 
   # Sign up
   match '/welcome', to: 'signup#user', via: :get, as: 'signup_user'

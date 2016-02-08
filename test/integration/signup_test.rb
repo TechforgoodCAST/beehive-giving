@@ -4,7 +4,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
 
   test 'landing page should have sign up form' do
     visit signup_user_path
-    assert page.has_content?('Sign up')
+    assert page.has_content?('Create your Beehive account')
     assert page.has_css?('form#new_user')
   end
 
@@ -42,7 +42,7 @@ class SignUpTest < ActionDispatch::IntegrationTest
     end
     click_button('Create an account')
     assert_equal signup_user_path, current_path
-    assert page.has_content?("can't be blank")
+    assert page.has_content?("Can't be blank")
   end
 
   test 'charity has to provide charity number that triggers scrape' do

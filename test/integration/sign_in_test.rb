@@ -38,12 +38,6 @@ class SignInTest < ActionDispatch::IntegrationTest
     assert page.has_content?('Oops!')
   end
 
-  test 'Clicking forgot password redirects to password reset' do
-    visit sign_in_path
-    click_link('Forgot Password?')
-    assert_equal new_password_reset_path, current_path
-  end
-
   test 'If signed in redirected to root path' do
     create_cookie(:auth_token, @user.auth_token)
     visit sign_in_path

@@ -1,23 +1,29 @@
-:javascript
-  mixpanel.track("View Edit Password Resets Page");
+= content_for :title, 'Set a new password'
 
-.uk-container.uk-container-center
-  .uk-grid.uk-margin-large.uk-margin-large-top
-    .uk-width-1-1.uk-margin
-      %h2 Reset your password
-      .uk-form.uk-form-stacked.uk-panel.uk-panel-box
-        %fieldset
-        = simple_form_for @user, url: password_reset_path(params[:id]) do |f|
-          .uk-grid
-            .uk-width-medium-1-2.uk-margin-bottom
-              .uk-form-controls{style: 'position: relative;'}
-                = f.input :password, label: false, error: false, type: 'password', input_html: { class: 'uk-width-1-1' }
-                .uk-form-password-toggle
-                  = f.error :password, class: 'uk-text-small uk-text-warning'
-            .uk-width-medium-1-2.uk-margin-bottom
-              .uk-form-controls{style: 'position: relative;'}
-                = f.input :password_confirmation, label: false, error: false, type: 'email', input_html: { class: 'uk-width-1-1' }
-                .uk-form-password-toggle
-                  = f.error :password_confirmation, class: 'uk-text-small uk-text-warning'
-            .uk-width-medium-1-1
-              = f.submit 'Change password', class: 'uk-button uk-button-primary uk-width-1-1', style: 'color: #fff;'
+:javascript
+  mixpanel.track('View Edit Password Resets Page');
+
+.uk-container.uk-container-center.uk-margin-large-top.uk-margin-large-bottom.uk-animation-fade
+  .uk-width-1-2.uk-container-center
+    %h2 Set a new password
+    %h4
+      %strong Someone (presumably you) has requested to reset your password.
+    %p Enter your new password into the 'New password' field below, repeat this for the 'Password confirmation' field and click 'Change password' to set your new password.
+    %p
+      More detailed instructions can be found
+      = succeed ',' do
+        = link_to 'here', faq_path(anchor: 'set-password'), class: 'faq-link'
+      or you can get in touch with
+      = link_to 'support', 'mailto:support@beehivegiving.org'
+      who'll be happy to help.
+    %hr.thick
+    .form.uk-form.uk-form-stacked.uk-panel.uk-panel-box.shadow
+      = simple_form_for @user, url: password_reset_path(params[:id]) do |f|
+        .uk-width-1-1.uk-margin-bottom
+          = f.input :password, placeholder: 'New password', type: 'password', input_html: { class: 'uk-width-1-1 large', "data-uk-tooltip": "{pos:'top', animation:true}", title: "At least 6 characters with 1 number." }
+          = f.error :password, class: 'error-message'
+        .uk-width-1-1.uk-margin-bottom
+          = f.input :password_confirmation, placeholder: 'Confirm new password', type: 'password', input_html: { class: 'uk-width-1-1 large' }
+          = f.error :password_confirmation, class: 'error-message'
+        .uk-width-1-1
+          = f.button :button, 'Change password', class: 'uk-button uk-button-primary uk-button-large uk-width-1-1', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> Changing...</span>"}

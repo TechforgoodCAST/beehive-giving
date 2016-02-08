@@ -112,12 +112,21 @@ SignupHelpers = ((w, d) ->
       $('#new_recipient').submit()
       return
 
+  checkFunders = ->
+    selector = '#country'
+    $(selector).change (e) ->
+      $('#count').html($('#preview').attr('data-' + $(selector).val()))
+      $('#result').removeClass('fade-out').addClass('fade-in')
+      $('#preview').addClass('fade-out')
+      return
+
   return {
     toggleNoOrg: toggleNoOrg,
     bindSignUpOrgNumbers: bindSignUpOrgNumbers,
     hideWelcomeMessage: hideWelcomeMessage,
     bindOrgFieldToggle: bindOrgFieldToggle,
-    jsSubmitForm: jsSubmitForm
+    jsSubmitForm: jsSubmitForm,
+    checkFunders: checkFunders
   }
 )(window, document)
 
@@ -127,6 +136,7 @@ $(document).ready ->
   SignupHelpers.hideWelcomeMessage()
   SignupHelpers.bindOrgFieldToggle()
   SignupHelpers.jsSubmitForm()
+  SignupHelpers.checkFunders()
 
 $(document).ajaxComplete ->
   SignupHelpers.toggleNoOrg()
@@ -134,3 +144,4 @@ $(document).ajaxComplete ->
   SignupHelpers.hideWelcomeMessage()
   SignupHelpers.bindOrgFieldToggle()
   SignupHelpers.jsSubmitForm()
+  SignupHelpers.checkFunders()

@@ -341,4 +341,69 @@ namespace :import do
       District.find_by_district(row['district']).update_attributes(imd_data)
     end
   end
+
+  desc "Set regions and sub-countries for UK"
+  # usage: be rake import:set_regions
+  task :set_regions => :environment do
+    # London
+    ["City of London", "Westminster", "Kensington and Chelsea", "Hammersmith and Fulham", "Wandsworth", "Lambeth", "Southwark", "Tower Hamlets", "Hackney", "Islington", "Camden", "Brent", "Ealing", "Hounslow", "Richmond upon Thames", "Kingston upon Thames", "Merton", "Sutton", "Croydon", "Bromley", "Lewisham", "Greenwich", "Bexley", "Havering", "Barking and Dagenham", "Redbridge", "Newham", "Waltham Forest", "Haringey", "Enfield", "Barnet", "Harrow", "Hillingdon"].each do |i|
+      District.find_by_district(i).update_attributes(region: 'London', sub_country: 'England')
+    end
+
+    # West Midlands
+    ["Herefordshire, County of", "Shropshire", "Telford and Wrekin", "East Staffordshire", "Cannock Chase", "Lichfield", "Newcastle-under-Lyme", "South Staffordshire", "Stafford", "Staffordshire Moorlands", "Tamworth", "Stoke-on-Trent", "North Warwickshire", "Nuneaton and Bedworth", "Rugby", "Stratford-on-Avon", "Warwick", "Birmingham", "Coventry", "Dudley", "Sandwell", "Solihull", "Walsall", "Bromsgrove", "Malvern Hills", "Redditch", "Worcester", "Wychavon", "Wyre Forest"].each do |i|
+      District.find_by_district(i).update_attributes(region: 'West Midlands', sub_country: 'England')
+    end
+
+    # East Midlands
+    ["High Peak", "Derbyshire Dales", "South Derbyshire", "Erewash", "Amber Valley", "North East Derbyshire", "Chesterfield", "Bolsover", "Derby", "Rushcliffe", "Broxtowe", "Ashfield", "Gedling", "Newark and Sherwood", "Mansfield", "Bassetlaw", "Nottingham", "Lincoln", "North Kesteven", "South Kesteven", "South Holland", "Boston", "East Lindsey", "West Lindsey", "Charnwood", "Melton", "Harborough", "Oadby and Wigston", "Blaby", "Hinckley and Bosworth", "North West Leicestershire", "Leicester", "Rutland", "South Northamptonshire", "Northampton", "Daventry", "Wellingborough", "Kettering", "Corby", "East Northamptonshire"].each do |i|
+      District.find_by_district(i).update_attributes(region: 'East Midlands', sub_country: 'England')
+    end
+
+    # Yorkshire and The Humber
+    ["Sheffield", "Rotherham", "Barnsley", "Doncaster", "Wakefield", "Kirklees", "Calderdale", "Bradford", "Leeds", "Selby", "Harrogate", "Craven", "Richmondshire", "Hambleton", "Ryedale", "Scarborough", "York", "East Riding of Yorkshire", "Kingston upon Hull, City of", "North Lincolnshire", "North East Lincolnshire"].each do |i|
+      District.find_by_district(i).update_attributes(region: 'Yorkshire and The Humber', sub_country: 'England')
+    end
+
+    # East of England
+    ["Thurrock", "Southend-on-Sea", "Harlow", "Epping Forest", "Brentwood", "Basildon", "Castle Point", "Rochford", "Maldon", "Chelmsford", "Uttlesford", "Braintree", "Colchester", "Tendring", "Three Rivers", "Watford", "Hertsmere", "Welwyn Hatfield", "Broxbourne", "East Hertfordshire", "Stevenage", "North Hertfordshire", "St Albans", "Dacorum", "Luton", "Bedford", "Central Bedfordshire", "Cambridge", "South Cambridgeshire", "Huntingdonshire", "Fenland", "East Cambridgeshire", "Peterborough", "Norwich", "South Norfolk", "Great Yarmouth", "Broadland", "North Norfolk", "Breckland", "King's Lynn and West Norfolk", "Ipswich", "Suffolk Coastal", "Waveney", "Mid Suffolk", "Babergh", "St Edmundsbury", "Forest Heath"].each do |i|
+      District.find_by_district(i).update_attributes(region: 'East of England', sub_country: 'England')
+    end
+
+    # North West
+    ["Cheshire East", "Cheshire West and Chester", "Halton", "Warrington", "Barrow-in-Furness", "South Lakeland", "Copeland", "Allerdale", "Eden", "Carlisle", "Bolton", "Bury", "Manchester", "Oldham", "Rochdale", "Salford", "Stockport", "Tameside", "Trafford", "Wigan", "West Lancashire", "Chorley", "South Ribble", "Fylde", "Preston", "Wyre", "Lancaster", "Ribble Valley", "Pendle", "Burnley", "Rossendale", "Hyndburn", "Blackpool", "Blackburn with Darwen", "Knowsley", "Liverpool", "St. Helens", "Sefton", "Wirral"].each do |i|
+      District.find_by_district(i).update_attributes(region: 'North West', sub_country: 'England')
+    end
+
+    # North East
+    ["Northumberland", "Newcastle upon Tyne", "Gateshead", "North Tyneside", "South Tyneside", "Sunderland", "County Durham", "Darlington", "Hartlepool", "Stockton-on-Tees", "Redcar and Cleveland", "Middlesbrough"].each do |i|
+      District.find_by_district(i).update_attributes(region: 'North East', sub_country: 'England')
+    end
+
+    # South West
+    ["Bath and North East Somerset", "North Somerset", "South Somerset", "Taunton Deane", "West Somerset", "Sedgemoor", "Mendip", "South Gloucestershire", "Gloucester", "Tewkesbury", "Cheltenham", "Cotswold", "Stroud", "Forest of Dean", "Swindon", "Wiltshire", "Weymouth and Portland", "East Dorset", "North Dorset", "West Dorset", "Purbeck", "Christchurch", "Poole", "Bournemouth", "Exeter", "East Devon", "Mid Devon", "North Devon", "West Devon", "Torridge", "South Hams", "Teignbridge", "Torbay", "Plymouth", "Isles of Scilly", "Cornwall"].each do |i|
+      District.find_by_district(i).update_attributes(region: 'South West', sub_country: 'England')
+    end
+
+    # South East
+    ["West Berkshire", "Reading", "Wokingham", "Bracknell Forest", "Windsor and Maidenhead", "Slough", "South Bucks", "Chiltern", "Wycombe", "Aylesbury Vale", "Milton Keynes", "Hastings", "Rother", "Wealden", "Eastbourne", "Lewes", "Brighton and Hove", "Fareham", "Gosport", "Winchester", "Havant", "East Hampshire", "Hart", "Rushmoor", "Basingstoke and Deane", "Test Valley", "Eastleigh", "New Forest", "Southampton", "Portsmouth", "Isle of Wight", "Dartford", "Gravesham", "Sevenoaks", "Tonbridge and Malling", "Tunbridge Wells", "Maidstone", "Swale", "Ashford", "Shepway", "Canterbury", "Dover", "Thanet", "Medway", "Oxford", "Cherwell", "South Oxfordshire", "West Oxfordshire", "Vale of White Horse", "Spelthorne", "Runnymede", "Surrey Heath", "Woking", "Elmbridge", "Guildford", "Waverley", "Mole Valley", "Epsom and Ewell", "Reigate and Banstead", "Tandridge", "Worthing", "Arun", "Chichester", "Horsham", "Crawley", "Mid Sussex", "Adur"].each do |i|
+      District.find_by_district(i).update_attributes(region: 'South East', sub_country: 'England')
+    end
+
+    # Scotland
+    ["Aberdeen City", "Aberdeenshire", "Angus", "Argyll and Bute", "Clackmannanshire", "Dumfries and Galloway", "Dundee City", "East Ayrshire", "East Dunbartonshire", "East Lothian", "East Renfrewshire", "Edinburgh, City of", "Falkirk", "Fife", "Glasgow City", "Highland", "Inverclyde", "Midlothian", "Moray", "North Ayrshire", "North Lanarkshire", "Perth and Kinross", "Renfrewshire", "Scottish Borders", "South Ayrshire", "South Lanarkshire", "Stirling", "West Dunbartonshire", "West Lothian", "Eilean Siar", "Orkney Islands", "Shetland Islands"].each do |i|
+      District.find_by_district(i).update_attributes(sub_country: 'Scotland')
+    end
+
+    # Wales
+    ["Blaenau Gwent", "Bridgend", "Caerphilly", "Cardiff", "Carmarthenshire", "Ceredigion", "Conwy", "Denbighshire", "Flintshire", "Gwynedd", "Isle of Anglesey", "Merthyr Tydfil", "Monmouthshire", "Neath Port Talbot", "Newport", "Pembrokeshire", "Powys", "Rhondda Cynon Taf", "Swansea", "Torfaen", "The Vale of Glamorgan", "Wrexham"].each do |i|
+      District.find_by_district(i).update_attributes(sub_country: 'Wales')
+    end
+
+    # Northern Ireland
+    ["Antrim", "Ards", "Armagh", "Ballymena", "Ballymoney", "Banbridge", "Belfast", "Carrickfergus", "Castlereagh", "Coleraine", "Cookstown", "Craigavon", "Derry", "Down", "Dungannon", "Fermanagh", "Larne", "Limavady", "Lisburn", "Magherafelt", "Moyle", "Newry and Mourne", "Newtownabbey", "North Down", "Omagh", "Strabane"].each do |i|
+      District.find_by_district(i).update_attributes(sub_country: 'Northern Ireland')
+    end
+  end
+
 end

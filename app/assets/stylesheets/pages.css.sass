@@ -1,10 +1,75 @@
 @import variables
 
+/* Utility
+ ========================================================================== */
+
+.mobile-margin
+  @media screen and (max-width: 768px)
+    margin-bottom: 60px
+    &:after
+      content: ''
+      position: absolute
+      margin: 0 auto
+      width: calc(100% - 60px)
+      border-bottom: solid 1px $white
+      margin-top: 30px
+
+#result
+  margin: 20px auto
+#count
+  font-size: 30px
+  font-weight: bold
+  color: $white
+  display: inline-block
+.arrow
+  display: inline-block
+  width: 40px
+  height: 36px
+  background-image: image-url('arrow.svg')
+  @media screen and (max-width: 480px)
+    display: none
+
 /* Header
  ========================================================================== */
 
 .stat
-  font-size: 20px
+  display: inline-block
+  font-size: 25px
+  &.divider
+    position: relative
+    top: -15px
+  .funders, .streams, .grants
+    font-size: 10px
+  .funders
+    width: 80px
+    &:after
+      content: "funders"
+      position: relative
+      left: 47px
+      top: -14px
+  .streams
+    width: 110px
+    &:before
+      content: "funding"
+      position: relative
+      left: 47px
+      top: -25px
+    &:after
+      content: "programmes"
+      position: relative
+      left: 11px
+      top: -14px
+  .grants
+    &:before
+      content: "thousand grants"
+      position: relative
+      left: 47px
+      top: -25px
+    &:after
+      content: "to explore"
+      position: relative
+      left: -31px
+      top: -14px
 
 /* Illustrations
  ========================================================================== */
@@ -49,6 +114,29 @@
     width: 185px
     height: 200px
     background-position: left -600px
+
+/* Banner
+ ========================================================================== */
+
+.banner
+  background: $blue-active
+  padding: 30px 0
+
+/* Features
+ ========================================================================== */
+
+#smart, #personal, #quick, #free
+  margin: 20px 0
+
+.feature
+  background: image-url('features-sprite.png') no-repeat
+  width: 244px
+  height: 224px
+  margin: 0 auto
+  &.personal
+    background-position: center -224px
+  &.quick
+    background-position: center -448px
 
 /* Roadmap
  ========================================================================== */

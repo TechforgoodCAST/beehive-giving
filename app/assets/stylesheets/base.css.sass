@@ -14,6 +14,23 @@
   font-size: 16px
   line-height: 14px
 
+.italics
+  font-style: italic !important
+
+h1.hero, h2.hero, h3.hero
+  font-weight: normal
+  margin-bottom: 20px
+h1.hero
+  font-family: 'Noto Sans', Helvetica, sans-serif !important
+  font-size: 37px
+h2.hero
+  font-size: 34px
+h3.hero
+  font-size: 20px
+  line-height: 25px
+h4.hero
+  font-size: 18px
+
 /* Layout
  ========================================================================== */
 
@@ -42,6 +59,9 @@ hr
     border-width: 3px !important
     margin: 30px auto
 
+.background
+  background: $off-white
+
 .background-image
   +background-image
 
@@ -55,6 +75,11 @@ hr
   color: $yellow-base !important
   &.background
     background: $yellow-base !important
+
+.primary
+  color: $cta-base !important
+.primary:hover
+  color: $cta-hover !important
 
 .blue
   color: $blue-base !important
