@@ -17,14 +17,21 @@
       That's a
       .highlight= percentage(funder.current_attribute.grant_count, funder.current_attribute.application_count)
       success rate.
-    %a.action.blue{href: funder_overview_path(funder, anchor: 'how-was-funding-distributed')} More info
+    %a.action.blue{href: funder_overview_path(funder, anchor: 'how-was-funding-distributed'), "data-uk-smooth-scroll" => ""} More info
 
   - if funder.current_attribute.approval_months_by_count
     %li
       Awarded funding in
       = succeed '.' do
         %strong= raw(funder.current_attribute.approval_months_by_count)
-      %a.action.blue{href: funder_overview_path(funder, anchor: 'when-was-funding-awarded')} More info
+      %a.action.blue{href: funder_overview_path(funder, anchor: 'when-was-funding-awarded'), "data-uk-smooth-scroll" => ""} More info
+
+  - if funder.recent_grants(@funder.current_attribute.year).where('days_from_start_to_end IS NOT NULL').group(:days_from_start_to_end).count.count > 0
+    %li
+      Most funding lasted for
+      = succeed '.' do
+        %strong= funding_duration(@funder).sort_by { |hsh| hsh[:grant_count] }.last[:years]
+      %a.action.blue{href: funder_overview_path(funder, anchor: 'how-long-did-funding-last'), "data-uk-smooth-scroll" => ""} More info
 
   - if funder.current_attribute.countries_by_count
     %li
@@ -45,3 +52,13 @@
       Awarded the most grants in
       = succeed '.' do
         %strong=raw(funder.current_attribute.funding_streams_by_count)
+
+  %li
+    Funded
+    %strong= @funder.current_attribute.shared_recipient_ids.values.flatten.uniq.count
+    of the same organisations as
+    %strong= @funder.current_attribute.shared_recipient_ids.keys.count
+    other funders. Thats
+    %strong= number_to_percentage((@funder.current_attribute.shared_recipient_ids.values.flatten.uniq.count.to_f / @funder.current_attribute.no_of_recipients_funded.to_f)*100, precision: 0)
+    of organisations funded.
+    %a.action.blue{href: funder_overview_path(funder, anchor: 'shared-recipients'), "data-uk-smooth-scroll" => ""} More info

@@ -2,26 +2,39 @@ module OrganisationsHelper
 
   def funding_by_month(funder)
     data = []
-    grants = funder.recent_grants(funder.current_attribute.year).group_by_month(:approved_on, format: '%b').count
+    year = funder.current_attribute.year
+    grant_count = funder.recent_grants(year).group_by_month(:approved_on, format: '%b').count
+    amount_awarded = funder.recent_grants(year).group_by_month(:approved_on, format: '%b').sum(:amount_awarded)
     %w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec].each do |month|
       data << {
         month: month,
-        grant_count: grants[month]
+        grant_count: grant_count[month],
+        amount_awarded: amount_awarded[month]
       }
     end
     data
   end
 
-  # refactor dry
-  def amount_by_month(funder)
+  def funding_duration(funder, year=funder.current_attribute.year)
+    # refactor
+    query = funder.recent_grants(year).where('days_from_start_to_end IS NOT NULL').group(:days_from_start_to_end).count.sort_by {|k, v| k}.to_h
+    amount_awarded = funder.recent_grants(year).where('days_from_start_to_end IS NOT NULL').group(:days_from_start_to_end).sum(:amount_awarded).sort_by {|k, v| k}.to_h
+    max = query.keys.last
+    count = (max / 365) + 1
+    segments = Array.new(count) { |i| "#{i} to #{i+1} years" }
     data = []
-    grants = funder.recent_grants.group_by_month(:approved_on, format: '%b').calculate(:sum, :amount_awarded)
-    %w[Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec].each do |month|
-      data << {
-        month: month,
-        amount_awarded: grants[month]
-      }
+    segments.each_with_index do |segment, i|
+      hash = {}
+      query.each do |k, v|
+        if k > ((i+1)*365)-365 && k <= (i+1)*365
+          hash[:years] = segment
+          hash[:grant_count] = (hash[:grant_count] || 0) + v
+          hash[:amount_awarded] = (hash[:amount_awarded] || 0) + amount_awarded[k]
+        end
+      end
+      data << hash
     end
+    data.delete_if { |hash| hash == {} }
     data
   end
 
@@ -36,7 +49,7 @@ module OrganisationsHelper
     data
   end
 
-  def funding_frequency_distribution(funder, year)
+  def funding_frequency_distribution(funder, year=funder.current_attribute.year)
     # if @funding_stream == 'All'
     grants = funder.grants
       .where("approved_on <= ? AND approved_on >= ?", "#{year}-12-31", "#{year}-01-01")

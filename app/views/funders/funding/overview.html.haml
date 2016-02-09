@@ -38,23 +38,6 @@
 
 .uk-container.uk-container-center.uk-margin-large.uk-margin-large-top.uk-animation-fade
 
-  -# = @funder.current_attribute.shared_recipient_ids
-  -# %ol
-  -#   - Recipient.where(id: @funder.current_attribute.shared_recipient_ids['sport-england']).each do |r|
-  -#     %li= r.recent_grants(2014).map(&:funder_id)
-
-  -# %ol
-  -#   - @funder.current_attribute.shared_recipient_ids.each do |k, v|
-  -#     - if v.count > 0
-  -#       %li
-  -#         = "#{k} | #{v.count} recipients shared"
-  -#         | from me
-  -#         = Recipient.joins(:grants).where(id: @funder.current_attribute.shared_recipient_ids[k]).where('grants.funder_id = ?', @funder.id).sum(:amount_awarded)
-  -#         | from them
-  -#         = Recipient.joins(:grants).where(id: @funder.current_attribute.shared_recipient_ids[k]).where('grants.funder_id = ?', Funder.find_by_slug(k).id).sum(:amount_awarded)
-  -#         |
-  -#         = Recipient.where(id: @funder.current_attribute.shared_recipient_ids[k]).map(&:name)
-
   = render partial: 'funders/prototype'
 
   .uk-grid
@@ -69,6 +52,9 @@
             %a{:href => "#summary"} Summary
           %li
             %a{:href => "#how-was-funding-distributed"} How was funding distributed?
+          - if @funder.recent_grants(@funder.current_attribute.year).where('days_from_start_to_end IS NOT NULL').group(:days_from_start_to_end).count.count > 0
+            %li
+              %a{:href => "#how-long-did-funding-last"} How long did funding last?
           %li
             %a{:href => "#shared-recipients"} Shared recipients
           %li
@@ -103,6 +89,15 @@
             in
             = @funder.current_attribute.year
 
+          -# .data-toggle-buttons.uk-form-select{"data-uk-form-select" => "{target:'span'}", :style => "font-size: 14px;"}
+          -#   %a.blue
+          -#     %span
+          -#     %i.uk-icon.uk-icon-caret-down
+          -#   %select#toggle-funding-stream
+          -#     %option{value: 'all'} All funding
+          -#     - @funder.recent_grants(@funder.current_attribute.year).pluck(:funding_stream).uniq.each do |funding_stream|
+          -#       %option{value: "#{funding_stream}"}= funding_stream
+
         %p
           - if @funder.current_attribute.application_count
             Recieved
@@ -121,6 +116,17 @@
             success rate.
 
         #funding_frequency_distribution.chart{ data: {data: funding_frequency_distribution(@funder, @funder.current_attribute.year).to_json} }
+
+        %div.uk-margin-top.shadow{style: 'border: 1px solid #ddd; border-radius: 3px; padding: 10px; color: #333; font-size: 14px; background: white;'}
+          %h4.uk-text-bold Coming soon
+          %ul.insights.uk-margin-bottom-remove.uk-text-left
+            %li
+              The most common grant amount was between
+              %strong £100k - £125k
+              accounting for
+              %strong 25%
+              of all funding awarded.
+
         %hr.thick
 
       - if @funder.current_attribute.approval_months_by_count
@@ -131,15 +137,47 @@
               in
               = @funder.current_attribute.year
 
+            .data-toggle-buttons{"data-uk-button-radio" => ""}
+              %button.uk-button.uk-button-small.uk-button-primary.uk-active#count No. of grants
+              %button.uk-button.uk-button-small.uk-button-primary#amount Amount in £
+
           %p
             Awarded funding in
             = succeed '.' do
               %strong= raw(@funder.current_attribute.approval_months_by_count)
 
           #funding_by_month.chart{ data: {data: funding_by_month(@funder).to_json} }
-          -# #amount_by_month.chart{ data: {data: amount_by_month(@funder).to_json} }
+
+          %div.uk-margin-top.shadow{style: 'border: 1px solid #ddd; border-radius: 3px; padding: 10px; color: #333; font-size: 14px; background: white;'}
+            %h4.uk-text-bold Coming soon
+            %ul.insights.uk-margin-bottom-remove.uk-text-left
+              %li
+                Largest grants were awarded in
+                = succeed '.' do
+                  %strong July
 
         %hr.thick
+
+      - if @funder.recent_grants(@funder.current_attribute.year).where('days_from_start_to_end IS NOT NULL').group(:days_from_start_to_end).count.count > 0
+        %section#how-long-did-funding-last.offset
+          %h3.uk-margin-top
+            How long did funding last?
+            %span.year.muted
+              in
+              = @funder.current_attribute.year
+
+            .data-toggle-buttons{"data-uk-button-radio" => ""}
+              %button.uk-button.uk-button-small.uk-button-primary.uk-active#duration_count No. of grants
+              %button.uk-button.uk-button-small.uk-button-primary#duration_amount Amount in £
+
+          %p
+            Most funding lasted for
+            = succeed '.' do
+              %strong= funding_duration(@funder).sort_by { |hsh| hsh[:grant_count] }.last[:years]
+
+          #funding_duration.chart{ data: {data: funding_duration(@funder).to_json} }
+
+          %hr.thick
 
       %section#shared-recipients.offset
         %h3.uk-margin-top
@@ -154,7 +192,11 @@
           %strong= @funder.current_attribute.shared_recipient_ids.values.flatten.uniq.count
           of the same organisations as
           %strong= @funder.current_attribute.shared_recipient_ids.keys.count
-          other funders.
+          other funders. Thats
+          %strong= number_to_percentage((@funder.current_attribute.shared_recipient_ids.values.flatten.uniq.count.to_f / @funder.current_attribute.no_of_recipients_funded.to_f)*100, precision: 0)
+          of organisations funded in
+          = succeed '.' do
+            = @funder.current_attribute.year
 
         .uk-overflow-container
           %table.uk-table.uk-table-hover.uk-table-striped
@@ -170,7 +212,7 @@
                   %td= i+1
                   %td= Funder.find(k).name
                   %td= v.count
-                  %td= number_to_percentage((v.count.to_f / @funder.current_attribute.no_of_recipients_funded.to_f)*100, precision: 1)
+                  %td= number_to_percentage((v.count.to_f / Funder.find(k).current_attribute.no_of_recipients_funded.to_f)*100, precision: 1)
 
           .uk-text-center
             %a.uk-button.uk-button-primary.uk-button-small.show-more Show more

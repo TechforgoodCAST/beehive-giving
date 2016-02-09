@@ -91,6 +91,11 @@ class Funder < Organisation
     self.current_attribute.update_column(:map_data, self.get_map_data)
   end
 
+  def update_current_attribute
+    self.current_attribute.update_column(:no_of_recipients_funded, self.recent_grants(self.current_attribute.year).pluck(:recipient_id).uniq.count)
+    self.current_attribute.set_shared_recipient_ids
+  end
+
   def get_hue(amount, max, segments=10)
     segment = max.to_f / segments
     segments.times do |i|
@@ -117,13 +122,10 @@ class Funder < Organisation
 
   def shared_recipient_ids
     recent_grants_recipient_ids = self.recent_grants(self.current_attribute.year).pluck(:recipient_id).uniq
-
     result = {}
     Funder.active.each do |funder|
       unless funder == self
-        result[funder.id] = recent_grants_recipient_ids.find_all do |recipient_id|
-          funder.recent_grants(self.current_attribute.year).pluck(:recipient_id).uniq.include?(recipient_id)
-        end
+        result[funder.id] = recent_grants_recipient_ids & funder.recent_grants(self.current_attribute.year).pluck(:recipient_id).uniq
       end
     end
     result.delete_if { |k, v| v == [] }
@@ -140,7 +142,7 @@ class Funder < Organisation
       result[v] = result[v] || 0
       result[v] += 1
     end
-    result
+    result = result.sort_by {|k, v| k}.to_h
   end
 
   def recommended_recipients

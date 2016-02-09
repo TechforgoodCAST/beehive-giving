@@ -16,7 +16,7 @@
               .highlight
           %span &middot;
 
-          %a{"data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"}
+          %a{"data-uk-tooltip" => "{pos:'bottom'}", :title => "Coming soon"}
             %li
               Browse
               .highlight
@@ -32,6 +32,6 @@
               - Funder.order(:name).where(active_on_beehive: true).each do |f|
                 %option{value: "#{f.slug}", selected: ('selected' if params[:id] == f.slug)}= f.name
           in
-          %a.blue{"data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"}
+          %a.blue{"data-uk-tooltip" => "{pos:'bottom'}", :title => "Coming soon"}
             = (params[:id] == 'all' ? '2014' : @funder.current_attribute.year)
             %i.uk-icon.uk-icon-caret-down
