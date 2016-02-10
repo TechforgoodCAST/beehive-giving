@@ -146,7 +146,7 @@ class Funder < Organisation
   end
 
   def recommended_recipients
-    Recipient.joins(:recommendations, :proposals, :enquiries)
+    Recipient.includes(:recommendations, :proposals, :enquiries)
       .where("recommendations.funder_id = ? AND
               recommendations.total_recommendation >= ? AND
               recommendations.eligibility = ? AND
@@ -155,7 +155,9 @@ class Funder < Organisation
               Recipient::RECOMMENDATION_THRESHOLD,
               'Eligible',
               self.id)
-      .order("proposals.created_at DESC, recommendations.eligibility ASC, recommendations.total_recommendation DESC, name ASC")
+      .distinct
+      .order("proposals.created_at DESC, recommendations.eligibility ASC, recommendations.total_recommendation DESC")
+      .order(:name)
   end
 
 end

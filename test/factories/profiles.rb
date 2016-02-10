@@ -10,6 +10,7 @@ FactoryGirl.define do
     label 'Other'
     district 'London'
     subdivision 'Other'
+    slug 'london'
   end
 
   factory :beneficiary do

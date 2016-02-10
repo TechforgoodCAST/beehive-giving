@@ -1,10 +1,11 @@
 class FundersController < ApplicationController
 
   before_filter :ensure_logged_in
-  before_filter :ensure_admin, only: [:comparison]
-  before_filter :ensure_funder, only: [:recent, :map, :explore, :eligible, :map_data]
+  before_filter :ensure_admin, only: [:comparison, :explore, :eligible]
+  before_filter :ensure_funder, except: [:show]
   before_filter :ensure_profile_for_current_year, only: [:show]
   before_filter :load_funder, except: [:new, :create]
+  before_filter :check_proposals_ownership, only: :recent
 
   respond_to :html
 
@@ -25,7 +26,6 @@ class FundersController < ApplicationController
 
   def recent
     @recipients = @funder.recommended_recipients
-
     render 'funders/recipients/recent'
   end
 
@@ -35,13 +35,6 @@ class FundersController < ApplicationController
 
   def map
     params[:id] == 'all' ? gon.funderSlug = 'all' : gon.funderSlug = @funder.slug
-
-    # feat = []
-    # Recipient.geocoded.each do |r|
-    #   feat << { type: 'Feature', properties: { title: r.name, seeking: (r.proposals.count > 0 ? r.proposals.first.total_costs : ''), 'marker-color': '#afbc30', 'marker-size': 'medium', 'marker-symbol': 'star' }, geometry: { type: 'Point', coordinates: [r.longitude, r.latitude] } }
-    # end
-    # @geojson = { type: "FeatureCollection", features: feat }.to_json
-
     render 'funders/funding/map'
   end
 
@@ -66,16 +59,17 @@ class FundersController < ApplicationController
   end
 
   def district
-    @funder = Funder.find_by_slug(params[:id]) # refactor
     @district = District.find_by_slug(params[:district])
 
     # @top_funders_for_district = '?'
-
     @amount_awarded = @funder.districts_by_year.group(:district).sum(:amount_awarded)[@district.district]
     @grant_count = @funder.districts_by_year.group(:district).count[@district.district]
 
-
-    render 'districts/show'
+    if current_user.organisation != @funder
+      redirect_to funder_district_path(current_user.organisation, @district.slug)
+    else
+      render 'districts/show'
+    end
   end
 
   def explore

@@ -6,6 +6,7 @@ class FunderNavigationTest < ActionDispatch::IntegrationTest
     @funder = create(:funder)
     create(:funder_attribute, funder: @funder)
     3.times { create(:grant, funder: @funder) }
+    @funder.update_current_attribute
     create_and_auth_user!(role: 'Funder', organisation: @funder)
   end
 
@@ -15,15 +16,15 @@ class FunderNavigationTest < ActionDispatch::IntegrationTest
     assert_equal funder_overview_path(@funder), current_path
   end
 
-  # test 'signing in redirects to recent proposals' do
-  #   visit sign_in_path
-  #   within('#sign-in') do
-  #     fill_in('email', with: @user.user_email)
-  #     fill_in('password', with: @user.password)
-  #   end
-  #   click_button('Sign in')
-  #   assert_equal funder_recent_path, current_path
-  #   assert false
-  # end
+  test 'signing in redirects to funder overview' do
+    expire_cookies
+    visit sign_in_path
+    within('#sign-in') do
+      fill_in('email', with: @user.user_email)
+      fill_in('password', with: @user.password)
+    end
+    click_button('Sign in')
+    assert_equal funder_overview_path(@funder), current_path
+  end
 
 end

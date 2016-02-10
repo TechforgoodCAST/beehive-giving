@@ -89,7 +89,7 @@ $(document).ready ->
       content = '<div><strong>' + layer.feature.properties.name + '</strong>' +
         '<ul><li><strong>£' + (layer.feature.properties.amount_awarded).formatMoney(0) + '</strong> in <strong>' +
         layer.feature.properties.grant_count + '</strong> grant(s).</li>' +
-        '<li>Average grant of <strong>£' + layer.feature.properties.grant_average + '</strong>.</li>' + rank + '</ul><a href="/funding/' + gon.funderSlug + '/' + layer.feature.properties.slug + '">More info</a>'
+        '<li>Average grant of <strong>£' + Math.round(layer.feature.properties.grant_average) + '</strong>.</li>' + rank + '</ul><a href="/funding/' + gon.funderSlug + '/' + layer.feature.properties.slug + '">More info</a>'
       info.innerHTML = content
       return
 

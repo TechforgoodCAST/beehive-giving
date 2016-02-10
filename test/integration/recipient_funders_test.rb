@@ -50,6 +50,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
   test 'cannot visit redacted funder unless subscribed' do
     setup_funders(7)
     create(:feedback, user: @user)
+    @recipient.load_recommendation(@funders.last).update_attribute(:score, 0)
     visit funder_path(@funders.last)
     assert_equal edit_feedback_path(@user.feedbacks.last), current_path
     # refactor unless subscribed

@@ -25,7 +25,7 @@
           %li{style: 'margin-bottom: 10px;'}
             %a.blue#connect{href: funder_recent_path(@funder), onclick: "ga('send', 'event', 'Funders', 'click connect in welcome', 'Connect');"} Connect with organisations seeking funding
           %li
-            %a.blue#region{href: funders_district_path(@funder, @funder.districts.group(:slug).count.sort_by {|k, v| v}.reverse.to_h.keys.first), onclick: "ga('send', 'event', 'Funders', 'click region in welcome', 'Region');"} Understand the previous funding in a specific region
+            %a.blue#region{href: funder_district_path(@funder, @funder.districts.group(:slug).count.sort_by {|k, v| v}.reverse.to_h.keys.first), onclick: "ga('send', 'event', 'Funders', 'click region in welcome', 'Region');"} Understand the previous funding in a specific region
 
 - unless cookies['_beehiveFunderWelcomeClose'].present?
   :javascript

@@ -59,6 +59,22 @@
                           = recipient.company_number
                   %hr
 
+                  .details
+                    .content
+                      - if recipient.charity_name.present?
+                        %dl.uk-description-list-line
+                          %dt Charity status
+                          %dd= recipient.charity_status
+                          %dt Charity accounts
+                          %dd= link_to 'Link', recipient.charity_recent_accounts_link, target: '_blank', class: 'blue'
+                      - if recipient.company_name.present?
+                        %dl.uk-description-list-line.uk-margin-bottom-remove
+                          %dt Company status
+                          %dd= recipient.company_status
+                          %dt Company type
+                          %dd= recipient.company_type
+
+                  %hr
               .details
                 .content
                   %i.uk-icon.uk-icon-map-marker
@@ -86,10 +102,7 @@
               %span.year.muted
                 = time_ago_in_words(recipient.proposals.first.created_at)
                 ago
-            -# %p= some_scope.tagline
             %p= recipient.proposals.first.tagline
-
-            = render partial: 'funders/recipients/data_table', locals: {recipient: recipient}
 
             %ul.insights
               %li{ class: (recipient.eligible?(@funder) ? 'eligible' : 'ineligible')}
@@ -101,7 +114,11 @@
               %li
                 Also suggested to
                 = succeed '.' do
-                  %strong= recipient.recommended_funders.pluck(:name).reject {|i| i == @funder.name}.take(3).to_sentence
+                  -# refactor
+                  - array = []
+                  - recipient.recommended_funders.pluck(:name).reject {|i| i == @funder.name}.take(3).each do |i|
+                    - array << '<a class="blue uk-text-bold" href="' + funder_overview_path(Funder.find_by_name(i).slug) + '">' + Funder.find_by_name(i).name + '</a>'
+                  = raw(array.to_sentence)
               -# %li
               -#   Interested in
               -#   = succeed '.' do
@@ -123,7 +140,12 @@
               %li
                 Seeking funds to affect
                 = succeed '.' do
-                  %strong= recipient.proposals.first.districts.pluck(:district).to_sentence
+                  -# refactor
+                  - array = []
+                  - recipient.proposals.first.districts.pluck(:district).each do |i|
+                    - array << '<a class="blue uk-text-bold" href="' + funder_district_path(@funder, District.find_by_district(i).slug) + '">' + District.find_by_district(i).district + '</a>'
+                  = raw(array.to_sentence)
+
               - if recipient.grants.count > 0
                 %li
                   %strong= recipient.grants.last.funder.name
@@ -153,7 +175,12 @@
             %div.uk-margin-top.shadow{style: 'border: 1px solid #ddd; border-radius: 3px; padding: 10px; color: #333; font-size: 14px; background: white;', "data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"}
               %h4.uk-text-bold Coming soon
               %ul.insights
-                %li Previously funded by
+                %li
+                  Previously funded by
+                  %strong funder
+                  and
+                  = succeed '.' do
+                    %strong funder
 
             %div.uk-margin-top.shadow{style: 'border: 1px solid #ddd; border-radius: 3px; padding: 10px; color: #333; font-size: 14px; background: white;', "data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"}
               %h4.uk-text-bold Improve your recommendations and help Beehive learn

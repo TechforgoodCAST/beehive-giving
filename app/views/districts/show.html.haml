@@ -14,6 +14,59 @@
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
 
     %section#most-active-funders.offset
+      %ul.insights
+        %li
+          %strong Indices year:
+          = @district.indices_year
+        %li
+          %strong Indices rank:
+          = @district.indices_rank
+        %li
+          %strong % of residents living in highly deprived areas:
+          = number_to_percentage(@district.indices_rank_proportion_most_deprived_ten_percent.to_f * 100, precision: 0)
+        %li
+          %strong Indices income rank:
+          = @district.indices_income_rank
+        %li
+          %strong Indices income proportion population in 10% most deprived:
+          = number_to_percentage(@district.indices_income_proportion_most_deprived_ten_percent.to_f * 100, precision: 0)
+        %li
+          %strong Indices employment:
+          = @district.indices_employment_rank
+        %li
+          %strong Indices employment proportion population in 10% most deprived:
+          = number_to_percentage(@district.indices_employment_proportion_most_deprived_ten_percent.to_f * 100, precision: 0)
+        %li
+          %strong Indices education:
+          = @district.indices_education_rank
+        %li
+          %strong Indices education proportion population in 10% most deprived:
+          = number_to_percentage(@district.indices_education_proportion_most_deprived_ten_percent.to_f * 100, precision: 0)
+        %li
+          %strong Indices health:
+          = @district.indices_health_rank
+        %li
+          %strong Indices health proportion population in 10% most deprived:
+          = number_to_percentage(@district.indices_health_proportion_most_deprived_ten_percent.to_f * 100, precision: 0)
+        %li
+          %strong Indices crime:
+          = @district.indices_crime_rank
+        %li
+          %strong Indices crime proportion population in 10% most deprived:
+          = number_to_percentage(@district.indices_crime_proportion_most_deprived_ten_percent.to_f * 100, precision: 0)
+        %li
+          %strong Indices income barriers:
+          = @district.indices_barriers_rank
+        %li
+          %strong Indices barriers proportion population in 10% most deprived:
+          = number_to_percentage(@district.indices_barriers_proportion_most_deprived_ten_percent.to_f * 100, precision: 0)
+        %li
+          %strong Indices living:
+          = @district.indices_living_rank
+        %li
+          %strong Indices living proportion population in 10% most deprived:
+          = number_to_percentage(@district.indices_living_proportion_most_deprived_ten_percent.to_f * 100, precision: 0)
+
       %h3.uk-margin-top
         Most active funders
         %span.year.muted

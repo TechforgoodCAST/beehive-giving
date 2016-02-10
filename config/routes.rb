@@ -58,8 +58,8 @@ Rails.application.routes.draw do
   match '/map-data/(:id)', to: 'funders#map_data', via: :get, as: 'funder_map_data'
   match '/map-data/all', to: 'funders#map_data', via: :get, as: 'funders_map_all'
 
-  match '/funding/(:id)/(:district)', to: 'funders#district', via: :get, as: 'funders_district'
-  # match '/funding/(:id)/(:district)/(:year)', to: 'funders#district', via: :get, as: 'funders_district'
+  match '/funding/(:id)/(:district)', to: 'funders#district', via: :get, as: 'funder_district'
+  # match '/funding/(:id)/(:district)/(:year)', to: 'funders#district', via: :get, as: 'funder_district'
 
   # Eligibilities
   match '/funders/(:id)/eligibility', to: 'recipients#eligibility', via: :get, as: 'recipient_eligibility'

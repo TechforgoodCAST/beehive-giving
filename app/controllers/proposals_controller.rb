@@ -1,6 +1,6 @@
 class ProposalsController < ApplicationController
 
-  before_filter :ensure_logged_in, :load_recipient
+  before_filter :ensure_logged_in, :load_recipient, :prevent_funder_access
   before_filter :load_proposal, only: [:edit, :update]
 
   def new

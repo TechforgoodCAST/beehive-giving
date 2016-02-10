@@ -10,7 +10,7 @@
                   Funding
                   .highlight
                   .caret.funder
-              %a{href: funder_recent_path(@funder)}
+              %a{href: funder_recent_path(current_user.organisation)}
                 %li.first{ class: ('active' if params[:proposals_navbar]) }
                   Proposals
                   .highlight
@@ -39,16 +39,14 @@
                   %a.white
                     %i.uk-icon-cog.uk-icon-small
                     %i.uk-icon-caret-down
-                  .uk-dropdown.uk-dropdown-navbar.uk-dropdown-flip
+                  .uk-dropdown.uk-dropdown-navbar.uk-dropdown-flip{ class: ('funder-dropdown' if current_user.role == 'Funder') }
                     %ul.uk-nav.uk-nav-navbar
-                      %li
-                        %a{:href => recipient_profiles_path(current_user.organisation)} Update profile
                       - if current_user.role == 'User' && @recipient.has_proposal?
                         %li
+                          %a{:href => recipient_profiles_path(current_user.organisation)} Update profile
+                        %li
                           %a{:href => recipient_proposals_path(current_user.organisation)} Funding proposals
-                      -# %li
-                        -# %a{:href => recipient_eligibility_path(current_user.organisation), :"data-no-turbolink" => true} Manage eligibility
-                      %hr
+                        %hr
                       %li
                         %a{href: logout_path, method: :destroy} Sign out
 
@@ -68,11 +66,11 @@
       - if logged_in?
         %ul.uk-nav.uk-nav-offcanvas
           %li.uk-nav-header.uk-margin-top.uk-text-center Menu
-          %li
-            %a{:href => recipient_profiles_path(current_user.organisation)} Update profile
           - if current_user.role == 'User' && @recipient.has_proposal?
             %li
+              %a{:href => recipient_profiles_path(current_user.organisation)} Update profile
+            %li
               %a{:href => recipient_proposals_path(current_user.organisation)} Funding proposals
-          %hr
+            %hr
           %li
             %a{href: logout_path, method: :destroy} Sign out
