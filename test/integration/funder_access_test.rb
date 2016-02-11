@@ -19,8 +19,11 @@ class FunderAccessTest < ActionDispatch::IntegrationTest
   test "funder can only view their own districts" do
     funder2 = create(:funder)
     create(:funder_attribute, funder: funder2)
-    visit funder_district_path(funder2, District.last.slug)
-    assert_equal funder_district_path(@funder, District.last.slug), current_path
+    @funder.current_attribute.update_attribute(:grant_count, 10)
+    district = @funder.grants.last.districts.last
+    district.update_attribute(:slug, 'birmingham')
+    visit funder_district_path(funder2, district.slug)
+    assert_equal funder_district_path(@funder, district.slug), current_path
   end
 
   test "funder cannot visit new profile path" do

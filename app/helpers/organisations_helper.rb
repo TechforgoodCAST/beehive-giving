@@ -1,5 +1,44 @@
 module OrganisationsHelper
 
+  def funding_in_region(district, funder)
+    data = []
+    year = funder.current_attribute.year
+    grant_count = district.ids_by_grant_count('funder', year)
+    amount_awarded = district.ids_by_grant_sum('funder', year)
+    district.district_funder_ids(funder.current_attribute.year).each do |funder_id|
+      data << {
+        funder: Funder.find(funder_id).name,
+        grant_count: grant_count[funder_id],
+        amount_awarded: amount_awarded[funder_id]
+      }
+    end
+    data.sort_by { |hash| hash[:grant_count] }.reverse
+  end
+
+  # refactor
+  def region_difference_amount(district, year=@funder.current_attribute.year)
+    top_district = district.amount_awarded_in_region(year).values.first
+    current_district = district.amount_awarded_in_region(year)[district.district]
+    less = 1 - (current_district.to_f / top_district.to_f)
+    if less > 0
+      raw("#{district.district} received <strong>#{number_to_percentage(less * 100, precision: 0)} less funding</strong> than <a href='#{funder_district_path(@funder, District.find_by_district(district.amount_awarded_in_region(year).keys.first).slug)}' class='blue'>#{district.amount_awarded_in_region(year).keys.first}</a> which")
+    else
+      district.amount_awarded_in_region(year).keys.first
+    end
+  end
+
+  # refactor
+  def region_difference_count(district, year=@funder.current_attribute.year)
+    top_district = district.grant_count_in_region(year).values.first
+    current_district = district.grant_count_in_region(year)[district.district]
+    less = 1 - (current_district.to_f / top_district.to_f)
+    if less > 0
+      raw("#{district.district} received <strong>#{number_to_percentage(less * 100, precision: 0)} fewer grants</strong> than <a href='#{funder_district_path(@funder, District.find_by_district(district.amount_awarded_in_region(year).keys.first).slug)}' class='blue'>#{district.amount_awarded_in_region(year).keys.first}</a> which")
+    else
+      district.grant_count_in_region(year).keys.first
+    end
+  end
+
   def funding_by_month(funder)
     data = []
     year = funder.current_attribute.year

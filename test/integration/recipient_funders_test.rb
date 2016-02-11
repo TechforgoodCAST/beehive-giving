@@ -69,7 +69,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     visit recipient_eligibility_path(@funders.first)
     assert_equal recipient_eligibility_path(@funders.first), current_path
 
-    @recipient.recommendations.first.update_attribute(:eligibility, 'Eligible')
+    @recipient.load_recommendation(@funders.first).update_attribute(:eligibility, 'Eligible')
     create(:proposal, recipient: @recipient)
     visit recipient_apply_path(@funders.first)
     assert_equal recipient_apply_path(@funders.first), current_path

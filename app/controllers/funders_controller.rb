@@ -60,6 +60,8 @@ class FundersController < ApplicationController
 
   def district
     @district = District.find_by_slug(params[:district])
+    gon.districtLabel = @district.district
+    gon.funderName = @funder.name
 
     # @top_funders_for_district = '?'
     @amount_awarded = @funder.districts_by_year.group(:district).sum(:amount_awarded)[@district.district]

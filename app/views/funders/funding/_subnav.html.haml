@@ -36,7 +36,7 @@
           = stylesheet_link_tag 'overrides/chosen_overrides'
 
           %p{style: 'padding: 16px 0; text-align: left; width: 200px; float: right;'}
-            = select_tag :district, options_from_collection_for_select(District.where(country_id: 741).order(:district), 'slug', 'district', @district.slug), class: 'chosen-select', include_blank: true
+            = select_tag :district_select, options_from_collection_for_select(District.where(country_id: 741).order(:district), 'slug', 'district', @district.slug), class: 'chosen-select', include_blank: true
 
         - else
           %p{style: 'padding: 25px 0;'}
