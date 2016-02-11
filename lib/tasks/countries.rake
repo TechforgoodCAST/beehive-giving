@@ -315,6 +315,7 @@ namespace :import do
   desc "Add indices of multiple deprivation data to districts from file"
   # usage: be rake import:imd FILE=~/filename.csv
   task :imd => :environment do
+    require 'open-uri'
     require 'csv'
     @filename = ENV['FILE']
     CSV.parse(open(@filename).read, :headers => true, encoding:'iso-8859-1:utf-8') do |row|
