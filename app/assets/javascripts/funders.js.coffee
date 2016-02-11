@@ -167,7 +167,7 @@ FundersHelper = ((w, d) ->
       modal.show()
 
     $(document).on 'click', 'li a.blue', ->
-      d.cookie = _cookieName + "=true";
+      d.cookie = _cookieName + "=true;path=/";
 
   showMoreRows = ->
     $('.show-more').on 'click', ->
