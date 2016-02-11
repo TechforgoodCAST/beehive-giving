@@ -41,7 +41,6 @@ ActiveAdmin.register User do
       f.input :org_type, as: :select, collection: Organisation::ORG_TYPE
       f.input :first_name
       f.input :last_name
-      f.input :job_role
       f.input :user_email
       f.input :password
       f.input :password_confirmation
