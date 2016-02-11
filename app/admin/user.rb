@@ -1,6 +1,6 @@
 ActiveAdmin.register User do
 
-  permit_params :first_name, :last_name, :org_type,
+  permit_params :first_name, :last_name, :org_type, :agree_to_terms,
   :user_email, :password, :password_confirmation, :role, :organisation_id
 
   controller do
@@ -44,6 +44,7 @@ ActiveAdmin.register User do
       f.input :user_email
       f.input :password
       f.input :password_confirmation
+      f.input :agree_to_terms
     end
     f.actions
   end
