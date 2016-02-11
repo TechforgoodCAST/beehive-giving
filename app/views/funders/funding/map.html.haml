@@ -1,3 +1,5 @@
+= content_for :title, (params[:id] == 'all' ? "Map of all funding in 2014" : "Map of #{@funder.name} in #{@funder.current_attribute.year}")
+
 %script{:src => "https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js"}
 %link{:href => "https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css", :rel => "stylesheet"}
 
@@ -5,149 +7,46 @@
 %link{:href => "https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css", :rel => "stylesheet"}
 %link{:href => "https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css", :rel => "stylesheet"}
 
-:coffee
-  $(document).ready ->
-    mapData = JSON.parse($('#map').attr('data'))
+= javascript_include_tag 'map'
 
-    getStyle = (feature) ->
-      {
-        weight: 2
-        opacity: 0.1
-        color: '#333'
-        fillOpacity: 0.8
-        fillColor: getColor(feature.properties.grant_count)
-      }
-
-    # get colour depending on grant_count
-
-    getColor = (d) ->
-      if d > 7 then '#8c2d04' else if d > 6 then '#cc4c02' else if d > 5 then '#ec7014' else if d > 4 then '#fe9929' else if d > 3 then '#fec44f' else if d > 2 then '#fee391' else if d > 1 then '#fff7bc' else '#ffffe5'
-
-    onEachFeature = (feature, layer) ->
-      layer.on
-        mousemove: mousemove
-        mouseout: mouseout
-        click: zoomToFeature
-      return
-
-    mousemove = (e) ->
-      layer = e.target
-      popup.setLatLng e.latlng
-      popup.setContent '<div class="marker-title">' + layer.feature.properties.name + '</div>' + 'Grants given: ' + layer.feature.properties.grant_count
-      if !popup._map
-        popup.openOn map
-      window.clearTimeout closeTooltip
-      # highlight feature
-      layer.setStyle
-        weight: 3
-        opacity: 0.3
-        fillOpacity: 0.9
-      if !L.Browser.ie and !L.Browser.opera
-        layer.bringToFront()
-      return
-
-    mouseout = (e) ->
-      mapLayer.resetStyle e.target
-      closeTooltip = window.setTimeout((->
-        map.closePopup()
-        return
-      ), 100)
-      return
-
-    zoomToFeature = (e) ->
-      map.fitBounds e.target.getBounds()
-      return
-
-    getLegendHTML = ->
-      grades = [
-        0
-        1
-        2
-        3
-        4
-        5
-        6
-        7
-      ]
-      labels = []
-      from = undefined
-      to = undefined
-      i = 0
-      while i < grades.length
-        from = grades[i]
-        to = grades[i + 1]
-        labels.push('<li><span class="swatch" style="background:' + getColor(from + 1) + '"></span> ' + from + (if to then '&ndash;' + to else '+')) + '</li>'
-        i++
-      '<span>No. of grants given</span><ul>' + labels.join('') + '</ul>'
-
-    L.mapbox.accessToken = 'pk.eyJ1IjoiYmVlaGl2ZWdpdmluZyIsImEiOiJjaWZma3IyM3cwMGp6dGprbnZ1ZnVubTY1In0.sAccvZGdUQt3fHhWhrpGfw'
-    map = L.mapbox.map('map', 'mapbox.streets').addControl(L.mapbox.geocoderControl('mapbox.places')).setView([
-      54.515
-      -4.296
-    ], 6)
-    popup = new (L.Popup)(autoPan: false)
-
-    mapLayer = L.geoJson(mapData,
-      style: getStyle
-      onEachFeature: onEachFeature).addTo(map)
-    closeTooltip = undefined
-    map.legendControl.addLegend getLegendHTML()
-
-    # markerLayer = L.mapbox.featureLayer().addTo(map)
-
-    markers = new (L.MarkerClusterGroup)
-
-    geojson = JSON.parse($('#geojson').attr('data'))
-
-    # geojson =
-    #   type: 'FeatureCollection'
-    #   features: [
-    #     {
-    #       type: 'Feature'
-    #       properties:
-    #         title: 'My organisation'
-    #         'marker-color': '#afbc30'
-    #         'marker-size': 'large'
-    #         'marker-symbol': 'star'
-    #         # url: 'http://how.does.this.work'
-    #       geometry:
-    #         type: 'Point'
-    #         coordinates: [
-    #           -1.890401
-    #           52.48624299999999
-    #         ]
-    #     }
-    #   ]
-
-    markers.addLayer(L.geoJson(geojson));
-    map.addLayer(markers)
-
-    # markerLayer.setGeoJSON geojson
-    # markerLayer.on 'mouseover', (e) ->
-    #   e.layer.openPopup()
-    #   return
-    # markerLayer.on 'mouseout', (e) ->
-    #   e.layer.closePopup()
-    #   return
+:css
+  #map-buttons {
+    position: absolute;
+    top: 10px;
+    right: 75px;
+    z-index: 999;
+  }
+  .info {
+    position: absolute;
+    top: 50px;
+    right: 75px;
+    z-index: 999;
+  }
+  .info div {
+    background: #fafafa;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    width: 200px;
+    height: 100%;
+  }
 
 = render partial: 'funders/funding/subnav'
 
-.uk-container.uk-container-center.uk-margin-large
+.full-height.map.uk-animation-fade
+  .full-height-content
+    - if params[:id] == 'all' || @funder.districts.any?
 
-  = render partial: 'funders/prototype'
-
-  %h2 Map
-  %h4
-    A map of
-    = @funder.name.pluralize
-    funding distribution in
-    = @funder.current_attribute.year
-    by UK Local Autority Districts.
-
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
-    - if @funder.districts.any?
-      #map{data: @map_data}
-      #geojson{data: @geojson}
+      #map
+        #map-buttons{"data-uk-button-radio" => ""}
+          %button.uk-button.uk-button-small.uk-button-primary.uk-active#all{"data-uk-tooltip" => "{pos:'top'}", :title => "Colour map by the amount of funding awarded."} Amount given
+          %button.uk-button.uk-button-small.uk-button-primary#count{"data-uk-tooltip" => "{pos:'top'}", :title => "Colour map by the number of grants awarded."} No. of grants
+          %button.uk-button.uk-button-small.uk-button-primary#rank{"data-uk-tooltip" => "{pos:'top'}", :title => "Colour map by the amount of highly deprived residents."} IMD rank
+        #info.info
+        .cta{style: 'margin: 10%;'}
+          %strong Map loading...
+          .uk-progress.uk-progress-striped.uk-active
+            .uk-progress-bar{:style => "width: 100%;"}
     - else
       .cta.red
         %strong Sorry, missing information.

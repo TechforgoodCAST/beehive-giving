@@ -83,6 +83,9 @@ h1
       border-color: $cta-active
       color: $cta-active !important
 
+.uk-button-primary.uk-active
+  background: $cta-active !important
+
 .uk-button-success
   background: $green-base !important
   border: 1px solid $green-base
@@ -138,6 +141,12 @@ h1
     &:hover
       background: $yellow-base !important
       color: $white !important
+.uk-dropdown
+  &.funder-dropdown
+    li a
+      color: $blue-base !important
+      &:hover
+        background: $blue-base !important
 
 .uk-navbar-content
   padding: 0 !important
@@ -165,6 +174,9 @@ h1
   margin: 50px auto 10px
   border-radius: 3px
 
+.uk-modal-dialog-medium
+  width: 800px
+
 // refactor
 .modal-scroll-touch
   -webkit-overflow-scrolling: touch !important
@@ -184,6 +196,14 @@ h1
   &:hover
     background: #35b3ee !important
 
+.uk-nav-side
+  li a
+    color: $blue-base !important
+  li.uk-active
+    background-color: $blue-base !important
+    a
+      color: $white !important
+
 /* Tooltip
  ========================================================================== */
 
@@ -192,3 +212,10 @@ h1
   color: $white
   background: $dark-brown
   padding: 12px 7px
+
+/* Table
+ ========================================================================== */
+
+.uk-table-hover tbody tr
+  &:hover
+    cursor: pointer

@@ -20,13 +20,13 @@ ActiveAdmin.register_page "Dashboard" do
           h5 'Recipients'
           h1 number_with_delimiter(Recipient.joins(:users).all.count)
           h5 'Profiles'
-          h1 Profile.joins(:organisation).all.count
+          h1 number_with_delimiter(Profile.joins(:organisation).all.count)
         end
 
         span class: "blank_slate" do
           h3 'Non-profits'
           h5 'Unlocks'
-          h1 RecipientFunderAccess.all.count
+          h1 number_with_delimiter(RecipientFunderAccess.all.count)
           h5 'Eligibilities'
           h1 number_with_delimiter(Eligibility.all.count)
         end

@@ -2,13 +2,31 @@
 .subnav{"data-uk-sticky" => ""}
   .uk-container.uk-container-center
     %ul.nav{ class: current_user.role == 'Funder' ? 'funder' : 'recipient' }
+      %a{"data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"}
+        %li
+          Overview
+          .highlight
+      %span &middot;
+
       %a{href: funder_recent_path(@funder)}
         %li.first.active
           Recent
           .highlight
       %span &middot;
 
-      %a
+      %a{"data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"}
+        %li
+          Collaborate
+          .highlight
+      %span &middot;
+
+      %a{"data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"}
+        %li
+          Configure
+          .highlight
+      %span &middot;
+
+      %a{"data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"}
         %li
           Browse
           .highlight

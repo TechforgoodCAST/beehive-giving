@@ -81,7 +81,7 @@ namespace :export do
   end
 
   # usage: be rake export:enquiries DESTINATON=/path
-  desc 'Export nonprofit data for analysis'
+  desc 'Export enquiry data for analysis'
   task :enquiries => :environment do
     require 'csv'
     @destination = ENV['DESTINATION']
@@ -95,6 +95,60 @@ namespace :export do
         created_at: e.created_at,
         updated_at: e.updated_at
       }
+      CSV.open(@destination, 'w') { |csv| csv << data.keys } if i < 1
+      CSV.open(@destination, 'a+') { |csv| csv << data.values }
+    end
+  end
+
+  # usage: be rake export:proposals DESTINATON=/path
+  desc 'Export proposal data for analysis'
+  task :proposals => :environment do
+    require 'csv'
+    @destination = ENV['DESTINATION']
+
+    Proposal.all.each_with_index do |proposal, i|
+      data = {
+        organisation: Recipient.find(proposal.recipient_id).name,
+        title: proposal.title,
+        tagline: proposal.tagline,
+
+        outcome1: proposal.outcome1,
+        outcome2: proposal.outcome2,
+        outcome3: proposal.outcome3,
+        outcome4: proposal.outcome4,
+        outcome5: proposal.outcome5,
+
+        beneficiaries: proposal.beneficiaries.pluck(:label),
+        gender: proposal.gender,
+        min_age: proposal.min_age,
+        max_age: proposal.max_age,
+
+        countries_proposed: proposal.countries.pluck(:alpha2),
+        districts_proposed: proposal.districts.pluck(:label),
+
+        beneficiaries_proposed_impact: proposal.beneficiaries_count,
+        funding_duration_month: proposal.funding_duration,
+
+        type_of_support_requested: proposal.type_of_support,
+        activity_costs: proposal.activity_costs,
+        activity_costs_estimated: proposal.activity_costs_estimated,
+        people_costs: proposal.people_costs,
+        people_costs_estimated: proposal.people_costs_estimated,
+        capital_costs: proposal.capital_costs,
+        capital_costs_estimated: proposal.capital_costs_estimated,
+        other_costs: proposal.other_costs,
+        other_costs_estimated: proposal.other_costs_estimated,
+        total_costs: proposal.total_costs,
+        all_funding_required: proposal.all_funding_required,
+
+        created_at: proposal.created_at,
+        updated_at: proposal.updated_at
+      }
+
+      if data['beneficiaries_other_required'] == true
+        data['beneficiaries_other'] = e.beneficiaries_other
+      end
+
       CSV.open(@destination, 'w') { |csv| csv << data.keys } if i < 1
       CSV.open(@destination, 'a+') { |csv| csv << data.values }
     end

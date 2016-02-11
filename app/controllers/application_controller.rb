@@ -30,6 +30,15 @@ class ApplicationController < ActionController::Base
       current_user.role == 'Admin'
   end
 
+  def prevent_funder_access
+    redirect_to funder_overview_path(current_user.organisation), alert: "Sorry, you don't have access to that" if current_user.role == 'Funder'
+  end
+
+  def check_proposals_ownership
+    redirect_to funder_recent_path(current_user.organisation), alert: "Sorry, you don't have access to that" unless
+      current_user.organisation == Funder.find_by_slug(params[:id])
+  end
+
   def check_organisation_ownership
     redirect_to root_path, alert: "Sorry, you don't have access to that" unless
       current_user.organisation == Recipient.find_by_slug(params[:id])

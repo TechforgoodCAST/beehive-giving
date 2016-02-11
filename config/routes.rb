@@ -48,8 +48,18 @@ Rails.application.routes.draw do
   match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
   # match '/(:id)/edit', to: 'recipients#edit', via: :get, as: 'recipient_edit'
   # match '/(:id)/edit', to: 'recipients#edit', via: :patch
-  match '/(:id)/proposals/recent', to: 'funders#recent', via: :get, as: 'funder_recent'
-  match '/(:id)/funding/map', to: 'funders#map', via: :get, as: 'funder_map'
+  match '/proposals/(:id)/recent', to: 'funders#recent', via: :get, as: 'funder_recent'
+
+  match '/funding/(:id)/overview', to: 'funders#overview', via: :get, as: 'funder_overview'
+  # match '/funding/(:id)/overview/(:year)', to: 'funders#overview', via: :get, as: 'funder_overview'
+
+  match '/funding/(:id)/map', to: 'funders#map', via: :get, as: 'funder_map'
+  # match '/funding/(:id)/map/(:year)', to: 'funders#map', via: :get, as: 'funder_map'
+  match '/map-data/(:id)', to: 'funders#map_data', via: :get, as: 'funder_map_data'
+  match '/map-data/all', to: 'funders#map_data', via: :get, as: 'funders_map_all'
+
+  match '/funding/(:id)/(:district)', to: 'funders#district', via: :get, as: 'funder_district'
+  # match '/funding/(:id)/(:district)/(:year)', to: 'funders#district', via: :get, as: 'funder_district'
 
   # Eligibilities
   match '/funders/(:id)/eligibility', to: 'recipients#eligibility', via: :get, as: 'recipient_eligibility'
