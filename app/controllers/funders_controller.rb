@@ -30,7 +30,13 @@ class FundersController < ApplicationController
   end
 
   def overview
-    render 'funders/funding/overview'
+    if params[:id] == 'all' || 'All funding'
+      @funder = current_user.organisation
+      params[:id] = current_user.organisation.slug
+      render 'funders/funding/overview'
+    else
+      render 'funders/funding/overview'
+    end
   end
 
   def map

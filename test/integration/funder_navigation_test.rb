@@ -27,4 +27,10 @@ class FunderNavigationTest < ActionDispatch::IntegrationTest
     assert_equal funder_overview_path(@funder), current_path
   end
 
+  test 'visiting overview after all funding map redirects' do
+    visit '/funding/all/map'
+    click_link('Overview')
+    assert_equal '/funding/overview', current_path
+  end
+
 end

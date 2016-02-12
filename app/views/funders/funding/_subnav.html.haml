@@ -45,7 +45,8 @@
                 %span
                 %i.uk-icon.uk-icon-caret-down
               %select#funder-select
-                %option{value: 'all'} All funding
+                - unless params[:controller] == 'funders' && params[:action] == 'overview'
+                  %option{value: 'all'} All funding
                 - Funder.order(:name).where(active_on_beehive: true).each do |f|
                   %option{value: "#{f.slug}", selected: ('selected' if params[:id] == f.slug)}= f.name
             in
