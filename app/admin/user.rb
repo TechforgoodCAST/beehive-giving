@@ -10,6 +10,7 @@ ActiveAdmin.register User do
   end
 
   index do
+    column :id
     column "Organisation" do |user|
       if user.organisation
         link_to user.organisation.name, [:admin, user.organisation]
