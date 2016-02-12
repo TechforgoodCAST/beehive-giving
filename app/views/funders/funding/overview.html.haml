@@ -18,13 +18,13 @@
       .uk-width-1-1{style: 'padding-left: 15px;'}
         %ul.uk-list.uk-margin-remove
           %li{style: 'margin-bottom: 10px;'}
-            %a.blue.uk-modal-close#overview{onclick: "ga('send', 'event', 'Funders', 'click overview in welcome', 'Overview');"} Compare previous funding
+            %a.blue.uk-modal-close#overview{onclick: "ga('send', 'event', 'Funders', 'click overview in welcome', 'Overview - #{current_user.first_name} #{current_user.last_name}');"} Compare previous funding
           %li{style: 'margin-bottom: 10px;'}
-            %a.blue#map{href: funder_map_path(@funder), onclick: "ga('send', 'event', 'Funders', 'click map in welcome', 'Map');"} Explore a map of previous funding
+            %a.blue#map{href: funder_map_path(@funder), onclick: "ga('send', 'event', 'Funders', 'click map in welcome', 'Map - #{current_user.first_name} #{current_user.last_name}');"} Explore a map of previous funding
           %li{style: 'margin-bottom: 10px;'}
-            %a.blue#connect{href: funder_recent_path(@funder), onclick: "ga('send', 'event', 'Funders', 'click connect in welcome', 'Connect');"} Connect with organisations seeking funding
+            %a.blue#connect{href: funder_recent_path(@funder), onclick: "ga('send', 'event', 'Funders', 'click connect in welcome', 'Connect - #{current_user.first_name} #{current_user.last_name}');"} Connect with organisations seeking funding
           %li
-            %a.blue#region{href: funder_district_path(@funder, @funder.districts.group(:slug).count.sort_by {|k, v| v}.reverse.to_h.keys.first), onclick: "ga('send', 'event', 'Funders', 'click region in welcome', 'Region');"} Understand the previous funding in a specific region
+            %a.blue#region{href: funder_district_path(@funder, @funder.districts.group(:slug).count.sort_by {|k, v| v}.reverse.to_h.keys.first), onclick: "ga('send', 'event', 'Funders', 'click region in welcome', 'Region - #{current_user.first_name} #{current_user.last_name}');"} Understand the previous funding in a specific region
 
 = render partial: 'funders/funding/subnav'
 
