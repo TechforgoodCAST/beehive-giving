@@ -111,14 +111,14 @@
                   Eligible for
                   = succeed '.' do
                     %strong= recipient.enquiries.where(funder_id: @funder.id).first.funding_stream
-              %li
-                Also suggested to
-                = succeed '.' do
-                  -# refactor
-                  - array = []
-                  - recipient.recommended_funders.pluck(:name).reject {|i| i == @funder.name}.take(3).each do |i|
-                    - array << '<a class="blue uk-text-bold" href="' + funder_overview_path(Funder.find_by_name(i).slug) + '">' + Funder.find_by_name(i).name + '</a>'
-                  = raw(array.to_sentence)
+              -# %li
+              -#   Also suggested to
+              -#   = succeed '.' do
+              -#     -# refactor
+              -#     - array = []
+              -#     - recipient.recommended_funders.pluck(:name).reject {|i| i == @funder.name}.take(3).each do |i|
+              -#       - array << '<a class="blue uk-text-bold" href="' + funder_overview_path(Funder.find_by_name(i).slug) + '">' + Funder.find_by_name(i).name + '</a>'
+              -#     = raw(array.to_sentence)
               -# %li
               -#   Interested in
               -#   = succeed '.' do
@@ -181,6 +181,13 @@
                   and
                   = succeed '.' do
                     %strong funder
+                %li
+                  Also suggested to
+                  %strong funder
+                  and
+                  = succeed '.' do
+                    %strong funder
+                %li And more...
 
             %div.uk-margin-top.shadow{style: 'border: 1px solid #ddd; border-radius: 3px; padding: 10px; color: #333; font-size: 14px; background: white;', "data-uk-tooltip" => "{pos:'top'}", :title => "Coming soon"}
               %h4.uk-text-bold Improve your recommendations and help Beehive learn
