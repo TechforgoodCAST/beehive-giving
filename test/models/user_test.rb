@@ -60,4 +60,10 @@ class UserTest < ActiveSupport::TestCase
     end
   end
 
+  test 'user email is downcased' do
+    @user.user_email = 'UPCASE@email.com'
+    @user.save
+    assert_equal 'upcase@email.com', @user.user_email
+  end
+
 end

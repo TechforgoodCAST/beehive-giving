@@ -44,6 +44,14 @@ class SignInTest < ActionDispatch::IntegrationTest
     assert_equal signup_organisation_path, current_path
   end
 
-  # See password_reset_test.rb
+  test 'User email is downcased' do
+    visit sign_in_path
+    within('#sign-in') do
+      fill_in('email', with: @user.user_email.upcase)
+      fill_in('password', with: @user.password)
+    end
+    click_button('Sign in')
+    assert_equal signup_organisation_path, current_path
+  end
 
 end

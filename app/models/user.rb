@@ -41,6 +41,10 @@ class User < ActiveRecord::Base
     write_attribute(:last_name, s.to_s.strip.capitalize)
   end
 
+  def user_email=(s)
+    write_attribute(:user_email, s.downcase)
+  end
+
   def full_name
     name = "#{first_name} #{last_name}"
   end
