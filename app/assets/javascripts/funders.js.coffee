@@ -156,18 +156,19 @@ $(document).ready ->
 FundersHelper = ((w, d) ->
 
   hideWelcomeMessage = ->
-    _cookieName = '_beehiveFunderWelcomeClose'
-    modal = $.UIkit.modal("#welcome")
-    modal.options.bgclose = false
-    modal.options.keyboard = false
+    return unless window.location.pathname.split('/')[1] == 'funders'
+      _cookieName = '_beehiveFunderWelcomeClose'
+      modal = $.UIkit.modal("#welcome")
+      modal.options.bgclose = false
+      modal.options.keyboard = false
 
-    if document.cookie.indexOf(_cookieName) >= 0
-      modal.hide()
-    else
-      modal.show()
+      if document.cookie.indexOf(_cookieName) >= 0
+        modal.hide()
+      else
+        modal.show()
 
-    $(document).on 'click', 'li a.blue', ->
-      d.cookie = _cookieName + "=true;path=/";
+      $(document).on 'click', 'li a.blue', ->
+        d.cookie = _cookieName + "=true;path=/";
 
   showMoreRows = ->
     $('.show-more').on 'click', ->
@@ -187,11 +188,6 @@ FundersHelper = ((w, d) ->
       slug = $(this).val()
       if slug
         window.location = window.location.pathname.replace($('.funder.nav li.active').text().trim().toLowerCase(), slug)
-
-  toggleWelcomeOptions = ->
-    $('#understand').on 'click', ->
-      $('#understand-options').toggle()
-      $('#connect').toggle()
 
   return {
     hideWelcomeMessage: hideWelcomeMessage,

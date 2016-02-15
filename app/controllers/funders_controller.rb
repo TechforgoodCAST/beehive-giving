@@ -30,11 +30,11 @@ class FundersController < ApplicationController
   end
 
   def overview
-    if params[:id] == 'all' || 'All funding'
-      @funder = current_user.organisation
-      params[:id] = current_user.organisation.slug
+    if params[:id].present?
       render 'funders/funding/overview'
     else
+      @funder = current_user.organisation
+      params[:id] = current_user.organisation.slug
       render 'funders/funding/overview'
     end
   end
