@@ -66,7 +66,7 @@
           %a.action.blue{href: funder_district_path(@funder, @district, anchor: 'most-active-funders'), "data-uk-smooth-scroll" => ""} More info
         %li
           = region_difference_amount(@district)
-          recieved the most funding in
+          received the most funding in
           %strong= @district.region || @district.sub_country
           with
           %strong= number_to_currency(@district.amount_awarded_in_region(@funder.current_attribute.year).values.first, unit: '£', precision: 0)
@@ -74,7 +74,7 @@
           %a.action.blue{href: funder_district_path(@funder, @district, anchor: 'region-comparison'), "data-uk-smooth-scroll" => ""} More info
         %li
           = region_difference_count(@district)
-          recieved the most grants in
+          received the most grants in
           %strong= @district.region || @district.sub_country
           with
           %strong= @district.grant_count_in_region(@funder.current_attribute.year).values.first
@@ -189,14 +189,14 @@
               %button.uk-button.uk-button-small.uk-button-primary#region_comparison_amount Amount in £
         %p.region-comparison-count-insight
           = region_difference_count(@district)
-          recieved the most grants in
+          received the most grants in
           %strong= @district.region || @district.sub_country
           with
           %strong= @district.grant_count_in_region(@funder.current_attribute.year).values.first
           grants awarded.
         %p.region-comparison-amount-insight.fade-out
           = region_difference_amount(@district)
-          recieved the most funding in
+          received the most funding in
           %strong= @district.region || @district.sub_country
           with
           %strong= number_to_currency(@district.amount_awarded_in_region(@funder.current_attribute.year).values.first, unit: '£', precision: 0)
