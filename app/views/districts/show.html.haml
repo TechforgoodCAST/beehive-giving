@@ -171,39 +171,40 @@
 
       .uk-text-center
         %a.uk-button.uk-button-primary.uk-button-small.show-more Show more
-    %hr.thick
-
-    %section#region-comparison.offset
-      %h3.uk-margin-top
-        How did
-        = @district.district
-        compare to the rest of
-        = succeed '?' do
-          = @district.region || @district.sub_country
-        %span.year.muted
-          in
-          = @funder.current_attribute.year
-          .data-toggle-buttons{"data-uk-button-radio" => ""}
-            %button.uk-button.uk-button-small.uk-button-primary.uk-active#region_comparison_count No. of grants
-            %button.uk-button.uk-button-small.uk-button-primary#region_comparison_amount Amount in £
-      %p.region-comparison-count-insight
-        = region_difference_count(@district)
-        recieved the most grants in
-        %strong= @district.region || @district.sub_country
-        with
-        %strong= @district.grant_count_in_region(@funder.current_attribute.year).values.first
-        grants awarded.
-      %p.region-comparison-amount-insight.fade-out
-        = region_difference_amount(@district)
-        recieved the most funding in
-        %strong= @district.region || @district.sub_country
-        with
-        %strong= number_to_currency(@district.amount_awarded_in_region(@funder.current_attribute.year).values.first, unit: '£', precision: 0)
-        awarded.
-      #region_comparison.chart{ data: {data: @district.rank_in_region(@funder.current_attribute.year).to_json} }
-      %hr.thick
 
     - if @district.indices_year.present?
+      %hr.thick
+      %section#region-comparison.offset
+        %h3.uk-margin-top
+          How did
+          = @district.district
+          compare to the rest of
+          = succeed '?' do
+            = @district.region || @district.sub_country
+          %span.year.muted
+            in
+            = @funder.current_attribute.year
+            .data-toggle-buttons{"data-uk-button-radio" => ""}
+              %button.uk-button.uk-button-small.uk-button-primary.uk-active#region_comparison_count No. of grants
+              %button.uk-button.uk-button-small.uk-button-primary#region_comparison_amount Amount in £
+        %p.region-comparison-count-insight
+          = region_difference_count(@district)
+          recieved the most grants in
+          %strong= @district.region || @district.sub_country
+          with
+          %strong= @district.grant_count_in_region(@funder.current_attribute.year).values.first
+          grants awarded.
+        %p.region-comparison-amount-insight.fade-out
+          = region_difference_amount(@district)
+          recieved the most funding in
+          %strong= @district.region || @district.sub_country
+          with
+          %strong= number_to_currency(@district.amount_awarded_in_region(@funder.current_attribute.year).values.first, unit: '£', precision: 0)
+          awarded.
+        #region_comparison.chart{ data: {data: @district.rank_in_region(@funder.current_attribute.year).to_json} }
+        %hr.thick
+
+
       %section#deprivation.offset
         %h3.uk-margin-top
           How deprived is
@@ -231,33 +232,3 @@
                   %tr{class: ('overall' if i < 1)}
                     %td= hash[:category]
                     %td.uk-text-bold{class: hash[:class]}= hash[:deprivation]
-    -#   %hr.thick
-    -#
-    -# %section#summary.offset
-    -#   %h3.uk-margin-top
-    -#     Most funded organisations in
-    -#     = @district.district
-    -#     %span.year.muted
-    -#       in
-    -#       = @funder.current_attribute.year
-    -#
-    -#   %p
-    -#     %strong X grants
-    -#     to
-    -#     %strong Y organisations
-    -#
-    -#   %table.uk-table.uk-table-striped
-    -#     %thead
-    -#       %tr
-    -#         %th Funder
-    -#         %th Total amount awarded
-    -#         %th No. of grants
-    -#     %tbody
-    -#       - @district.ids_by_grant_sum('recipient', @funder.current_attribute.year).each_with_index do |(k, v), i|
-    -#         %tr{class: ('uk-hidden' if i > 4)}
-    -#           %td= Recipient.find(k).name
-    -#           %td= number_to_currency(v, unit: '£', precision: 0)
-    -#           %td= @district.ids_by_grant_count('recipient', @funder.current_attribute.year)[k]
-    -#
-    -#   .uk-text-center
-    -#     %a.uk-button.uk-button-primary.uk-button-small.show-more Show more
