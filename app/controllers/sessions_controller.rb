@@ -13,7 +13,7 @@ class SessionsController < ApplicationController
   end
 
   def create
-    user = User.find_by_user_email(params[:email])
+    user = User.find_by_user_email(params[:email].downcase)
     if user && user.authenticate(params[:password])
       if params[:remember_me]
         cookies.permanent[:auth_token] = user.auth_token
@@ -48,7 +48,7 @@ class SessionsController < ApplicationController
       return edit_recipient_profile_path(user.organisation, user.organisation.profiles.last) unless user.organisation.profiles.last.state == 'complete'
       recommended_funders_path
     else
-      funder_path(current_user.organisation)
+      funder_overview_path(user.organisation)
     end
   end
 

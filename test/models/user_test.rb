@@ -38,4 +38,32 @@ class UserTest < ActiveSupport::TestCase
     assert_not build(:user, :job_role => "None, I don't work/volunteer for a non-profit").valid?
   end
 
+  test 'charity and company numbers requried based on org type' do
+    case @user.org_type
+    when 1
+      assert_not @user.valid?
+      @user.charity_number = '123'
+      assert @user.valid?
+    when 2
+      assert_not @user.valid?
+      @user.company_number = '123'
+      assert @user.valid?
+    when 3
+      assert_not @user.valid?
+      @user.charity_number = '123'
+      @user.company_number = '123'
+      assert @user.valid?
+    else
+      assert_equal nil, @user.charity_number
+      assert_equal nil, @user.company_number
+      assert @user.valid?
+    end
+  end
+
+  test 'user email is downcased' do
+    @user.user_email = 'UPCASE@email.com'
+    @user.save
+    assert_equal 'upcase@email.com', @user.user_email
+  end
+
 end

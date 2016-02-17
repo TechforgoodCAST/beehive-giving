@@ -19,7 +19,8 @@ en:
         implementations_other: 'Please specify'
       recipient:
         name: 'Organisation or project name'
-        website: 'Website (optional)'
+        street_address: 'Street address e.g. 123 New street'
+        website: 'Optional'
         charity_number: 'Charity number'
         company_number: 'Company number'
       funder:

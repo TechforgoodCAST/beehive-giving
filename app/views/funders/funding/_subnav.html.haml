@@ -1,0 +1,55 @@
+- params[:funding_navbar] = true
+.subnav{"data-uk-sticky" => ""}
+  .uk-container.uk-container-center
+    .uk-grid
+      .uk-width-1-2
+        %ul.nav{ class: current_user.role == 'Funder' ? 'funder' : 'recipient' }
+          %a{href: funder_overview_path(@funder)}
+            %li.first{ class: ('active' if params[:controller] == 'funders' && params[:action] == 'overview') }
+              Overview
+              .highlight
+          %span &middot;
+
+          %a{href: funder_map_path(@funder)}
+            %li{ class: ('active' if params[:controller] == 'funders' && params[:action] == 'map') }
+              Map
+              .highlight
+
+          - if params[:controller] == 'funders' && params[:action] == 'district'
+            %span &rsaquo;
+            %a{href: funder_district_path(@funder, @district.slug)}
+              %li{ class: ('active' if params[:controller] == 'funders' && params[:action] == 'district') }
+                = @district.district
+                .highlight
+
+          %span &middot;
+          %a{"data-uk-tooltip" => "{pos:'bottom'}", :title => "Coming soon"}
+            %li
+              Browse
+              .highlight
+
+      .uk-width-1-2.uk-text-right
+        - if params[:controller] == 'funders' && params[:action] == 'district'
+          = javascript_include_tag 'chosen-jquery'
+          = javascript_include_tag 'chosen'
+          = stylesheet_link_tag 'chosen'
+          = stylesheet_link_tag 'overrides/chosen_overrides'
+
+          %p{style: 'padding: 16px 0; text-align: left; width: 200px; float: right;'}
+            = select_tag :district_select, options_from_collection_for_select(District.where(country_id: 741).order(:district), 'slug', 'district', @district.slug), class: 'chosen-select', include_blank: true
+
+        - else
+          %p{style: 'padding: 25px 0;'}
+            %span.uk-form-select{"data-uk-form-select" => "{target:'span'}"}
+              %a.blue
+                %span
+                %i.uk-icon.uk-icon-caret-down
+              %select#funder-select
+                - unless params[:controller] == 'funders' && params[:action] == 'overview'
+                  %option{value: 'all'} All funding
+                - Funder.order(:name).where(active_on_beehive: true).each do |f|
+                  %option{value: "#{f.slug}", selected: ('selected' if params[:id] == f.slug)}= f.name
+            in
+            %a.blue{"data-uk-tooltip" => "{pos:'bottom'}", :title => "Coming soon"}
+              = (params[:id] == 'all' ? '2014' : @funder.current_attribute.year)
+              %i.uk-icon.uk-icon-caret-down

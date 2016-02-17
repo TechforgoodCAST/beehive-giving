@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   match '/about', to: 'pages#about', via: :get, as: 'about'
   match '/privacy', to: 'pages#privacy', via: :get, as: 'privacy'
   match '/terms', to: 'pages#terms', via: :get, as: 'terms'
+  match '/faq', to: 'pages#faq', via: :get, as: 'faq'
 
   # Sign up
   match '/welcome', to: 'signup#user', via: :get, as: 'signup_user'
@@ -34,7 +35,7 @@ Rails.application.routes.draw do
   # User authorisation for organisational access
   match '/unauthorised', to: 'signup#unauthorised', via: :get, as: 'unauthorised'
   match '/grant_access/(:unlock_token)', to: 'signup#grant_access', via: :get, as: 'grant_access'
-  match '/granted_access/(:name)', to: 'signup#granted_access', via: :get, as: 'granted_access'
+  match '/granted_access/(:unlock_token)', to: 'signup#granted_access', via: :get, as: 'granted_access'
 
   # Profiles
   match '/(:id)/profile', to: 'profiles#new', via: :get, as: 'new_recipient_profile'
@@ -48,12 +49,22 @@ Rails.application.routes.draw do
   match '/funders/ineligible', to: 'recipients#ineligible_funders', via: :get, as: 'ineligible_funders'
   match '/funders', to: 'recipients#all_funders', via: :get, as: 'all_funders'
 
-  match '/dashboard', to: 'funders#dashboard', via: :get, as: 'funder_dashboard'
-
   # Recipients
   match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
   # match '/(:id)/edit', to: 'recipients#edit', via: :get, as: 'recipient_edit'
   # match '/(:id)/edit', to: 'recipients#edit', via: :patch
+  match '/proposals/(:id)/recent', to: 'funders#recent', via: :get, as: 'funder_recent'
+
+  match '/funding/(:id)/overview', to: 'funders#overview', via: :get, as: 'funder_overview'
+  # match '/funding/(:id)/overview/(:year)', to: 'funders#overview', via: :get, as: 'funder_overview'
+
+  match '/funding/(:id)/map', to: 'funders#map', via: :get, as: 'funder_map'
+  # match '/funding/(:id)/map/(:year)', to: 'funders#map', via: :get, as: 'funder_map'
+  match '/map-data/(:id)', to: 'funders#map_data', via: :get, as: 'funder_map_data'
+  match '/map-data/all', to: 'funders#map_data', via: :get, as: 'funders_map_all'
+
+  match '/funding/(:id)/(:district)', to: 'funders#district', via: :get, as: 'funder_district'
+  # match '/funding/(:id)/(:district)/(:year)', to: 'funders#district', via: :get, as: 'funder_district'
 
   # Eligibilities
   match '/funders/(:id)/eligibility', to: 'recipients#eligibility', via: :get, as: 'recipient_eligibility'
@@ -72,7 +83,6 @@ Rails.application.routes.draw do
   # Compare funders
   match '/funders/comparison', to: 'funders#comparison', via: :get, as: 'funders_comparison'
 
-  
   resources :users
   resources :feedback, :only => [:new, :create, :edit, :update]
   resources :password_resets, :only => [:new, :create, :edit, :update]

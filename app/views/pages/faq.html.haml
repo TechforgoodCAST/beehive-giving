@@ -1,0 +1,260 @@
+= content_for :title, 'FAQ'
+
+.uk-container.uk-container-center.uk-margin-large
+  %h2 Frequently Asked Questions (FAQ)
+
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+    .cta{style: 'padding: 20px;'} Our mission is to give every non-profit the best chance of finding the right funder, and every funder the tools to create the most impact with their funding.
+
+    .uk-grid
+      .uk-width-medium-1-2.uk-margin-bottom
+        %h3 About
+        %ul.uk-list.padded
+          %li
+            %a.primary{href: '#background'} Who’s behind Beehive?
+          %li
+            %a.primary{href: '#name'} What’s with the name?
+          %li
+            %a.primary{href: '#cost'} How much does Beehive cost?
+          %li
+            %a.primary{href: '#what'} What does Beehive do?
+          %li
+            %a.primary{href: '#data-source'} Where does Beehive get its information about funders?
+      .uk-width-medium-1-2
+        %h3 Getting started
+        %ul.uk-list.padded
+          %li
+            %a.primary{href: '#sign-in'} How do I sign in?
+          %li
+            %a.primary{href: '#reset-password'} How do I reset my password?
+          %li
+            %a.primary{href: '#no-org'} I don’t have an organisation or project I’m seeking funding for. Can I still use Beehive?
+          %li
+            %a.primary{href: '#already-registered'} Beehive is telling me my organisation or project is already registered
+          %li
+            %a.primary{href: '#not-charity'} My organisation or project isn’t a registered charity can I still use Beehive?
+          %li
+            %a.primary{href: '#individual'} I’m looking for funding to support an individual beneficiary. Can Beehive help me find this kind of funding?
+
+    %section#background
+      %hr.thick
+      %h3
+        Who’s behind Beehive?
+        %span.muted.year About
+      %p
+        Beehive is a tech for good project being incubated by
+        = link_to 'The Centre for the Acceleration of Social Technology', 'http://wearecast.org.uk/', target: '_blank', class: 'primary'
+        (CAST for short). CAST is a registered charity (1161998) that works to accelerate the use of technology for social good by working with funders, ventures, and the tech for good sector at large.
+      %p
+        Beehive has been kindly supported by, Forward Foundation,
+        = succeed ',' do
+          = link_to 'The Indigo Trust', 'http://indigotrust.org.uk/', target: '_blank', class: 'primary'
+        and
+        = succeed ';' do
+          = link_to '360Giving', 'http://www.threesixtygiving.org/', target: '_blank', class: 'primary'
+        with volunteers from
+        = succeed ',' do
+          = link_to 'NEON', 'http://neonadventures.com/', target: '_blank', class: 'primary'
+        = succeed ',' do
+          = link_to 'DataKind UK', 'http://www.datakind.org/chapters/datakind-uk/', target: '_blank', class: 'primary'
+        = succeed ',' do
+          = link_to 'Forward Partners', 'http://www.forwardpartners.com/', target: '_blank', class: 'primary'
+        = succeed ',' do
+          = link_to 'Forward3D', 'http://www.forward3d.com/', target: '_blank', class: 'primary'
+        and more.
+
+    %section#name
+      %hr.thick
+      %h3
+        What’s with the name?
+        %span.muted.year About
+      %p Much like the humble honeybee we believe that social sector organisations are essential to healthy and productive communities, and that without them countless communities would be worse off. That’s why we’re committed to developing technology that helps them find the right funders for their essential work.
+
+    %section#cost
+      %hr.thick
+      %h3
+        How much does Beehive cost?
+        %span.muted.year About
+      %p Nothing, a ‘basic’ account is free and always will be.
+      %p We intend to introduce a ‘professional’ account type in the future that would be paid for, and extend the features available to you on Beehive. There would be no obligation to upgrade, and your ‘basic’ account privileges will not be affected.
+      %p As Beehive is a tech for good project, all income will be reinvested back into the development and running of the platform.
+
+    %section#what
+      %hr.thick
+      %h3
+        What does Beehive do?
+        %span.muted.year About
+      %p Beehive is a website that does three things:
+      %ol
+        %li Uses information about your organisation or project to identify suitable funders for you.
+        %li Provides personalised information about suitable funders to help plan your fundraising.
+        %li Lets you check if you meet a given funder's eligibility criteria before you apply.
+
+    %section#data-source
+      %hr.thick
+      %h3
+        Where does Beehive get its information about funders?
+        %span.muted.year About
+      %p
+        We work closely with
+        = succeed ',' do
+          = link_to '360Giving', 'http://www.threesixtygiving.org/', target: '_blank', class: 'primary'
+        which supports funders to publish their information in a way that can be used to create tools like Beehive. In addition to the information published through 360Giving, we work directly with funders to source their information.
+
+    %section#sign-in
+      %hr.thick
+      %h3
+        How do I sign in?
+        %span.muted.year Getting started
+      %p
+        To sign in visit the
+        = link_to 'sign in page', sign_in_path, class: 'primary'
+        and enter the email address and password you set when creating your account. You can visit the sign in page in two ways:
+      %ol
+        %li
+          Visit
+          = succeed '.' do
+            = link_to 'www.beehivegiving.org/sign-in', sign_in_path, class: 'primary'
+        %li
+          Click the ‘Sign in’ button at the top right of the
+          = link_to 'homepage', signup_user_path, class: 'primary'
+      %p
+        Should you need them details of how to reset your password can be found
+        = succeed '.' do
+          = link_to 'here', new_password_reset_path, class: 'primary'
+
+    %section#reset-password
+      %hr.thick
+      %h3
+        How do I reset my password?
+        %span.muted.year Getting started
+      %p
+        %strong Important:
+        In order to reset your password you must first have an account on Beehive.
+      %p Resetting a password consists of two steps; firstly requesting a password reset email, then setting a new password.
+      %ol.uk-list.padded
+        %li
+          %strong Requesting a password reset email:
+          %ol{style: 'margin-top: 10px;'}
+            %li
+              Visit the
+              %strong= link_to 'sign in page', sign_in_path, class: 'primary'
+              %small
+                = surround '(', ')' do
+                  = link_to 'How do I sign in?', faq_path(anchor: 'sign-in'), class: 'primary'
+            %li
+              Click the
+              %strong Forgot password
+              link.
+            %li
+              Enter the email you created your account with into the
+              %strong ‘Email’
+              field.
+            %li
+              Click the
+              %strong Reset password
+              button.
+            %li
+              Proceed to step
+              = succeed '.' do
+                %strong 2. Setting a new password
+        %li
+          %strong Setting a new password:
+          %ol{style: 'margin-top: 10px;'}
+            %li
+              Check you email inbox for an email with the subject
+              = succeed '.' do
+                %strong Reset your password – Beehive
+              %br
+                %small Please note the email can sometimes take a few minutes to arrive, and be sure to check your email ‘spam’ or ‘junk’ folders.
+            %li
+              Click the
+              %strong Click to reset password
+              link in the email.
+              %br
+                %small The link in the password reset email is only valid for 60 minutes for security reasons. If the link has expired please request a new password reset email (see. 1. Requesting a password rest email for more details).
+            %li
+              Check you email inbox for an email with the subject
+              = succeed '.' do
+                %strong Reset your password – Beehive
+              %br
+                %small Please note the email can sometimes take a few minutes to arrive, and be sure to check your email ‘spam’ or ‘junk’ folders.
+            %li
+              On the
+              %strong Set a new password
+              page type a new password into the
+              %strong New password
+              field.
+              %br
+                %small Passwords should be at lease 6 characters long with 1 number.
+            %li
+              Type the new password into the
+              %strong Confirm new password
+              field.
+            %li
+              Click the
+              %strong Change password
+              button.
+            %li
+              If the password is successfully changed you will be taken to the
+              = succeed ',' do
+                %strong Sign in page
+              where you can use your email address and new password to sign in.
+              %small
+                = surround '(', ')' do
+                  = link_to 'How do I sign in?', faq_path(anchor: 'sign-in'), class: 'primary'
+
+      %section#no-org
+        %hr.thick
+        %h3
+          I don’t have an organisation or project I’m seeking funding for. Can I still use Beehive?
+          %span.muted.year Getting started
+        %p None of the funders currently on Beehive provide funding directly to individuals instead they support organisations or projects delivered by groups. We strongly advise you to only sign up if you are associated with an organisation or project seeking charitable funding.
+        %p
+          If you are a funder please contact
+          = link_to 'support@beehivegiving.org', 'mailto:support@beehivegiving.org', class: 'primary'
+          for details on how to get started.
+        %p
+          See also
+          = link_to "I’m looking for funding to support an individual beneficiary. Can Beehive help me find this kind of funding?", faq_path(anchor: 'individual'), class: 'primary'
+
+      %section#already-registered
+        %hr.thick
+        %h3
+          Beehive is telling me my organisation or project is already registered
+          %span.muted.year Getting started
+        %p
+          This means that either, we have your details on our records, or another person has signed up for your organisation or project. If this is the case then please get in touch with
+          = link_to 'support@beehivegiving.org', 'mailto:support@beehivegiving.org', class: 'primary'
+          requesting access to your organisation or projects account.
+        %p Please include the following in your message:
+        %ul
+          %li Name of your organisation or project
+          %li Your role in the organisation or the project
+          %li Charity number (if known)
+          %li Company number (if known)
+
+      %section#not-charity
+        %hr.thick
+        %h3
+          My organisation or project isn’t a registered charity can I still use Beehive?
+          %span.muted.year Getting started
+        %p Yes. On Beehive there are funders that support a range of different types of organisations and projects. Simply use Beehives eligibility checker to quickly understand if your organisation or project meets the minimum requirements for a given funder.
+        %p
+          Also see
+          = link_to "I don’t have an organisation or project I’m seeking funding for. Can I still use Beehive?", faq_path(anchor: 'no-org'), class: 'primary'
+
+      %section#individual
+        %hr.thick
+        %h3
+          I’m looking for funding to support an individual beneficiary. Can Beehive help me find this kind of funding?
+          %span.muted.year Getting started
+        %p
+          Unfortunately, none of the funders on Beehive provide funding for individual beneficiaries. However there are other online tools available that may help you to find funding for an individual beneficiary, such as
+          = succeed ',' do
+            = link_to 'SENDirect', 'http://www.sendirect.org.uk', target: '_blank', class: 'primary'
+          = succeed ',' do
+            = link_to 'The Prince’s Trust', 'https://www.princes-trust.org.uk/need_help/next_steps/your_next_steps_in_the_uk/alternative_sources_of_funding/funding_for_individuals.aspx', target: '_blank', class: 'primary'
+          and
+          = succeed '.' do
+            = link_to 'Turn2us', 'https://www.turn2us.org.uk/', target: '_blank', class: 'primary'

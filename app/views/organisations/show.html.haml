@@ -7,7 +7,7 @@
       %li= link_to profile.year, edit_organisation_profile_path(@organisation, profile)
     %li= link_to 'New Profile', new_organisation_profile_path(@organisation)
   %hr
-  %h3 Grants recieved
+  %h3 Grants received
   %ul
     - @grants.each do |grant|
       %li

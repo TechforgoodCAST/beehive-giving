@@ -14,8 +14,8 @@
               %h3.uk-text-bold Oops!
               = flash[:error]
 
-          .uk-panel.uk-panel-box#panel.shadow
-            .uk-panel-title.uk-text-center Sign in to continue
+          .uk-panel.uk-panel-box#panel.shadow{style: 'border-radius: 3px'}
+            %h4.uk-text-bold.uk-text-center Sign in to continue
 
             = form_tag sign_in_path, method: 'post', class: 'uk-panel uk-form form', id: 'sign-in' do
               .uk-form-row
@@ -24,7 +24,8 @@
                 = password_field_tag :password, nil, placeholder: 'Password', type: 'password', class: 'large uk-form-password uk-width-1-1'
                 %a.uk-form-password-toggle{"data-uk-form-password" => "", :href => ""} Show
               .uk-form-row
-                = submit_tag 'Sign in', class: 'uk-width-1-1 uk-button uk-button-large uk-button-primary'
+                = button_tag 'Sign in', class: 'uk-width-1-1 uk-button uk-button-large uk-button-primary'
+
               .uk-form-row.uk-text-small
                 %label.uk-float-left
                   = check_box_tag :remember_me, 1, params[:remember_me]

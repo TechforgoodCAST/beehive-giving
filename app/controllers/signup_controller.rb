@@ -1,16 +1,22 @@
 class SignupController < ApplicationController
-  before_filter :ensure_logged_in, except: [:user, :create_user, :unauthorised, :grant_access, :granted_access]
-  
+
+  before_filter :ensure_logged_in, except: [:user, :create_user, :grant_access, :granted_access]
+  before_filter :get_districts, only: [:user, :create_user]
+
   def user
     if logged_in?
       redirect_to root_path
     else
+      reset_session
       @user = User.new
     end
   end
 
   def create_user
     @user = User.new(user_params)
+    session[:org_type] = @user.org_type
+    session[:charity_number] = @user.charity_number
+    session[:company_number] = @user.company_number
 
     respond_to do |format|
       if @user.save
@@ -53,15 +59,52 @@ class SignupController < ApplicationController
     if current_user.organisation
       redirect_to new_recipient_profile_path(current_user.organisation)
     else
-      @organisation = Recipient.new
+      @organisation = Recipient.new(
+        org_type: session[:org_type],
+        charity_number: session[:charity_number],
+        company_number: session[:company_number]
+      )
+
+      case @organisation.org_type
+      when 1
+        @organisation.get_charity_data
+      when 2
+        @organisation.get_company_data
+      when 3
+        @organisation.get_charity_data
+        @organisation.get_company_data
+      end
     end
   end
 
   def create_organisation
     @organisation = Recipient.new(organisation_params)
+    session[:org_type] = @organisation.org_type
+    session[:charity_number] = @organisation.charity_number
+    session[:company_number] = @organisation.company_number
+
+    case @organisation.org_type
+    when 1
+      @organisation.destroy
+      @organisation = Recipient.new(organisation_params)
+      @organisation.get_charity_data
+    when 2
+      @organisation.destroy
+      @organisation = Recipient.new(organisation_params)
+      @organisation.get_company_data
+      @organisation.charity_number = nil
+    when 3
+      @organisation.destroy
+      @organisation = Recipient.new(organisation_params)
+      @organisation.get_charity_data if @organisation.charity_number.present?
+      @organisation.get_company_data if @organisation.company_number.present?
+    else
+      @organisation.registered_on = nil
+    end
 
     respond_to do |format|
       if @organisation.save
+        reset_session
         format.js   {
           current_user.update_attribute(:organisation_id, @organisation.id)
           render :js => "mixpanel.identify('#{current_user.id}');
@@ -78,19 +121,17 @@ class SignupController < ApplicationController
         format.html {
           current_user.update_attribute(:organisation_id, @organisation.id)
           redirect_to new_recipient_profile_path(@organisation)
-        }    
+        }
+      # If company/charity number has already been taken
       elsif ((@organisation.errors.added? :charity_number, :taken) ||
-            (@organisation.errors.added? :company_number, :taken)) 
-        # If company/charity number has already been taken
+            (@organisation.errors.added? :company_number, :taken))
         format.js {
           charity_number = @organisation.charity_number
           company_number = @organisation.company_number
           organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
                           (Organisation.find_by_company_nuber(company_number) if company_number)
 
-          current_user.lock_access_to_organisation(organisation.id)
-
-          # TODO: redirect not working
+          current_user.lock_access_to_organisation(organisation)
           render :js => "window.location.href = '#{unauthorised_path}';"
         }
         format.html {
@@ -99,8 +140,7 @@ class SignupController < ApplicationController
           organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
                           (Organisation.find_by_company_nuber(company_number) if company_number)
 
-          current_user.lock_access_to_organisation(organisation.id)
-
+          current_user.lock_access_to_organisation(organisation)
           redirect_to unauthorised_path
         }
       else
@@ -125,29 +165,37 @@ class SignupController < ApplicationController
   end
 
   def grant_access
-    user = User.find_by_unlock_token(params[:unlock_token])
-    user.unlock
-    redirect_to granted_access_path(user.first_name)
+    @user = User.find_by_unlock_token(params[:unlock_token])
+    @user.unlock
+    redirect_to granted_access_path(@user.unlock_token)
   end
 
   def granted_access
-    @name = params[:name]
+    @user = User.find_by_unlock_token(params[:unlock_token])
   end
 
   def unauthorised
+    redirect_to root_path if current_user.authorised
   end
 
   private
 
+  def get_districts
+    @districts_count = Funder.active.joins(:countries).group('countries.id').uniq.count
+    @districts = Country.order(priority: :desc).order(:name).find(@districts_count.keys)
+  end
+
   def user_params
     params.require(:user).permit(:first_name, :last_name, :job_role,
-    :user_email, :password, :password_confirmation, :role, :agree_to_terms)
+    :user_email, :password, :password_confirmation, :role, :agree_to_terms,
+    :org_type, :charity_number, :company_number)
   end
 
   def organisation_params
     params.require(:recipient).permit(:name, :contact_number, :website,
     :street_address, :city, :region, :postal_code, :country, :charity_number,
-    :company_number, :founded_on, :registered_on, :mission, :status, :registered, organisation_ids: [])
+    :company_number, :founded_on, :registered_on, :mission, :status,
+    :org_type, organisation_ids: [])
   end
 
   def funder_params

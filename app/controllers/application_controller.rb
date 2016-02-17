@@ -17,15 +17,12 @@ class ApplicationController < ActionController::Base
   end
 
   def ensure_logged_in
-    if !logged_in?
-      redirect_to "/", alert: "Please sign in"
-    elsif current_user.organisation
-      ensure_authorised
-    end
+    return redirect_to '/', alert: "Please sign in" unless logged_in?
+    return ensure_authorised
   end
 
   def ensure_authorised
-    redirect_to unauthorised_path unless current_user.authorised
+    redirect_to unauthorised_path unless current_user.authorised || params[:action] == 'unauthorised'
   end
 
   def ensure_funder
@@ -36,6 +33,15 @@ class ApplicationController < ActionController::Base
   def ensure_admin
     redirect_to root_path, alert: "Sorry, you don't have access to that" unless
       current_user.role == 'Admin'
+  end
+
+  def prevent_funder_access
+    redirect_to funder_overview_path(current_user.organisation), alert: "Sorry, you don't have access to that" if current_user.role == 'Funder'
+  end
+
+  def check_proposals_ownership
+    redirect_to funder_recent_path(current_user.organisation), alert: "Sorry, you don't have access to that" unless
+      current_user.organisation == Funder.find_by_slug(params[:id])
   end
 
   def check_organisation_ownership

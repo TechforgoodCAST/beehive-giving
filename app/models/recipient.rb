@@ -95,6 +95,11 @@ class Recipient < Organisation
     ].join(", ")
   end
 
+  # refactor?
+  def recent_grants(year=2015)
+    self.grants.where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01")
+  end
+
   # refactor
   def eligibility_count(funder)
     count = 0

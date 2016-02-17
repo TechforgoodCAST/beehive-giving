@@ -9,7 +9,6 @@ $.fn.currencyFormat = ->
       if isNaN(parseFloat(@value))
         return
       @value = parseFloat(@value).toFixed(2)
-      console.log 'hello'
       return
     return
   this

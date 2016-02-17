@@ -67,10 +67,11 @@ gem 'workflow'
 
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'groupdate'
-gem 'chartkick'
+gem 'chartkick', '~> 1.4.1'
 
 gem 'httparty'
 gem 'nokogiri'
+gem 'geocoder'
 
 gem 'newrelic_rpm', '~> 3.12.0', require: false
 gem 'intercom-rails'

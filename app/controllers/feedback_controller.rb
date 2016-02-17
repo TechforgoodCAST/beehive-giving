@@ -1,6 +1,6 @@
 class FeedbackController < ApplicationController
 
-  before_filter :ensure_logged_in, :load_recipient
+  before_filter :ensure_logged_in, :load_recipient, :prevent_funder_access
 
   def new
     @redirect_to_funder = params[:redirect_to_funder]

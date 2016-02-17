@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151216110109) do
+ActiveRecord::Schema.define(version: 20160205133718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -150,9 +150,30 @@ ActiveRecord::Schema.define(version: 20151216110109) do
 
   create_table "districts", force: :cascade do |t|
     t.integer "country_id"
-    t.string  "label",       limit: 255
-    t.string  "district",    limit: 255
-    t.string  "subdivision", limit: 255
+    t.string  "label",                                                   limit: 255
+    t.string  "district",                                                limit: 255
+    t.string  "subdivision",                                             limit: 255
+    t.text    "geometry"
+    t.string  "region"
+    t.string  "sub_country"
+    t.string  "slug"
+    t.string  "indices_year"
+    t.integer "indices_rank"
+    t.float   "indices_rank_proportion_most_deprived_ten_percent"
+    t.integer "indices_income_rank"
+    t.float   "indices_income_proportion_most_deprived_ten_percent"
+    t.integer "indices_employment_rank"
+    t.float   "indices_employment_proportion_most_deprived_ten_percent"
+    t.integer "indices_education_rank"
+    t.float   "indices_education_proportion_most_deprived_ten_percent"
+    t.integer "indices_health_rank"
+    t.float   "indices_health_proportion_most_deprived_ten_percent"
+    t.integer "indices_crime_rank"
+    t.float   "indices_crime_proportion_most_deprived_ten_percent"
+    t.integer "indices_barriers_rank"
+    t.float   "indices_barriers_proportion_most_deprived_ten_percent"
+    t.integer "indices_living_rank"
+    t.float   "indices_living_proportion_most_deprived_ten_percent"
   end
 
   add_index "districts", ["country_id"], name: "index_districts_on_country_id", using: :btree
@@ -302,6 +323,9 @@ ActiveRecord::Schema.define(version: 20151216110109) do
     t.string   "funding_streams_by_count"
     t.string   "funding_streams_by_giving"
     t.text     "description"
+    t.text     "map_data"
+    t.text     "shared_recipient_ids"
+    t.integer  "no_of_recipients_funded"
   end
 
   add_index "funder_attributes", ["funder_id"], name: "index_funder_attributes_on_funder_id", using: :btree
@@ -424,9 +448,37 @@ ActiveRecord::Schema.define(version: 20151216110109) do
     t.date     "registered_on"
     t.boolean  "registered"
     t.boolean  "active_on_beehive"
-    t.datetime "created_at",                                  null: false
-    t.datetime "updated_at",                                  null: false
+    t.datetime "created_at",                                              null: false
+    t.datetime "updated_at",                                              null: false
     t.integer  "recipient_funder_accesses_count"
+    t.integer  "org_type"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.string   "contact_email"
+    t.string   "charity_name"
+    t.string   "charity_status"
+    t.float    "charity_income"
+    t.float    "charity_spending"
+    t.string   "charity_recent_accounts_link"
+    t.string   "charity_trustees"
+    t.string   "charity_employees"
+    t.string   "charity_volunteers"
+    t.string   "charity_year_ending"
+    t.string   "charity_days_overdue"
+    t.string   "charity_registered_date"
+    t.string   "company_name"
+    t.string   "company_type"
+    t.string   "company_status"
+    t.date     "company_incorporated_date"
+    t.date     "company_last_accounts_date"
+    t.date     "company_next_accounts_date"
+    t.date     "company_accounts_due_date"
+    t.date     "company_next_annual_return_date"
+    t.date     "company_last_annual_return_date"
+    t.date     "company_annual_return_due_date"
+    t.text     "company_sic",                                                          array: true
+    t.string   "company_recent_accounts_link"
+    t.integer  "grants_count",                                default: 0
   end
 
   add_index "organisations", ["id", "type"], name: "index_organisations_on_id_and_type", using: :btree

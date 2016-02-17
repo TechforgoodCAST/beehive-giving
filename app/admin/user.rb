@@ -1,6 +1,6 @@
 ActiveAdmin.register User do
 
-  permit_params :first_name, :last_name, :job_role,
+  permit_params :first_name, :last_name, :org_type, :agree_to_terms,
   :user_email, :password, :password_confirmation, :role, :organisation_id
 
   controller do
@@ -10,6 +10,7 @@ ActiveAdmin.register User do
   end
 
   index do
+    column :id
     column "Organisation" do |user|
       if user.organisation
         link_to user.organisation.name, [:admin, user.organisation]
@@ -38,12 +39,13 @@ ActiveAdmin.register User do
     f.inputs "User Details" do
       f.input :organisation, required: true, input_html: {class: 'chosen-select'}
       f.input :role
+      f.input :org_type, as: :select, collection: Organisation::ORG_TYPE
       f.input :first_name
       f.input :last_name
-      f.input :job_role
       f.input :user_email
       f.input :password
       f.input :password_confirmation
+      f.input :agree_to_terms
     end
     f.actions
   end

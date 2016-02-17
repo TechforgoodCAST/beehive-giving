@@ -7,11 +7,13 @@ class Grant < ActiveRecord::Base
   ATTENTION_HOW = ['Headhunting', 'Referral', 'Unsolicited application']
 
   belongs_to :funder
-  belongs_to :recipient
+  belongs_to :recipient, counter_cache: true
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
 
   attr_accessor :skip_validation
+
+  scope :recent, -> (year=2015) { where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01") }
 
   validates :funder, :recipient, presence: true
 

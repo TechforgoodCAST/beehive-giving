@@ -14,6 +14,23 @@
   font-size: 16px
   line-height: 14px
 
+.italics
+  font-style: italic !important
+
+h1.hero, h2.hero, h3.hero
+  font-weight: normal
+  margin-bottom: 20px
+h1.hero
+  font-family: 'Noto Sans', Helvetica, sans-serif !important
+  font-size: 37px
+h2.hero
+  font-size: 34px
+h3.hero
+  font-size: 20px
+  line-height: 25px
+h4.hero
+  font-size: 18px
+
 /* Layout
  ========================================================================== */
 
@@ -28,6 +45,8 @@ html, body
   display: table
   &.max
     height: 100%
+  &.map
+    height: calc(100% - 121px)
   .full-height-content
     display: table-cell
     vertical-align: middle
@@ -39,6 +58,9 @@ hr
   &.thick
     border-width: 3px !important
     margin: 30px auto
+
+.background
+  background: $off-white
 
 .background-image
   +background-image
@@ -53,6 +75,11 @@ hr
   color: $yellow-base !important
   &.background
     background: $yellow-base !important
+
+.primary
+  color: $cta-base !important
+.primary:hover
+  color: $cta-hover !important
 
 .blue
   color: $blue-base !important
@@ -86,6 +113,22 @@ hr
   @media screen and (max-width: 480px)
     height: 60px
     margin-top: -60px
+
+.overall
+  background: #f5f5f5
+  border-bottom: $light-grey solid 1px
+  td
+    padding: 10px 8px!important
+.very-poor
+  color: $red-base
+.poor
+  color: $red-active
+.fair
+  color: $dark-brown
+.good
+  color: $green-active
+.excellent
+  color: $green-base
 
 // refactor
 .shadow
@@ -155,9 +198,9 @@ hr
  ========================================================================== */
 
 .navbar, .subnav
-  &.recipient
+  &.recipient-bg
     background: $yellow-base
-  &.funder
+  &.funder-bg
     background: $blue-base
 
   ul.nav
@@ -210,6 +253,9 @@ hr
           border-left: 10px solid transparent
           border-right: 10px solid transparent
           margin-left: -10px
+        &.funder
+          &:after
+            border-top: 6px solid $blue-base
 
 .logo
   display: inline-block
@@ -244,15 +290,22 @@ hr
   background: $off-white
   border-bottom: 1px solid $lightest-grey
   ul.nav
+    &.recipient
+      li
+        color: $yellow-base
+        .highlight
+          background: $yellow-base
+    &.funder
+      li
+        color: $blue-base
+        .highlight
+          background: $blue-base
     span
       color: $mid-grey
     li
-      color: $yellow-base
       padding: 25px 2px
       @media screen and (max-width: 480px)
         padding: 15px 2px
-      .highlight
-        background: $yellow-base
 
 /* Panel
  ========================================================================== */
@@ -486,6 +539,10 @@ input::-webkit-inner-spin-button
     +green-badge
   &.ineligible
     +red-badge
+  &.no-click
+    cursor: auto
+    &:hover
+      background: $white !important
 
 ul.insights
   list-style: none

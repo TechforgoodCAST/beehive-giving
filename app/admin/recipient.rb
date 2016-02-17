@@ -31,6 +31,7 @@ ActiveAdmin.register Recipient do
     column :website
     column :country
     column ("Users"){|f| f.users.count }
+    column :org_type
     column ("Profiles"){|f| f.profiles.count }
     column ("Unlocks"), :recipient_funder_accesses_count
     column ("Unlocked Funders") do |r|
@@ -41,12 +42,28 @@ ActiveAdmin.register Recipient do
     column ("Proposals"){|f| f.proposals.count }
     column ("Grants"){|f| f.grants.count }
     column ("Requests"){|f| f.features.count }
+    column ("Scrape") do |r|
+      if r.charity_name.present? && r.company_name.present?
+        "Both"
+      elsif r.charity_name.present? && !r.company_name.present?
+        "Charity"
+      elsif !r.charity_name.present? && r.company_name.present?
+        "Company"
+      else
+        "None"
+      end
+    end
+    column :street_address
+    column :postal_code
+    column :latitude
+    column :longitude
   end
 
   show do
     tabs do
       tab 'Overview' do
         attributes_table do
+          row :id
           row :name
           row :mission
           row :status

@@ -125,6 +125,7 @@ GEM
       actionpack (>= 3.2.13)
     formtastic_i18n (0.4.1)
     fssm (0.2.10)
+    geocoder (1.2.13)
     git-version-bump (0.15.1)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
@@ -343,13 +344,14 @@ DEPENDENCIES
   activeadmin!
   bcrypt (~> 3.1.7)
   capybara
-  chartkick
+  chartkick (~> 1.4.1)
   chosen-rails
   coffee-rails (~> 4.0.0)
   country_select
   devise
   factory_girl_rails
   fiscali
+  geocoder
   gon
   google-webfonts-rails
   groupdate

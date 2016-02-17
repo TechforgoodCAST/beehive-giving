@@ -2,33 +2,50 @@
   .uk-grid.uk-grid-small
     .uk-width-medium-1-2.uk-margin-bottom
       .uk-form-controls{style: 'position: relative;'}
-        = f.input :first_name, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+        = f.input :first_name, error: false, type: 'text', input_html: { class: 'large uk-width-1-1' }
         .uk-form-password-toggle
           = f.error :first_name, class: 'uk-text-small uk-text-warning'
     .uk-width-medium-1-2.uk-margin-bottom
       .uk-form-controls{style: 'position: relative;'}
-        = f.input :last_name, error: false, type: 'text', input_html: { class: 'uk-width-1-1' }
+        = f.input :last_name, error: false, type: 'text', input_html: { class: 'large uk-width-1-1' }
         .uk-form-password-toggle
           = f.error :last_name, class: 'uk-text-small uk-text-warning'
-    %label.uk-label.uk-float-left Select your role at the non-profit...
+
+    %label.uk-label.uk-float-left Are you seeking funds for...
     .uk-width-medium-1-1.uk-margin-bottom
       .uk-form-controls{style: 'position: relative;'}
-        = f.input :job_role, error: false, as: :select, collection: User::JOB_ROLES, input_html: { class: 'uk-width-1-1' }
+        = f.input :org_type, error: false, as: :select, collection: Organisation::ORG_TYPE, input_html: { class: 'large uk-width-1-1' }
         .uk-form-password-toggle
-          = f.error :job_role, class: 'uk-text-small uk-text-warning', style: 'margin-right: 8px'
+          = f.error :org_type, class: 'uk-text-small uk-text-warning', style: 'margin-right: 8px'
+
+      .cta.tight.red.uk-margin-top.fade-out.org-type-other
+        %strong Important.
+        None of the funders on Beehive provide grants for individuals.
+
+    #charity-number.uk-width-medium-1-1.uk-margin-bottom{ class: ('fade-out' unless charity_hidden?(@user.org_type)) }
+      .uk-form-controls{style: 'position: relative;'}
+        = f.input :charity_number, placeholder: 'Charity no.', input_html: { class: 'large uk-width-1-1' }
+        .uk-form-password-toggle
+          = f.error :charity_number, class: 'uk-text-small uk-text-warning', style: 'margin-right: 8px'
+
+    #company-number.uk-width-medium-1-1.uk-margin-bottom{ class: ('fade-out' unless company_hidden?(@user.org_type)) }
+      .uk-form-controls{style: 'position: relative;'}
+        = f.input :company_number, placeholder: 'Company no.', input_html: { class: 'large uk-width-1-1' }
+        .uk-form-password-toggle
+          = f.error :company_number, class: 'uk-text-small uk-text-warning', style: 'margin-right: 8px'
 
     .uk-width-1-1.organisation-declared
       .uk-width-medium-1-1.uk-margin-bottom
         .uk-form-controls{style: 'position: relative;'}
-          = f.input :user_email, error: false, type: 'email', input_html: { class: 'uk-width-1-1' }
+          = f.input :user_email, error: false, type: 'email', input_html: { class: 'large uk-width-1-1' }
           .uk-form-password-toggle
             = f.error :user_email, class: 'uk-text-small uk-text-warning'
       .uk-width-medium-1-1.uk-margin-bottom
         .uk-form-controls{style: 'position: relative;'}
-          = f.input :password, error: false, type: 'password', input_html: { class: 'uk-width-1-1', "data-uk-tooltip" => "{pos:'top', animation:true}", :title => "At least 6 characters with 1 number."}
+          = f.input :password, error: false, type: 'password', input_html: { class: 'large uk-width-1-1', "data-uk-tooltip" => "{pos:'top', animation:true}", :title => "At least 6 characters with 1 number."}
           .uk-form-password-toggle
             = f.error :password, class: 'uk-text-small uk-text-warning'
-      .uk-width-medium-1-1.uk-margin-bottom
+      .uk-width-medium-1-1.uk-margin-bottom.uk-text-center
         .uk-form-controls.uk-text-muted
           Accept
           = link_to 'terms of service', '#terms', class: 'blue', onclick: "window.open('#{terms_path}','Terms of Service','width=600,height=400')"
@@ -38,7 +55,7 @@
           = f.input_field :agree_to_terms, error: false, checked: true
           = f.error :agree_to_terms, class: 'uk-text-small uk-text-warning'
       .uk-width-medium-1-1.uk-text-truncate
-        = f.button :button, "Create an account (for free!)", class: 'uk-button uk-button-primary uk-width-1-1 uk-button-large shadow', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> Welcome aboard...</span>"}, id: 'submit_user'
+        = f.button :button, "Create an account (for free!)", class: 'uk-button uk-button-primary uk-width-1-1 uk-button-large bounce', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> Welcome aboard...</span>"}, id: 'submit_user'
 
     .uk-width-1-1.organisation-not-declared.fade-out
       .cta.red.tight

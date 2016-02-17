@@ -1,10 +1,11 @@
 FactoryGirl.define do
   factory :recipient, class: Recipient do
     transient do
-      n  { rand(9999) }
+      n { rand(9999) }
     end
+    org_type 3
     name "ACME"
-    website "www.acme.com"
+    website "http://www.acme.com"
     country "GB"
     status Organisation::STATUS.first
     registered true

@@ -7,7 +7,7 @@ FactoryGirl.define do
 
   factory :restriction do
     transient do
-      n  { rand(1000) }
+      n { rand(9999) }
     end
     details { "Random restriction #{n}" }
   end
