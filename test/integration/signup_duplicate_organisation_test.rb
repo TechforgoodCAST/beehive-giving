@@ -29,6 +29,42 @@ class SignupDuplicateOrganisationTest < ActionDispatch::IntegrationTest
     assert_equal false, User.last.authorised
   end
 
+  # refactor
+  test 'Sigining in a duplicate charity will redirect' do
+    @organisation.destroy
+    @organisation = create(:organisation, org_type: 1, company_number: '')
+    visit signup_organisation_path
+    within('#new_recipient') do
+      select('A registered charity', from: 'recipient_org_type')
+      fill_in('recipient_name', with: 'ACME')
+      Capybara.match = :first
+      select('United Kingdom', from: 'recipient_country')
+      select(Date.today.strftime('%B'), from: 'recipient_founded_on_2i')
+      select(Date.today.strftime('%Y'), from: 'recipient_founded_on_1i')
+      fill_in('recipient_charity_number', with: @organisation.charity_number)
+    end
+    click_button('Next')
+    assert_equal unauthorised_path, current_path
+  end
+
+  # refactor
+  test 'Sigining in a duplicate company will redirect' do
+    @organisation.destroy
+    @organisation = create(:organisation, org_type: 2, charity_number: nil)
+    visit signup_organisation_path
+    within('#new_recipient') do
+      select('A registered company', from: 'recipient_org_type')
+      fill_in('recipient_name', with: 'ACME')
+      Capybara.match = :first
+      select('United Kingdom', from: 'recipient_country')
+      select(Date.today.strftime('%B'), from: 'recipient_founded_on_2i')
+      select(Date.today.strftime('%Y'), from: 'recipient_founded_on_1i')
+      fill_in('recipient_company_number', with: @organisation.company_number)
+    end
+    click_button('Next')
+    assert_equal unauthorised_path, current_path
+  end
+
   test 'User will be blocked from accessing other pages' do
     @user.lock_access_to_organisation(@organisation)
     assert_equal false, @user.authorised
@@ -56,6 +92,11 @@ class SignupDuplicateOrganisationTest < ActionDispatch::IntegrationTest
     assert_equal 2, ActionMailer::Base.deliveries.size
     visit signup_organisation_path
     assert_equal new_recipient_profile_path(@user.organisation), current_path
+  end
+
+  test 'Once authorised redirected from unauthorised path' do
+    visit unauthorised_path
+    assert_equal signup_organisation_path, current_path
   end
 
 end
