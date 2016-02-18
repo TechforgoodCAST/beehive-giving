@@ -41,6 +41,7 @@ class Proposal < ActiveRecord::Base
   end
 
   def build_proposal_recommendation
+    self.recipient.refined_recommendation if self.recipient.recommendations.pluck(:funder_id).uniq.count < Funder.active.count
     Funder.active.each do |funder|
       recommendation = load_recommendation(funder)
       recommendation.update_attribute(:grant_amount_recommendation, calculate_grant_amount_recommendation(funder))
