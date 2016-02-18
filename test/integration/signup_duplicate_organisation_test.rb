@@ -3,6 +3,7 @@ require 'test_helper'
 class SignupDuplicateOrganisationTest < ActionDispatch::IntegrationTest
 
   setup do
+    create(:admin_user)
     ActionMailer::Base.deliveries = []
     @organisation = create(:organisation)
     create_and_auth_user!
