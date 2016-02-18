@@ -13,7 +13,8 @@ class UserMailer < ApplicationMailer
   def request_access(organisation, user)
     @organisation = organisation
     @user = user
-    mail(to: 'support@beehivegiving.org', subject: "#{@user.first_name} has requested access to #{@organisation.name}")
+    recipient = AdminUser.count > 0 ? AdminUser.first.email : 'support@beehivegiving.org'
+    mail(to: recipient, subject: "#{@user.first_name} has requested access to #{@organisation.name}")
   end
 
   def notify_unlock(user)
