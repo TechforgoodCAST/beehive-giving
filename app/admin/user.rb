@@ -16,6 +16,7 @@ ActiveAdmin.register User do
         link_to user.organisation.name, [:admin, user.organisation]
       end
     end
+    column :authorised
     column :first_name
     column :last_name
     column :user_email
