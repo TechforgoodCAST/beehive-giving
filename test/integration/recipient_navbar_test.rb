@@ -3,33 +3,43 @@ require 'test_helper'
 class RecipientNavbarTest < ActionDispatch::IntegrationTest
 
   setup do
+    @organisation = create(:organisation)
   end
 
   test 'logo click whilst unregistered sends to user#signup' do
-    visit about_path
+    visit faq_path
     find(:css, '.logo').click
     assert_equal signup_user_path, current_path
   end
 
-  test 'logo click with user sends to find?' do
+  test 'user creating profile has not navigation options' do
+    create_and_auth_user!
+    visit root_path
+    assert_equal signup_organisation_path, current_path
+    assert_not page.has_content?('Update profile')
+    assert_not page.has_content?('Funding proposals')
+    assert_not page.has_content?('Sign out')
   end
 
-  test 'logo click with organisation sends to dashboard' do
+  test 'user with profile can navigate to edit profiles path' do
+    create_and_auth_user!(organisation: @organisation)
+    create(:profile, organisation: @organisation)
+    visit recommended_funders_path
+    assert_equal recommended_funders_path, current_path
+    assert page.has_content?('Update profile')
+    assert_not page.has_content?('Funding proposals')
+    assert page.has_content?('Sign out')
   end
 
-  test 'logo click with profile sends to ?' do
-  end
-
-  test 'clicking Funders redirects to funders_path' do
-  end
-
-  test 'clicking Dashboard redirects to recipient_dashboard_path' do
-  end
-
-  test 'user icon opens drop down' do
-  end
-
-  test 'clicking Edit profiled redirects to recipient_profiles_path' do
+  test 'user with proposal can navigate to edit proposals path' do
+    create_and_auth_user!(organisation: @organisation)
+    create(:profile, organisation: @organisation)
+    create(:proposal, recipient: @organisation)
+    visit recommended_funders_path
+    assert_equal recommended_funders_path, current_path
+    assert page.has_content?('Update profile')
+    assert page.has_content?('Funding proposals')
+    assert page.has_content?('Sign out')
   end
 
 end

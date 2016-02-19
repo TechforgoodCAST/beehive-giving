@@ -41,11 +41,13 @@
                     %i.uk-icon-caret-down
                   .uk-dropdown.uk-dropdown-navbar.uk-dropdown-flip{ class: ('funder-dropdown' if current_user.role == 'Funder') }
                     %ul.uk-nav.uk-nav-navbar
-                      - if current_user.role == 'User' && @recipient.has_proposal?
+                      - if current_user.role == 'User'
                         %li
                           %a{:href => recipient_profiles_path(current_user.organisation)} Update profile
+                      - if current_user.role == 'User' && @recipient.has_proposal?
                         %li
                           %a{:href => recipient_proposals_path(current_user.organisation)} Funding proposals
+                      - if current_user.role == 'User'
                         %hr
                       %li
                         %a{href: logout_path, method: :destroy} Sign out
