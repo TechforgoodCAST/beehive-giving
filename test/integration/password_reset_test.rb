@@ -7,6 +7,12 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
     ActionMailer::Base.deliveries = []
   end
 
+  test 'cannot visit password resets path if logged in' do
+    create_cookie(:auth_token, @user.auth_token)
+    visit new_password_reset_path
+    assert_not_equal new_password_reset_path, current_path
+  end
+
   test 'clicking forgot password redirects to reset password page' do
     visit sign_in_path
     click_link('Forgot Password?')

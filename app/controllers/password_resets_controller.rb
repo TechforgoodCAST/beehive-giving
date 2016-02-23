@@ -1,5 +1,7 @@
 class PasswordResetsController < ApplicationController
 
+  before_filter :ensure_not_logged_in, :if => Proc.new { logged_in? }
+
   def create
     if params[:user_email].present?
       user = User.find_by_user_email(params[:user_email])
@@ -28,6 +30,12 @@ class PasswordResetsController < ApplicationController
     else
       render :edit
     end
+  end
+
+  private
+
+  def ensure_not_logged_in
+    redirect_to root_path, alert: "Sorry, you don't have access to that"
   end
 
 end
