@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160205133718) do
+ActiveRecord::Schema.define(version: 20160224162726) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -284,6 +284,7 @@ ActiveRecord::Schema.define(version: 20160205133718) do
     t.string   "grant_frequency"
     t.string   "marketing_frequency"
     t.integer  "price"
+    t.string   "most_useful"
   end
 
   add_index "feedbacks", ["user_id"], name: "index_feedbacks_on_user_id", using: :btree

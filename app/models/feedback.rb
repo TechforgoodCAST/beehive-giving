@@ -1,14 +1,17 @@
 class Feedback < ActiveRecord::Base
   belongs_to :user
 
-  NPS = ['- Not likely at all', '', '', '', '', '- Neutral', '', '', '', '', '- Extremely likely']
-  TAKEN_AWAY = ['- Very satisfied', '', '', '', '', '- Neutral', '', '', '', '', '- Very dissatisfied']
-  INFORMS_DECISION = ['- Strongly disagree', '', '', '', '', '- Neutral', '', '', '', '', '- Strongly agree']
+  MOST_USEFUL = ['The information about funders', 'Recommendations of funders', 'Being able to check your eligibility', 'Other']
+  NPS = ['- Not at all likely', '', '', '', '', '', '', '', '', '', '- Extremely likely']
+  TAKEN_AWAY = ['- Very satisfied', '', '', '', '', '', '', '', '', '', '- Very dissatisfied']
+  INFORMS_DECISION = ['- Strongly disagree', '', '', '', '', '', '', '', '', '', '- Strongly agree']
   APP_AND_GRANT_FREQUENCY = ['None', '1-3', '4-6', '7-9', '10 or more']
   MARKETING_FREQUENCY = %w[Weekly Monthly Quartetly Never]
 
-  validates :user, :nps, :taken_away, :informs_decision, :application_frequency,
-            :grant_frequency, :marketing_frequency, presence: true
+  validates :user, :most_useful, :nps, :taken_away, :informs_decision,
+            :application_frequency, :grant_frequency, :marketing_frequency,
+            presence: true
+  validates :most_useful, inclusion: {in: MOST_USEFUL}
   validates :nps, :taken_away, :informs_decision, inclusion: {in: 1..10}
   validates :application_frequency, inclusion: {in: APP_AND_GRANT_FREQUENCY}
   validates :grant_frequency, inclusion: {in: APP_AND_GRANT_FREQUENCY}

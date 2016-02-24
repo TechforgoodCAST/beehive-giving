@@ -1,20 +1,21 @@
 class FeedbackController < ApplicationController
 
   before_filter :ensure_logged_in, :load_recipient, :prevent_funder_access
+  before_filter :redirect_to_funder, only: [:new, :create]
 
   def new
-    @redirect_to_funder = params[:redirect_to_funder]
+    @feedback = current_user.feedbacks.new
     @funder = Funder.find_by_slug(@redirect_to_funder)
 
     redirect_to recommended_funders_path, alert: "It looks like you've already provided feedback" if current_user.feedbacks.count > 0
   end
 
   def create
-    @redirect_to_funder = params[:feedback].delete(:redirect_to_funder)
     @feedback = current_user.feedbacks.new(feedback_params)
     @funder = Funder.find_by_slug(@redirect_to_funder)
 
     if @feedback.save
+      session.delete(:redirect_to_funder)
       flash[:notice] = "You're a star! Thanks for the feedback."
       redirect_to recipient_eligibility_path(Funder.find_by_slug(@redirect_to_funder))
     else
@@ -40,11 +41,17 @@ class FeedbackController < ApplicationController
   private
 
   def feedback_params
-    params.require(:feedback).permit(:nps, :taken_away, :informs_decision, :other, :application_frequency, :grant_frequency, :marketing_frequency)
+    params.require(:feedback).permit(:most_useful, :nps, :taken_away,
+    :informs_decision, :other, :application_frequency, :grant_frequency,
+    :marketing_frequency)
   end
 
   def load_recipient
     @recipient = current_user.organisation if logged_in?
+  end
+
+  def redirect_to_funder
+    @redirect_to_funder = session[:redirect_to_funder]
   end
 
 end

@@ -27,6 +27,7 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
     # completing feedback form redirects to funder
     visit recipient_eligibility_path(@funders[2])
     within('#new_feedback') do
+      select(Feedback::MOST_USEFUL.sample, from: 'feedback_most_useful')
       select('10 - Extremely likely', from: 'feedback_nps')
       select('10 - Very dissatisfied', from: 'feedback_taken_away')
       select('10 - Strongly agree', from: 'feedback_informs_decision')

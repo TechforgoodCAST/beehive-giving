@@ -1,7 +1,0 @@
-- if @feedback.save
-  $.UIkit.modal("#feedback").hide();
-  $('#feedback-button').hide();
-  $('#feedback-button-mobile').hide();
-  $.UIkit.notify({message: "<i class='uk-icon-star'></i><span> You're a star! Thanks for the feedback.</span>", status: 'success', timeout: 3000, pos: 'top-center' });
-- else
-  $('#new_feedback').html('#{escape_javascript(render("feedback/form"))}');

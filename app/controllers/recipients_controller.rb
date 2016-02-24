@@ -74,7 +74,8 @@ class RecipientsController < ApplicationController
     @eligibility =  1.times { @restrictions.each { |r| @recipient.eligibilities.new(restriction_id: r.id) unless @recipient.eligibilities.where('restriction_id = ?', r.id).count > 0 } }
 
     if current_user.feedbacks.count < 1 && @recipient.unlocked_funders.count == 2
-      redirect_to new_feedback_path(redirect_to_funder: @funder)
+      session[:redirect_to_funder] = @funder.slug
+      redirect_to new_feedback_path
     elsif @recipient.is_subscribed? || (@recipient.recommended_funder?(@funder) && (@recipient.unlocked_funder_ids.include?(@funder.id) || @recipient.can_unlock_funder?(@funder)))
       render :eligibility
     else

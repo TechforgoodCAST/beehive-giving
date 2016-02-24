@@ -1,6 +1,6 @@
 ActiveAdmin.register Feedback do
 
-  permit_params :user_id, :nps, :taken_away, :informs_decision, :other
+  permit_params :user_id, :most_useful, :nps, :taken_away, :informs_decision, :other
 
   controller do
     def scoped_collection
@@ -19,6 +19,7 @@ ActiveAdmin.register Feedback do
         feedback.user.user_email
       end
     end
+    column :most_useful
     column "Net Promoter Score", :nps
     column :taken_away
     column :informs_decision
