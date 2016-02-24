@@ -17,7 +17,8 @@ class ApplicationController < ActionController::Base
   end
 
   def ensure_logged_in
-    return redirect_to '/', alert: "Please sign in" unless logged_in?
+    session[:original_url] = request.original_url
+    return redirect_to sign_in_path, alert: "Please sign in" unless logged_in?
     return ensure_authorised
   end
 

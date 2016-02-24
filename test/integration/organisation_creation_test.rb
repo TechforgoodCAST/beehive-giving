@@ -45,7 +45,7 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
 
   test 'you get redirected when visiting the page when not signed in' do
     visit signup_organisation_path
-    assert_equal signup_user_path, current_path
+    assert_equal sign_in_path, current_path
   end
 
   test 'if you are signed in and you have an organisation you get redirected to new profile path' do

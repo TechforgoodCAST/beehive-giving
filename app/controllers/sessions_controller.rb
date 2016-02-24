@@ -22,7 +22,11 @@ class SessionsController < ApplicationController
         cookies[:auth_token] = user.auth_token
         sign_in_metrics
       end
-      redirect_to start_path_for_user(user), notice: 'Signed in!'
+      if session[:original_url]
+        redirect_to session.delete(:original_url)
+      else
+        redirect_to start_path_for_user(user), notice: 'Signed in!'
+      end
     else
       flash[:error] = 'Incorrect email/password combination, please try again.'
       redirect_to sign_in_path

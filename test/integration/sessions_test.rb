@@ -10,13 +10,13 @@ class SessionsTest < ActionDispatch::IntegrationTest
   def assert_path(array)
     array.each do |path|
       visit path
-      assert_equal welcome_path, current_path
+      assert_equal sign_in_path, current_path
     end
   end
-
+  
   test 'ensure logged in for feedback' do
     visit new_feedback_path
-    assert_equal welcome_path, current_path
+    assert_equal sign_in_path, current_path
   end
 
   test 'ensure logged in for funders' do
@@ -61,11 +61,11 @@ class SessionsTest < ActionDispatch::IntegrationTest
   test 'ensure logged in for recipients' do
     assert_path([
       edit_recipient_path(@recipient),
-      recipient_path(@recipient),
+      # recipient_path(@recipient),
 
       # Non-profit
       funder_path(@funder),
-      recipient_public_path(@recipient),
+      # recipient_public_path(@recipient),
 
       # Eligibility
       recipient_eligibility_path(@recipient)
@@ -74,7 +74,7 @@ class SessionsTest < ActionDispatch::IntegrationTest
 
   test 'ensure logged in for signup' do
     visit signup_organisation_path
-    assert_equal welcome_path, current_path
+    assert_equal sign_in_path, current_path
   end
 
   test 'ensure logged in for users' do
