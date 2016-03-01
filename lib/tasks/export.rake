@@ -1,6 +1,6 @@
 namespace :export do
 
-  # usage: be rake export:nonprofits DESTINATON=/path
+  # usage: be rake export:nonprofits DESTINATION=/path
   desc 'Export nonprofit data for analysis'
   task :nonprofits => :environment do
     require 'csv'
@@ -41,13 +41,11 @@ namespace :export do
       }
 
       CSV.open(@destination, 'w') { |csv| csv << data.keys } if i < 1
-
       CSV.open(@destination, 'a+') { |csv| csv << data.values }
-
     end
   end
 
-  # usage: be rake export:grants DESTINATON=/path
+  # usage: be rake export:grants DESTINATION=/path
   desc 'Export grants data for analysis'
   task :grants => :environment do
     require 'csv'
@@ -74,13 +72,11 @@ namespace :export do
       }
 
       CSV.open(@destination, 'w') { |csv| csv << data.keys } if i < 1
-
       CSV.open(@destination, 'a+') { |csv| csv << data.values }
-
     end
   end
 
-  # usage: be rake export:enquiries DESTINATON=/path
+  # usage: be rake export:enquiries DESTINATION=/path
   desc 'Export enquiry data for analysis'
   task :enquiries => :environment do
     require 'csv'
@@ -100,7 +96,7 @@ namespace :export do
     end
   end
 
-  # usage: be rake export:proposals DESTINATON=/path
+  # usage: be rake export:proposals DESTINATION=/path
   desc 'Export proposal data for analysis'
   task :proposals => :environment do
     require 'csv'
