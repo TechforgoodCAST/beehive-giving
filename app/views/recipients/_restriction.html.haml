@@ -3,7 +3,7 @@
     .restriction
       %label.capitalize
         = succeed '?' do
-          = get_restriction_details(e.object.restriction_id)
+          = raw(get_restriction_details(e.object.restriction_id))
     .answer
       = e.hidden_field :recipient_id, value: @recipient.id
       = e.hidden_field :restriction_id
