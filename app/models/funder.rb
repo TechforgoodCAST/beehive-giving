@@ -28,7 +28,7 @@ class Funder < Organisation
 
   scope :active, -> {where(active_on_beehive: true)}
 
-  CLOSED_FUNDERS = ['Cripplegate Foundation']
+  CLOSED_FUNDERS = ['Cripplegate Foundation', 'The Baring Foundation']
 
   def get_map_all_data
     features = []
