@@ -57,8 +57,8 @@ class Proposal < ActiveRecord::Base
 
   def proposal_recommendation(funder, group, request, precision)
     score = 0
-    total_grants = funder.recent_grants.count
-    funder.recent_grants.group(group).count.each do |k, v|
+    total_grants = funder.recent_grants(funder.current_attribute.year).count
+    funder.recent_grants(funder.current_attribute.year).group(group).count.each do |k, v|
       score += (v.to_f / total_grants) if (k-precision..k+precision).include?(request)
     end
     score
@@ -69,7 +69,7 @@ class Proposal < ActiveRecord::Base
   end
 
   def calculate_grant_duration_recommendation(funder)
-    if funder.recent_grants.where('days_from_start_to_end is NULL').count == 0
+    if funder.recent_grants(funder.current_attribute.year).where('days_from_start_to_end is NULL').count == 0
       proposal_recommendation(funder, 'days_from_start_to_end', (funding_duration * 30), 28)
     else
       0
