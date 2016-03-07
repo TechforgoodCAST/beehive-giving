@@ -73,7 +73,7 @@ gem 'httparty'
 gem 'nokogiri'
 gem 'geocoder'
 
-gem 'newrelic_rpm', '~> 3.12.0', require: false
+gem 'newrelic_rpm'
 gem 'intercom-rails'
 
 # Use ActiveModel has_secure_password
