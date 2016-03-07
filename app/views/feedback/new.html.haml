@@ -10,6 +10,11 @@
       .form.uk-form.uk-form-stacked.uk-panel.uk-panel-box.shadow
 
         .uk-width-1-1.uk-margin-bottom
+          .uk-margin-small-bottom How suitable were your recommended funders?
+          = f.input :suitable, as: :select, collection: (0..10).to_a.reverse, label_method: lambda { |n| "#{n} #{Feedback::SUITABLE[n]}" }, input_html: {class: 'large uk-width-1-1'}
+          = f.error :suitable, class: 'error-message'
+
+        .uk-width-1-1.uk-margin-bottom
           .uk-margin-small-bottom What was most useful about Beehive?
           = f.input :most_useful, as: :select, collection: Feedback::MOST_USEFUL, input_html: {class: 'large uk-width-1-1'}
           = f.error :most_useful, class: 'error-message'

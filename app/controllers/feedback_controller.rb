@@ -41,7 +41,7 @@ class FeedbackController < ApplicationController
   private
 
   def feedback_params
-    params.require(:feedback).permit(:most_useful, :nps, :taken_away,
+    params.require(:feedback).permit(:suitable, :most_useful, :nps, :taken_away,
     :informs_decision, :other, :application_frequency, :grant_frequency,
     :marketing_frequency)
   end
