@@ -20,7 +20,7 @@ class Organisation < ActiveRecord::Base
 
   attr_accessor :skip_validation
 
-  validates :org_type, :name, :founded_on, :status, :country, presence: true,
+  validates :org_type, :name, :status, :country, presence: true,
     unless: :skip_validation
 
   validates :org_type, inclusion: { in: 0..4, message: 'please select a valid option' },
@@ -35,10 +35,6 @@ class Organisation < ActiveRecord::Base
 
   validates :charity_number, uniqueness: { on: [:create], scope: [:company_number] }, allow_nil: true, allow_blank: true
   validates :company_number, uniqueness: { on: [:create], scope: [:charity_number] }, allow_nil: true, allow_blank: true
-
-  validate :founded_on_before_registered_on
-  validates :registered_on, presence: true, if: Proc.new { |o| o.org_type != 0 && o.org_type != 4 },
-    unless: :skip_validation
 
   validates :status, inclusion: { in: STATUS },
     unless: :skip_validation
@@ -200,17 +196,10 @@ class Organisation < ActiveRecord::Base
 
   private
 
-  def founded_on_before_registered_on
-    if founded_on.present? and registered_on.present?
-      errors.add(:registered_on, "you can't be registered before being founded") if registered_on < founded_on
-    end
-  end
-
   def clear_registration_numbers_if_unregistered
     if self.org_type == 0 || self.org_type == 4
       self.charity_number = nil
       self.company_number = nil
-      self.registered_on = nil
     end
   end
 

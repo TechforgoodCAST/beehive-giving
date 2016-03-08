@@ -59,20 +59,6 @@
 
     .uk-width-medium-1-1
       .uk-grid
-        .uk-width-medium-1-2.uk-margin-top.founded-on
-          .label When was your organisation or project established?
-          .uk-form-controls
-            = f.input :founded_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-250, discard_day: true, order: [:month, :year], include_blank: true, default: nil, input_html: { class: 'large' }
-            = f.error :founded_on, class: 'error-message'
-
-        .uk-width-medium-1-2.uk-margin-top.fade-out.registered-on
-          .label When was your organisation legally registered?
-          .uk-form-controls
-            = f.input :registered_on, as: :date, start_year: Date.today.year, end_year: Date.today.year-250, include_blank: true, discard_day: true, order: [:month, :year], input_html: { class: 'large' }
-            = f.error :registered_on, class: 'error-message'
-
-    .uk-width-medium-1-1
-      .uk-grid
         .uk-width-medium-1-2.uk-margin-top.website
           .label Your organisation or projects website
           .uk-form-controls

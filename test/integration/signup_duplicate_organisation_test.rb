@@ -19,8 +19,6 @@ class SignupDuplicateOrganisationTest < ActionDispatch::IntegrationTest
       fill_in('recipient_name', with: 'ACME')
       Capybara.match = :first
       select('United Kingdom', from: 'recipient_country')
-      select(Date.today.strftime('%B'), from: 'recipient_founded_on_2i')
-      select(Date.today.strftime('%Y'), from: 'recipient_founded_on_1i')
       fill_in('recipient_charity_number', with: @organisation.charity_number)
       fill_in('recipient_company_number', with: @organisation.company_number)
     end
@@ -40,8 +38,6 @@ class SignupDuplicateOrganisationTest < ActionDispatch::IntegrationTest
       fill_in('recipient_name', with: 'ACME')
       Capybara.match = :first
       select('United Kingdom', from: 'recipient_country')
-      select(Date.today.strftime('%B'), from: 'recipient_founded_on_2i')
-      select(Date.today.strftime('%Y'), from: 'recipient_founded_on_1i')
       fill_in('recipient_charity_number', with: @organisation.charity_number)
     end
     click_button('Next')
@@ -58,8 +54,6 @@ class SignupDuplicateOrganisationTest < ActionDispatch::IntegrationTest
       fill_in('recipient_name', with: 'ACME')
       Capybara.match = :first
       select('United Kingdom', from: 'recipient_country')
-      select(Date.today.strftime('%B'), from: 'recipient_founded_on_2i')
-      select(Date.today.strftime('%Y'), from: 'recipient_founded_on_1i')
       fill_in('recipient_company_number', with: @organisation.company_number)
     end
     click_button('Next')

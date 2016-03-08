@@ -8,8 +8,6 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
       fill_in('recipient_name', with: 'ACME')
       Capybara.match = :first
       select('United Kingdom', from: 'recipient_country')
-      select(Date.today.strftime('%B'), from: 'recipient_founded_on_2i')
-      select(Date.today.strftime('%Y'), from: 'recipient_founded_on_1i')
       case state
       when 'A registered charity'
         fill_in('recipient_charity_number', with: '1161998')
@@ -28,16 +26,6 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
     create_and_auth_user!
     visit signup_organisation_path
     full_form(state)
-    click_button('Next')
-
-    # scrape triggerd for valid charity number
-    assert_equal 'Centre For The Acceleration Of Social Technology', find("#recipient_name")[:value]
-
-    # complete missing data and submit
-    within('#new_recipient') do
-      select(find("#recipient_registered_on_2i option[selected='selected']").text, from: 'recipient_founded_on_2i')
-      select(find("#recipient_registered_on_1i option[selected='selected']").text, from: 'recipient_founded_on_1i')
-    end
     click_button('Next')
 
     assert_equal new_recipient_profile_path(Recipient.first), current_path
@@ -81,15 +69,15 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
     assert page.has_content?("can't be blank")
   end
 
-  test 'unregistered organistion only needs founded on' do
-    create_and_auth_user!
-    visit signup_organisation_path
-    full_form('Other')
-    click_button('Next')
-    assert_equal new_recipient_profile_path(Recipient.first), current_path
-    assert page.has_content?('Target')
-    assert Recipient.first.registered_on.nil?
-  end
+  # test 'unregistered organistion only needs founded on' do
+  #   create_and_auth_user!
+  #   visit signup_organisation_path
+  #   full_form('Other')
+  #   click_button('Next')
+  #   assert_equal new_recipient_profile_path(Recipient.first), current_path
+  #   assert page.has_content?('Target')
+  #   assert Recipient.first.registered_on.nil?
+  # end
 
   test 'correct fields required for org type 1' do
     complete_form_for('A registered charity')
@@ -109,8 +97,8 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
     full_form('A registered charity')
     click_button('Next')
 
-    assert_equal '3', find("#recipient_org_type")[:value]
-    assert_equal '09544506', find("#recipient_company_number")[:value]
+    assert_equal new_recipient_profile_path(Recipient.first), current_path
+    assert_equal 3, Recipient.first.org_type
   end
 
   test 'form cleared when org_type changes' do

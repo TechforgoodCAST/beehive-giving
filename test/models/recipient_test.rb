@@ -44,28 +44,6 @@ class RecipientTest < ActiveSupport::TestCase
     assert 2, @recipient.recommendations.size
   end
 
-  test "founded_on before registered_on checked when registered" do
-    @recipient.registered = true
-    @recipient.founded_on = Date.today - 2.months
-    @recipient.registered_on = Date.today - 1.month
-    assert @recipient.valid?
-
-    @recipient.founded_on = Date.today - 1.month
-    @recipient.registered_on = Date.today - 2.months
-    assert_not @recipient.valid?
-  end
-
-  test "founded_on before registered_on is ignored when not registered organisation" do
-    @recipient.org_type = 0
-    @recipient.street_address = "London Road"
-    @recipient.founded_on = Date.today - 1.day
-    @recipient.registered_on = Date.today - 7.days
-    assert @recipient.valid?
-
-    @recipient.org_type = 4
-    assert @recipient.valid?
-  end
-
   test "charity number or company number does exist if registered organisation" do
     case @recipient.org_type
     when 1
