@@ -6,10 +6,15 @@ class ApplicationController < ActionController::Base
   helper_method :logged_in?
   helper_method :current_user
 
-  before_filter :load_feedback, :if => Proc.new { logged_in? }
+  before_filter :load_feedback, if: Proc.new { logged_in? }
+  before_filter :set_new_relic_user, if: Proc.new { logged_in? }
 
   def current_user
     current_user ||= User.find_by_auth_token(cookies[:auth_token])
+  end
+
+  def set_new_relic_user
+    ::NewRelic::Agent.add_custom_attributes({ user_id: current_user.id })
   end
 
   def logged_in?
@@ -66,7 +71,6 @@ class ApplicationController < ActionController::Base
 
   unless Rails.application.config.consider_all_requests_local
     rescue_from StandardError do |exception|
-      NewRelic::Agent.add_custom_attributes({ user_id: current_user.id }) if current_user
       NewRelic::Agent.notice_error(exception)
       render "errors/#{status_code}", :status => status_code
     end
