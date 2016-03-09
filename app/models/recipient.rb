@@ -234,10 +234,10 @@ class Recipient < Organisation
           score += 0.1 if profiles.order('year').last.min_age <= funder.attributes.where('funding_stream = ?', 'All').first.beneficiary_max_age
         end
 
-        # Age
-        if funder.attributes.where('funding_stream = ?', 'All').first.funded_age_temp
-          score += 0.1 if (Date.today - founded_on) >= (funder.attributes.where('funding_stream = ?', 'All').first.funded_age_temp - 2.5) && (Date.today - founded_on) <= (funder.attributes.where('funding_stream = ?', 'All').first.funded_age_temp + 2.5)
-        end
+        # # Age
+        # if funder.attributes.where('funding_stream = ?', 'All').first.funded_age_temp
+        #   score += 0.1 if (Date.today - founded_on) >= (funder.attributes.where('funding_stream = ?', 'All').first.funded_age_temp - 2.5) && (Date.today - founded_on) <= (funder.attributes.where('funding_stream = ?', 'All').first.funded_age_temp + 2.5)
+        # end
 
         # Finance
         if funder.attributes.where('funding_stream = ?', 'All').first.funded_income_temp
