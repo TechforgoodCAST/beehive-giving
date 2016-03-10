@@ -15,18 +15,6 @@
       .label Do you receive financial payment (not donations) for your work?
       = f.input :does_sell, as: :radio_buttons, input_html: { class: 'uk-width-1-1' }
       = f.error :does_sell, class: 'error-message'
-    .uk-width-1-1
-      .label
-        How many beneficiaries has or will your work affected this year
-        = succeed '?' do
-          = surround '(', ')' do
-            = Date.today.year
-      .uk-grid
-        .uk-width-medium-1-2
-          = f.input :beneficiaries_count, input_html: { class: 'uk-width-1-1 large' }
-          = f.error :beneficiaries_count, class: 'error-message'
-        .uk-display-block.boolean-padding
-          = f.input :beneficiaries_count_actual, as: :boolean, checked_value: false, unchecked_value: true, inline_label: 'Are these estimated figures?'
 
   - unless @profile.state == 'complete'
     = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-margin-top uk-button-large uk-width-medium-1-2 uk-float-right', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> You're getting the hang of this...</span>"}

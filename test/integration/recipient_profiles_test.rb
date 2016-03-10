@@ -117,7 +117,6 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
     within("#edit_profile_#{@profile.id}") do
       check("profile_implementation_ids_#{@implementations[0].id}")
       choose('Yes')
-      fill_in('profile_beneficiaries_count', :with => 0)
     end
     click_button('Next')
   end

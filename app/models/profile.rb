@@ -86,20 +86,11 @@ class Profile < ActiveRecord::Base
 
   ## work state validations
 
-  validates :beneficiaries_count, presence: true,
-            if: ('self.work? || self.complete?')
-
   validates :implementations, presence: true, if: ('self.work? || self.complete?'), unless: 'self.implementations_other.present?'
 
   validates :implementations_other, presence: { message: "must uncheck 'Other' or specify details" }, if: :implementations_other_required
 
   validates :does_sell, inclusion: { message: 'please select an option', in: [true, false] }, if: ('self.work? || self.complete?')
-
-  validates :beneficiaries_count,
-            numericality: { only_integer: true, greater_than_or_equal_to: 0,
-            if: ('self.work? || self.complete?') }
-
-  ## finance state validations
 
   validates :income, :expenditure, presence: true, if: ('self.finance? || self.complete?')
 
