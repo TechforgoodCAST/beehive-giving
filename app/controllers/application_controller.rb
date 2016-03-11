@@ -9,6 +9,13 @@ class ApplicationController < ActionController::Base
   before_filter :load_feedback, if: Proc.new { logged_in? }
   before_filter :set_new_relic_user, if: Proc.new { logged_in? }
 
+  rescue_from ActionController::InvalidAuthenticityToken, with: :bad_token
+
+  def bad_token
+    flash[:warning] = 'Please sign in asdas'
+    redirect_to '/logout'
+  end
+
   def current_user
     current_user ||= User.find_by_auth_token(cookies[:auth_token])
   end
