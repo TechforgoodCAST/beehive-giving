@@ -39,8 +39,6 @@ FactoryGirl.define do
     staff_count 1
     trustee_count 3
     does_sell true
-    beneficiaries_count 1
-    beneficiaries_count_actual true
     income 1
     expenditure 1
     income_actual true
