@@ -35,6 +35,8 @@
             %a.primary{href: '#not-charity'} My organisation or project isn’t a registered charity can I still use Beehive?
           %li
             %a.primary{href: '#individual'} I’m looking for funding to support an individual beneficiary. Can Beehive help me find this kind of funding?
+          %li
+            %a.primary{href: '#individual-fundraiser'} I'm fundraising on behalf of a charity through an event, expedition or other activity. Can Beehive help me?
 
     %section#background
       %hr.thick
@@ -258,3 +260,16 @@
           and
           = succeed '.' do
             = link_to 'Turn2us', 'https://www.turn2us.org.uk/', target: '_blank', class: 'primary'
+        %p
+          Also see
+          = link_to "I'm fundraising on behalf of a charity through an event, expedition or other activity. Can Beehive help me?", faq_path(anchor: 'individual-fundraiser'), class: 'primary'
+
+      %section#individual-fundraiser
+        %hr.thick
+        %h3
+          I'm fundraising on behalf of a charity through an event, expedition or other activity. Can Beehive help me?
+          %span.muted.year Getting started
+        %p
+          Unfortunately not, the funders on Beehive only provide support to charitable organisations or projects directly. Meaning, that they are unable to support individuals who are fundraising on behalf of an organisation or project.
+        %p
+          This is because organisations and projects are often required to have a written governing document, and separate bank account to ensure the appropriate use of charitable funding.
