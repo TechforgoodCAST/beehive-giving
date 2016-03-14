@@ -1,6 +1,5 @@
 = simple_form_for @organisation, url: signup_organisation_path, remote: true do |f|
   .uk-grid.uk-form.form
-    = f.hidden_field :status, value: 'Active - currently operational'
     .uk-width-medium-1-1
       .uk-grid
         .uk-width-large-1-2
@@ -57,7 +56,7 @@
       = f.input :country, error: false, type: 'text', input_html: { class: 'large uk-width-1-1 chosen-select' }, include_blank: true, priority: ['United Kingdom']
       = f.error :country, class: 'error-message'
 
-    .uk-width-medium-1-1.uk-margin-top
+    .uk-width-medium-1-1.uk-margin-top.fade-out.name
       .label How long has your organisation or project been operating for?
       = f.input :operating_for, as: :select, collection: Organisation::OPERATING_FOR, input_html: { class: 'large uk-width-1-1' }
       = f.error :operating_for, class: 'error-message'

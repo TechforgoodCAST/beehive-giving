@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160311162559) do
+ActiveRecord::Schema.define(version: 20160314150803) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -445,13 +445,13 @@ ActiveRecord::Schema.define(version: 20160311162559) do
     t.string   "slug",                            limit: 255
     t.string   "type",                            limit: 255
     t.text     "mission"
-    t.string   "status",                          limit: 255
+    t.string   "status",                          limit: 255, default: "Active - currently operational"
     t.date     "founded_on"
     t.date     "registered_on"
     t.boolean  "registered"
     t.boolean  "active_on_beehive"
-    t.datetime "created_at",                                              null: false
-    t.datetime "updated_at",                                              null: false
+    t.datetime "created_at",                                                                             null: false
+    t.datetime "updated_at",                                                                             null: false
     t.integer  "recipient_funder_accesses_count"
     t.integer  "org_type"
     t.float    "latitude"
@@ -478,7 +478,7 @@ ActiveRecord::Schema.define(version: 20160311162559) do
     t.date     "company_next_annual_return_date"
     t.date     "company_last_annual_return_date"
     t.date     "company_annual_return_due_date"
-    t.text     "company_sic",                                                          array: true
+    t.text     "company_sic",                                                                                         array: true
     t.string   "company_recent_accounts_link"
     t.integer  "grants_count",                                default: 0
     t.integer  "operating_for"
