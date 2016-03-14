@@ -11,8 +11,7 @@ FactoryGirl.define do
     registered true
     charity_number { "1AB1C#{n}" }
     company_number { "1AB1C#{n}" }
-    founded_on "01/01/2014"
-    registered_on "01/01/2015"
+    operating_for Organisation::OPERATING_FOR.sample[1]
   end
 
   factory :recipient_attribute, class: RecipientAttribute do

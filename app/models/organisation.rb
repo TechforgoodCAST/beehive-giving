@@ -10,6 +10,12 @@ class Organisation < ActiveRecord::Base
     ['A registered charity & company', 3],
     ['Other', 4]
   ]
+  OPERATING_FOR = [
+    ['Yet to start', 0],
+    ['Less than 12 months', 1],
+    ['Less than 3 years', 2],
+    ['4 years or more', 3]
+  ]
 
   has_one :subscription
   has_many :users, dependent: :destroy
@@ -20,10 +26,13 @@ class Organisation < ActiveRecord::Base
 
   attr_accessor :skip_validation
 
-  validates :org_type, :name, :status, :country, presence: true,
+  validates :org_type, :name, :status, :country, :operating_for, presence: true,
     unless: :skip_validation
 
   validates :org_type, inclusion: { in: 0..4, message: 'please select a valid option' },
+    unless: :skip_validation
+
+  validates :operating_for, inclusion: { in: 0..3, message: 'please select a valid option' },
     unless: :skip_validation
 
   validates :street_address, presence: true, if: Proc.new { |o| o.org_type == 0 || o.org_type == 4 },
@@ -188,9 +197,24 @@ class Organisation < ActiveRecord::Base
 
       self.registered_on = self.company_incorporated_date
 
+      if self.company_incorporated_date
+        self.set_registered_on_if_scraped
+      end
+
       return true
     else
       return false
+    end
+  end
+
+  def set_registered_on_if_scraped
+    age = ((Date.today - self.company_incorporated_date).to_f / 365)
+    if age <= 1
+      self.operating_for = 1
+    elsif age > 1 && age <= 3
+      self.operating_for = 2
+    elsif age > 3
+      self.operating_for = 3
     end
   end
 
