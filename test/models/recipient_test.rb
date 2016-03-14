@@ -93,4 +93,19 @@ class RecipientTest < ActiveSupport::TestCase
     assert_equal false, @recipient.latitude.present?
   end
 
+  test "set registered on if scraped" do
+    @recipient.operating_for = nil
+    assert_equal nil, @recipient.operating_for
+
+    def check(years_ago, boost=0)
+      @recipient.company_incorporated_date = Date.today - ((365 * years_ago) + boost)
+      @recipient.set_registered_on_if_scraped
+      assert_equal years_ago, @recipient.operating_for
+    end
+
+    check(1)
+    check(2)
+    check(3, 365)
+  end
+
 end

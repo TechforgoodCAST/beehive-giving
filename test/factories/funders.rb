@@ -19,6 +19,7 @@ FactoryGirl.define do
     company_number { "1AB1C#{n}" }
     founded_on "01/01/2014"
     registered_on "01/01/2015"
+    operating_for Organisation::OPERATING_FOR.sample[1]
     active_on_beehive true
   end
 end

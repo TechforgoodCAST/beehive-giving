@@ -57,13 +57,17 @@
       = f.input :country, error: false, type: 'text', input_html: { class: 'large uk-width-1-1 chosen-select' }, include_blank: true, priority: ['United Kingdom']
       = f.error :country, class: 'error-message'
 
+    .uk-width-medium-1-1.uk-margin-top
+      .label How long has your organisation or project been operating for?
+      = f.input :operating_for, as: :select, collection: Organisation::OPERATING_FOR, input_html: { class: 'large uk-width-1-1' }
+      = f.error :operating_for, class: 'error-message'
+
     .uk-width-medium-1-1
       .uk-grid
         .uk-width-medium-1-2.uk-margin-top.website
           .label Your organisation or projects website
-          .uk-form-controls
-            = f.input :website, as: :url, input_html: { class: 'large uk-width-1-1' }
-            = f.error :website, class: 'error-message'
+          = f.input :website, as: :url, input_html: { class: 'large uk-width-1-1' }
+          = f.error :website, class: 'error-message'
 
     .uk-width-medium-1-1.uk-margin-top.next
       = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-button-large uk-width-medium-1-2 uk-float-right', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> We're off the mark...</span>"}

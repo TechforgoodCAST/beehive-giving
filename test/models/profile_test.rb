@@ -36,11 +36,6 @@ class ProfileTest < ActiveSupport::TestCase
     assert @district.country
   end
 
-  test "doesn't allow profile before year of founding" do
-    @profile.year = 2013
-    assert_not @profile.valid?
-  end
-
   test 'profile starts with beneficiaries' do
     assert_equal 'beneficiaries', @profile.state
   end

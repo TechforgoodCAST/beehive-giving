@@ -1,6 +1,5 @@
 class Profile < ActiveRecord::Base
 
-  before_validation :allowed_years, unless: Proc.new { |profile| profile.year.nil? }
   before_save :clear_other_options
 
   belongs_to :organisation
@@ -97,14 +96,6 @@ class Profile < ActiveRecord::Base
   validates :income, :expenditure,
             numericality: { only_integer: true, greater_than_or_equal_to: 0,
             if: ('self.finance? || self.complete?') }
-
-  def allowed_years
-    if organisation.founded_on
-      if organisation.founded_on.year.to_i > year
-        errors.add(:year, "you can't make a profile before #{organisation.founded_on.year} because that's when your organisation was founded")
-      end
-    end
-  end
 
   def clear_other_options
     unless self.beneficiaries_other_required?
