@@ -44,7 +44,9 @@ class ProfilesController < ApplicationController
     @profiles = @recipient.profiles
   end
 
-  def edit; end
+  def edit
+    gon.orgCountry = Country.find_by_alpha2(@recipient.country).name
+  end
 
   def update
     respond_to do |format|

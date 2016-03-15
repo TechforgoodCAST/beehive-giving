@@ -41,10 +41,7 @@
       %hr.thick.uk-margin-bottom
 
     .uk-width-medium-1-1.fade-out.name
-      .label
-        Which organisation or project are you seeking funds for?
-        -# %span
-        -#   %a.yellow I don't have an organisation
+      .label Which organisation or project are you seeking funds for?
       = f.input :name, type: 'text', input_html: { class: 'large uk-width-1-1' }
       = f.error :name, class: 'error-message'
 
@@ -55,6 +52,11 @@
         = f.error :street_address, class: 'error-message'
       = f.input :country, error: false, type: 'text', input_html: { class: 'large uk-width-1-1 chosen-select' }, include_blank: true, priority: ['United Kingdom']
       = f.error :country, class: 'error-message'
+
+    .uk-width-medium-1-1.uk-margin-top.fade-out.name
+      .label Does your organisation or project operate in more than one country?
+      = f.input :multi_national, as: :radio_buttons, input_html: { class: 'large uk-width-1-1' }
+      = f.error :multi_national, class: 'error-message'
 
     .uk-width-medium-1-1.uk-margin-top.fade-out.name
       .label How long has your organisation or project been operating for?

@@ -12,6 +12,7 @@ FactoryGirl.define do
     charity_number { "1AB1C#{n}" }
     company_number { "1AB1C#{n}" }
     operating_for Organisation::OPERATING_FOR.sample[1]
+    multi_national false
   end
 
   factory :recipient_attribute, class: RecipientAttribute do

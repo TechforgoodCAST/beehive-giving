@@ -20,6 +20,7 @@ FactoryGirl.define do
     founded_on "01/01/2014"
     registered_on "01/01/2015"
     operating_for Organisation::OPERATING_FOR.sample[1]
+    multi_national false
     active_on_beehive true
   end
 end
