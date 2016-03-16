@@ -59,6 +59,7 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
   end
 
   def complete_beneficiaries_section
+    create(:country)
     @beneficiaries = Array.new(3) { create(:beneficiary) }
     visit new_recipient_profile_path(@recipient)
     assert_equal new_recipient_profile_path(@recipient), current_path
@@ -93,6 +94,39 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
     complete_location_section
     assert_equal 'team', @recipient.profiles.first.state
   end
+
+  test 'country completed if multi national' do
+    @recipient.update_attribute(:multi_national, true)
+    complete_beneficiaries_section
+    assert @recipient.multi_national?
+    assert page.has_css?('.uk-hidden', count: 0)
+    # Selenium?
+  end
+
+  test 'country blank if not not multi national' do
+    complete_beneficiaries_section
+    assert_not @recipient.multi_national?
+    assert page.has_css?('.uk-hidden', count: 2)
+  end
+
+  # # Selenium
+  # test 'countries field toggle' do
+  #   Capybara.current_driver = :selenium
+  #   browser = Capybara.current_session.driver.browser
+  #   browser.manage.add_cookie(name: :auth_token, value: @user.auth_token)
+  #
+  #   visit sign_in_path
+  #   within("#sign-in") do
+  #     fill_in('email', :with => @user.user_email)
+  #     fill_in('password', :with => @user.password)
+  #   end
+  #   click_button 'Sign in'
+  #
+  #   complete_beneficiaries_section
+  #   assert page.has_css?('.uk-hidden', count: 2)
+  #   click('Work in another country?')
+  #   assert page.has_css?('.uk-hidden', count: 0)
+  # end
 
   def complete_team_section
     @implementors = Array.new(3) { create(:implementor) }

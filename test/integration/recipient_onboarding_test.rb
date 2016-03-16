@@ -20,6 +20,7 @@ class RecipientOnboardingTest < ActionDispatch::IntegrationTest
 
   test 'Incomplete profile update redirects to profile update page' do
     create_and_auth_user!(organisation: @recipient)
+    create(:country) # For gon.countryName
     @profile = create(:incomplete_profile, organisation: @recipient)
     visit root_path
     assert_equal edit_recipient_profile_path(@recipient, @profile), current_path

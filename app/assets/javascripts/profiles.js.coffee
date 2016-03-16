@@ -9,20 +9,39 @@ ProfileForm = ((w, d) ->
   bindCountryRegions = ->
     districts = $('.district_field').html()
 
-    country = $('.country_field :selected')
-    options = []
-    $.each country, (index, value) ->
-      options.push($(districts).filter("optgroup[label='#{$(value).text()}']").html())
-      return
-    $('.district_field').html(options).trigger("chosen:updated")
-
-    $('.country_field').change ->
+    populateDistrictsList = ->
       country = $('.country_field :selected')
       options = []
       $.each country, (index, value) ->
         options.push($(districts).filter("optgroup[label='#{$(value).text()}']").html())
         return
       $('.district_field').html(options).trigger("chosen:updated")
+
+    gon.orgCountry = gon.orgCountry || ''
+    if gon.orgCountry.length > 0
+      $('.country_field option').filter ->
+        if $(this).html() == gon.orgCountry
+          $(this).prop('selected', true)
+    populateDistrictsList()
+
+    $('.country_field').change ->
+      populateDistrictsList()
+
+  showCountries = ->
+    _cookieName = '_bhCountries'
+    toggle = ->
+      $('.countries').removeClass('uk-hidden')
+      $('.show-countries').addClass('fade-out')
+      return
+    if d.cookie.indexOf(_cookieName) >= 0
+      toggle()
+    else
+      $('.show-countries').on 'click', (e) ->
+        toggle()
+        date = new Date();
+        minutes = 30;
+        date.setTime(date.getTime() + (minutes * 60 * 1000))
+        document.cookie = _cookieName + '=true; Path=/; Expires=' + date + ';'
 
   triggerOtherFieldToggle = ->
     $.each $('.toggle-other'), ( index, value ) ->
@@ -80,7 +99,8 @@ ProfileForm = ((w, d) ->
     bindCountryRegions: bindCountryRegions,
     otherFieldToggle: otherFieldToggle,
     toggleMoreBeneficiaryOptions: toggleMoreBeneficiaryOptions,
-    highlightChecked: highlightChecked
+    highlightChecked: highlightChecked,
+    showCountries: showCountries
     # bindGetTooltip: bindGetTooltip,
   }
 )(window, document)
@@ -91,6 +111,7 @@ $(document).ready ->
   ProfileForm.highlightChecked('checkbox')
   ProfileForm.highlightChecked('radio')
   ProfileForm.otherFieldToggle()
+  ProfileForm.showCountries()
   # ProfileForm.bindGetTooltip()
 
 $(document).ajaxComplete ->
@@ -99,4 +120,5 @@ $(document).ajaxComplete ->
   ProfileForm.highlightChecked('checkbox')
   ProfileForm.highlightChecked('radio')
   ProfileForm.otherFieldToggle()
+  ProfileForm.showCountries()
   # ProfileForm.bindGetTooltip()

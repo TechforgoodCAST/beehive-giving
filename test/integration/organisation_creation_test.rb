@@ -9,6 +9,7 @@ class OrganisationCreationTest < ActionDispatch::IntegrationTest
       Capybara.match = :first
       select('United Kingdom', from: 'recipient_country')
       select('Yet to start', from: 'recipient_operating_for')
+      choose('No')
       case state
       when 'A registered charity'
         fill_in('recipient_charity_number', with: '1161998')

@@ -29,6 +29,9 @@ class Organisation < ActiveRecord::Base
   validates :org_type, :name, :status, :country, :operating_for, presence: true,
     unless: :skip_validation
 
+  validates :multi_national, inclusion: { message: 'please select an option', in: [true, false] },
+    unless: :skip_validation
+
   validates :org_type, inclusion: { in: 0..4, message: 'please select a valid option' },
     unless: :skip_validation
 

@@ -194,7 +194,7 @@ class SignupController < ApplicationController
   def organisation_params
     params.require(:recipient).permit(:name, :website, :street_address,
       :country, :charity_number, :company_number, :operating_for, :status,
-      :org_type, organisation_ids: [])
+      :multi_national, :org_type, organisation_ids: [])
   end
 
   def funder_params

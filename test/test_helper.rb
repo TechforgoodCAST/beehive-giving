@@ -25,11 +25,10 @@ class ActionDispatch::IntegrationTest
   include Capybara::DSL
   include ShowMeTheCookies
 
-  # # Selenium testing
-  # Capybara.app_host = "http://localhost:4000"
-  # Capybara.server_host = "localhost"
-  # Capybara.server_port = "4000"
-  # self.use_transactional_fixtures = false
+  # Selenium
+  Capybara.app_host = "http://localhost:4000"
+  Capybara.server_host = "localhost"
+  Capybara.server_port = "4000"
 
   setup do
     expire_cookies
