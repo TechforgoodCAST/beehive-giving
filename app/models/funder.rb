@@ -21,10 +21,11 @@ class Funder < Organisation
 
   has_and_belongs_to_many :funding_streams
   has_many :restrictions, :through => :funding_streams
+  has_many :recommendations
+
+  acts_as_taggable
 
   alias_method :attributes, :funder_attributes
-
-  has_many :recommendations
 
   scope :active, -> {where(active_on_beehive: true)}
 

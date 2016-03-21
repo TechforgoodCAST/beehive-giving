@@ -68,6 +68,7 @@ gem 'workflow'
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'groupdate'
 gem 'chartkick', '~> 1.4.1'
+gem 'acts-as-taggable-on', '~> 3.4'
 
 gem 'httparty'
 gem 'nokogiri'

@@ -45,6 +45,7 @@ class Recipient < Organisation
     end
   end
 
+  # refactor
   def can_request_funder?(funder, request)
     features.build("#{request}" => true, :funder => funder).valid?
   end
@@ -255,13 +256,17 @@ class Recipient < Organisation
   def recommended_funders
     Funder.joins(:recommendations)
       .where("recipient_id = ? AND #{has_proposal? ? 'total_recommendation' : 'score'} >= ?", self.id, RECOMMENDATION_THRESHOLD)
-      .order("recommendations.eligibility ASC, #{has_proposal? ? 'recommendations.total_recommendation' : 'recommendations.score'} DESC, name ASC")
+      .order("#{has_proposal? ? 'recommendations.total_recommendation' : 'recommendations.score'} DESC, name ASC")
   end
 
   def recommended_with_eligible_funders
+    funder_ids = recommended_funders
+                  .pluck(:funder_id)
+                  .take(Recipient::RECOMMENDATION_LIMIT)
+
     recommended_funders
+      .where(id: funder_ids)
       .where('eligibility is NULL OR eligibility != ?', 'Ineligible')
-      .limit(Recipient::RECOMMENDATION_LIMIT - self.get_funders_by_eligibility('Ineligible').count)
   end
 
   def recommended_funder?(funder)

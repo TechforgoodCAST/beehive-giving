@@ -14,6 +14,17 @@ $logo-width: 150px
   margin: 0 auto
   background-position: center 65px
 
+  &.locked
+    font-family: FontAwesome
+    &:before
+      text-indent: 0 !important
+      display: block
+      text-align: center
+      font-size: 4em
+      line-height: 65px
+      content: '\f023'
+      color: $mid-grey
+
   &.the-foundation
     +funder-logo(0)
   &.the-foundation-small

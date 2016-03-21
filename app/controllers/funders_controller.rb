@@ -2,8 +2,8 @@ class FundersController < ApplicationController
 
   before_filter :ensure_logged_in
   before_filter :ensure_admin, only: [:comparison, :explore, :eligible]
-  before_filter :ensure_funder, except: [:show]
-  before_filter :ensure_profile_for_current_year, only: [:show]
+  before_filter :ensure_funder, except: [:show, :tagged]
+  before_filter :ensure_profile_for_current_year, only: [:show, :tagged]
   before_filter :load_funder, except: [:new, :create]
   before_filter :check_proposals_ownership, only: :recent
 
@@ -11,16 +11,23 @@ class FundersController < ApplicationController
 
   def show
     @recipient = current_user.organisation # refactor
-
     @restrictions = @funder.restrictions.uniq
 
-    unless @recipient.is_subscribed? || @recipient.recommended_funder?(@funder)
-      if current_user.feedbacks.count > 0
-        redirect_to edit_feedback_path(current_user.feedbacks.last)
-      else
-        flash[:alert] = "Sorry, you don't have access to that"
-        redirect_to recommended_funders_path
-      end
+    unless @funder.active_on_beehive?
+      flash[:alert] = "Sorry, you don't have access to that"
+      redirect_to recommended_funders_path
+    end
+  end
+
+  def tagged
+    @recipient = current_user.organisation # refactor
+
+    @tag = ActsAsTaggableOn::Tag.find_by_slug(params[:tag])
+    if @tag.present?
+      @funders = @recipient.recommended_funders.tagged_with(@tag)
+    else
+      flash[:alert] = "Not found"
+      redirect_to root_path
     end
   end
 
