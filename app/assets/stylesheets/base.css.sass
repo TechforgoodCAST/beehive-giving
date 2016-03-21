@@ -13,6 +13,8 @@
   font-family: 'Redacted' !important
   font-size: 16px
   line-height: 14px
+  &.large
+    font-size: 28px
 
 .italics
   font-style: italic !important
@@ -33,10 +35,6 @@ h4.hero
 
 /* Layout
  ========================================================================== */
-
-html, body
-  min-height: 100% !important
-  height: 100%
 
 .full-height
   min-height: 340px
@@ -474,9 +472,32 @@ input::-webkit-inner-spin-button
 /* Card
  ========================================================================== */
 
+.locked-funder
+  position: relative
+  .overlay
+    position: absolute
+    top: -10px
+    right: -10px
+    bottom: -10px
+    left: -10px
+    z-index: 999
+    background: $dark-brown
+    border-radius: 3px
+    opacity: 0
+    transition: all .25s
+    .content
+      padding: 20px
+      h3
+        color: $white !important
+  &:hover
+    .overlay
+      opacity: .9
+
 .card
   border-radius: 3px
   border: 1px solid $light-grey
+  a:hover
+    text-decoration: none
   +shadow
   .thumbnail
     padding: 10px

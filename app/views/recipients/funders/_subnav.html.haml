@@ -31,3 +31,10 @@
         %li.last{ class: ('active' if current_page?(all_funders_path)) }
           All
           .highlight
+
+      - if params[:tag]
+        %span &rsaquo;
+        %a{href: tag_path(@tag)}
+          %li.last.active
+            = @tag.name
+            .highlight

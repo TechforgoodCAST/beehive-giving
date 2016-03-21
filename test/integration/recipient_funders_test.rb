@@ -13,7 +13,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     create(:feedback, user: @user)
 
     visit funder_path(funder)
-    assert_equal edit_feedback_path(@user.feedbacks.last), current_path
+    assert_equal recommended_funders_path, current_path
   end
 
   test 'recommended funders path only shows recommended and eligible funders' do
@@ -47,14 +47,14 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     assert page.has_css?('.funder', count: Funder.where(active_on_beehive: true).count)
   end
 
-  test 'cannot visit redacted funder unless subscribed' do
-    setup_funders(7)
-    create(:feedback, user: @user)
-    @recipient.load_recommendation(@funders.last).update_attribute(:score, 0)
-    visit funder_path(@funders.last)
-    assert_equal edit_feedback_path(@user.feedbacks.last), current_path
-    # refactor unless subscribed
-  end
+  # test 'cannot visit redacted funder unless subscribed' do
+  #   setup_funders(7)
+  #   create(:feedback, user: @user)
+  #   @recipient.load_recommendation(@funders.last).update_attribute(:score, 0)
+  #   visit funder_path(@funders.last)
+  #   assert_equal edit_feedback_path(@user.feedbacks.last), current_path
+  #   # refactor unless subscribed
+  # end
 
   test 'redacted funder redirects to upgrade path unless subscribed' do
     # refactor unless subscribed

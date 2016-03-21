@@ -38,6 +38,10 @@ module RecipientsHelper
     ].sample
   end
 
+  def scramble_name(name)
+    name.chars.map { |c| c.sub(/\w/, ('a'..'z').to_a.sample) }.join.capitalize
+  end
+
   def percentage(percent, total)
     "#{((percent.to_d / total.to_d).round(3) * 100)}%"
   end

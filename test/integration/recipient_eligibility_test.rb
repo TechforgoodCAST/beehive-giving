@@ -53,8 +53,8 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
 
   test 'cannot check eligibility if max free limit reached unless subscribed' do
     create(:feedback, user: @user)
-    4.times { |f| create(:funder) }
-    @recipient.recommended_funders.each { |f| @recipient.unlock_funder!(f) }
+    3.times { |f| create(:funder) }
+    Funder.limit(3).each { |f| @recipient.unlock_funder!(f) }
     @recipient.refined_recommendation
 
     visit recipient_eligibility_path(@recipient.unlocked_funders.first)

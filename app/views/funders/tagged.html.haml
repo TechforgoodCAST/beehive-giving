@@ -1,0 +1,36 @@
+= content_for :title, "#{@tag.name} funders"
+
+:javascript
+  mixpanel.track("View #{@tag.name} Funders Page");
+
+= render partial: 'recipients/funders/subnav'
+
+.uk-container.uk-container-center.uk-margin-large
+  %h2
+    = @tag.name
+    = surround '(', ')' do
+      = @funders.count
+  %h4
+    You are seeing funders interested in
+    = succeed '.' do
+      = @tag.name.downcase
+
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+
+    = render partial: 'cta/proposal_cta', locals: { recipient: @recipient }
+
+    - @funders.each_with_index do |funder, i|
+
+      - if i < 1
+        = render partial: 'recipients/funders/summary', locals: { funder: funder }
+        .cta.wide
+          Go unlimited with Beehive Pro to see more
+          = @tag.name
+          funders.
+          %a{href: '#why-hidden', class: ' uk-button uk-button-large uk-button-primary invert', onclick: '$.UIkit.modal("#why-hidden").show();'} Upgrade (coming soon)
+      - else
+        = render partial: 'recipients/funders/summary_redacted', locals: { funder: funder }
+        - unless i == @funders.count-1
+          %hr.thick
+
+= render partial: 'funders/why_hidden'
