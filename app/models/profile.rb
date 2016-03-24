@@ -1,6 +1,7 @@
 class Profile < ActiveRecord::Base
 
-  before_save :clear_other_options
+  before_save :clear_other_options, :save_all_age_groups_if_all_ages
+  before_validation :set_year_to_current_year
 
   belongs_to :organisation
 
@@ -9,6 +10,7 @@ class Profile < ActiveRecord::Base
   has_and_belongs_to_many :implementors
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
+  has_and_belongs_to_many :age_groups
 
   VALID_YEARS = ((Date.today.year-3)..(Date.today.year)).to_a.reverse
   GENDERS = ['All genders', 'Female', 'Male', 'Transgender', 'Other']
@@ -36,35 +38,42 @@ class Profile < ActiveRecord::Base
 
   ## beneficiaries state validations
 
+  validates :affect_people, presence: {message: 'you must affect either people or other groups'}, if: ('self.beneficiaries? || self.complete?'), unless: 'self.affect_other?'
+
+  validates :affect_other, presence: {message: 'you must affect either people or other groups'}, if: ('self.beneficiaries? || self.complete?'), unless: 'self.affect_people?'
+
+  validates :affect_people, :affect_other, inclusion: {in: [true, false], message: 'please select an option'}
+
+  validates :organisation, :year,
+            presence: true, if: ('self.beneficiaries? || self.complete?')
+
   validates :year, uniqueness: { scope: :organisation_id,
             message: 'only one is allowed per year', if: ('self.beneficiaries? || self.complete?') }
 
   validates :year, inclusion: { in: VALID_YEARS }, if: ('self.beneficiaries? || self.complete?')
 
-  validates :gender, inclusion: { in: GENDERS, message: 'please select an option'}, if: ('self.beneficiaries? || self.complete?')
+  validates :gender, :age_groups,
+            presence: { message: 'Please select an option' }, if: ('self.affect_people? && self.beneficiaries? || self.complete?')
 
-  validates :organisation, :year, :gender, :min_age, :max_age,
-            presence: true, if: ('self.beneficiaries? || self.complete?')
+  validates :gender, inclusion: { in: GENDERS, message: 'please select an option'}, if: ('self.affect_people? && self.beneficiaries? || self.complete?')
 
-  validates :beneficiaries, presence: true, if: ('self.beneficiaries? || self.complete?'), unless: 'self.beneficiaries_other.present?'
+  validate :beneficiaries_people, :beneficiaries_other
 
-  validates :beneficiaries_other, presence: { message: "must uncheck 'Other' or specify details" }, if: :beneficiaries_other_required
+  def beneficiaries_people
+    if (beneficiary_ids & Beneficiary.where(category: 'People').pluck(:id)).count < 1
+      errors.add(:beneficiaries, 'Please select an option') if affect_people?
+    end
+  end
 
-  validates :min_age, :max_age, numericality: { only_integer: true,
-            greater_than_or_equal_to: 0, if: ('self.beneficiaries? || self.complete?') }
+  def beneficiaries_other
+    if (beneficiary_ids & Beneficiary.where(category: 'Other').pluck(:id)).count < 1
+      unless beneficiaries_other_required?
+        errors.add(:beneficiaries, 'Please select an option') if affect_other?
+      end
+    end
+  end
 
-  validates :min_age, numericality: { less_than_or_equal_to: :max_age,
-            message: 'minimum age must be less than maximum age',
-            unless: Proc.new { |profile| profile.min_age.nil? || profile.max_age.nil? },
-            if: ('self.beneficiaries? || self.complete?') }
-
-  validates :max_age, numericality: { greater_than_or_equal_to: :min_age || 0,
-            message: 'maximum age must be greater than minimum age',
-            unless: Proc.new { |profile| profile.min_age.nil? || profile.max_age.nil? },
-            if: ('self.beneficiaries? || self.complete?') }
-  validates :max_age, numericality: { less_than_or_equal_to: 150,
-            message: 'maximum age must less than 150 years old',
-            if: ('self.beneficiaries? || self.complete?') }
+  validates :beneficiaries_other, presence: { message: "please uncheck 'Other' or specify details" }, if: :beneficiaries_other_required
 
   ## location state validations
 
@@ -106,6 +115,16 @@ class Profile < ActiveRecord::Base
     end
     unless self.implementations_other_required?
       self.implementations_other = nil
+    end
+  end
+
+  def set_year_to_current_year
+    self.year = Date.today.year unless self.year.present?
+  end
+
+  def save_all_age_groups_if_all_ages
+    if self.age_group_ids.include?(AgeGroup.first.id)
+      self.age_group_ids = AgeGroup.pluck(:id)
     end
   end
 

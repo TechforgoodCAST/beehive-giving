@@ -35,7 +35,7 @@ module SignupHelper
   def profile_state_step_helper(profile_state)
     case profile_state
     when 'beneficiaries'
-      { count: 1, message: 'Who does your organisation or project primarily benefit?' }
+      { count: 1, message: 'Who your organisation or project primarily benefits.' }
     when 'location'
       { count: 2, message: 'Where your organisation or project has an impact.' }
     when 'team'

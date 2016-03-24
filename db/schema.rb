@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160316133130) do
+ActiveRecord::Schema.define(version: 20160322133429) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -48,6 +48,21 @@ ActiveRecord::Schema.define(version: 20160316133130) do
 
   add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
   add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "age_groups", force: :cascade do |t|
+    t.string   "label"
+    t.integer  "age_from"
+    t.integer  "age_to"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "age_groups_profiles", force: :cascade do |t|
+    t.integer "age_group_id"
+    t.integer "profile_id"
+  end
+
+  add_index "age_groups_profiles", ["age_group_id", "profile_id"], name: "index_age_groups_profiles_on_age_group_id_and_profile_id", using: :btree
 
   create_table "approval_months", force: :cascade do |t|
     t.string "month"
@@ -531,6 +546,8 @@ ActiveRecord::Schema.define(version: 20160316133130) do
     t.string   "implementors_other"
     t.boolean  "implementations_other_required"
     t.string   "implementations_other"
+    t.boolean  "affect_people"
+    t.boolean  "affect_other"
   end
 
   add_index "profiles", ["organisation_id"], name: "index_profiles_on_organisation_id", using: :btree

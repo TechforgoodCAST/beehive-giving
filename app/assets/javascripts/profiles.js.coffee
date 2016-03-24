@@ -1,9 +1,3 @@
-$(document).ready ->
-  $('.year').html($('#profile_year').val())
-  $('#profile_year').change ->
-    $('.year').html($('#profile_year').val())
-    return
-
 ProfileForm = ((w, d) ->
 
   bindCountryRegions = ->
@@ -75,50 +69,90 @@ ProfileForm = ((w, d) ->
     document.cookie = name + '=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;'
     return
 
-  toggleMoreBeneficiaryOptions = ->
-    _cookieName = '_beehiveMoreOptions'
-    if d.cookie.indexOf(_cookieName) >= 0
-      $('#more-beneficiary-options').removeClass('uk-hidden')
-      $('.more-options').html('Less options <i class="uk-icon-caret-up"></i>')
-
-    $('.more-options').on 'click', ->
-      if d.cookie.indexOf(_cookieName) >= 0
-        deleteCookie(_cookieName)
-        $('#more-beneficiary-options').addClass('uk-hidden')
-        $('.more-options').html('More options <i class="uk-icon-caret-down"></i>')
+  toggleBeneficiaryGroups = (group) ->
+    $('.profile_affect_' + group).change ->
+      if $('#profile_affect_' + group + '_true:checked').length > 0
+        $('#' + group + '-options').removeClass 'uk-hidden'
+        $('#' + group + '-error').addClass 'uk-hidden'
       else
-        setCookie(_cookieName, true)
-        $('#more-beneficiary-options').removeClass('uk-hidden')
-        $('#more-beneficiary-options').addClass 'fade-in'
-        $('.more-options').html('Less options <i class="uk-icon-caret-up"></i>')
+        $('#' + group + '-options').addClass 'uk-hidden'
+        $('#' + group + '-error').removeClass 'uk-hidden'
 
-  # bindGetTooltip = ->
-  #   return $('.checkbox label').append('<i class="uk-icon-question-circle" style="float: right;" data-uk-tooltip="{pos:"top"}" title="Tooltip"></i>')
+  triggerToggleBeneficiaryGroups = ->
+    toggleBeneficiaryGroups('people')
+    toggleBeneficiaryGroups('other')
+
+  selectAllAges = ->
+    checkBoxes = '.profile_age_groups input'
+    $(checkBoxes).first().change ->
+      if this.checked
+        $.each $(checkBoxes), ( i, v ) ->
+          $(v).prop('checked', true).closest('label').addClass('checkbox-checked');
+      else
+        $.each $(checkBoxes), ( i, v ) ->
+          $(v).prop('checked', false).closest('label').removeClass('checkbox-checked');
+
+    options = []
+    $.each $(checkBoxes).splice(1,$(checkBoxes).length-1), ( i, v ) ->
+      options.push(v.id + ':checked') if i < 7
+    options = options.join(', #')
+
+    $(checkBoxes).change ->
+      if $('#' + options).length == 7
+        $(checkBoxes).first().prop('checked', true).closest('label').addClass('checkbox-checked');
+      else
+        $(checkBoxes).first().prop('checked', false).closest('label').removeClass('checkbox-checked');
+
+  showCheckboxErrors = (group, field) ->
+    if $('#profile_affect_' + group + '_true:checked')
+      if $('#' + group + ' input:checked').length > 0
+        $('#' + group + ' .profile_' + field).removeClass('field_with_errors')
+      $('#' + group + ' input').change ->
+        if $('#' + group + ' input:checked').length > 0
+          $('#' + group + ' .profile_' + field).removeClass('field_with_errors')
+        else
+          $('#' + group + ' .profile_' + field).addClass('field_with_errors')
+
+  triggerCheckboxErrors = ->
+    showCheckboxErrors('people', 'beneficiaries')
+    showCheckboxErrors('age_groups', 'age_groups')
+    showCheckboxErrors('other', 'beneficiaries')
+    otherRequiredErrors()
+
+  otherRequiredErrors = ->
+    $('#other input, #profile_beneficiaries_other_required').change ->
+      if $('#profile_beneficiaries_other_required').is(':checked') || $('#other input:checked').length > 0
+        $('#other .profile_beneficiaries').removeClass('field_with_errors')
+      else
+        $('#other .profile_beneficiaries').addClass('field_with_errors')
 
   return {
     bindCountryRegions: bindCountryRegions,
     otherFieldToggle: otherFieldToggle,
-    toggleMoreBeneficiaryOptions: toggleMoreBeneficiaryOptions,
+    triggerToggleBeneficiaryGroups: triggerToggleBeneficiaryGroups,
     highlightChecked: highlightChecked,
-    showCountries: showCountries
-    # bindGetTooltip: bindGetTooltip,
+    showCountries: showCountries,
+    triggerCheckboxErrors: triggerCheckboxErrors,
+    selectAllAges: selectAllAges
   }
 )(window, document)
 
 $(document).ready ->
   ProfileForm.bindCountryRegions()
-  ProfileForm.toggleMoreBeneficiaryOptions()
+  ProfileForm.triggerToggleBeneficiaryGroups()
   ProfileForm.highlightChecked('checkbox')
   ProfileForm.highlightChecked('radio')
   ProfileForm.otherFieldToggle()
   ProfileForm.showCountries()
-  # ProfileForm.bindGetTooltip()
+  ProfileForm.triggerCheckboxErrors()
+  ProfileForm.selectAllAges()
 
 $(document).ajaxComplete ->
   ProfileForm.bindCountryRegions()
-  ProfileForm.toggleMoreBeneficiaryOptions()
+  ProfileForm.triggerToggleBeneficiaryGroups()
   ProfileForm.highlightChecked('checkbox')
   ProfileForm.highlightChecked('radio')
   ProfileForm.otherFieldToggle()
   ProfileForm.showCountries()
-  # ProfileForm.bindGetTooltip()
+  ProfileForm.triggerCheckboxErrors()
+  ProfileForm.selectAllAges()
