@@ -4,6 +4,7 @@ class Organisation < ActiveRecord::Base
 
   STATUS = ['Active - currently operational', 'Closed - no longer operational', 'Merged - operating as a different entity']
   ORG_TYPE = [
+    ['Myself OR another individual', -1],
     ['A new project OR unincorporated association', 0],
     ['A registered charity', 1],
     ['A registered company', 2],

@@ -5,11 +5,19 @@ SignupHelpers = ((w, d) ->
     message = $('.org-type-other')
     if $(selector).val() == '4'
       message.removeClass('fade-out')
+    else if $(selector).val() == '-1'
+      message.removeClass('fade-out')
+      $('.seeking-individual').addClass 'fade-out'
     $(selector).change (e) ->
       if $(selector).val() == '4'
         message.removeClass('fade-out').addClass 'fade-in'
+        $('.seeking-individual').removeClass 'fade-out'
+      else if $(selector).val() == '-1'
+        message.removeClass('fade-out')
+        $('.seeking-individual').addClass 'fade-out'
       else
         message.addClass 'fade-out'
+        $('.seeking-individual').removeClass 'fade-out'
       return
 
   triggerSignUpOrgNumbers = (state) ->

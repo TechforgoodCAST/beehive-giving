@@ -20,7 +20,9 @@
 
       .cta.tight.red.uk-margin-top.fade-out.org-type-other
         %strong Important.
-        None of the funders on Beehive provide grants for individuals.
+        None of the funders on Beehive provide grants for individuals. See our
+        = link_to 'FAQ', faq_path(anchor: 'individual'), class: 'primary'
+        for more details.
 
     #charity-number.uk-width-medium-1-1.uk-margin-bottom{ class: ('fade-out' unless charity_hidden?(@user.org_type)) }
       .uk-form-controls{style: 'position: relative;'}
@@ -34,7 +36,7 @@
         .uk-form-password-toggle
           = f.error :company_number, class: 'uk-text-small uk-text-warning', style: 'margin-right: 8px'
 
-    .uk-width-1-1.organisation-declared
+    .uk-width-1-1.seeking-individual
       .uk-width-medium-1-1.uk-margin-bottom
         .uk-form-controls{style: 'position: relative;'}
           = f.input :user_email, error: false, type: 'email', input_html: { class: 'large uk-width-1-1' }
@@ -56,8 +58,3 @@
           = f.error :agree_to_terms, class: 'uk-text-small uk-text-warning'
       .uk-width-medium-1-1.uk-text-truncate
         = f.button :button, "Create an account (for free!)", class: 'uk-button uk-button-primary uk-width-1-1 uk-button-large bounce', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> Welcome aboard...</span>"}, id: 'submit_user'
-
-    .uk-width-1-1.organisation-not-declared.fade-out
-      .cta.red.tight
-        %i.uk-icon.uk-icon-small.uk-icon-exclamation-triangle
-        Beehive helps non-profits connect with suitable funders. It appears you dont work/volunteer for a non-profit. If this is a mistake please select the appropriate option above.
