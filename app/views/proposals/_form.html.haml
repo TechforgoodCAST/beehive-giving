@@ -1,4 +1,4 @@
-= simple_form_for [@recipient, @proposal], remote: true do |f|
+= simple_form_for [@recipient, @proposal], remote: true, authenticity_token: true do |f|
   .uk-grid.uk-form.form
     = f.error :recipient
     = f.error :recipient_id

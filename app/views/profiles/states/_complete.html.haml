@@ -1,6 +1,6 @@
 = content_for :title, "Update #{@profile.year} profile"
 
-= simple_form_for [@recipient, @profile], method: :patch, remote: true do |f|
+= simple_form_for [@recipient, @profile], method: :patch, remote: true, authenticity_token: true do |f|
   = f.hidden_field :year, value: Date.today.year.to_s
   = f.error :year, class: 'uk-text-small uk-text-warning'
 

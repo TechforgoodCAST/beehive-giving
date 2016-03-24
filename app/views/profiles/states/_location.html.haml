@@ -1,6 +1,6 @@
 = content_for :title, 'Location'
 
-= simple_form_for [@recipient, @profile], method: :patch, remote: true do |f|
+= simple_form_for [@recipient, @profile], method: :patch, remote: true, authenticity_token: true do |f|
   .cta
     %strong Remember:
     You can select multiple options, and easily find the locations you want by typing the name in the box below. Importantly, being specific will improve your funder matches.

@@ -1,4 +1,9 @@
-= simple_form_for @user, url: signup_user_path, remote: true do |f|
+= simple_form_for @user, url: signup_user_path, remote: true, authenticity_token: true do |f|
+  %noscript
+    .cta.red.tight.uk-margin-bottom
+      %strong You browser has Javascript disabled
+      and you may be unable to use the site properly.
+
   .uk-grid.uk-grid-small
     .uk-width-medium-1-2.uk-margin-bottom
       .uk-form-controls{style: 'position: relative;'}

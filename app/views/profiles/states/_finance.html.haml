@@ -1,6 +1,6 @@
 = content_for :title, 'Finance'
 
-= simple_form_for [@recipient, @profile], method: :patch, remote: true do |f|
+= simple_form_for [@recipient, @profile], method: :patch, remote: true, authenticity_token: true do |f|
   .uk-form.uk-form-stacked.form
     .cta
       %strong Don't have exact figures?

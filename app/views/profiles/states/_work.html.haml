@@ -1,6 +1,6 @@
 = content_for :title, 'Work'
 
-= simple_form_for [@recipient, @profile], method: :patch, remote: true do |f|
+= simple_form_for [@recipient, @profile], method: :patch, remote: true, authenticity_token: true do |f|
   .uk-form.uk-form-stacked.form
     .uk-width-1-1.uk-margin-bottom
       .label What does your organisation or project provide?
