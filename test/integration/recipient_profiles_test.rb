@@ -3,30 +3,30 @@ require 'test_helper'
 class RecipientProfilesTest < ActionDispatch::IntegrationTest
 
   setup do
-    @recipient = create(:recipient, :founded_on => "01/01/2005")
-    create_and_auth_user!(:organisation => @recipient)
+    @recipient = create(:recipient, founded_on: "01/01/2005")
+    create_and_auth_user!(organisation: @recipient)
   end
 
   test 'new profile link is hidden if annual profile limit is reached' do
-    create(:profile, :organisation => @recipient, :year => Date.today.year)
+    create(:profile, organisation: @recipient, year: Date.today.year)
     visit recipient_profiles_path(@recipient)
     assert_not page.has_content?("New profile")
   end
 
   test 'recipients can only create one profile a year' do
-    @profile = create(:profile, :organisation => @recipient, :year => Date.today.year)
+    @profile = create(:profile, organisation: @recipient, year: Date.today.year)
     visit new_recipient_profile_path(@recipient)
     assert_equal edit_recipient_profile_path(@recipient, @profile), current_path
   end
 
   test 'new profile page redirects to edit when profile exisits for current year' do
-    @profile = create(:profile, :organisation => @recipient, :year => Date.today.year)
+    @profile = create(:profile, organisation: @recipient, year: Date.today.year)
     visit new_recipient_profile_path(@recipient)
     assert_equal edit_recipient_profile_path(@recipient, @profile), current_path
   end
 
   test 'profile missing for current year redirects to new profile page' do
-    @profile = create(:profile, :organisation => @recipient, :year => Date.today.year-1)
+    @profile = create(:profile, organisation: @recipient, year: Date.today.year-1)
     @funder = create(:funder)
 
     visit recommended_funders_path
@@ -61,13 +61,15 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
   def complete_beneficiaries_section
     create(:country)
     @beneficiaries = Array.new(3) { create(:beneficiary) }
+    @age_groups = Array.new(3) { create(:age_group) }
     visit new_recipient_profile_path(@recipient)
     assert_equal new_recipient_profile_path(@recipient), current_path
     within('#new_profile') do
+      choose('profile_affect_people_true')
+      select(Profile::GENDERS.sample, from: 'profile_gender')
       check("profile_beneficiary_ids_#{@beneficiaries[0].id}")
-      select(Profile::GENDERS.sample, :from => 'profile_gender')
-      fill_in('profile_min_age', :with => 0)
-      fill_in('profile_max_age', :with => 120)
+      check("profile_age_group_ids_#{@age_groups[0].id}")
+      choose('profile_affect_other_false')
     end
     click_button('Next')
   end
@@ -84,8 +86,8 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
     complete_beneficiaries_section
     @profile = @recipient.profiles.first
     within("#edit_profile_#{@profile.id}") do
-      select('United Kingdom', :from => 'profile_country_ids', :match => :first)
-      select('Other', :from => 'profile_district_ids', :match => :first)
+      select('United Kingdom', from: 'profile_country_ids', match: :first)
+      select('Other', from: 'profile_district_ids', match: :first)
     end
     click_button('Next')
   end
@@ -117,8 +119,8 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
   #
   #   visit sign_in_path
   #   within("#sign-in") do
-  #     fill_in('email', :with => @user.user_email)
-  #     fill_in('password', :with => @user.password)
+  #     fill_in('email', with: @user.user_email)
+  #     fill_in('password', with: @user.password)
   #   end
   #   click_button 'Sign in'
   #
@@ -132,9 +134,9 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
     @implementors = Array.new(3) { create(:implementor) }
     complete_location_section
     within("#edit_profile_#{@profile.id}") do
-      fill_in('profile_staff_count', :with => 1)
-      fill_in('profile_volunteer_count', :with => 0)
-      fill_in('profile_trustee_count', :with => 0)
+      fill_in('profile_staff_count', with: 1)
+      fill_in('profile_volunteer_count', with: 0)
+      fill_in('profile_trustee_count', with: 0)
       check("profile_implementor_ids_#{@implementors[0].id}")
     end
     click_button('Next')
@@ -163,9 +165,9 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
   def complete_finance_section
     complete_work_section
     within("#edit_profile_#{@profile.id}") do
-      fill_in('profile_income', :with => 0)
+      fill_in('profile_income', with: 0)
       check('profile_income_actual')
-      fill_in('profile_expenditure', :with => 0)
+      fill_in('profile_expenditure', with: 0)
     end
     click_button('Next')
   end
@@ -181,7 +183,7 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
   end
 
   test 'editing complete profile shows entire form' do
-    @profile = create(:profile, :organisation => @recipient, :year => Date.today.year, :state => 'complete')
+    @profile = create(:profile, organisation: @recipient, year: Date.today.year, state: 'complete')
     visit edit_recipient_profile_path(@recipient, @profile)
     assert page.has_content?('countries')
   end
@@ -190,7 +192,7 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
     setup_funders(3)
     @funders[0].grants.each { |g| g.update_column(:amount_awarded, 1000) }
     @funders[1].grants.each { |g| g.update_column(:amount_awarded, 1000) }
-    @profile = create(:profile, :organisation => @recipient, :year => Date.today.year, :state => 'complete')
+    @profile = create(:profile, organisation: @recipient, year: Date.today.year, state: 'complete')
     @recipient.refined_recommendation
 
     assert_equal 2, @recipient.load_recommendation(@funders.last).score

@@ -17,11 +17,6 @@ class ProfileTest < ActiveSupport::TestCase
     assert @profile.valid?
   end
 
-  test 'only positive numbers are allowed' do
-    @profile.min_age = -10
-    assert_not @profile.valid?
-  end
-
   test "doesn't allow duplicates for the same org/year" do
     create(:profile, organisation: @recipient)
     assert_not @profile.valid?
@@ -85,9 +80,46 @@ class ProfileTest < ActiveSupport::TestCase
     assert_not @profile.valid?
   end
 
-  test 'max age must be less than 150' do
-    @profile.max_age = 151
+  test 'must affect people or other' do
+    @profile.affect_people = false
     assert_not @profile.valid?
+  end
+
+  test 'gender required if affects people' do
+    @profile.gender = nil
+    assert_not @profile.valid?
+  end
+
+  test 'age groups required if affects people' do
+    @profile.age_groups = []
+    assert_not @profile.valid?
+  end
+
+  test 'gender and age_groups not required if affects other' do
+    Beneficiary.destroy_all
+    @profile = build(:beneficiary_other_profile, organisation: @recipient, state: 'beneficiaries', affect_people: false, affect_other: true)
+    @profile.gender = nil
+    @profile.age_groups = []
+    assert_equal 'Other', Beneficiary.pluck(:category).uniq[0]
+    assert @profile.valid?
+  end
+
+  test 'beneficiaries required if affects people' do
+    @profile.beneficiaries = []
+    assert_not @profile.valid?
+  end
+
+  test 'beneficiary other options required if affects other' do
+    @profile.affect_people = false
+    @profile.affect_other = true
+    assert_equal 'People', Beneficiary.pluck(:category).uniq[0]
+    assert_not @profile.valid?
+  end
+
+  test 'all age groups selected if all ages selected' do
+    @profile.age_groups = [AgeGroup.first]
+    @profile.save
+    assert_equal AgeGroup.all.pluck(:label), @profile.age_groups.pluck(:label)
   end
 
 end
