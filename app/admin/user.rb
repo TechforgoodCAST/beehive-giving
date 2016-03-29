@@ -27,6 +27,7 @@ ActiveAdmin.register User do
     actions
   end
 
+  filter :id
   filter :organisation, input_html: {class: 'chosen-select'}
   filter :role
   filter :first_name

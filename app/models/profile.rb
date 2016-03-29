@@ -53,9 +53,9 @@ class Profile < ActiveRecord::Base
   validates :year, inclusion: { in: VALID_YEARS }, if: ('self.beneficiaries? || self.complete?')
 
   validates :gender, :age_groups,
-            presence: { message: 'Please select an option' }, if: ('self.affect_people? && self.beneficiaries? || self.complete?')
+            presence: { message: 'Please select an option' }, if: ('self.affect_people? && self.beneficiaries? || self.complete?'), unless: '!self.affect_people? && self.affect_other?'
 
-  validates :gender, inclusion: { in: GENDERS, message: 'please select an option'}, if: ('self.affect_people? && self.beneficiaries? || self.complete?')
+  validates :gender, inclusion: { in: GENDERS, message: 'please select an option'}, if: ('self.affect_people? && self.beneficiaries? || self.complete?'), unless: '!self.affect_people? && self.affect_other?'
 
   validate :beneficiaries_people, :beneficiaries_other
 
