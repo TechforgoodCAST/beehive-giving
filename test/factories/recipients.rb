@@ -1,23 +1,21 @@
 FactoryGirl.define do
-  factory :recipient, class: Recipient do
+
+  factory :recipient do
     transient do
       n { rand(9999) }
     end
     org_type 3
-    name "ACME"
-    website "http://www.acme.com"
-    country "GB"
-    status Organisation::STATUS.first
-    registered true
     charity_number { "1AB1C#{n}" }
     company_number { "1AB1C#{n}" }
+    name "ACME"
+    country "GB"
     operating_for Organisation::OPERATING_FOR.sample[1]
-    multi_national false
+    income Organisation::INCOME.sample[1]
+    employees Organisation::EMPLOYEES.sample[1]
+    volunteers Organisation::EMPLOYEES.sample[1]
+    website "http://www.acme.com"
   end
 
-  factory :recipient_attribute, class: RecipientAttribute do
-    association :recipient, :factory => :recipient
-    problem "Problem"
-    solution "Solution"
-  end
+  factory :blank_org, class: Recipient do; end
+
 end

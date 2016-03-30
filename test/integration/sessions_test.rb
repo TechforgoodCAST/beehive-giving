@@ -13,7 +13,7 @@ class SessionsTest < ActionDispatch::IntegrationTest
       assert_equal sign_in_path, current_path
     end
   end
-  
+
   test 'ensure logged in for feedback' do
     visit new_feedback_path
     assert_equal sign_in_path, current_path
@@ -47,14 +47,6 @@ class SessionsTest < ActionDispatch::IntegrationTest
       recipient_profiles_path(@recipient),
       new_recipient_profile_path(@recipient),
       edit_recipient_profile_path(@recipient, @profile)
-    ])
-  end
-
-  test 'ensure logged in for recipient attributes' do
-    @recipient_attribute = create(:recipient_attribute)
-    assert_path([
-      new_recipient_attribute_path(@recipient),
-      edit_recipient_attribute_path(@recipient, @recipient_attribute)
     ])
   end
 

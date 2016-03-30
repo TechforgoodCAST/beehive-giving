@@ -3,7 +3,7 @@ require 'test_helper'
 class RecipientNavbarTest < ActionDispatch::IntegrationTest
 
   setup do
-    @organisation = create(:organisation)
+    @recipient = create(:recipient)
   end
 
   test 'logo click whilst unregistered sends to user#signup' do
@@ -22,8 +22,8 @@ class RecipientNavbarTest < ActionDispatch::IntegrationTest
   end
 
   test 'user with profile can navigate to edit profiles path' do
-    create_and_auth_user!(organisation: @organisation)
-    create(:profile, organisation: @organisation)
+    create_and_auth_user!(organisation: @recipient)
+    create(:profile, organisation: @recipient)
     visit recommended_funders_path
     assert_equal recommended_funders_path, current_path
     assert page.has_content?('Update profile')
@@ -32,9 +32,9 @@ class RecipientNavbarTest < ActionDispatch::IntegrationTest
   end
 
   test 'user with proposal can navigate to edit proposals path' do
-    create_and_auth_user!(organisation: @organisation)
-    create(:profile, organisation: @organisation)
-    create(:proposal, recipient: @organisation)
+    create_and_auth_user!(organisation: @recipient)
+    create(:profile, organisation: @recipient)
+    create(:proposal, recipient: @recipient)
     visit recommended_funders_path
     assert_equal recommended_funders_path, current_path
     assert page.has_content?('Update profile')

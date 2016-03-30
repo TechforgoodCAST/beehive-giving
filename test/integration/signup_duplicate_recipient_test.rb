@@ -1,11 +1,11 @@
 require 'test_helper'
 
-class SignupDuplicateOrganisationTest < ActionDispatch::IntegrationTest
+class SignupDuplicateRecipientTest < ActionDispatch::IntegrationTest
 
   setup do
     create(:admin_user)
     ActionMailer::Base.deliveries = []
-    @organisation = create(:organisation)
+    @recipient = create(:recipient)
     create_and_auth_user!
   end
 
@@ -19,8 +19,8 @@ class SignupDuplicateOrganisationTest < ActionDispatch::IntegrationTest
       fill_in('recipient_name', with: 'ACME')
       Capybara.match = :first
       select('United Kingdom', from: 'recipient_country')
-      fill_in('recipient_charity_number', with: @organisation.charity_number)
-      fill_in('recipient_company_number', with: @organisation.company_number)
+      fill_in('recipient_charity_number', with: @recipient.charity_number)
+      fill_in('recipient_company_number', with: @recipient.company_number)
     end
     click_button('Next')
     assert_equal unauthorised_path, current_path
@@ -30,15 +30,15 @@ class SignupDuplicateOrganisationTest < ActionDispatch::IntegrationTest
 
   # refactor
   test 'Sigining in a duplicate charity will redirect' do
-    @organisation.destroy
-    @organisation = create(:organisation, org_type: 1, company_number: '')
+    @recipient.destroy
+    @recipient = create(:recipient, org_type: 1, company_number: '')
     visit signup_organisation_path
     within('#new_recipient') do
       select('A registered charity', from: 'recipient_org_type')
       fill_in('recipient_name', with: 'ACME')
       Capybara.match = :first
       select('United Kingdom', from: 'recipient_country')
-      fill_in('recipient_charity_number', with: @organisation.charity_number)
+      fill_in('recipient_charity_number', with: @recipient.charity_number)
     end
     click_button('Next')
     assert_equal unauthorised_path, current_path
@@ -46,22 +46,22 @@ class SignupDuplicateOrganisationTest < ActionDispatch::IntegrationTest
 
   # refactor
   test 'Sigining in a duplicate company will redirect' do
-    @organisation.destroy
-    @organisation = create(:organisation, org_type: 2, charity_number: nil)
+    @recipient.destroy
+    @recipient = create(:recipient, org_type: 2, charity_number: nil)
     visit signup_organisation_path
     within('#new_recipient') do
       select('A registered company', from: 'recipient_org_type')
       fill_in('recipient_name', with: 'ACME')
       Capybara.match = :first
       select('United Kingdom', from: 'recipient_country')
-      fill_in('recipient_company_number', with: @organisation.company_number)
+      fill_in('recipient_company_number', with: @recipient.company_number)
     end
     click_button('Next')
     assert_equal unauthorised_path, current_path
   end
 
   test 'User will be blocked from accessing other pages' do
-    @user.lock_access_to_organisation(@organisation)
+    @user.lock_access_to_organisation(@recipient)
     assert_equal false, @user.authorised
     visit signup_organisation_path
     assert_equal unauthorised_path, current_path
@@ -71,13 +71,13 @@ class SignupDuplicateOrganisationTest < ActionDispatch::IntegrationTest
 
   test 'Mailer will be sent to admin if duplicate organisation found' do
     assert_equal 0, ActionMailer::Base.deliveries.size
-    @user.lock_access_to_organisation(@organisation)
+    @user.lock_access_to_organisation(@recipient)
     assert_equal 1, ActionMailer::Base.deliveries.size
   end
 
   test 'Clicking link in email authorises user and triggers email' do
     assert_equal 0, ActionMailer::Base.deliveries.size
-    @user.lock_access_to_organisation(@organisation)
+    @user.lock_access_to_organisation(@recipient)
     assert_equal 1, ActionMailer::Base.deliveries.size
     assert_equal false, User.last.authorised
     visit grant_access_path(@user.unlock_token)

@@ -18,7 +18,7 @@ en:
         implementors_other: 'Please specify'
         implementations_other: 'Please specify'
       recipient:
-        name: 'Organisation or project name'
+        # name: 'Organisation or project name'
         street_address: 'Street address e.g. 123 New street'
         website: 'Optional'
         charity_number: 'Charity number'

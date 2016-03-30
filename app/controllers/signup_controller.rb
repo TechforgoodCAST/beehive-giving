@@ -74,6 +74,24 @@ class SignupController < ApplicationController
         @organisation.get_charity_data
         @organisation.get_company_data
       end
+
+      # refactor
+      if @organisation.save
+        current_user.update_attribute(:organisation_id, @organisation.id)
+        redirect_to new_recipient_profile_path(@organisation)
+      elsif ((@organisation.errors.added? :charity_number, :taken) ||
+            (@organisation.errors.added? :company_number, :taken))
+        charity_number = @organisation.charity_number
+        company_number = @organisation.company_number
+        organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
+                        (Organisation.find_by_company_number(company_number) if company_number)
+
+        current_user.lock_access_to_organisation(organisation)
+        redirect_to unauthorised_path
+      else
+        render :organisation
+      end
+
     end
   end
 
@@ -193,8 +211,9 @@ class SignupController < ApplicationController
 
   def organisation_params
     params.require(:recipient).permit(:name, :website, :street_address,
-      :country, :charity_number, :company_number, :operating_for, :status,
-      :multi_national, :org_type, organisation_ids: [])
+      :country, :charity_number, :company_number, :operating_for,
+      :multi_national, :income, :employees, :volunteers, :org_type,
+      organisation_ids: [])
   end
 
   def funder_params

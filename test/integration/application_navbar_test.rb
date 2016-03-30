@@ -4,7 +4,7 @@ class ApplicationNavbarTest < ActionDispatch::IntegrationTest
 
   setup do
     @recipient = create(:recipient)
-    create_and_auth_user!(:organisation => @recipient)
+    create_and_auth_user!(organisation: @recipient)
   end
 
   test 'logo click whilst unregistered sends to user#signup' do

@@ -16,6 +16,8 @@ class ActiveSupport::TestCase
     "GL6 0QL, GB", [{'latitude' => 1, 'longitude' => 1}])
   Geocoder::Lookup::Test.add_stub(
     "London Road, GB", [{'latitude' => 0, 'longitude' => 0}])
+  Geocoder::Lookup::Test.add_stub(
+    "SE1 7TP, GB", [{'latitude' => 3, 'longitude' => 3}])
 end
 
 class ActionDispatch::IntegrationTest

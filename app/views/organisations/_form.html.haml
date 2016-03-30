@@ -42,7 +42,7 @@
       %hr.thick.uk-margin-bottom
 
     .uk-width-medium-1-1.fade-out.name
-      .label Which organisation or project are you seeking funds for?
+      .label Organisation or project name
       = f.input :name, type: 'text', input_html: { class: 'large uk-width-1-1' }
       = f.error :name, class: 'error-message'
 
@@ -55,14 +55,25 @@
       = f.error :country, class: 'error-message'
 
     .uk-width-medium-1-1.uk-margin-top.fade-out.name
-      .label Does your organisation or project operate in more than one country?
-      = f.input :multi_national, as: :radio_buttons, input_html: { class: 'large uk-width-1-1' }
-      = f.error :multi_national, class: 'error-message'
-
-    .uk-width-medium-1-1.uk-margin-top.fade-out.name
       .label How long has your organisation or project been operating for?
       = f.input :operating_for, as: :select, collection: Organisation::OPERATING_FOR, input_html: { class: 'large uk-width-1-1' }
       = f.error :operating_for, class: 'error-message'
+
+    .uk-width-medium-1-1.uk-margin-top
+      -# .label How large is your organisation or project?
+      .label What is the income of your organisation or project?
+      = f.input :income, as: :select, collection: Organisation::INCOME, input_html: { class: 'large uk-width-1-1' }
+      = f.error :income, class: 'error-message'
+
+    .uk-width-medium-1-1.uk-margin-top
+      .label How many employees does your organisation or project have?
+      = f.input :employees, as: :select, collection: Organisation::EMPLOYEES, input_html: { class: 'large uk-width-1-1' }
+      = f.error :employees, class: 'error-message'
+
+    .uk-width-medium-1-1.uk-margin-top
+      .label How many volunteers does your organisation or project have?
+      = f.input :volunteers, as: :select, collection: Organisation::EMPLOYEES, input_html: { class: 'large uk-width-1-1' }
+      = f.error :volunteers, class: 'error-message'
 
     .uk-width-medium-1-1
       .uk-grid

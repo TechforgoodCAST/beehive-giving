@@ -2,20 +2,36 @@ class Organisation < ActiveRecord::Base
 
   before_validation :clear_registration_numbers_if_unregistered
 
-  STATUS = ['Active - currently operational', 'Closed - no longer operational', 'Merged - operating as a different entity']
   ORG_TYPE = [
     ['Myself OR another individual', -1],
-    ['A new project OR unincorporated association', 0],
+    ['An unregistered organisation OR project', 0],
     ['A registered charity', 1],
     ['A registered company', 2],
     ['A registered charity & company', 3],
-    ['Other', 4]
+    ['Another type of organisation', 4]
   ]
   OPERATING_FOR = [
     ['Yet to start', 0],
     ['Less than 12 months', 1],
     ['Less than 3 years', 2],
     ['4 years or more', 3]
+  ]
+  INCOME = [
+    ['Less than £10k', 0],
+    ['£10k - £100k', 1],
+    ['£100k - £1m', 2],
+    ['£1m - £10m', 3],
+    ['£10m+', 4]
+  ]
+  EMPLOYEES = [
+    ['None', 0],
+    ['1 - 5', 1],
+    ['6 - 25', 2],
+    ['26 - 50', 3],
+    ['51 - 100', 4],
+    ['101 - 250', 5],
+    ['251 - 500', 6],
+    ['500+', 7]
   ]
 
   has_one :subscription
@@ -27,10 +43,16 @@ class Organisation < ActiveRecord::Base
 
   attr_accessor :skip_validation
 
-  validates :org_type, :name, :status, :country, :operating_for, presence: true,
+  validates :income, :employees, :volunteers, presence: true, numericality: { greater_than_or_equal_to: 0 },
     unless: :skip_validation
 
-  validates :multi_national, inclusion: { message: 'please select an option', in: [true, false] },
+  validates :income, inclusion: { in: 0..4 },
+    unless: :skip_validation
+
+  validates :employees, :volunteers, inclusion: { in: 0..7 },
+    unless: :skip_validation
+
+  validates :org_type, :name, :status, :country, :operating_for, presence: true,
     unless: :skip_validation
 
   validates :org_type, inclusion: { in: 0..4, message: 'please select a valid option' },
@@ -48,9 +70,6 @@ class Organisation < ActiveRecord::Base
 
   validates :charity_number, uniqueness: { on: [:create], scope: [:company_number] }, allow_nil: true, allow_blank: true
   validates :company_number, uniqueness: { on: [:create], scope: [:charity_number] }, allow_nil: true, allow_blank: true
-
-  validates :status, inclusion: { in: STATUS },
-    unless: :skip_validation
 
   validates :website, format: {
     with: URI::regexp(%w(http https)),
@@ -151,6 +170,10 @@ class Organisation < ActiveRecord::Base
       self.charity_volunteers = volunteer_scrape.text if volunteer_scrape.present?
       self.charity_recent_accounts_link = link_scrape['href'] if link_scrape.present?
 
+      income_select(income_scrape.text.sub('£','').to_f * financials_multiplier(income_scrape)) if income_scrape.present?
+      staff_select('employees', employee_scrape.text) if self.charity_employees.present?
+      staff_select('volunteers', volunteer_scrape.text) if self.charity_volunteers.present?
+
       if company_no_scrape.present?
         self.org_type = 3
         get_company_data
@@ -172,6 +195,45 @@ class Organisation < ActiveRecord::Base
       when 'M'
         return 1000000
       end
+    end
+  end
+
+  def income_select(income)
+    if income < 10000
+      self.income = 0
+    elsif income >= 10000 && income < 100000
+      self.income = 1
+    elsif income >= 100000 && income < 1000000
+      self.income = 2
+    elsif income >= 1000000 && income < 10000000
+      self.income = 3
+    elsif income >= 10000000
+      self.income = 4
+    else
+      self.income = nil
+    end
+  end
+
+  def staff_select(field_name, count)
+    count = count.to_i
+    if count == 0
+      self[field_name] = 0
+    elsif count >= 1 && count <= 5
+      self[field_name] = 1
+    elsif count >= 6 && count <= 25
+      self[field_name] = 2
+    elsif count >= 26 && count <= 50
+      self[field_name] = 3
+    elsif count >= 51 && count <= 100
+      self[field_name] = 4
+    elsif count >= 101 && count <= 250
+      self[field_name] = 5
+    elsif count >= 251 && count <= 500
+      self[field_name] = 6
+    elsif count > 500
+      self[field_name] = 7
+    else
+      self[field_name] = nil
     end
   end
 

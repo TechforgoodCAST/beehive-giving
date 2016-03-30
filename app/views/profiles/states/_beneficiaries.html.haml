@@ -2,8 +2,9 @@
 
 = simple_form_for [@recipient, @profile], method: :post, remote: true, authenticity_token: true do |f|
   .uk-form.uk-form-stacked.form
+    .label Are you seeking funding to affect...
     .uk-width-1-1
-      .label Do you affect people?
+      .label People?
       = f.input :affect_people, as: :radio_buttons, input_html: { class: 'large uk-width-1-1' }
       = f.error :affect_people, class: 'error-message error-margin', id: 'people-error'
 
@@ -28,7 +29,7 @@
         #people= f.association :beneficiaries, as: :check_boxes, collection: Beneficiary.order(:sort).where(category: 'People'), label_method: :label, value_method: :id
 
     .uk-width-1-1.uk-margin-top
-      .label Do you affect any other groups (not people)?
+      .label Other groups (not people)?
       .question-padding
         = f.input :affect_other, as: :radio_buttons, input_html: { class: 'large uk-width-1-1' }
         = f.error :affect_other, class: 'error-message error-margin', id: 'other-error'

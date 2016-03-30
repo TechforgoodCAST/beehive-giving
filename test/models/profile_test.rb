@@ -23,7 +23,7 @@ class ProfileTest < ActiveSupport::TestCase
   end
 
   test 'allows duplicate years for the different orgs' do
-    @profile =  build(:profile, organisation: create(:organisation, n: 1))
+    @profile =  build(:profile, organisation: create(:recipient, n: 1))
     assert @profile.valid?
   end
 
