@@ -63,6 +63,7 @@ class RecipientsController < ApplicationController
   def update_eligibility
     @restrictions = @funder.restrictions
 
+    @recipient.skip_validation = true # refactor?
     if @recipient.update_attributes(eligibility_params)
       @recipient.unlock_funder!(@funder) if @recipient.locked_funder?(@funder)
       @recipient.check_eligibility(@funder)

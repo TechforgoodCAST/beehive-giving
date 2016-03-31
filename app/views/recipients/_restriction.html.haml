@@ -8,8 +8,8 @@
       = e.hidden_field :recipient_id, value: @recipient.id
       = e.hidden_field :restriction_id
       = e.input :eligible, as: :radio_buttons, collection: @recipient.restriction_truthy(e.object.restriction)
-      - if e.object.eligible == false
-        .error-message You did not meet this criteria
       - if e.object.errors.any?
         = e.error :eligible, class: 'error-message'
+      - elsif e.object.eligible == false && @recipient.valid?
+        .error-message You did not meet this criteria
     %hr

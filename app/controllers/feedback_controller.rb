@@ -32,7 +32,7 @@ class FeedbackController < ApplicationController
     @feedback = Feedback.find(params[:id])
     if @feedback.update_attributes(params.require(:feedback).permit(:price))
       flash[:notice] = 'Thanks for the feedback!'
-      redirect_to session.delete(:return_to)
+      redirect_to session.delete(:return_to) || recommended_funders_path
     else
       render :edit
     end
