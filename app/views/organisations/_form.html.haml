@@ -60,8 +60,7 @@
       = f.error :operating_for, class: 'error-message'
 
     .uk-width-medium-1-1.uk-margin-top
-      -# .label How large is your organisation or project?
-      .label What is the income of your organisation or project?
+      .label What is the annual income of your organisation or project?
       = f.input :income, as: :select, collection: Organisation::INCOME, input_html: { class: 'large uk-width-1-1' }
       = f.error :income, class: 'error-message'
 

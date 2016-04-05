@@ -83,6 +83,7 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  # refactor
   def ensure_profile_for_current_year
     unless current_user.organisation.profiles.where(year: Date.today.year).count > 0
       redirect_to new_recipient_profile_path(current_user.organisation)

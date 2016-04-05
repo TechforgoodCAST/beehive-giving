@@ -1,3 +1,5 @@
+@import variables
+
 .nested-questions
   padding: 10px
   @media screen and (max-width: 480px)
@@ -5,3 +7,125 @@
 
 #char_count
   font-size: 12px
+
+/* Adapted from =========================================================== */
+/* jQuery Tree Multiselect v1.15.3 | (c) Patrick Tsai et al. | MIT Licensed */
+
+.tree-multiselect
+  display: table
+  height: inherit
+  width: 100%
+  margin: 0 4px
+  .error, .error input
+    border: 2px $red-base solid !important
+    background: $red-alert !important
+    color: $red-base !important
+  .section
+    margin-bottom: 3px
+    .title
+      padding: 4px
+      border-radius: 3px
+      border: 2px solid $cta-base
+      color: $cta-base
+      transition: all .25s
+      &:hover
+        cursor: pointer
+        background: $cta-alert
+      &.checked
+        background: $cta-active
+        border-color: $cta-active
+        color: white
+        &:hover
+          border-color: $cta-hover
+          input
+            border-color: $cta-hover
+        input
+          border-color: $cta-active
+      &.child-checked
+        background: $cta-hover
+      input
+        background: white
+        border: 2px solid $cta-base
+        border-radius: 3px
+        margin: -2px 5px 0 4px
+        width: 18px !important
+        height: 18px !important
+        transition: all .25s
+        &:before
+          color: $cta-base !important
+          line-height: 15px !important
+      .collapse-section
+        margin: 2px 4px
+        width: 12px
+    .item
+      display: block
+      margin: 2px 25px
+      padding: 3px 10px 3px 10px
+      border-radius: 3px
+      color: $cta-base
+      transition: all .25s
+      &:first-child
+        margin: 20px 0
+      &:hover
+        cursor: pointer
+        background: $cta-alert
+      &.checked
+        background: $cta-active
+        border-color: $cta-active
+        color: white
+        &:hover
+          input
+            border-color: $cta-hover
+        input
+          border-color: $cta-active
+      &.error
+        border: none !important
+      input
+        background: white
+        margin-right: 5px
+        margin-top: -2px
+        border: 2px solid $cta-base
+        border-radius: 3px
+        width: 16px !important
+        height: 16px !important
+        transition: all .25s
+        &:before
+          color: $cta-base !important
+          line-height: 13px !important
+  .title + .item
+    margin-top: 10px
+  .item:last-child
+    margin-bottom: 10px
+  .remove-selected, span.description
+    padding: 0 3px
+    margin-right: 5px
+    background: #777
+    color: white
+    border-radius: 2px
+  .remove-selected:hover
+    cursor: pointer
+  span.description:hover
+    cursor: help
+  .temp-description-popup
+    background: #FAFAFA
+    padding: 5px
+    border: 2px solid #676767
+    border-radius: 3px
+  .selected, .selections
+    display: inline-block
+    vertical-align: top
+    box-sizing: border-box
+    -moz-box-sizing: border-box
+    -webkit-box-sizing: border-box
+    display: table-cell
+    padding: 1%
+    width: 50%
+  // .selections
+  //   border-right: solid 2px #D8D8D8
+  .selected
+    .item
+      display: block
+      margin: 2px 0
+  span.section-name
+    float: right
+    font-style: italic

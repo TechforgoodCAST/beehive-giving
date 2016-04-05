@@ -3,7 +3,7 @@ class FundersController < ApplicationController
   before_filter :ensure_logged_in
   before_filter :ensure_admin, only: [:comparison, :explore, :eligible]
   before_filter :ensure_funder, except: [:show, :tagged]
-  before_filter :ensure_profile_for_current_year, only: [:show, :tagged]
+  before_filter :ensure_profile_for_current_year, only: [:show, :tagged] # refactor
   before_filter :load_funder, except: [:new, :create]
   before_filter :check_proposals_ownership, only: :recent
 

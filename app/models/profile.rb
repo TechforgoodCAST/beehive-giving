@@ -13,7 +13,7 @@ class Profile < ActiveRecord::Base
   has_and_belongs_to_many :age_groups
 
   VALID_YEARS = ((Date.today.year-3)..(Date.today.year)).to_a.reverse
-  GENDERS = ['All genders', 'Female', 'Male', 'Transgender', 'Other']
+  GENDERS = ['All genders', 'Female', 'Male', 'Transgender', 'Other'] # refactor
 
   include Workflow
   workflow_column :state

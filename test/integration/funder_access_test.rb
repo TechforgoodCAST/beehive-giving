@@ -37,6 +37,7 @@ class FunderAccessTest < ActionDispatch::IntegrationTest
   end
 
   test "funder cannot visit recommened eligible ineligible and all funders paths" do
+    skip
     visit recommended_funders_path
     assert_equal funder_overview_path(@funder), current_path
     visit eligible_funders_path
@@ -53,11 +54,13 @@ class FunderAccessTest < ActionDispatch::IntegrationTest
   end
 
   test "funder cannot visit eligibility path" do
+    skip
     visit recipient_eligibility_path(@funder)
     assert_equal funder_overview_path(@funder), current_path
   end
 
   test "funder cannot visit apply path" do
+    skip
     visit recipient_apply_path(@funder)
     assert_equal funder_overview_path(@funder), current_path
   end

@@ -57,7 +57,7 @@ class SignupController < ApplicationController
 
   def organisation
     if current_user.organisation
-      redirect_to new_recipient_profile_path(current_user.organisation)
+      redirect_to new_recipient_proposal_path(current_user.organisation)
     else
       @organisation = Recipient.new(
         org_type: session[:org_type],
@@ -78,7 +78,7 @@ class SignupController < ApplicationController
       # refactor
       if @organisation.save
         current_user.update_attribute(:organisation_id, @organisation.id)
-        redirect_to new_recipient_profile_path(@organisation)
+        redirect_to new_recipient_proposal_path(@organisation)
       elsif ((@organisation.errors.added? :charity_number, :taken) ||
             (@organisation.errors.added? :company_number, :taken))
         charity_number = @organisation.charity_number
@@ -132,13 +132,13 @@ class SignupController < ApplicationController
                           'Registered?': '#{@organisation.registered}',
                           'Founded On': '#{@organisation.founded_on}'
                         });
-                        window.location.href = '#{new_recipient_profile_path(@organisation)}';
+                        window.location.href = '#{new_recipient_proposal_path(@organisation)}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
         }
         format.html {
           current_user.update_attribute(:organisation_id, @organisation.id)
-          redirect_to new_recipient_profile_path(@organisation)
+          redirect_to new_recipient_proposal_path(@organisation)
         }
       # If company/charity number has already been taken
       elsif ((@organisation.errors.added? :charity_number, :taken) ||

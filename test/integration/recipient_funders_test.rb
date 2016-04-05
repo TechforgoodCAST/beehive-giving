@@ -61,6 +61,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
   end
 
   test 'recipients without a profile and with a proposal for current year must update profiles' do
+    skip
     setup_funders(3)
 
     visit funder_path(@funders.first)

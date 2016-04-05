@@ -2,6 +2,10 @@ require 'test_helper'
 
 class RecipientCreationTest < ActionDispatch::IntegrationTest
 
+  setup do
+    create(:country)
+  end
+
   def full_form(state)
     within('#new_recipient') do
       select(state, from: 'recipient_org_type')
@@ -32,68 +36,68 @@ class RecipientCreationTest < ActionDispatch::IntegrationTest
     full_form(state)
     click_button('Next')
 
-    assert_equal new_recipient_profile_path(Recipient.first), current_path
+    assert_equal new_recipient_proposal_path(Recipient.first), current_path
   end
 
-  # test 'you get redirected when visiting the page when not signed in' do
-  #   visit signup_organisation_path
-  #   assert_equal sign_in_path, current_path
-  # end
-  #
-  # test 'if you are signed in and you have an organisation you get redirected to new profile path' do
-  #   @recipient = create(:recipient)
-  #   create_and_auth_user!(organisation: @recipient)
-  #   assert @user.organisation.present?
-  #   visit signup_organisation_path
-  #   assert_equal new_recipient_profile_path(@recipient), current_path
-  # end
-  #
-  # test 'if you are signed in and have no organisation you can see the organisation page' do
-  #   create_and_auth_user!
-  #   assert_not @user.organisation.present?
-  #   visit signup_organisation_path
-  #   assert_equal signup_organisation_path, current_path
-  # end
-  #
-  # test 'filling in form correctly submits, saves record and redirects to correct page' do
-  #   create_and_auth_user!
-  #   visit signup_organisation_path
-  #   full_form('An unregistered organisation OR project')
-  #   click_button('Next')
-  #   assert_equal new_recipient_profile_path(Recipient.first), current_path
-  #   assert page.has_content?('Target')
-  # end
-  #
-  # test 'filling form incorrectly causes validation to trigger' do
-  #   create_and_auth_user!
-  #   visit signup_organisation_path
-  #
-  #   click_button('Next')
-  #   assert_equal signup_organisation_path, current_path
-  #   assert page.has_content?("can't be blank")
-  # end
-  #
-  # test 'correct fields required for org type 1' do
-  #   complete_form_for('A registered charity')
-  # end
-  #
-  # test 'correct fields required for org type 2' do
-  #   complete_form_for('A registered company')
-  # end
-  #
-  # test 'correct fields required for org type 3' do
-  #   complete_form_for('A registered charity & company')
-  # end
-  #
-  # test 'charity with company number found changes org type' do
-  #   create_and_auth_user!
-  #   visit signup_organisation_path
-  #   full_form('A registered charity')
-  #   click_button('Next')
-  #
-  #   assert_equal new_recipient_profile_path(Recipient.first), current_path
-  #   assert_equal 3, Recipient.first.org_type
-  # end
+  test 'you get redirected when visiting the page when not signed in' do
+    visit signup_organisation_path
+    assert_equal sign_in_path, current_path
+  end
+
+  test 'if you are signed in and you have an organisation you get redirected to new proposal path' do
+    @recipient = create(:recipient)
+    create_and_auth_user!(organisation: @recipient)
+    assert @user.organisation.present?
+    visit signup_organisation_path
+    assert_equal new_recipient_proposal_path(@recipient), current_path
+  end
+
+  test 'if you are signed in and have no organisation you can see the organisation page' do
+    create_and_auth_user!
+    assert_not @user.organisation.present?
+    visit signup_organisation_path
+    assert_equal signup_organisation_path, current_path
+  end
+
+  test 'filling in form correctly submits, saves record and redirects to correct page' do
+    create_and_auth_user!
+    visit signup_organisation_path
+    full_form('An unregistered organisation OR project')
+    click_button('Next')
+    assert_equal new_recipient_proposal_path(Recipient.first), current_path
+    assert page.has_content?('What are you seeking funding for?')
+  end
+
+  test 'filling form incorrectly causes validation to trigger' do
+    create_and_auth_user!
+    visit signup_organisation_path
+
+    click_button('Next')
+    assert_equal signup_organisation_path, current_path
+    assert page.has_content?("can't be blank")
+  end
+
+  test 'correct fields required for org type 1' do
+    complete_form_for('A registered charity')
+  end
+
+  test 'correct fields required for org type 2' do
+    complete_form_for('A registered company')
+  end
+
+  test 'correct fields required for org type 3' do
+    complete_form_for('A registered charity & company')
+  end
+
+  test 'charity with company number found changes org type' do
+    create_and_auth_user!
+    visit signup_organisation_path
+    full_form('A registered charity')
+    click_button('Next')
+
+    assert_equal new_recipient_proposal_path(Recipient.first), current_path
+    assert_equal 3, Recipient.first.org_type
+  end
 
   def create_user(charity_number)
     visit signup_user_path
@@ -126,21 +130,23 @@ class RecipientCreationTest < ActionDispatch::IntegrationTest
   end
 
   test 'form cleared when org_type changes' do
+    skip
     # refactor javascript testing
-    # create_and_auth_user!
-    # visit signup_organisation_path
-    # within('#new_recipient') do
-    #   select('A new project OR unincorporated association', from: 'recipient_org_type')
-    #   fill_in('recipient_name', with: 'ACME')
-    # end
-    # click_button('Next')
-    # within('#new_recipient') do
-    #   select('Other', from: 'recipient_org_type')
-    # end
-    # assert_equal '', find("#recipient_name")[:value]
+    create_and_auth_user!
+    visit signup_organisation_path
+    within('#new_recipient') do
+      select('A new project OR unincorporated association', from: 'recipient_org_type')
+      fill_in('recipient_name', with: 'ACME')
+    end
+    click_button('Next')
+    within('#new_recipient') do
+      select('Other', from: 'recipient_org_type')
+    end
+    assert_equal '', find("#recipient_name")[:value]
   end
 
   test 'clicking find scrapes data' do
+    skip
     # refactor javascript testing
   end
 

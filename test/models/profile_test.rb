@@ -5,8 +5,6 @@ class ProfileTest < ActiveSupport::TestCase
   setup do
     @recipient = create(:recipient)
     @profile = build(:profile, organisation: @recipient, state: 'beneficiaries')
-    @country = create(:country)
-    @district = build(:district, country: @country)
   end
 
   test 'a profile belongs to an organisation' do
@@ -25,10 +23,6 @@ class ProfileTest < ActiveSupport::TestCase
   test 'allows duplicate years for the different orgs' do
     @profile =  build(:profile, organisation: create(:recipient, n: 1))
     assert @profile.valid?
-  end
-
-  test 'a district belongs to a country' do
-    assert @district.country
   end
 
   test 'profile starts with beneficiaries' do

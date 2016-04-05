@@ -1,7 +1,7 @@
 class ProfilesController < ApplicationController
 
   before_filter :ensure_logged_in, :load_recipient, :prevent_funder_access
-  before_filter :ensure_profile_for_current_year, only: [:index, :edit, :update]
+  before_filter :ensure_profile_for_current_year, only: [:index, :edit, :update] # refactor
   before_filter :load_profile, :only => [:edit, :update, :destroy]
 
   def new
@@ -42,10 +42,6 @@ class ProfilesController < ApplicationController
 
   def index
     @profiles = @recipient.profiles
-  end
-
-  def edit
-    gon.orgCountry = Country.find_by_alpha2(@recipient.country).name
   end
 
   def update

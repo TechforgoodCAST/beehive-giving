@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330102903) do
+ActiveRecord::Schema.define(version: 20160330140330) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -63,6 +63,13 @@ ActiveRecord::Schema.define(version: 20160330102903) do
   end
 
   add_index "age_groups_profiles", ["age_group_id", "profile_id"], name: "index_age_groups_profiles_on_age_group_id_and_profile_id", using: :btree
+
+  create_table "age_groups_proposals", force: :cascade do |t|
+    t.integer "age_group_id"
+    t.integer "proposal_id"
+  end
+
+  add_index "age_groups_proposals", ["age_group_id", "proposal_id"], name: "index_age_groups_proposals_on_age_group_id_and_proposal_id", using: :btree
 
   create_table "approval_months", force: :cascade do |t|
     t.string "month"
@@ -582,12 +589,19 @@ ActiveRecord::Schema.define(version: 20160330102903) do
     t.boolean  "other_costs_estimated"
     t.boolean  "all_funding_required"
     t.boolean  "beneficiaries_other_required"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                                       null: false
+    t.datetime "updated_at",                                       null: false
     t.string   "type_of_support"
+    t.string   "state",                        default: "initial"
+    t.boolean  "affect_people"
+    t.boolean  "affect_other"
+    t.integer  "affect_geo"
+    t.boolean  "total_costs_estimated"
+    t.string   "funding_type"
   end
 
   add_index "proposals", ["recipient_id"], name: "index_proposals_on_recipient_id", using: :btree
+  add_index "proposals", ["state"], name: "index_proposals_on_state", using: :btree
 
   create_table "recipient_funder_accesses", force: :cascade do |t|
     t.integer  "recipient_id"

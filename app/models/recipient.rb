@@ -171,8 +171,13 @@ class Recipient < Organisation
     ).order(:id)
   end
 
+  # refactor?
   def has_proposal?
     proposals.count > 0
+  end
+
+  def incomplete_proposals?
+    proposals.where(state: 'initial').count > 0
   end
 
   # refactor

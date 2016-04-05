@@ -1,0 +1,90 @@
+-# = content_for :title, 'Location'
+
+= simple_form_for [@recipient, @proposal], method: :patch, remote: true, authenticity_token: true do |f|
+
+  .uk-width-medium-1-1
+    = f.input :title, input_html: { class: 'large uk-width-1-1' }
+    = f.error :title, class: 'error-message'
+
+  .uk-width-medium-1-1.uk-margin-top
+    = f.input :tagline, as: :text, input_html: { class: 'uk-width-1-1' }
+    = f.error :tagline, class: 'error-message'
+    .muted.uk-float-right#char_count
+
+  .uk-width-1-1.uk-margin-top
+    .label How many people will be affected by the proposed work?
+    = f.input :beneficiaries_count, input_html: { class: 'large uk-width-1-1' }
+    = f.error :beneficiaries_count, class: 'error-message'
+
+  .uk-width-medium-1-1.uk-margin-large-top
+    .label How much funding are you seeking?
+    .muted Give your best estimate and tick the appropriate box if you don't have exact figures. You can easily update them later.
+    .nested-questions
+      .uk-width-1-1
+        Activity costs (e.g. venue hire, promotional materials, fuel)
+        .uk-grid
+          .uk-width-medium-1-2
+            = f.input :activity_costs, as: :currency, input_html: { class: 'numeric integer uk-width-1-1 large', min: 0 }, placeholder: 'e.g. 1234'
+            = f.error :activity_costs, class: 'error-message'
+          .uk-display-block.boolean-padding
+            = f.input :activity_costs_estimated, as: :boolean, inline_label: 'Are these estimated figures?'
+
+      %hr
+
+      .uk-width-1-1
+        People costs (e.g. salaries, consultants fees, volunteer expenses)
+        .uk-grid
+          .uk-width-medium-1-2
+            = f.input :people_costs, as: :currency, input_html: { class: 'numeric integer uk-width-1-1 large', min: 0 }, placeholder: 'e.g. 1234'
+            = f.error :people_costs, class: 'error-message'
+          .uk-display-block.boolean-padding
+            = f.input :people_costs_estimated, as: :boolean, inline_label: 'Are these estimated figures?'
+
+      %hr
+
+      .uk-width-1-1.uk-margin-top
+        Capital costs (e.g. one time purchasing of equipment or assets)
+        .uk-grid
+          .uk-width-medium-1-2
+            = f.input :capital_costs, as: :currency, input_html: { class: 'numeric integer uk-width-1-1 large', min: 0 }, placeholder: 'e.g. 1234'
+            = f.error :capital_costs, class: 'error-message'
+          .uk-display-block.boolean-padding
+            = f.input :capital_costs_estimated, as: :boolean, inline_label: 'Are these estimated figures?'
+
+      %hr
+
+      .uk-width-1-1.uk-margin-top
+        Other costs (e.g. rent, utilities)
+        .uk-grid
+          .uk-width-medium-1-2
+            = f.input :other_costs, as: :currency, input_html: { class: 'numeric integer uk-width-1-1 large', min: 0 }, placeholder: 'e.g. 1234'
+            = f.error :other_costs, class: 'error-message'
+          .uk-display-block.boolean-padding
+            = f.input :other_costs_estimated, as: :boolean, inline_label: 'Are these estimated figures?'
+
+      %hr
+
+      .uk-width-medium-1-1.uk-margin-top
+        Is this all of the funding required for the proposed work?
+        .muted.uk-margin i.e. Does the proposed work require funding in addition to the amount sought above?
+        = f.input :all_funding_required, as: :radio_buttons, input_html: { class: 'uk-width-1-1' }
+        = f.error :all_funding_required, class: 'error-message'
+
+      %hr
+      %h3.uk-margin-bottom-remove
+        Total
+        = precede '£' do
+          %span.total 0
+      %small.muted The total will update when you change the figures above
+
+  .uk-width-medium-1-1.uk-margin-large-top
+    .label List 1-5 outcomes for the proposed work below:
+    = f.input :outcome1, input_html: { class: 'large uk-width-1-1 uk-margin-top' }
+    = f.error :outcome1, class: 'error-message'
+    = f.input :outcome2, input_html: { class: 'large uk-width-1-1 uk-margin-top' }
+    = f.input :outcome3, input_html: { class: 'large uk-width-1-1 uk-margin-top' }
+    = f.input :outcome4, input_html: { class: 'large uk-width-1-1 uk-margin-top' }
+    = f.input :outcome5, input_html: { class: 'large uk-width-1-1 uk-margin-top' }
+
+  - unless @proposal.state == 'registered' || @proposal.state == 'complete'
+    = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-margin-top uk-button-large uk-width-medium-1-2 uk-float-right', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> Now we're cooking...</span>"}
