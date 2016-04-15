@@ -1,6 +1,7 @@
 class Organisation < ActiveRecord::Base
 
   before_validation :clear_registration_numbers_if_unregistered
+  after_validation :report_validation_errors_to_rollbar
 
   STATUS = ['Active - currently operational', 'Closed - no longer operational', 'Merged - operating as a different entity']
   ORG_TYPE = [

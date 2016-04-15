@@ -1,5 +1,6 @@
 class Proposal < ActiveRecord::Base
 
+  after_validation :report_validation_errors_to_rollbar
   before_save :total_costs, :build_proposal_recommendation
 
   belongs_to :recipient

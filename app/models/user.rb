@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+  after_validation :report_validation_errors_to_rollbar
+
   belongs_to :organisation
   has_many :feedbacks
 
