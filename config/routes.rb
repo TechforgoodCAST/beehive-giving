@@ -74,8 +74,9 @@ Rails.application.routes.draw do
   # Proposals
   match '/(:id)/proposal', to: 'proposals#new', via: :get, as: 'new_recipient_proposal'
   match '/(:id)/proposal', to: 'proposals#create', via: :post
-  match '/(:recipient_id)/proposals/(:id)', to: 'proposals#edit', via: :get, as: 'edit_recipient_proposal'
-  match '/(:recipient_id)/proposals/(:id)', to: 'proposals#update', via: :patch
+  match '/(:recipient_id)/proposal/(:id)', to: 'proposals#edit', via: :get, as: 'edit_recipient_proposal'
+  match '/(:recipient_id)/proposal/(:id)', to: 'proposals#update', via: :patch
+  match '/(:recipient_id)/proposals', to: 'proposals#index', via: :get, as: 'recipient_proposals'
 
   # Enquiries
   match '/funders/(:id)/apply', to: 'recipients#apply', via: :get, as: 'recipient_apply'
@@ -93,7 +94,6 @@ Rails.application.routes.draw do
       post :approach_funder
     end
     resources :profiles, :only => [:create, :update, :index]
-    resources :proposals, :only => [:update, :index]
     resources :recipient_attribute, :as => :attribute, :only => [:new, :create, :edit, :update]
   end
 

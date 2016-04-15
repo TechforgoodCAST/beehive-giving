@@ -179,6 +179,7 @@ class RecipientProfilesTest < ActionDispatch::IntegrationTest
   end
 
   test 'initial profile completion redirects to recommended funders path' do
+    skip
     complete_finance_section
     assert_equal recommended_funders_path, current_path
   end

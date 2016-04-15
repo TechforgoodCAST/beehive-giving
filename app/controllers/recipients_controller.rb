@@ -1,6 +1,6 @@
 class RecipientsController < ApplicationController
 
-  before_filter :ensure_logged_in, :load_recipient, :years_ago
+  before_filter :ensure_logged_in, :load_recipient, :years_ago, :ensure_proposal_present
   before_filter :check_organisation_ownership_or_funder, :only => :show
   before_filter :load_funder, :only => [:comparison, :eligibility, :update_eligibility, :apply]
   before_filter :load_feedback, :except => [:unlock_funder, :vote]

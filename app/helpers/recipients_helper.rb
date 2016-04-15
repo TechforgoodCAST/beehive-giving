@@ -1,10 +1,16 @@
 module RecipientsHelper
 
-  # def recipients_navbar_my_nonprofit_active
-  #   current_page?(recipient_profiles_path(current_user.organisation)) ||
-  #   current_page?(edit_recipient_profile_path(current_user.organisation, current_user.organisation.profiles.first)) ||
-  #   current_page?(recipient_eligibility_path)
-  # end
+  def score_to_match_copy(score, scale=1)
+    {
+      'Very poor':  0.2,
+      'Poor':       0.4,
+      'Fair':       0.6,
+      'Good':       0.8,
+      'Excellent':  1.0
+    }.each do |k,v|
+      return content_tag(:strong, k, class: k.downcase) if score <= (v * scale)
+    end
+  end
 
   def funder_card_cta_button_copy(recipient, funder)
     classes = 'uk-width-1-1 uk-button uk-button-primary uk-button-large'

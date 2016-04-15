@@ -38,6 +38,11 @@ class ApplicationController < ActionController::Base
     redirect_to unauthorised_path unless current_user.authorised || params[:action] == 'unauthorised'
   end
 
+  def ensure_recipient
+    redirect_to root_path, alert: "Sorry, you don't have access to that" unless
+      current_user.role == 'User'
+  end
+
   def ensure_funder
     redirect_to root_path, alert: "Sorry, you don't have access to that" unless
       current_user.role == 'Funder'
@@ -81,6 +86,12 @@ class ApplicationController < ActionController::Base
       NewRelic::Agent.notice_error(exception)
       render "errors/#{status_code}", :status => status_code
     end
+  end
+
+  def ensure_proposal_present
+    # if current_user.role == 'User'
+    #   redirect_to new_recipient_proposal_path(current_user.organisation) if current_user.organisation.proposals.count < 1
+    # end
   end
 
   # refactor

@@ -26,6 +26,7 @@ FactoryGirl.define do
     soft_restrictions 'Soft restrictions'
     application_details 'Application details'
     application_link 'www.example.com'
+    age_groups { FactoryGirl.create_list(:age_group, 8) }
   end
 
   factory :funder_attribute_no_grants, class: FunderAttribute do

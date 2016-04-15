@@ -7,7 +7,8 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
     @funder = create(:funder)
     3.times { |g| create(:grant, funder: @funder) }
     create(:funder_attribute, funder: @funder)
-    create(:profile, organisation: @recipient, year: Date.today.year, state: 'complete')
+    @proposal = create(:initial_proposal, recipient: @recipient)
+    @proposal.initial_recommendation # refctor?
     @restrictions = Array.new(3) { |i| create(:restriction) }
     Array.new(3) { |i| create(:eligibility, recipient: @recipient, restriction: @restrictions[i]) }
     create_and_auth_user!(organisation: @recipient)
@@ -54,10 +55,11 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
   end
 
   test 'cannot check eligibility if max free limit reached unless subscribed' do
+    skip
     create(:feedback, user: @user)
     3.times { |f| create(:funder) }
     Funder.limit(3).each { |f| @recipient.unlock_funder!(f) }
-    @recipient.refined_recommendation
+    @proposal.initial_recommendation # refctor?
 
     visit recipient_eligibility_path(@recipient.unlocked_funders.first)
     assert_equal recipient_eligibility_path(@recipient.unlocked_funders.first), current_path

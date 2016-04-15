@@ -10,6 +10,7 @@ class FunderAttribute < ActiveRecord::Base
                     :funded_organisation_age,
                     :funded_organisation_income_and_staff,
                     :set_insights
+  before_save :save_all_age_groups_if_all_ages
 
   belongs_to :funder
 
@@ -18,6 +19,7 @@ class FunderAttribute < ActiveRecord::Base
   has_and_belongs_to_many :funding_types
   has_and_belongs_to_many :approval_months
   has_and_belongs_to_many :beneficiaries
+  has_and_belongs_to_many :age_groups
 
   serialize :map_data
   serialize :shared_recipient_ids
@@ -32,6 +34,13 @@ class FunderAttribute < ActiveRecord::Base
     with: /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/,
     multiline: true,
     message: "enter a valid website address e.g. www.example.com"}, if: :application_link
+
+  # refactor dry?
+  def save_all_age_groups_if_all_ages
+    if self.age_group_ids.include?(AgeGroup.first.id)
+      self.age_group_ids = AgeGroup.pluck(:id)
+    end
+  end
 
   def grant_count_from_grants
     if self.funder && self.funder.grants.count > 0

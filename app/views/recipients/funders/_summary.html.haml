@@ -5,6 +5,67 @@
         .thumbnail
           .funder{class: funder.slug}
       .details
+        -# Score:
+        -# = @recipient.load_recommendation(funder).score
+        -# | Total:
+        -# = @recipient.load_recommendation(funder).total_recommendation
+        .content
+          %h4.uk-text-bold
+            Your recommendation
+            %small.muted Beta
+          %table.uk-table.uk-table-condensed
+            %thead
+              %tr
+                %th Decision factor
+                %th Match
+            %tbody
+              %tr
+                %td
+                  Organisation type
+                  -# %i.uk-icon.uk-icon-question-circle.muted{"data-uk-tooltip" => "{pos:'top'}", :title => "Recipients profiles coming soon."}
+                %td
+                  = score_to_match_copy(@recipient.load_recommendation(funder).org_type_score, 2)
+              %tr
+                %td
+                  Beneficiaries
+                  -# %i.uk-icon.uk-icon-question-circle.muted{"data-uk-tooltip" => "{pos:'top'}", :title => "Recipients profiles coming soon."}
+                %td
+                  = score_to_match_copy(@recipient.load_recommendation(funder).beneficiary_score)
+              %tr
+                %td
+                  Location
+                  -# %i.uk-icon.uk-icon-question-circle.muted{"data-uk-tooltip" => "{pos:'top'}", :title => "Recipients profiles coming soon."}
+                %td
+                  = score_to_match_copy(@recipient.load_recommendation(funder).location_score, 2)
+              %tr
+                %td
+                  Activity
+                  -# %i.uk-icon.uk-icon-question-circle.muted{"data-uk-tooltip" => "{pos:'top'}", :title => "Recipients profiles coming soon."}
+                %td.muted Coming soon
+              %tr
+                %td
+                  Outcomes
+                  -# %i.uk-icon.uk-icon-question-circle.muted{"data-uk-tooltip" => "{pos:'top'}", :title => "Recipients profiles coming soon."}
+                %td.muted Coming soon
+              %tr
+                %td
+                  Type of funding
+                  -# %i.uk-icon.uk-icon-question-circle.muted{"data-uk-tooltip" => "{pos:'top'}", :title => "Recipients profiles coming soon."}
+                %td.muted Coming soon
+              - unless @recipient.transferred?
+                %tr
+                  %td
+                    Funding amount
+                    -# %i.uk-icon.uk-icon-question-circle.muted{"data-uk-tooltip" => "{pos:'top'}", :title => "Recipients profiles coming soon."}
+                  %td
+                    = score_to_match_copy(@recipient.load_recommendation(funder).funding_amount_score)
+                %tr
+                  %td
+                    Funding duration
+                    -# %i.uk-icon.uk-icon-question-circle.muted{"data-uk-tooltip" => "{pos:'top'}", :title => "Recipients profiles coming soon."}
+                  %td
+                    = score_to_match_copy(@recipient.load_recommendation(funder).funding_duration_score)
+
         .content.center
           = funder_card_cta_button_copy(@recipient, funder)
         .content.center

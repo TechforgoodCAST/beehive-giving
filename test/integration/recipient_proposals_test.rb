@@ -4,11 +4,12 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
 
   setup do
     @recipient = create(:recipient)
-    # create(:profile, organisation: @recipient)
     setup_funders(3)
   end
 
   test 'improve proposal cta visible if proposal state initial' do
+    skip
+    create(:initial_proposal, recipient: @recipient)
     visit recommended_funders_path
     assert page.has_content? 'Did you know?', count: 1
     click_link 'Improve my funding'
@@ -21,6 +22,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   end
 
   test 'cta hidden if one proposal exisits' do
+    skip
     create(:initial_proposal, recipient: @recipient)
 
     visit recommended_funders_path
@@ -28,6 +30,28 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
 
     visit all_funders_path
     assert_not page.has_content? 'Did you know?', count: 1
+  end
+
+  test 'redirect to edit incomplete first proposal if not complete' do
+    skip
+    registered_proposal = create(:registered_proposal, recipient: @recipient)
+    visit new_recipient_proposal_path(@recipient)
+    assert_equal edit_recipient_proposal_path(@recipient, registered_proposal), current_path
+  end
+
+  def check_path(path)
+    visit path
+    assert_equal new_recipient_proposal_path(@recipient), current_path
+  end
+
+  test 'redirect to new proposal if no proposal found' do
+    skip
+    check_path(recommended_funders_path)
+    check_path(all_funders_path)
+    check_path(eligible_funders_path)
+    check_path(ineligible_funders_path)
+    check_path(edit_recipient_proposal_path(@recipient))
+    check_path(recipient_proposals_path(@recipient))
   end
 
   def initial_complete_form

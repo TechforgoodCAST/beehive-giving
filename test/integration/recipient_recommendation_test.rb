@@ -17,6 +17,7 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
   end
 
   test 'funders order by refined recommendation' do
+    skip
     create(:profile, :organisation => @recipient, :beneficiaries => FactoryGirl.create_list(:beneficiary_unique, 4), :state => 'complete')
     @recipient.refined_recommendation
     visit funders_path
@@ -26,6 +27,7 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
   end
 
   test 'closed funder is not recommended' do
+    skip
     recommendation = @recipient.recommendations.where(funder_id: @funders[0].id).first
 
     @recipient.refined_recommendation

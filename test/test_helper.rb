@@ -39,7 +39,6 @@ class ActionDispatch::IntegrationTest
   def create_and_auth_user!(opts = {})
     @user = create(:user, opts)
     create_cookie(:auth_token, @user.auth_token)
-    @recipient.initial_recommendation if @recipient.present?
   end
 
   def setup_funders(num)
@@ -49,6 +48,5 @@ class ActionDispatch::IntegrationTest
     @restrictions = Array.new(3) { |i| create(:restriction) }
     @funding_streams = Array.new(num) { |i| create(:funding_stream, restrictions: @restrictions, funders: [@funders[i]]) }
     create_and_auth_user!(organisation: @recipient, user_email: 'email@email.com')
-    @recipient.refined_recommendation
   end
 end

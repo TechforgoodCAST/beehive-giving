@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160330140330) do
+ActiveRecord::Schema.define(version: 20160406095716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,13 @@ ActiveRecord::Schema.define(version: 20160330140330) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "age_groups_funder_attributes", force: :cascade do |t|
+    t.integer "age_group_id"
+    t.integer "funder_attribute_id"
+  end
+
+  add_index "age_groups_funder_attributes", ["age_group_id", "funder_attribute_id"], name: "index_age_groups_funder_attributes", using: :btree
 
   create_table "age_groups_profiles", force: :cascade do |t|
     t.integer "age_group_id"
@@ -621,6 +628,11 @@ ActiveRecord::Schema.define(version: 20160330140330) do
     t.float    "grant_amount_recommendation",   default: 0.0
     t.float    "grant_duration_recommendation", default: 0.0
     t.float    "total_recommendation",          default: 0.0
+    t.float    "org_type_score"
+    t.float    "beneficiary_score"
+    t.float    "location_score"
+    t.float    "funding_amount_score"
+    t.float    "funding_duration_score"
   end
 
   add_index "recommendations", ["funder_id"], name: "index_recommendations_on_funder_id", using: :btree

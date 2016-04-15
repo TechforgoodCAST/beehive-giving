@@ -12,13 +12,15 @@ class ProposalTest < ActiveSupport::TestCase
   end
 
   test 'a recipient can have many proposals' do
-    @initial_proposal.save
+    create(:proposal, recipient: @recipient)
     create(:initial_proposal, recipient: @recipient)
     assert_equal 2, @recipient.proposals.count
   end
 
   test 'cannot create second proposal until first proposal is complete' do
-    skip
+    @initial_proposal.save
+    incomplete_proposal2 = build(:initial_proposal, recipient: @recipient)
+    assert_not incomplete_proposal2.valid?
   end
 
   test 'a valid initial proposal' do

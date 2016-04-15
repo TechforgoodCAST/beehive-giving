@@ -176,6 +176,10 @@ class Recipient < Organisation
     proposals.count > 0
   end
 
+  def transferred?
+    proposals.where(state: 'transferred').count > 0
+  end
+
   def incomplete_proposals?
     proposals.where(state: 'initial').count > 0
   end
@@ -264,8 +268,8 @@ class Recipient < Organisation
 
   def recommended_funders
     Funder.joins(:recommendations)
-      .where("recipient_id = ? AND #{has_proposal? ? 'total_recommendation' : 'score'} >= ?", self.id, RECOMMENDATION_THRESHOLD)
-      .order("#{has_proposal? ? 'recommendations.total_recommendation' : 'recommendations.score'} DESC, name ASC")
+      .where('recipient_id = ? AND score >= ?', self.id, RECOMMENDATION_THRESHOLD)
+      .order('recommendations.score DESC, name ASC')
   end
 
   def recommended_with_eligible_funders

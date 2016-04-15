@@ -4,8 +4,8 @@ class RecipientApproachFunderTest < ActionDispatch::IntegrationTest
 
   setup do
     @recipient = create(:recipient)
-    create(:profile, organisation: @recipient, year: Date.today.year)
     setup_funders(3)
+    create(:initial_proposal, recipient: @recipient)
   end
 
   test 'approach funder choice visible if eligible on comparison page' do
