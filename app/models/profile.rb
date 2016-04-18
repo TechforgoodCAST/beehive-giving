@@ -2,7 +2,6 @@ class Profile < ActiveRecord::Base
 
   before_save :clear_other_options, :save_all_age_groups_if_all_ages
   before_validation :set_year_to_current_year
-  after_validation :report_validation_errors_to_rollbar
 
   belongs_to :organisation
 
