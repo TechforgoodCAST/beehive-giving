@@ -37,12 +37,6 @@ Rails.application.routes.draw do
   match '/grant_access/(:unlock_token)', to: 'signup#grant_access', via: :get, as: 'grant_access'
   match '/granted_access/(:unlock_token)', to: 'signup#granted_access', via: :get, as: 'granted_access'
 
-  # Profiles
-  match '/(:id)/profile', to: 'profiles#new', via: :get, as: 'new_recipient_profile'
-  match '/(:id)/profile', to: 'profiles#create', via: :post
-  match '/(:recipient_id)/profile/(:id)', to: 'profiles#edit', via: :get, as: 'edit_recipient_profile'
-  match '/(:recipient_id)/profile/(:id)', to: 'profiles#update', via: :patch
-
   # Funders
   match '/funders/recommended', to: 'recipients#recommended_funders', via: :get, as: 'recommended_funders'
   match '/funders/eligible', to: 'recipients#eligible_funders', via: :get, as: 'eligible_funders'
@@ -93,7 +87,6 @@ Rails.application.routes.draw do
     member do
       post :approach_funder
     end
-    resources :profiles, :only => [:create, :update, :index]
     resources :recipient_attribute, :as => :attribute, :only => [:new, :create, :edit, :update]
   end
 

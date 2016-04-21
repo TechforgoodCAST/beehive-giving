@@ -129,25 +129,23 @@ class RecipientCreationTest < ActionDispatch::IntegrationTest
     assert_equal new_recipient_proposal_path(User.last.organisation), current_path
   end
 
-  test 'form cleared when org_type changes' do
-    skip
-    # refactor javascript testing
-    create_and_auth_user!
-    visit signup_organisation_path
-    within('#new_recipient') do
-      select('A new project OR unincorporated association', from: 'recipient_org_type')
-      fill_in('recipient_name', with: 'ACME')
-    end
-    click_button('Next')
-    within('#new_recipient') do
-      select('Other', from: 'recipient_org_type')
-    end
-    assert_equal '', find("#recipient_name")[:value]
-  end
-
-  test 'clicking find scrapes data' do
-    skip
-    # refactor javascript testing
-  end
+  # test 'form cleared when org_type changes' do
+  #   # refactor javascript testing
+  #   create_and_auth_user!
+  #   visit signup_organisation_path
+  #   within('#new_recipient') do
+  #     select('A new project OR unincorporated association', from: 'recipient_org_type')
+  #     fill_in('recipient_name', with: 'ACME')
+  #   end
+  #   click_button('Next')
+  #   within('#new_recipient') do
+  #     select('Other', from: 'recipient_org_type')
+  #   end
+  #   assert_equal '', find("#recipient_name")[:value]
+  # end
+  #
+  # test 'clicking find scrapes data' do
+  #   # refactor javascript testing
+  # end
 
 end

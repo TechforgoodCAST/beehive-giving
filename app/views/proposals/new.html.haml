@@ -1,44 +1,30 @@
 = stylesheet_link_tag 'profiles'
+= stylesheet_link_tag 'chosen'
+= stylesheet_link_tag 'overrides/chosen_overrides'
+= stylesheet_link_tag 'signup'
 
 = javascript_include_tag 'chosen-jquery'
 = javascript_include_tag 'chosen'
-= stylesheet_link_tag 'chosen'
-= stylesheet_link_tag 'overrides/chosen_overrides'
-
 = javascript_include_tag 'jquery.tree-multiselect.min'
 
--# = content_for :title, 'New funding proposal'
--#
--# :javascript
--#   mixpanel.track('View New Proposal Page');
--#
--# .uk-container.uk-container-center.uk-margin-large
--#   %h2 Tell Beehive what you're seeking funds for
--#   %h4 And Beehive will use this information to improve your funding recommendations.
--#
--#   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
--#     = render partial: 'form'
+:javascript
+  mixpanel.track("View Proposal #{@proposal.state.capitalize} Page");
+  mixpanel.identify('#{current_user.id}');
+  mixpanel.people.set({
+    'Proposal State': '#{@proposal.state}'
+  });
 
-= stylesheet_link_tag 'signup'
-
--# :javascript
--#   mixpanel.track("View Proposal #{@proposal.state.capitalize} Page");
--#   mixpanel.identify('#{current_user.id}');
--#   mixpanel.people.set({
--#     'Proposal State': '#{@proposal.state}'
--#   });
-
--# :javascript
--#   var google_conversion_id = 937505505;
--#   var google_conversion_language = "en";
--#   var google_conversion_format = "3";
--#   var google_conversion_color = "ffffff";
--#   var google_conversion_label = "fR8GCJamvWMQ4eWEvwM";
--#   var google_remarketing_only = false;
--# %script{:src => "//www.googleadservices.com/pagead/conversion.js", :type => "text/javascript"}
--# %noscript
--#   %div{:style => "display:inline;"}
--#     %img{:alt => "", :height => "1", :src => "//www.googleadservices.com/pagead/conversion/937505505/?label=fR8GCJamvWMQ4eWEvwM&amp;guid=ON&amp;script=0", :style => "border-style:none;", :width => "1"}/
+:javascript
+  var google_conversion_id = 937505505;
+  var google_conversion_language = "en";
+  var google_conversion_format = "3";
+  var google_conversion_color = "ffffff";
+  var google_conversion_label = "fR8GCJamvWMQ4eWEvwM";
+  var google_remarketing_only = false;
+%script{:src => "//www.googleadservices.com/pagead/conversion.js", :type => "text/javascript"}
+%noscript
+  %div{:style => "display:inline;"}
+    %img{:alt => "", :height => "1", :src => "//www.googleadservices.com/pagead/conversion/937505505/?label=fR8GCJamvWMQ4eWEvwM&amp;guid=ON&amp;script=0", :style => "border-style:none;", :width => "1"}/
 
 - content_for :signup do
   = render partial: 'signup/subnav', locals: { current_step: 1 }

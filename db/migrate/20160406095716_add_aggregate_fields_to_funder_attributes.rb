@@ -6,13 +6,22 @@ class AddAggregateFieldsToFunderAttributes < ActiveRecord::Migration
       t.references :funder_attribute
     end
 
-    add_index :age_groups_funder_attributes, [:age_group_id, :funder_attribute_id], :name => 'index_age_groups_funder_attributes'
+    add_index :age_groups_funder_attributes, [:age_group_id, :funder_attribute_id], name: 'index_age_groups_funder_attributes'
+
+    create_table :implementations_proposals do |t|
+      t.references :implementation
+      t.references :proposal
+    end
+
+    add_index :implementations_proposals, [:implementation_id, :proposal_id], name: 'index_implementations_proposals'
 
     add_column :recommendations, :org_type_score, :float
     add_column :recommendations, :beneficiary_score, :float
     add_column :recommendations, :location_score, :float
-    add_column :recommendations, :funding_amount_score, :float
-    add_column :recommendations, :funding_duration_score, :float
+
+    add_column :proposals, :private, :boolean, required: true
+    add_column :proposals, :implementations_other_required, :boolean
+    add_column :proposals, :implementations_other, :string
 
   end
 end

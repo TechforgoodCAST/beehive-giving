@@ -26,10 +26,10 @@ class RecipientTest < ActiveSupport::TestCase
     assert 2, @recipient.users.size
   end
 
-  test "recipient has many profiles" do
-    @recipient.profiles << build(:profile)
-    @recipient.profiles << build(:profile)
-    assert 2, @recipient.profiles.size
+  test "recipient has many proposals" do
+    @recipient.proposals << build(:proposal)
+    @recipient.proposals << build(:proposal)
+    assert 2, @recipient.proposals.size
   end
 
   test "recipient has many grants" do

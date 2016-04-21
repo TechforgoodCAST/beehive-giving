@@ -48,9 +48,9 @@ class ProfilesController < ApplicationController
     respond_to do |format|
       if @profile.update_attributes(profile_params)
         format.js   {
-          @profile.next_step! unless @profile.state == 'complete'
+          @profile.next_step! unless @profile.complete?
 
-          if @profile.state == 'complete'
+          if @profile.complete?
             @recipient.refined_recommendation
             render :js => "mixpanel.identify('#{current_user.id}');
                           mixpanel.people.set({
@@ -70,8 +70,8 @@ class ProfilesController < ApplicationController
           end
         }
         format.html {
-          @profile.next_step! unless @profile.state == 'complete'
-          if @profile.state == 'complete'
+          @profile.next_step! unless @profile.complete?
+          if @profile.complete?
             @recipient.refined_recommendation
             redirect_to recommended_funders_path
           else

@@ -1,15 +1,16 @@
 class Proposal < ActiveRecord::Base
 
   after_validation :trigger_clear_beneficiary_ids
-  before_save :initial_recommendation
   before_save :save_all_age_groups_if_all_ages
   after_save :save_districts_from_countries
+  after_save :initial_recommendation
 
   belongs_to :recipient
   has_and_belongs_to_many :beneficiaries
   has_and_belongs_to_many :age_groups
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
+  has_and_belongs_to_many :implementations
 
   TYPE_OF_SUPPORT = ['Only financial', 'Mostly financial', 'Equal financial and non-financial', 'Mostly non-financial', 'Only non-financial']
   GENDERS = ['All genders', 'Female', 'Male', 'Transgender', 'Other']
@@ -43,38 +44,25 @@ class Proposal < ActiveRecord::Base
   validate :prevent_second_proposal_until_first_is_complete, if: 'self.initial?'
 
   # Requirements
-  validates :recipient, :funding_duration, presence: true,
-              if: ('self.initial? || self.transferred? || self.complete?')
-  validates :type_of_support, inclusion: { in: TYPE_OF_SUPPORT, message: 'please select an option' },
-              if: ('self.initial? || self.transferred? || self.complete?')
-  validates :funding_type, inclusion: { in: FUNDING_TYPE, message: 'please select an option' },
-              if: ('self.initial? || self.transferred? || self.complete?')
-  validates :funding_duration, numericality: { only_integer: true, greater_than_or_equal_to: 1 },
-              if: ('self.initial? || self.transferred? || self.complete?')
-  validates :total_costs, numericality: { greater_than_or_equal_to: 0, message: 'please enter the amount of funding you are seeking' },
-              # format: { with: /\A\d+\.?\d{0,2}\z/, message: 'only two decimal places allowed' },
-              if: ('self.initial? || self.transferred? || self.complete?')
-  validates :total_costs_estimated, inclusion: { message: 'please select an option', in: [true, false] },
-              if: ('self.initial? || self.transferred? || self.complete?')
-  validates :all_funding_required, inclusion: { message: 'please select an option', in: [true, false] },
-              if: ('self.initial? || self.transferred? || self.complete?')
+  validates :recipient, :funding_duration, presence: true
+  validates :type_of_support, inclusion: { in: TYPE_OF_SUPPORT, message: 'please select an option' }
+  validates :funding_type, inclusion: { in: FUNDING_TYPE, message: 'please select an option' }
+  validates :funding_duration, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
+  validates :total_costs, numericality: { greater_than_or_equal_to: 0, message: 'please enter the amount of funding you are seeking' }
+              # format: { with: /\A\d+\.?\d{0,2}\z/, message: 'only two decimal places allowed' }
+  validates :total_costs_estimated, inclusion: { message: 'please select an option', in: [true, false] }
+  validates :all_funding_required, inclusion: { message: 'please select an option', in: [true, false] }
 
   # Beneficiaries
-  validates :affect_people, presence: { message: 'you must affect either people or other groups' },
-              if: ('self.initial? || self.transferred? || self.complete?'), unless: 'self.affect_other?'
-  validates :affect_other, presence: { message: 'you must affect either people or other groups' },
-              if: ('self.initial? || self.transferred? || self.complete?'), unless: 'self.affect_people?'
-  validates :affect_people, :affect_other, inclusion: { in: [true, false], message: 'please select an option' },
-              if: ('self.initial? || self.transferred? || self.complete?')
+  validates :affect_people, presence: { message: 'you must affect either people or other groups' }, unless: 'self.affect_other?'
+  validates :affect_other, presence: { message: 'you must affect either people or other groups' }, unless: 'self.affect_people?'
+  validates :affect_people, :affect_other, inclusion: { in: [true, false], message: 'please select an option' }
   validates :gender, :age_groups,
               presence: { message: 'Please select an option' },
-              if: ('self.affect_people? && self.initial? || self.complete?'),
               unless: '!self.affect_people? && self.affect_other?'
   validates :gender, inclusion: { in: GENDERS, message: 'please select an option'},
-              if: ('self.affect_people? && self.initial? || self.complete?'),
               unless: '!self.affect_people? && self.affect_other?'
-  validate :beneficiaries_people, :beneficiaries_other_group,
-              if: ('self.initial? || self.transferred? || self.complete?')
+  validate :beneficiaries_people, :beneficiaries_other_group
   validates :beneficiaries_other,
               presence: { message: "please uncheck 'Other' or specify details" },
               if: :beneficiaries_other_required
@@ -94,16 +82,25 @@ class Proposal < ActiveRecord::Base
   end
 
   # Location
-  validates :affect_geo, inclusion: { in: 0..3, message: 'please select an option'},
-              if: ('self.initial? || self.transferred? || self.complete?')
+  validates :affect_geo, inclusion: { in: 0..3, message: 'please select an option'}
   validates :countries, presence: true
   validates :districts, presence: true,
-              if: ('self.initial? || self.transferred? || self.complete?'),
               unless: Proc.new { |o| o.affect_geo > 1 if o.affect_geo.present? }
 
+  # Privacy
+  validates :private, inclusion: { in: [true, false], message: 'please select an option' }
+
   # Registered
-  validates :title, presence: true,
+  validates :title, uniqueness: { scope: :recipient_id, message: 'each proposal must have a unique title' },
               if: ('self.registered? || self.complete?')
+  validates :title, :tagline, :outcome1, presence: true, length: { maximum: 280, message: 'please use 280 characters or less' },
+              if: ('self.registered? || self.complete?')
+  validates :implementations, presence: true,
+              unless: :implementations_other_required,
+              if: ('self.registered? || self.complete?')
+  validates :implementations_other,
+              presence: { message: "please uncheck 'Other' or specify details" },
+              if: :implementations_other_required
 
   def initial_recommendation
     Funder.active.each do |funder|
@@ -116,24 +113,16 @@ class Proposal < ActiveRecord::Base
         # Age
         org_type_score = 0
         if funder.current_attribute.funded_age_temp
-          funder_age_temp = (funder.current_attribute.funded_age_temp / 365)
+          funder_age_temp = funder.current_attribute.funded_age_temp
           result = nil
-          if funder_age_temp < 1
+          if funder_age_temp < 365
             result = 0
-          elsif funder_age_temp > 0 && funder_age_temp < 6
+          elsif funder_age_temp >= 365 && funder_age_temp < 1095
             result = 1
-          elsif funder_age_temp > 5 && funder_age_temp < 26
+          elsif funder_age_temp >=1095 && funder_age_temp < 26
             result = 2
-          elsif funder_age_temp > 25 && funder_age_temp < 51
+          elsif funder_age_temp >= 1460
             result = 3
-          elsif funder_age_temp > 50 && funder_age_temp <= 101
-            result = 4
-          elsif funder_age_temp > 100 && funder_age_temp <= 251
-            result = 5
-          elsif funder_age_temp > 250 && funder_age_temp <= 501
-            result = 6
-          elsif funder_age_temp > 500
-            result = 7
           end
           org_type_score += 1 if self.recipient.operating_for == result
         end
@@ -143,15 +132,15 @@ class Proposal < ActiveRecord::Base
         if funder.current_attribute.funded_income_temp
           funder_income_temp = funder.current_attribute.funded_income_temp
           result = nil
-          if funder_income_temp <= 10000
+          if funder_income_temp < 10000
             result = 0
-          elsif funder_income_temp > 10000 && funder_income_temp <= 100000
+          elsif funder_income_temp >= 10000 && funder_income_temp < 100000
             result = 1
-          elsif funder_income_temp > 100000 && funder_income_temp <= 1000000
+          elsif funder_income_temp >= 100000 && funder_income_temp < 1000000
             result = 2
-          elsif funder_income_temp > 1000000 && funder_income_temp <= 10000000
+          elsif funder_income_temp >= 1000000 && funder_income_temp < 10000000
             result = 3
-          elsif funder_income_temp > 100000000
+          elsif funder_income_temp >= 100000000
             result = 4
           end
           org_type_score += 1 if self.recipient.income == result
@@ -162,8 +151,8 @@ class Proposal < ActiveRecord::Base
         location_score += compare_arrays('districts', funder) # refactor, this will bias towards funders with district data
 
         # unless self.transferred?
-        funding_amount_score = calculate_grant_amount_recommendation(funder)
-        funding_duration_score = calculate_grant_duration_recommendation(funder)
+        grant_amount_recommendation = calculate_grant_amount_recommendation(funder)
+        grant_duration_recommendation = calculate_grant_duration_recommendation(funder)
         # end
 
         score = beneficiary_score +
@@ -179,8 +168,8 @@ class Proposal < ActiveRecord::Base
         org_type_score: org_type_score,
         beneficiary_score: beneficiary_score,
         location_score: location_score,
-        funding_amount_score: funding_amount_score,
-        funding_duration_score: funding_duration_score
+        grant_amount_recommendation: grant_amount_recommendation,
+        grant_duration_recommendation: grant_duration_recommendation
       }
 
       save_recommendation(funder, scores)
@@ -188,10 +177,6 @@ class Proposal < ActiveRecord::Base
   end
 
   private
-
-  def hello
-    return 1
-  end
 
   def load_recommendation(funder)
     Recommendation.where(recipient: recipient, funder: funder).first
@@ -239,7 +224,7 @@ class Proposal < ActiveRecord::Base
   end
 
   def prevent_second_proposal_until_first_is_complete
-    if self.recipient.proposals.count == 1 && self.recipient.proposals.last.state != 'complete'
+    if self.recipient.proposals.count == 1 && self.recipient.proposals.where(state: 'complete').count < 1
       errors.add(:proposal, 'Please complete your first proposal before creating a second.')
     end
   end

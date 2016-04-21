@@ -445,6 +445,13 @@ ActiveRecord::Schema.define(version: 20160406095716) do
   add_index "implementations_profiles", ["implementation_id"], name: "index_implementations_profiles_on_implementation_id", using: :btree
   add_index "implementations_profiles", ["profile_id"], name: "index_implementations_profiles_on_profile_id", using: :btree
 
+  create_table "implementations_proposals", force: :cascade do |t|
+    t.integer "implementation_id"
+    t.integer "proposal_id"
+  end
+
+  add_index "implementations_proposals", ["implementation_id", "proposal_id"], name: "index_implementations_proposals", using: :btree
+
   create_table "implementors", force: :cascade do |t|
     t.string   "label",      limit: 255
     t.datetime "created_at",             null: false
@@ -596,15 +603,18 @@ ActiveRecord::Schema.define(version: 20160406095716) do
     t.boolean  "other_costs_estimated"
     t.boolean  "all_funding_required"
     t.boolean  "beneficiaries_other_required"
-    t.datetime "created_at",                                       null: false
-    t.datetime "updated_at",                                       null: false
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
     t.string   "type_of_support"
-    t.string   "state",                        default: "initial"
+    t.string   "state",                          default: "initial"
     t.boolean  "affect_people"
     t.boolean  "affect_other"
     t.integer  "affect_geo"
     t.boolean  "total_costs_estimated"
     t.string   "funding_type"
+    t.boolean  "private"
+    t.boolean  "implementations_other_required"
+    t.string   "implementations_other"
   end
 
   add_index "proposals", ["recipient_id"], name: "index_proposals_on_recipient_id", using: :btree
@@ -631,8 +641,6 @@ ActiveRecord::Schema.define(version: 20160406095716) do
     t.float    "org_type_score"
     t.float    "beneficiary_score"
     t.float    "location_score"
-    t.float    "funding_amount_score"
-    t.float    "funding_duration_score"
   end
 
   add_index "recommendations", ["funder_id"], name: "index_recommendations_on_funder_id", using: :btree

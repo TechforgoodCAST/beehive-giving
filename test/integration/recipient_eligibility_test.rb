@@ -4,62 +4,44 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
 
   setup do
     @recipient = create(:recipient)
-    @funder = create(:funder)
-    3.times { |g| create(:grant, funder: @funder) }
-    create(:funder_attribute, funder: @funder)
-    @proposal = create(:initial_proposal, recipient: @recipient)
-    @proposal.initial_recommendation # refctor?
-    @restrictions = Array.new(3) { |i| create(:restriction) }
-    Array.new(3) { |i| create(:eligibility, recipient: @recipient, restriction: @restrictions[i]) }
-    create_and_auth_user!(organisation: @recipient)
-    @recipient.recommendations.first.update_attribute(:score, 2)
+    setup_funders(3, true)
   end
 
   test 'recipient no eligibility data has to complete all questions' do
     Capybara.match = :first
-
-    @funding_stream = create(:funding_stream, :restrictions => @restrictions, :funders => [@funder])
-    Eligibility.destroy_all
-
-    visit funder_path(@funder)
+    visit funder_path(@funders[0])
     click_link('Check eligibility')
 
-    assert_equal recipient_eligibility_path(@funder), current_path
+    assert_equal recipient_eligibility_path(@funders[0]), current_path
     assert page.has_content?('Yes', count: 3)
   end
 
   test 'recipient with partial eligibility data able to fill gaps' do
-    create(:funding_stream, restrictions: @restrictions, funders: [@funder])
+    Array.new(3) { |i| create(:eligibility, recipient: @recipient, restriction: @restrictions[i]) }
     Eligibility.last.destroy
 
-    visit recipient_eligibility_path(@funder)
+    visit recipient_eligibility_path(@funders[0])
     assert page.has_content?('Yes', count: 1)
   end
 
-  test 'eligible recipient with a funding proposal can apply for funding' do
-    skip
-    @recipient.recommendations.last.update_attribute(:eligibility, 'Eligible')
-    create(:proposal, recipient: @recipient)
+  test 'eligible recipient can apply for funding' do
+    @recipient.load_recommendation(@funders[0]).update_attribute(:eligibility, 'Eligible')
 
-    visit recipient_apply_path(@funder)
-    assert_equal recipient_apply_path(@funder), current_path
+    visit recipient_apply_path(@funders[0])
+    assert_equal recipient_apply_path(@funders[0]), current_path
   end
 
-  test 'ineligible recipient with a funding proposal cannot visit apply for funding page' do
-    skip
-    @recipient.recommendations.last.update_attributes(eligibility: 'Ineligible')
-    create(:proposal, recipient: @recipient)
+  test 'ineligible recipient cannot visit apply for funding page' do
+    @recipient.load_recommendation(@funders[0]).update_attribute(:eligibility, 'Ineligible')
 
-    visit recipient_apply_path(@funder)
-    assert_equal recipient_eligibility_path(@funder), current_path
+    visit recipient_apply_path(@funders[0])
+    assert_equal recipient_eligibility_path(@funders[0]), current_path
   end
 
   test 'cannot check eligibility if max free limit reached unless subscribed' do
-    skip
     create(:feedback, user: @user)
-    3.times { |f| create(:funder) }
-    Funder.limit(3).each { |f| @recipient.unlock_funder!(f) }
-    @proposal.initial_recommendation # refctor?
+    @funders.each { |f| @recipient.unlock_funder!(f) }
+    create(:funder)
 
     visit recipient_eligibility_path(@recipient.unlocked_funders.first)
     assert_equal recipient_eligibility_path(@recipient.unlocked_funders.first), current_path
@@ -68,6 +50,11 @@ class RecipientEligibilityTest < ActionDispatch::IntegrationTest
     assert_equal edit_feedback_path(@user.feedbacks.last), current_path
 
     # refactor test unless subscribed
+  end
+
+  test 'funder card displayed with appropriate cta' do
+    visit recipient_eligibility_path(@funders[0])
+    assert_not page.has_css?('.card-cta')
   end
 
 end

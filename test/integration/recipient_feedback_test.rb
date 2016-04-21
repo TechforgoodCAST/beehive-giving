@@ -5,7 +5,7 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
   setup do
     @recipient = create(:recipient)
     setup_funders(4)
-    create(:initial_proposal, recipient: @recipient)
+    create(:proposal, recipient: @recipient)
   end
 
   test 'feedback prompt before third funder check' do

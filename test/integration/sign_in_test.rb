@@ -55,16 +55,17 @@ class SignInTest < ActionDispatch::IntegrationTest
   end
 
   test 'redirected to original url if exists' do
+    create(:country)
     recipient = create(:recipient)
     @user.update_attribute(:organisation_id, recipient.id)
-    visit new_recipient_profile_path(recipient)
+    visit new_recipient_proposal_path(recipient)
     assert_equal sign_in_path, current_path
     within('#sign-in') do
       fill_in('email', with: @user.user_email.upcase)
       fill_in('password', with: @user.password)
     end
     click_button('Sign in')
-    assert_equal new_recipient_profile_path(recipient), current_path
+    assert_equal new_recipient_proposal_path(recipient), current_path
   end
 
 end

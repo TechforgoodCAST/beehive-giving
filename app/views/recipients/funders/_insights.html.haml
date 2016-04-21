@@ -14,15 +14,15 @@
           %a.action{href: recipient_eligibility_path(funder)} Find out why
 
   - if @recipient.has_proposal? && !@recipient.transferred?
-    - if @recipient.load_recommendation(funder).funding_amount_score > 0.01
+    - if @recipient.load_recommendation(funder).grant_amount_recommendation > 0.01
       %li
-        %strong= number_to_percentage((@recipient.load_recommendation(funder).funding_amount_score * 100), precision: 0)
+        %strong= number_to_percentage((@recipient.load_recommendation(funder).grant_amount_recommendation * 100), precision: 0)
         of funding was similar to the
         %strong amount
         you're seeking.
-    - if @recipient.load_recommendation(funder).funding_duration_score > 0
+    - if @recipient.load_recommendation(funder).grant_duration_recommendation > 0.01
       %li
-        %strong= number_to_percentage((@recipient.load_recommendation(funder).funding_duration_score * 100), precision: 0)
+        %strong= number_to_percentage((@recipient.load_recommendation(funder).grant_duration_recommendation * 100), precision: 0)
         of funding was similar to the
         %strong duration
         you're seeking.

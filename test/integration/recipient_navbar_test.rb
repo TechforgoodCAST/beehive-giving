@@ -12,32 +12,19 @@ class RecipientNavbarTest < ActionDispatch::IntegrationTest
     assert_equal signup_user_path, current_path
   end
 
-  test 'user creating profile has not navigation options' do
+  test 'user creating profile has no navigation options' do
     create_and_auth_user!
     visit root_path
     assert_equal signup_organisation_path, current_path
-    assert_not page.has_content?('Update profile')
     assert_not page.has_content?('Funding proposals')
     assert_not page.has_content?('Sign out')
   end
 
-  test 'user with profile can navigate to edit profiles path' do
-    skip
+  test 'user with registered proposal can navigate to edit proposals path' do
     create_and_auth_user!(organisation: @recipient)
-    create(:profile, organisation: @recipient)
+    create(:registered_proposal, recipient: @recipient)
     visit recommended_funders_path
     assert_equal recommended_funders_path, current_path
-    assert page.has_content?('Update profile')
-    assert_not page.has_content?('Funding proposals')
-    assert page.has_content?('Sign out')
-  end
-
-  test 'user with initial proposal can navigate to edit proposals path' do
-    create_and_auth_user!(organisation: @recipient)
-    create(:initial_proposal, recipient: @recipient)
-    visit recommended_funders_path
-    assert_equal recommended_funders_path, current_path
-    assert page.has_content?('Update profile')
     assert page.has_content?('Funding proposals')
     assert page.has_content?('Sign out')
   end

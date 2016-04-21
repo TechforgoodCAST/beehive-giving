@@ -15,11 +15,11 @@ class Recipient < Organisation
   alias_method :attribute, :recipient_attribute
 
   has_many :recommendations, dependent: :destroy
-  has_many :countries, :through => :profiles
-  has_many :districts, :through => :profiles
-  has_many :beneficiaries, :through => :profiles
-  has_many :implementors, :through => :profiles
-  has_many :implementations, :through => :profiles
+  has_many :countries, :through => :proposals
+  has_many :districts, :through => :proposals
+  has_many :beneficiaries, :through => :proposals
+  has_many :implementations, :through => :proposals
+  # has_many :implementors, :through => :profiles # refactor
 
   RECOMMENDATION_THRESHOLD = 1
   MAX_FREE_LIMIT = 3
@@ -73,7 +73,7 @@ class Recipient < Organisation
     })
   end
 
-  def valid_profile_years
+  def valid_profile_years # refactor
     if profiles.last.year.present?
       a = Profile::VALID_YEARS - profiles.map(&:year)
       a.unshift(profiles.last.year)
@@ -82,7 +82,7 @@ class Recipient < Organisation
     end
   end
 
-  def can_create_profile?
+  def can_create_profile? # refactor
     profiles.where(year: Date.today.year).count < 1
   end
 
@@ -171,17 +171,20 @@ class Recipient < Organisation
     ).order(:id)
   end
 
-  # refactor?
-  def has_proposal?
+  def has_proposal? # refactor?
     proposals.count > 0
   end
 
-  def transferred?
+  def transferred? # refactor?
     proposals.where(state: 'transferred').count > 0
   end
 
-  def incomplete_proposals?
+  def incomplete_proposals? # refactor?
     proposals.where(state: 'initial').count > 0
+  end
+
+  def incomplete_first_proposal?
+    proposals.count == 1 && proposals.last.state != 'complete'
   end
 
   # refactor
@@ -197,7 +200,7 @@ class Recipient < Organisation
     end
   end
 
-  def build_recommendation(funder, score)
+  def build_recommendation(funder, score) # refactor
     recommendation = Recommendation.where(
       recipient: self,
       funder: funder
@@ -207,7 +210,7 @@ class Recipient < Organisation
     )
   end
 
-  def initial_recommendation
+  def initial_recommendation # refactor
     Funder.all.each do |funder|
       score = 0
       if funder.attributes.any?
@@ -217,7 +220,7 @@ class Recipient < Organisation
     end
   end
 
-  def refined_recommendation
+  def refined_recommendation # refactor
     Funder.where(active_on_beehive: true).each do |funder|
       score = 0
 

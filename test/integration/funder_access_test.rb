@@ -26,18 +26,7 @@ class FunderAccessTest < ActionDispatch::IntegrationTest
     assert_equal funder_district_path(@funder, district.slug), current_path
   end
 
-  test "funder cannot visit new profile path" do
-    visit new_recipient_profile_path(@funder)
-    assert_equal funder_overview_path(@funder), current_path
-  end
-
-  test "funder cannot visit profiles index path" do
-    visit recipient_profiles_path(@funder)
-    assert_equal funder_overview_path(@funder), current_path
-  end
-
   test "funder cannot visit recommened eligible ineligible and all funders paths" do
-    skip
     visit recommended_funders_path
     assert_equal funder_overview_path(@funder), current_path
     visit eligible_funders_path
@@ -54,13 +43,11 @@ class FunderAccessTest < ActionDispatch::IntegrationTest
   end
 
   test "funder cannot visit eligibility path" do
-    skip
     visit recipient_eligibility_path(@funder)
     assert_equal funder_overview_path(@funder), current_path
   end
 
   test "funder cannot visit apply path" do
-    skip
     visit recipient_apply_path(@funder)
     assert_equal funder_overview_path(@funder), current_path
   end
@@ -72,6 +59,11 @@ class FunderAccessTest < ActionDispatch::IntegrationTest
 
   test "funder cannot visit edit proposal path" do
     visit edit_recipient_proposal_path(@funder)
+    assert_equal funder_overview_path(@funder), current_path
+  end
+
+  test "funder cannot visit proposal index path" do
+    visit recipient_proposals_path(@funder)
     assert_equal funder_overview_path(@funder), current_path
   end
 

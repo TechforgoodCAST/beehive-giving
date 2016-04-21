@@ -19,9 +19,9 @@ class RecipientOnboardingTest < ActionDispatch::IntegrationTest
     assert_equal new_recipient_proposal_path(@recipient), current_path
   end
 
-  test 'Complete registration redirects to funder recommendation page' do
+  test 'complete registration redirects to funder recommendation page' do
     create_and_auth_user!(organisation: @recipient)
-    @initial_proposal = create(:initial_proposal, recipient: @recipient)
+    create(:registered_proposal, recipient: @recipient)
     visit root_path
     assert_equal recommended_funders_path, current_path
   end

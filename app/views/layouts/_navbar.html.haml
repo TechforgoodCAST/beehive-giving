@@ -41,9 +41,6 @@
                     %i.uk-icon-caret-down
                   .uk-dropdown.uk-dropdown-navbar.uk-dropdown-flip{ class: ('funder-dropdown' if current_user.role == 'Funder') }
                     %ul.uk-nav.uk-nav-navbar
-                      - if current_user.role == 'User'
-                        %li
-                          %a{:href => recipient_profiles_path(current_user.organisation)} Update profile
                       - if current_user.role == 'User' && @recipient.has_proposal?
                         %li
                           %a{:href => recipient_proposals_path(current_user.organisation)} Funding proposals
@@ -69,8 +66,6 @@
         %ul.uk-nav.uk-nav-offcanvas
           %li.uk-nav-header.uk-margin-top.uk-text-center Menu
           - if current_user.role == 'User' && @recipient.has_proposal?
-            %li
-              %a{:href => recipient_profiles_path(current_user.organisation)} Update profile
             %li
               %a{:href => recipient_proposals_path(current_user.organisation)} Funding proposals
             %hr

@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::InvalidAuthenticityToken, with: :bad_token
 
   def bad_token
-    flash[:warning] = 'Please sign in asdas'
+    flash[:warning] = 'Please sign in.'
     redirect_to '/logout'
   end
 
@@ -89,9 +89,10 @@ class ApplicationController < ActionController::Base
   end
 
   def ensure_proposal_present
-    # if current_user.role == 'User'
-    #   redirect_to new_recipient_proposal_path(current_user.organisation) if current_user.organisation.proposals.count < 1
-    # end
+    if current_user.role == 'User' && current_user.organisation.proposals.count < 1
+      redirect_to new_recipient_proposal_path(current_user.organisation),
+                  alert: 'Please create a funding proposal before continuing.'
+    end
   end
 
   # refactor

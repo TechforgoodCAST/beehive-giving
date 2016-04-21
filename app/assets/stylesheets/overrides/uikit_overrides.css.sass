@@ -219,3 +219,19 @@ h1
 .uk-table-hover tbody tr
   &:hover
     cursor: pointer
+
+/* Notify
+ ========================================================================== */
+
+.uk-notify-message-danger a, .uk-notify-message-succes a
+  transition: all .25s
+
+.uk-notify-message-danger a
+  color: $red-base !important
+  &:hover
+    color: $red-hover !important
+
+.uk-notify-message-success a
+  color: $green-base !important
+  &:hover
+    color: $green-hover !important

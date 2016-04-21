@@ -5,6 +5,8 @@ class ProposalTest < ActiveSupport::TestCase
   setup do
     @recipient = create(:recipient)
     @initial_proposal = build(:initial_proposal, recipient: @recipient)
+    @registered_proposal = build(:registered_proposal, recipient: @recipient)
+    @proposal = build(:proposal, recipient: @recipient)
   end
 
   test 'a proposal belongs to a recipient' do
@@ -23,7 +25,7 @@ class ProposalTest < ActiveSupport::TestCase
     assert_not incomplete_proposal2.valid?
   end
 
-  test 'a valid initial proposal' do
+  test 'valid initial proposal' do
     assert_equal 'initial', @initial_proposal.state
     assert @initial_proposal.valid?
   end
@@ -32,6 +34,28 @@ class ProposalTest < ActiveSupport::TestCase
     @initial_proposal.funding_duration = -1
     @initial_proposal.save
     assert_not @initial_proposal.valid?
+  end
+
+  test 'valid registered proposal' do
+    assert_equal 'registered', @registered_proposal.state
+    @registered_proposal.valid?
+  end
+
+  test 'invalid registered proposal' do
+    @registered_proposal.title = nil
+    @registered_proposal.funding_duration = nil
+    assert_not @registered_proposal.valid?
+  end
+
+  test 'valid complete proposal' do
+    assert_equal 'complete', @proposal.state
+    @proposal.valid?
+  end
+
+  test 'invalid complete proposal' do
+    @proposal.title = nil
+    @proposal.funding_duration = nil
+    assert_not @proposal.valid?
   end
 
   test 'proposal default state is initial' do
@@ -72,11 +96,14 @@ class ProposalTest < ActiveSupport::TestCase
   end
 
   test 'gender and age_groups not required if affects other' do
-    Beneficiary.destroy_all
-    @initial_proposal = build(:beneficiary_other_profile, organisation: @recipient, state: 'beneficiaries', affect_people: false, affect_other: true)
+    @initial_proposal.affect_people = false
+    @initial_proposal.affect_other = true
     @initial_proposal.gender = nil
     @initial_proposal.age_groups = []
-    assert_equal 'Other', Beneficiary.pluck(:category).uniq[0]
+    @initial_proposal.beneficiaries.each do |b|
+      b.update_attribute(:category, 'Other')
+    end
+
     assert @initial_proposal.valid?
   end
 
@@ -86,9 +113,16 @@ class ProposalTest < ActiveSupport::TestCase
   end
 
   test 'beneficiary other options required if affects other' do
-    @initial_proposal.affect_people = false
-    @initial_proposal.affect_other = true
-    assert_equal 'People', Beneficiary.pluck(:category).uniq[0]
+    @initial_proposal.save
+    @initial_proposal.update_attribute(:affect_people, false)
+    @initial_proposal.update_attribute(:affect_other, true)
+    @initial_proposal.beneficiaries.last.update_attribute(:category, 'Other')
+
+    # beneficiary people options cleared after validation
+    @initial_proposal.valid?
+    assert_equal 0, @initial_proposal.beneficiaries.where(category: 'People').count
+
+    assert_equal 1, @initial_proposal.beneficiaries.where(category: 'Other').count
     assert_not @initial_proposal.valid?
   end
 
@@ -103,29 +137,36 @@ class ProposalTest < ActiveSupport::TestCase
   end
 
   def setup_beneficiaries
-    Beneficiary.last.update_attribute(:category, 'Other')
-    @people_ids = Beneficiary.where(category: 'People').pluck(:id)
-    @other_groups_ids = Beneficiary.where(category: 'Other').pluck(:id)
-    @initial_proposal.beneficiary_ids = Beneficiary.pluck(:id)
     @initial_proposal.save
+    @initial_proposal.beneficiaries.last.update_attribute(:category, 'Other')
+    @people_ids = @initial_proposal.beneficiaries.where(category: 'People').pluck(:id)
+    @other_groups_ids = @initial_proposal.beneficiaries.where(category: 'Other').pluck(:id)
   end
 
   test 'beneficiary people cleared if no affect_people' do
     setup_beneficiaries
+    @initial_proposal.save
+
+    assert_equal 'People', @initial_proposal.beneficiaries.pluck(:category)[0]
+    assert_equal 'Other', @initial_proposal.beneficiaries.pluck(:category)[1]
     assert_equal @people_ids, @initial_proposal.beneficiary_ids
   end
 
   test 'beneficiary other groups cleared if no affect_other' do
+    setup_beneficiaries
     @initial_proposal.affect_people = false
     @initial_proposal.affect_other = true
-    setup_beneficiaries
+    @initial_proposal.save
+
     assert_equal @other_groups_ids, @initial_proposal.beneficiary_ids
   end
 
   test 'no beneficiaries cleared if affect both people and other' do
-    @initial_proposal.affect_other = true
     setup_beneficiaries
-    assert_equal Beneficiary.pluck(:id), @initial_proposal.beneficiary_ids
+    @initial_proposal.affect_other = true
+    @initial_proposal.save
+
+    assert_equal @people_ids + @other_groups_ids, @initial_proposal.beneficiary_ids
   end
 
   test 'no districts required if affect_geo is at country level' do
@@ -153,33 +194,19 @@ class ProposalTest < ActiveSupport::TestCase
     assert_equal country_districts.count, (country_districts & proposal_districts).count
   end
 
-  test 'fields for registered and compelted proposal' do
-    skip
-  end
-
-  test 'total costs calculated for complete proposal' do
-    skip
-    @proposal.save
-    assert_equal 4000, Proposal.last.total_costs
-  end
-
-  test 'minimum of one outcome required for complete proposal' do
-    skip
-    @proposal.outcome1 = nil
-    @proposal.save
-    assert_not @proposal.valid?
-  end
-
   test 'creating a proposal generates recommendations' do
-    skip
     funder = create(:funder)
-    create(:recommendation, funder: funder, recipient: @recipient)
     create(:funder_attribute, funder: funder)
-    3.times { |grant| create(:grant, funder: funder, amount_awarded: 4000) }
+
+    assert_equal 0, Recommendation.count
     @initial_proposal.save
-    recommendation = Recommendation.last
-    assert_equal 1, recommendation.grant_amount_recommendation
-    assert_equal recommendation.grant_amount_recommendation + recommendation.grant_duration_recommendation + recommendation.score, recommendation.total_recommendation
+    assert_equal 1, Recommendation.count
+  end
+
+  test 'recipient cannot have duplicate proposal titles' do
+    @proposal.save
+    second_proposal = build(:registered_proposal, recipient: @recipient, title: @proposal.title)
+    assert_not second_proposal.valid?
   end
 
 end
