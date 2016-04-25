@@ -2,7 +2,6 @@ class ProposalsController < ApplicationController
 
   before_filter :ensure_logged_in, :load_recipient,
                 :prevent_funder_access, :recipient_country
-  before_filter :ensure_proposal_present, except: [:new, :create]
   before_filter :load_proposal, only: [:edit, :update]
 
   def new
@@ -11,7 +10,12 @@ class ProposalsController < ApplicationController
     elsif @recipient.has_proposal?
       redirect_to recommended_funders_path
     else
-      @proposal = @recipient.proposals.new(state: 'initial')
+      if @recipient.valid?
+        @proposal = @recipient.proposals.new(state: 'initial')
+        @recipient.transfer_profile_to_new_proposal(@recipient.profiles.last, @proposal)
+      else
+        redirect_to edit_recipient_path(@recipient)
+      end
     end
   end
 
@@ -46,12 +50,14 @@ class ProposalsController < ApplicationController
   end
 
   def edit
+    @recipient.transfer_profile_to_existing_proposal(@recipient.profiles.last, @proposal)
     if request.referer
       session.delete(:return_to) if request.referer.ends_with?('/proposals')
     end
   end
 
   def update
+    @proposal.state = 'transferred' if @proposal.initial?
     respond_to do |format|
       if @proposal.update_attributes(proposal_params)
         format.js   {

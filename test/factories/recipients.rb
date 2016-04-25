@@ -1,6 +1,6 @@
 FactoryGirl.define do
 
-  factory :recipient do
+  factory :legacy_recipient, class: Recipient do
     transient do
       n { rand(9999) }
     end
@@ -10,10 +10,13 @@ FactoryGirl.define do
     name            "ACME"
     country         "GB"
     operating_for   Organisation::OPERATING_FOR[1][1]
-    income          Organisation::INCOME[1][1]
-    employees       Organisation::EMPLOYEES.sample[1]
-    volunteers      Organisation::EMPLOYEES.sample[1]
     website         "http://www.acme.com"
+
+    factory :recipient do
+      income        Organisation::INCOME[1][1]
+      employees     Organisation::EMPLOYEES.sample[1]
+      volunteers    Organisation::EMPLOYEES.sample[1]
+    end
   end
 
   factory :blank_org, class: Recipient do; end

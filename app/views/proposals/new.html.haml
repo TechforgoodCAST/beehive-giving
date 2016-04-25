@@ -35,4 +35,7 @@
     %h4 Beehive will use this to provide recommendations of suitable funder.
 
     .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+      - if @recipient.profile_for_migration?
+        = render partial: 'proposals/cta'
+
       = render partial: "proposals/states/#{@proposal.state}"

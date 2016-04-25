@@ -597,10 +597,10 @@ ActiveRecord::Schema.define(version: 20160406095716) do
     t.float    "capital_costs"
     t.float    "other_costs"
     t.float    "total_costs"
-    t.boolean  "activity_costs_estimated"
-    t.boolean  "people_costs_estimated"
-    t.boolean  "capital_costs_estimated"
-    t.boolean  "other_costs_estimated"
+    t.boolean  "activity_costs_estimated",       default: false
+    t.boolean  "people_costs_estimated",         default: false
+    t.boolean  "capital_costs_estimated",        default: false
+    t.boolean  "other_costs_estimated",          default: false
     t.boolean  "all_funding_required"
     t.boolean  "beneficiaries_other_required"
     t.datetime "created_at",                                         null: false
@@ -610,7 +610,7 @@ ActiveRecord::Schema.define(version: 20160406095716) do
     t.boolean  "affect_people"
     t.boolean  "affect_other"
     t.integer  "affect_geo"
-    t.boolean  "total_costs_estimated"
+    t.boolean  "total_costs_estimated",          default: false
     t.string   "funding_type"
     t.boolean  "private"
     t.boolean  "implementations_other_required"

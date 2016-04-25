@@ -29,6 +29,9 @@ Rails.application.routes.draw do
   match '/basics', to: 'signup#organisation', via: :get, as: 'signup_organisation'
   match '/basics', to: 'signup#create_organisation', via: :post
 
+  match '/(:id)/basics', to: 'recipients#edit', via: :get, as: 'edit_recipient'
+  match '/(:id)/basics', to: 'recipients#update', via: :patch
+
   match '/new-funder', to: 'signup#funder', via: :get, as: 'new_funder'
   match '/new-funder', to: 'signup#create_funder', via: :post
 
@@ -46,8 +49,6 @@ Rails.application.routes.draw do
 
   # Recipients
   match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
-  # match '/(:id)/edit', to: 'recipients#edit', via: :get, as: 'recipient_edit'
-  # match '/(:id)/edit', to: 'recipients#edit', via: :patch
   match '/proposals/(:id)/recent', to: 'funders#recent', via: :get, as: 'funder_recent'
 
   match '/funding/(:id)/overview', to: 'funders#overview', via: :get, as: 'funder_overview'

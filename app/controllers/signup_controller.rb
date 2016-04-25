@@ -59,30 +59,30 @@ class SignupController < ApplicationController
     if current_user.organisation
       redirect_to new_recipient_proposal_path(current_user.organisation)
     else
-      @organisation = Recipient.new(
+      @recipient = Recipient.new(
         org_type: session[:org_type],
         charity_number: session[:charity_number],
         company_number: session[:company_number]
       )
 
-      case @organisation.org_type
+      case @recipient.org_type
       when 1
-        @organisation.get_charity_data
+        @recipient.get_charity_data
       when 2
-        @organisation.get_company_data
+        @recipient.get_company_data
       when 3
-        @organisation.get_charity_data
-        @organisation.get_company_data
+        @recipient.get_charity_data
+        @recipient.get_company_data
       end
 
       # refactor
-      if @organisation.save
-        current_user.update_attribute(:organisation_id, @organisation.id)
-        redirect_to new_recipient_proposal_path(@organisation)
-      elsif ((@organisation.errors.added? :charity_number, :taken) ||
-            (@organisation.errors.added? :company_number, :taken))
-        charity_number = @organisation.charity_number
-        company_number = @organisation.company_number
+      if @recipient.save
+        current_user.update_attribute(:organisation_id, @recipient.id)
+        redirect_to new_recipient_proposal_path(@recipient)
+      elsif ((@recipient.errors.added? :charity_number, :taken) ||
+            (@recipient.errors.added? :company_number, :taken))
+        charity_number = @recipient.charity_number
+        company_number = @recipient.company_number
         organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
                         (Organisation.find_by_company_number(company_number) if company_number)
 
@@ -96,56 +96,56 @@ class SignupController < ApplicationController
   end
 
   def create_organisation
-    @organisation = Recipient.new(organisation_params)
-    session[:org_type] = @organisation.org_type
-    session[:charity_number] = @organisation.charity_number
-    session[:company_number] = @organisation.company_number
+    @recipient = Recipient.new(recipient_params)
+    session[:org_type] = @recipient.org_type
+    session[:charity_number] = @recipient.charity_number
+    session[:company_number] = @recipient.company_number
 
-    case @organisation.org_type
+    case @recipient.org_type
     when 1
-      @organisation.destroy
-      @organisation = Recipient.new(organisation_params)
-      @organisation.get_charity_data
+      @recipient.destroy
+      @recipient = Recipient.new(recipient_params)
+      @recipient.get_charity_data
     when 2
-      @organisation.destroy
-      @organisation = Recipient.new(organisation_params)
-      @organisation.get_company_data
-      @organisation.charity_number = nil
+      @recipient.destroy
+      @recipient = Recipient.new(recipient_params)
+      @recipient.get_company_data
+      @recipient.charity_number = nil
     when 3
-      @organisation.destroy
-      @organisation = Recipient.new(organisation_params)
-      @organisation.get_charity_data if @organisation.charity_number.present?
-      @organisation.get_company_data if @organisation.company_number.present?
+      @recipient.destroy
+      @recipient = Recipient.new(recipient_params)
+      @recipient.get_charity_data if @recipient.charity_number.present?
+      @recipient.get_company_data if @recipient.company_number.present?
     else
-      @organisation.registered_on = nil
+      @recipient.registered_on = nil
     end
 
     respond_to do |format|
-      if @organisation.save
+      if @recipient.save
         reset_session
         format.js   {
-          current_user.update_attribute(:organisation_id, @organisation.id)
+          current_user.update_attribute(:organisation_id, @recipient.id)
           render :js => "mixpanel.identify('#{current_user.id}');
                         mixpanel.people.set({
-                          'Organisation': '#{@organisation.name}',
-                          'Country': '#{@organisation.country}',
-                          'Registered?': '#{@organisation.registered}',
-                          'Founded On': '#{@organisation.founded_on}'
+                          'Organisation': '#{@recipient.name}',
+                          'Country': '#{@recipient.country}',
+                          'Registered?': '#{@recipient.registered}',
+                          'Founded On': '#{@recipient.founded_on}'
                         });
-                        window.location.href = '#{new_recipient_proposal_path(@organisation)}';
+                        window.location.href = '#{new_recipient_proposal_path(@recipient)}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
         }
         format.html {
-          current_user.update_attribute(:organisation_id, @organisation.id)
-          redirect_to new_recipient_proposal_path(@organisation)
+          current_user.update_attribute(:organisation_id, @recipient.id)
+          redirect_to new_recipient_proposal_path(@recipient)
         }
       # If company/charity number has already been taken
-      elsif ((@organisation.errors.added? :charity_number, :taken) ||
-            (@organisation.errors.added? :company_number, :taken))
+    elsif ((@recipient.errors.added? :charity_number, :taken) ||
+            (@recipient.errors.added? :company_number, :taken))
         format.js {
-          charity_number = @organisation.charity_number
-          company_number = @organisation.company_number
+          charity_number = @recipient.charity_number
+          company_number = @recipient.company_number
           organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
                           (Organisation.find_by_company_number(company_number) if company_number)
 
@@ -153,8 +153,8 @@ class SignupController < ApplicationController
           render :js => "window.location.href = '#{unauthorised_path}';"
         }
         format.html {
-          charity_number = @organisation.charity_number
-          company_number = @organisation.company_number
+          charity_number = @recipient.charity_number
+          company_number = @recipient.company_number
           organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
                           (Organisation.find_by_company_number(company_number) if company_number)
 
@@ -209,7 +209,7 @@ class SignupController < ApplicationController
     :org_type, :charity_number, :company_number)
   end
 
-  def organisation_params
+  def recipient_params
     params.require(:recipient).permit(:name, :website, :street_address,
       :country, :charity_number, :company_number, :operating_for,
       :multi_national, :income, :employees, :volunteers, :org_type,

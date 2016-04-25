@@ -23,5 +23,10 @@ class AddAggregateFieldsToFunderAttributes < ActiveRecord::Migration
     add_column :proposals, :implementations_other_required, :boolean
     add_column :proposals, :implementations_other, :string
 
+    change_column_default :proposals, :total_costs_estimated, false
+    change_column_default :proposals, :activity_costs_estimated, false
+    change_column_default :proposals, :people_costs_estimated, false
+    change_column_default :proposals, :capital_costs_estimated, false
+    change_column_default :proposals, :other_costs_estimated, false
   end
 end

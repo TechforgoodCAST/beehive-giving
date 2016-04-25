@@ -57,7 +57,7 @@ class Profile < ActiveRecord::Base
 
   validates :gender, inclusion: { in: GENDERS, message: 'please select an option'}, if: ('self.affect_people? && self.beneficiaries? || self.complete?'), unless: '!self.affect_people? && self.affect_other?'
 
-  validate :beneficiaries_people, :beneficiaries_other, if: ('self.beneficiaries? || self.complete?')
+  validate :beneficiaries_people, :beneficiaries_other_categories, if: ('self.beneficiaries? || self.complete?')
 
   def beneficiaries_people
     if (beneficiary_ids & Beneficiary.where(category: 'People').pluck(:id)).count < 1
@@ -65,7 +65,7 @@ class Profile < ActiveRecord::Base
     end
   end
 
-  def beneficiaries_other
+  def beneficiaries_other_categories
     if (beneficiary_ids & Beneficiary.where(category: 'Other').pluck(:id)).count < 1
       unless beneficiaries_other_required?
         errors.add(:beneficiaries, 'Please select an option') if affect_other?

@@ -1,6 +1,7 @@
 class Proposal < ActiveRecord::Base
 
   after_validation :trigger_clear_beneficiary_ids
+  after_validation :check_affect_geo
   before_save :save_all_age_groups_if_all_ages
   after_save :save_districts_from_countries
   after_save :initial_recommendation
@@ -176,6 +177,20 @@ class Proposal < ActiveRecord::Base
     end
   end
 
+  def check_affect_geo
+    unless self.affect_geo == 2
+      if self.country_ids.uniq.count > 1
+        self.affect_geo = 3
+      elsif (self.district_ids & Country.find(self.country_ids[0]).districts.pluck(:id)).count == Country.find(self.country_ids[0]).districts.count
+        self.affect_geo = 2
+      elsif District.where(id: district_ids).pluck(:region).uniq.count > 1
+        self.affect_geo = 1
+      else
+        self.affect_geo = 0
+      end
+    end
+  end
+
   private
 
   def load_recommendation(funder)
@@ -219,7 +234,7 @@ class Proposal < ActiveRecord::Base
       self.countries.each do |country|
         district_ids_array += District.where(country_id: country.id).pluck(:id)
       end
-      self.district_ids = district_ids_array
+      self.district_ids = district_ids_array.uniq
     end
   end
 

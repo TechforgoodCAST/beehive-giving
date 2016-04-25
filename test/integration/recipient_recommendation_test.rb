@@ -15,27 +15,24 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
   end
 
   test 'closed funder is not recommended' do
-    recommendation = @recipient.recommendations.where(funder_id: @funders[0].id).first
+    Funder.last.update_column(:name, 'Cripplegate Foundation')
+    @proposal.save
+    visit recommended_funders_path
+    assert page.has_css?('.funder', count: 2)
+    assert_equal 0, @recipient.load_recommendation(Funder.last).score
+  end
 
-    @recipient.refined_recommendation
-    assert_not recommendation.score == 0
-
-    @funders[0].name = 'Cripplegate Foundation'
-    @recipient.refined_recommendation
-    recommendation = @recipient.recommendations.where(funder_id: @funders[0].id).first
-
-    assert_equal 0, recommendation.score
+  test 'closing funder updates historic recommendations' do
+    skip
   end
 
   test 'org_type recommendation set' do
-    @proposal.save
     test_data = []
     @funders.each { |f| test_data << [f.id, 2] }
     assert_equal test_data, @recipient.recommendations.order(:funder_id).pluck(:funder_id, :org_type_score)
   end
 
   test 'beneficiary recommendation set' do
-    @proposal.save
     test_data = [
       [@funders[0].id, 1.33333333333333],
       [@funders[1].id, 1.66666666666667],
@@ -45,21 +42,18 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
   end
 
   test 'location recommendation set' do
-    @proposal.save
     test_data = []
     @funders.each { |f| test_data << [f.id, 0.266666666666667] }
     assert_equal test_data, @recipient.recommendations.order(:funder_id).pluck(:funder_id, :location_score)
   end
 
   test 'requirements recommendation set' do
-    @proposal.save
     test_data = []
     @funders.each { |f| test_data << [f.id, 1, 1] }
     assert_equal test_data, @recipient.recommendations.order(:funder_id).pluck(:funder_id, :grant_amount_recommendation, :grant_duration_recommendation)
   end
 
   test 'total recommendation set' do
-    @proposal.save
     test_data = [
       [@funders[0].id, 3.6],
       [@funders[1].id, 3.93333333333333],

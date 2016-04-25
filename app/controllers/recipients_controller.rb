@@ -1,11 +1,36 @@
 class RecipientsController < ApplicationController
 
   before_filter :ensure_logged_in, :load_recipient, :ensure_recipient,
-                :years_ago, :ensure_proposal_present
+                :years_ago
+  before_filter :ensure_proposal_present, except: [:edit, :update]
   before_filter :check_organisation_ownership_or_funder, only: :show
   before_filter :load_funder, only: [:comparison, :eligibility, :update_eligibility, :apply]
   before_filter :load_feedback, except: [:unlock_funder, :vote]
   before_filter :funder_attribute, only: [:comparison, :eligibility, :update_eligibility]
+
+  def edit
+    @recipient.get_charity_data
+    @recipient.get_company_data
+    redirect_to new_recipient_proposal_path(@recipient) if @recipient.save
+  end
+
+  def update
+    respond_to do |format|
+      if @recipient.update_attributes(recipient_params)
+        format.js {
+          render :js => "window.location.href = '#{new_recipient_proposal_path(@recipient)}';
+                      $('button[type=submit]').prop('disabled', true)
+                      .removeAttr('data-disable-with');"
+        }
+        format.html {
+          redirect_to new_recipient_proposal_path(@recipient)
+        }
+      else
+        format.js
+        format.html { render :edit }
+      end
+    end
+  end
 
   def recommended_funders
     @funders = @recipient.recommended_with_eligible_funders
@@ -91,7 +116,7 @@ class RecipientsController < ApplicationController
   private
 
   def load_recipient
-    @recipient = current_user.organisation if logged_in?
+    @recipient = Recipient.find_by_slug(params[:id]) || current_user.organisation if logged_in?
   end
 
   def load_funder
@@ -122,6 +147,13 @@ class RecipientsController < ApplicationController
 
   def eligibility_params
     params.require(:recipient).permit(eligibilities_attributes: [:id, :eligible, :restriction_id, :recipient_id])
+  end
+
+  def recipient_params
+    params.require(:recipient).permit(:name, :website, :street_address,
+      :country, :charity_number, :company_number, :operating_for,
+      :multi_national, :income, :employees, :volunteers, :org_type,
+      organisation_ids: [])
   end
 
 end

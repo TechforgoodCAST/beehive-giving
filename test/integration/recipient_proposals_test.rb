@@ -22,6 +22,100 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
     check_path(recipient_proposals_path(@recipient))
   end
 
+  def complete_inital_proposal
+    proposal = create(:initial_proposal, recipient: @recipient)
+    visit recommended_funders_path
+    assert_equal edit_recipient_proposal_path(@recipient, proposal), current_path
+    assert_equal proposal.total_costs.to_s, find('#proposal_total_costs')[:value]
+    select(Proposal::FUNDING_TYPE.sample, from: 'proposal_funding_type')
+    within('.proposal_private') do
+      choose('Yes')
+    end
+    click_button 'Save and recommend funders'
+    assert_equal recommended_funders_path, current_path
+  end
+
+  test 'current profile redirects to edit proposal if proposal inital' do
+    create(:current_profile, organisation: @recipient)
+    complete_inital_proposal
+  end
+
+  test 'legacy profile redirects to edit proposal if proposal inital' do
+    legacy_profile = build(:legacy_profile, organisation: @recipient)
+    legacy_profile.save(validate: false)
+    complete_inital_proposal
+  end
+
+  def assert_profile_transferred
+    visit recommended_funders_path
+    assert_equal new_recipient_proposal_path(@recipient), current_path
+    assert_equal 'Other', find('#proposal_gender')[:value]
+  end
+
+  test 'transferred proposal populated from current profile if no proposal' do
+    create(:current_profile, organisation: @recipient, gender: 'Other')
+    assert_profile_transferred
+  end
+
+  test 'transferred proposal populated from legacy profile if no proposal' do
+    legacy_profile = build(:legacy_profile, organisation: @recipient, gender: 'Other')
+    legacy_profile.save(validate: false)
+    assert_profile_transferred
+  end
+
+  test 'beneficiary_other and implementor_other transferred' do
+    profile = create(:current_profile, organisation: @recipient, beneficiaries_other: 'Beneficiaries', beneficiaries_other_required: true, implementations_other: 'Implementations', implementations_other_required: true)
+    proposal = build(:initial_proposal, recipient: @recipient)
+    @recipient.transfer_profile_to_new_proposal(profile, proposal)
+    visit recommended_funders_path
+    # assert page.has_css?('#proposal_beneficiaries_other_required:checked')
+    assert_equal 'Beneficiaries', find('#proposal_beneficiaries_other')[:value]
+    # assert page.has_css?('#proposal_implementations_other_required:checked')
+    assert_equal 'Implementations', proposal.implementations_other
+  end
+
+  test 'implementors transferred' do
+    profile = create(:current_profile, organisation: @recipient)
+    proposal = build(:initial_proposal, recipient: @recipient, implementations: Implementation.all)
+    visit recommended_funders_path
+    assert_equal profile.implementations.pluck(:id), proposal.implementation_ids
+  end
+
+  def create_invalid_recipient(charity_number)
+    User.destroy_all
+    Recipient.destroy_all
+    @recipient = build(:legacy_recipient, charity_number: charity_number)
+    @recipient.set_slug
+    @recipient.save(validate: false)
+    setup_funders(1)
+  end
+
+  test 'invalid recipient must be completed before proposal or recommendations' do
+    create_invalid_recipient('1161998')
+
+    visit recommended_funders_path
+    assert_equal edit_recipient_path(@recipient), current_path
+
+    visit new_recipient_proposal_path(@recipient)
+    assert_equal edit_recipient_path(@recipient), current_path
+
+    assert_equal 'Centre For The Acceleration Of Social Technology', find('#recipient_name')[:value]
+  end
+
+  test 'invalid recipient with complete scrape redirects to new proposal' do
+    create_invalid_recipient('326568')
+
+    visit root_path
+    assert_equal new_recipient_proposal_path(@recipient), current_path
+  end
+
+  test 'profile for migration shows cta' do
+    profile = build(:legacy_profile, organisation: @recipient)
+    profile.save(validate: false)
+    visit edit_recipient_path(@recipient)
+    assert page.has_content?('Your details are out of date')
+  end
+
   test 'cannot create second proposal until first complete' do
     proposal = create(:registered_proposal, recipient: @recipient)
     visit new_recipient_proposal_path(@recipient)

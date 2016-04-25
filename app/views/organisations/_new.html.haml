@@ -1,0 +1,2 @@
+= simple_form_for @recipient, url: signup_organisation_path, remote: true, authenticity_token: true do |f|
+  = render partial: 'organisations/fields', locals: { f: f }

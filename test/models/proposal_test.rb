@@ -187,11 +187,11 @@ class ProposalTest < ActiveSupport::TestCase
   test 'districts populated by country selection if no districts required' do
     create(:district, country: Country.first)
     @initial_proposal.affect_geo = 2
-    country_districts = District.where(country_id: @initial_proposal.countries.first.id).pluck(:id)
+    country_districts = District.where(country_id: @initial_proposal.countries.first.id).order(:id).pluck(:id)
     @initial_proposal.save
-    proposal_districts = @initial_proposal.districts.pluck(:id)
+    proposal_districts = @initial_proposal.districts.order(:id).pluck(:id)
 
-    assert_equal country_districts.count, (country_districts & proposal_districts).count
+    assert_equal proposal_districts, country_districts
   end
 
   test 'creating a proposal generates recommendations' do
@@ -207,6 +207,10 @@ class ProposalTest < ActiveSupport::TestCase
     @proposal.save
     second_proposal = build(:registered_proposal, recipient: @recipient, title: @proposal.title)
     assert_not second_proposal.valid?
+  end
+
+  test 'affect_geo set by selection unless affects entire country' do
+    skip
   end
 
 end
