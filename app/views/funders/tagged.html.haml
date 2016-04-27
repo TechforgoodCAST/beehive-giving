@@ -17,8 +17,6 @@
 
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
 
-    = render partial: 'cta/proposal_cta', locals: { recipient: @recipient }
-
     - @funders.each_with_index do |funder, i|
 
       - if i < 1

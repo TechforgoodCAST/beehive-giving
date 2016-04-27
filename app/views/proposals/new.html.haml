@@ -1,18 +1,41 @@
 = stylesheet_link_tag 'profiles'
-= javascript_include_tag 'profiles'
-= javascript_include_tag 'chosen-jquery'
-= javascript_include_tag 'chosen'
 = stylesheet_link_tag 'chosen'
 = stylesheet_link_tag 'overrides/chosen_overrides'
+= stylesheet_link_tag 'signup'
 
-= content_for :title, 'New funding proposal'
+= javascript_include_tag 'chosen-jquery'
+= javascript_include_tag 'chosen'
+= javascript_include_tag 'jquery.tree-multiselect.min'
 
 :javascript
-  mixpanel.track('View New Proposal Page');
+  mixpanel.track("View Proposal #{@proposal.state.capitalize} Page");
+  mixpanel.identify('#{current_user.id}');
+  mixpanel.people.set({
+    'Proposal State': '#{@proposal.state}'
+  });
 
-.uk-container.uk-container-center.uk-margin-large
-  %h2 Tell Beehive what you're seeking funds for
-  %h4 And Beehive will use this information to improve your funding recommendations.
+:javascript
+  var google_conversion_id = 937505505;
+  var google_conversion_language = "en";
+  var google_conversion_format = "3";
+  var google_conversion_color = "ffffff";
+  var google_conversion_label = "fR8GCJamvWMQ4eWEvwM";
+  var google_remarketing_only = false;
+%script{:src => "//www.googleadservices.com/pagead/conversion.js", :type => "text/javascript"}
+%noscript
+  %div{:style => "display:inline;"}
+    %img{:alt => "", :height => "1", :src => "//www.googleadservices.com/pagead/conversion/937505505/?label=fR8GCJamvWMQ4eWEvwM&amp;guid=ON&amp;script=0", :style => "border-style:none;", :width => "1"}/
 
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
-    = render partial: 'form'
+- content_for :signup do
+  = render partial: 'signup/subnav', locals: { current_step: 1 }
+
+  .uk-container.uk-container-center.uk-margin-large
+
+    %h2 What are you seeking funding for?
+    %h4 Beehive will use this to provide recommendations of suitable funder.
+
+    .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+      - if @recipient.profile_for_migration?
+        = render partial: 'proposals/cta'
+
+      = render partial: "proposals/states/#{@proposal.state}"

@@ -9,7 +9,8 @@ class Recommendation < ActiveRecord::Base
 
   validates :funder, :recipient, :score, presence: true
   validates_uniqueness_of :funder_id, scope: :recipient_id, :message => 'only one per funder and recipient'
-  validates :eligibility, inclusion: {in: ['Eligible', 'Ineligible']}
+  # refactor
+  # validates :eligibility, inclusion: {in: ['Eligible', 'Ineligible']}
 
   def calculate_total_recommendation
     self.total_recommendation = self.score + self.grant_amount_recommendation + self.grant_duration_recommendation if self.grant_amount_recommendation && self.grant_duration_recommendation

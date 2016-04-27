@@ -27,10 +27,10 @@
   = render partial: 'subnav', locals: { current_step: 0 }
   .uk-container.uk-container-center.uk-margin-large
     %h2 Basics
-    %h4 Let's start by creating a profile for your organisation or project so that Beehive can provide you the best funder recommendations.
+    %h4 Which type of organisation or project you are seeking funding for?
 
     .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
-      = render partial: 'organisations/form'
+      = render partial: 'organisations/new'
 
 - unless cookies['_beehiveWelcomeClose'].present?
   #your-organisation.uk-modal.modal-scroll-touch

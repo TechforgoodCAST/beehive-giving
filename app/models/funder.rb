@@ -9,6 +9,8 @@ class Funder < Organisation
   has_many :recipients, :through => :grants
   has_many :recent_recipients, -> (object) { where('grants.approved_on <= ? AND grants.approved_on >= ?', "#{object.current_attribute.year}-12-31", "#{object.current_attribute.year}-01-01") }, :through => :grants, :source => :recipient
 
+  has_many :age_groups, :through => :funder_attributes
+
   has_many :features
   has_many :enquiries
 
@@ -149,7 +151,7 @@ class Funder < Organisation
   def recommended_recipients
     Recipient.includes(:recommendations, :proposals, :enquiries)
       .where("recommendations.funder_id = ? AND
-              recommendations.total_recommendation >= ? AND
+              recommendations.score >= ? AND
               recommendations.eligibility = ? AND
               enquiries.funder_id = ?",
               self.id,
@@ -157,7 +159,7 @@ class Funder < Organisation
               'Eligible',
               self.id)
       .distinct
-      .order("proposals.created_at DESC, recommendations.eligibility ASC, recommendations.total_recommendation DESC")
+      .order("proposals.created_at DESC, recommendations.eligibility ASC, recommendations.score DESC")
       .order(:name)
   end
 

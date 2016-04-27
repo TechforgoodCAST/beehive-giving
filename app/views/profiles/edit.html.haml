@@ -1,6 +1,6 @@
 = stylesheet_link_tag 'signup'
 
-- if @profile.state == 'location' || @profile.state == 'complete'
+- if @profile.location? || @profile.complete?
   = javascript_include_tag 'chosen-jquery'
   = javascript_include_tag 'chosen'
   = stylesheet_link_tag 'chosen'
@@ -9,7 +9,7 @@
 :javascript
   mixpanel.track("View Profile #{@profile.state.capitalize} Page");
 
-- if @profile.state == 'complete'
+- if @profile.complete?
   .uk-container.uk-container-center.uk-margin-large
     %h2 Update profile
     %h4= "#{@profile.year}"

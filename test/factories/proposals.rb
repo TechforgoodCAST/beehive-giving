@@ -1,36 +1,64 @@
 FactoryGirl.define do
-  factory :proposal, class: Proposal do
-    association :recipient, factory: :recipient
-    title 'Proposal title'
-    tagline 'Some tagline summary explaining the proposal, sed do eiusmod sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ada.'
-    beneficiaries { FactoryGirl.create_list(:beneficiary, 2) }
-    beneficiaries_other_required true
-    beneficiaries_other 'Other'
-    gender 'All genders'
-    min_age 14
-    max_age 28
-    beneficiaries_count 50
-    countries { FactoryGirl.create_list(:country, 2) }
-    districts { FactoryGirl.create_list(:district, 2) }
-    funding_duration 12
-    activity_costs 1000
-    activity_costs_estimated true
-    people_costs 1000
-    people_costs_estimated false
-    capital_costs 1000
-    capital_costs_estimated false
-    other_costs 1000
-    other_costs_estimated false
-    after(:build) do |object|
-      object.total_costs
-      object.build_proposal_recommendation
-    end
-    all_funding_required true
-    outcome1 'Outcome 1'
-    outcome2 'Outcome 2'
-    outcome3 'Outcome 3'
-    outcome4 'Outcome 4'
-    outcome5 'Outcome 5'
-    type_of_support Proposal::TYPE_OF_SUPPORT.sample
+
+  factory :country, class: Country do
+    name    'United Kingdom'
+    alpha2  'GB'
   end
+
+  factory :district do
+    association :country, factory: :country
+    label       'Other'
+    district    'London'
+    subdivision 'Other'
+    slug        'london'
+  end
+
+  factory :beneficiary do
+    label     'People'
+    category  'People'
+  end
+
+  factory :age_group do
+    sequence(:label, (0..7).cycle) { |n| ['All ages', 'Infants (0-3 years)', 'Children (4-11 years)', 'Adolescents (12-19 years)', 'Young adults (20-35 years)', 'Adults (36-50 years)', 'Mature adults (51-80 years)', 'Older adults (80+)'][n] }
+    sequence(:age_from, (0..7).cycle) { |n| [0, 0, 4, 12, 20, 36, 51, 80][n] }
+    sequence(:age_to, (0..7).cycle) { |n| [150, 3, 11, 19, 35, 50, 80, 150][n] }
+  end
+
+  factory :implementation do
+    label 'Some activity'
+  end
+
+  factory :initial_proposal, class: Proposal do
+    association           :recipient, factory: :recipient
+    type_of_support       Proposal::TYPE_OF_SUPPORT.sample
+    funding_duration      12
+    funding_type          Proposal::FUNDING_TYPE.sample
+    total_costs           10000
+    total_costs_estimated false
+    all_funding_required  true
+    affect_people         true
+    affect_other          false
+    gender                Proposal::GENDERS.sample
+    age_groups            { FactoryGirl.create_list(:age_group, 8) }
+    beneficiaries         { FactoryGirl.create_list(:beneficiary, 2) }
+    beneficiaries_other_required false
+    affect_geo            Proposal::AFFECT_GEO.sample[1]
+    countries             { FactoryGirl.create_list(:country, 1) }
+    districts             { FactoryGirl.create_list(:district, 2, country: Country.first) }
+    private               false
+    after(:create)        { |proposal| proposal.initial_recommendation }
+
+    factory :registered_proposal do
+      state           'registered'
+      title           'Title'
+      tagline         'Tagline'
+      implementations { FactoryGirl.create_list(:implementation, 1) }
+      outcome1        'Outcome 1'
+
+      factory :proposal do
+        state 'complete'
+      end
+    end
+  end
+
 end

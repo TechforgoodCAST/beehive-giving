@@ -13,7 +13,7 @@ class SessionsTest < ActionDispatch::IntegrationTest
       assert_equal sign_in_path, current_path
     end
   end
-  
+
   test 'ensure logged in for feedback' do
     visit new_feedback_path
     assert_equal sign_in_path, current_path
@@ -33,7 +33,7 @@ class SessionsTest < ActionDispatch::IntegrationTest
   end
 
   test 'ensure logged in for grants' do
-    @grant = create(:grant, :funder => @funder)
+    @grant = create(:grant, funder: @funder)
     assert_path([
       funder_grants_path(@funder),
       new_funder_grant_path(@funder),
@@ -41,20 +41,12 @@ class SessionsTest < ActionDispatch::IntegrationTest
     ])
   end
 
-  test 'ensure logged in for profiles' do
-    @profile = create(:profile, :organisation => @recipient)
+  test 'ensure logged in for proposals' do
+    @registered_proposal = create(:registered_proposal, recipient: @recipient)
     assert_path([
-      recipient_profiles_path(@recipient),
-      new_recipient_profile_path(@recipient),
-      edit_recipient_profile_path(@recipient, @profile)
-    ])
-  end
-
-  test 'ensure logged in for recipient attributes' do
-    @recipient_attribute = create(:recipient_attribute)
-    assert_path([
-      new_recipient_attribute_path(@recipient),
-      edit_recipient_attribute_path(@recipient, @recipient_attribute)
+      recipient_proposals_path(@recipient),
+      new_recipient_proposal_path(@recipient),
+      edit_recipient_proposal_path(@recipient, @registered_proposal)
     ])
   end
 

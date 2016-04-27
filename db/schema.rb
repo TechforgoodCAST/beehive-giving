@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160322133429) do
+ActiveRecord::Schema.define(version: 20160406095716) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -57,12 +57,26 @@ ActiveRecord::Schema.define(version: 20160322133429) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "age_groups_funder_attributes", force: :cascade do |t|
+    t.integer "age_group_id"
+    t.integer "funder_attribute_id"
+  end
+
+  add_index "age_groups_funder_attributes", ["age_group_id", "funder_attribute_id"], name: "index_age_groups_funder_attributes", using: :btree
+
   create_table "age_groups_profiles", force: :cascade do |t|
     t.integer "age_group_id"
     t.integer "profile_id"
   end
 
   add_index "age_groups_profiles", ["age_group_id", "profile_id"], name: "index_age_groups_profiles_on_age_group_id_and_profile_id", using: :btree
+
+  create_table "age_groups_proposals", force: :cascade do |t|
+    t.integer "age_group_id"
+    t.integer "proposal_id"
+  end
+
+  add_index "age_groups_proposals", ["age_group_id", "proposal_id"], name: "index_age_groups_proposals_on_age_group_id_and_proposal_id", using: :btree
 
   create_table "approval_months", force: :cascade do |t|
     t.string "month"
@@ -431,6 +445,13 @@ ActiveRecord::Schema.define(version: 20160322133429) do
   add_index "implementations_profiles", ["implementation_id"], name: "index_implementations_profiles_on_implementation_id", using: :btree
   add_index "implementations_profiles", ["profile_id"], name: "index_implementations_profiles_on_profile_id", using: :btree
 
+  create_table "implementations_proposals", force: :cascade do |t|
+    t.integer "implementation_id"
+    t.integer "proposal_id"
+  end
+
+  add_index "implementations_proposals", ["implementation_id", "proposal_id"], name: "index_implementations_proposals", using: :btree
+
   create_table "implementors", force: :cascade do |t|
     t.string   "label",      limit: 255
     t.datetime "created_at",             null: false
@@ -498,6 +519,9 @@ ActiveRecord::Schema.define(version: 20160322133429) do
     t.integer  "grants_count",                                default: 0
     t.integer  "operating_for"
     t.boolean  "multi_national"
+    t.integer  "income"
+    t.integer  "employees"
+    t.integer  "volunteers"
   end
 
   add_index "organisations", ["id", "type"], name: "index_organisations_on_id_and_type", using: :btree
@@ -573,28 +597,28 @@ ActiveRecord::Schema.define(version: 20160322133429) do
     t.float    "capital_costs"
     t.float    "other_costs"
     t.float    "total_costs"
-    t.boolean  "activity_costs_estimated"
-    t.boolean  "people_costs_estimated"
-    t.boolean  "capital_costs_estimated"
-    t.boolean  "other_costs_estimated"
+    t.boolean  "activity_costs_estimated",       default: false
+    t.boolean  "people_costs_estimated",         default: false
+    t.boolean  "capital_costs_estimated",        default: false
+    t.boolean  "other_costs_estimated",          default: false
     t.boolean  "all_funding_required"
     t.boolean  "beneficiaries_other_required"
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
     t.string   "type_of_support"
+    t.string   "state",                          default: "initial"
+    t.boolean  "affect_people"
+    t.boolean  "affect_other"
+    t.integer  "affect_geo"
+    t.boolean  "total_costs_estimated",          default: false
+    t.string   "funding_type"
+    t.boolean  "private"
+    t.boolean  "implementations_other_required"
+    t.string   "implementations_other"
   end
 
   add_index "proposals", ["recipient_id"], name: "index_proposals_on_recipient_id", using: :btree
-
-  create_table "recipient_attributes", force: :cascade do |t|
-    t.integer  "recipient_id"
-    t.text     "problem"
-    t.text     "solution"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
-  end
-
-  add_index "recipient_attributes", ["recipient_id"], name: "index_recipient_attributes_on_recipient_id", using: :btree
+  add_index "proposals", ["state"], name: "index_proposals_on_state", using: :btree
 
   create_table "recipient_funder_accesses", force: :cascade do |t|
     t.integer  "recipient_id"
@@ -614,6 +638,9 @@ ActiveRecord::Schema.define(version: 20160322133429) do
     t.float    "grant_amount_recommendation",   default: 0.0
     t.float    "grant_duration_recommendation", default: 0.0
     t.float    "total_recommendation",          default: 0.0
+    t.float    "org_type_score"
+    t.float    "beneficiary_score"
+    t.float    "location_score"
   end
 
   add_index "recommendations", ["funder_id"], name: "index_recommendations_on_funder_id", using: :btree

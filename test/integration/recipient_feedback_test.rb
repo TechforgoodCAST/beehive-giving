@@ -4,12 +4,11 @@ class RecipientFeedbackTest < ActionDispatch::IntegrationTest
 
   setup do
     @recipient = create(:recipient)
-    create(:profile, organisation: @recipient, state: 'complete')
+    setup_funders(4)
+    create(:proposal, recipient: @recipient)
   end
 
   test 'feedback prompt before third funder check' do
-    setup_funders(4)
-
     # First funder unlock
     @recipient.unlock_funder!(@funders[0])
 

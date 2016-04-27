@@ -3,8 +3,6 @@ class User < ActiveRecord::Base
   belongs_to :organisation
   has_many :feedbacks
 
-  JOB_ROLES = ['Fundraiser', 'Founder/Leader', 'Trustee', "None, I don't work/volunteer for a non-profit", 'Other']
-
   attr_accessor :org_type, :charity_number, :company_number
 
   validates :org_type, inclusion: { in: %w[0 1 2 3 4], message: 'Please select a valid option' }, on: :create

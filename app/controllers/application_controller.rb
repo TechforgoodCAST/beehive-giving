@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   rescue_from ActionController::InvalidAuthenticityToken, with: :bad_token
 
   def bad_token
-    flash[:warning] = 'Please sign in asdas'
+    flash[:warning] = 'Please sign in.'
     redirect_to '/logout'
   end
 
@@ -36,6 +36,11 @@ class ApplicationController < ActionController::Base
 
   def ensure_authorised
     redirect_to unauthorised_path unless current_user.authorised || params[:action] == 'unauthorised'
+  end
+
+  def ensure_recipient
+    redirect_to root_path, alert: "Sorry, you don't have access to that" unless
+      current_user.role == 'User'
   end
 
   def ensure_funder
@@ -83,6 +88,20 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def ensure_proposal_present
+    if current_user.role == 'User'
+      if current_user.organisation.proposals.count < 1
+        redirect_to new_recipient_proposal_path(current_user.organisation),
+                    alert: 'Please create a funding proposal before continuing.'
+      elsif current_user.organisation.proposals.last.initial?
+        redirect_to edit_recipient_proposal_path(
+                  current_user.organisation,
+                  current_user.organisation.proposals.last)
+      end
+    end
+  end
+
+  # refactor
   def ensure_profile_for_current_year
     unless current_user.organisation.profiles.where(year: Date.today.year).count > 0
       redirect_to new_recipient_profile_path(current_user.organisation)

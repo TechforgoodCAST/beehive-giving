@@ -62,6 +62,7 @@ module Beehive
       chosen-jquery.js
       morris.js
       raphael.js
+      jquery.tree-multiselect.min.js
       timelineJS/embed.js
     )
   end

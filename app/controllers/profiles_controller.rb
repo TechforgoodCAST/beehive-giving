@@ -1,7 +1,7 @@
 class ProfilesController < ApplicationController
 
   before_filter :ensure_logged_in, :load_recipient, :prevent_funder_access
-  before_filter :ensure_profile_for_current_year, only: [:index, :edit, :update]
+  before_filter :ensure_profile_for_current_year, only: [:index, :edit, :update] # refactor
   before_filter :load_profile, :only => [:edit, :update, :destroy]
 
   def new
@@ -44,17 +44,13 @@ class ProfilesController < ApplicationController
     @profiles = @recipient.profiles
   end
 
-  def edit
-    gon.orgCountry = Country.find_by_alpha2(@recipient.country).name
-  end
-
   def update
     respond_to do |format|
       if @profile.update_attributes(profile_params)
         format.js   {
-          @profile.next_step! unless @profile.state == 'complete'
+          @profile.next_step! unless @profile.complete?
 
-          if @profile.state == 'complete'
+          if @profile.complete?
             @recipient.refined_recommendation
             render :js => "mixpanel.identify('#{current_user.id}');
                           mixpanel.people.set({
@@ -74,8 +70,8 @@ class ProfilesController < ApplicationController
           end
         }
         format.html {
-          @profile.next_step! unless @profile.state == 'complete'
-          if @profile.state == 'complete'
+          @profile.next_step! unless @profile.complete?
+          if @profile.complete?
             @recipient.refined_recommendation
             redirect_to recommended_funders_path
           else

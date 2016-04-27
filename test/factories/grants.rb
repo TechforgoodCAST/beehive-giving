@@ -37,7 +37,7 @@ FactoryGirl.define do
     installments 1
     approved_on Date.new(Date.today.year, 1, 2)
     start_on Date.new(Date.today.year, 1, 2)
-    end_on Date.new(Date.today.year, 1, 2)
+    end_on Date.new(Date.today.year, 12, 2)
     attention_on Date.new(Date.today.year, 1, 2)
     applied_on Date.new(Date.today.year, 1, 2)
     open_call [true, false].sample

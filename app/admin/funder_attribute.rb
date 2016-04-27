@@ -7,7 +7,7 @@ ActiveAdmin.register FunderAttribute do
   :funded_average_paid_staff, :beneficiary_min_age, :beneficiary_max_age,
   :funded_age_temp, :funded_income_temp, :application_link, :soft_restrictions,
   :application_details, country_ids: [], district_ids: [], approval_month_ids: [],
-  funding_type_ids: [], beneficiary_ids: []
+  funding_type_ids: [], beneficiary_ids: [], age_group_ids: []
 
   controller do
     def scoped_collection
@@ -66,8 +66,11 @@ ActiveAdmin.register FunderAttribute do
       row :funded_average_age
       row :funded_average_income
       row :funded_average_paid_staff
-      row :beneficiary_min_age
-      row :beneficiary_max_age
+      row :age_groups do |attribute|
+        attribute.age_groups.each do |a|
+          li a.label
+        end
+      end
       row :funded_age_temp
       row :funded_income_temp
       row :beneficiaries do |attribute|
@@ -76,14 +79,10 @@ ActiveAdmin.register FunderAttribute do
         end
       end
       row :countries do |attribute|
-        attribute.countries.each do |c|
-          li c.name
-        end
+        attribute.countries.count
       end
       row :districts do |attribute|
-        attribute.districts.each do |d|
-          li d.district
-        end
+        attribute.districts.count
       end
     end
   end
@@ -118,6 +117,7 @@ ActiveAdmin.register FunderAttribute do
       f.input :beneficiaries, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: "Beneficiaries"
       f.input :beneficiary_min_age
       f.input :beneficiary_max_age
+      f.input :age_groups, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: 'Age Groups'
     end
     f.actions
   end

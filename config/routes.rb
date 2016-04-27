@@ -29,6 +29,9 @@ Rails.application.routes.draw do
   match '/basics', to: 'signup#organisation', via: :get, as: 'signup_organisation'
   match '/basics', to: 'signup#create_organisation', via: :post
 
+  match '/(:id)/basics', to: 'recipients#edit', via: :get, as: 'edit_recipient'
+  match '/(:id)/basics', to: 'recipients#update', via: :patch
+
   match '/new-funder', to: 'signup#funder', via: :get, as: 'new_funder'
   match '/new-funder', to: 'signup#create_funder', via: :post
 
@@ -36,12 +39,6 @@ Rails.application.routes.draw do
   match '/unauthorised', to: 'signup#unauthorised', via: :get, as: 'unauthorised'
   match '/grant_access/(:unlock_token)', to: 'signup#grant_access', via: :get, as: 'grant_access'
   match '/granted_access/(:unlock_token)', to: 'signup#granted_access', via: :get, as: 'granted_access'
-
-  # Profiles
-  match '/(:id)/profile', to: 'profiles#new', via: :get, as: 'new_recipient_profile'
-  match '/(:id)/profile', to: 'profiles#create', via: :post
-  match '/(:recipient_id)/profile/(:id)', to: 'profiles#edit', via: :get, as: 'edit_recipient_profile'
-  match '/(:recipient_id)/profile/(:id)', to: 'profiles#update', via: :patch
 
   # Funders
   match '/funders/recommended', to: 'recipients#recommended_funders', via: :get, as: 'recommended_funders'
@@ -52,8 +49,6 @@ Rails.application.routes.draw do
 
   # Recipients
   match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
-  # match '/(:id)/edit', to: 'recipients#edit', via: :get, as: 'recipient_edit'
-  # match '/(:id)/edit', to: 'recipients#edit', via: :patch
   match '/proposals/(:id)/recent', to: 'funders#recent', via: :get, as: 'funder_recent'
 
   match '/funding/(:id)/overview', to: 'funders#overview', via: :get, as: 'funder_overview'
@@ -74,8 +69,9 @@ Rails.application.routes.draw do
   # Proposals
   match '/(:id)/proposal', to: 'proposals#new', via: :get, as: 'new_recipient_proposal'
   match '/(:id)/proposal', to: 'proposals#create', via: :post
-  match '/(:recipient_id)/proposals/(:id)', to: 'proposals#edit', via: :get, as: 'edit_recipient_proposal'
-  match '/(:recipient_id)/proposals/(:id)', to: 'proposals#update', via: :patch
+  match '/(:recipient_id)/proposal/(:id)', to: 'proposals#edit', via: :get, as: 'edit_recipient_proposal'
+  match '/(:recipient_id)/proposal/(:id)', to: 'proposals#update', via: :patch
+  match '/(:recipient_id)/proposals', to: 'proposals#index', via: :get, as: 'recipient_proposals'
 
   # Enquiries
   match '/funders/(:id)/apply', to: 'recipients#apply', via: :get, as: 'recipient_apply'
@@ -90,11 +86,8 @@ Rails.application.routes.draw do
 
   resources :recipients, :except => [:new, :index] do
     member do
-      post :vote
       post :approach_funder
     end
-    resources :profiles, :only => [:create, :update, :index]
-    resources :proposals, :only => [:create, :update, :index]
     resources :recipient_attribute, :as => :attribute, :only => [:new, :create, :edit, :update]
   end
 

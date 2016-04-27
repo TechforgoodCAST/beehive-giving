@@ -5,46 +5,41 @@ class RecipientTest < ActiveSupport::TestCase
   setup do
     3.times { |i| create(:funder, :active_on_beehive => true) }
     @recipient = create(:recipient)
-    @recipient.initial_recommendation
   end
 
-  test "recipient has initial recommendations" do
-    assert_equal 3, @recipient.recommendations.count
-  end
-
-  test "recipient with basic details is valid" do
+  test 'recipient with basic details is valid' do
     assert @recipient.valid?
   end
 
-  test "recipient with false details is invalid" do
+  test 'recipient with false details is invalid' do
     assert_not build(:blank_org).valid?
   end
 
-  test "recipient has many users" do
+  test 'recipient has many users' do
     @recipient.users << build(:user)
     @recipient.users << build(:user)
     assert 2, @recipient.users.size
   end
 
-  test "recipient has many profiles" do
-    @recipient.profiles << build(:profile)
-    @recipient.profiles << build(:profile)
-    assert 2, @recipient.profiles.size
+  test 'recipient has many proposals' do
+    @recipient.proposals << build(:proposal)
+    @recipient.proposals << build(:proposal)
+    assert 2, @recipient.proposals.size
   end
 
-  test "recipient has many grants" do
+  test 'recipient has many grants' do
     @recipient.grants << build(:grant)
     @recipient.grants << build(:grant)
     assert 2, @recipient.grants.size
   end
 
-  test "recipient has many recommendations" do
+  test 'recipient has many recommendations' do
     @recipient.recommendations << build(:recommendation)
     @recipient.recommendations << build(:recommendation)
     assert 2, @recipient.recommendations.size
   end
 
-  test "charity number or company number does exist if registered organisation" do
+  test 'charity number or company number does exist if registered organisation' do
     case @recipient.org_type
     when 1
       @recipient.charity_number = 123
@@ -66,7 +61,7 @@ class RecipientTest < ActiveSupport::TestCase
     end
   end
 
-  test "geocoded if postal_code" do
+  test 'geocoded if postal_code' do
     @recipient.charity_number = '1161998'
     @recipient.get_charity_data
     @recipient.save
@@ -76,7 +71,7 @@ class RecipientTest < ActiveSupport::TestCase
     assert_equal true, @recipient.longitude.present?
   end
 
-  test "geocoded by street address and country if no postal code" do
+  test 'geocoded by street address and country if no postal code' do
     @recipient.street_address = 'London Road'
     @recipient.save
     assert_equal false, @recipient.postal_code.present?
@@ -86,14 +81,14 @@ class RecipientTest < ActiveSupport::TestCase
     assert_equal true, @recipient.longitude.present?
   end
 
-  test "only geocode for GB" do
+  test 'only geocode for GB' do
     @recipient.street_address = 'London Road'
     @recipient.country = 'KE'
     @recipient.save
     assert_equal false, @recipient.latitude.present?
   end
 
-  test "set registered on if scraped" do
+  test 'set registered on if scraped' do
     @recipient.operating_for = nil
     assert_equal nil, @recipient.operating_for
 

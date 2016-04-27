@@ -21,5 +21,5 @@
       = f.error :districts, class: 'error-message'
       %small.muted.countries{class: ('uk-hidden' unless @recipient.multi_national?)} This list will populate once you've selected some countries
 
-  - unless @profile.state == 'complete'
+  - unless @profile.complete?
     = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-margin-top uk-button-large uk-width-medium-1-2 uk-float-right', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> Now we're cooking...</span>"}

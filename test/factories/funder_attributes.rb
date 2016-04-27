@@ -11,21 +11,25 @@ FactoryGirl.define do
     association :funder, :factory => :funder
     countries { FactoryGirl.create_list(:country, 2) }
     districts { FactoryGirl.create_list(:district, 2) }
-    after(:build) { |a| a.grant_count_from_grants }
     application_count nil
     enquiry_count nil
-    after(:build) { |a| a.funding_size_and_duration_from_grants }
     funding_types { FactoryGirl.create_list(:funding_types, 2) }
     funding_stream 'All'
     description 'description'
     approval_months { FactoryGirl.create_list(:approval_months, 1) }
     funded_average_age { |a| a.funded_organisation_age }
-    # funded_average_income 1234
-    # funded_average_paid_staff 1234
-    after(:build) { |a| a.funded_organisation_income_and_staff }
     soft_restrictions 'Soft restrictions'
     application_details 'Application details'
     application_link 'www.example.com'
+    age_groups { FactoryGirl.create_list(:age_group, 8) }
+    beneficiaries { FactoryGirl.create_list(:beneficiary, 2) }
+    funded_age_temp 365
+    funded_income_temp 10000
+    after(:build) do |a|
+      a.grant_count_from_grants
+      a.funding_size_and_duration_from_grants
+      a.funded_organisation_income_and_staff
+    end
   end
 
   factory :funder_attribute_no_grants, class: FunderAttribute do
