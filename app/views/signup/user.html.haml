@@ -40,7 +40,9 @@
         .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
           .uk-width-medium-1-2.mobile-margin
             %h4.hero.white.italics "I have been fundraising for 20 years and even though it is still in development this tool is long over-due and is brilliant!"
-            %h4.hero.white Catherine, Bright Ideas Trust
+            %h4.hero.white
+              Catherine,
+              = link_to 'Bright Ideas Trust', 'http://www.brightideastrust.com/', target: '_blank', class: 'yellow'
           .uk-width-medium-1-2
             #preview{data: @districts_count}
               %h3.white See if Beehive has funders for you
@@ -90,9 +92,11 @@
       .uk-grid.uk-grid-divider{"data-uk-grid-match" => ""}
         .uk-width-medium-2-3.mobile-margin
           %h4.hero.white.italics “The option to click on a few additional questions to rule [funders] in or out was a HUGE bonus for me – it saved me trawling through myriad websites to ascertain whether or not our project was eligible for funding”
-          %h4.hero.white Karen, Erb's Palsy Group
+          %h4.hero.white
+            Karen,
+            = link_to "Erb's Palsy Group", 'http://www.erbspalsygroup.co.uk/', target: '_blank', class: 'yellow'
         .uk-width-medium-1-3.uk-text-center
-          %h2.hero.white 3,000+
+          %h2.hero.white 4,500+
           %h4.white
             projects matched
             %br with funders
