@@ -9,6 +9,54 @@ namespace :transfer do
     Recipient.where(website: '').each { |r| r.update_attribute(:website, nil) }
   end
 
+  # usage: be rake transfer:england
+  desc 'Update districts marked as England'
+  task :england => :environment do
+    District.find(11742).update_attributes( region: 'South West',
+                                            sub_country: 'England')
+    District.find(12093).update_attributes( region: 'West Midlands',
+                                            sub_country: 'England')
+  end
+
+  # update: be rake transfer:profile_districts
+  desc 'Update districts for profiles marked with sub-countries'
+  task :profile_districts => :environment do
+
+    def query(region)
+      Profile.joins(:districts).where('districts.district = ?', region).count
+    end
+
+    def migrate(region)
+      remove_id = [District.where(district: region).first.id]
+      region_ids = District.where(region: region).pluck(:id)
+
+      Profile.joins(:districts).where('districts.district = ?', region).each do |p|
+        p.district_ids = ((p.district_ids + region_ids) - remove_id).uniq
+        p.save(validate: false)
+      end
+    end
+
+    def update_sub_country(region)
+      District.where(region: region).each do |d|
+        d.update_column(:sub_country, region)
+      end
+    end
+
+    def run(region)
+      if query(region) == 0
+        puts query(region)
+        District.where(district: region).first.destroy
+      else
+        migrate(region)
+        update_sub_country(region) unless region == 'London'
+      end
+    end
+
+    ['London', 'England', 'Wales', 'Scotland', 'Northern Ireland'].each do |region|
+      run(region)
+    end
+  end
+
   # usage: be rake transfer:profiles LIMIT=50 SAVE=true
   desc 'Transfer profiles to proposals'
   task :profiles => :environment do

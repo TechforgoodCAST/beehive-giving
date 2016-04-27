@@ -15,11 +15,20 @@
   display: table
   height: inherit
   width: 100%
-  margin: 0 4px
   .error, .error input
     border: 2px $red-base solid !important
     background: $red-alert !important
     color: $red-base !important
+  .section > .section
+    margin: 0 15px 3px
+    .title:first-child
+      margin-top: 3px
+    &.checked
+      .title
+        background: $cta-active
+        border-color: $cta-active
+        color: white
+
   .section
     margin-bottom: 3px
     .title

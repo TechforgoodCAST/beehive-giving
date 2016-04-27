@@ -47,12 +47,30 @@ ProposalForm = ((w, d) ->
     hightlight = (el, isTitle) ->
       $(el + ':checked').parent().addClass 'checked'
       $(el).on 'change', ->
+        input = $(this).parent()
+        sections = input.siblings('.section')
+        items = input.siblings('.item')
+        checkedItems = input.siblings('.item').children('input:checked')
+
         if $(this).is(':checked')
-          $(this).parent().addClass 'checked'
-          $(item + ':checked').parent().addClass 'checked' if isTitle
+          input.addClass 'checked'
+
+          if items.length <= checkedItems.length
+            input.siblings('.title').addClass 'checked'
+
+          if isTitle
+            $(item + ':checked').parent().addClass 'checked'
+            sections.children('.title').addClass 'checked'
+
         else
-          $(this).parent().removeClass 'checked'
-          $(item).parent().removeClass 'checked' if isTitle
+          input.removeClass 'checked'
+
+          if items.length <= checkedItems.length
+            input.siblings('.title').removeClass 'checked'
+
+          if isTitle
+            input.siblings('.item').removeClass 'checked'
+            sections.children(['.item', '.title']).removeClass 'checked'
 
     $('.title input, .item input').on 'change', ->
       if $('.item input:checked').length > 0

@@ -80,11 +80,11 @@
 
 .uk-width-1-1.uk-margin-top.districts{class: ('uk-hidden' unless @proposal.affect_geo == 0 || @proposal.affect_geo == 1)}
   .label Please select all of the areas your proposed work will affect
-  .muted You can expand each region to select individual areas, or check the box next to a regions name to select all the areas.
+  .muted You can expand each region to select individual areas, or check the box next to a regions name to select all the areas. Remember, the more specific you are the better your results will be.
   %a{"data-uk-tooltip" => "{pos:'top'}", :title => "Please select 'Across many countries' and pick the countries you affect."}
     %small Affect regions in a different country?
   = f.association :districts do
-    = f.select :district_ids, country.districts.order(:region, :district).map { |d| [d.district, d.id, {"data-section": "#{d.region.blank? ? 'Other' : d.region}"}] }, {}, {multiple: true, class: ('field_with_errors' unless f.object.errors.any? && f.object.districts.present?)}
+    = f.select :district_ids, country.districts.order(:region, :district).map { |d| [d.district, d.id, {"data-section": d.region.nil? ? d.sub_country.nil? ? 'All regions' : "#{d.sub_country}" : "#{d.sub_country}/#{d.region}"}] }, {}, {multiple: true, class: ('field_with_errors' unless f.object.errors.any? && f.object.districts.present?)}
   - if f.object.errors.any? && (f.object.affect_geo == 0 || f.object.affect_geo == 1)
     .field_with_errors
     = f.error :districts, class: 'error-message'
