@@ -83,8 +83,8 @@ ActiveAdmin.register_page "Dashboard" do
       Recipient.joins(:recipient_funder_accesses).where('recipient_funder_accesses_count = ?', count).uniq.group_by_week('recipient_funder_accesses.created_at', week_start: :mon, last: 6).count
     end
 
-    def proposal_count(count)
-      Proposal.group_by_week(:created_at, week_start: :mon, last: 6).count
+    def proposal_count(state)
+      Proposal.where(state: state).group_by_week(:created_at, week_start: :mon, last: 6).count
     end
 
     def feedback_count(count)
@@ -115,9 +115,35 @@ ActiveAdmin.register_page "Dashboard" do
             end
           end
           tr do
-            td 'Create profile'
-            profile_count.each_with_index do |count, i|
+            td 'Proposals'
+            proposal_count(['initial', 'registered', 'complete']).each_with_index do |count, i|
               td percentage(count, i) if count[1] > 0
+            end
+          end
+          tr do
+            td 'Inital proposal'
+            proposal_count('initial').each_with_index do |count, i|
+              td percentage(count, i) if count[1] > 0
+            end
+          end
+          tr do
+            td 'Registered proposal'
+            proposal_count('registered').each_with_index do |count, i|
+              if count[1] > 0
+                td percentage(count, i)
+              else
+                td '-'
+              end
+            end
+          end
+          tr do
+            td 'Complete proposal'
+            proposal_count('complete').each_with_index do |count, i|
+              if count[1] > 0
+                td percentage(count, i)
+              else
+                td '-'
+              end
             end
           end
           tr do
@@ -139,14 +165,14 @@ ActiveAdmin.register_page "Dashboard" do
             end
           end
           tr do
-            td 'Proposals'
-            proposal_count(3).each_with_index do |count, i|
+            td 'Feedback'
+            feedback_count(3).each_with_index do |count, i|
               td count[1] > 0 ? percentage(count, i) : '-'
             end
           end
           tr do
-            td 'Feedback'
-            feedback_count(3).each_with_index do |count, i|
+            td 'Profiles'
+            profile_count.each_with_index do |count, i|
               td count[1] > 0 ? percentage(count, i) : '-'
             end
           end
