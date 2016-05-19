@@ -8,7 +8,7 @@
       = javascript_include_tag 'application', 'data-turbolinks-track' => true
       = javascript_include_tag params[:controller]
       = csrf_meta_tags
-      = Gon::Base.render_data({})
+      = Gon::Base.render_data
     = google_webfonts_init({google: ['Roboto+Slab::latin', 'Noto+Sans:400,700:latin']})
 
     / Google Analytics
@@ -41,6 +41,8 @@
 
     - if logged_in?
       = intercom_script_tag({:email => current_user.user_email, :name => current_user.full_name, :job_role => current_user.job_role})
+      :javascript
+        ga('set', 'userId', gon.currentUserId);
 
   %body#top
     = render partial: 'layouts/navbar'
