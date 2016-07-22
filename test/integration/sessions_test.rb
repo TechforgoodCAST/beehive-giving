@@ -3,6 +3,7 @@ require 'test_helper'
 class SessionsTest < ActionDispatch::IntegrationTest
 
   setup do
+    seed_test_db
     @recipient = create(:recipient)
     @funder = create(:funder)
   end
@@ -33,7 +34,7 @@ class SessionsTest < ActionDispatch::IntegrationTest
   end
 
   test 'ensure logged in for grants' do
-    @grant = create(:grant, funder: @funder)
+    @grant = create(:grant, funder: @funder, countries: @countries, districts: @uk_districts + @kenya_districts)
     assert_path([
       funder_grants_path(@funder),
       new_funder_grant_path(@funder),
@@ -42,7 +43,7 @@ class SessionsTest < ActionDispatch::IntegrationTest
   end
 
   test 'ensure logged in for proposals' do
-    @registered_proposal = create(:registered_proposal, recipient: @recipient)
+    @registered_proposal = create(:registered_proposal, recipient: @recipient, countries: @countries, districts: @districts)
     assert_path([
       recipient_proposals_path(@recipient),
       new_recipient_proposal_path(@recipient),

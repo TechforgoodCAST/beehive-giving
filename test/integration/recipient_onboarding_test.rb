@@ -3,8 +3,8 @@ require 'test_helper'
 class RecipientOnboardingTest < ActionDispatch::IntegrationTest
 
   setup do
+    seed_test_db
     @recipient = create(:recipient)
-    create(:country)
   end
 
   test 'incomplete organisation creation redirects to organisation creation page' do
@@ -21,7 +21,7 @@ class RecipientOnboardingTest < ActionDispatch::IntegrationTest
 
   test 'complete registration redirects to funder recommendation page' do
     create_and_auth_user!(organisation: @recipient)
-    create(:registered_proposal, recipient: @recipient)
+    create(:registered_proposal, recipient: @recipient, countries: @countries, districts: @districts)
     visit root_path
     assert_equal recommended_funders_path, current_path
   end

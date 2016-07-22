@@ -64,6 +64,7 @@ GEM
       sass (~> 3.2)
       thor
     builder (3.2.2)
+    byebug (6.0.2)
     callsite (0.0.11)
     capybara (2.5.0)
       mime-types (>= 1.16)
@@ -114,10 +115,10 @@ GEM
     erubis (2.7.0)
     eventmachine (1.0.8)
     execjs (2.6.0)
-    factory_girl (4.5.0)
+    factory_girl (4.7.0)
       activesupport (>= 3.0.0)
-    factory_girl_rails (4.5.0)
-      factory_girl (~> 4.5.0)
+    factory_girl_rails (4.7.0)
+      factory_girl (~> 4.7.0)
       railties (>= 3.0.0)
     ffi (1.9.10)
     fiscali (2.4.1)
@@ -348,13 +349,14 @@ DEPENDENCIES
   activeadmin!
   acts-as-taggable-on (~> 3.4)
   bcrypt (~> 3.1.7)
+  byebug
   capybara
   chartkick (~> 1.4.1)
   chosen-rails
   coffee-rails (~> 4.0.0)
   country_select
   devise
-  factory_girl_rails
+  factory_girl_rails (~> 4.7)
   fiscali
   geocoder
   gon

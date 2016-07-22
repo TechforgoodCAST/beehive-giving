@@ -3,10 +3,20 @@ require 'test_helper'
 class ProposalTest < ActiveSupport::TestCase
 
   setup do
+    seed_test_db
     @recipient = create(:recipient)
-    @initial_proposal = build(:initial_proposal, recipient: @recipient)
-    @registered_proposal = build(:registered_proposal, recipient: @recipient)
-    @proposal = build(:proposal, recipient: @recipient)
+    @initial_proposal    = build(:initial_proposal, recipient: @recipient,
+                                  countries: [@countries.first],
+                                  districts: @uk_districts
+                                )
+    @registered_proposal = build(:registered_proposal, recipient: @recipient,
+                                  countries: [@countries.first],
+                                  districts: @uk_districts
+                                )
+    @proposal            = build(:proposal, recipient: @recipient,
+                                  countries: [@countries.first],
+                                  districts: @uk_districts
+                                )
   end
 
   test 'a proposal belongs to a recipient' do
@@ -14,15 +24,15 @@ class ProposalTest < ActiveSupport::TestCase
   end
 
   test 'a recipient can have many proposals' do
-    create(:proposal, recipient: @recipient)
-    create(:initial_proposal, recipient: @recipient)
-    assert_equal 2, @recipient.proposals.count
+    @initial_proposal.save!
+    @registered_proposal.save!
+    @proposal.save!
+    assert_equal 3, @recipient.proposals.count
   end
 
   test 'cannot create second proposal until first proposal is complete' do
-    @initial_proposal.save
-    incomplete_proposal2 = build(:initial_proposal, recipient: @recipient)
-    assert_not incomplete_proposal2.valid?
+    @registered_proposal.save!
+    assert_not @initial_proposal.valid?
   end
 
   test 'valid initial proposal' do
@@ -38,7 +48,7 @@ class ProposalTest < ActiveSupport::TestCase
 
   test 'valid registered proposal' do
     assert_equal 'registered', @registered_proposal.state
-    @registered_proposal.valid?
+    assert @registered_proposal.valid?
   end
 
   test 'invalid registered proposal' do
@@ -49,7 +59,7 @@ class ProposalTest < ActiveSupport::TestCase
 
   test 'valid complete proposal' do
     assert_equal 'complete', @proposal.state
-    @proposal.valid?
+    assert @proposal.valid?
   end
 
   test 'invalid complete proposal' do
@@ -132,10 +142,6 @@ class ProposalTest < ActiveSupport::TestCase
     assert_equal AgeGroup.all.pluck(:label), @initial_proposal.age_groups.pluck(:label)
   end
 
-  test 'a district belongs to a country' do
-    assert @initial_proposal.districts.first.country
-  end
-
   def setup_beneficiaries
     @initial_proposal.save
     @initial_proposal.beneficiaries.last.update_attribute(:category, 'Other')
@@ -185,28 +191,23 @@ class ProposalTest < ActiveSupport::TestCase
   end
 
   test 'districts populated by country selection if no districts required' do
-    create(:district, country: Country.first)
     @initial_proposal.affect_geo = 2
-    country_districts = District.where(country_id: @initial_proposal.countries.first.id).order(:id).pluck(:id)
-    @initial_proposal.save
-    proposal_districts = @initial_proposal.districts.order(:id).pluck(:id)
-
-    assert_equal proposal_districts, country_districts
+    @initial_proposal.save!
+    assert_equal @initial_proposal.district_ids, @countries.first.district_ids.sort { |a,b| a <=> b }
   end
 
   test 'creating a proposal generates recommendations' do
     funder = create(:funder)
-    create(:funder_attribute, funder: funder)
-
+    create(:funder_attribute, funder: funder, countries: @countries, districts: @uk_districts)
     assert_equal 0, Recommendation.count
-    @initial_proposal.save
+    @initial_proposal.save!
     assert_equal 1, Recommendation.count
   end
 
   test 'recipient cannot have duplicate proposal titles' do
-    @proposal.save
-    second_proposal = build(:registered_proposal, recipient: @recipient, title: @proposal.title)
-    assert_not second_proposal.valid?
+    @proposal.save!
+    @registered_proposal.title = @proposal.title
+    assert_not @registered_proposal.valid?
   end
 
   test 'affect_geo set by selection unless affects entire country' do

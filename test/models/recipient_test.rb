@@ -3,7 +3,8 @@ require 'test_helper'
 class RecipientTest < ActiveSupport::TestCase
 
   setup do
-    3.times { |i| create(:funder, :active_on_beehive => true) }
+    seed_test_db
+    3.times { |i| create(:funder, active_on_beehive: true) }
     @recipient = create(:recipient)
   end
 
@@ -16,26 +17,26 @@ class RecipientTest < ActiveSupport::TestCase
   end
 
   test 'recipient has many users' do
-    @recipient.users << build(:user)
-    @recipient.users << build(:user)
+    2.times { |i| @recipient.users << build(:user) }
     assert 2, @recipient.users.size
   end
 
-  test 'recipient has many proposals' do
-    @recipient.proposals << build(:proposal)
-    @recipient.proposals << build(:proposal)
-    assert 2, @recipient.proposals.size
+  test 'has many proposals' do
+    2.times do |i|
+      @recipient.proposals << build(:proposal, countries: [@countries.first], districts: @uk_districts)
+    end
+    assert 2, @recipient.proposals.count
   end
 
-  test 'recipient has many grants' do
-    @recipient.grants << build(:grant)
-    @recipient.grants << build(:grant)
-    assert 2, @recipient.grants.size
+  test 'has many grants' do
+    2.times do |i|
+      @recipient.grants << build(:grant, countries: [@countries.first], districts: @uk_districts)
+    end
+    assert 2, @recipient.grants.count
   end
 
   test 'recipient has many recommendations' do
-    @recipient.recommendations << build(:recommendation)
-    @recipient.recommendations << build(:recommendation)
+    2.times { |i| @recipient.recommendations << build(:recommendation) }
     assert 2, @recipient.recommendations.size
   end
 

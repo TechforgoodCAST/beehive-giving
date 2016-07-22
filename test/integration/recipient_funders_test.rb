@@ -7,8 +7,9 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
   end
 
   test 'cannot view funder if not active' do
+    seed_test_db
     funder = create(:funder, active_on_beehive: false)
-    create(:registered_proposal, recipient: @recipient)
+    create(:registered_proposal, recipient: @recipient, countries: @countries, districts: @districts)
     create_and_auth_user!(organisation: @recipient)
     create(:feedback, user: @user)
 
@@ -25,7 +26,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
 
   test 'eligible funders path only shows eligible funders' do
     setup_funders(3)
-    create(:registered_proposal, recipient: @recipient)
+    create(:registered_proposal, recipient: @recipient, countries: @countries, districts: @districts)
     visit eligible_funders_path
     assert_not page.has_css?('.funder', count: 1)
     @recipient.load_recommendation(@funders.first).update_attribute(:eligibility, 'Eligible')
@@ -35,7 +36,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
 
   test 'ineligible funders path only shows eligible funders' do
     setup_funders(3)
-    create(:registered_proposal, recipient: @recipient)
+    create(:registered_proposal, recipient: @recipient, countries: @countries, districts: @districts)
     visit ineligible_funders_path
     assert_not page.has_css?('.funder', count: 1)
     @recipient.load_recommendation(@funders.first).update_attribute(:eligibility, 'Ineligible')
@@ -45,7 +46,7 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
 
   test 'all funders path shows all funders' do
     setup_funders(7)
-    create(:registered_proposal, recipient: @recipient)
+    create(:registered_proposal, recipient: @recipient, countries: @countries, districts: @districts)
     visit funders_path
     assert page.has_css?('.funder', count: Funder.where(active_on_beehive: true).count)
   end

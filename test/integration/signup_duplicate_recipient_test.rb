@@ -4,7 +4,7 @@ class SignupDuplicateRecipientTest < ActionDispatch::IntegrationTest
 
   setup do
     create(:admin_user)
-    create(:country)
+    seed_test_db
     ActionMailer::Base.deliveries = []
     @recipient = create(:recipient)
     create_and_auth_user!

@@ -1,19 +1,14 @@
 FactoryGirl.define do
-  factory :funding_types, class: FundingType do
-    label { ['Unrestricted', 'Restricted'].sample }
-  end
+
   factory :approval_months, class: ApprovalMonth do
     sequence(:month, (0..11).cycle) { |n| ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][n] }
   end
 
-  factory :funder_attribute, class: FunderAttribute do
+  factory :funder_attribute do
+    funder
     year Date.today.year
-    association :funder, :factory => :funder
-    countries { FactoryGirl.create_list(:country, 2) }
-    districts { FactoryGirl.create_list(:district, 2) }
     application_count nil
     enquiry_count nil
-    funding_types { FactoryGirl.create_list(:funding_types, 2) }
     funding_stream 'All'
     description 'description'
     approval_months { FactoryGirl.create_list(:approval_months, 1) }

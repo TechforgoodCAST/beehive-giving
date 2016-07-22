@@ -41,8 +41,8 @@ FactoryGirl.define do
     attention_on Date.new(Date.today.year, 1, 2)
     applied_on Date.new(Date.today.year, 1, 2)
     open_call [true, false].sample
-    countries {FactoryGirl.create_list(:country, 2)}
-    districts {FactoryGirl.create_list(:district, 2)}
+    # countries {FactoryGirl.create_list(:country, 2)}
+    # districts {FactoryGirl.create_list(:district, 2)}
     after(:build) do |object|
       object.default_values
     end
@@ -68,8 +68,6 @@ FactoryGirl.define do
     attention_on Date.new(Date.today.year, 1, 1)
     applied_on Date.new(Date.today.year, 1, 1)
     open_call [true, false].sample
-    countries {FactoryGirl.create_list(:country, 2)}
-    districts {FactoryGirl.create_list(:district, 2)}
     after(:build) do |object|
       object.default_values
     end

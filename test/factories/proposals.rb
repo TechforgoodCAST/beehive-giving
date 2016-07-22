@@ -1,18 +1,5 @@
 FactoryGirl.define do
 
-  factory :country, class: Country do
-    name    'United Kingdom'
-    alpha2  'GB'
-  end
-
-  factory :district do
-    association :country, factory: :country
-    label       'Other'
-    district    'London'
-    subdivision 'Other'
-    slug        'london'
-  end
-
   factory :beneficiary do
     label     'People'
     category  'People'
@@ -29,7 +16,7 @@ FactoryGirl.define do
   end
 
   factory :initial_proposal, class: Proposal do
-    association           :recipient, factory: :recipient
+    recipient
     type_of_support       Proposal::TYPE_OF_SUPPORT.sample
     funding_duration      12
     funding_type          Proposal::FUNDING_TYPE.sample
@@ -43,17 +30,17 @@ FactoryGirl.define do
     beneficiaries         { FactoryGirl.create_list(:beneficiary, 2) }
     beneficiaries_other_required false
     affect_geo            Proposal::AFFECT_GEO.sample[1]
-    countries             { FactoryGirl.create_list(:country, 1) }
-    districts             { FactoryGirl.create_list(:district, 2, country: Country.first) }
+    # countries             { FactoryGirl.create_list(:country, 1) }
+    # districts             { FactoryGirl.create_list(:district, 2, country: Country.first) }
     private               false
     after(:create)        { |proposal| proposal.initial_recommendation }
 
     factory :registered_proposal do
-      state           'registered'
-      title           'Title'
-      tagline         'Tagline'
-      implementations { FactoryGirl.create_list(:implementation, 1) }
-      outcome1        'Outcome 1'
+      state            'registered'
+      sequence(:title) { |n| "Title#{n}" }
+      tagline          'Tagline'
+      implementations  { FactoryGirl.create_list(:implementation, 1) }
+      outcome1         'Outcome 1'
 
       factory :proposal do
         state 'complete'

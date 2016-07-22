@@ -2,6 +2,8 @@ require 'test_helper'
 
 class RecipientProposalsTest < ActionDispatch::IntegrationTest
 
+  # TODO:  refactor tests
+
   setup do
     @recipient = create(:recipient)
     setup_funders(3)
@@ -23,7 +25,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   end
 
   def complete_inital_proposal
-    proposal = create(:initial_proposal, recipient: @recipient)
+    proposal = create(:initial_proposal, recipient: @recipient, countries: @countries, districts: @districts)
     visit recommended_funders_path
     assert_equal edit_recipient_proposal_path(@recipient, proposal), current_path
     assert_equal proposal.total_costs.to_s, find('#proposal_total_costs')[:value]
@@ -36,12 +38,12 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   end
 
   test 'current profile redirects to edit proposal if proposal inital' do
-    create(:current_profile, organisation: @recipient)
+    create(:current_profile, organisation: @recipient, countries: @countries, districts: @districts)
     complete_inital_proposal
   end
 
   test 'legacy profile redirects to edit proposal if proposal inital' do
-    legacy_profile = build(:legacy_profile, organisation: @recipient)
+    legacy_profile = build(:legacy_profile, organisation: @recipient, countries: @countries, districts: @districts)
     legacy_profile.save(validate: false)
     complete_inital_proposal
   end
@@ -53,19 +55,19 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   end
 
   test 'transferred proposal populated from current profile if no proposal' do
-    create(:current_profile, organisation: @recipient, gender: 'Other')
+    create(:current_profile, organisation: @recipient, gender: 'Other', countries: @countries, districts: @districts)
     assert_profile_transferred
   end
 
   test 'transferred proposal populated from legacy profile if no proposal' do
-    legacy_profile = build(:legacy_profile, organisation: @recipient, gender: 'Other')
+    legacy_profile = build(:legacy_profile, organisation: @recipient, gender: 'Other', countries: @countries, districts: @districts)
     legacy_profile.save(validate: false)
     assert_profile_transferred
   end
 
   test 'beneficiary_other and implementor_other transferred' do
-    profile = create(:current_profile, organisation: @recipient, beneficiaries_other: 'Beneficiaries', beneficiaries_other_required: true, implementations_other: 'Implementations', implementations_other_required: true)
-    proposal = build(:initial_proposal, recipient: @recipient)
+    profile = create(:current_profile, organisation: @recipient, beneficiaries_other: 'Beneficiaries', beneficiaries_other_required: true, implementations_other: 'Implementations', implementations_other_required: true, countries: @countries, districts: @districts)
+    proposal = build(:initial_proposal, recipient: @recipient, countries: @countries, districts: @districts)
     @recipient.transfer_profile_to_new_proposal(profile, proposal)
     visit recommended_funders_path
     # assert page.has_css?('#proposal_beneficiaries_other_required:checked')
@@ -75,8 +77,8 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   end
 
   test 'implementors transferred' do
-    profile = create(:current_profile, organisation: @recipient)
-    proposal = build(:initial_proposal, recipient: @recipient, implementations: Implementation.all)
+    profile = create(:current_profile, organisation: @recipient, countries: @countries, districts: @districts)
+    proposal = build(:initial_proposal, recipient: @recipient, implementations: Implementation.all, countries: @countries, districts: @districts)
     visit recommended_funders_path
     assert_equal profile.implementations.pluck(:id), proposal.implementation_ids
   end
@@ -87,7 +89,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
     @recipient = build(:legacy_recipient, charity_number: charity_number)
     @recipient.set_slug
     @recipient.save(validate: false)
-    setup_funders(1)
+    create_and_auth_user!(organisation: @recipient)
   end
 
   test 'invalid recipient must be completed before proposal or recommendations' do
@@ -110,21 +112,21 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   end
 
   test 'profile for migration shows cta' do
-    profile = build(:legacy_profile, organisation: @recipient)
+    profile = build(:legacy_profile, organisation: @recipient, countries: @countries, districts: @districts)
     profile.save(validate: false)
     visit edit_recipient_path(@recipient)
     assert page.has_content?('Your details are out of date')
   end
 
   test 'cannot create second proposal until first complete' do
-    proposal = create(:registered_proposal, recipient: @recipient)
+    proposal = create(:registered_proposal, recipient: @recipient, countries: @countries, districts: @districts)
     visit new_recipient_proposal_path(@recipient)
     assert_equal edit_recipient_proposal_path(@recipient, proposal), current_path
     assert page.has_content?('fully complete your funding proposal')
   end
 
   test 'cannot check eligibility until first proposal is complete' do
-    proposal = create(:registered_proposal, recipient: @recipient)
+    proposal = create(:registered_proposal, recipient: @recipient, countries: @countries, districts: @districts)
     visit recipient_eligibility_path(@funders[0])
     assert_equal edit_recipient_proposal_path(@recipient, proposal), current_path
     assert page.has_content?('fully complete your funding proposal')
@@ -135,7 +137,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   end
 
   test 'cannot apply until first proposal is complete' do
-    proposal = create(:proposal, recipient: @recipient)
+    proposal = create(:proposal, recipient: @recipient, countries: @countries, districts: @districts)
     visit recipient_apply_path(@funders[0])
     assert_equal recipient_eligibility_path(@funders[0]), current_path
 
@@ -145,7 +147,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   end
 
   test 'redirect to edit incomplete first proposal if not complete' do
-    registered_proposal = create(:registered_proposal, recipient: @recipient)
+    registered_proposal = create(:registered_proposal, recipient: @recipient, countries: @countries, districts: @districts)
     visit new_recipient_proposal_path(@recipient)
     assert_equal edit_recipient_proposal_path(@recipient, registered_proposal), current_path
   end
@@ -171,7 +173,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   end
 
   test 'can create inital proposal' do
-    @initial_proposal = build(:initial_proposal, recipient: @recipient)
+    @initial_proposal = build(:initial_proposal, recipient: @recipient, countries: @countries, districts: @districts)
 
     visit new_recipient_proposal_path(@recipient)
     within('#new_proposal') do
@@ -185,7 +187,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   end
 
   test 'funder insights reflect proposal comparison' do
-    create(:registered_proposal, recipient: @recipient, beneficiaries: Beneficiary.all, age_groups: AgeGroup.all)
+    create(:registered_proposal, recipient: @recipient, beneficiaries: Beneficiary.all, age_groups: AgeGroup.all, countries: @countries, districts: @districts)
     visit recommended_funders_path
 
     assert page.has_content? "amount you're seeking", count: 3
@@ -193,7 +195,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   end
 
   test 'only registered fields shown when registered' do
-    proposal = create(:registered_proposal, recipient: @recipient)
+    proposal = create(:registered_proposal, recipient: @recipient, countries: @countries, districts: @districts)
     visit edit_recipient_proposal_path(@recipient, proposal)
 
     assert page.has_content?('Summary')
@@ -206,7 +208,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   end
 
   test 'all fields shown when proposal complete' do
-    proposal = create(:proposal, recipient: @recipient)
+    proposal = create(:proposal, recipient: @recipient, countries: @countries, districts: @districts)
     visit edit_recipient_proposal_path(@recipient, proposal)
     assert page.has_content?('Summary')
     assert page.has_content?('Requirements')
@@ -218,7 +220,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   end
 
   test 'redirected to eligibility if return to' do
-    proposal = create(:registered_proposal, recipient: @recipient)
+    proposal = create(:registered_proposal, recipient: @recipient, countries: @countries, districts: @districts)
     visit recipient_eligibility_path(@funders[0])
 
     assert_not page.has_content?('Update and review recommendations')
@@ -227,7 +229,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   end
 
   test 'redirected to recommended funders if no return to' do
-    proposal = create(:registered_proposal, recipient: @recipient)
+    proposal = create(:registered_proposal, recipient: @recipient, countries: @countries, districts: @districts)
     visit recipient_proposals_path(@recipient)
     click_link('Update proposal')
     click_button('Update and review recommendations')

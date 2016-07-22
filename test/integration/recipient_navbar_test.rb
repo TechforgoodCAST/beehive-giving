@@ -21,8 +21,9 @@ class RecipientNavbarTest < ActionDispatch::IntegrationTest
   end
 
   test 'user with registered proposal can navigate to edit proposals path' do
+    seed_test_db
     create_and_auth_user!(organisation: @recipient)
-    create(:registered_proposal, recipient: @recipient)
+    create(:registered_proposal, recipient: @recipient, countries: @countries, districts: @districts)
     visit recommended_funders_path
     assert_equal recommended_funders_path, current_path
     assert page.has_content?('Funding proposals')

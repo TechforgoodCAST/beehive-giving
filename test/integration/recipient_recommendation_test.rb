@@ -43,7 +43,7 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
 
   test 'location recommendation set' do
     test_data = []
-    @funders.each { |f| test_data << [f.id, 0.266666666666667] }
+    @funders.each { |f| test_data << [f.id, 2.0] }
     assert_equal test_data, @recipient.recommendations.order(:funder_id).pluck(:funder_id, :location_score)
   end
 
@@ -55,9 +55,9 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
 
   test 'total recommendation set' do
     test_data = [
-      [@funders[0].id, 3.6],
-      [@funders[1].id, 3.93333333333333],
-      [@funders[2].id, 4.26666666666667]
+      [@funders[0].id, 5.33333333333333],
+      [@funders[1].id, 5.66666666666667],
+      [@funders[2].id, 6.0]
     ]
     assert_equal test_data, @recipient.recommendations.order(:funder_id).pluck(:funder_id, :score)
   end

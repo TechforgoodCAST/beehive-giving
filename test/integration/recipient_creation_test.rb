@@ -3,7 +3,7 @@ require 'test_helper'
 class RecipientCreationTest < ActionDispatch::IntegrationTest
 
   setup do
-    create(:country)
+    seed_test_db
   end
 
   def full_form(state)

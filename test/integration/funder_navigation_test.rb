@@ -3,9 +3,10 @@ require 'test_helper'
 class FunderNavigationTest < ActionDispatch::IntegrationTest
 
   setup do
+    seed_test_db
     @funder = create(:funder)
-    create(:funder_attribute, funder: @funder)
-    3.times { create(:grant, funder: @funder) }
+    create(:funder_attribute, funder: @funder, countries: @countries, districts: @districts)
+    3.times { create(:grant, funder: @funder, countries: @countries, districts: @districts) }
     @funder.update_current_attribute
     create_and_auth_user!(role: 'Funder', organisation: @funder)
   end

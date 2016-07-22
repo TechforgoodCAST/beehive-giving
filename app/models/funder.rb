@@ -1,5 +1,6 @@
 class Funder < Organisation
 
+  has_many :funds
   has_many :grants
   has_many :districts, :through => :grants
   has_many :countries, :through => :grants

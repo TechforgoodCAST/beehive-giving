@@ -40,7 +40,11 @@ group :test do
   gem 'capybara'
   gem 'show_me_the_cookies'
   gem 'selenium-webdriver'
-  gem 'factory_girl_rails'
+  gem 'factory_girl_rails', '~> 4.7'
+end
+
+group :development, :test do
+  gem 'byebug'
 end
 
 gem 'haml'
