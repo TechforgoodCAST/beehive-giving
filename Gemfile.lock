@@ -16,6 +16,13 @@ GIT
       ransack (~> 1.3)
       sass-rails
 
+GIT
+  remote: https://github.com/stripe/stripe-ruby
+  revision: 2026c0624203eb30b7cefd25269a8fc8683dbd56
+  specs:
+    stripe (1.48.0)
+      rest-client (>= 1.4, < 3.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -109,6 +116,12 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    domain_name (0.5.20160615)
+      unf (>= 0.0.5, < 1.0.0)
+    dotenv (2.1.1)
+    dotenv-rails (2.1.1)
+      dotenv (= 2.1.1)
+      railties (>= 4.0, < 5.1)
     em-websocket (0.5.1)
       eventmachine (>= 0.12.9)
       http_parser.rb (~> 0.6.0)
@@ -163,6 +176,8 @@ GEM
       actionpack (>= 3.2, < 5)
       activesupport (>= 3.2, < 5)
     hike (1.2.3)
+    http-cookie (1.0.2)
+      domain_name (~> 0.5)
     http_parser.rb (0.6.0)
     httparty (0.13.7)
       json (~> 1.8)
@@ -211,6 +226,7 @@ GEM
     multi_json (1.11.2)
     multi_xml (0.5.5)
     nenv (0.2.0)
+    netrc (0.11.0)
     newrelic_rpm (3.15.0.314)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
@@ -229,7 +245,7 @@ GEM
       slop (~> 3.4)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
-    puma (2.14.0)
+    puma (2.16.0)
     quiet_assets (1.1.0)
       railties (>= 3.1, < 5.0)
     rabl (0.11.6)
@@ -283,6 +299,10 @@ GEM
     request_store (1.2.0)
     responders (2.1.0)
       railties (>= 4.2.0, < 5)
+    rest-client (2.0.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     rollbar (2.8.3)
       multi_json
     rubyzip (1.1.7)
@@ -333,6 +353,9 @@ GEM
       json (>= 1.8.0)
     uikit-sass-rails (1.4.1)
       sass-rails (>= 3.1)
+    unf (0.1.4)
+      unf_ext
+    unf_ext (0.0.7.2)
     unicode_utils (1.4.0)
     vex_rails (0.2.0)
     warden (1.2.3)
@@ -356,6 +379,7 @@ DEPENDENCIES
   coffee-rails (~> 4.0.0)
   country_select
   devise
+  dotenv-rails
   factory_girl_rails (~> 4.7)
   fiscali
   geocoder
@@ -392,6 +416,7 @@ DEPENDENCIES
   show_me_the_cookies
   simple_form
   spring
+  stripe!
   timelineJS-rails (~> 1.1.5)
   turbolinks
   uglifier (>= 1.3.0)

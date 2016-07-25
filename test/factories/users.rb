@@ -3,7 +3,7 @@ FactoryGirl.define do
     first_name 'John'
     last_name 'Doe'
     org_type '0'
-    user_email 'john@organisation.org'
+    sequence(:user_email) { |n| "email#{n}@organisation.org" }
     password 'password123'
     role 'User'
     agree_to_terms true

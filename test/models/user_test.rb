@@ -12,8 +12,8 @@ class UserTest < ActiveSupport::TestCase
   end
 
   test "doesn't allow duplicate emails for different users" do
-    create(:user)
-    assert_not build(:user).valid?
+    @user.save
+    assert_not build(:user, user_email: @user.user_email).valid?
   end
 
   test 'a valid user' do

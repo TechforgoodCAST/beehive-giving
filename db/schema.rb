@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160718124125) do
+ActiveRecord::Schema.define(version: 20160725110505) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -678,17 +678,6 @@ ActiveRecord::Schema.define(version: 20160718124125) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "plans", force: :cascade do |t|
-    t.string   "name"
-    t.float    "price"
-    t.string   "interval"
-    t.text     "features"
-    t.boolean  "highlight"
-    t.integer  "display_order"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
-  end
-
   create_table "profiles", force: :cascade do |t|
     t.integer  "organisation_id"
     t.string   "gender",                         limit: 255
@@ -817,14 +806,15 @@ ActiveRecord::Schema.define(version: 20160718124125) do
   add_index "stages", ["fund_id"], name: "index_stages_on_fund_id", using: :btree
 
   create_table "subscriptions", force: :cascade do |t|
-    t.integer  "plan_id"
     t.integer  "organisation_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.string   "strip_user_id"
+    t.boolean  "active",          default: false, null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
   add_index "subscriptions", ["organisation_id"], name: "index_subscriptions_on_organisation_id", using: :btree
-  add_index "subscriptions", ["plan_id"], name: "index_subscriptions_on_plan_id", using: :btree
+  add_index "subscriptions", ["strip_user_id"], name: "index_subscriptions_on_strip_user_id", unique: true, using: :btree
 
   create_table "taggings", force: :cascade do |t|
     t.integer  "tag_id"

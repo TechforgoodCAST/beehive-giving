@@ -45,6 +45,7 @@ end
 
 group :development, :test do
   gem 'byebug'
+  gem 'dotenv-rails'
 end
 
 gem 'haml'
@@ -68,6 +69,7 @@ gem 'ransack'
 gem 'activeadmin', github: 'activeadmin'
 gem 'devise'
 gem 'workflow'
+gem 'stripe', git: 'https://github.com/stripe/stripe-ruby'
 
 gem 'timelineJS-rails', '~> 1.1.5'
 gem 'groupdate'

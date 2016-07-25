@@ -1,5 +1,9 @@
 class Recipient < Organisation
 
+  RECOMMENDATION_THRESHOLD = 1
+  MAX_FREE_LIMIT = 3
+  RECOMMENDATION_LIMIT = 6
+
   has_many :grants
   has_many :features, dependent: :destroy
   has_many :enquiries, dependent: :destroy
@@ -20,16 +24,12 @@ class Recipient < Organisation
   has_many :beneficiaries, through: :proposals
   has_many :implementations, through: :proposals
 
-  RECOMMENDATION_THRESHOLD = 1
-  MAX_FREE_LIMIT = 3
-  RECOMMENDATION_LIMIT = 6
-
   def is_subscribed?
-    self.subscription.present?
+    self.subscription.active?
   end
 
   def can_unlock_funder?(funder)
-    if self.subscription.present?
+    if self.subscription.active?
       true
     else
       unlocked_funders.size < MAX_FREE_LIMIT
