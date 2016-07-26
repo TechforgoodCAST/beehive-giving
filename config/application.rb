@@ -34,6 +34,7 @@ module Beehive
       feedback.css
       password_resets.css
       proposals.css
+      accounts.css
     )
     config.assets.precompile += %w(
       sessions.js
@@ -47,6 +48,7 @@ module Beehive
       password_resets.js
       proposals.js
       map.js
+      accounts.js
     )
 
     # vendor assets

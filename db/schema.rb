@@ -807,14 +807,14 @@ ActiveRecord::Schema.define(version: 20160725110505) do
 
   create_table "subscriptions", force: :cascade do |t|
     t.integer  "organisation_id"
-    t.string   "strip_user_id"
-    t.boolean  "active",          default: false, null: false
     t.datetime "created_at",                      null: false
     t.datetime "updated_at",                      null: false
+    t.string   "stripe_user_id"
+    t.boolean  "active",          default: false, null: false
   end
 
   add_index "subscriptions", ["organisation_id"], name: "index_subscriptions_on_organisation_id", using: :btree
-  add_index "subscriptions", ["strip_user_id"], name: "index_subscriptions_on_strip_user_id", unique: true, using: :btree
+  add_index "subscriptions", ["stripe_user_id"], name: "index_subscriptions_on_stripe_user_id", unique: true, using: :btree
 
   create_table "taggings", force: :cascade do |t|
     t.integer  "tag_id"

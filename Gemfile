@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.2.1'
+ruby '2.3.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
@@ -24,14 +24,9 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0',          group: :doc
 
-# Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-
 group :development do
   gem 'pry'
   gem 'pry-rails'
-  gem 'spring'
-  gem 'guard-rake'
-  gem 'guard-livereload'
   gem 'quiet_assets'
   gem 'meta_request'
 end
@@ -40,12 +35,17 @@ group :test do
   gem 'capybara'
   gem 'show_me_the_cookies'
   gem 'selenium-webdriver'
-  gem 'factory_girl_rails', '~> 4.7'
 end
 
 group :development, :test do
-  gem 'byebug'
   gem 'dotenv-rails'
+  gem 'byebug'
+  gem 'spring'
+  gem 'spring-commands-rspec'
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+  gem 'guard-rspec', require: false
+  gem 'stripe-ruby-mock', :require => 'stripe_mock'
 end
 
 gem 'haml'

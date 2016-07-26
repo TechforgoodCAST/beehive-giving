@@ -16,4 +16,8 @@ class DeadlineTest < ActiveSupport::TestCase
     assert_equal @deadline, @fund.deadlines.first
   end
 
+  test 'is in future' do
+    assert_not build(:deadline, fund: @fund, deadline: 1.day.ago).valid?
+  end
+
 end

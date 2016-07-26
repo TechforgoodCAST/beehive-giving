@@ -1,0 +1,11 @@
+= content_for :title, 'Organisation'
+
+:javascript
+  mixpanel.track("View Organisation Page");
+  mixpanel.identify("#{current_user.id}");
+
+= render partial: 'subnav'
+
+.uk-container.uk-container-center.uk-margin-large
+  %h2 Organisation
+  %h4 Some intro.

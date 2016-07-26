@@ -24,6 +24,10 @@ class Recipient < Organisation
   has_many :beneficiaries, through: :proposals
   has_many :implementations, through: :proposals
 
+  def subscribe!
+    self.subscription.update_attribute(:active, true)
+  end
+
   def is_subscribed?
     self.subscription.active?
   end

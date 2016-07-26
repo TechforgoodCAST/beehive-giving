@@ -1,8 +1,8 @@
 class ChangeSubscriptions < ActiveRecord::Migration
   def change
-    add_column :subscriptions, :strip_user_id, :string
+    add_column :subscriptions, :stripe_user_id, :string
     add_column :subscriptions, :active, :boolean, null: false, default: false
-    add_index :subscriptions, :strip_user_id, unique: true
+    add_index :subscriptions, :stripe_user_id, unique: true
     remove_column :subscriptions, :plan_id, :integer
 
     drop_table :plans do |t|
