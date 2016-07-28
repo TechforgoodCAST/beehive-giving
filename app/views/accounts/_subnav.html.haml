@@ -1,17 +1,17 @@
 .subnav{"data-uk-sticky" => ""}
   .uk-container.uk-container-center
     %ul.nav.recipient
-      %a{href: account_path}
-        %li.first{ class: ('active' if current_page?(account_path)) }
-          My account
-          .highlight
-      %span &middot;
-
-      %a{href: account_organisation_path(@recipient)}
-        %li.first{ class: ('active' if current_page?(account_organisation_path(@recipient))) }
-          Organisation
-          .highlight
-      %span &middot;
+      -# %a{href: account_path}
+      -#   %li.first{ class: ('active' if current_page?(account_path)) }
+      -#     My account
+      -#     .highlight
+      -# %span &middot;
+      -#
+      -# %a{href: account_organisation_path(@recipient)}
+      -#   %li.first{ class: ('active' if current_page?(account_organisation_path(@recipient))) }
+      -#     Organisation
+      -#     .highlight
+      -# %span &middot;
 
       %a{href: account_subscription_path(@recipient)}
         %li.first{ class: ('active' if current_page?(account_subscription_path(@recipient))) }

@@ -41,7 +41,7 @@
                         %li
                           %a{href: recipient_proposals_path(current_user.organisation)} Funding proposals
                       %li
-                        %a{href: account_path} My account
+                        %a{href: account_subscription_path(@recipient)} My account
                       - if current_user.role == 'User'
                         %hr
                       %li

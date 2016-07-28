@@ -47,6 +47,11 @@ feature 'Subscriptions' do
         expect(current_path).to eq account_subscription_path(@data[:recipient])
         expect(@data[:recipient].is_subscribed?).to eq true
       end
+
+      scenario 'can only have 1 proposal'
+      scenario 'can only check 3 eligibilty'
+      scenario 'can only see 6 funds'
+
     end
 
     context 'active subscription' do
@@ -71,6 +76,10 @@ feature 'Subscriptions' do
         expect(page).to have_text "Pro plan which expires on "\
                                   "#{1.year.since.strftime("#{1.year.since.day.ordinalize} %B %Y")}"
       end
+
+      scenario 'can have unlimited proposals'
+      scenario 'can check unlimited eligibilty'
+      scenario 'can see unlimited funds'
     end
   end
 end

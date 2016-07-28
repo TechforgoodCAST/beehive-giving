@@ -15,8 +15,5 @@
 /log/*.log
 /tmp
 
-.DS_Store
-.env
-
 # Ignore data
 *.dump
