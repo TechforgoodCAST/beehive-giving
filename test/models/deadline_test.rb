@@ -20,4 +20,10 @@ class DeadlineTest < ActiveSupport::TestCase
     assert_not build(:deadline, fund: @fund, deadline: 1.day.ago).valid?
   end
 
+  test 'destroyed with fund' do
+    assert_equal 2, Deadline.count
+    @fund.destroy
+    assert_equal 0, Deadline.count
+  end
+
 end

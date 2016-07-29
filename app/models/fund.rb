@@ -2,8 +2,8 @@ class Fund < ActiveRecord::Base
 
   belongs_to :funder
 
-  has_many :deadlines
-  has_many :stages
+  has_many :deadlines, dependent: :destroy
+  has_many :stages, dependent: :destroy
 
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts

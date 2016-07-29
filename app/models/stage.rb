@@ -1,6 +1,8 @@
 class Stage < ActiveRecord::Base
 
   STAGES = [
+    'Speak with member of staff',
+    'Expression of interest',
     'Application form',
     'Online application form',
     'Interview',

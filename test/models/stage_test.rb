@@ -50,4 +50,10 @@ class StageTest < ActiveSupport::TestCase
     assert_not @stage2.valid?
   end
 
+  test 'destroyed with fund' do
+    assert_equal 2, Stage.count
+    @fund.destroy
+    assert_equal 0, Stage.count
+  end
+
 end

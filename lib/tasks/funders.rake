@@ -1,7 +1,7 @@
 namespace :funders do
 
   # usage: be rake funders:beyondme KEY=locationiq_api_key DESTINATION=/path
-  desc 'Export nonprofit data for analysis'
+  desc 'Export nonprofit data for BeyondMe'
   task beyondme: :environment do
     require 'csv'
     @destination = ENV['DESTINATION']
