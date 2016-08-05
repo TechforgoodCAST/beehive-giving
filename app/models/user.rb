@@ -59,14 +59,14 @@ class User < ActiveRecord::Base
 
   def unlock
     self.update_attribute(:authorised, true)
-    UserMailer.notify_unlock(self).deliver
+    UserMailer.notify_unlock(self).deliver_now
   end
 
   def send_password_reset
     generate_token(:password_reset_token)
     self.password_reset_sent_at = Time.zone.now
     save(validate: false)
-    UserMailer.password_reset(self).deliver
+    UserMailer.password_reset(self).deliver_now
   end
 
   def generate_token(column)

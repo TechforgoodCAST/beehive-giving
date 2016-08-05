@@ -18,7 +18,6 @@ FactoryGirl.define do
     expenditure         10000
     income_actual       true
     expenditure_actual  true
-    beneficiaries       { FactoryGirl.create_list(:beneficiary, 2) }
     implementors        { FactoryGirl.create_list(:implementor, 2) }
     implementations     { FactoryGirl.create_list(:implementation, 2) }
     state               'complete'
@@ -26,7 +25,6 @@ FactoryGirl.define do
     factory :current_profile do
       affect_people       true
       affect_other        false
-      age_groups          { FactoryGirl.create_list(:age_group, 8) }
     end
   end
 

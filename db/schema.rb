@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160725110505) do
+ActiveRecord::Schema.define(version: 20160729130534) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -781,9 +781,15 @@ ActiveRecord::Schema.define(version: 20160725110505) do
     t.float    "org_type_score"
     t.float    "beneficiary_score"
     t.float    "location_score"
+    t.integer  "fund_id"
+    t.integer  "fund_slug"
+    t.integer  "proposal_id"
   end
 
+  add_index "recommendations", ["fund_id"], name: "index_recommendations_on_fund_id", unique: true, using: :btree
+  add_index "recommendations", ["fund_slug"], name: "index_recommendations_on_fund_slug", unique: true, using: :btree
   add_index "recommendations", ["funder_id"], name: "index_recommendations_on_funder_id", using: :btree
+  add_index "recommendations", ["proposal_id"], name: "index_recommendations_on_proposal_id", unique: true, using: :btree
   add_index "recommendations", ["recipient_id"], name: "index_recommendations_on_recipient_id", using: :btree
 
   create_table "restrictions", force: :cascade do |t|

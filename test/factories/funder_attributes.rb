@@ -16,8 +16,6 @@ FactoryGirl.define do
     soft_restrictions 'Soft restrictions'
     application_details 'Application details'
     application_link 'www.example.com'
-    age_groups { FactoryGirl.create_list(:age_group, 8) }
-    beneficiaries { FactoryGirl.create_list(:beneficiary, 2) }
     funded_age_temp 365
     funded_income_temp 10000
     after(:build) do |a|

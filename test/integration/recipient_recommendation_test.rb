@@ -34,9 +34,9 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
 
   test 'beneficiary recommendation set' do
     test_data = [
-      [@funders[0].id, 1.33333333333333],
-      [@funders[1].id, 1.66666666666667],
-      [@funders[2].id, 2.0]
+      [@funders[0].id, 1.05],
+      [@funders[1].id, 1.1],
+      [@funders[2].id, 1.15]
     ]
     assert_equal test_data, @recipient.recommendations.order(:funder_id).pluck(:funder_id, :beneficiary_score)
   end
@@ -55,9 +55,9 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
 
   test 'total recommendation set' do
     test_data = [
-      [@funders[0].id, 5.33333333333333],
-      [@funders[1].id, 5.66666666666667],
-      [@funders[2].id, 6.0]
+      [@funders[0].id, 5.05],
+      [@funders[1].id, 5.1],
+      [@funders[2].id, 5.15]
     ]
     assert_equal test_data, @recipient.recommendations.order(:funder_id).pluck(:funder_id, :score)
   end

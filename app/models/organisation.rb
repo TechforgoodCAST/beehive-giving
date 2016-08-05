@@ -115,7 +115,7 @@ class Organisation < ActiveRecord::Base
   end
 
   def send_authorisation_email(user_to_authorise)
-    UserMailer.request_access(self, user_to_authorise).deliver
+    UserMailer.request_access(self, user_to_authorise).deliver_now
   end
 
   def charity_commission_url

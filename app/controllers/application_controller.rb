@@ -35,6 +35,10 @@ class ApplicationController < ActionController::Base
     return ensure_authorised
   end
 
+  def load_recipient
+    @recipient = current_user.organisation if logged_in?
+  end
+
   def ensure_authorised
     redirect_to unauthorised_path unless current_user.authorised || params[:action] == 'unauthorised'
   end

@@ -46,10 +46,6 @@ class FeedbackController < ApplicationController
     :marketing_frequency)
   end
 
-  def load_recipient
-    @recipient = current_user.organisation if logged_in?
-  end
-
   def redirect_to_funder
     @redirect_to_funder = session[:redirect_to_funder]
   end

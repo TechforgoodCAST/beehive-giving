@@ -106,10 +106,6 @@ class ProposalsController < ApplicationController
       district_ids: [], implementation_ids: [])
   end
 
-  def load_recipient
-    @recipient = current_user.organisation
-  end
-
   def load_proposal
     @proposal = @recipient.proposals.find(params[:id])
   end

@@ -99,10 +99,6 @@ class ProfilesController < ApplicationController
     district_ids: [], implementation_ids: [], implementor_ids: [])
   end
 
-  def load_recipient
-    @recipient = current_user.organisation
-  end
-
   def load_profile
     @profile = @recipient.profiles.find(params[:id])
   end

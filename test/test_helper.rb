@@ -21,7 +21,8 @@ class ActiveSupport::TestCase
 
   def seed_test_db
     FactoryGirl.reload
-    # TODO: refactor add age_groups and beneficiaries
+    @age_groups      = create_list(:age_group, AgeGroup::AGE_GROUPS.count)
+    @beneficiaries   = create_list(:beneficiary, Beneficiary::BENEFICIARIES.count)
     @countries       = create_list(:country, 2)
     @uk_districts    = create_list(:district, 3, country: @countries.first)
     @kenya_districts = create_list(:kenya_district, 3, country: @countries.last)
@@ -73,8 +74,6 @@ class ActionDispatch::IntegrationTest
 
   def setup_funders(num, proposal=false)
     seed_test_db
-    FactoryGirl.create_list(:beneficiary, num)
-    FactoryGirl.create_list(:age_group, num)
     @funding_types = create_list(:funding_type, FundingType::FUNDING_TYPE.count)
 
     @funders = Array.new(num) { |i| create(:funder) }
@@ -95,8 +94,8 @@ class ActionDispatch::IntegrationTest
     create_and_auth_user!(organisation: @recipient, user_email: 'email@email.com')
 
     @proposal = create(:proposal, recipient: @recipient,
-                        beneficiaries: Beneficiary.all,
-                        age_groups: AgeGroup.all,
+                        beneficiaries: @beneficiaries,
+                        age_groups: @age_groups,
                         countries: @countries,
                         districts: @uk_districts + @kenya_districts
                       ) if proposal

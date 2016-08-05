@@ -2,6 +2,9 @@ class Fund < ActiveRecord::Base
 
   belongs_to :funder
 
+  has_many :recommendations, dependent: :destroy
+  has_many :proposals, through: :recommendations
+
   has_many :deadlines, dependent: :destroy
   has_many :stages, dependent: :destroy
 

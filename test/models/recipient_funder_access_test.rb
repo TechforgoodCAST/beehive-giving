@@ -11,18 +11,10 @@ class RecipientFunderAccessTest < ActiveSupport::TestCase
     @funder = create(:funder)
     @recipient = create(:recipient)
 
-    puts "BEFORE"
-    puts @recipient.unlocked_funders.inspect
-    puts @recipient.locked_funders.length.inspect
-
     assert @recipient.unlocked_funders.empty?
     assert @recipient.locked_funders.include?(@funder)
 
     @recipient.unlock_funder!(@funder)
-
-    puts "AFTER"
-    puts @recipient.unlocked_funders.inspect
-    puts @recipient.locked_funders.length.inspect
 
     assert @recipient.unlocked_funders.include?(@funder)
     assert @recipient.locked_funders.empty?

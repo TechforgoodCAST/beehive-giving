@@ -6,6 +6,9 @@ class Proposal < ActiveRecord::Base
   after_save :save_districts_from_countries
   after_save :initial_recommendation
 
+  has_many :recommendations, dependent: :destroy
+  has_many :funds, through: :recommendations
+
   belongs_to :recipient
   has_and_belongs_to_many :beneficiaries
   has_and_belongs_to_many :age_groups
@@ -86,7 +89,7 @@ class Proposal < ActiveRecord::Base
   validates :affect_geo, inclusion: { in: 0..3, message: 'please select an option'}
   validates :countries, presence: true
   validates :districts, presence: true,
-              unless: Proc.new { |o| o.affect_geo > 1 if o.affect_geo.present? }
+              if: Proc.new { |o| o.affect_geo < 2 && o.affect_geo.present? }
 
   # Privacy
   validates :private, inclusion: { in: [true, false], message: 'please select an option' }

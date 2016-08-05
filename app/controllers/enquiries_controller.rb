@@ -20,8 +20,4 @@ class EnquiriesController < ApplicationController
     @funder = Funder.find_by_slug(params[:id])
   end
 
-  def load_recipient
-    @recipient = current_user.organisation
-  end
-
 end

@@ -4,6 +4,8 @@ class Recommendation < ActiveRecord::Base
 
   RECOMMENDATION_QUALITY = ["Good suggestion", "Neutral suggestion", "Poor suggestion"]
 
+  belongs_to :proposal
+  belongs_to :fund
   belongs_to :funder
   belongs_to :recipient
 

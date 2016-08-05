@@ -87,7 +87,7 @@ gem 'rollbar', '~> 2.8.3'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
 
-gem 'rails_12factor'
+gem 'rails_12factor', group: :production
 
 # Use puma as the app server
 gem 'puma'

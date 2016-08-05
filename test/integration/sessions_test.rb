@@ -43,7 +43,7 @@ class SessionsTest < ActionDispatch::IntegrationTest
   end
 
   test 'ensure logged in for proposals' do
-    @registered_proposal = create(:registered_proposal, recipient: @recipient, countries: @countries, districts: @districts)
+    @registered_proposal = create(:registered_proposal, recipient: @recipient, countries: @countries, districts: @districts, age_groups: @age_groups, beneficiaries: @beneficiaries)
     assert_path([
       recipient_proposals_path(@recipient),
       new_recipient_proposal_path(@recipient),

@@ -47,6 +47,9 @@ Rails.application.routes.draw do
   match '/account/(:id)/upgrade', to: 'accounts#upgrade', via: :get, as: 'account_upgrade'
   match '/account/(:id)/charge', to: 'accounts#charge', via: :post, as: 'account_charge'
 
+  # Funds
+  match '/funds/home', to: 'funds#home', via: :get, as: 'funds_home'
+
   # Funders
   match '/funders/recommended', to: 'recipients#recommended_funders', via: :get, as: 'recommended_funders'
   match '/funders/eligible', to: 'recipients#eligible_funders', via: :get, as: 'eligible_funders'

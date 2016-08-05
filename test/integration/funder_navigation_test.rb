@@ -5,7 +5,7 @@ class FunderNavigationTest < ActionDispatch::IntegrationTest
   setup do
     seed_test_db
     @funder = create(:funder)
-    create(:funder_attribute, funder: @funder, countries: @countries, districts: @districts)
+    create(:funder_attribute, funder: @funder, countries: @countries, districts: @districts, age_groups: @age_groups, beneficiaries: @beneficiaries)
     3.times { create(:grant, funder: @funder, countries: @countries, districts: @districts) }
     @funder.update_current_attribute
     create_and_auth_user!(role: 'Funder', organisation: @funder)

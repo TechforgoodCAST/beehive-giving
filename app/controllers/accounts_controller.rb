@@ -38,10 +38,4 @@ class AccountsController < ApplicationController
     end
   end
 
-  private
-
-    def load_recipient # TODO: refactor
-      @recipient = current_user.organisation
-    end
-
 end

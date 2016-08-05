@@ -19,6 +19,8 @@ class Recipient < Organisation
   alias_method :attribute, :recipient_attribute
 
   has_many :recommendations, dependent: :destroy
+  has_many :funds, -> { joins(:recommendations).order('recommendations.total_recommendation DESC') }, through: :recommendations
+
   has_many :countries, through: :proposals
   has_many :districts, through: :proposals
   has_many :beneficiaries, through: :proposals
