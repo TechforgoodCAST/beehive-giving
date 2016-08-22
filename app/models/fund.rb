@@ -19,6 +19,8 @@ class Fund < ActiveRecord::Base
             :open_call, :active, :currency, :funding_types,
               presence: true
 
+  validates :name, uniqueness: { scope: :funder }
+
   validates :amount_min_limited, :amount_max_limited,
               inclusion: { in: [true, false] },
               if: :amount_known?
@@ -49,6 +51,33 @@ class Fund < ActiveRecord::Base
   validates :outcomes, presence: true, if: :outcomes_known?
   validates :decision_makers, presence: true, if: :decision_makers_known?
 
+  # with open_data
+
+  validates :period_start, :period_end, :org_type_distribution,
+            :operating_for_distribution, :income_distribution,
+            :employees_distribution, :volunteers_distribution,
+            :geographic_scale_distribution, :gender_distribution,
+              presence: true, if: :open_data?
+
+  validates :grant_count, :recipient_count, :amount_mean_historic,
+            :amount_median_historic, :amount_min_historic, :amount_max_historic,
+            :duration_months_mean_historic, :duration_months_median_historic,
+            :duration_months_min_historic, :duration_months_max_historic,
+            :beneficiary_max_age_historic,
+              presence: true, numericality: { greater_than: 0 }, if: :open_data?
+
+  validates :beneficiary_min_age_historic,
+              presence: true, numericality: { greater_than_or_equal_to: 0 }, if: :open_data?
+
+  validates :amount_max_historic, numericality: { greater_than: :amount_min_historic },
+              if: Proc.new { |o| o.amount_min_historic? && o.open_data? }
+  validates :duration_months_max_historic, numericality: { greater_than: :duration_months_min_historic },
+              if: Proc.new { |o| o.duration_months_min_historic? && o.open_data? }
+  validates :beneficiary_max_age_historic, numericality: { greater_than: :beneficiary_min_age_historic },
+              if: Proc.new { |o| o.beneficiary_min_age_historic? && o.open_data? }
+
+  validate :period_start_before_period_end, :period_end_in_past, if: :open_data?
+
   before_validation :set_slug, unless: :slug
 
   private
@@ -59,6 +88,18 @@ class Fund < ActiveRecord::Base
 
     def set_slug
       self.slug = "#{self.funder.slug}-#{self.name.parameterize}" if self.funder
+    end
+
+    def period_end_in_past
+      if period_end
+        errors.add(:period_end, 'Period end must be in the past') if period_end > Date.today
+      end
+    end
+
+    def period_start_before_period_end
+      if period_start && period_end
+        errors.add(:period_start, 'Period start must be before period end') if period_start > period_end
+      end
     end
 
 end

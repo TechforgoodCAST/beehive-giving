@@ -1,12 +1,9 @@
 require 'rails_helper'
 
 describe AgeGroup do
-
-  let(:test_helper) { TestHelper.new }
-
   before(:each) do
-    @app = test_helper.seed_test_db
-    @db  = @app.instances
+    @app.seed_test_db
+    @db = @app.instances
   end
 
   it 'is valid' do

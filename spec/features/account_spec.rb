@@ -1,17 +1,13 @@
 require 'rails_helper'
 
 feature 'Account' do
-
-  let(:test_helper) { TestHelper.new }
-
   context 'signed in' do
     before(:each) do
-      @app = test_helper.
-               seed_test_db.
-               create_recipient.
-               with_user.
-               create_registered_proposal.
-               sign_in
+      @app.seed_test_db
+          .create_recipient
+          .with_user
+          .create_registered_proposal
+          .sign_in
       @db = @app.instances
     end
 

@@ -35,6 +35,7 @@ group :test do
   gem 'capybara'
   gem 'show_me_the_cookies'
   gem 'selenium-webdriver'
+  gem 'webmock'
 end
 
 group :development, :test do

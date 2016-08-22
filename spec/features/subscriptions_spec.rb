@@ -4,7 +4,6 @@ require 'stripe_mock'
 
 feature 'Subscriptions' do
 
-  let(:test_helper) { TestHelper.new }
   let(:subscriptions_helper) { SubscriptionsHelper.new }
   let(:stripe) { StripeMock.create_test_helper }
   before { StripeMock.start }
@@ -12,12 +11,11 @@ feature 'Subscriptions' do
 
   context 'signed in' do
     before(:each) do
-      @app = test_helper.
-               seed_test_db.
-               create_recipient.
-               with_user.
-               create_registered_proposal.
-               sign_in
+      @app.seed_test_db
+          .create_recipient
+          .with_user
+          .create_registered_proposal
+          .sign_in
       @db = @app.instances
     end
 

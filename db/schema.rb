@@ -520,8 +520,30 @@ ActiveRecord::Schema.define(version: 20160729130534) do
     t.boolean  "outcomes_known"
     t.boolean  "documents_known"
     t.boolean  "decision_makers_known"
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.datetime "created_at",                                      null: false
+    t.datetime "updated_at",                                      null: false
+    t.boolean  "open_data",                       default: false
+    t.date     "period_start"
+    t.date     "period_end"
+    t.integer  "grant_count"
+    t.integer  "recipient_count"
+    t.float    "amount_mean_historic"
+    t.float    "amount_median_historic"
+    t.float    "amount_min_historic"
+    t.float    "amount_max_historic"
+    t.float    "duration_months_mean_historic"
+    t.float    "duration_months_median_historic"
+    t.float    "duration_months_min_historic"
+    t.float    "duration_months_max_historic"
+    t.json     "org_type_distribution"
+    t.json     "operating_for_distribution"
+    t.json     "income_distribution"
+    t.json     "employees_distribution"
+    t.json     "volunteers_distribution"
+    t.json     "geographic_scale_distribution"
+    t.integer  "beneficiary_min_age_historic"
+    t.integer  "beneficiary_max_age_historic"
+    t.json     "gender_distribution"
   end
 
   add_index "funds", ["funder_id"], name: "index_funds_on_funder_id", using: :btree
@@ -781,15 +803,14 @@ ActiveRecord::Schema.define(version: 20160729130534) do
     t.float    "org_type_score"
     t.float    "beneficiary_score"
     t.float    "location_score"
-    t.integer  "fund_id"
-    t.integer  "fund_slug"
     t.integer  "proposal_id"
+    t.integer  "fund_id"
+    t.string   "fund_slug"
   end
 
-  add_index "recommendations", ["fund_id"], name: "index_recommendations_on_fund_id", unique: true, using: :btree
-  add_index "recommendations", ["fund_slug"], name: "index_recommendations_on_fund_slug", unique: true, using: :btree
   add_index "recommendations", ["funder_id"], name: "index_recommendations_on_funder_id", using: :btree
-  add_index "recommendations", ["proposal_id"], name: "index_recommendations_on_proposal_id", unique: true, using: :btree
+  add_index "recommendations", ["proposal_id", "fund_id"], name: "index_recommendations_on_proposal_id_and_fund_id", unique: true, using: :btree
+  add_index "recommendations", ["proposal_id", "fund_slug"], name: "index_recommendations_on_proposal_id_and_fund_slug", unique: true, using: :btree
   add_index "recommendations", ["recipient_id"], name: "index_recommendations_on_recipient_id", using: :btree
 
   create_table "restrictions", force: :cascade do |t|

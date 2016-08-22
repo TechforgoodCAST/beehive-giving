@@ -27,6 +27,7 @@ class ActiveSupport::TestCase
     @uk_districts    = create_list(:district, 3, country: @countries.first)
     @kenya_districts = create_list(:kenya_district, 3, country: @countries.last)
     @districts       = @uk_districts + @kenya_districts
+    @implementations = create_list(:implementation, Implementation::IMPLEMENTATIONS.count)
   end
 
   def setup_funds(num=1, save=false)
@@ -97,7 +98,8 @@ class ActionDispatch::IntegrationTest
                         beneficiaries: @beneficiaries,
                         age_groups: @age_groups,
                         countries: @countries,
-                        districts: @uk_districts + @kenya_districts
+                        districts: @uk_districts + @kenya_districts,
+                        implementations: @implementations
                       ) if proposal
   end
 end

@@ -2,6 +2,7 @@ class TestHelper
 
   include FactoryGirl::Syntax::Methods
   include ShowMeTheCookies
+  include WebMock::API
 
   def seed_test_db
     @age_groups           = create_list(:age_group, AgeGroup::AGE_GROUPS.count)
@@ -15,13 +16,18 @@ class TestHelper
     @uk_districts         = create_list(:district, 3, country: @uk)
     @kenya_districts      = create_list(:kenya_district, 3, country: @kenya)
     @districts            = @uk_districts + @kenya_districts
+    @implementations      = create_list(:implementation, Implementation::IMPLEMENTATIONS.count)
     self
   end
 
-  def setup_funds(num=1, save=false) # TODO: refactor
+  def setup_funds(num=1, save=false, open_data=false) # TODO: refactor
     FactoryGirl.reload
     @funder = create(:funder)
-    @funds = build_list(:fund, num, funder: @funder)
+    if open_data
+      @funds = build_list(:fund_with_open_data, num, funder: @funder)
+    else
+      @funds = build_list(:fund, num, funder: @funder)
+    end
     @funding_types = create_list(:funding_type, FundingType::FUNDING_TYPE.count)
     @restrictions = create_list(:restriction, 2)
     @outcomes = create_list(:outcome, 2)
@@ -37,6 +43,32 @@ class TestHelper
       fund.decision_makers = @decision_makers
     end
     @funds.each { |f| f.save! } if save
+    self
+  end
+
+  def stub_beehive_insight(categories=['People'])
+    data = Beneficiary::BENEFICIARIES
+            .map { |i| [i[:sort], categories.include?(i[:category]) ? 1 : 0] }.to_h
+    stub_request(:post, ENV['BEEHIVE_INSIGHT_ENDPOINT']).with(
+      body: { data: data }.to_json,
+      basic_auth: [ENV['BEEHIVE_INSIGHT_TOKEN'], ENV['BEEHIVE_INSIGHT_SECRET']],
+      headers: { 'Content-Type'=>'application/json' }
+    ).to_return(
+      status: 200,
+      body: {"2015-acme-awards-for-all-1"=>0.5}.to_json
+    )
+    self
+  end
+
+  def stub_beehive_insight_amounts(data=10000.0)
+    stub_request(:post, ENV['BEEHIVE_INSIGHT_AMOUNTS_ENDPOINT']).with(
+      body: { data: data }.to_json,
+      basic_auth: [ENV['BEEHIVE_INSIGHT_TOKEN'], ENV['BEEHIVE_INSIGHT_SECRET']],
+      headers: { 'Content-Type'=>'application/json' }
+    ).to_return(
+      status: 200,
+      body: {"2015-acme-awards-for-all-1"=>0.5}.to_json
+    )
     self
   end
 
@@ -72,7 +104,8 @@ class TestHelper
   def build_registered_proposal
     @registered_proposal = build(:registered_proposal, recipient: @recipient,
                                   countries: [@uk], districts: @uk_districts,
-                                  age_groups: @age_groups, beneficiaries: @beneficiaries)
+                                  age_groups: @age_groups, beneficiaries: @beneficiaries,
+                                  implementations: @implementations)
     self
   end
 
@@ -85,7 +118,8 @@ class TestHelper
   def build_complete_proposal
     @complete_proposal = build(:proposal, recipient: @recipient,
                                 countries: [@uk], districts: @uk_districts,
-                                age_groups: @age_groups, beneficiaries: @beneficiaries)
+                                age_groups: @age_groups, beneficiaries: @beneficiaries,
+                                implementations: @implementations)
     self
   end
 
@@ -102,7 +136,7 @@ class TestHelper
   end
 
   def instances
-    return {
+     instances = {
       age_groups: @age_groups,
       all_ages: @all_ages,
       beneficiaries: @beneficiaries,
@@ -114,12 +148,18 @@ class TestHelper
       uk_districts: @uk_districts,
       kenya_districts: @kenya_districts,
       districts: @districts,
+      implementations: @implementations,
       recipient: @recipient,
       user: @user,
       initial_proposal: @initial_proposal,
       registered_proposal: @registered_proposal,
       complete_proposal: @complete_proposal
     }
+    if @funds
+      instances[:funds] = @funds
+      instances[:funder] = @funder
+    end
+    return instances
   end
 
 end

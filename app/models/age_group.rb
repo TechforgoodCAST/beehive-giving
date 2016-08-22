@@ -11,10 +11,10 @@ class AgeGroup < ActiveRecord::Base
     { label: 'Older adults (80+)',          age_from: 80, age_to: 150 }
   ]
 
-  has_and_belongs_to_many :profiles
+  has_and_belongs_to_many :profiles # TODO: refactor
   has_and_belongs_to_many :proposals
 
   validates :label, :age_from, :age_to, presence: true
   validates :label, uniqueness: true
-  
+
 end
