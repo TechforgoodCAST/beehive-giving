@@ -80,11 +80,11 @@ class Fund < ActiveRecord::Base
 
   before_validation :set_slug, unless: :slug
 
-  private
+  def to_param
+    self.slug
+  end
 
-    def to_param
-      self.slug
-    end
+  private
 
     def set_slug
       self.slug = "#{self.funder.slug}-#{self.name.parameterize}" if self.funder

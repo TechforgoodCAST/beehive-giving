@@ -4,7 +4,7 @@ feature 'Home' do
   context 'signed in' do
     before(:each) do
       @app.seed_test_db
-          .setup_funds(3, true)
+          .setup_funds(3, true, true)
           .create_recipient
           .with_user
           .create_registered_proposal

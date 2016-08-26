@@ -113,7 +113,11 @@ class Proposal < ActiveRecord::Base
     )
     beehive_insight_amounts = call_beehive_insight(
       ENV['BEEHIVE_INSIGHT_AMOUNTS_ENDPOINT'],
-      self.total_costs
+      { amount: self.total_costs }
+    )
+    beehive_insight_durations = call_beehive_insight(
+      ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'],
+      { duration: self.funding_duration }
     )
 
     Fund.all.each do |fund|
@@ -157,40 +161,30 @@ class Proposal < ActiveRecord::Base
 
         # amount requested recommendation
         amount_score = 0
-        beehive_insight_amounts.each do |k, v|
-          amount_score += v if fund.slug == k
-        end
-        amount_score = 0 if fund.amount_known && self.total_costs > fund.amount_max
+        amount_score = fund_request_scores(fund, beehive_insight_amounts, amount_score)
+        amount_score = 0 if fund.amount_max_limited? && self.total_costs > fund.amount_max
 
-        #   grant_duration_recommendation = calculate_grant_duration_recommendation(funder)
-        #   # end
-        #
-        #   score = beneficiary_score +
-        #           org_type_score +
-        #           location_score
-        #
-        #   # Reset for closed funders, refactor
-        #   score = 0 if Funder::CLOSED_FUNDERS.include?(funder.name)
-        # end
-        #
-        # scores = {
-        #   score: score,
-        #   org_type_score: org_type_score,
-        #   beneficiary_score: beneficiary_score,
-        #   location_score: location_score,
-        #   grant_amount_recommendation: grant_amount_recommendation,
-        #   grant_duration_recommendation: grant_duration_recommendation
-        # }
+        # duration requested recommendation
+        duration_score = 0
+        duration_score = fund_request_scores(fund, beehive_insight_durations, duration_score)
+        duration_score = 0 if fund.duration_months_max_limited? && self.funding_duration > fund.duration_months_max
+
+        score = org_type_score +
+                beneficiary_score +
+                location_score +
+                amount_score +
+                duration_score
+
         scores = {
           org_type_score: org_type_score,
           beneficiary_score: beneficiary_score,
           location_score: location_score,
-          grant_amount_recommendation: amount_score
+          grant_amount_recommendation: amount_score,
+          grant_duration_recommendation: duration_score,
+          score: score
         }
         save_recommendation(fund, scores)
       end
-      scores = {}
-      save_recommendation(fund, scores)
     end
   end
 
@@ -243,14 +237,20 @@ class Proposal < ActiveRecord::Base
       return JSON.parse(resp.body).map { |k,v| [k.slice(5..-1), v] }.to_h
     end
 
+    def fund_request_scores(fund, data, score)
+      score = 0
+      data.each do |k, v|
+        score += v if fund.slug == k
+      end
+      return score
+    end
+
     def save_recommendation(fund, scores)
       r = Recommendation.where(
         proposal: self,
         fund: fund
-      ).first_or_initialize
-      # r.save
+      ).first_or_create
       r.update_attributes(scores)
-      # refactor update columns might be quicker
     end
 
     def compare_arrays(array, fund) # TODO: refactor
@@ -275,7 +275,7 @@ class Proposal < ActiveRecord::Base
     end
 
     def save_districts_from_countries
-      # refactor into background job too slow
+      # TODO: refactor into background job too slow
       if self.affect_geo > 1
         district_ids_array = []
         self.countries.each do |country|

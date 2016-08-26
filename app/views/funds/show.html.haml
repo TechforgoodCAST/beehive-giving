@@ -1,0 +1,3 @@
+%h1= @fund.name
+- if @fund.open_data?
+  %h2= @fund.org_type_distribution

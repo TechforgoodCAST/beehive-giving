@@ -49,6 +49,7 @@ Rails.application.routes.draw do
 
   # Funds
   match '/funds/home', to: 'funds#home', via: :get, as: 'funds_home'
+  match '/funds/(:id)', to: 'funds#show', via: :get, as: 'fund'
 
   # Funders
   match '/funders/recommended', to: 'recipients#recommended_funders', via: :get, as: 'recommended_funders'

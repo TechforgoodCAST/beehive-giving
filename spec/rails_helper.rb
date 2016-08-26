@@ -58,6 +58,9 @@ RSpec.configure do |config|
 
   config.before(:each) do
     @app = TestHelper.new
-    @app.stub_beehive_insight.stub_beehive_insight_amounts
+    @app
+      .stub_beneficiaries_endpoint
+      .stub_amounts_endpoint
+      .stub_durations_endpoint
   end
 end

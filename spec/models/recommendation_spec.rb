@@ -71,25 +71,39 @@ describe Recommendation do
       expect(@recommendation.grant_amount_recommendation).to eq 0.5
     end
 
-    it 'grant_amount_recommendation is zero if total_costs greater than amount_max if amount_known' do
+    it 'grant_amount_recommendation is zero if total_costs greater than
+        amount_max if amount_max_limited' do
       over_max = 10001.0
-      @app.stub_beehive_insight_amounts(over_max)
+      @app.stub_amounts_endpoint(over_max)
       @proposal.total_costs = over_max
       @proposal.save
       @recommendation.reload
       expect(@recommendation.grant_amount_recommendation).to eq 0
     end
 
-    # it 'has grant_duration_recommendation'
-    # it 'grant_duration_recommendation is zero if beyond fund range'
-    # it 'has total_recommendation'
-    # it 'has state'
+    it 'has grant_duration_recommendation' do
+      expect(@recommendation.grant_duration_recommendation).to eq 0.5
+    end
+
+    it 'grant_duration_recommendation is zero if funding_duration greater
+        than duration_months_max if duration_months_max_limited' do
+      over_max = 13
+      @app.stub_durations_endpoint(over_max)
+      @proposal.funding_duration = over_max
+      @proposal.save
+      @recommendation.reload
+      expect(@recommendation.grant_duration_recommendation).to eq 0
+    end
+
+    it 'has total_recommendation' do
+      expect(@recommendation.total_recommendation).not_to eq 0
+    end
   end
 
   context 'multiple' do
     before(:each) do
       @app.seed_test_db
-          .setup_funds(2, true)
+          .setup_funds(2, true, true)
           .create_recipient
           .create_initial_proposal
       @fund1_recommendation = Recommendation.first
@@ -97,6 +111,7 @@ describe Recommendation do
     end
 
     it 'slug is unique to proposal and fund' do
+      expect(Recommendation.count).to eq 2
       @fund1_recommendation.fund_slug = @fund2_recommendation.fund_slug
       expect { @fund1_recommendation.save!(validate: false) }.to raise_error(ActiveRecord::RecordNotUnique)
       expect(@fund1_recommendation).not_to be_valid

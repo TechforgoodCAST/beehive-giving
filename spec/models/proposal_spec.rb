@@ -45,7 +45,7 @@ describe Proposal do
 
     context 'with funds' do
       before(:each) do
-        @app.setup_funds(2, true)
+        @app.setup_funds(2, true, true)
         @initial_proposal.save
       end
 
@@ -129,7 +129,7 @@ describe Proposal do
     end
 
     it 'clears beneficiaries from category "People" unless affect_people' do
-      @app.stub_beehive_insight(['Other'])
+      @app.stub_beneficiaries_endpoint(['Other'])
       expect(@initial_proposal.beneficiaries).to eq @db[:beneficiaries]
       @initial_proposal.affect_people = false
       @initial_proposal.affect_other = true
@@ -144,7 +144,7 @@ describe Proposal do
     end
 
     it 'does not clear beneficiaries if both affect_people and affect_other' do
-      @app.stub_beehive_insight(['People', 'Other'])
+      @app.stub_beneficiaries_endpoint(['People', 'Other'])
       @initial_proposal.affect_other = true
       @initial_proposal.save
       expect(@initial_proposal.beneficiaries).to eq @db[:beneficiaries]

@@ -46,10 +46,8 @@ class TestHelper
     self
   end
 
-  def stub_beehive_insight(categories=['People'])
-    data = Beneficiary::BENEFICIARIES
-            .map { |i| [i[:sort], categories.include?(i[:category]) ? 1 : 0] }.to_h
-    stub_request(:post, ENV['BEEHIVE_INSIGHT_ENDPOINT']).with(
+  def stub_beehive_insight(endpoint, data)
+    stub_request(:post, endpoint).with(
       body: { data: data }.to_json,
       basic_auth: [ENV['BEEHIVE_INSIGHT_TOKEN'], ENV['BEEHIVE_INSIGHT_SECRET']],
       headers: { 'Content-Type'=>'application/json' }
@@ -60,14 +58,25 @@ class TestHelper
     self
   end
 
-  def stub_beehive_insight_amounts(data=10000.0)
-    stub_request(:post, ENV['BEEHIVE_INSIGHT_AMOUNTS_ENDPOINT']).with(
-      body: { data: data }.to_json,
-      basic_auth: [ENV['BEEHIVE_INSIGHT_TOKEN'], ENV['BEEHIVE_INSIGHT_SECRET']],
-      headers: { 'Content-Type'=>'application/json' }
-    ).to_return(
-      status: 200,
-      body: {"2015-acme-awards-for-all-1"=>0.5}.to_json
+  def stub_beneficiaries_endpoint(categories=['People'])
+    data = Beneficiary::BENEFICIARIES
+            .map { |i| [i[:sort], categories.include?(i[:category]) ? 1 : 0] }.to_h
+    stub_beehive_insight(ENV['BEEHIVE_INSIGHT_ENDPOINT'], data)
+    self
+  end
+
+  def stub_amounts_endpoint(data=10000.0)
+    stub_beehive_insight(
+      ENV['BEEHIVE_INSIGHT_AMOUNTS_ENDPOINT'],
+      { amount: data }
+    )
+    self
+  end
+
+  def stub_durations_endpoint(data=12)
+    stub_beehive_insight(
+      ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'],
+      { duration: data }
     )
     self
   end
