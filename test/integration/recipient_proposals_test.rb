@@ -153,6 +153,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
     assert_equal edit_recipient_proposal_path(@recipient, registered_proposal), current_path
   end
 
+  # TODO:
   def initial_complete_form
     select(Proposal::TYPE_OF_SUPPORT.sample, from: 'proposal_type_of_support')
     fill_in 'proposal_funding_duration', with: @initial_proposal.funding_duration

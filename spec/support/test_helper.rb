@@ -53,7 +53,11 @@ class TestHelper
       headers: { 'Content-Type'=>'application/json' }
     ).to_return(
       status: 200,
-      body: {"2015-acme-awards-for-all-1"=>0.5}.to_json
+      body: {
+        '2015-acme-awards-for-all-1': 0.5,
+        '2015-acme-awards-for-all-2': 0.6,
+        '2015-acme-awards-for-all-3': 0.7
+      }.to_json
     )
     self
   end

@@ -89,7 +89,7 @@ class Proposal < ActiveRecord::Base
   validates :affect_geo, inclusion: { in: 0..3, message: 'please select an option'}
   validates :countries, presence: true
   validates :districts, presence: true,
-              if: Proc.new { |o| o.affect_geo < 2 && o.affect_geo.present? }
+              if: Proc.new { |o| o.affect_geo.present? && o.affect_geo < 2 } # TODO: test
 
   # Privacy
   validates :private, inclusion: { in: [true, false], message: 'please select an option' }
@@ -150,8 +150,10 @@ class Proposal < ActiveRecord::Base
         )
         # TODO: add age_groups
 
-        beehive_insight.each do |k, v|
-          fund.slug == k ? beneficiary_score += v : beneficiary_score = 0
+        if beehive_insight.has_key?(fund.slug)
+          beneficiary_score += beehive_insight[fund.slug]
+        else
+          beneficiary_score = 0
         end
 
         # location recommendation
@@ -189,15 +191,18 @@ class Proposal < ActiveRecord::Base
   end
 
   def check_affect_geo
-    unless self.affect_geo == 2
-      if self.country_ids.uniq.count > 1
-        self.affect_geo = 3
-      elsif (self.district_ids & Country.find(self.country_ids[0]).districts.pluck(:id)).count == Country.find(self.country_ids[0]).districts.count
-        self.affect_geo = 2
-      elsif District.where(id: district_ids).pluck(:region).uniq.count > 1
-        self.affect_geo = 1
-      else
-        self.affect_geo = 0
+    # TODO: refactor
+    if self.affect_geo.present?
+      unless self.affect_geo == 2
+        if self.country_ids.uniq.count > 1
+          self.affect_geo = 3
+        elsif (self.district_ids & Country.find(self.country_ids[0]).districts.pluck(:id)).count == Country.find(self.country_ids[0]).districts.count
+          self.affect_geo = 2
+        elsif District.where(id: district_ids).pluck(:region).uniq.count > 1
+          self.affect_geo = 1
+        else
+          self.affect_geo = 0
+        end
       end
     end
   end

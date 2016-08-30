@@ -32,7 +32,7 @@ class ProposalsController < ApplicationController
         }
         format.html {
           @proposal.next_step!
-          redirect_to recommended_funders_path
+          redirect_to funds_home_path
         }
       else
         format.js

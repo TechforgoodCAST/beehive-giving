@@ -18,8 +18,8 @@
           - @recommended_funds.each do |fund|
             %li.funder
               = fund.name
-              |
-              = fund.slug
+              -# |
+              -# = fund.slug
               -# |
               -# = Recommendation.where(fund: fund, proposal: @recipient.proposals.first).first.total_recommendation
 
