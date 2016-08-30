@@ -20,7 +20,7 @@ class TestHelper
     self
   end
 
-  def setup_funds(num=1, save=false, open_data=false) # TODO: refactor
+  def setup_funds(num: 1, save: true, open_data: false) # TODO: refactor
     FactoryGirl.reload
     @funder = create(:funder)
     if open_data

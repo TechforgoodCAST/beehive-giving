@@ -4,7 +4,7 @@ describe Recommendation do
   context 'single' do
     before(:each) do
       @app.seed_test_db
-          .setup_funds(1, true, true)
+          .setup_funds(open_data: true)
           .create_recipient
           .create_initial_proposal
       @db = @app.instances
@@ -103,7 +103,7 @@ describe Recommendation do
   context 'multiple' do
     before(:each) do
       @app.seed_test_db
-          .setup_funds(2, true, true)
+          .setup_funds(num: 2, open_data: true)
           .create_recipient
           .create_initial_proposal
       @fund1_recommendation = Recommendation.first

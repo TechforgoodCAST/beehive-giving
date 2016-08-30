@@ -45,7 +45,7 @@ describe Proposal do
 
     context 'with funds' do
       before(:each) do
-        @app.setup_funds(2, true, true)
+        @app.setup_funds(num: 2, open_data: true)
         @initial_proposal.save
       end
 

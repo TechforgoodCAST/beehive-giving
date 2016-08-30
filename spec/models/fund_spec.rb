@@ -5,7 +5,7 @@ describe Fund do
 
     before(:each) do
       @app.seed_test_db
-          .setup_funds
+          .setup_funds(save: false)
       @db = @app.instances
       @fund = @db[:funds].first
       @funder = @db[:funder]
@@ -186,7 +186,7 @@ describe Fund do
   context 'multiple' do
     before(:each) do
       @app.seed_test_db
-          .setup_funds(2, true)
+          .setup_funds(num: 2)
       @db = @app.instances
       @fund1 = @db[:funds].first
       @fund2 = @db[:funds].last
@@ -202,7 +202,7 @@ describe Fund do
   context 'with open date' do
     before(:each) do
       @app.seed_test_db
-          .setup_funds(1, true, true)
+          .setup_funds(open_data: true)
       @db = @app.instances
       @fund = @db[:funds].first
     end
