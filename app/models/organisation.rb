@@ -133,7 +133,7 @@ class Organisation < ActiveRecord::Base
       # refactor
       company_no_scrape = response.at_css('#ContentPlaceHolderDefault_cp_content_ctl00_CharityDetails_4_TabContainer1_tpOverview_plCompanyNumber')
       name_scrape = response.at_css('h1')
-      address_scrape = response.at_css('#ContentPlaceHolderDefault_cp_content_ctl00_CharityDetails_4_TabContainer1_tpOverview_plContact .detail-50+ .detail-50 .detail-panel-wrap')
+      address_scrape = response.at_css('#ContentPlaceHolderDefault_cp_content_ctl00_CharityDetails_4_TabContainer1_tpOverview_plContact .detail-33+ .detail-33 .detail-panel-wrap')
       website_scrape = response.at_css('#ContentPlaceHolderDefault_cp_content_ctl00_CharityDetails_4_TabContainer1_tpOverview_plContact h3+ a')
       email_scrape = response.at_css('br+ a')
       status_scrape = response.at_css('.up-to-date')
