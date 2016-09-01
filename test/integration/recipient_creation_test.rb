@@ -129,6 +129,10 @@ class RecipientCreationTest < ActionDispatch::IntegrationTest
     assert_equal new_recipient_proposal_path(User.last.organisation), current_path
   end
 
+  test 'valid scrape with no postal_code shows field' do
+    skip
+  end
+
   # test 'form cleared when org_type changes' do
   #   # refactor javascript testing
   #   create_and_auth_user!
