@@ -19,7 +19,7 @@ class RecipientFundingThemesTest < ActionDispatch::IntegrationTest
   end
 
   test 'clicking funding theme shows related funders' do
-    visit recommended_funders_path
+    visit recommended_funds_path
     Capybara.match = :first
     click_link('tag1')
     assert_equal tag_path('tag1'), current_path

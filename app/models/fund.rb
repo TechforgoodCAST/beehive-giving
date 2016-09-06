@@ -15,6 +15,8 @@ class Fund < ActiveRecord::Base
   has_and_belongs_to_many :outcomes
   has_and_belongs_to_many :decision_makers
 
+  acts_as_taggable
+
   validates :funder, :type_of_fund, :year_of_fund, :slug, :name, :description,
             :open_call, :active, :currency, :funding_types,
               presence: true

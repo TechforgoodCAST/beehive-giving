@@ -24,8 +24,8 @@ class RecipientNavbarTest < ActionDispatch::IntegrationTest
     seed_test_db
     create_and_auth_user!(organisation: @recipient)
     create(:registered_proposal, recipient: @recipient, countries: @countries, districts: @districts, age_groups: @age_groups, beneficiaries: @beneficiaries, implementations: @implementations)
-    visit recommended_funders_path
-    assert_equal recommended_funders_path, current_path
+    visit recommended_funds_path
+    assert_equal recommended_funds_path, current_path
     assert page.has_content?('Funding proposals')
     assert page.has_content?('Sign out')
   end

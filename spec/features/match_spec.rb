@@ -39,10 +39,10 @@ feature 'Match' do
     expect(current_path).to eq new_recipient_proposal_path(Recipient.last)
 
     helper.submit_proposal_form
-    expect(current_path).to eq funds_home_path
+    expect(current_path).to eq recommended_funds_path
     expect(page).to have_css '.funder', count: 3
 
-    expect(page.first('.funder').text).to eq 'Awards for All 3'
+    expect(page.first('.yellow').text).to eq 'Awards for All 3'
   end
 
   # context 'individual'
@@ -52,5 +52,6 @@ feature 'Match' do
   # context 'charity & company'
   # context 'other org'
   # context 'pre-registered'
+  # with/without age_groups/genders
 
 end

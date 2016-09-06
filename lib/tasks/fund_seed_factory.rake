@@ -14,8 +14,9 @@ namespace :fund do
 
     FundingType.create(label: 'Other')
 
-    @funder = Funder.find_by_name('Lloyds Bank Foundation')
-    @funds = build_list(:fund_with_open_data, 2, funder: @funder)
+    @funder = Funder.find_by_name(['Lloyds Bank Foundation', 'Lloyds Bank Foundation England and Wales'])
+    @funder.update_column(:name, 'Lloyds Bank Foundation England and Wales')
+    @funds = build_list(:fund_with_open_data, 11, funder: @funder)
 
     @funds.each do |fund|
       fund.deadlines = create_list(:deadline, 2, fund: fund)
@@ -32,7 +33,9 @@ namespace :fund do
     end
     puts
 
+    @funds.first.update_column(:name, 'Enable North')
     @funds.first.update_column(:slug, 'lloyds-bank-foundation-for-england-and-wales-enable-north')
+    @funds.last.update_column(:name, 'Invest North')
     @funds.last.update_column(:slug, 'lloyds-bank-foundation-for-england-and-wales-invest-north')
   end
 end

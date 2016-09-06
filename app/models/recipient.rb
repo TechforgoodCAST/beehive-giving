@@ -111,8 +111,8 @@ class Recipient < Organisation
     funder.funding_streams.where('label = ?', funding_stream).first.restrictions.count == count ? true : false
   end
 
-  def load_recommendation(funder)
-    Recommendation.where(recipient: self, funder: funder).first
+  def load_recommendation(fund) # TODO: move to proposal
+    Recommendation.where(proposal: self.proposals.last, fund: fund).first
   end
 
   def set_eligibility(funder, eligibility)
@@ -136,8 +136,8 @@ class Recipient < Organisation
     end
   end
 
-  def eligible?(funder)
-    return true if self.load_recommendation(funder).eligibility == 'Eligible'
+  def eligible?(fund)
+    self.load_recommendation(fund).eligibility == 'Eligible'
   end
 
   def get_funders_by_eligibility(eligibility)
@@ -188,24 +188,23 @@ class Recipient < Organisation
     end
   end
 
-  def recommended_funders
-    Funder.joins(:recommendations)
-      .where('recipient_id = ? AND score >= ?', self.id, RECOMMENDATION_THRESHOLD)
-      .order('recommendations.score DESC, name ASC')
+  def recommended_funds # TODO: refactor to proposal
+    self.proposals.last.funds
+      .where('recommendations.total_recommendation >= ?', RECOMMENDATION_THRESHOLD)
+      .order('recommendations.total_recommendation DESC', 'funds.name')
   end
 
-  def recommended_with_eligible_funders
-    funder_ids = recommended_funders
-                  .pluck(:funder_id)
-                  .take(Recipient::RECOMMENDATION_LIMIT)
-
-    recommended_funders
-      .where(id: funder_ids)
+  def recommended_with_eligible_funds # TODO: refactor  to proposal
+    fund_ids = recommended_funds
+      .pluck(:fund_id)
+      .take(RECOMMENDATION_LIMIT)
+    recommended_funds
+      .where(id: fund_ids)
       .where('eligibility is NULL OR eligibility != ?', 'Ineligible')
   end
 
-  def recommended_funder?(funder)
-    recommended_funders.pluck(:funder_id).take(RECOMMENDATION_LIMIT).include?(funder.id)
+  def recommended_fund?(fund) # TODO: refactor to proposal
+    recommended_funds.pluck(:fund_id).take(RECOMMENDATION_LIMIT).include?(fund.id)
   end
 
   def similar_funders(funder)

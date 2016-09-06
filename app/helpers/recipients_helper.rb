@@ -52,9 +52,9 @@ module RecipientsHelper
     content_tag(:strong, scramble_name(%w[Poor Excellent].sample), class: 'redacted muted')
   end
 
-  def render_recommendation(funder, score, scale=1)
-    if current_user.organisation.recommended_funder?(funder) || current_user.organisation.eligible?(funder)
-      score_to_match_copy(current_user.organisation.load_recommendation(funder)["#{score}"], scale)
+  def render_recommendation(fund, score, scale=1)
+    if current_user.organisation.recommended_fund?(fund) || current_user.organisation.eligible?(fund)
+      score_to_match_copy(current_user.organisation.load_recommendation(fund)["#{score}"], scale)
     else
       scramble_recommendations
     end

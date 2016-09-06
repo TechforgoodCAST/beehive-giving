@@ -52,10 +52,10 @@ Rails.application.routes.draw do
   match '/funds/(:id)', to: 'funds#show', via: :get, as: 'fund'
 
   # Funders
-  match '/funders/recommended', to: 'recipients#recommended_funders', via: :get, as: 'recommended_funders'
-  match '/funders/eligible', to: 'recipients#eligible_funders', via: :get, as: 'eligible_funders'
-  match '/funders/ineligible', to: 'recipients#ineligible_funders', via: :get, as: 'ineligible_funders'
-  match '/funders', to: 'recipients#all_funders', via: :get, as: 'all_funders'
+  match '/recommended/funds', to: 'recipients#recommended_funds', via: :get, as: 'recommended_funds'
+  match '/eligible/funds', to: 'recipients#eligible_funds', via: :get, as: 'eligible_funders'
+  match '/ineligible/funds', to: 'recipients#ineligible_funds', via: :get, as: 'ineligible_funders'
+  match '/all/funds', to: 'recipients#all_funds', via: :get, as: 'all_funds'
   get '/(:tag)/funders', to: 'funders#tagged', as: 'tag'
 
   # Recipients

@@ -32,42 +32,36 @@ class RecipientsController < ApplicationController
     end
   end
 
-  def recommended_funders
-    @funders = @recipient.recommended_with_eligible_funders
+  def recommended_funds
+    @funds = @recipient.recommended_with_eligible_funds
 
     render 'recipients/funders/recommended_funders'
   end
 
-  def eligible_funders
+  def eligible_funds
     @funders = Funder.find(@recipient.recommendations.where(eligibility: 'Eligible').pluck(:funder_id))
 
     render 'recipients/funders/eligible_funders'
   end
 
-  def ineligible_funders
+  def ineligible_funds
     @funders = Funder.find(@recipient.recommendations.where(eligibility: 'Ineligible').pluck(:funder_id))
 
     render 'recipients/funders/ineligible_funders'
   end
 
-  def all_funders
-    @search = Funder.where(active_on_beehive: true).where('recommendations.recipient_id = ?', @recipient.id).ransack(params[:q])
-    @search.sorts = ['recommendations_score desc', 'name asc'] if @search.sorts.empty?
-    @funders = @search.result
+  def all_funds
+    @funds = @recipient.proposals.last.funds.order('recommendations.total_recommendation DESC', 'funds.name')
 
-    respond_to do |format|
-      format.html { render 'recipients/funders/all_funders' }
-      format.js
-    end
+    render 'recipients/funders/all_funders'
   end
 
-  def dashboard
+  def dashboard # TODO: refactor
     @search = Funder.ransack(params[:q])
     @profile = @recipient.profiles.where('year = ?', 2015).first
   end
 
-  # refactor
-  def show
+  def show # TODO: refactor
     @recipient = Recipient.find_by_slug(params[:id])
   end
 
@@ -136,8 +130,7 @@ class RecipientsController < ApplicationController
     end
   end
 
-  #refactor?
-  def funder_attribute
+  def funder_attribute # TODO: refactor
     @funding_stream = params[:funding_stream] || 'All'
 
     if @funder.attributes.any?

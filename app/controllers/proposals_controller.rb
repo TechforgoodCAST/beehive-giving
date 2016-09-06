@@ -8,7 +8,7 @@ class ProposalsController < ApplicationController
     if @recipient.incomplete_first_proposal?
       redirect_to edit_recipient_proposal_path(@recipient, @recipient.proposals.last)
     elsif @recipient.has_proposal?
-      redirect_to recommended_funders_path
+      redirect_to recommended_funds_path
     else
       if @recipient.valid?
         @proposal = @recipient.proposals.new(state: 'initial')
@@ -26,13 +26,13 @@ class ProposalsController < ApplicationController
       if @proposal.save
         format.js   {
           @proposal.next_step!
-          render :js => "window.location.href = '#{recommended_funders_path}';
+          render :js => "window.location.href = '#{recommended_funds_path}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
         }
         format.html {
           @proposal.next_step!
-          redirect_to funds_home_path
+          redirect_to recommended_funds_path
         }
       else
         format.js
@@ -45,7 +45,7 @@ class ProposalsController < ApplicationController
     if @recipient.has_proposal?
       @proposals = @recipient.proposals
     else
-      redirect_to recommended_funders_path
+      redirect_to recommended_funds_path
     end
   end
 
@@ -70,7 +70,7 @@ class ProposalsController < ApplicationController
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
           else
-            render :js => "window.location.href = '#{recommended_funders_path}';
+            render :js => "window.location.href = '#{recommended_funds_path}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
           end
@@ -83,7 +83,7 @@ class ProposalsController < ApplicationController
             funder = Funder.find_by_slug(session.delete(:return_to))
             redirect_to recipient_eligibility_path(funder)
           else
-            redirect_to recommended_funders_path
+            redirect_to recommended_funds_path
           end
         }
       else

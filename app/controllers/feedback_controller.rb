@@ -7,7 +7,7 @@ class FeedbackController < ApplicationController
     @feedback = current_user.feedbacks.new
     @funder = Funder.find_by_slug(@redirect_to_funder)
 
-    redirect_to recommended_funders_path, alert: "It looks like you've already provided feedback" if current_user.feedbacks.count > 0
+    redirect_to recommended_funds_path, alert: "It looks like you've already provided feedback" if current_user.feedbacks.count > 0
   end
 
   def create
@@ -32,7 +32,7 @@ class FeedbackController < ApplicationController
     @feedback = Feedback.find(params[:id])
     if @feedback.update_attributes(params.require(:feedback).permit(:price))
       flash[:notice] = 'Thanks for the feedback!'
-      redirect_to session.delete(:return_to) || recommended_funders_path
+      redirect_to session.delete(:return_to) || recommended_funds_path
     else
       render :edit
     end

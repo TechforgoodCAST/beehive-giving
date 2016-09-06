@@ -15,7 +15,7 @@ class FundersController < ApplicationController
 
     unless @funder.active_on_beehive?
       flash[:alert] = "Sorry, you don't have access to that"
-      redirect_to recommended_funders_path
+      redirect_to recommended_funds_path
     end
   end
 

@@ -144,10 +144,14 @@ class Proposal < ActiveRecord::Base
         end
 
         # beneficiary recommendation
-        beneficiary_score = parse_distribution(
-          fund.gender_distribution,
-          self.gender
-        )
+        if self.gender?
+          beneficiary_score = parse_distribution(
+            fund.gender_distribution,
+            self.gender
+          )
+        else
+          beneficiary_score = 0
+        end
         # TODO: add age_groups
 
         if beehive_insight.has_key?(fund.slug)
@@ -214,10 +218,9 @@ class Proposal < ActiveRecord::Base
     end
 
     def parse_distribution(data, comparison)
-      data.
-        sort_by { |i| i["position"] }.
-        select { |i| i["label"] == comparison }.
-        first["percentage"]
+      data.sort_by { |i| i["position"] }
+          .select { |i| i["label"] == comparison }
+          .first["percentage"]
     end
 
     def beneficiaries_request

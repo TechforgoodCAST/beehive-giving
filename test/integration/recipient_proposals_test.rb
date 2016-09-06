@@ -16,7 +16,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
 
   test 'redirect to new proposal if no proposal found' do
     assert_equal 0, @recipient.proposals.count
-    check_path(recommended_funders_path)
+    check_path(recommended_funds_path)
     check_path(all_funders_path)
     check_path(eligible_funders_path)
     check_path(ineligible_funders_path)
@@ -26,7 +26,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
 
   def complete_inital_proposal
     proposal = create(:initial_proposal, recipient: @recipient, countries: @countries, districts: @districts, age_groups: @age_groups, beneficiaries: @beneficiaries)
-    visit recommended_funders_path
+    visit recommended_funds_path
     assert_equal edit_recipient_proposal_path(@recipient, proposal), current_path
     assert_equal proposal.total_costs.to_s, find('#proposal_total_costs')[:value]
     select(Proposal::FUNDING_TYPE.sample, from: 'proposal_funding_type')
@@ -35,7 +35,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
       choose('Yes')
     end
     click_button 'Save and recommend funders'
-    assert_equal recommended_funders_path, current_path
+    assert_equal recommended_funds_path, current_path
   end
 
   test 'current profile redirects to edit proposal if proposal inital' do
@@ -50,7 +50,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   end
 
   def assert_profile_transferred
-    visit recommended_funders_path
+    visit recommended_funds_path
     assert_equal new_recipient_proposal_path(@recipient), current_path
     assert_equal 'Other', find('#proposal_gender')[:value]
   end
@@ -70,7 +70,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
     profile = create(:current_profile, organisation: @recipient, beneficiaries_other: 'Beneficiaries', beneficiaries_other_required: true, implementations_other: 'Implementations', implementations_other_required: true, countries: @countries, districts: @districts, age_groups: @age_groups, beneficiaries: @beneficiaries)
     proposal = build(:initial_proposal, recipient: @recipient, countries: @countries, districts: @districts)
     @recipient.transfer_profile_to_new_proposal(profile, proposal)
-    visit recommended_funders_path
+    visit recommended_funds_path
     # assert page.has_css?('#proposal_beneficiaries_other_required:checked')
     assert_equal 'Beneficiaries', find('#proposal_beneficiaries_other')[:value]
     # assert page.has_css?('#proposal_implementations_other_required:checked')
@@ -80,7 +80,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   test 'implementors transferred' do
     profile = create(:current_profile, organisation: @recipient, countries: @countries, districts: @districts, age_groups: @age_groups, beneficiaries: @beneficiaries)
     proposal = build(:initial_proposal, recipient: @recipient, implementations: Implementation.all, countries: @countries, districts: @districts, age_groups: @age_groups, beneficiaries: @beneficiaries)
-    visit recommended_funders_path
+    visit recommended_funds_path
     assert_equal profile.implementations.pluck(:id), proposal.implementation_ids
   end
 
@@ -96,7 +96,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
   test 'invalid recipient must be completed before proposal or recommendations' do
     create_invalid_recipient('1161998')
 
-    visit recommended_funders_path
+    visit recommended_funds_path
     assert_equal edit_recipient_path(@recipient), current_path
 
     visit new_recipient_proposal_path(@recipient)
@@ -184,13 +184,13 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
     click_button 'Save and recommend funders'
 
     assert_equal false, @initial_proposal.private
-    assert_equal recommended_funders_path, current_path
+    assert_equal recommended_funds_path, current_path
     assert page.has_content? 'Recommended funders'
   end
 
   test 'funder insights reflect proposal comparison' do
     create(:registered_proposal, recipient: @recipient, countries: @countries, districts: @districts, age_groups: @age_groups, beneficiaries: @beneficiaries)
-    visit recommended_funders_path
+    visit recommended_funds_path
 
     assert page.has_content? "amount you're seeking", count: 3
     assert page.has_content? "duration you're seeking", count: 3
@@ -235,7 +235,7 @@ class RecipientProposalsTest < ActionDispatch::IntegrationTest
     visit recipient_proposals_path(@recipient)
     click_link('Update proposal')
     click_button('Update and review recommendations')
-    assert_equal recommended_funders_path, current_path
+    assert_equal recommended_funds_path, current_path
   end
 
 end

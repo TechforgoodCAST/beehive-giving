@@ -29,7 +29,7 @@ class FunderAccessTest < ActionDispatch::IntegrationTest
   end
 
   test "funder cannot visit recommened eligible ineligible and all funders paths" do
-    visit recommended_funders_path
+    visit recommended_funds_path
     assert_equal funder_overview_path(@funder), current_path
     visit eligible_funders_path
     assert_equal funder_overview_path(@funder), current_path

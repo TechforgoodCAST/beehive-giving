@@ -6,21 +6,21 @@
 = render partial: 'recipients/funders/subnav'
 
 .uk-container.uk-container-center.uk-margin-large
-  %h2 All funders
-  %h4 You are seeing all of the funders currently on Beehive.
+  %h2 All funds
+  %h4 You are seeing all of the funds currently on Beehive.
 
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
 
-    - @funders.each_with_index do |funder, i|
+    - @funds.each_with_index do |fund, i|
 
-      = render partial: 'recipients/funders/summary', locals: { funder: funder }
+      = render partial: 'recipients/funders/summary', locals: { fund: fund }
 
       - if i == 5
         .cta.wide
           Go unlimited with Beehive Pro and see all funders with complete profiles.
           %a{href: '#why-hidden', class: ' uk-button uk-button-large uk-button-primary invert', onclick: '$.UIkit.modal("#why-hidden").show();'} Upgrade (coming soon)
 
-      - if i == @funders.count-1
+      - if i == @funds.count-1
         .cta.wide
           More funders coming soon. Drop us an
           = link_to 'email', 'mailto:support@beehivegiving.org'

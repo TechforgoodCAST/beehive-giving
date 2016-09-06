@@ -12,25 +12,25 @@ feature 'Account' do
     end
 
     scenario 'account link visible in navbar' do
-      visit recommended_funders_path
+      visit recommended_funds_path
       expect(page).to have_text 'My account'
     end
 
     scenario 'can navigate to account page and defaults to user page' do
-      visit recommended_funders_path
+      visit recommended_funds_path
       click_on 'My account'
       expect(current_path).to eq account_subscription_path(@db[:recipient])
     end
 
     # scenario 'can navigate to organisation page' do
-    #   visit recommended_funders_path
+    #   visit recommended_funds_path
     #   click_on 'My account'
     #   click_on 'Organisation'
     #   expect(current_path).to eq account_organisation_path(@db[:recipient])
     # end
 
     scenario 'can navigate to subscription page' do
-      visit recommended_funders_path
+      visit recommended_funds_path
       click_on 'My account'
       # click_on 'Subscription'
       expect(current_path).to eq account_subscription_path(@db[:recipient])

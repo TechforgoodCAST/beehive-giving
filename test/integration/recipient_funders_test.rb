@@ -14,13 +14,13 @@ class RecipientFundersTest < ActionDispatch::IntegrationTest
     create(:feedback, user: @user)
 
     visit funder_path(funder)
-    assert_equal recommended_funders_path, current_path
+    assert_equal recommended_funds_path, current_path
   end
 
   test 'recommended funders path only shows recommended and eligible funders' do
     setup_funders(3, true)
     @recipient.recommendations.last.update_attribute(:eligibility, 'Ineligible')
-    visit recommended_funders_path
+    visit recommended_funds_path
     assert page.has_css?('.funder', count: 2)
   end
 

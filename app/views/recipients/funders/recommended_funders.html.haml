@@ -7,20 +7,21 @@
     'Funder Unlocks': '#{@recipient.recipient_funder_accesses_count}',
   });
 
-- if @recipient.recipient_funder_accesses.any?
-  :javascript
-    mixpanel.people.set({
-      'Last Unlocked Funder': '#{Funder.find(@recipient.recipient_funder_accesses.last.funder_id).name}',
-      'Last Funder Eligibility': '#{@recipient.eligible?(Funder.find(@recipient.recipient_funder_accesses.last.funder_id))}'
-    });
+-# TODO: refactor
+-# - if @recipient.recipient_funder_accesses.any?
+-#   :javascript
+-#     mixpanel.people.set({
+-#       'Last Unlocked Funder': '#{Funder.find(@recipient.recipient_funder_accesses.last.funder_id).name}',
+-#       'Last Funder Eligibility': '#{@recipient.eligible?(Funder.find(@recipient.recipient_funder_accesses.last.funder_id))}'
+-#     });
 
 = render partial: 'recipients/funders/subnav'
 
 .uk-container.uk-container-center.uk-margin-large
   .uk-grid
     .uk-width-medium-2-3
-      %h2 Recommended funders
-      %h4 You are seeing funders that Beehive thinks would be suitable for you.
+      %h2 Recommended funds
+      %h4 You are seeing funds that Beehive thinks would be suitable for you.
 
     -# refactor
     -# - if @recipient.has_proposal?
@@ -32,9 +33,9 @@
 
     -# = render partial: 'cta/proposal_cta', locals: { recipient: @recipient }
 
-    - @funders.each_with_index do |funder, i|
-      = render partial: 'recipients/funders/summary', locals: { funder: funder }
-      - if i == @funders.count-1
+    - @funds.each_with_index do |fund, i|
+      = render partial: 'recipients/funders/summary', locals: { fund: fund }
+      - if i == @funds.count-1
         .cta.wide
           Want to see more?
           %a.uk-button.uk-button-large.uk-button-primary.invert{href: funders_path} All funders

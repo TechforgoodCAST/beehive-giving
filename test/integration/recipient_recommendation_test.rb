@@ -17,7 +17,7 @@ class RecipientRecommendationTest < ActionDispatch::IntegrationTest
   test 'closed funder is not recommended' do
     Funder.last.update_column(:name, 'Cripplegate Foundation')
     @proposal.save
-    visit recommended_funders_path
+    visit recommended_funds_path
     assert page.has_css?('.funder', count: 2)
     assert_equal 0, @recipient.load_recommendation(Funder.last).score
   end

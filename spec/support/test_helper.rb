@@ -172,7 +172,7 @@ class TestHelper
       instances[:funds] = @funds
       instances[:funder] = @funder
     end
-    return instances
+    instances
   end
 
 end

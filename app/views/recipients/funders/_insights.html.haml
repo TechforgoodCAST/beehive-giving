@@ -1,89 +1,60 @@
-%p= raw(funder.current_attribute.description)
+%p= raw(fund.description)
 
 %ul.insights
   - unless params[:controller] == 'recipients' && %w(eligibility update_eligibility apply).include?(params[:action])
-    - if @recipient.load_recommendation(funder).eligibility
-      %li{ class: (@recipient.eligible?(funder) ? 'eligible' : 'ineligible')}
-        - if @recipient.eligible?(funder)
+    - if @recipient.load_recommendation(fund).eligibility
+      %li{ class: (@recipient.eligible?(fund) ? 'eligible' : 'ineligible')}
+        - if @recipient.eligible?(fund)
           %a.badge{href: eligible_funders_path} Eligible
           You are eligible for funding.
-          %a.action{href: recipient_eligibility_path(funder)} See criteria
+          %a.action{href: recipient_eligibility_path(fund)} See criteria
         - else
           %a.badge{href: ineligible_funders_path} Ineligible
           You are ineligible for funding.
-          %a.action{href: recipient_eligibility_path(funder)} Find out why
+          %a.action{href: recipient_eligibility_path(fund)} Find out why
 
   - if @recipient.has_proposal? && !@recipient.transferred?
-    - if @recipient.load_recommendation(funder).grant_amount_recommendation > 0.01
-      %li
-        %strong= number_to_percentage((@recipient.load_recommendation(funder).grant_amount_recommendation * 100), precision: 0)
-        of funding was similar to the
-        %strong amount
-        you're seeking.
-    - if @recipient.load_recommendation(funder).grant_duration_recommendation > 0.01
-      %li
-        %strong= number_to_percentage((@recipient.load_recommendation(funder).grant_duration_recommendation * 100), precision: 0)
-        of funding was similar to the
-        %strong duration
-        you're seeking.
+    %li
+      %strong= number_to_percentage((@recipient.load_recommendation(fund).grant_amount_recommendation * 100), precision: 0)
+      of funding was similar to the
+      %strong amount
+      you're seeking.
+    %li
+      %strong= number_to_percentage((@recipient.load_recommendation(fund).grant_duration_recommendation * 100), precision: 0)
+      of funding was similar to the
+      %strong duration
+      you're seeking.
 
   %li
-    - if funder.current_attribute.application_count
-      Received
-      .highlight= number_with_delimiter(funder.current_attribute.application_count)
-      applications and awarded
-      = succeed '.' do
-        .highlight= number_with_delimiter(funder.current_attribute.grant_count)
-      grants
-    - else
-      Awarded
-      .highlight= number_with_delimiter(funder.current_attribute.grant_count)
-      grants.
-    - if funder.current_attribute.application_count
-      That's a
-      .highlight= percentage(funder.current_attribute.grant_count, funder.current_attribute.application_count)
-      success rate.
-    %a.action{href: funder_path(funder, anchor: 'how-was-funding-distributed')} More info
+    Awarded
+    .highlight= number_with_delimiter(fund.grant_count)
+    grants.
+    %a.action{href: funder_path(fund, anchor: 'how-was-funding-distributed')} More info
 
-  - if funder.current_attribute.approval_months_by_count
-    %li
-      Awarded funding in
-      = succeed '.' do
-        %strong= raw(funder.current_attribute.approval_months_by_count)
-      %a.action{href: funder_path(funder, anchor: 'when-was-funding-awarded')} More info
-
-  - if funder.current_attribute.countries_by_count
-    %li
-      The most funded countries were
-      = succeed '.' do
-        %strong= raw(funder.current_attribute.countries_by_count)
-      %a.action{href: funder_path(funder, anchor: 'where-was-funding-awarded')} More info
-
-  - if funder.current_attribute.regions_by_count
-    %li
-      The most funded regions were
-      = succeed '.' do
-        %strong= raw(funder.current_attribute.regions_by_count)
-
-  - if funder.current_attribute.funding_streams_by_count
-    %li
-      Awarded the most grants in
-      = succeed '.' do
-        %strong=raw(funder.current_attribute.funding_streams_by_count)
-
-  -# - if funder.current_attribute.funding_streams_by_giving
+  -# - if fund.monthly_distribution
   -#   %li
-  -#     Gave the most funding in
+  -#     Awarded funding in
   -#     = succeed '.' do
-  -#       %strong=raw(funder.current_attribute.funding_streams_by_giving)
+  -#       %strong= raw(funder.current_attribute.approval_months_by_count)
+  -#     %a.action{href: funder_path(fund, anchor: 'when-was-funding-awarded')} More info
 
-  -# %li
-  -#   The most common grant size was
-  -#   .highlight
-  -#     = funder.grants.group(:amount_awarded).count.sort_by {|k, v| v}.reverse.to_h.first
-  -#
-  -# %li
-  -#   Most funding lasted for
-  -#   .highlight
-  -#     = funder.grants.group(:days_from_start_to_end).count.sort_by {|k, v| v}.reverse.to_h.take(3)
-  -#   -# = funder.funding_streams.pluck(:label)
+  - if fund.geographic_scale_distribution
+    %li
+      %strong= number_to_percentage(fund.geographic_scale_distribution.map { |i| [i['percentage'], i['label']] }.max[0], precision: 0)
+      of projects funded affected
+      = succeed '.' do
+        %strong= fund.geographic_scale_distribution.map { |i| [i['percentage'], i['label']] }.max[1].downcase
+      %a.action{href: funder_path(fund, anchor: 'where-was-funding-awarded')} More info
+
+  -# - if fund.country_distribution
+  -#   %li
+  -#     The most funded countries were
+  -#     = succeed '.' do
+  -#       %strong= raw(funder.current_attribute.countries_by_count)
+  -#     %a.action{href: funder_path(fund, anchor: 'where-was-funding-awarded')} More info
+
+  -# - if fund.district_distribution
+  -#   %li
+  -#     The most funded regions were
+  -#     = succeed '.' do
+  -#       %strong= raw(funder.current_attribute.regions_by_count)

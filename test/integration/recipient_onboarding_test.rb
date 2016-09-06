@@ -23,7 +23,7 @@ class RecipientOnboardingTest < ActionDispatch::IntegrationTest
     create_and_auth_user!(organisation: @recipient)
     create(:registered_proposal, recipient: @recipient, countries: @countries, districts: @districts, age_groups: @age_groups, beneficiaries: @beneficiaries, implementations: @implementations)
     visit root_path
-    assert_equal recommended_funders_path, current_path
+    assert_equal recommended_funds_path, current_path
   end
 
 end
