@@ -1,7 +1,7 @@
 class RecipientsController < ApplicationController
 
   before_filter :ensure_logged_in, :load_recipient, :ensure_recipient,
-                :years_ago
+                :years_ago, :load_proposal
   before_filter :ensure_proposal_present, except: [:edit, :update]
   before_filter :check_organisation_ownership_or_funder, only: :show
   before_filter :load_funder, only: [:comparison, :eligibility, :update_eligibility, :apply]
@@ -110,44 +110,48 @@ class RecipientsController < ApplicationController
 
   private
 
-  def load_recipient
-    @recipient = Recipient.find_by_slug(params[:id]) || current_user.organisation if logged_in?
-  end
-
-  def load_funder
-    @funder = Funder.find_by_slug(params[:id])
-  end
-
-  def load_feedback
-    @feedback = current_user.feedbacks.new if logged_in?
-  end
-
-  def years_ago
-    if params[:years_ago].present?
-      @years_ago = params[:years_ago].to_i
-    else
-      @years_ago = 1
+    def load_proposal
+      @proposal = current_user.organisation.proposals.last
     end
-  end
 
-  def funder_attribute # TODO: refactor
-    @funding_stream = params[:funding_stream] || 'All'
-
-    if @funder.attributes.any?
-      @year_of_funding = @funder.attributes.where('grant_count > ?', 0).order(year: :desc).first.year
-      @funder_attribute = @funder.attributes.where('year = ? AND funding_stream = ?', @year_of_funding, @funding_stream).first
+    def load_recipient
+      @recipient = Recipient.find_by_slug(params[:id]) || current_user.organisation if logged_in?
     end
-  end
 
-  def eligibility_params
-    params.require(:recipient).permit(eligibilities_attributes: [:id, :eligible, :restriction_id, :recipient_id])
-  end
+    def load_funder
+      @funder = Funder.find_by_slug(params[:id])
+    end
 
-  def recipient_params
-    params.require(:recipient).permit(:name, :website, :street_address,
-      :country, :charity_number, :company_number, :operating_for,
-      :multi_national, :income, :employees, :volunteers, :org_type,
-      organisation_ids: [])
-  end
+    def load_feedback
+      @feedback = current_user.feedbacks.new if logged_in?
+    end
+
+    def years_ago
+      if params[:years_ago].present?
+        @years_ago = params[:years_ago].to_i
+      else
+        @years_ago = 1
+      end
+    end
+
+    def funder_attribute # TODO: refactor
+      @funding_stream = params[:funding_stream] || 'All'
+
+      if @funder.attributes.any?
+        @year_of_funding = @funder.attributes.where('grant_count > ?', 0).order(year: :desc).first.year
+        @funder_attribute = @funder.attributes.where('year = ? AND funding_stream = ?', @year_of_funding, @funding_stream).first
+      end
+    end
+
+    def eligibility_params
+      params.require(:recipient).permit(eligibilities_attributes: [:id, :eligible, :restriction_id, :recipient_id])
+    end
+
+    def recipient_params
+      params.require(:recipient).permit(:name, :website, :street_address,
+        :country, :charity_number, :company_number, :operating_for,
+        :multi_national, :income, :employees, :volunteers, :org_type,
+        organisation_ids: [])
+    end
 
 end

@@ -211,11 +211,11 @@ class Proposal < ActiveRecord::Base
     end
   end
 
-  private
+  def recommendation(fund)
+    Recommendation.where(proposal: self, fund: fund).first
+  end
 
-    def load_recommendation(funder)
-      Recommendation.where(recipient: recipient, funder: funder).first
-    end
+  private
 
     def parse_distribution(data, comparison)
       data.sort_by { |i| i["position"] }

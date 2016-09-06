@@ -2,7 +2,7 @@
 
 %ul.insights
   - unless params[:controller] == 'recipients' && %w(eligibility update_eligibility apply).include?(params[:action])
-    - if @recipient.load_recommendation(fund).eligibility
+    - if @proposal.recommendation(fund).eligibility
       %li{ class: (@recipient.eligible?(fund) ? 'eligible' : 'ineligible')}
         - if @recipient.eligible?(fund)
           %a.badge{href: eligible_funders_path} Eligible
@@ -15,12 +15,12 @@
 
   - if @recipient.has_proposal? && !@recipient.transferred?
     %li
-      %strong= number_to_percentage((@recipient.load_recommendation(fund).grant_amount_recommendation * 100), precision: 0)
+      %strong= number_to_percentage((@proposal.recommendation(fund).grant_amount_recommendation * 100), precision: 0)
       of funding was similar to the
       %strong amount
       you're seeking.
     %li
-      %strong= number_to_percentage((@recipient.load_recommendation(fund).grant_duration_recommendation * 100), precision: 0)
+      %strong= number_to_percentage((@proposal.recommendation(fund).grant_duration_recommendation * 100), precision: 0)
       of funding was similar to the
       %strong duration
       you're seeking.

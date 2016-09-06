@@ -17,13 +17,13 @@
             %td
               Eligibility
             %td
-              - if @recipient.load_recommendation(fund).eligibility
+              - if @proposal.recommendation(fund).eligibility
                 - if @recipient.eligible?(fund)
                   %strong= link_to 'Eligible', recipient_eligibility_path(fund), class: 'excellent'
                 - else
                   %strong= link_to 'Ineligible', recipient_eligibility_path(fund), class: 'very-poor'
               - else
-                = link_to 'Check', recipient_eligibility_path(fund), class: 'primary'
+                %strong= link_to 'Check', recipient_eligibility_path(fund), class: 'primary'
           -# - unless @recipient.recommended_funder?(fund) || @recipient.eligible?(fund)
           -#   %tr
           -#     %td.muted{colspan: 2}

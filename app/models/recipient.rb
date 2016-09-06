@@ -111,10 +111,6 @@ class Recipient < Organisation
     funder.funding_streams.where('label = ?', funding_stream).first.restrictions.count == count ? true : false
   end
 
-  def load_recommendation(fund) # TODO: move to proposal
-    Recommendation.where(proposal: self.proposals.last, fund: fund).first
-  end
-
   def set_eligibility(funder, eligibility)
     self.load_recommendation(funder).update_attributes(eligibility: eligibility)
   end
