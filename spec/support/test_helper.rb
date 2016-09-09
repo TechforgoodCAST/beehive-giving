@@ -85,14 +85,19 @@ class TestHelper
     self
   end
 
-  def create_recipient
-    @recipient = create(:recipient)
+  def create_admin(opts={})
+    create(:admin_user, opts)
+    self
+  end
+
+  def create_recipient(opts={})
+    @recipient = create(:recipient, opts)
     @recipient.reload
     self
   end
 
-  def with_user
-    @user = create(:user, organisation: @recipient)
+  def with_user(opts={organisation: @recipient})
+    @user = create(:user, opts)
     self
   end
 

@@ -33,6 +33,7 @@ end
 
 group :test do
   gem 'capybara'
+  gem 'poltergeist'
   gem 'show_me_the_cookies'
   gem 'selenium-webdriver'
   gem 'webmock'

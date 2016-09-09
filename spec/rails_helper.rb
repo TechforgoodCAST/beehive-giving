@@ -6,6 +6,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'spec_helper'
 require 'rspec/rails'
 require 'webmock/rspec'
+require 'capybara/poltergeist'
 require_relative './support/test_helper'
 # Add additional requires below this line. Rails is not loaded until this point!
 
@@ -27,6 +28,9 @@ require_relative './support/test_helper'
 # Checks for pending migration and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
 ActiveRecord::Migration.maintain_test_schema!
+
+WebMock.disable_net_connect!(allow_localhost: true)
+Capybara.javascript_driver = :poltergeist
 
 RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
