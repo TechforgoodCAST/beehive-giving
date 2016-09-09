@@ -35,7 +35,7 @@ describe Recommendation do
     end
 
     it 'org_type with 0 match returns 0 overall' do
-      @fund.org_type_distribution[1]["percentage"] = 0
+      @fund.org_type_distribution[1]["percent"] = 0
       @fund.update_column(:org_type_distribution, @fund.org_type_distribution)
       @proposal.save
       @recommendation.reload
@@ -44,11 +44,11 @@ describe Recommendation do
 
     it 'has org_type_score' do
       response =
-        @fund.org_type_distribution[1]["percentage"] +
-        @fund.operating_for_distribution[2]["percentage"] +
-        @fund.income_distribution[1]["percentage"] +
-        @fund.employees_distribution[0]["percentage"] +
-        @fund.volunteers_distribution[0]["percentage"]
+        @fund.org_type_distribution[1]["percent"] +
+        @fund.operating_for_distribution[2]["percent"] +
+        @fund.income_distribution[1]["percent"] +
+        @fund.employees_distribution[0]["percent"] +
+        @fund.volunteers_distribution[0]["percent"]
       expect(@recommendation.org_type_score).to eq response
     end
 

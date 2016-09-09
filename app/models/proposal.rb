@@ -220,7 +220,7 @@ class Proposal < ActiveRecord::Base
     def parse_distribution(data, comparison)
       data.sort_by { |i| i["position"] }
           .select { |i| i["label"] == comparison }
-          .first["percentage"]
+          .first["percent"]
     end
 
     def beneficiaries_request

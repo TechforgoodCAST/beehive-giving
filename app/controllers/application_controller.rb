@@ -39,6 +39,10 @@ class ApplicationController < ActionController::Base
     @recipient = current_user.organisation if logged_in?
   end
 
+  def load_proposal
+    @proposal = @recipient.proposals.last if logged_in? && @recipient.proposals.count > 0
+  end
+
   def ensure_authorised
     redirect_to unauthorised_path unless current_user.authorised || params[:action] == 'unauthorised'
   end

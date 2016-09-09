@@ -110,10 +110,6 @@ class RecipientsController < ApplicationController
 
   private
 
-    def load_proposal
-      @proposal = current_user.organisation.proposals.last
-    end
-
     def load_recipient
       @recipient = Recipient.find_by_slug(params[:id]) || current_user.organisation if logged_in?
     end

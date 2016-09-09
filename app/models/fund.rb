@@ -17,7 +17,7 @@ class Fund < ActiveRecord::Base
 
   acts_as_taggable
 
-  validates :funder, :type_of_fund, :year_of_fund, :slug, :name, :description,
+  validates :funder, :type_of_fund, :slug, :name, :description,
             :open_call, :active, :currency, :funding_types,
               presence: true
 
@@ -59,6 +59,8 @@ class Fund < ActiveRecord::Base
             :operating_for_distribution, :income_distribution,
             :employees_distribution, :volunteers_distribution,
             :geographic_scale_distribution, :gender_distribution,
+            :amount_awarded_distribution, :award_month_distribution,
+            :country_distribution,
               presence: true, if: :open_data?
 
   validates :grant_count, :recipient_count, :amount_mean_historic,

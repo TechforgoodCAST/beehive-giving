@@ -483,7 +483,6 @@ ActiveRecord::Schema.define(version: 20160729130534) do
     t.integer  "funder_id"
     t.string   "type_of_fund"
     t.string   "name"
-    t.integer  "year_of_fund"
     t.text     "description"
     t.string   "slug"
     t.boolean  "open_call"
@@ -544,6 +543,9 @@ ActiveRecord::Schema.define(version: 20160729130534) do
     t.integer  "beneficiary_min_age_historic"
     t.integer  "beneficiary_max_age_historic"
     t.json     "gender_distribution"
+    t.json     "amount_awarded_distribution"
+    t.json     "award_month_distribution"
+    t.json     "country_distribution"
   end
 
   add_index "funds", ["funder_id"], name: "index_funds_on_funder_id", using: :btree

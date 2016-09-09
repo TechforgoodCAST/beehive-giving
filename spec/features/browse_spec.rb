@@ -21,4 +21,23 @@ feature 'Browse' do
     expect(current_path).to eq recommended_funds_path
   end
 
+  context 'signed in' do
+    before(:each) do
+      @fund = Fund.first
+      @app.sign_in
+      visit root_path
+    end
+
+    scenario "When I find a fund I'm interested in,
+              I want to view further details,
+              so I can decide if I want to apply" do
+      click_link @fund.name
+      expect(current_path).to eq fund_path(@fund)
+    end
+
+    # TODO: thumbnail link
+    # TODO: card more info link
+    # TODO: insight more info link
+  end
+
 end

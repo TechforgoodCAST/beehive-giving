@@ -12,7 +12,6 @@ namespace :fund do
       type_of_fund: 'Grant',
       funding_types: [FundingType.create(label: 'Other')],
       name: 'Ambition for Excellence',
-      year_of_fund: 2016,
       description:
         "Funding to support organisations and partnerships, including private "\
         "sector arts companies, community and charitable arts organisations, "\
@@ -68,7 +67,6 @@ namespace :fund do
       type_of_fund: 'Grant',
       funding_types: [FundingType.last],
       name: 'Community Grant General Fund',
-      year_of_fund: 2016,
       description:
         "Grants are available to groups and projects working to tackle "\
         "disadvantage and improve the quality of life of people in Oxfordshire.",

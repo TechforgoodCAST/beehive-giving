@@ -30,5 +30,11 @@ class AddRecommendationsToProposals < ActiveRecord::Migration
     add_column :funds, :beneficiary_min_age_historic, :integer
     add_column :funds, :beneficiary_max_age_historic, :integer
     add_column :funds, :gender_distribution, :json
+
+    add_column :funds, :amount_awarded_distribution, :json
+    add_column :funds, :award_month_distribution, :json
+    add_column :funds, :country_distribution, :json
+
+    remove_column :funds, :year_of_fund
   end
 end

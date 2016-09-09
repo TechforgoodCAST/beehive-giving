@@ -49,7 +49,6 @@ Rails.application.routes.draw do
 
   # Funds
   match '/funds/home', to: 'funds#home', via: :get, as: 'funds_home'
-  match '/funds/(:id)', to: 'funds#show', via: :get, as: 'fund'
 
   # Funders
   match '/recommended/funds', to: 'recipients#recommended_funds', via: :get, as: 'recommended_funds'
@@ -109,5 +108,7 @@ Rails.application.routes.draw do
     end
     resources :grants, :except =>[:show]
   end
+
+  resources :funds, only: :show
 
 end
