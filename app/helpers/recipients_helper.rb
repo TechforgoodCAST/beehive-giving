@@ -1,6 +1,6 @@
 module RecipientsHelper
 
-  def funder_card_cta_button_copy(recipient, fund)
+  def fund_card_cta_button_copy(recipient, fund)
     classes = 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
     if @proposal.recommendation(fund).eligibility
       if recipient.eligible?(fund)
