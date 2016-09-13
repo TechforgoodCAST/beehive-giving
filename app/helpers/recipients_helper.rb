@@ -53,7 +53,7 @@ module RecipientsHelper
   end
 
   def render_recommendation(fund, score, scale=1)
-    if current_user.organisation.recommended_fund?(fund) || current_user.organisation.eligible?(fund)
+    if current_user.organisation.recommended_fund?(fund) || @proposal.recommendation(fund).eligibility?
       score_to_match_copy(@proposal.recommendation(fund)["#{score}"], scale)
     else
       scramble_recommendations

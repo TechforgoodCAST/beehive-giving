@@ -34,30 +34,36 @@ class TestHelper
     @decision_makers = create_list(:decision_maker, 2)
     @funds.each do |fund|
       fund.deadlines = create_list(:deadline, 2, fund: fund)
-      fund.stages = create_list(:stage, 2, fund: fund)
+      fund.stages = build_list(:stage, 2, fund: fund)
       fund.funding_types = @funding_types
       fund.countries = @countries
       fund.districts = @uk_districts + @kenya_districts
       fund.restrictions = @restrictions
       fund.outcomes = @outcomes
       fund.decision_makers = @decision_makers
+      fund.save! if save
     end
-    @funds.each { |f| f.save! } if save
+    self
+  end
+
+  def tag_funds
+    Fund.all.each do |fund|
+      fund.tag_list << 'Arts'
+      fund.save
+    end
     self
   end
 
   def stub_beehive_insight(endpoint, data)
+    body = {}
+    7.times { |i| body["2015-acme-awards-for-all-#{i + 1}"] = (i + 1).to_f / 10 }
     stub_request(:post, endpoint).with(
       body: { data: data }.to_json,
       basic_auth: [ENV['BEEHIVE_INSIGHT_TOKEN'], ENV['BEEHIVE_INSIGHT_SECRET']],
       headers: { 'Content-Type'=>'application/json' }
     ).to_return(
       status: 200,
-      body: {
-        '2015-acme-awards-for-all-1': 0.5,
-        '2015-acme-awards-for-all-2': 0.6,
-        '2015-acme-awards-for-all-3': 0.7
-      }.to_json
+      body: body.to_json
     )
     self
   end

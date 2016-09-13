@@ -19,18 +19,6 @@ class FundersController < ApplicationController
     end
   end
 
-  def tagged
-    @recipient = current_user.organisation # refactor
-
-    @tag = ActsAsTaggableOn::Tag.find_by_slug(params[:tag])
-    if @tag.present?
-      @funders = @recipient.recommended_funders.tagged_with(@tag)
-    else
-      flash[:alert] = "Not found"
-      redirect_to root_path
-    end
-  end
-
   def recent
     @recipients = @funder.recommended_recipients
     render 'funders/recipients/recent'

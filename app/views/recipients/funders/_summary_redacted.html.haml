@@ -1,28 +1,24 @@
 .locked-funder
-  -# .overlay
-  -#   .content
-  -#     %h3 Why is this hidden?
   .uk-grid
     .uk-width-medium-1-3
       .card
         -# refactor
         - if current_user.feedbacks.count > 0
-          %a{href: funder_path(funder), alt: funder.name}
-            .thumbnail
-              .funder{class: (@tag.present? ? 'locked' : funder.slug)}
+          .thumbnail
+            .funder{class: (@tag.present? ? 'locked' : fund.funder.slug)}
         - else
-          %a{onclick: '$.UIkit.modal("#why-hidden").show();', alt: (@tag.present? ? scramble_name(funder.name) : funder.name)}
+          %a{onclick: '$.UIkit.modal("#why-hidden").show();', alt: (@tag.present? ? scramble_name(fund.name) : fund.name)}
             .thumbnail
-              .funder{class: (@tag.present? ? 'locked' : funder.slug)}
+              .funder{class: (@tag.present? ? 'locked' : fund.funder.slug)}
         .details
           .content.center
             - if current_user.feedbacks.count > 0
-              %a.uk-width-1-1.uk-button.uk-button-primary.uk-button-large{href: funder_path(funder)} Show funder
+              %a.uk-width-1-1.uk-button.uk-button-primary.uk-button-large{href: fund_path(fund)} Show fund
             - else
-              = link_to 'Show funder', '#why-hidden', class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large', onclick: '$.UIkit.modal("#why-hidden").show();'
+              = link_to 'Show fund', '#why-hidden', class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large', onclick: '$.UIkit.modal("#why-hidden").show();'
           .content.center
             - if current_user.feedbacks.count > 0
-              = link_to 'Why is this hidden?', funder_path(funder)
+              = link_to 'Why is this hidden?', fund_path(fund)
             - else
               = link_to 'Why is this hidden?', '#why-hidden', onclick: '$.UIkit.modal("#why-hidden").show();'
 
@@ -30,17 +26,13 @@
       %h3.uk-margin-top
         -# refactor
         - if current_user.feedbacks.count > 0
-          = link_to (@tag.present? ? scramble_name(funder.name) : funder.name), funder_path(funder), class: (@tag.present? ? 'yellow redacted large': 'yellow')
+          = link_to (@tag.present? ? scramble_name(fund.name) : fund.name), fund_path(fund), class: (@tag.present? ? 'yellow redacted large': 'yellow')
         - else
-          = link_to (@tag.present? ? scramble_name(funder.name) : funder.name), '#why-hidden', class: (@tag.present? ? 'yellow redacted large': 'yellow'), onclick: '$.UIkit.modal("#why-hidden").show();'
+          = link_to (@tag.present? ? scramble_name(fund.name) : fund.name), '#why-hidden', class: (@tag.present? ? 'yellow redacted large': 'yellow'), onclick: '$.UIkit.modal("#why-hidden").show();'
         %span.year.muted
-          - if @tag.present?
-            %span.redacted in 0000
-          - else
-            in
-            = funder.current_attribute.year
+          %span.redacted= scramble_name(fund.funder.name)
 
-      %p.redacted.muted= scramble_name(raw(funder.current_attribute.description))
+      %p.redacted.muted= scramble_name(raw(fund.description))
 
       %ul.insights
         - 5.times do |i|
@@ -49,5 +41,5 @@
             - if i < 2
               .action.redacted.yellow= redacted_actions
 
-      - if funder.tag_list.present?
-        .uk-margin-top= raw funder.tags.order(:name).map { |t| link_to scramble_name(t.name), '#why-hidden', class: 'uk-button uk-button-small uk-button-primary invert uk-margin-small-bottom redacted', onclick: '$.UIkit.modal("#why-hidden").show();' }.join(' ')
+      - if fund.tag_list.present?
+        .uk-margin-top= raw fund.tags.order(:name).map { |t| link_to scramble_name(t.name), '#why-hidden', class: 'uk-button uk-button-small uk-button-primary invert uk-margin-small-bottom redacted', onclick: '$.UIkit.modal("#why-hidden").show();' }.join(' ')

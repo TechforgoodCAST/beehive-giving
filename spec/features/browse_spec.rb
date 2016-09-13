@@ -4,7 +4,8 @@ feature 'Browse' do
 
   before(:each) do
     @app.seed_test_db
-        .setup_funds(num: 3, open_data: true)
+        .setup_funds(num: 7, open_data: true)
+        .tag_funds
         .create_recipient
         .with_user
         .create_registered_proposal
@@ -23,21 +24,84 @@ feature 'Browse' do
 
   context 'signed in' do
     before(:each) do
-      @fund = Fund.first
+      @unsuitable_fund = Fund.first
+      @low_fund = Fund.find_by_name('Awards for All 2')
+      @top_fund = Fund.last
       @app.sign_in
       visit root_path
     end
 
-    scenario "When I find a fund I'm interested in,
-              I want to view further details,
+    scenario "When I find a recommended fund I'm interested in,
+              I want to view more details,
               so I can decide if I want to apply" do
-      click_link @fund.name
-      expect(current_path).to eq fund_path(@fund)
+      expect(page).to_not have_text @unsuitable_fund.name
+      click_link @low_fund.name
+      expect(current_path).to eq fund_path(@low_fund)
     end
 
-    # TODO: thumbnail link
-    # TODO: card more info link
-    # TODO: insight more info link
+    scenario 'When I click for more details on a fund card,
+              I want to see more details about the fund,
+              so I can decide if I want to apply' do
+      within('.card-cta', match: :first) do
+        click_link 'More info'
+      end
+      expect(current_path).to eq fund_path(@top_fund)
+    end
+
+    scenario 'When I click for more details on funding distribution,
+              I want to see a column chart of funding distribution,
+              so I can decide if I want to apply' do
+      click_link 'More info', href: fund_path(@top_fund, anchor: 'how-was-funding-distributed')
+      expect(current_path).to eq fund_path(@top_fund)
+    end
+
+    scenario 'When I click for more details on geographic scale,
+              I want to see a geo chart of geographic scale,
+              so I can decide if I want to apply' do
+      click_link 'More info', href: fund_path(@top_fund, anchor: 'where-was-funding-awarded')
+      expect(current_path).to eq fund_path(@top_fund)
+    end
+
+    scenario "When I find a funding theme I'm interested in,
+              I want to see similar funds,
+              so I can discover new funding opportunties" do
+      click_link 'Arts', match: :first
+      expect(current_path).to eq tag_path('arts')
+      expect(page).to have_css '.funder', count: 7
+      expect(page).to have_css '.locked-funder', count: 6
+    end
+
+    scenario "When navigate to 'Recommended' funds,
+              I want to see my recommended funds,
+              so I compare them" do
+      click_link 'Recommended'
+      expect(current_path).to eq recommended_funds_path
+    end
+
+    context 'all_funds_path' do
+      before(:each) do
+        click_link 'All'
+      end
+
+      scenario "When I find a recommended fund I'm interested in,
+                I want to view more details,
+                so I can decide if I want to apply" do
+        click_link @unsuitable_fund.name
+        expect(current_path).to eq fund_path(@unsuitable_fund)
+      end
+
+      scenario "When navigate to 'All' funds,
+                I want to see my all funds on site,
+                so I can see which ones I already and the value of the site" do
+        expect(current_path).to eq all_funds_path
+      end
+
+      scenario "When I'm browsing 'All' funds and can only see tags for recommedned funds,
+                I want more information,
+                so I understand why I can't see some information" do
+        expect(page).to have_css '.redacted', count: 6
+      end
+    end
   end
 
 end

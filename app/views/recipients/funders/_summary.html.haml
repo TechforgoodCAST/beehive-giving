@@ -10,11 +10,10 @@
     = render partial: 'recipients/funders/insights', locals: {fund: fund}
 
     - if fund.tag_list.present?
-      -# TODO:
-      -# .uk-margin-top
-      -#   - if @recipient.recommended_funder?(fund) || @recipient.eligible?(fund)
-      -#     = raw fund.tags.order(:name).map { |t| link_to t, tag_path(t.slug), class: 'uk-button uk-button-small uk-button-primary invert uk-margin-small-bottom' }.join(' ')
-      -#   - else
-      -#     .uk-margin-small-bottom
-      -#       %a{href: '#why-hidden', class: 'uk-text-bold', onclick: '$.UIkit.modal("#why-hidden").show();'} Upgrade to see funding themes (coming soon)
-      -#     = raw funder.tags.order(:name).map { |t| link_to scramble_name(t.name), '#why-hidden', class: 'uk-button uk-button-small uk-button-primary invert uk-margin-small-bottom redacted', onclick: '$.UIkit.modal("#why-hidden").show();' }.join(' ')
+      .uk-margin-top
+        - if @recipient.recommended_fund?(fund) || @proposal.recommendation(fund).eligibility?
+          = raw fund.tags.order(:name).map { |t| link_to t, tag_path(t.slug), class: 'uk-button uk-button-small uk-button-primary invert uk-margin-small-bottom' }.join(' ')
+        - else
+          .uk-margin-small-bottom
+            %a{href: '#why-hidden', class: 'uk-text-bold', onclick: '$.UIkit.modal("#why-hidden").show();'} Upgrade to see funding themes (coming soon)
+          = raw fund.tags.order(:name).map { |t| link_to scramble_name(t.name), '#why-hidden', class: 'uk-button uk-button-small uk-button-primary invert uk-margin-small-bottom redacted', onclick: '$.UIkit.modal("#why-hidden").show();' }.join(' ')

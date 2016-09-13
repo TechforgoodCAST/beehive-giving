@@ -1,7 +1,7 @@
-= content_for :title, "#{@tag.name} funders"
+= content_for :title, "#{@tag.name} funds"
 
 :javascript
-  mixpanel.track("View #{@tag.name} Funders Page");
+  mixpanel.track("View #{@tag.name} Funds Page");
 
 = render partial: 'recipients/funders/subnav'
 
@@ -9,26 +9,26 @@
   %h2
     = @tag.name
     = surround '(', ')' do
-      = @funders.count
+      = @funds.count
   %h4
-    You are seeing funders interested in
-    = succeed '.' do
-      = @tag.name.downcase
+    You are seeing
+    = @tag.name.downcase
+    funds.
 
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
 
-    - @funders.each_with_index do |funder, i|
+    - @funds.each_with_index do |fund, i|
 
       - if i < 1
-        = render partial: 'recipients/funders/summary', locals: { funder: funder }
+        = render partial: 'recipients/funders/summary', locals: { fund: fund }
         .cta.wide
           Go unlimited with Beehive Pro to see more
           = @tag.name
           funders.
           %a{href: '#why-hidden', class: ' uk-button uk-button-large uk-button-primary invert', onclick: '$.UIkit.modal("#why-hidden").show();'} Upgrade (coming soon)
       - else
-        = render partial: 'recipients/funders/summary_redacted', locals: { funder: funder }
-        - unless i == @funders.count-1
+        = render partial: 'recipients/funders/summary_redacted', locals: { fund: fund }
+        - unless i == @funds.count-1
           %hr.thick
 
 = render partial: 'funders/why_hidden'

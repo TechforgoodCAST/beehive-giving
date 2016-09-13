@@ -1,7 +1,7 @@
-= content_for :title, 'All funders'
+= content_for :title, 'All funds'
 
 :javascript
-  mixpanel.track("View All Funders Page");
+  mixpanel.track("View All Funds Page");
 
 = render partial: 'recipients/funders/subnav'
 
@@ -22,7 +22,7 @@
 
       - if i == @funds.count-1
         .cta.wide
-          More funders coming soon. Drop us an
+          More funds coming soon. Drop us an
           = link_to 'email', 'mailto:support@beehivegiving.org'
           if you'd like to see any in particular.
       - else

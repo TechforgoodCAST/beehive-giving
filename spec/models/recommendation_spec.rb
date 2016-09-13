@@ -53,7 +53,7 @@ describe Recommendation do
     end
 
     it 'has beneficiary_score from beehive-insight' do
-      expect(@recommendation.beneficiary_score).to eq 0.568
+      expect(@recommendation.beneficiary_score).to eq 0.168
     end
 
     it 'beneficiary_score zero if beehive-insight fund not found' do
@@ -68,7 +68,7 @@ describe Recommendation do
     end
 
     it 'has grant_amount_recommendation' do
-      expect(@recommendation.grant_amount_recommendation).to eq 0.5
+      expect(@recommendation.grant_amount_recommendation).to eq 0.1
     end
 
     it 'grant_amount_recommendation is zero if total_costs greater than
@@ -82,7 +82,7 @@ describe Recommendation do
     end
 
     it 'has grant_duration_recommendation' do
-      expect(@recommendation.grant_duration_recommendation).to eq 0.5
+      expect(@recommendation.grant_duration_recommendation).to eq 0.1
     end
 
     it 'grant_duration_recommendation is zero if funding_duration greater
