@@ -27,6 +27,7 @@ namespace :fund do
       fund.restrictions = Restriction.limit(2)
       fund.outcomes = create_list(:outcome, 2)
       fund.decision_makers = create_list(:decision_maker, 2)
+      fund.tag_list << ActsAsTaggableOn::Tag.first
 
       fund.save!
       print '.'
