@@ -1,15 +1,15 @@
 module RecipientsHelper
 
-  def fund_card_cta_button_copy(recipient, fund)
+  def fund_card_cta_button_copy(fund)
     classes = 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
     if @proposal.recommendation(fund).eligibility
-      if recipient.eligible?(fund)
+      if @proposal.eligible?(fund)
         content_tag(:a, link_to('Apply', recipient_apply_path(fund), class: classes))
       else
-        content_tag(:a, link_to('Why ineligible?', recipient_eligibility_path(fund), class: classes))
+        content_tag(:a, link_to('Why ineligible?', fund_eligibility_path(fund), class: classes))
       end
     else
-      content_tag(:a, link_to('Check eligibility', recipient_eligibility_path(fund), class: classes))
+      content_tag(:a, link_to('Check eligibility', fund_eligibility_path(fund), class: classes))
     end
   end
 

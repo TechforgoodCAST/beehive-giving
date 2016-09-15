@@ -26,8 +26,8 @@ class Funder < Organisation
   has_many :recipients, :through => :grants
   has_many :profiles, :through => :recipients, dependent: :destroy
 
-  has_and_belongs_to_many :funding_streams
-  has_many :restrictions, :through => :funding_streams
+  has_and_belongs_to_many :funding_streams # TODO: remove once data migrated
+  has_many :restrictions, through: :funds
   has_many :recommendations
 
   alias_method :attributes, :funder_attributes

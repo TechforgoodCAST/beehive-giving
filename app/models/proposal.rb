@@ -215,6 +215,10 @@ class Proposal < ActiveRecord::Base
     Recommendation.where(proposal: self, fund: fund).first
   end
 
+  def eligible?(fund)
+    recommendation(fund).eligibility == 'Eligible'
+  end
+
   private
 
     def parse_distribution(data, comparison)

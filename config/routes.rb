@@ -71,8 +71,8 @@ Rails.application.routes.draw do
   # match '/funding/(:id)/(:district)/(:year)', to: 'funders#district', via: :get, as: 'funder_district'
 
   # Eligibilities
-  match '/funders/(:id)/eligibility', to: 'recipients#eligibility', via: :get, as: 'recipient_eligibility'
-  match '/funders/(:id)/eligibility', to: 'recipients#update_eligibility', via: :patch
+  match '/funds/(:id)/eligibility', to: 'eligibilities#new', via: :get, as: 'fund_eligibility'
+  match '/funds/(:id)/eligibility', to: 'eligibilities#create', via: :patch
 
   # Proposals
   match '/(:id)/proposal', to: 'proposals#new', via: :get, as: 'new_recipient_proposal'

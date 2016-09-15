@@ -3,15 +3,15 @@
 %ul.insights
   - unless params[:controller] == 'recipients' && %w(eligibility update_eligibility apply).include?(params[:action])
     - if @proposal.recommendation(fund).eligibility
-      %li{ class: (@recipient.eligible?(fund) ? 'eligible' : 'ineligible')}
-        - if @recipient.eligible?(fund)
+      %li{ class: (@proposal.eligible?(fund) ? 'eligible' : 'ineligible')}
+        - if @proposal.eligible?(fund)
           %a.badge{href: eligible_funders_path} Eligible
           You are eligible for funding.
-          %a.action{href: recipient_eligibility_path(fund)} See criteria
+          %a.action{href: fund_eligibility_path(fund)} See criteria
         - else
           %a.badge{href: ineligible_funders_path} Ineligible
           You are ineligible for funding.
-          %a.action{href: recipient_eligibility_path(fund)} Find out why
+          %a.action{href: fund_eligibility_path(fund)} Find out why
 
   - if @recipient.has_proposal? && !@recipient.transferred?
     %li
@@ -31,6 +31,7 @@
     grants.
     %a.action{href: fund_path(fund, anchor: 'how-was-funding-distributed')} More info
 
+  -# TODO:
   -# - if fund.monthly_distribution
   -#   %li
   -#     Awarded funding in
@@ -46,6 +47,7 @@
         %strong= fund.geographic_scale_distribution.map { |i| [i['percent'], i['label']] }.max[1].downcase
       %a.action{href: fund_path(fund, anchor: 'where-was-funding-awarded')} More info
 
+  -# TODO:
   -# - if fund.country_distribution
   -#   %li
   -#     The most funded countries were
@@ -53,6 +55,7 @@
   -#       %strong= raw(funder.current_attribute.countries_by_count)
   -#     %a.action{href: funder_path(fund, anchor: 'where-was-funding-awarded')} More info
 
+  -# TODO:
   -# - if fund.district_distribution
   -#   %li
   -#     The most funded regions were

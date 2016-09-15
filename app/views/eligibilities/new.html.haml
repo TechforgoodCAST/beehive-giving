@@ -1,58 +1,62 @@
-= content_for :title, "Eligibility for #{@funder.name}"
+= content_for :title, "Eligibility for #{@fund.name}"
 
 :javascript
-  mixpanel.track("View Eligibility Page", {"Funder": "#{@funder.name}"});
+  mixpanel.track("View Eligibility Page", {"Fund": "#{@fund.name}"});
   mixpanel.identify('#{current_user.id}');
   mixpanel.people.set({
     'Funder Unlocks': '#{@recipient.recipient_funder_accesses_count}',
   });
 
-- if @recipient.recipient_funder_accesses.any?
-  :javascript
-    mixpanel.people.set({
-      'Last Unlocked Funder': '#{Funder.find(@recipient.recipient_funder_accesses.last.funder_id).name}',
-      'Last Funder Eligibility': '#{@recipient.eligible?(Funder.find(@recipient.recipient_funder_accesses.last.funder_id))}'
-    });
+-# TODO: 
+-# - if @recipient.recipient_funder_accesses.any?
+-#   :javascript
+-#     mixpanel.people.set({
+-#       'Last Unlocked Funder': '#{Funder.find(@recipient.recipient_funder_accesses.last.funder_id).name}',
+-#       'Last Funder Eligibility': '#{@recipient.eligible?(Funder.find(@recipient.recipient_funder_accesses.last.funder_id))}'
+-#     });
 
-= render partial: 'funders/subnav', locals: {funder: @funder}
+= render partial: 'funds/subnav', locals: {fund: @fund}
 
 .uk-container.uk-container-center.uk-margin-large.uk-margin-large-top.uk-animation-fade
   .uk-grid
     .uk-width-medium-1-3
-      = render partial: 'recipients/funders/card', locals: { funder: @funder }
+      = render partial: 'recipients/funders/card', locals: { fund: @fund }
 
     .uk-width-medium-2-3
-      - if @recipient.load_recommendation(@funder).eligibility
-        - if @recipient.eligible?(@funder)
+      - if @proposal.recommendation(@fund).eligibility
+        - if @proposal.eligible?(@fund)
           .cta.wide.green
-            You are eligible for at least one funding programme.
+            You are eligible for the
+            = @fund.short_name
+            fund.
             = link_to 'Apply for funding', recipient_apply_path(@funder), class: 'uk-button uk-button-large uk-button-success invert'
         - else
           .cta.wide.red
             You are ineligible, and did not meet
-            %strong= @recipient.eligibility_restrictions(@funder).where(eligible: false).count
+            %strong= @recipient.eligibility_restrictions(@fund).where(eligible: false).count
             of the criteria below.
 
       %h3.uk-margin-top Eligibility questions
       %p.uk-margin-bottom
         The following questions have been set by
-        = succeed '.' do
-          = @funder.name
-        Complete them to see if your non-profit is eligible for their support.
+        = succeed ',' do
+          = @fund.funder.name
+        complete them to see if you are eligible for their
+        = link_to @fund.short_name, fund_path(@fund)
+        fund.
 
       %hr.thick
 
       %h4.uk-text-bold Are you seeking funding for?
       .uk-form.uk-form-stacked
-
-        - if @recipient.load_recommendation(@funder).eligibility
-          = simple_form_for @recipient, url: recipient_eligibility_path(@funder) do |f|
-            = f.simple_fields_for :eligibilities, @recipient.eligibility_restrictions(@funder).each { |e| Eligibility.where(recipient_id: @recipient, restriction_id: e.restriction.id).first_or_initialize } do |e|
+        - if @proposal.recommendation(@fund).eligibility
+          = simple_form_for @recipient, url: fund_eligibility_path(@fund) do |f|
+            = f.simple_fields_for :eligibilities, @recipient.eligibility_restrictions(@fund).each { |e| Eligibility.where(recipient_id: @recipient, restriction_id: e.restriction.id).first_or_initialize } do |e|
               = render partial: 'recipients/restriction', locals: {e: e}
             = f.button :button, 'Update', class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right', data: {disable_with: "<i class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i> Updating..."}
 
         - else
-          = simple_form_for @recipient, url: recipient_eligibility_path(@funder) do |f|
+          = simple_form_for @recipient, url: fund_eligibility_path(@fund) do |f|
             = f.simple_fields_for :eligibilities, @eligibility do |e|
               - if e.object.new_record?
                 = render partial: 'recipients/restriction', locals: {e: e}

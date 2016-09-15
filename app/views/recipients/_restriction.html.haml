@@ -3,9 +3,9 @@
     .restriction
       %label.capitalize
         = succeed '?' do
-          = raw(get_restriction_details(e.object.restriction_id))
+          = e.object.restriction.details.capitalize
     .answer
-      = e.hidden_field :recipient_id, value: @recipient.id
+      = e.hidden_field :recipient_id
       = e.hidden_field :restriction_id
       = e.input :eligible, as: :radio_buttons, collection: @recipient.restriction_truthy(e.object.restriction)
       - if e.object.errors.any?

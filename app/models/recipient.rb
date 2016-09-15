@@ -98,31 +98,14 @@ class Recipient < Organisation
     count
   end
 
-  # refactor?
-  def funding_stream_eligible?(funding_stream, funder)
-    count = 0
-
-    funder.funding_streams.where('label = ?', funding_stream).first.restrictions.each do |r|
-      self.eligibilities.each do |e|
-        count += 1 if e.restriction_id == r.id && e.eligible == true
-      end
-    end
-
-    funder.funding_streams.where('label = ?', funding_stream).first.restrictions.count == count ? true : false
+  def set_eligibility(proposal, fund, eligibility)
+    proposal.recommendation(fund).update_attributes(eligibility: eligibility)
   end
 
-  def set_eligibility(funder, eligibility)
-    self.load_recommendation(funder).update_attributes(eligibility: eligibility)
-  end
-
-  def check_eligibility(funder)
-    count = 0
-
-    funder.funding_streams.each do |f|
-      count += 1 if self.funding_stream_eligible?(f.label, funder)
-    end
-
-    count > 0 ? self.set_eligibility(funder, 'Eligible') : self.set_eligibility(funder, 'Ineligible')
+  def check_eligibility(proposal, fund)
+    self.eligibility_restrictions(fund).pluck(:eligible).include?(false) ?
+      self.set_eligibility(proposal, fund, 'Ineligible') :
+      self.set_eligibility(proposal, fund, 'Eligible')
   end
 
   def check_eligibilities
@@ -130,10 +113,6 @@ class Recipient < Organisation
       funder = Funder.find(unlocked_funder.funder_id)
       self.check_eligibility(funder)
     end
-  end
-
-  def eligible?(fund)
-    self.load_recommendation(fund).eligibility == 'Eligible'
   end
 
   def get_funders_by_eligibility(eligibility)
@@ -144,10 +123,10 @@ class Recipient < Organisation
     return true if self.load_recommendation(funder).eligibility == 'Ineligible'
   end
 
-  def eligibility_restrictions(funder)
+  def eligibility_restrictions(fund)
     Eligibility.where(
       recipient_id: self,
-      restriction_id: funder.restrictions
+      restriction_id: fund.funder.restrictions
     ).order(:id)
   end
 

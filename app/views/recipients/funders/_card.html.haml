@@ -17,12 +17,12 @@
               Eligibility
             %td
               - if @proposal.recommendation(fund).eligibility
-                - if @recipient.eligible?(fund)
-                  %strong= link_to 'Eligible', recipient_eligibility_path(fund), class: 'excellent'
+                - if @proposal.eligible?(fund)
+                  %strong= link_to 'Eligible', fund_eligibility_path(fund), class: 'excellent'
                 - else
-                  %strong= link_to 'Ineligible', recipient_eligibility_path(fund), class: 'very-poor'
+                  %strong= link_to 'Ineligible', fund_eligibility_path(fund), class: 'very-poor'
               - else
-                %strong= link_to 'Check', recipient_eligibility_path(fund), class: 'primary'
+                %strong= link_to 'Check', fund_eligibility_path(fund), class: 'primary'
           - unless @recipient.recommended_fund?(fund) || @proposal.recommendation(fund).eligibility?
             %tr
               %td.muted{colspan: 2}
@@ -48,7 +48,7 @@
     - unless %w[eligibility update_eligibility apply].include?(params[:action])
       .card-cta
         .content.center
-          = fund_card_cta_button_copy(@recipient, fund)
+          = fund_card_cta_button_copy(fund)
         - unless params[:controller] == 'funds' && params[:action] == 'show'
           .content.center
             = link_to 'More info', fund_path(fund)

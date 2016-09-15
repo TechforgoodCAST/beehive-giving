@@ -39,4 +39,12 @@ namespace :fund do
     @funds.last.update_column(:name, 'Invest North')
     @funds.last.update_column(:slug, 'lloyds-bank-foundation-for-england-and-wales-invest-north')
   end
+
+  task restrictions: :environment do
+    funder = Funder.find_by_name('Lloyds Bank Foundation England and Wales')
+    fund = funder.funds.first
+    restrictions = funder.funding_streams.first.restrictions
+    fund.restriction_ids = restrictions.pluck(:id)
+    fund.save!
+  end
 end

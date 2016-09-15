@@ -15,7 +15,7 @@
               .highlight
           %span &rsaquo;
 
-          %a{href: recipient_eligibility_path(fund)}
+          %a{href: fund_eligibility_path(fund)}
             %li{ class: ('active' if params[:controller] == 'recipients' && %w(eligibility update_eligibility).include?(params[:action])) }
               Eligiblity
               .highlight

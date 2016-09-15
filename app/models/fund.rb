@@ -13,6 +13,7 @@ class Fund < ActiveRecord::Base
   has_and_belongs_to_many :districts
   has_and_belongs_to_many :funding_types
   has_and_belongs_to_many :restrictions
+  # TODO: has_and_belongs_to_many :proposal_restrictions
   has_and_belongs_to_many :outcomes
   has_and_belongs_to_many :decision_makers
 
@@ -87,6 +88,10 @@ class Fund < ActiveRecord::Base
 
   def to_param
     self.slug
+  end
+
+  def short_name
+    self.name.sub(' Fund', '')
   end
 
   private
