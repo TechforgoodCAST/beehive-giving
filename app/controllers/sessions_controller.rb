@@ -1,7 +1,7 @@
 class SessionsController < ApplicationController
 
   def new
-    redirect_to start_path_for_user(User.find_by_auth_token(cookies[:auth_token])) if cookies[:auth_token]
+    redirect_to start_path_for_user(current_user) if current_user
   end
 
   def check

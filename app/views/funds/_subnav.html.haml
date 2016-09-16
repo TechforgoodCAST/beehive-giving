@@ -16,17 +16,16 @@
           %span &rsaquo;
 
           %a{href: fund_eligibility_path(fund)}
-            %li{ class: ('active' if params[:controller] == 'recipients' && %w(eligibility update_eligibility).include?(params[:action])) }
+            %li{ class: ('active' if current_page?(fund_eligibility_path(fund))) }
               Eligiblity
               .highlight
           %span &rsaquo;
 
-          -# TODO:
-          -# - if @recipient.eligible?(fund)
-          -#   %a{href: recipient_apply_path(fund)}
-          -#     %li.last{ class: ('active' if current_page?(recipient_apply_path(fund))) }
-          -#       Apply
-          -#       .highlight
-          -# - else
-          -#   %li.muted
-          -#     Apply
+          - if @proposal.eligible?(fund)
+            %a{href: fund_apply_path(fund)}
+              %li.last{ class: ('active' if current_page?(fund_apply_path(fund))) }
+                Apply
+                .highlight
+          - else
+            %li.muted
+              Apply

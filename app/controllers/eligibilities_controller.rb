@@ -1,5 +1,6 @@
 class EligibilitiesController < ApplicationController
 
+  before_filter :ensure_logged_in # TODO:
   before_filter :load_recipient, :load_proposal, :load_fund # TODO: refactor
 
   def new
@@ -20,7 +21,7 @@ class EligibilitiesController < ApplicationController
 
   private
 
-    def load_fund
+    def load_fund # TODO: refactor to applicaiton controller?
       @fund = Fund.find_by(slug: params[:id])
     end
 

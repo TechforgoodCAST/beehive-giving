@@ -4,7 +4,7 @@ module RecipientsHelper
     classes = 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
     if @proposal.recommendation(fund).eligibility
       if @proposal.eligible?(fund)
-        content_tag(:a, link_to('Apply', recipient_apply_path(fund), class: classes))
+        content_tag(:a, link_to('Apply', fund_apply_path(fund), class: classes))
       else
         content_tag(:a, link_to('Why ineligible?', fund_eligibility_path(fund), class: classes))
       end

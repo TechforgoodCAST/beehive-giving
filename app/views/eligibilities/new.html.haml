@@ -7,7 +7,7 @@
     'Funder Unlocks': '#{@recipient.recipient_funder_accesses_count}',
   });
 
--# TODO: 
+-# TODO:
 -# - if @recipient.recipient_funder_accesses.any?
 -#   :javascript
 -#     mixpanel.people.set({
@@ -15,7 +15,7 @@
 -#       'Last Funder Eligibility': '#{@recipient.eligible?(Funder.find(@recipient.recipient_funder_accesses.last.funder_id))}'
 -#     });
 
-= render partial: 'funds/subnav', locals: {fund: @fund}
+= render partial: 'funds/subnav', locals: { fund: @fund }
 
 .uk-container.uk-container-center.uk-margin-large.uk-margin-large-top.uk-animation-fade
   .uk-grid
@@ -29,7 +29,7 @@
             You are eligible for the
             = @fund.short_name
             fund.
-            = link_to 'Apply for funding', recipient_apply_path(@funder), class: 'uk-button uk-button-large uk-button-success invert'
+            = link_to 'Apply for funding', fund_apply_path(@fund), class: 'uk-button uk-button-large uk-button-success invert'
         - else
           .cta.wide.red
             You are ineligible, and did not meet

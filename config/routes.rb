@@ -70,10 +70,6 @@ Rails.application.routes.draw do
   match '/funding/(:id)/(:district)', to: 'funders#district', via: :get, as: 'funder_district'
   # match '/funding/(:id)/(:district)/(:year)', to: 'funders#district', via: :get, as: 'funder_district'
 
-  # Eligibilities
-  match '/funds/(:id)/eligibility', to: 'eligibilities#new', via: :get, as: 'fund_eligibility'
-  match '/funds/(:id)/eligibility', to: 'eligibilities#create', via: :patch
-
   # Proposals
   match '/(:id)/proposal', to: 'proposals#new', via: :get, as: 'new_recipient_proposal'
   match '/(:id)/proposal', to: 'proposals#create', via: :post
@@ -81,9 +77,13 @@ Rails.application.routes.draw do
   match '/(:recipient_id)/proposal/(:id)', to: 'proposals#update', via: :patch
   match '/(:recipient_id)/proposals', to: 'proposals#index', via: :get, as: 'recipient_proposals'
 
+  # Eligibilities
+  match '/funds/(:id)/eligibility', to: 'eligibilities#new', via: :get, as: 'fund_eligibility'
+  match '/funds/(:id)/eligibility', to: 'eligibilities#create', via: :patch
+
   # Enquiries
-  match '/funders/(:id)/apply', to: 'recipients#apply', via: :get, as: 'recipient_apply'
-  match '/funders/(:id)/apply', to: 'enquiries#apply', via: :post
+  match '/funds/(:id)/apply', to: 'enquiries#new', via: :get, as: 'fund_apply'
+  match '/funds/(:id)/apply', to: 'enquiries#create', via: :post
 
   # Compare funders
   match '/funders/comparison', to: 'funders#comparison', via: :get, as: 'funders_comparison'

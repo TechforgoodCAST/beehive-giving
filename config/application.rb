@@ -37,6 +37,7 @@ module Beehive
       accounts.css
       funds.css
       eligibilities.css
+      enquiries.css
     )
     config.assets.precompile += %w(
       sessions.js
@@ -53,6 +54,7 @@ module Beehive
       accounts.js
       funds.js
       eligibilities.js
+      enquiries.js
     )
 
     # vendor assets

@@ -1,9 +1,21 @@
-class EnquiriesController < ApplicationController
+class EnquiriesController < ApplicationController # TODO: ApplicationsController?
 
-  before_filter :ensure_logged_in
-  before_filter :load_funder, :load_recipient
+  before_filter :ensure_logged_in # TODO:
+  before_filter :load_recipient, :load_proposal, :load_fund # TODO: refactor
 
-  def apply
+  def new
+    if @proposal.eligible?(@fund) && @recipient.has_proposal?
+      render :new
+    elsif !@recipient.has_proposal?
+      redirect_to new_recipient_proposal_path(@recipient, return_to: @fund),
+        alert: 'Please provide details of your funding request before applying.'
+    else
+      redirect_to fund_eligibility_path(@fund),
+        alert: 'You need to check your eligibility before applying.'
+    end
+  end
+
+  def create
     @recommendation = Recommendation.where(recipient: @recipient, funder: @funder).first
     @funder_attribute = @funder.attributes.order(created_at: :desc).where('funding_stream = ? OR funding_stream = ?', params[:funding_stream], 'All').first
 
@@ -16,8 +28,8 @@ class EnquiriesController < ApplicationController
 
   private
 
-  def load_funder
-    @funder = Funder.find_by_slug(params[:id])
-  end
+    def load_fund # TODO: refactor to applicaiton controller?
+      @fund = Fund.find_by(slug: params[:id])
+    end
 
 end
