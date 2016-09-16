@@ -68,27 +68,47 @@ ActiveAdmin.register_page "Dashboard" do
     end
 
     def user_count
-      User.where(role: 'User').group_by_week(:created_at, week_start: :mon, last: 6, format: 'w/o %d %b').count
+      User.where(role: 'User').group_by_week(:created_at, week_start: :mon, last: 8, format: 'w/o %d %b').count
+    end
+
+    def user_count_by_month
+      User.where(role: 'User').group_by_month(:created_at, last: 8, format: "%b %Y").count
     end
 
     def recipient_count
-      Recipient.joins(:users).group_by_week('users.created_at', week_start: :mon, last: 6).count
+      Recipient.joins(:users).group_by_week('users.created_at', week_start: :mon, last: 8).count
+    end
+
+    def recipient_count_by_month
+      Recipient.joins(:users).group_by_month('users.created_at', last: 8).count
     end
 
     def profile_count
-      Profile.where(state: 'complete').select(:organisation_id).group_by_week(:created_at, week_start: :mon, last: 6).count
+      Profile.where(state: 'complete').select(:organisation_id).group_by_week(:created_at, week_start: :mon, last: 8).count
     end
 
     def unlock_count(count)
-      Recipient.joins(:recipient_funder_accesses).where('recipient_funder_accesses_count = ?', count).uniq.group_by_week('recipient_funder_accesses.created_at', week_start: :mon, last: 6).count
+      Recipient.joins(:recipient_funder_accesses).where('recipient_funder_accesses_count = ?', count).uniq.group_by_week('recipient_funder_accesses.created_at', week_start: :mon, last: 8).count
+    end
+
+    def unlock_by_month
+      Recipient.joins(:recipient_funder_accesses).where('recipient_funder_accesses_count': [1, 2, 3]).uniq.group_by_month('recipient_funder_accesses.created_at', last: 8).count
     end
 
     def proposal_count(state)
-      Proposal.where(state: state).group_by_week(:created_at, week_start: :mon, last: 6).count
+      Proposal.where(state: state).group_by_week(:created_at, week_start: :mon, last: 8).count
     end
 
-    def feedback_count(count)
-      Feedback.group_by_week(:created_at, week_start: :mon, last: 6).count
+    def proposal_count_by_month
+      Proposal.where(state: ['registered', 'complete']).group_by_month(:created_at, last: 8, format: "%b %Y").count
+    end
+
+    def feedback_count
+      Feedback.group_by_week(:created_at, week_start: :mon, last: 8).count
+    end
+
+    def feedback_count_by_month
+      Feedback.group_by_month(:created_at, last: 8).count
     end
 
     def percentage(count, i)
@@ -166,7 +186,7 @@ ActiveAdmin.register_page "Dashboard" do
           end
           tr do
             td 'Feedback'
-            feedback_count(3).each_with_index do |count, i|
+            feedback_count.each_with_index do |count, i|
               td count[1] > 0 ? percentage(count, i) : '-'
             end
           end
@@ -175,6 +195,39 @@ ActiveAdmin.register_page "Dashboard" do
             profile_count.each_with_index do |count, i|
               td count[1] > 0 ? percentage(count, i) : '-'
             end
+          end
+        end
+      end
+    end
+
+    div style: "float:left; width: 100%; padding: 0 20px; box-sizing: border-box;" do
+      section "Conversion by month" do
+        table do
+          thead do
+            tr do
+              th 'Stage'
+              user_count_by_month.each { |i| th i[0] }
+            end
+          end
+          tr do
+            td 'Users'
+            user_count_by_month.each { |i| td i[1] }
+          end
+          tr do
+            td 'Recipients'
+            recipient_count_by_month.each { |i| td i[1] }
+          end
+          tr do
+            td 'Proposals'
+            proposal_count_by_month.each { |i| td i[1] }
+          end
+          tr do
+            td 'Eligibility checks'
+            unlock_by_month.each { |i| td i[1] }
+          end
+          tr do
+            td 'Feedback'
+            feedback_count_by_month.each { |i| td i[1] }
           end
         end
       end
