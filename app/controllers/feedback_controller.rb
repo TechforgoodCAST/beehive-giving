@@ -5,19 +5,19 @@ class FeedbackController < ApplicationController
 
   def new
     @feedback = current_user.feedbacks.new
-    @funder = Funder.find_by_slug(@redirect_to_funder)
+    @fund = Fund.find_by_slug(@redirect_to_funder) # TODO: refactor
 
     redirect_to recommended_funds_path, alert: "It looks like you've already provided feedback" if current_user.feedbacks.count > 0
   end
 
   def create
     @feedback = current_user.feedbacks.new(feedback_params)
-    @funder = Funder.find_by_slug(@redirect_to_funder)
+    @fund = Fund.find_by_slug(@redirect_to_funder) # TODO: refactor
 
     if @feedback.save
       session.delete(:redirect_to_funder)
-      flash[:notice] = "You're a star! Thanks for the feedback."
-      redirect_to recipient_eligibility_path(Funder.find_by_slug(@redirect_to_funder))
+      redirect_to fund_eligibility_path(@fund),
+        notice: "You're a star! Thanks for the feedback."
     else
       render :new
     end

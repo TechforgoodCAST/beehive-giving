@@ -65,24 +65,6 @@ class RecipientsController < ApplicationController
     @recipient = Recipient.find_by_slug(params[:id])
   end
 
-  # def eligibility # TODO: refactor
-  #   @restrictions = @funder.restrictions.order(:id).uniq
-  #   @eligibility =  1.times { @restrictions.each { |r| @recipient.eligibilities.new(restriction_id: r.id) unless @recipient.eligibilities.where('restriction_id = ?', r.id).count > 0 } }
-  #
-  #   if @recipient.incomplete_first_proposal?
-  #     session[:return_to] = @funder.slug
-  #     redirect_to edit_recipient_proposal_path(@recipient, @recipient.proposals.last)
-  #   elsif current_user.feedbacks.count < 1 && @recipient.unlocked_funders.count == 2
-  #     session[:redirect_to_funder] = @funder.slug
-  #     redirect_to new_feedback_path
-  #   elsif @recipient.can_unlock_funder?(@funder) || !@recipient.locked_funder?(@funder)
-  #     render 'recipients/funders/eligibility'
-  #   else
-  #     # refactor redirect to upgrade path
-  #     redirect_to edit_feedback_path(current_user.feedbacks.last)
-  #   end
-  # end
-
   private
 
     def load_recipient

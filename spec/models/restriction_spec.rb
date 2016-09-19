@@ -46,4 +46,6 @@ describe 'Restriction' do
     end
   end
 
+  it 'truthy invert'
+
 end

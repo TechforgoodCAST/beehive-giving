@@ -6,7 +6,7 @@
           %ul.nav
             - if current_user.role == 'Funder'
               %a{href: funder_overview_path(@funder)}
-                %li.first{ class: ('active' if params[:funding_navbar]) }
+                %li.first{ class: ('active' if params[:funders_navbar]) }
                   Funding
                   .highlight
                   .caret.funder
@@ -17,7 +17,7 @@
                   .caret.funder
             - else
               %a{href: recommended_funds_path}
-                %li.first{ class: ('active' if params[:funders_navbar]) }
+                %li.first{ class: ('active' if params[:funding_navbar]) }
                   Funding
                   .highlight
                   .caret

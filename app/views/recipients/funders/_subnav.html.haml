@@ -1,4 +1,4 @@
-- params[:funders_navbar] = true
+- params[:funding_navbar] = true
 .subnav{"data-uk-sticky" => ""}
   .uk-container.uk-container-center
     %ul.nav{ class: current_user.role == 'Funder' ? 'funder' : 'recipient' }
@@ -8,23 +8,25 @@
           .highlight
       %span &middot;
 
-      %a{href: eligible_funders_path}
-        %li{ class: ('active' if current_page?(eligible_funders_path)) }
-          Eligible
-          - if @recipient.get_funders_by_eligibility('Eligible').count > 0
-            = surround '(', ')' do
-              = @recipient.get_funders_by_eligibility('Eligible').count
-          .highlight
-      %span &middot;
+      -# TODO:
+      -# %a{href: eligible_funders_path}
+      -#   %li{ class: ('active' if current_page?(eligible_funders_path)) }
+      -#     Eligible
+      -#     - if @recipient.get_funders_by_eligibility('Eligible').count > 0
+      -#       = surround '(', ')' do
+      -#         = @recipient.get_funders_by_eligibility('Eligible').count
+      -#     .highlight
+      -# %span &middot;
 
-      %a{href: ineligible_funders_path}
-        %li{ class: ('active' if current_page?(ineligible_funders_path)) }
-          Ineligible
-          - if @recipient.get_funders_by_eligibility('Ineligible').count > 0
-            = surround '(', ')' do
-              = @recipient.get_funders_by_eligibility('Ineligible').count
-          .highlight
-      %span &middot;
+      -# TODO:
+      -# %a{href: ineligible_funders_path}
+      -#   %li{ class: ('active' if current_page?(ineligible_funders_path)) }
+      -#     Ineligible
+      -#     - if @recipient.get_funders_by_eligibility('Ineligible').count > 0
+      -#       = surround '(', ')' do
+      -#         = @recipient.get_funders_by_eligibility('Ineligible').count
+      -#     .highlight
+      -# %span &middot;
 
       %a{href: all_funds_path}
         %li.last{ class: ('active' if current_page?(all_funds_path)) }

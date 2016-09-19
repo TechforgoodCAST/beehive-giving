@@ -1,28 +1,28 @@
-- params[:funds_navbar] = true
+- params[:funding_navbar] = true
 .subnav{"data-uk-sticky" => ""}
   .uk-container.uk-container-center
     .uk-grid
       .uk-width-2-3
         %ul.nav{ class: current_user.role == 'Funder' ? 'funder' : 'recipient' }
 
-          %li.muted
+          %li.muted{ title: fund.funder.name }
             = fund.funder.name.truncate(14)
           %span &rsaquo;
 
-          %a{href: fund_path(fund)}
+          %a{ href: fund_path(fund), title: fund.name }
             %li{ class: ('active' if current_page?(fund_path(fund))) }
               = fund.name.truncate(14)
               .highlight
           %span &rsaquo;
 
-          %a{href: fund_eligibility_path(fund)}
+          %a{ href: fund_eligibility_path(fund) }
             %li{ class: ('active' if current_page?(fund_eligibility_path(fund))) }
               Eligiblity
               .highlight
           %span &rsaquo;
 
           - if @proposal.eligible?(fund)
-            %a{href: fund_apply_path(fund)}
+            %a{ href: fund_apply_path(fund) }
               %li.last{ class: ('active' if current_page?(fund_apply_path(fund))) }
                 Apply
                 .highlight

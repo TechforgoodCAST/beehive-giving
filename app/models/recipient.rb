@@ -18,8 +18,7 @@ class Recipient < Organisation
   has_one :recipient_attribute
   alias_method :attribute, :recipient_attribute
 
-  has_many :recommendations, dependent: :destroy
-  has_many :funds, -> { joins(:recommendations).order('recommendations.total_recommendation DESC') }, through: :recommendations
+  has_many :funds, through: :proposals
 
   has_many :countries, through: :proposals
   has_many :districts, through: :proposals
@@ -42,32 +41,20 @@ class Recipient < Organisation
     end
   end
 
-  # refactor
-  def can_request_funder?(funder, request)
-    features.build("#request}": true, funder: funder).valid?
+  def unlocked_funds
+    funds.where('eligibility IS NOT NULL')
   end
 
-  def unlocked_funder_ids
-    RecipientFunderAccess.where(recipient_id: self.id).map(&:funder_id)
+  def locked_funds
+    funds.where('eligibility IS NULL')
   end
 
-  def unlocked_funders
-    Funder.where(id: unlocked_funder_ids)
+  def unlocked_fund?(fund)
+    unlocked_funds.pluck(:id).include?(fund.id)
   end
 
-  def locked_funders
-    unlocked_funder_ids.any? ? Funder.where('id NOT IN (?)', unlocked_funder_ids) : Funder.all
-  end
-
-  def locked_funder?(funder)
-    !unlocked_funder_ids.include?(funder.id)
-  end
-
-  def unlock_funder!(funder)
-    RecipientFunderAccess.find_or_create_by({
-        recipient_id: self.id,
-        funder_id: funder.id
-    })
+  def locked_fund?(fund)
+    !unlocked_fund?(fund)
   end
 
   def full_address
@@ -80,12 +67,12 @@ class Recipient < Organisation
     ].join(", ")
   end
 
-  # refactor?
+  # TODO: refactor?
   def recent_grants(year=2015)
     self.grants.where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01")
   end
 
-  # refactor
+  # TODO: refactor
   def eligibility_count(funder)
     count = 0
 
@@ -150,7 +137,7 @@ class Recipient < Organisation
     proposals.count < 1 && profiles.where(state: 'complete').count > 0
   end
 
-  # refactor
+  # TODO: refactor
   def questions_remaining?(funder)
     self.eligibility_count(funder) < funder.restrictions.uniq.count
   end

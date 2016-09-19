@@ -4,16 +4,15 @@
   mixpanel.track("View Eligibility Page", {"Fund": "#{@fund.name}"});
   mixpanel.identify('#{current_user.id}');
   mixpanel.people.set({
-    'Funder Unlocks': '#{@recipient.recipient_funder_accesses_count}',
+    'Fund Unlocks': '#{@recipient.funds_checked}',
   });
 
--# TODO:
--# - if @recipient.recipient_funder_accesses.any?
--#   :javascript
--#     mixpanel.people.set({
--#       'Last Unlocked Funder': '#{Funder.find(@recipient.recipient_funder_accesses.last.funder_id).name}',
--#       'Last Funder Eligibility': '#{@recipient.eligible?(Funder.find(@recipient.recipient_funder_accesses.last.funder_id))}'
--#     });
+- if @recipient.unlocked_fund?(@fund)
+  %h1 aasfasf
+  :javascript
+    mixpanel.people.set({
+      'Eligibility #{@fund.slug}': '#{@recipient.proposals.last.eligible?(@fund)}'
+    });
 
 = render partial: 'funds/subnav', locals: { fund: @fund }
 
@@ -49,15 +48,11 @@
 
       %h4.uk-text-bold Are you seeking funding for?
       .uk-form.uk-form-stacked
-        - if @proposal.recommendation(@fund).eligibility
-          = simple_form_for @recipient, url: fund_eligibility_path(@fund) do |f|
-            = f.simple_fields_for :eligibilities, @recipient.eligibility_restrictions(@fund).each { |e| Eligibility.where(recipient_id: @recipient, restriction_id: e.restriction.id).first_or_initialize } do |e|
+        = simple_form_for @recipient, url: fund_eligibility_path(@fund) do |f|
+          = f.simple_fields_for :eligibilities, @criteria do |e|
+            - if @fund.restrictions.pluck(:restriction_id).include?(e.object.restriction_id) # TODO: refactor
               = render partial: 'recipients/restriction', locals: {e: e}
+          - if @proposal.recommendation(@fund).eligibility
             = f.button :button, 'Update', class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right', data: {disable_with: "<i class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i> Updating..."}
-
-        - else
-          = simple_form_for @recipient, url: fund_eligibility_path(@fund) do |f|
-            = f.simple_fields_for :eligibilities, @eligibility do |e|
-              - if e.object.new_record?
-                = render partial: 'recipients/restriction', locals: {e: e}
-            = f.button :button, "Check eligibility (#{(Recipient::MAX_FREE_LIMIT - @recipient.unlocked_funders.count)} left)", class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right', data: {disable_with: "<i class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i> Checking..."}, "data-uk-tooltip" => "{pos:'top'}", :title => "This will use one of your eligibility checks."
+          - else
+            = f.button :button, "Check eligibility (#{(Recipient::MAX_FREE_LIMIT - @recipient.funds_checked)} left)", class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right', data: {disable_with: "<i class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i> Checking..."}, "data-uk-tooltip" => "{pos:'top'}", :title => "This will use one of your free eligibility checks."
