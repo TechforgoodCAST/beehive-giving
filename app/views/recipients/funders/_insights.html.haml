@@ -5,11 +5,11 @@
     - if @proposal.recommendation(fund).eligibility
       %li{ class: (@proposal.eligible?(fund) ? 'eligible' : 'ineligible')}
         - if @proposal.eligible?(fund)
-          %a.badge{href: eligible_funders_path} Eligible
+          %a.badge{href: eligible_funds_path} Eligible
           You are eligible for funding.
           %a.action{href: fund_eligibility_path(fund)} See criteria
         - else
-          %a.badge{href: ineligible_funders_path} Ineligible
+          %a.badge{href: ineligible_funds_path} Ineligible
           You are ineligible for funding.
           %a.action{href: fund_eligibility_path(fund)} Find out why
 

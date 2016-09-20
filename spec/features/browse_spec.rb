@@ -42,7 +42,7 @@ feature 'Browse' do
     scenario 'When I click for more details on a fund card,
               I want to see more details about the fund,
               so I can decide if I want to apply' do
-      within('.card-cta', match: :first) do
+      within '.card-cta', match: :first do
         click_link 'More info'
       end
       expect(current_path).to eq fund_path(@top_fund)
@@ -71,7 +71,7 @@ feature 'Browse' do
       expect(page).to have_css '.locked-funder', count: 6
     end
 
-    scenario "When navigate to 'Recommended' funds,
+    scenario "When I navigate to 'Recommended' funds,
               I want to see my recommended funds,
               so I compare them" do
       click_link 'Recommended'

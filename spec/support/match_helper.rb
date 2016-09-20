@@ -26,7 +26,7 @@ class MatchHelper
     seeking: 'A registered charity', charity_number: '1161998',
     company_number: '09544506'
   )
-    within('#new_user') do
+    within '#new_user' do
       fill_in :user_first_name, with: 'Jack'
       fill_in :user_last_name,  with: 'Bauer'
       select  seeking
@@ -63,7 +63,7 @@ class MatchHelper
 
   def fill_organisation_form
     # TODO: test cases for other types of org
-    within('#new_recipient') do
+    within '#new_recipient' do
       select '£100k - £1m'
       select '1 - 5', from: 'recipient_employees'
       select '1 - 5', from: 'recipient_volunteers'

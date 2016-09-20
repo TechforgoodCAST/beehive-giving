@@ -27,13 +27,13 @@
       %p.uk-margin-bottom Below are details of the funds which you can apply to.
 
       %hr.thick
--# TODO: 
+-# TODO:
 -#       - @funder.funding_streams.each_with_index do |stream, i|
 -#         .uk-panel
 -#           %h4.uk-text-bold= stream.label
 -#
 -#           - if @recipient.funding_stream_eligible?(stream.label, @funder)
--#             %a.uk-panel-badge.badge.eligible{href: eligible_funders_path} Eligible
+-#             %a.uk-panel-badge.badge.eligible{href: eligible_funds_path} Eligible
 -#
 -#             %p
 -#               If you haven't already, be sure to explore the profile for
@@ -46,7 +46,7 @@
 -#             = link_to 'Apply for funding', recipient_apply_path(@funder, funding_stream: stream.label), method: :post, target: '_blank', 'data-uk-tooltip' => "{pos:'top'}", :title => "#{@funder.name.pluralize} website will open in a new page", class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right'
 -#
 -#           - else
--#             %a.uk-panel-badge.badge.ineligible{href: ineligible_funders_path} Ineligible
+-#             %a.uk-panel-badge.badge.ineligible{href: ineligible_funds_path} Ineligible
 -#             Sorry, it seems you are ineligible for this fund. Remember you can always update your answers to the eligiblity questions
 -#             = succeed '.' do
 -#               = link_to 'here', recipient_eligibility_path(@funder)

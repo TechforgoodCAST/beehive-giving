@@ -132,4 +132,71 @@ feature 'Eligibility' do
     end
   end
 
+  context 'eligible_funds_path' do
+    scenario 'When I navigate to my eligible funds,
+              I want to see a list of eligible funds,
+              so I can apply for to them' do
+      click_link 'Eligible'
+      expect(page).to have_text "You don't have any eligible funds"
+    end
+
+    context 'eligible fund' do
+      before(:each) do
+        helper
+          .visit_first_fund.complete_proposal.submit_proposal
+          .visit_first_fund.answer.check_eligibility
+          visit root_path
+      end
+
+      scenario "When I'm browsing funds,
+                I want to see how many eligible funds I have,
+                so I can decide to view them" do
+        expect(page).to have_text 'Eligible (1)'
+      end
+
+      scenario "When I click on an 'Eligible' tag,
+                I want to see a list of eligible funds,
+                so I can compare them" do
+        within '.insights', match: :first do
+          click_link 'Eligible'
+          expect(current_path).to eq eligible_funds_path
+        end
+      end
+    end
+  end
+
+  context 'ineligible_funds_path' do
+    scenario 'When I navigate to my ineligible funds,
+              I want to see a list of ineligible funds,
+              so I can apply for to them' do
+      click_link 'Ineligible'
+      expect(page).to have_text "Awesome, you're not ineligible for any funds!"
+    end
+
+    context 'ineligible fund' do
+      before(:each) do
+        helper
+          .visit_first_fund.complete_proposal.submit_proposal
+          .visit_first_fund.answer(eligible: false).check_eligibility
+          visit root_path
+      end
+
+      scenario "When I'm browsing funds,
+                I want to see how many ineligible funds I have,
+                so I can decide to view them" do
+        expect(page).to have_text 'Ineligible (1)'
+      end
+
+      scenario "When I click on an 'Ineligible' tag,
+                I want to see a list of ineligible funds,
+                so I can compare them" do
+        visit ineligible_funds_path
+        within '.insights', match: :first do
+          click_link 'Ineligible'
+          expect(current_path).to eq ineligible_funds_path
+        end
+      end
+    end
+  end
+
 end

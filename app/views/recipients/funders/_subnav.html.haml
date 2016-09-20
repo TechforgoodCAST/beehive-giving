@@ -8,25 +8,23 @@
           .highlight
       %span &middot;
 
-      -# TODO:
-      -# %a{href: eligible_funders_path}
-      -#   %li{ class: ('active' if current_page?(eligible_funders_path)) }
-      -#     Eligible
-      -#     - if @recipient.get_funders_by_eligibility('Eligible').count > 0
-      -#       = surround '(', ')' do
-      -#         = @recipient.get_funders_by_eligibility('Eligible').count
-      -#     .highlight
-      -# %span &middot;
+      %a{ href: eligible_funds_path }
+        %li{ class: ('active' if current_page?(eligible_funds_path)) }
+          Eligible
+          - if @recipient.eligible_funds.any?
+            = surround '(', ')' do
+              = @recipient.eligible_funds.count
+          .highlight
+      %span &middot;
 
-      -# TODO:
-      -# %a{href: ineligible_funders_path}
-      -#   %li{ class: ('active' if current_page?(ineligible_funders_path)) }
-      -#     Ineligible
-      -#     - if @recipient.get_funders_by_eligibility('Ineligible').count > 0
-      -#       = surround '(', ')' do
-      -#         = @recipient.get_funders_by_eligibility('Ineligible').count
-      -#     .highlight
-      -# %span &middot;
+      %a{ href: ineligible_funds_path }
+        %li{ class: ('active' if current_page?(ineligible_funds_path)) }
+          Ineligible
+          - if @recipient.ineligible_funds.any?
+            = surround '(', ')' do
+              = @recipient.ineligible_funds.count
+          .highlight
+      %span &middot;
 
       %a{href: all_funds_path}
         %li.last{ class: ('active' if current_page?(all_funds_path)) }

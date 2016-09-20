@@ -50,8 +50,8 @@ Rails.application.routes.draw do
   # Funds
   match '/funds/home', to: 'funds#home', via: :get, as: 'funds_home'
   match '/recommended/funds', to: 'recipients#recommended_funds', via: :get, as: 'recommended_funds'
-  match '/eligible/funds', to: 'recipients#eligible_funds', via: :get, as: 'eligible_funders'
-  match '/ineligible/funds', to: 'recipients#ineligible_funds', via: :get, as: 'ineligible_funders'
+  match '/eligible/funds', to: 'recipients#eligible_funds', via: :get, as: 'eligible_funds'
+  match '/ineligible/funds', to: 'recipients#ineligible_funds', via: :get, as: 'ineligible_funds'
   match '/all/funds', to: 'recipients#all_funds', via: :get, as: 'all_funds'
   get '/(:tag)/funds', to: 'funds#tagged', as: 'tag'
 

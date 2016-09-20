@@ -1,19 +1,11 @@
-= content_for :title, 'Recommended funders'
+= content_for :title, 'Recommended funds'
 
 :javascript
-  mixpanel.track("View Recommended Funders Page");
+  mixpanel.track("View Recommended Funds Page");
   mixpanel.identify('#{current_user.id}');
   mixpanel.people.set({
-    'Funder Unlocks': '#{@recipient.recipient_funder_accesses_count}',
+    'Fund Unlocks': '#{@recipient.funds_checked}',
   });
-
--# TODO: refactor
--# - if @recipient.recipient_funder_accesses.any?
--#   :javascript
--#     mixpanel.people.set({
--#       'Last Unlocked Funder': '#{Funder.find(@recipient.recipient_funder_accesses.last.funder_id).name}',
--#       'Last Funder Eligibility': '#{@recipient.eligible?(Funder.find(@recipient.recipient_funder_accesses.last.funder_id))}'
--#     });
 
 = render partial: 'recipients/funders/subnav'
 
@@ -31,14 +23,12 @@
 
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
 
-    -# = render partial: 'cta/proposal_cta', locals: { recipient: @recipient }
-
     - @funds.each_with_index do |fund, i|
       = render partial: 'recipients/funders/summary', locals: { fund: fund }
       - if i == @funds.count-1
         .cta.wide
           Want to see more?
-          %a.uk-button.uk-button-large.uk-button-primary.invert{href: all_funds_path} All funds
+          %a.uk-button.uk-button-large.uk-button-primary.invert{ href: all_funds_path } All funds
       - else
         %hr.thick
 

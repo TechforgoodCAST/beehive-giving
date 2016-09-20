@@ -49,6 +49,14 @@ class Recipient < Organisation
     funds.where('eligibility IS NULL')
   end
 
+  def eligible_funds
+    unlocked_funds.where('eligibility = ?', 'Eligible')
+  end
+
+  def ineligible_funds
+    unlocked_funds.where('eligibility = ?', 'Ineligible')
+  end
+
   def unlocked_fund?(fund)
     unlocked_funds.pluck(:id).include?(fund.id)
   end
@@ -113,7 +121,7 @@ class Recipient < Organisation
   def eligibility_restrictions(fund)
     Eligibility.where(
       recipient_id: self,
-      restriction_id: fund.funder.restrictions
+      restriction_id: fund.restrictions
     ).order(:id)
   end
 

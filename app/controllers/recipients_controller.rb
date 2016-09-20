@@ -39,13 +39,13 @@ class RecipientsController < ApplicationController
   end
 
   def eligible_funds
-    @funders = Funder.find(@recipient.recommendations.where(eligibility: 'Eligible').pluck(:funder_id))
+    @funds = @recipient.eligible_funds
 
     render 'recipients/funders/eligible_funders'
   end
 
   def ineligible_funds
-    @funders = Funder.find(@recipient.recommendations.where(eligibility: 'Ineligible').pluck(:funder_id))
+    @funds = @recipient.ineligible_funds
 
     render 'recipients/funders/ineligible_funders'
   end

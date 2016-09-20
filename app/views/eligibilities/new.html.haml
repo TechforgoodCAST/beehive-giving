@@ -8,9 +8,10 @@
   });
 
 - if @recipient.unlocked_fund?(@fund)
-  %h1 aasfasf
   :javascript
     mixpanel.people.set({
+      'Last Unlocked Fund': '#{@recipient.unlocked_funds.last.name}',
+      'Last Fund Eligibility': '#{@recipient.proposals.last.eligible?(@recipient.unlocked_funds.last)}',
       'Eligibility #{@fund.slug}': '#{@recipient.proposals.last.eligible?(@fund)}'
     });
 
