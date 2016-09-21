@@ -4,19 +4,16 @@ class Recipient < Organisation
   MAX_FREE_LIMIT = 3
   RECOMMENDATION_LIMIT = 6
 
-  has_many :grants
-  has_many :features, dependent: :destroy
-  has_many :enquiries, dependent: :destroy
+  has_many :grants # TODO:
+  has_many :features, dependent: :destroy # TODO:
   has_many :proposals
-  has_many :recipient_funder_accesses
+  has_many :recipient_funder_accesses # TODO:
   has_many :restrictions, through: :eligibilities
   has_many :eligibilities, dependent: :destroy
   accepts_nested_attributes_for :eligibilities
 
-  has_many :recipient_funder_accesses
-
-  has_one :recipient_attribute
-  alias_method :attribute, :recipient_attribute
+  has_one :recipient_attribute # TODO:
+  alias_method :attribute, :recipient_attribute # TODO:
 
   has_many :funds, through: :proposals
 

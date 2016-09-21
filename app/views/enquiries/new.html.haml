@@ -23,37 +23,23 @@
       = render partial: 'recipients/funders/card', locals: { fund: @fund }
 
     .uk-width-medium-2-3
-      %h3.uk-margin-top Apply for funding
-      %p.uk-margin-bottom Below are details of the funds which you can apply to.
+      %h3.uk-margin-top
+        Apply to
+        = @fund.name
+      %p.uk-margin-bottom
+        If you haven't already, be sure to explore our analysis of
+        = succeed ',' do
+          = link_to "#{@fund.name}", fund_path(@fund)
+        otherwise below are a few things to consider before you proceed.
 
       %hr.thick
--# TODO:
--#       - @funder.funding_streams.each_with_index do |stream, i|
--#         .uk-panel
--#           %h4.uk-text-bold= stream.label
--#
--#           - if @recipient.funding_stream_eligible?(stream.label, @funder)
--#             %a.uk-panel-badge.badge.eligible{href: eligible_funds_path} Eligible
--#
--#             %p
--#               If you haven't already, be sure to explore the profile for
--#               = succeed ',' do
--#                 = link_to "#{@funder.name}", funder_path(@funder)
--#               otherwise here are a few things to consider before you proceed:
--#
--#             = raw(@funder.attributes.order(created_at: :desc).where('funding_stream = ? OR funding_stream = ?', stream.label, 'All').first.soft_restrictions)
--#
--#             = link_to 'Apply for funding', recipient_apply_path(@funder, funding_stream: stream.label), method: :post, target: '_blank', 'data-uk-tooltip' => "{pos:'top'}", :title => "#{@funder.name.pluralize} website will open in a new page", class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right'
--#
--#           - else
--#             %a.uk-panel-badge.badge.ineligible{href: ineligible_funds_path} Ineligible
--#             Sorry, it seems you are ineligible for this fund. Remember you can always update your answers to the eligiblity questions
--#             = succeed '.' do
--#               = link_to 'here', recipient_eligibility_path(@funder)
--#
--#         - if i == @funder.funding_streams.count-1
--#           .cta.wide
--#             Be sure to check out your recommended funders.
--#             %a.uk-button.uk-button-large.uk-button-primary.invert{href: recommended_funds_path} Recommended funds
--#         - else
--#           %hr.thick
+
+      .uk-panel
+        %h4.uk-text-bold Key criteria
+        = raw(@fund.key_criteria)
+        -# TODO:
+        -# - if @fund.match_funding_restrictions?
+        -#   %h4.uk-text-bold Match funding restrictions
+        -#   = raw(@fund.match_funding_restrictions)
+
+        = link_to "Apply to #{@fund.name}", fund_apply_path(@fund), method: :post, target: '_blank', 'data-uk-tooltip': "{pos:'top'}", title: 'A new page will be opened with application details', class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right'

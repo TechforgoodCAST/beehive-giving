@@ -16,9 +16,6 @@ class Funder < Organisation
 
   has_many :age_groups, :through => :funder_attributes
 
-  has_many :features
-  has_many :enquiries
-
   has_many :funder_attributes, dependent: :destroy
   has_many :approval_months, :through => :funder_attributes
   has_many :beneficiaries, :through => :funder_attributes

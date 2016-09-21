@@ -10,6 +10,7 @@ class Proposal < ActiveRecord::Base
   has_many :funds, through: :recommendations
 
   belongs_to :recipient
+  has_many :enquiries, dependent: :destroy
   has_and_belongs_to_many :beneficiaries
   has_and_belongs_to_many :age_groups
   has_and_belongs_to_many :countries

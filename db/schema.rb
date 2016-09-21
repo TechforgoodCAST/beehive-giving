@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160916134003) do
+ActiveRecord::Schema.define(version: 20160920143703) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -336,13 +336,17 @@ ActiveRecord::Schema.define(version: 20160916134003) do
     t.boolean  "new_location"
     t.integer  "amount_seeking"
     t.integer  "duration_seeking"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-    t.integer  "approach_funder_count"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.integer  "approach_funder_count", default: 0
     t.string   "funding_stream"
+    t.integer  "fund_id"
+    t.integer  "proposal_id"
   end
 
+  add_index "enquiries", ["fund_id"], name: "index_enquiries_on_fund_id", using: :btree
   add_index "enquiries", ["funder_id"], name: "index_enquiries_on_funder_id", using: :btree
+  add_index "enquiries", ["proposal_id"], name: "index_enquiries_on_proposal_id", using: :btree
   add_index "enquiries", ["recipient_id"], name: "index_enquiries_on_recipient_id", using: :btree
 
   create_table "features", force: :cascade do |t|
@@ -487,7 +491,6 @@ ActiveRecord::Schema.define(version: 20160916134003) do
     t.string   "slug"
     t.boolean  "open_call"
     t.boolean  "active"
-    t.boolean  "key_criteria_known"
     t.string   "key_criteria"
     t.string   "currency"
     t.boolean  "amount_known"
@@ -546,6 +549,7 @@ ActiveRecord::Schema.define(version: 20160916134003) do
     t.json     "amount_awarded_distribution"
     t.json     "award_month_distribution"
     t.json     "country_distribution"
+    t.string   "application_link"
   end
 
   add_index "funds", ["funder_id"], name: "index_funds_on_funder_id", using: :btree
@@ -891,5 +895,7 @@ ActiveRecord::Schema.define(version: 20160916134003) do
   add_index "users", ["organisation_id"], name: "index_users_on_organisation_id", using: :btree
 
   add_foreign_key "deadlines", "funds"
+  add_foreign_key "enquiries", "funds"
+  add_foreign_key "enquiries", "proposals"
   add_foreign_key "stages", "funds"
 end

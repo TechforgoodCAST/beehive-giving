@@ -5,6 +5,7 @@ class Fund < ActiveRecord::Base
   has_many :recommendations, dependent: :destroy
   has_many :proposals, through: :recommendations
 
+  has_many :enquiries, dependent: :destroy
   has_many :deadlines, dependent: :destroy
   has_many :stages, dependent: :destroy
   accepts_nested_attributes_for :stages
@@ -19,8 +20,8 @@ class Fund < ActiveRecord::Base
 
   acts_as_taggable
 
-  validates :funder, :type_of_fund, :slug, :name, :description,
-            :open_call, :active, :currency, :funding_types,
+  validates :funder, :type_of_fund, :slug, :name, :description, :open_call,
+            :active, :currency, :funding_types, :key_criteria, :application_link,
               presence: true
 
   validates :name, uniqueness: { scope: :funder }
