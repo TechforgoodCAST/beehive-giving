@@ -49,5 +49,5 @@ class GrantsController < ApplicationController
   def load_funder
     @funder = Funder.find_by_slug(params[:funder_id])
   end
-  
+
 end

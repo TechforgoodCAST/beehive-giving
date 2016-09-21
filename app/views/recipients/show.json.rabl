@@ -8,7 +8,7 @@ child(@recipient => :timeline) do
   node :type do
     "default"
   end
-  
+
   node :date do
     @grants.map { |g| Hash[[
       [:startDate, g.start_on.strftime("%y,%m,%d")],

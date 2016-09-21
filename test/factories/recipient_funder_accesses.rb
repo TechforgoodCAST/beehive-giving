@@ -1,3 +1,4 @@
+# TODO: deprecated
 FactoryGirl.define do
 
   factory :recipient_funder_access do

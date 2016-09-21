@@ -1,3 +1,4 @@
+# TODO: deprecated
 FactoryGirl.define do
   factory :grant do
     association :funder, :factory => :funder

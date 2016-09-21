@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :feedback do
-    association :user, :factory => :user
+    user
     suitable 10
     most_useful Feedback::MOST_USEFUL.sample
     nps 10

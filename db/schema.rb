@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160920143703) do
+ActiveRecord::Schema.define(version: 20160921134820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -134,14 +134,6 @@ ActiveRecord::Schema.define(version: 20160920143703) do
 
   add_index "countries", ["name", "alpha2"], name: "index_countries_on_name_and_alpha2", unique: true, using: :btree
 
-  create_table "countries_enquiries", force: :cascade do |t|
-    t.integer "enquiry_id"
-    t.integer "country_id"
-  end
-
-  add_index "countries_enquiries", ["country_id", "enquiry_id"], name: "index_countries_enquiries_on_country_id_and_enquiry_id", using: :btree
-  add_index "countries_enquiries", ["enquiry_id"], name: "index_countries_enquiries_on_enquiry_id", using: :btree
-
   create_table "countries_funder_attributes", force: :cascade do |t|
     t.integer "funder_attribute_id"
     t.integer "country_id"
@@ -243,14 +235,6 @@ ActiveRecord::Schema.define(version: 20160920143703) do
   end
 
   add_index "districts", ["country_id"], name: "index_districts_on_country_id", using: :btree
-
-  create_table "districts_enquiries", force: :cascade do |t|
-    t.integer "enquiry_id"
-    t.integer "district_id"
-  end
-
-  add_index "districts_enquiries", ["district_id", "enquiry_id"], name: "index_districts_enquiries_on_district_id_and_enquiry_id", using: :btree
-  add_index "districts_enquiries", ["enquiry_id"], name: "index_districts_enquiries_on_enquiry_id", using: :btree
 
   create_table "districts_funder_attributes", force: :cascade do |t|
     t.integer  "funder_attribute_id"

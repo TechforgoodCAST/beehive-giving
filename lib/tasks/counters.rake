@@ -11,5 +11,5 @@ namespace :counters do
   task :grants => :environment do
     Recipient.joins(:grants).find_each { |r| Recipient.reset_counters(r.id, :grants) }
   end
-    
+
 end

@@ -52,5 +52,5 @@ class RecipientAttributeController < ApplicationController
   def load_recipient
     @recipient = Recipient.find_by_slug(params[:recipient_id])
   end
-  
+
 end

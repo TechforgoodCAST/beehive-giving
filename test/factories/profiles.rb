@@ -1,3 +1,4 @@
+# TODO: deprecated
 FactoryGirl.define do
 
   factory :implementor do

@@ -35,5 +35,5 @@ class UsersController < ApplicationController
   def load_organisation
     @organisation = Organisation.find_by_slug(params[:organisation_id])
   end
-  
+
 end
