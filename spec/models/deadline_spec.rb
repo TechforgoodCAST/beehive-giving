@@ -3,8 +3,7 @@ require 'rails_helper'
 describe Deadline do
 
   before(:each) do
-    @app.seed_test_db
-        .setup_funds
+    @app.seed_test_db.setup_funds
     @db = @app.instances
     @deadline = Deadline.first
     @fund = @db[:funds].first
