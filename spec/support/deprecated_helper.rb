@@ -7,6 +7,7 @@ class DeprecatedHelper
     @beneficiaries = Beneficiary.all
     @countries     = Country.all
     @districts     = District.all
+    @funding_types = FundingType.all
     @recipient     = Recipient.last
   end
 
@@ -15,7 +16,8 @@ class DeprecatedHelper
       create(:funder_attribute,
         funder: create(:funder),
         countries: @countries,
-        districts: @districts
+        districts: @districts,
+        funding_types: @funding_types
       )
     end
     self

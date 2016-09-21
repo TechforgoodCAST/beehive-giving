@@ -10,7 +10,7 @@ class FundingType < ActiveRecord::Base
 
   has_and_belongs_to_many :funds
   has_many :funders, -> { distinct }, through: :funds
-  has_and_belongs_to_many :funder_attributes
+  has_and_belongs_to_many :funder_attributes # TODO: deprecated
 
   validates :label, presence: true, inclusion: { in: FUNDING_TYPE }, uniqueness: true
 
