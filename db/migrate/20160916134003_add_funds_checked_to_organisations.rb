@@ -9,6 +9,6 @@ class AddFundsCheckedToOrganisations < ActiveRecord::Migration
   end
 
   def down
-    remove_column :organisations, :funds_checked
+    remove_column :organisations, :funds_checked, :integer
   end
 end

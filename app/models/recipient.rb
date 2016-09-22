@@ -4,23 +4,19 @@ class Recipient < Organisation
   MAX_FREE_LIMIT = 3
   RECOMMENDATION_LIMIT = 6
 
-  has_many :grants # TODO:
-  has_many :features, dependent: :destroy # TODO:
   has_many :proposals
-  has_many :recipient_funder_accesses # TODO:
-  has_many :restrictions, through: :eligibilities
+  has_many :funds, -> { distinct }, through: :proposals
+  has_many :countries, -> { distinct }, through: :proposals
+  has_many :districts, -> { distinct }, through: :proposals
   has_many :eligibilities, dependent: :destroy
+  has_many :restrictions, through: :eligibilities
   accepts_nested_attributes_for :eligibilities
 
-  has_one :recipient_attribute # TODO:
-  alias_method :attribute, :recipient_attribute # TODO:
-
-  has_many :funds, through: :proposals
-
-  has_many :countries, through: :proposals
-  has_many :districts, through: :proposals
-  has_many :beneficiaries, through: :proposals
-  has_many :implementations, through: :proposals
+  has_many :grants # TODO: deprecated
+  has_many :features, dependent: :destroy # TODO: deprecated
+  has_many :recipient_funder_accesses # TODO: deprecated
+  has_one :recipient_attribute # TODO: deprecated
+  alias_method :attribute, :recipient_attribute # TODO: deprecated
 
   def subscribe!
     self.subscription.update_attribute(:active, true)

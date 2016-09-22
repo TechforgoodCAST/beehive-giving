@@ -1,9 +1,15 @@
 require 'rails_helper'
+require_relative '../support/match_helper'
 
 describe Organisation do
 
+  let(:helper) { MatchHelper.new }
+
   before(:each) do
-    @app.seed_test_db.create_recipient.with_user
+    helper.stub_charity_commission.stub_companies_house
+    @app.seed_test_db
+        .create_recipient(charity_number: '1161998', company_number: '09544506')
+        .with_user
     @db = @app.instances
     @org = @db[:recipient]
   end
@@ -15,6 +21,10 @@ describe Organisation do
   it 'has many users' do
     create(:user, organisation: @org)
     expect(@org.users.count).to eq 2
+  end
+
+  it 'is valid' do
+    expect(@org).to be_valid
   end
 
   context 'registration numbers present' do
@@ -61,6 +71,37 @@ describe Organisation do
     @org.charity_number = nil
     @org.company_number = nil
     expect(@org).not_to be_valid
+  end
+
+  it 'geocoded if postal_code' do
+    expect(@org.postal_code).to be_nil
+    @org.get_charity_data
+    @org.save!
+    expect(@org.postal_code).to eq 'GL6 0QL'
+    expect(@org.latitude).to eq 0.0
+    expect(@org.longitude).to eq 0.0
+  end
+
+  it 'geocoded by street address and country if no postal code' do
+    @org.street_address = 'London Road'
+    @org.save!
+    expect(@org.postal_code).to be_nil
+    expect(@org.latitude).to eq 1.0
+    expect(@org.longitude).to eq 1.0
+  end
+
+  it 'only geocode for GB' do
+    @org.street_address = 'London Road'
+    @org.country = 'KE'
+    @org.save!
+    expect(@org.latitude).to be_nil
+    expect(@org.longitude).to be_nil
+  end
+
+  it 'set registered on if scraped' do
+    @org.operating_for = nil
+    @org.get_company_data
+    expect(@org.operating_for).to eq 2
   end
 
 end

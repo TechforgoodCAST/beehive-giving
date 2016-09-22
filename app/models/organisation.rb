@@ -34,7 +34,8 @@ class Organisation < ActiveRecord::Base
 
   has_one :subscription, dependent: :destroy
   has_many :users, dependent: :destroy
-  has_many :profiles, dependent: :destroy # TODO: refactor
+
+  has_many :profiles, dependent: :destroy # TODO: deprecated
 
   geocoded_by :search_address
   after_validation :geocode, if: -> (o) { (o.street_address.present?) or (o.postal_code.present? and o.postal_code_changed?) }, unless: -> (o) { o.country != 'GB' }

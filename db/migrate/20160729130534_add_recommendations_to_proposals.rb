@@ -20,21 +20,21 @@ class AddRecommendationsToProposals < ActiveRecord::Migration
     add_column :funds, :duration_months_median_historic, :float
     add_column :funds, :duration_months_min_historic, :float
     add_column :funds, :duration_months_max_historic, :float
-    add_column :funds, :org_type_distribution, :json
-    add_column :funds, :operating_for_distribution, :json
-    add_column :funds, :income_distribution, :json
-    add_column :funds, :employees_distribution, :json
-    add_column :funds, :volunteers_distribution, :json
-    add_column :funds, :geographic_scale_distribution, :json
+    add_column :funds, :org_type_distribution, :jsonb
+    add_column :funds, :operating_for_distribution, :jsonb
+    add_column :funds, :income_distribution, :jsonb
+    add_column :funds, :employees_distribution, :jsonb
+    add_column :funds, :volunteers_distribution, :jsonb
+    add_column :funds, :geographic_scale_distribution, :jsonb
 
     add_column :funds, :beneficiary_min_age_historic, :integer
     add_column :funds, :beneficiary_max_age_historic, :integer
-    add_column :funds, :gender_distribution, :json
+    add_column :funds, :gender_distribution, :jsonb
 
-    add_column :funds, :amount_awarded_distribution, :json
-    add_column :funds, :award_month_distribution, :json
-    add_column :funds, :country_distribution, :json
+    add_column :funds, :amount_awarded_distribution, :jsonb
+    add_column :funds, :award_month_distribution, :jsonb
+    add_column :funds, :country_distribution, :jsonb
 
-    remove_column :funds, :year_of_fund
+    remove_column :funds, :year_of_fund, :integer
   end
 end
