@@ -29,6 +29,8 @@ class User < ActiveRecord::Base
 
   before_create { generate_token(:auth_token) }
 
+  has_secure_password
+
   def first_name=(s)
     write_attribute(:first_name, s.to_s.strip.capitalize)
   end
@@ -42,10 +44,8 @@ class User < ActiveRecord::Base
   end
 
   def full_name
-    name = "#{first_name} #{last_name}"
+    "#{first_name} #{last_name}"
   end
-
-  has_secure_password
 
   def lock_access_to_organisation(organisation)
     generate_token(:unlock_token)
