@@ -63,6 +63,7 @@ RSpec.configure do |config|
   config.before(:each) do
     Geocoder.configure(lookup: :test)
     Geocoder::Lookup::Test.add_stub('GL6 0QL, GB', [{latitude: 0, longitude: 0}])
+    Geocoder::Lookup::Test.add_stub('London Road, GB', [{latitude: 0, longitude: 0}])
     @app = TestHelper.new
     @app
       .stub_beneficiaries_endpoint

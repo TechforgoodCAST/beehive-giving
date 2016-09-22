@@ -66,8 +66,8 @@ class Organisation < ActiveRecord::Base
   validates :company_number, presence: true, if: Proc.new { |o| o.org_type == 2 || o.org_type == 3 },
     unless: :skip_validation
 
-  validates :charity_number, uniqueness: { on: [:create], scope: [:company_number] }, allow_nil: true, allow_blank: true
-  validates :company_number, uniqueness: { on: [:create], scope: [:charity_number] }, allow_nil: true, allow_blank: true
+  validates :charity_number, uniqueness: { on: :create, scope: :company_number }, allow_nil: true, allow_blank: true
+  validates :company_number, uniqueness: { on: :create, scope: :charity_number }, allow_nil: true, allow_blank: true
 
   validates :website, format: {
     with: URI::regexp(%w(http https)),

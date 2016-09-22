@@ -1,3 +1,4 @@
+# TODO: deprecated
 require 'test_helper'
 
 class RecipientFunderAccessTest < ActiveSupport::TestCase
