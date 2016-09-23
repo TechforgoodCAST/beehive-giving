@@ -1,3 +1,4 @@
+# TODO: refactor
 require 'test_helper'
 
 class PasswordResetTest < ActionDispatch::IntegrationTest

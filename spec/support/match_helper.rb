@@ -3,7 +3,7 @@ class MatchHelper
   include Capybara::DSL
   include WebMock::API
 
-  def stub_charity_commission(number=1161998)
+  def stub_charity_commission(number='1161998')
     # TODO: refactor
     stub_request(:get, "http://beta.charitycommission.gov.uk/charity-details/?regid=&subid=0")
       .to_return(status: 200, body: [])

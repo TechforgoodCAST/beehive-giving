@@ -52,24 +52,51 @@ feature 'Match' do
     expect(page).to have_text "can't be blank", count: 7
   end
 
+  def expect_charity_scrape
+    expect(page).to have_selector("input[value='Centre For The Acceleration Of Social Technology']")
+    expect(page).to have_text "can't be blank", count: 5
+    self
+  end
+
+  def expect_company_scrape
+    expect(page).to have_selector("input[value='Centre For The Acceleration Of Social Technology']")
+    expect(find_field(:recipient_country).value).to eq 'GB'
+    expect(find_field(:recipient_operating_for).value).to eq '2'
+    expect(page).to have_text "can't be blank", count: 3
+    self
+  end
+
   scenario 'When I sign up as a charity that is also a company,
             I want to make sure my details are correct,
             so I feel confident my results will be accurate' do
     helper.submit_user_form!
-    expect(page).to have_text "can't be blank", count: 3
+    expect_company_scrape
   end
 
   scenario 'When I sign up as a charity,
             I want to make sure my details are correct,
-            so I feel confident my results will be accurate'
+            so I feel confident my results will be accurate' do
+    helper.stub_charity_commission('123456')
+          .fill_user_form(seeking: 'A registered charity', charity_number: '123456')
+          .submit_user_form
+    expect_charity_scrape
+  end
 
   scenario 'When I sign up as a company,
             I want to make sure my details are correct,
-            so I feel confident my results will be accurate'
+            so I feel confident my results will be accurate' do
+    helper.fill_user_form(seeking: 'A registered company')
+          .submit_user_form
+    expect_company_scrape
+  end
 
   scenario 'When I sign up as both a charity and company,
             I want to make sure my details are correct,
-            so I feel confident my results will be accurate'
+            so I feel confident my results will be accurate' do
+    helper.fill_user_form(seeking: 'A registered charity & company')
+      .submit_user_form
+    expect_company_scrape
+  end
 
   scenario 'When I sign up as another type of organisation,
             I want to make sure my details are correct,
