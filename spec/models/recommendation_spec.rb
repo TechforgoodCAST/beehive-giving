@@ -117,4 +117,6 @@ describe Recommendation do
       expect(@fund1_recommendation).not_to be_valid
     end
   end
+
+  it 'only active funds recommended'
 end

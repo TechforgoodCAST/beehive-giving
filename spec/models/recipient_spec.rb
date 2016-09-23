@@ -57,4 +57,10 @@ describe Recipient do
     end
   end
 
+  it 'unlocked_funds'
+  it 'locked_funds'
+  it 'eligible_funds'
+  it 'ineligible_funds'
+  it 'recommended_with_eligible_funds'
+
 end
