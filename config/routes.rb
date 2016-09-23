@@ -32,8 +32,8 @@ Rails.application.routes.draw do
   match '/(:id)/basics', to: 'recipients#edit', via: :get, as: 'edit_recipient'
   match '/(:id)/basics', to: 'recipients#update', via: :patch
 
-  match '/new-funder', to: 'signup#funder', via: :get, as: 'new_funder'
-  match '/new-funder', to: 'signup#create_funder', via: :post
+  # match '/new-funder', to: 'signup#funder', via: :get, as: 'new_funder'
+  # match '/new-funder', to: 'signup#create_funder', via: :post
 
   # User authorisation for organisational access
   match '/unauthorised', to: 'signup#unauthorised', via: :get, as: 'unauthorised'
@@ -48,7 +48,7 @@ Rails.application.routes.draw do
   match '/account/(:id)/charge', to: 'accounts#charge', via: :post, as: 'account_charge'
 
   # Funds
-  match '/funds/home', to: 'funds#home', via: :get, as: 'funds_home'
+  # match '/funds/home', to: 'funds#home', via: :get, as: 'funds_home'
   match '/recommended/funds', to: 'recipients#recommended_funds', via: :get, as: 'recommended_funds'
   match '/eligible/funds', to: 'recipients#eligible_funds', via: :get, as: 'eligible_funds'
   match '/ineligible/funds', to: 'recipients#ineligible_funds', via: :get, as: 'ineligible_funds'
@@ -56,8 +56,8 @@ Rails.application.routes.draw do
   get '/(:tag)/funds', to: 'funds#tagged', as: 'tag'
 
   # Recipients
-  match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
-  match '/proposals/(:id)/recent', to: 'funders#recent', via: :get, as: 'funder_recent'
+  # match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
+  # match '/proposals/(:id)/recent', to: 'funders#recent', via: :get, as: 'funder_recent'
 
   match '/funding/(:id)/overview', to: 'funders#overview', via: :get, as: 'funder_overview'
   # match '/funding/(:id)/overview/(:year)', to: 'funders#overview', via: :get, as: 'funder_overview'
@@ -88,23 +88,20 @@ Rails.application.routes.draw do
   # Compare funders
   match '/funders/comparison', to: 'funders#comparison', via: :get, as: 'funders_comparison'
 
-  resources :users
-  resources :feedback, :only => [:new, :create, :edit, :update]
-  resources :password_resets, :only => [:new, :create, :edit, :update]
+  resources :feedback, only: [:new, :create, :edit, :update]
+  resources :password_resets, only: [:new, :create, :edit, :update]
 
-  resources :recipients, :except => [:new, :index] do
+  resources :recipients, except: [:new, :index] do
     member do
       post :approach_funder
     end
-    resources :recipient_attribute, :as => :attribute, :only => [:new, :create, :edit, :update]
   end
 
-  resources :funders, :except =>[:edit, :update] do
+  resources :funders, only: [:show, :index] do
     member do
       get :explore
       get :eligible
     end
-    resources :grants, :except =>[:show]
   end
 
   resources :funds, only: :show

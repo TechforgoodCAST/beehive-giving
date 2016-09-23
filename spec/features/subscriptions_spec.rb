@@ -19,7 +19,7 @@ feature 'Subscriptions' do
       @db = @app.instances
     end
 
-    context 'inactive subscription' do
+    context 'inactive' do
       scenario 'is inactive' do
         expect(@db[:recipient].subscription.active).to eq false
       end
@@ -51,7 +51,7 @@ feature 'Subscriptions' do
 
     end
 
-    context 'active subscription' do
+    context 'active' do
       before(:each) do
         visit(account_upgrade_path(@db[:recipient]))
         subscriptions_helper.pay_by_card(stripe)
