@@ -119,4 +119,7 @@ describe Recommendation do
   end
 
   it 'only active funds recommended'
+  it 'adding fund updates recommendations'
+  it 'recommendations ordered by score'
+  it 'different proposals have different recommendations'
 end
