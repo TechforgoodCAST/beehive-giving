@@ -1,7 +1,7 @@
 class EnquiriesController < ApplicationController # TODO: ApplicationsController?
 
   before_filter :ensure_logged_in # TODO:
-  before_filter :load_recipient, :load_proposal, :load_fund # TODO: refactor
+  before_filter :load_recipient, :load_fund, :ensure_proposal_present, :load_proposal # TODO: refactor
 
   def new
     if @proposal.eligible?(@fund) && @recipient.has_proposal?
