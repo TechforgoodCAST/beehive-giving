@@ -161,7 +161,7 @@ class Organisation < ActiveRecord::Base
       self.contact_email = email_scrape.text if email_scrape.present?
       self.charity_status = status_scrape.text.gsub('-',' ').capitalize if status_scrape.present?
       self.charity_status = out_of_date_scrape.text.gsub('-',' ').capitalize if out_of_date_scrape.present?
-      self.charity_year_ending = year_ending_scrape.text.gsub('Data for financial year ending ','').to_date if year_ending_scrape.present?
+      self.charity_year_ending = year_ending_scrape.text.gsub('Data for financial year ending ','').to_date if year_ending_scrape.present? && year_ending_scrape.include?('Data')
       self.charity_days_overdue = days_overdue_scrape.text.gsub('Documents ','').gsub(' days overdue','') if days_overdue_scrape.present?
       self.charity_income = income_scrape.text.sub('£','').to_f * financials_multiplier(income_scrape) if income_scrape.present?
       self.charity_spending = spending_scrape.text.sub('£','').to_f * financials_multiplier(spending_scrape) if spending_scrape.present?
