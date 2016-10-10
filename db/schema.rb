@@ -475,8 +475,9 @@ ActiveRecord::Schema.define(version: 20160921134820) do
     t.string   "slug"
     t.boolean  "open_call"
     t.boolean  "active"
-    t.string   "key_criteria"
+    t.text     "key_criteria"
     t.string   "currency"
+    t.string   "application_link"
     t.boolean  "amount_known"
     t.boolean  "amount_min_limited"
     t.boolean  "amount_max_limited"
@@ -506,34 +507,36 @@ ActiveRecord::Schema.define(version: 20160921134820) do
     t.boolean  "outcomes_known"
     t.boolean  "documents_known"
     t.boolean  "decision_makers_known"
-    t.datetime "created_at",                                      null: false
-    t.datetime "updated_at",                                      null: false
-    t.boolean  "open_data",                       default: false
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
+    t.boolean  "open_data",                            default: false
     t.date     "period_start"
     t.date     "period_end"
     t.integer  "grant_count"
     t.integer  "recipient_count"
-    t.float    "amount_mean_historic"
-    t.float    "amount_median_historic"
-    t.float    "amount_min_historic"
-    t.float    "amount_max_historic"
-    t.float    "duration_months_mean_historic"
-    t.float    "duration_months_median_historic"
-    t.float    "duration_months_min_historic"
-    t.float    "duration_months_max_historic"
-    t.jsonb    "org_type_distribution"
-    t.jsonb    "operating_for_distribution"
-    t.jsonb    "income_distribution"
-    t.jsonb    "employees_distribution"
-    t.jsonb    "volunteers_distribution"
-    t.jsonb    "geographic_scale_distribution"
-    t.integer  "beneficiary_min_age_historic"
-    t.integer  "beneficiary_max_age_historic"
-    t.jsonb    "gender_distribution"
-    t.jsonb    "amount_awarded_distribution"
-    t.jsonb    "award_month_distribution"
-    t.jsonb    "country_distribution"
-    t.string   "application_link"
+    t.float    "amount_awarded_sum"
+    t.float    "amount_awarded_mean"
+    t.float    "amount_awarded_median"
+    t.float    "amount_awarded_min"
+    t.float    "amount_awarded_max"
+    t.jsonb    "amount_awarded_distribution",          default: {},    null: false
+    t.float    "duration_awarded_months_mean"
+    t.float    "duration_awarded_months_median"
+    t.float    "duration_awarded_months_min"
+    t.float    "duration_awarded_months_max"
+    t.jsonb    "duration_awarded_months_distribution", default: {},    null: false
+    t.jsonb    "award_month_distribution",             default: {},    null: false
+    t.jsonb    "org_type_distribution",                default: {},    null: false
+    t.jsonb    "operating_for_distribution",           default: {},    null: false
+    t.jsonb    "income_distribution",                  default: {},    null: false
+    t.jsonb    "employees_distribution",               default: {},    null: false
+    t.jsonb    "volunteers_distribution",              default: {},    null: false
+    t.jsonb    "gender_distribution",                  default: {},    null: false
+    t.jsonb    "age_group_distribution",               default: {},    null: false
+    t.jsonb    "beneficiary_distribution",             default: {},    null: false
+    t.jsonb    "geographic_scale_distribution",        default: {},    null: false
+    t.jsonb    "country_distribution",                 default: {},    null: false
+    t.jsonb    "district_distribution",                default: {},    null: false
   end
 
   add_index "funds", ["funder_id"], name: "index_funds_on_funder_id", using: :btree

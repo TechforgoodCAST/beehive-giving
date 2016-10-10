@@ -14,8 +14,9 @@ namespace :fund do
 
     FundingType.create(label: 'Other')
 
-    @funder = Funder.find_by_name(['Lloyds Bank Foundation', 'Lloyds Bank Foundation England and Wales'])
-    @funder.update_column(:name, 'Lloyds Bank Foundation England and Wales')
+    @funder = Funder.find_by_name(['Lloyds Bank Foundation', 'Lloyds Bank Foundation for England and Wales'])
+    @funder.update_column(:name, 'Lloyds Bank Foundation for England and Wales')
+    @funder.update_column(:slug, 'lloyds-bank-foundation-for-england-and-wales')
     @funds = build_list(:fund_with_open_data, 11, funder: @funder)
 
     @funds.each do |fund|

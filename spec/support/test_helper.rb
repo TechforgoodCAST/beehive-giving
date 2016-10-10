@@ -33,6 +33,8 @@ class TestHelper
     @outcomes = create_list(:outcome, 2)
     @decision_makers = create_list(:decision_maker, 2)
     @funds.each do |fund|
+      stub_fund_summary_endpoint(fund.instance_eval { set_slug })
+
       fund.deadlines = create_list(:deadline, 2, fund: fund)
       fund.stages = build_list(:stage, 2, fund: fund)
       fund.funding_types = @funding_types
@@ -88,6 +90,13 @@ class TestHelper
       ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'],
       { duration: data }
     )
+    self
+  end
+
+  def stub_fund_summary_endpoint(fund_slug)
+    stub_request(:get, ENV['BEEHIVE_DATA_FUND_SUMMARY_ENDPOINT'] + fund_slug)
+      .with(headers: { 'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN'] })
+      .to_return(status: 200, body: "", headers: {})
     self
   end
 

@@ -68,7 +68,7 @@ gem 'kaminari'
 gem 'fiscali'
 
 gem 'ransack'
-gem 'activeadmin', github: 'activeadmin'
+gem 'activeadmin', '~> 1.0.0.pre1'
 gem 'devise'
 gem 'workflow'
 gem 'stripe', git: 'https://github.com/stripe/stripe-ruby'

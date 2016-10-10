@@ -3,13 +3,12 @@ class CreateFunds < ActiveRecord::Migration
     create_table :funds do |t|
       t.references :funder, index: true
       t.string :type_of_fund, :name, required: true
-      t.integer :year_of_fund, required: true
       t.text :description, required: true
       t.string :slug, index: true, unique: true
       t.boolean :open_call, :active, required: true
-      t.boolean :key_criteria_known, required: true
-      t.string :key_criteria
+      t.text :key_criteria
       t.string :currency, required: true
+      t.string :application_link, required: true
 
       t.boolean :amount_known, required: true
       t.boolean :amount_min_limited, required: true
