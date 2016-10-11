@@ -6,7 +6,9 @@ ActiveAdmin.register Fund do
                 :restrictions_known, :skip_beehive_data, :open_data,
                 :period_start, :period_end, :grant_count,
                 :amount_awarded_distribution, :award_month_distribution,
-                :country_distribution, restriction_ids: []
+                :country_distribution, :geographic_scale,
+                :geographic_scale_limited, country_ids: [], district_ids: [],
+                restriction_ids: []
 
   controller do
     def find_resource
@@ -153,10 +155,14 @@ ActiveAdmin.register Fund do
       #   f.input :contact_email
       # end
       #
-      # inputs 'Geography' do
-      #   f.input :geographic_scale_limited
-      #     f.input :geographic_scale
-      # end
+      inputs 'Geography' do
+        f.input :geographic_scale, as: :select, collection: Proposal::AFFECT_GEO
+        f.input :geographic_scale_limited
+          f.input :countries, collection: Country.all, member_label: :name,
+            input_html: { multiple: true, class: 'chosen-select' }
+          f.input :districts, collection: District.all, member_label: :label,
+            input_html: { multiple: true, class: 'chosen-select' }
+      end
 
       # f.input :restrictions_known # boolean
       #

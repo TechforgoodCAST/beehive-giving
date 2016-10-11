@@ -56,10 +56,9 @@ class Fund < ActiveRecord::Base
   #
   # validates :accepts_calls, presence: true, if: :accepts_calls_known?
   # validates :contact_number, presence: true, if: :accepts_calls?
-  #
-  # validates :geographic_scale, numericality: { only_integer: true, greater_than_or_equal_to: Proposal::AFFECT_GEO.first[1], less_than_or_equal_to: Proposal::AFFECT_GEO.last[1] }
-  #
-  # validates :countries, :districts, presence: true, if: :geographic_scale_limited?
+
+  validates :geographic_scale, numericality: { only_integer: true, greater_than_or_equal_to: Proposal::AFFECT_GEO.first[1], less_than_or_equal_to: Proposal::AFFECT_GEO.last[1] }
+  validates :countries, :districts, presence: true, if: :geographic_scale_limited?
   validates :restrictions, presence: true, if: :restrictions_known?
   # validates :outcomes, presence: true, if: :outcomes_known?
   # validates :decision_makers, presence: true, if: :decision_makers_known?

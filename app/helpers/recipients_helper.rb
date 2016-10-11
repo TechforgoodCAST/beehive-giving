@@ -34,6 +34,7 @@ module RecipientsHelper
 
   def score_to_match_copy(score, scale=1)
     {
+      'Not enough data': 0,
       'Very poor':  0.2,
       'Poor':       0.4,
       'Fair':       0.6,
