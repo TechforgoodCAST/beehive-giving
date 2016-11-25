@@ -19,16 +19,18 @@
 
     - @funds.each_with_index do |fund, i|
 
-      - if i < 1
+      - if @recipient.is_subscribed? || i < 1
         = render partial: 'recipients/funders/summary', locals: { fund: fund }
-        .cta.wide
-          Go unlimited with Beehive Pro to see more
-          = @tag.name
-          funders.
-          %a{href: '#why-hidden', class: ' uk-button uk-button-large uk-button-primary invert', onclick: '$.UIkit.modal("#why-hidden").show();'} Upgrade (coming soon)
+        - unless @recipient.is_subscribed?
+          .cta.wide
+            Go unlimited with Beehive Pro to see more
+            = @tag.name
+            funders.
+            %a{href: '#why-hidden', class: ' uk-button uk-button-large uk-button-primary invert', onclick: '$.UIkit.modal("#why-hidden").show();'} Upgrade (coming soon)
       - else
         = render partial: 'recipients/funders/summary_redacted', locals: { fund: fund }
         - unless i == @funds.count-1
           %hr.thick
 
-= render partial: 'funders/why_hidden'
+- unless @recipient.is_subscribed?
+  = render partial: 'funders/why_hidden'

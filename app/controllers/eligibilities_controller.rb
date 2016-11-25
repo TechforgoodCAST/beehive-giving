@@ -15,7 +15,7 @@ class EligibilitiesController < ApplicationController
     elsif current_user.feedbacks.count < 1 && (@recipient.locked_fund?(@fund) && @recipient.funds_checked == 2)
       session[:redirect_to_funder] = @fund.slug
       redirect_to new_feedback_path
-    elsif @recipient.funds_checked < 3
+    elsif @recipient.funds_checked < 3 || @recipient.unlocked_fund?(@fund)
       render :new
     else
       # TODO: refactor redirect to upgrade path
@@ -26,7 +26,9 @@ class EligibilitiesController < ApplicationController
   def create
     if @recipient.update_attributes(eligibility_params)
       @recipient.increment!(:funds_checked) if @proposal.recommendation(@fund).eligibility == nil # TODO: refactor
-      @recipient.check_eligibility(@proposal, @fund)
+      @proposal.funds.each do |fund| # TODO: performance?
+        @recipient.check_eligibility(@proposal, fund)
+      end
       render :new
     else
       render :new

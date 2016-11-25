@@ -33,7 +33,7 @@
         - else
           .cta.wide.red
             You are ineligible, and did not meet
-            %strong= @recipient.eligibility_restrictions(@fund).where(eligible: false).count
+            %strong= @recipient.ineligible_restrictions.count
             of the criteria below.
 
       %h3.uk-margin-top Eligibility questions

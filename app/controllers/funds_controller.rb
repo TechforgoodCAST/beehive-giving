@@ -17,7 +17,7 @@ class FundsController < ApplicationController
   def tagged
     @tag = ActsAsTaggableOn::Tag.find_by_slug(params[:tag])
     if @tag.present?
-      @funds = @recipient.recommended_funds.tagged_with(@tag)
+      @funds = @recipient.funds.tagged_with(@tag)
     else
       redirect_to root_path, alert: 'Not found'
     end

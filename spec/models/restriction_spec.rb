@@ -5,7 +5,7 @@ describe 'Restriction' do
   before(:each) do
     @app.seed_test_db.setup_funds(num: 2)
     @db = @app.instances
-    @r1 = Restriction.first
+    @r1 = Restriction.third
     @r2 = Restriction.last
   end
 

@@ -45,7 +45,7 @@ feature 'Eligibility' do
               I want to see a list of all restrictions,
               so I can check to see if any apply' do
       expect(current_path).to eq fund_eligibility_path(@fund)
-      expect(page).to have_css '.restriction', count: 2
+      expect(page).to have_css '.restriction', count: 3
     end
 
     scenario "When I run a check and I'm eligible,
@@ -68,8 +68,8 @@ feature 'Eligibility' do
               I want to see which options did not meet the criteria,
               so I can correct them if neccesary" do
       helper.answer(eligible: false).check_eligibility
-      expect(page).to have_text 'You are ineligible, and did not meet 2 of the criteria below.'
-      expect(page).to have_text 'You did not meet this criteria', count: 2
+      expect(page).to have_text 'You are ineligible, and did not meet 3 of the criteria below.'
+      expect(page).to have_text 'You did not meet this criteria', count: 3
 
       click_link 'Why ineligible?'
       expect(current_path).to eq fund_eligibility_path(@fund)
@@ -85,19 +85,20 @@ feature 'Eligibility' do
       expect(current_path).to eq fund_eligibility_path(@fund)
     end
 
+    scenario "When I check a fund with shared restrictions,
+              I want associated funds to be checked,
+              so I don't waste time checking funds with the same restrictions" do
+      helper.answer.check_eligibility
+      expect(@db[:recipient].unlocked_funds.count).to eq 4
+    end
+
     scenario "When I've answered some eligibility questions in another fund,
               I want previously answered questions to be prefilled,
               so I don't waste my time answering the same question twice" do
       helper.answer(eligible: false).check_eligibility
-
-      fund = Fund.first
-      fund.restriction_ids = fund.restriction_ids << create(:restriction).id
-      fund.save!
-      expect(fund.restrictions.count).to eq 3
-
-      visit fund_eligibility_path(fund)
+      visit fund_eligibility_path(Fund.second)
       helper.check_eligibility(remaining: 2)
-      expect(page).to have_text 'please select from the list', count: 1
+      expect(page).to have_text 'please select from the list', count: 2
     end
 
     scenario "When I'm ineligible and try to access application details,
@@ -111,20 +112,32 @@ feature 'Eligibility' do
     scenario 'When I try check eligiblity but have reached the max free limit,
               I want to be able to upgrade,
               so I can continue to check eligibilities' do
+      Fund.second.restrictions << create(:restriction)
+      @fund.restrictions << create(:restriction)
+
+      # check 1
       helper.answer.check_eligibility
 
+      # check 2
       click_link 'Funding'
-      helper.visit_first_fund.check_eligibility(remaining: 2)
+      helper.visit_first_fund.answer(n: 4).check_eligibility(remaining: 2)
 
+      # check 3
       click_link 'Funding'
       helper.visit_first_fund
       expect(current_path).to eq new_feedback_path
       helper.complete_feedback.submit_feedback
-      helper.check_eligibility(remaining: 1)
+      helper.answer.check_eligibility(remaining: 1)
 
+      # checked funds shouldn't show 'Coming soon'
+      click_link 'Funding'
+      visit fund_eligibility_path(Fund.first)
+      expect(current_path).to eq fund_eligibility_path(Fund.first)
+
+      # unchecked funds show 'Coming soon'
       click_link 'Funding'
       helper.visit_first_fund
-      # TODO: subscription
+      # # TODO: subscription
       expect(page).to have_text 'Coming soon'
       fill_in :feedback_price, with: 50
       click_button 'Save feedback'
@@ -151,7 +164,7 @@ feature 'Eligibility' do
       scenario "When I'm browsing funds,
                 I want to see how many eligible funds I have,
                 so I can decide to view them" do
-        expect(page).to have_text 'Eligible (1)'
+        expect(page).to have_text 'Eligible (4)'
       end
 
       scenario "When I click on an 'Eligible' tag,
@@ -184,7 +197,7 @@ feature 'Eligibility' do
       scenario "When I'm browsing funds,
                 I want to see how many ineligible funds I have,
                 so I can decide to view them" do
-        expect(page).to have_text 'Ineligible (1)'
+        expect(page).to have_text 'Ineligible (4)'
       end
 
       scenario "When I click on an 'Ineligible' tag,

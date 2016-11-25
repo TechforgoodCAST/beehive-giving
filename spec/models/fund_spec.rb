@@ -30,14 +30,12 @@ describe Fund do
       expect(@fund).not_to be_valid
     end
 
-    # TODO:
-    # it 'has many deadlines' do
+    it 'has many deadlines'
     #   @fund.save
     #   expect(@fund.deadlines.count).to eq 2
     # end
 
-    # TODO:
-    # it 'deadlines required if deadlines_known and deadlines_limited' do
+    it 'deadlines required if deadlines_known and deadlines_limited'
     #   @fund.deadlines_limited = true
     #   @fund.deadlines = []
     #   @fund.save
@@ -51,85 +49,73 @@ describe Fund do
       expect(@fund).to be_valid
     end
 
-    # TODO:
-    # it 'has many stages' do
+    it 'has many stages'
     #   @fund.save
     #   expect(@fund.stages.count).to eq 2
     # end
 
-    # TODO:
-    # it 'stages required if stages_known' do
+    it 'stages required if stages_known'
     #   @fund.stages = []
     #   @fund.save
     #   expect(@fund).not_to be_valid
     # end
 
-    # TODO:
-    # it 'has many funding types' do
+    it 'has many funding types'
     #   @fund.save
     #   expect(@fund.funding_types.count).to eq FundingType::FUNDING_TYPE.count
     # end
 
-    # TODO:
-    # it 'amount_min_limited and amount_max_limited present if amount_known' do
+    it 'amount_min_limited and amount_max_limited present if amount_known'
     #   @fund.amount_min_limited = nil
     #   @fund.amount_max_limited = nil
     #   @fund.save
     #   expect(@fund).not_to be_valid
     # end
 
-    # TODO:
-    # it 'amount_min required if amount_min_limited' do
+    it 'amount_min required if amount_min_limited'
     #   @fund.amount_min = nil
     #   @fund.save
     #   expect(@fund).not_to be_valid
     # end
 
-    # TODO:
-    # it 'amount_max required if amount_max_limited' do
+    it 'amount_max required if amount_max_limited'
     #   @fund.amount_max = nil
     #   @fund.save
     #   expect(@fund).not_to be_valid
     # end
 
-    # TODO:
-    # it 'duration_months_min_limited and duration_months_min_limited present if duration_months_known' do
+    it 'duration_months_min_limited and duration_months_min_limited present if duration_months_known'
     #   @fund.duration_months_min_limited = nil
     #   @fund.duration_months_max_limited = nil
     #   @fund.save
     #   expect(@fund).not_to be_valid
     # end
 
-    # TODO:
-    # it 'duration_months_min required if duration_months_min_limited' do
+    it 'duration_months_min required if duration_months_min_limited'
     #   @fund.duration_months_min = nil
     #   @fund.save
     #   expect(@fund).not_to be_valid
     # end
 
-    # TODO:
-    # it 'duration_months_max required if duration_months_max_limited' do
+    it 'duration_months_max required if duration_months_max_limited'
     #   @fund.duration_months_max = nil
     #   @fund.save
     #   expect(@fund).not_to be_valid
     # end
 
-    # TODO:
-    # it 'accepts_calls present if accepts_calls_known' do
+    it 'accepts_calls present if accepts_calls_known'
     #   @fund.accepts_calls = nil
     #   @fund.save
     #   expect(@fund).not_to be_valid
     # end
 
-    # TODO:
-    # it 'contact_number present if accepts_calls' do
+    it 'contact_number present if accepts_calls'
     #   @fund.contact_number = nil
     #   @fund.save
     #   expect(@fund).not_to be_valid
     # end
 
-    # TODO:
-    # it 'geographic_scale is valid' do
+    it 'geographic_scale is valid'
     #   const = Proposal::AFFECT_GEO
     #
     #   @fund.geographic_scale = const.first[1] - 1
@@ -141,28 +127,24 @@ describe Fund do
     #   expect(@fund).not_to be_valid
     # end
 
-    # TODO:
-    # it 'countries present if geographic_scale_limited' do
+    it 'countries present if geographic_scale_limited'
     #   @fund.countries = []
     #   @fund.save
     #   expect(@fund).not_to be_valid
     # end
 
-    # TODO:
-    # it 'districts present if geographic_scale_limited' do
+    it 'districts present if geographic_scale_limited'
     #   @fund.districts = []
     #   @fund.save
     #   expect(@fund).not_to be_valid
     # end
 
-    # TODO:
-    # it 'has many countries' do
+    it 'has many countries'
     #   @fund.save
     #   expect(@fund.countries.count).to eq 2
     # end
 
-    # TODO:
-    # it 'has many districts' do
+    it 'has many districts'
     #   @fund.save
     #   expect(@fund.districts.count).to eq 6
     # end
@@ -175,31 +157,27 @@ describe Fund do
 
     it 'has many restrictions' do
       @fund.save
-      expect(@fund.restrictions.count).to eq 2
+      expect(@fund.restrictions.count).to eq 3
     end
 
-    # TODO:
-    # it 'outcomes present if outcomes_known' do
+    it 'outcomes present if outcomes_known'
     #   @fund.outcomes = []
     #   @fund.save
     #   expect(@fund).not_to be_valid
     # end
 
-    # TODO:
-    # it 'has many outcomes' do
+    it 'has many outcomes'
     #   @fund.save
     #   expect(@fund.outcomes.count).to eq 2
     # end
 
-    # TODO:
-    # it 'decision_makes present if decision_makers_known' do
+    it 'decision_makes present if decision_makers_known'
     #   @fund.decision_makers = []
     #   @fund.save
     #   expect(@fund).not_to be_valid
     # end
 
-    # TODO:
-    # it 'has many decision_makers' do
+    it 'has many decision_makers'
     #   @fund.save
     #   expect(@fund.decision_makers.count).to eq 2
     # end
@@ -265,8 +243,7 @@ describe Fund do
       end
     end
 
-    # TODO:
-    # it 'maximum values greater than minimum' do
+    it 'maximum values greater than minimum'
     #   [
     #     %w[amount_awarded_min amount_awarded_max],
     #     %w[duration_awarded_months_min duration_awarded_months_max]

@@ -8,6 +8,8 @@ class RecipientsController < ApplicationController
   before_filter :load_feedback, except: [:unlock_funder, :vote]
   before_filter :funder_attribute, only: [:comparison, :eligibility, :update_eligibility]
 
+  # TODO: before_filter :refine_recommendations
+
   def edit
     @recipient.get_charity_data
     @recipient.get_company_data
@@ -66,6 +68,10 @@ class RecipientsController < ApplicationController
   end
 
   private
+
+    def refine_recommendations
+      @recipient.proposals.last.refine_recommendations
+    end
 
     def load_recipient
       @recipient = Recipient.find_by_slug(params[:id]) || current_user.organisation if logged_in?

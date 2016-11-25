@@ -122,13 +122,16 @@ class Proposal < ActiveRecord::Base
     )
 
     Fund.all.each do |fund|
+      org_type_score = beneficiary_score = location_score = amount_score = duration_score = 0
+
       if fund.open_data?
 
-        # org type recommendation
-        org_type_score = parse_distribution(
-          fund.org_type_distribution,
-          Organisation::ORG_TYPE[self.recipient.org_type + 1][0]
-        )
+        # TODO:
+        # # org type recommendation
+        # org_type_score = parse_distribution(
+        #   fund.org_type_distribution,
+        #   Organisation::ORG_TYPE[self.recipient.org_type + 1][0]
+        # )
 
         if org_type_score > 0
           [
@@ -161,38 +164,48 @@ class Proposal < ActiveRecord::Base
           beneficiary_score = 0
         end
 
-        # location recommendation
-        location_score = 0
-        location_score += compare_arrays('countries', fund) # TODO: refactor
-        location_score += compare_arrays('districts', fund) # TODO: refactor
-
         # amount requested recommendation
-        amount_score = 0
         amount_score = fund_request_scores(fund, beehive_insight_amounts, amount_score)
         amount_score = 0 if fund.amount_max_limited? && self.total_costs > fund.amount_max
 
         # duration requested recommendation
-        duration_score = 0
         duration_score = fund_request_scores(fund, beehive_insight_durations, duration_score)
         duration_score = 0 if fund.duration_months_max_limited? && self.funding_duration > fund.duration_months_max
-
-        score = org_type_score +
-                beneficiary_score +
-                location_score +
-                amount_score +
-                duration_score
-
-        scores = {
-          org_type_score: org_type_score,
-          beneficiary_score: beneficiary_score,
-          location_score: location_score,
-          grant_amount_recommendation: amount_score,
-          grant_duration_recommendation: duration_score,
-          score: score
-        }
-        save_recommendation(fund, scores)
       end
+
+      # location recommendation
+      location_score += compare_arrays('countries', fund) # TODO: refactor
+      location_score += compare_arrays('districts', fund) # TODO: refactor
+
+      score = org_type_score +
+              beneficiary_score +
+              location_score +
+              amount_score +
+              duration_score
+
+      scores = {
+        org_type_score: org_type_score,
+        beneficiary_score: beneficiary_score,
+        location_score: location_score,
+        grant_amount_recommendation: amount_score,
+        grant_duration_recommendation: duration_score,
+        score: score
+      }
+      save_recommendation(fund, scores)
     end
+  end
+
+  def refine_recommendations
+    unless Fund.active.count == self.funds.count
+      self.initial_recommendation
+      self.recommendations.where(fund_id: Fund.inactive_ids).destroy_all
+    end
+  end
+
+  def show_fund(fund)
+    recipient.is_subscribed? ||
+    recipient.recommended_fund?(fund) ||
+    recommendation(fund).eligibility?
   end
 
   def check_affect_geo
@@ -224,7 +237,7 @@ class Proposal < ActiveRecord::Base
 
     def parse_distribution(data, comparison)
       data.sort_by { |i| i["position"] }
-          .select { |i| i["label"] == comparison }
+          .select { |i| i["label"] == comparison unless i["label"] == "Unknown" }
           .first["percent"]
     end
 

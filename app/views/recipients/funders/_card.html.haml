@@ -3,6 +3,7 @@
     .funder{class: fund.funder.slug}
   .details
     .content
+      %em= fund.name
       %h4.uk-text-bold
         Your recommendation
         %small.muted Beta
@@ -23,7 +24,7 @@
                   %strong= link_to 'Ineligible', fund_eligibility_path(fund), class: 'very-poor'
               - else
                 %strong= link_to 'Check', fund_eligibility_path(fund), class: 'primary'
-          - unless @recipient.recommended_fund?(fund) || @proposal.recommendation(fund).eligibility?
+          - unless @proposal.show_fund(fund)
             %tr
               %td.muted{colspan: 2}
                 %a{href: '#why-hidden', class: 'uk-text-bold', onclick: '$.UIkit.modal("#why-hidden").show();'} Upgrade to see more

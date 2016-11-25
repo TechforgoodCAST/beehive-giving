@@ -20,8 +20,8 @@ class EligibilityHelper
     self
   end
 
-  def answer(eligible: true)
-    2.times do |i|
+  def answer(eligible: true, n: 3)
+    n.times do |i|
       choose "recipient_eligibilities_attributes_#{i}_eligible_#{eligible}"
     end
     self

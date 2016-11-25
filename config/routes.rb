@@ -57,7 +57,7 @@ Rails.application.routes.draw do
 
   # Recipients
   # match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
-  # match '/proposals/(:id)/recent', to: 'funders#recent', via: :get, as: 'funder_recent'
+  match '/proposals/(:id)/recent', to: 'funders#recent', via: :get, as: 'funder_recent' # TODO: deprecated remove
 
   match '/funding/(:id)/overview', to: 'funders#overview', via: :get, as: 'funder_overview'
   # match '/funding/(:id)/overview/(:year)', to: 'funders#overview', via: :get, as: 'funder_overview'

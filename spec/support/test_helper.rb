@@ -29,10 +29,10 @@ class TestHelper
       @funds = build_list(:fund, num, funder: @funder)
     end
     @funding_types = create_list(:funding_type, FundingType::FUNDING_TYPE.count)
-    @restrictions = create_list(:restriction, 2)
+    @restrictions = create_list(:restriction, 5)
     @outcomes = create_list(:outcome, 2)
     @decision_makers = create_list(:decision_maker, 2)
-    @funds.each do |fund|
+    @funds.each_with_index do |fund, i|
       stub_fund_summary_endpoint(fund.instance_eval { set_slug })
 
       fund.deadlines = create_list(:deadline, 2, fund: fund)
@@ -40,7 +40,7 @@ class TestHelper
       fund.funding_types = @funding_types
       fund.countries = @countries
       fund.districts = @uk_districts + @kenya_districts
-      fund.restrictions = @restrictions
+      fund.restrictions = (i % 2 == 0 ? @restrictions.first(3) : @restrictions.last(3))
       fund.outcomes = @outcomes
       fund.decision_makers = @decision_makers
       fund.save! if save

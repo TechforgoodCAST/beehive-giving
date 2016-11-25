@@ -34,27 +34,28 @@ class Recipient < Organisation
     end
   end
 
-  def unlocked_funds
+  def unlocked_funds # TODO: to proposal
     funds.where('eligibility IS NOT NULL')
   end
 
-  def locked_funds
-    funds.where('eligibility IS NULL')
-  end
+  # TODO:
+  # def locked_funds
+  #   funds.where('eligibility IS NULL')
+  # end
 
-  def eligible_funds
+  def eligible_funds # TODO: to proposal
     unlocked_funds.where('eligibility = ?', 'Eligible')
   end
 
-  def ineligible_funds
+  def ineligible_funds # TODO: to proposal
     unlocked_funds.where('eligibility = ?', 'Ineligible')
   end
 
-  def unlocked_fund?(fund)
+  def unlocked_fund?(fund) # TODO: to proposal
     unlocked_funds.pluck(:id).include?(fund.id)
   end
 
-  def locked_fund?(fund)
+  def locked_fund?(fund) # TODO: to proposal
     !unlocked_fund?(fund)
   end
 
@@ -73,49 +74,33 @@ class Recipient < Organisation
     self.grants.where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01")
   end
 
-  # TODO: refactor
-  def eligibility_count(funder)
-    count = 0
-
-    funder.restrictions.uniq.each do |r|
-      self.eligibilities.each do |e|
-        count += 1 if e.restriction_id == r.id
-      end
-    end
-
-    count
-  end
-
-  def set_eligibility(proposal, fund, eligibility)
+  def set_eligibility(proposal, fund, eligibility) # TODO: to proposal
     proposal.recommendation(fund).update_attributes(eligibility: eligibility)
   end
 
-  def check_eligibility(proposal, fund)
-    self.eligibility_restrictions(fund).pluck(:eligible).include?(false) ?
-      self.set_eligibility(proposal, fund, 'Ineligible') :
-      self.set_eligibility(proposal, fund, 'Eligible')
+  def eligible_restrictions
+    self.eligibilities.where(eligible: true).pluck(:restriction_id)
   end
 
-  def check_eligibilities
+  def ineligible_restrictions
+    self.eligibilities.where(eligible: false).pluck(:restriction_id)
+  end
+
+  def check_eligibility(proposal, fund)
+    recipient_restrictions = self.eligibilities.pluck(:restriction_id)
+    fund_restrictions = fund.restrictions.pluck(:id)
+    if (recipient_restrictions & fund_restrictions).count == fund_restrictions.count
+      (eligible_restrictions & fund_restrictions).count == fund_restrictions.count ?
+        set_eligibility(proposal, fund, 'Eligible') :
+        set_eligibility(proposal, fund, 'Ineligible')
+    end
+  end
+
+  def check_eligibilities # TODO: remove?
     self.recipient_funder_accesses.each do |unlocked_funder|
       funder = Funder.find(unlocked_funder.funder_id)
       self.check_eligibility(funder)
     end
-  end
-
-  def get_funders_by_eligibility(eligibility)
-    Funder.find(self.recommendations.where(eligibility: eligibility).pluck(:funder_id))
-  end
-
-  def ineligible?(funder)
-    return true if self.load_recommendation(funder).eligibility == 'Ineligible'
-  end
-
-  def eligibility_restrictions(fund)
-    Eligibility.where(
-      recipient_id: self,
-      restriction_id: fund.restrictions
-    ).order(:id)
   end
 
   def has_proposal? # refactor?
@@ -136,11 +121,6 @@ class Recipient < Organisation
 
   def profile_for_migration?
     proposals.count < 1 && profiles.where(state: 'complete').count > 0
-  end
-
-  # TODO: refactor
-  def questions_remaining?(funder)
-    self.eligibility_count(funder) < funder.restrictions.uniq.count
   end
 
   def restriction_truthy(restriction)

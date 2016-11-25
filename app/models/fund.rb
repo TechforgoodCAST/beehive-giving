@@ -1,5 +1,8 @@
 class Fund < ActiveRecord::Base
 
+  scope :active, -> { where(active: true) }
+  scope :inactive_ids, -> { where(active: false).pluck(:id) }
+
   belongs_to :funder
 
   has_many :recommendations, dependent: :destroy

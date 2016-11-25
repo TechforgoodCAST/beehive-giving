@@ -11,7 +11,7 @@
 
     - if fund.tag_list.present?
       .uk-margin-top
-        - if @recipient.recommended_fund?(fund) || @proposal.recommendation(fund).eligibility?
+        - if @proposal.show_fund(fund)
           = raw fund.tags.order(:name).map { |t| link_to t, tag_path(t.slug), class: 'uk-button uk-button-small uk-button-primary invert uk-margin-small-bottom' }.join(' ')
         - else
           .uk-margin-small-bottom
