@@ -96,7 +96,7 @@ feature 'Browse' do
         expect(current_path).to eq all_funds_path
       end
 
-      scenario "When I'm browsing 'All' funds and can only see tags for recommedned funds,
+      scenario "When I'm browsing 'All' funds and can only see tags for recommended funds,
                 I want more information,
                 so I understand why I can't see some information" do
         expect(page).to have_css '.redacted', count: 6
