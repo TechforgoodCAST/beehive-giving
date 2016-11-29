@@ -12,15 +12,9 @@
               .funder{class: (@tag.present? ? 'locked' : fund.funder.slug)}
         .details
           .content.center
-            - if current_user.feedbacks.count > 0
-              %a.uk-width-1-1.uk-button.uk-button-primary.uk-button-large{href: fund_path(fund)} Show fund
-            - else
-              = link_to 'Show fund', '#why-hidden', class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large', onclick: '$.UIkit.modal("#why-hidden").show();'
+            = link_to 'Show fund', '#why-hidden', class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large', onclick: '$.UIkit.modal("#why-hidden").show();'
           .content.center
-            - if current_user.feedbacks.count > 0
-              = link_to 'Why is this hidden?', fund_path(fund)
-            - else
-              = link_to 'Why is this hidden?', '#why-hidden', onclick: '$.UIkit.modal("#why-hidden").show();'
+            = link_to 'Why is this hidden?', '#why-hidden', onclick: '$.UIkit.modal("#why-hidden").show();'
 
     .uk-width-medium-2-3
       %h3.uk-margin-top
