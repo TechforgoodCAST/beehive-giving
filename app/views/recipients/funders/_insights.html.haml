@@ -1,4 +1,5 @@
 %p= raw(fund.description)
+= period(fund)
 
 %ul.insights
   - unless params[:controller] == 'recipients' && %w(eligibility update_eligibility apply).include?(params[:action])
@@ -29,36 +30,35 @@
         %strong duration
         you're seeking.
 
-  - if fund.grant_count
+  - if fund.open_data && fund.grant_count
     %li
       Awarded
       .highlight= number_with_delimiter(fund.grant_count)
       grants.
       %a.action{href: fund_path(fund, anchor: 'how-was-funding-distributed')} More info
 
-  -# TODO:
-  -# - if fund.monthly_distribution
-  -#   %li
-  -#     Awarded funding in
-  -#     = succeed '.' do
-  -#       %strong= raw(funder.current_attribute.approval_months_by_count)
-  -#     %a.action{href: funder_path(fund, anchor: 'when-was-funding-awarded')} More info
-
-  - if fund.geographic_scale_distribution.size > 0
+  - if fund.open_data? && fund.award_month_distribution?
     %li
-      %strong= number_to_percentage(fund.geographic_scale_distribution.map { |i| [i['percent'], i['label']] }.max[0], precision: 0)
-      of projects funded affected
+      Awarded the most funding in
       = succeed '.' do
-        %strong= fund.geographic_scale_distribution.map { |i| [i['percent'], i['label']] }.max[1].downcase
-      %a.action{href: fund_path(fund, anchor: 'where-was-funding-awarded')} More info
+        %strong= top_award_months(fund)
+      %a.action{href: fund_path(fund, anchor: 'when-was-funding-awarded')} More info
 
   -# TODO:
-  -# - if fund.country_distribution
+  -# - if fund.geographic_scale_distribution.size > 0
   -#   %li
-  -#     The most funded countries were
+  -#     %strong= number_to_percentage(fund.geographic_scale_distribution.map { |i| [i['percent'], i['label']] }.max[0], precision: 0)
+  -#     of projects funded affected
   -#     = succeed '.' do
-  -#       %strong= raw(funder.current_attribute.countries_by_count)
-  -#     %a.action{href: funder_path(fund, anchor: 'where-was-funding-awarded')} More info
+  -#       %strong= fund.geographic_scale_distribution.map { |i| [i['percent'], i['label']] }.max[1].downcase
+  -#     %a.action{href: fund_path(fund, anchor: 'where-was-funding-awarded')} More info
+
+  - if fund.open_data? && fund.country_distribution?
+    %li
+      Awarded most funding in the
+      = succeed '.' do
+        %strong= top_countries(fund)
+      %a.action{href: fund_path(fund, anchor: 'where-was-funding-awarded')} More info
 
   -# TODO:
   -# - if fund.district_distribution

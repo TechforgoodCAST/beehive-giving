@@ -102,6 +102,49 @@ feature 'Browse' do
         expect(page).to have_css '.redacted', count: 6
       end
     end
+
+    context 'When I view fund a with open data' do
+      before(:each) do
+        click_link @top_fund.name
+      end
+
+      scenario 'I want to see which time period the analysis relates to,
+                so I can understand how up to date it is' do
+        expect(page).to have_text "Nov 15' - Nov 16'", count: 4
+      end
+
+      scenario 'I want to see the grant_count,
+                so I can evaluate my chances of success' do
+        expect(page).to have_text "Awarded #{@top_fund.grant_count} grants.", count: 2
+      end
+
+      scenario 'I want to see a amount_awarded_distribution chart,
+                so I can evaluate how much funding to ask for' do
+        expect(page).to have_css '#amount_awarded_distribution'
+      end
+
+      scenario 'I want to see the top_award_months,
+                so I can evaluate my chances of success' do
+        expect(page).to have_text 'Awarded the most funding in January and February.', count: 2
+      end
+
+      scenario "I want to see a award_month_distribution chart,
+                so I can understand which months funding is awarded" do
+        expect(page).to have_css '#award_month_distribution'
+      end
+
+      scenario 'I want to see the top_countries,
+                so I can evaluate my chances of success' do
+        expect(page).to have_text 'Awarded most funding in the United Kingdom.', count: 2
+      end
+
+      scenario "I want to see a country_distribution chart,
+                so I can understand in which countries funding is awarded" do
+        expect(page).to have_css '#country_distribution'
+      end
+
+      scenario "more info links"
+    end
   end
 
 end

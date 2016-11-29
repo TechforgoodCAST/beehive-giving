@@ -22,12 +22,13 @@ describe 'Ensure logged in' do
     end
   end
 
-  it 'accounts' do
-    expect_path([
-      account_subscription_path(@recipient),
-      account_upgrade_path(@recipient)
-    ])
-  end
+  # TODO:
+  it 'accounts'
+  #   expect_path([
+  #     account_subscription_path(@recipient),
+  #     account_upgrade_path(@recipient)
+  #   ])
+  # end
 
   it 'eligibilities' do
     expect_path([

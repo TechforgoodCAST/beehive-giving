@@ -1,9 +1,9 @@
 $(document).ready(function() {
 
-  if ($('#funding_frequency_distribution').length) {
+  if ($('#amount_awarded_distribution').length) {
     Morris.Bar({
-      element: 'funding_frequency_distribution',
-      data: $('#funding_frequency_distribution').data('data'),
+      element: 'amount_awarded_distribution',
+      data: $('#amount_awarded_distribution').data('data'),
       xkey: 'segment',
       ykeys: ['count'],
       labels: ['No. of grants'],
@@ -13,10 +13,10 @@ $(document).ready(function() {
     });
   }
 
-  if ($('#funding_by_month').length) {
+  if ($('#award_month_distribution').length) {
     var fundingByMonth = Morris.Bar({
-      element: 'funding_by_month',
-      data: $('#funding_by_month').data('data'),
+      element: 'award_month_distribution',
+      data: $('#award_month_distribution').data('data'),
       xkey: 'month',
       ykeys: ['count'],
       postUnits: ' grants',

@@ -19,9 +19,6 @@
       %section
         %h3.uk-margin-top
           Summary
-          -# %span.year.muted
-          -#   in
-          -#   = @fund.year_of_fund
 
         = render partial: 'recipients/funders/insights', locals: {fund: @fund}
 
@@ -35,56 +32,59 @@
                 %a{href: '#why-hidden', class: 'uk-text-bold', onclick: '$.UIkit.modal("#why-hidden").show();'} Upgrade to see funding themes (coming soon)
               = raw @fund.tags.order(:name).map { |t| link_to scramble_name(t.name), '#why-hidden', class: 'uk-button uk-button-small uk-button-primary invert uk-margin-small-bottom redacted', onclick: '$.UIkit.modal("#why-hidden").show();' }.join(' ')
 
-
         %hr.thick
 
       %section#how-was-funding-distributed.offset
         %h3.uk-margin-top
           How was funding distributed?
-          -# %span.year.muted
-          -#   in
-          -#   = @fund.year_of_fund
+          = period
 
-        %p
-          Awarded
-          %span.uk-text-bold= number_with_delimiter(@fund.grant_count)
-          grants.
+        - if @fund.open_data?
+          %p
+            Awarded
+            %span.uk-text-bold= number_with_delimiter(@fund.grant_count)
+            grants.
 
-        #funding_frequency_distribution.chart{ data: { data: amount_awarded_distribution } }
+          #amount_awarded_distribution.chart{ data: { data: amount_awarded_distribution } }
+
+        - else
+          = render partial: 'not_enough_data'
 
         %hr.thick
 
-      - if @fund.award_month_distribution
-        %section#when-was-funding-awarded.offset
-          %h3.uk-margin-top
-            When was funding awarded?
-            -# %span.year.muted
-            -#   in
-            -#   = @fund.year_of_fund
+      %section#when-was-funding-awarded.offset
+        %h3.uk-margin-top
+          When was funding awarded?
+          = period
 
+        - if @fund.open_data? && @fund.award_month_distribution?
           %p
-            Awarded funding in
-            -# = succeed '.' do
-            -#   %strong= raw(@funder.current_attribute.approval_months_by_count)
+            Awarded the most funding in
+            = succeed '.' do
+              %strong= top_award_months
 
-          #funding_by_month.chart{ data: { data: award_month_distribution } }
+          #award_month_distribution.chart{ data: { data: award_month_distribution } }
+
+        - else
+          = render partial: 'not_enough_data'
 
         %hr.thick
 
       %section#where-was-funding-awarded.offset
         %h3.uk-margin-top
           Where was funding awarded?
-          -# %span.year.muted
-          -#   in
-          -#   = @fund.year_of_fund
+          = period
 
-        - if @fund.country_distribution
+        - if @fund.open_data? && @fund.country_distribution?
           %p
-            The most funded countries were
-            -# = succeed '.' do
-            -#   %strong= raw(@funder.current_attribute.countries_by_count)
+            Awarded most funding in the
+            = succeed '.' do
+              %strong= top_countries
 
-        = geo_chart country_distribution, library: {colorAxis: {colors: ['#f5e8c4', '#fadc89', '#f5b918']}, tooltip: {textStyle: {color: '#353f45'}}}
+          = geo_chart country_distribution, id: 'country_distribution', library: {colorAxis: {colors: ['#f5e8c4', '#fadc89', '#f5b918']}, tooltip: {textStyle: {color: '#353f45'}}}
+
+        - else
+          = render partial: 'not_enough_data'
 
       -# TODO:
       -# - if @recipient.can_unlock_funder?(@funder) && !@recipient.load_recommendation(@funder).eligibility
