@@ -1,20 +1,10 @@
 class Enquiry < ActiveRecord::Base
 
-  belongs_to :recipient
-  belongs_to :funder
-  # has_and_belongs_to_many :countries
-  # has_and_belongs_to_many :districts
+  belongs_to :proposal
+  belongs_to :fund
 
-  validates :funder, :recipient, :funding_stream, presence: true
-  # validates :new_project, presence: true, if: :new_project?
-  # validates :new_location, presence: true, if: :new_location?
-  # validates :amount_seeking, :duration_seeking, presence: true
-  # validates :countries, :districts, presence: true,
-  #           unless: Proc.new { |enquiry| enquiry.new_location == false }
-  # validates :new_project, :new_location, :inclusion => { in: [true, false] }
-  # validates :amount_seeking, :duration_seeking,
-  #           numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-
-  validates_uniqueness_of :recipient, scope: [:funder, :funding_stream], :message => 'only one match per funder'
+  validates :proposal, :fund, :approach_funder_count, presence: true
+  validates :approach_funder_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validates :proposal, uniqueness: { scope: :fund, message: 'only one enquiry per fund' }
 
 end

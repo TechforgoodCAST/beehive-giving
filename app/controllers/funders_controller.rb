@@ -15,19 +15,7 @@ class FundersController < ApplicationController
 
     unless @funder.active_on_beehive?
       flash[:alert] = "Sorry, you don't have access to that"
-      redirect_to recommended_funders_path
-    end
-  end
-
-  def tagged
-    @recipient = current_user.organisation # refactor
-
-    @tag = ActsAsTaggableOn::Tag.find_by_slug(params[:tag])
-    if @tag.present?
-      @funders = @recipient.recommended_funders.tagged_with(@tag)
-    else
-      flash[:alert] = "Not found"
-      redirect_to root_path
+      redirect_to recommended_funds_path
     end
   end
 

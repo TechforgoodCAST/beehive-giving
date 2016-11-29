@@ -1,5 +1,4 @@
 class Feedback < ActiveRecord::Base
-  belongs_to :user
 
   SUITABLE = ['- Very unsuitable', '', '', '', '', '', '', '', '', '', '- Very suitable']
   MOST_USEFUL = ['The information about funders', 'Recommendations of funders', 'Being able to check your eligibility', 'Other']
@@ -8,6 +7,8 @@ class Feedback < ActiveRecord::Base
   INFORMS_DECISION = ['- Strongly disagree', '', '', '', '', '', '', '', '', '', '- Strongly agree']
   APP_AND_GRANT_FREQUENCY = ['None', '1-3', '4-6', '7-9', '10 or more']
   MARKETING_FREQUENCY = %w[Weekly Monthly Quartetly Never]
+
+  belongs_to :user
 
   validates :user, :suitable, :most_useful, :nps, :taken_away, :informs_decision,
             :application_frequency, :grant_frequency, :marketing_frequency,

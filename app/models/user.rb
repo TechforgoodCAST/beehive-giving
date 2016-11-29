@@ -27,9 +27,9 @@ class User < ActiveRecord::Base
             format: {with: /\A(?=.*\d)(?=.*[a-zA-Z]).{6,25}\z/,
             message: 'Must include 6 characters with 1 number'}, on: [:create, :update]
 
-  validate  :no_organisation_declared
-
   before_create { generate_token(:auth_token) }
+
+  has_secure_password
 
   def first_name=(s)
     write_attribute(:first_name, s.to_s.strip.capitalize)
@@ -44,10 +44,8 @@ class User < ActiveRecord::Base
   end
 
   def full_name
-    name = "#{first_name} #{last_name}"
+    "#{first_name} #{last_name}"
   end
-
-  has_secure_password
 
   def lock_access_to_organisation(organisation)
     generate_token(:unlock_token)
@@ -59,26 +57,20 @@ class User < ActiveRecord::Base
 
   def unlock
     self.update_attribute(:authorised, true)
-    UserMailer.notify_unlock(self).deliver
+    UserMailer.notify_unlock(self).deliver_now
   end
 
   def send_password_reset
     generate_token(:password_reset_token)
     self.password_reset_sent_at = Time.zone.now
     save(validate: false)
-    UserMailer.password_reset(self).deliver
+    UserMailer.password_reset(self).deliver_now
   end
 
   def generate_token(column)
     begin
       self[column] = SecureRandom.urlsafe_base64
     end while User.exists?(column => self[column])
-  end
-
-  private
-
-  def no_organisation_declared
-    errors.add(:job_role, '') if job_role == "None, I don't work/volunteer for a non-profit"
   end
 
 end

@@ -23,7 +23,7 @@ class SignupController < ApplicationController
         format.js   {
           cookies[:auth_token] = @user.auth_token
           @user.update_attribute(:last_seen, Time.now)
-          UserMailer.welcome_email(@user).deliver
+          UserMailer.welcome_email(@user).deliver_now
           render :js => "mixpanel.identify('#{@user.id}');
                         mixpanel.people.set({
                           '$first_name': '#{@user.first_name}',
@@ -44,7 +44,7 @@ class SignupController < ApplicationController
         }
         format.html {
           cookies[:auth_token] = @user.auth_token
-          UserMailer.welcome_email(@user).deliver
+          UserMailer.welcome_email(@user).deliver_now
           redirect_to signup_organisation_path if @user.role == 'User'
           redirect_to new_funder_path if @user.role == 'Funder'
         }

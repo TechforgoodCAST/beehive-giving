@@ -1,67 +1,62 @@
 class Recipient < Organisation
 
-  has_many :grants
-  has_many :features, dependent: :destroy
-  has_many :enquiries, dependent: :destroy
-  has_many :proposals
-  has_many :recipient_funder_accesses
-  has_many :restrictions, through: :eligibilities
-  has_many :eligibilities, dependent: :destroy
-  accepts_nested_attributes_for :eligibilities
-
-  has_many :recipient_funder_accesses
-
-  has_one :recipient_attribute
-  alias_method :attribute, :recipient_attribute
-
-  has_many :recommendations, dependent: :destroy
-  has_many :countries, through: :proposals
-  has_many :districts, through: :proposals
-  has_many :beneficiaries, through: :proposals
-  has_many :implementations, through: :proposals
-
   RECOMMENDATION_THRESHOLD = 1
   MAX_FREE_LIMIT = 3
   RECOMMENDATION_LIMIT = 6
 
+  has_many :proposals
+  has_many :funds, -> { distinct }, through: :proposals
+  has_many :countries, -> { distinct }, through: :proposals
+  has_many :districts, -> { distinct }, through: :proposals
+  has_many :eligibilities, dependent: :destroy
+  has_many :restrictions, through: :eligibilities
+  accepts_nested_attributes_for :eligibilities
+
+  has_many :grants # TODO: deprecated
+  has_many :features, dependent: :destroy # TODO: deprecated
+  has_many :recipient_funder_accesses # TODO: deprecated
+  has_one :recipient_attribute # TODO: deprecated
+  alias_method :attribute, :recipient_attribute # TODO: deprecated
+
+  def subscribe!
+    self.subscription.update_attribute(:active, true)
+  end
+
   def is_subscribed?
-    self.subscription.present?
+    self.subscription.active?
   end
 
   def can_unlock_funder?(funder)
-    if self.subscription.present?
+    if self.subscription.active?
       true
     else
       unlocked_funders.size < MAX_FREE_LIMIT
     end
   end
 
-  # refactor
-  def can_request_funder?(funder, request)
-    features.build("#request}": true, funder: funder).valid?
+  def unlocked_funds # TODO: to proposal
+    funds.where('eligibility IS NOT NULL')
   end
 
-  def unlocked_funder_ids
-    RecipientFunderAccess.where(recipient_id: self.id).map(&:funder_id)
+  # TODO:
+  # def locked_funds
+  #   funds.where('eligibility IS NULL')
+  # end
+
+  def eligible_funds # TODO: to proposal
+    unlocked_funds.where('eligibility = ?', 'Eligible')
   end
 
-  def unlocked_funders
-    Funder.where(id: unlocked_funder_ids)
+  def ineligible_funds # TODO: to proposal
+    unlocked_funds.where('eligibility = ?', 'Ineligible')
   end
 
-  def locked_funders
-    unlocked_funder_ids.any? ? Funder.where('id NOT IN (?)', unlocked_funder_ids) : Funder.all
+  def unlocked_fund?(fund) # TODO: to proposal
+    unlocked_funds.pluck(:id).include?(fund.id)
   end
 
-  def locked_funder?(funder)
-    !unlocked_funder_ids.include?(funder.id)
-  end
-
-  def unlock_funder!(funder)
-    RecipientFunderAccess.find_or_create_by({
-        recipient_id: self.id,
-        funder_id: funder.id
-    })
+  def locked_fund?(fund) # TODO: to proposal
+    !unlocked_fund?(fund)
   end
 
   def full_address
@@ -74,79 +69,38 @@ class Recipient < Organisation
     ].join(", ")
   end
 
-  # refactor?
+  # TODO: refactor?
   def recent_grants(year=2015)
     self.grants.where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01")
   end
 
-  # refactor
-  def eligibility_count(funder)
-    count = 0
+  def set_eligibility(proposal, fund, eligibility) # TODO: to proposal
+    proposal.recommendation(fund).update_attributes(eligibility: eligibility)
+  end
 
-    funder.restrictions.uniq.each do |r|
-      self.eligibilities.each do |e|
-        count += 1 if e.restriction_id == r.id
-      end
+  def eligible_restrictions
+    self.eligibilities.where(eligible: true).pluck(:restriction_id)
+  end
+
+  def ineligible_restrictions
+    self.eligibilities.where(eligible: false).pluck(:restriction_id)
+  end
+
+  def check_eligibility(proposal, fund)
+    recipient_restrictions = self.eligibilities.pluck(:restriction_id)
+    fund_restrictions = fund.restrictions.pluck(:id)
+    if (recipient_restrictions & fund_restrictions).count == fund_restrictions.count
+      (eligible_restrictions & fund_restrictions).count == fund_restrictions.count ?
+        set_eligibility(proposal, fund, 'Eligible') :
+        set_eligibility(proposal, fund, 'Ineligible')
     end
-
-    count
   end
 
-  # refactor?
-  def funding_stream_eligible?(funding_stream, funder)
-    count = 0
-
-    funder.funding_streams.where('label = ?', funding_stream).first.restrictions.each do |r|
-      self.eligibilities.each do |e|
-        count += 1 if e.restriction_id == r.id && e.eligible == true
-      end
-    end
-
-    funder.funding_streams.where('label = ?', funding_stream).first.restrictions.count == count ? true : false
-  end
-
-  def load_recommendation(funder)
-    Recommendation.where(recipient: self, funder: funder).first
-  end
-
-  def set_eligibility(funder, eligibility)
-    self.load_recommendation(funder).update_attributes(eligibility: eligibility)
-  end
-
-  def check_eligibility(funder)
-    count = 0
-
-    funder.funding_streams.each do |f|
-      count += 1 if self.funding_stream_eligible?(f.label, funder)
-    end
-
-    count > 0 ? self.set_eligibility(funder, 'Eligible') : self.set_eligibility(funder, 'Ineligible')
-  end
-
-  def check_eligibilities
+  def check_eligibilities # TODO: remove?
     self.recipient_funder_accesses.each do |unlocked_funder|
       funder = Funder.find(unlocked_funder.funder_id)
       self.check_eligibility(funder)
     end
-  end
-
-  def eligible?(funder)
-    return true if self.load_recommendation(funder).eligibility == 'Eligible'
-  end
-
-  def get_funders_by_eligibility(eligibility)
-    Funder.find(self.recommendations.where(eligibility: eligibility).pluck(:funder_id))
-  end
-
-  def ineligible?(funder)
-    return true if self.load_recommendation(funder).eligibility == 'Ineligible'
-  end
-
-  def eligibility_restrictions(funder)
-    Eligibility.where(
-      recipient_id: self,
-      restriction_id: funder.restrictions
-    ).order(:id)
   end
 
   def has_proposal? # refactor?
@@ -169,11 +123,6 @@ class Recipient < Organisation
     proposals.count < 1 && profiles.where(state: 'complete').count > 0
   end
 
-  # refactor
-  def questions_remaining?(funder)
-    self.eligibility_count(funder) < funder.restrictions.uniq.count
-  end
-
   def restriction_truthy(restriction)
     if restriction.invert
       [['Yes', true],['No', false]]
@@ -182,24 +131,23 @@ class Recipient < Organisation
     end
   end
 
-  def recommended_funders
-    Funder.joins(:recommendations)
-      .where('recipient_id = ? AND score >= ?', self.id, RECOMMENDATION_THRESHOLD)
-      .order('recommendations.score DESC, name ASC')
+  def recommended_funds # TODO: refactor to proposal
+    self.proposals.last.funds
+      .where('recommendations.total_recommendation >= ?', RECOMMENDATION_THRESHOLD)
+      .order('recommendations.total_recommendation DESC', 'funds.name')
   end
 
-  def recommended_with_eligible_funders
-    funder_ids = recommended_funders
-                  .pluck(:funder_id)
-                  .take(Recipient::RECOMMENDATION_LIMIT)
-
-    recommended_funders
-      .where(id: funder_ids)
+  def recommended_with_eligible_funds # TODO: refactor  to proposal
+    fund_ids = recommended_funds
+      .pluck(:fund_id)
+      .take(RECOMMENDATION_LIMIT)
+    recommended_funds
+      .where(id: fund_ids)
       .where('eligibility is NULL OR eligibility != ?', 'Ineligible')
   end
 
-  def recommended_funder?(funder)
-    recommended_funders.pluck(:funder_id).take(RECOMMENDATION_LIMIT).include?(funder.id)
+  def recommended_fund?(fund) # TODO: refactor to proposal
+    recommended_funds.pluck(:fund_id).take(RECOMMENDATION_LIMIT).include?(fund.id)
   end
 
   def similar_funders(funder)

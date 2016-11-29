@@ -8,7 +8,7 @@ class ProposalsController < ApplicationController
     if @recipient.incomplete_first_proposal?
       redirect_to edit_recipient_proposal_path(@recipient, @recipient.proposals.last)
     elsif @recipient.has_proposal?
-      redirect_to recommended_funders_path
+      redirect_to recommended_funds_path
     else
       if @recipient.valid?
         @proposal = @recipient.proposals.new(state: 'initial')
@@ -26,13 +26,13 @@ class ProposalsController < ApplicationController
       if @proposal.save
         format.js   {
           @proposal.next_step!
-          render :js => "window.location.href = '#{recommended_funders_path}';
+          render :js => "window.location.href = '#{recommended_funds_path}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
         }
         format.html {
           @proposal.next_step!
-          redirect_to recommended_funders_path
+          redirect_to recommended_funds_path
         }
       else
         format.js
@@ -45,7 +45,7 @@ class ProposalsController < ApplicationController
     if @recipient.has_proposal?
       @proposals = @recipient.proposals
     else
-      redirect_to recommended_funders_path
+      redirect_to recommended_funds_path
     end
   end
 
@@ -65,12 +65,12 @@ class ProposalsController < ApplicationController
           flash[:notice] = 'Funding recommendations updated!'
 
           if session[:return_to]
-            funder = Funder.find_by_slug(session.delete(:return_to))
-            render :js => "window.location.href = '#{recipient_eligibility_path(funder)}';
+            fund = Fund.find_by_slug(session.delete(:return_to))
+            render :js => "window.location.href = '#{fund_eligibility_path(fund)}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
           else
-            render :js => "window.location.href = '#{recommended_funders_path}';
+            render :js => "window.location.href = '#{recommended_funds_path}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
           end
@@ -80,10 +80,10 @@ class ProposalsController < ApplicationController
           flash[:notice] = 'Funding recommendations updated!'
 
           if session[:return_to]
-            funder = Funder.find_by_slug(session.delete(:return_to))
-            redirect_to recipient_eligibility_path(funder)
+            fund = Fund.find_by_slug(session.delete(:return_to))
+            redirect_to fund_eligibility_path(fund)
           else
-            redirect_to recommended_funders_path
+            redirect_to recommended_funds_path
           end
         }
       else
@@ -104,10 +104,6 @@ class ProposalsController < ApplicationController
       :implementations_other_required, :implementations_other,
       age_group_ids: [], beneficiary_ids: [], country_ids: [],
       district_ids: [], implementation_ids: [])
-  end
-
-  def load_recipient
-    @recipient = current_user.organisation
   end
 
   def load_proposal

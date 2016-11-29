@@ -32,24 +32,32 @@ Rails.application.routes.draw do
   match '/(:id)/basics', to: 'recipients#edit', via: :get, as: 'edit_recipient'
   match '/(:id)/basics', to: 'recipients#update', via: :patch
 
-  match '/new-funder', to: 'signup#funder', via: :get, as: 'new_funder'
-  match '/new-funder', to: 'signup#create_funder', via: :post
+  # match '/new-funder', to: 'signup#funder', via: :get, as: 'new_funder'
+  # match '/new-funder', to: 'signup#create_funder', via: :post
 
   # User authorisation for organisational access
   match '/unauthorised', to: 'signup#unauthorised', via: :get, as: 'unauthorised'
   match '/grant_access/(:unlock_token)', to: 'signup#grant_access', via: :get, as: 'grant_access'
   match '/granted_access/(:unlock_token)', to: 'signup#granted_access', via: :get, as: 'granted_access'
 
-  # Funders
-  match '/funders/recommended', to: 'recipients#recommended_funders', via: :get, as: 'recommended_funders'
-  match '/funders/eligible', to: 'recipients#eligible_funders', via: :get, as: 'eligible_funders'
-  match '/funders/ineligible', to: 'recipients#ineligible_funders', via: :get, as: 'ineligible_funders'
-  match '/funders', to: 'recipients#all_funders', via: :get, as: 'all_funders'
-  get '/(:tag)/funders', to: 'funders#tagged', as: 'tag'
+  # Account
+  # match '/account', to: 'accounts#user', via: :get, as: 'account'
+  # match '/account/(:id)', to: 'accounts#organisation', via: :get, as: 'account_organisation'
+  # TODO match '/account/(:id)/subscription', to: 'accounts#subscription', via: :get, as: 'account_subscription'
+  # TODO match '/account/(:id)/upgrade', to: 'accounts#upgrade', via: :get, as: 'account_upgrade'
+  # TODO match '/account/(:id)/charge', to: 'accounts#charge', via: :post, as: 'account_charge'
+
+  # Funds
+  # match '/funds/home', to: 'funds#home', via: :get, as: 'funds_home'
+  match '/recommended/funds', to: 'recipients#recommended_funds', via: :get, as: 'recommended_funds'
+  match '/eligible/funds', to: 'recipients#eligible_funds', via: :get, as: 'eligible_funds'
+  match '/ineligible/funds', to: 'recipients#ineligible_funds', via: :get, as: 'ineligible_funds'
+  match '/all/funds', to: 'recipients#all_funds', via: :get, as: 'all_funds'
+  get '/(:tag)/funds', to: 'funds#tagged', as: 'tag'
 
   # Recipients
-  match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
-  match '/proposals/(:id)/recent', to: 'funders#recent', via: :get, as: 'funder_recent'
+  # match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
+  match '/proposals/(:id)/recent', to: 'funders#recent', via: :get, as: 'funder_recent' # TODO: deprecated remove
 
   match '/funding/(:id)/overview', to: 'funders#overview', via: :get, as: 'funder_overview'
   # match '/funding/(:id)/overview/(:year)', to: 'funders#overview', via: :get, as: 'funder_overview'
@@ -62,10 +70,6 @@ Rails.application.routes.draw do
   match '/funding/(:id)/(:district)', to: 'funders#district', via: :get, as: 'funder_district'
   # match '/funding/(:id)/(:district)/(:year)', to: 'funders#district', via: :get, as: 'funder_district'
 
-  # Eligibilities
-  match '/funders/(:id)/eligibility', to: 'recipients#eligibility', via: :get, as: 'recipient_eligibility'
-  match '/funders/(:id)/eligibility', to: 'recipients#update_eligibility', via: :patch
-
   # Proposals
   match '/(:id)/proposal', to: 'proposals#new', via: :get, as: 'new_recipient_proposal'
   match '/(:id)/proposal', to: 'proposals#create', via: :post
@@ -73,30 +77,33 @@ Rails.application.routes.draw do
   match '/(:recipient_id)/proposal/(:id)', to: 'proposals#update', via: :patch
   match '/(:recipient_id)/proposals', to: 'proposals#index', via: :get, as: 'recipient_proposals'
 
+  # Eligibilities
+  match '/funds/(:id)/eligibility', to: 'eligibilities#new', via: :get, as: 'fund_eligibility'
+  match '/funds/(:id)/eligibility', to: 'eligibilities#create', via: :patch
+
   # Enquiries
-  match '/funders/(:id)/apply', to: 'recipients#apply', via: :get, as: 'recipient_apply'
-  match '/funders/(:id)/apply', to: 'enquiries#apply', via: :post
+  match '/funds/(:id)/apply', to: 'enquiries#new', via: :get, as: 'fund_apply'
+  match '/funds/(:id)/apply', to: 'enquiries#create', via: :post
 
   # Compare funders
   match '/funders/comparison', to: 'funders#comparison', via: :get, as: 'funders_comparison'
 
-  resources :users
-  resources :feedback, :only => [:new, :create, :edit, :update]
-  resources :password_resets, :only => [:new, :create, :edit, :update]
+  resources :feedback, only: [:new, :create, :edit, :update]
+  resources :password_resets, only: [:new, :create, :edit, :update]
 
-  resources :recipients, :except => [:new, :index] do
+  resources :recipients, except: [:new, :index] do
     member do
       post :approach_funder
     end
-    resources :recipient_attribute, :as => :attribute, :only => [:new, :create, :edit, :update]
   end
 
-  resources :funders, :except =>[:edit, :update] do
+  resources :funders, only: [:show, :index] do
     member do
       get :explore
       get :eligible
     end
-    resources :grants, :except =>[:show]
   end
+
+  resources :funds, only: :show
 
 end

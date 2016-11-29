@@ -1,7 +1,5 @@
 class Organisation < ActiveRecord::Base
 
-  before_validation :clear_registration_numbers_if_unregistered
-
   ORG_TYPE = [
     ['Myself OR another individual', -1],
     ['An unregistered organisation OR project', 0],
@@ -34,9 +32,10 @@ class Organisation < ActiveRecord::Base
     ['500+', 7]
   ]
 
-  has_one :subscription
+  has_one :subscription, dependent: :destroy
   has_many :users, dependent: :destroy
-  has_many :profiles, dependent: :destroy
+
+  has_many :profiles, dependent: :destroy # TODO: deprecated
 
   geocoded_by :search_address
   after_validation :geocode, if: -> (o) { (o.street_address.present?) or (o.postal_code.present? and o.postal_code_changed?) }, unless: -> (o) { o.country != 'GB' }
@@ -68,8 +67,8 @@ class Organisation < ActiveRecord::Base
   validates :company_number, presence: true, if: Proc.new { |o| o.org_type == 2 || o.org_type == 3 },
     unless: :skip_validation
 
-  validates :charity_number, uniqueness: { on: [:create], scope: [:company_number] }, allow_nil: true, allow_blank: true
-  validates :company_number, uniqueness: { on: [:create], scope: [:charity_number] }, allow_nil: true, allow_blank: true
+  validates :charity_number, uniqueness: { on: :create, scope: :company_number }, allow_nil: true, allow_blank: true
+  validates :company_number, uniqueness: { on: :create, scope: :charity_number }, allow_nil: true, allow_blank: true
 
   validates :website, format: {
     with: URI::regexp(%w(http https)),
@@ -81,6 +80,8 @@ class Organisation < ActiveRecord::Base
     unless: :skip_validation
 
   before_validation :set_slug, unless: :slug
+  before_validation :clear_registration_numbers_if_unregistered
+  after_create :create_subscription
 
   def name=(s)
     write_attribute(:name, s.sub(s.first, s.first.upcase))
@@ -115,7 +116,7 @@ class Organisation < ActiveRecord::Base
   end
 
   def send_authorisation_email(user_to_authorise)
-    UserMailer.request_access(self, user_to_authorise).deliver
+    UserMailer.request_access(self, user_to_authorise).deliver_now
   end
 
   def charity_commission_url
@@ -284,13 +285,17 @@ class Organisation < ActiveRecord::Base
     end
   end
 
+  def create_subscription
+    Subscription.create(organisation_id: id) if subscription.nil?
+  end
+
   private
 
-  def clear_registration_numbers_if_unregistered
-    if self.org_type == 0 || self.org_type == 4
-      self.charity_number = nil
-      self.company_number = nil
+    def clear_registration_numbers_if_unregistered
+      if self.org_type == 0 || self.org_type == 4
+        self.charity_number = nil
+        self.company_number = nil
+      end
     end
-  end
 
 end

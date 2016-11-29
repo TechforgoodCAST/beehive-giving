@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160406095716) do
+ActiveRecord::Schema.define(version: 20160921134820) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -132,13 +132,7 @@ ActiveRecord::Schema.define(version: 20160406095716) do
     t.integer "priority",             default: 0
   end
 
-  create_table "countries_enquiries", force: :cascade do |t|
-    t.integer "enquiry_id"
-    t.integer "country_id"
-  end
-
-  add_index "countries_enquiries", ["country_id", "enquiry_id"], name: "index_countries_enquiries_on_country_id_and_enquiry_id", using: :btree
-  add_index "countries_enquiries", ["enquiry_id"], name: "index_countries_enquiries_on_enquiry_id", using: :btree
+  add_index "countries", ["name", "alpha2"], name: "index_countries_on_name_and_alpha2", unique: true, using: :btree
 
   create_table "countries_funder_attributes", force: :cascade do |t|
     t.integer "funder_attribute_id"
@@ -148,6 +142,16 @@ ActiveRecord::Schema.define(version: 20160406095716) do
   add_index "countries_funder_attributes", ["country_id", "funder_attribute_id"], name: "index_countries_funder_attributes", using: :btree
   add_index "countries_funder_attributes", ["country_id"], name: "index_countries_funder_attributes_on_country_id", using: :btree
   add_index "countries_funder_attributes", ["funder_attribute_id"], name: "index_countries_funder_attributes_on_funder_attribute_id", using: :btree
+
+  create_table "countries_funds", force: :cascade do |t|
+    t.integer  "country_id"
+    t.integer  "fund_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "countries_funds", ["country_id"], name: "index_countries_funds_on_country_id", using: :btree
+  add_index "countries_funds", ["fund_id"], name: "index_countries_funds_on_fund_id", using: :btree
 
   create_table "countries_grants", force: :cascade do |t|
     t.integer  "country_id"
@@ -176,6 +180,31 @@ ActiveRecord::Schema.define(version: 20160406095716) do
 
   add_index "countries_proposals", ["country_id"], name: "index_countries_proposals_on_country_id", using: :btree
   add_index "countries_proposals", ["proposal_id"], name: "index_countries_proposals_on_proposal_id", using: :btree
+
+  create_table "deadlines", force: :cascade do |t|
+    t.integer  "fund_id"
+    t.datetime "deadline"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "deadlines", ["fund_id"], name: "index_deadlines_on_fund_id", using: :btree
+
+  create_table "decision_makers", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "decision_makers_funds", force: :cascade do |t|
+    t.integer  "decision_maker_id"
+    t.integer  "fund_id"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "decision_makers_funds", ["decision_maker_id"], name: "index_decision_makers_funds_on_decision_maker_id", using: :btree
+  add_index "decision_makers_funds", ["fund_id"], name: "index_decision_makers_funds_on_fund_id", using: :btree
 
   create_table "districts", force: :cascade do |t|
     t.integer "country_id"
@@ -207,14 +236,6 @@ ActiveRecord::Schema.define(version: 20160406095716) do
 
   add_index "districts", ["country_id"], name: "index_districts_on_country_id", using: :btree
 
-  create_table "districts_enquiries", force: :cascade do |t|
-    t.integer "enquiry_id"
-    t.integer "district_id"
-  end
-
-  add_index "districts_enquiries", ["district_id", "enquiry_id"], name: "index_districts_enquiries_on_district_id_and_enquiry_id", using: :btree
-  add_index "districts_enquiries", ["enquiry_id"], name: "index_districts_enquiries_on_enquiry_id", using: :btree
-
   create_table "districts_funder_attributes", force: :cascade do |t|
     t.integer  "funder_attribute_id"
     t.integer  "district_id"
@@ -225,6 +246,16 @@ ActiveRecord::Schema.define(version: 20160406095716) do
   add_index "districts_funder_attributes", ["district_id", "funder_attribute_id"], name: "index_districts_funder_attributes", using: :btree
   add_index "districts_funder_attributes", ["district_id"], name: "index_districts_funder_attributes_on_district_id", using: :btree
   add_index "districts_funder_attributes", ["funder_attribute_id"], name: "index_districts_funder_attributes_on_funder_attribute_id", using: :btree
+
+  create_table "districts_funds", force: :cascade do |t|
+    t.integer  "district_id"
+    t.integer  "fund_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "districts_funds", ["district_id"], name: "index_districts_funds_on_district_id", using: :btree
+  add_index "districts_funds", ["fund_id"], name: "index_districts_funds_on_fund_id", using: :btree
 
   create_table "districts_grants", force: :cascade do |t|
     t.integer  "district_id"
@@ -254,6 +285,23 @@ ActiveRecord::Schema.define(version: 20160406095716) do
   add_index "districts_proposals", ["district_id"], name: "index_districts_proposals_on_district_id", using: :btree
   add_index "districts_proposals", ["proposal_id"], name: "index_districts_proposals_on_proposal_id", using: :btree
 
+  create_table "documents", force: :cascade do |t|
+    t.string   "name"
+    t.string   "link"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "documents_funds", force: :cascade do |t|
+    t.integer  "document_id"
+    t.integer  "fund_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "documents_funds", ["document_id"], name: "index_documents_funds_on_document_id", using: :btree
+  add_index "documents_funds", ["fund_id"], name: "index_documents_funds_on_fund_id", using: :btree
+
   create_table "eligibilities", force: :cascade do |t|
     t.integer  "recipient_id"
     t.integer  "restriction_id"
@@ -272,13 +320,17 @@ ActiveRecord::Schema.define(version: 20160406095716) do
     t.boolean  "new_location"
     t.integer  "amount_seeking"
     t.integer  "duration_seeking"
-    t.datetime "created_at",            null: false
-    t.datetime "updated_at",            null: false
-    t.integer  "approach_funder_count"
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
+    t.integer  "approach_funder_count", default: 0
     t.string   "funding_stream"
+    t.integer  "fund_id"
+    t.integer  "proposal_id"
   end
 
+  add_index "enquiries", ["fund_id"], name: "index_enquiries_on_fund_id", using: :btree
   add_index "enquiries", ["funder_id"], name: "index_enquiries_on_funder_id", using: :btree
+  add_index "enquiries", ["proposal_id"], name: "index_enquiries_on_proposal_id", using: :btree
   add_index "enquiries", ["recipient_id"], name: "index_enquiries_on_recipient_id", using: :btree
 
   create_table "features", force: :cascade do |t|
@@ -403,6 +455,113 @@ ActiveRecord::Schema.define(version: 20160406095716) do
     t.string "label"
   end
 
+  add_index "funding_types", ["label"], name: "index_funding_types_on_label", unique: true, using: :btree
+
+  create_table "funding_types_funds", force: :cascade do |t|
+    t.integer  "funding_type_id"
+    t.integer  "fund_id"
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+  end
+
+  add_index "funding_types_funds", ["fund_id"], name: "index_funding_types_funds_on_fund_id", using: :btree
+  add_index "funding_types_funds", ["funding_type_id"], name: "index_funding_types_funds_on_funding_type_id", using: :btree
+
+  create_table "funds", force: :cascade do |t|
+    t.integer  "funder_id"
+    t.string   "type_of_fund"
+    t.string   "name"
+    t.text     "description"
+    t.string   "slug"
+    t.boolean  "open_call"
+    t.boolean  "active"
+    t.text     "key_criteria"
+    t.string   "currency"
+    t.string   "application_link"
+    t.boolean  "amount_known"
+    t.boolean  "amount_min_limited"
+    t.boolean  "amount_max_limited"
+    t.integer  "amount_min"
+    t.integer  "amount_max"
+    t.text     "amount_notes"
+    t.boolean  "duration_months_known"
+    t.boolean  "duration_months_min_limited"
+    t.boolean  "duration_months_max_limited"
+    t.integer  "duration_months_min"
+    t.integer  "duration_months_max"
+    t.text     "duration_months_notes"
+    t.boolean  "deadlines_known"
+    t.boolean  "deadlines_limited"
+    t.integer  "decision_in_months"
+    t.boolean  "stages_known"
+    t.integer  "stages_count"
+    t.text     "match_funding_restrictions"
+    t.text     "payment_procedure"
+    t.boolean  "accepts_calls_known"
+    t.boolean  "accepts_calls"
+    t.string   "contact_number"
+    t.string   "contact_email"
+    t.integer  "geographic_scale"
+    t.boolean  "geographic_scale_limited"
+    t.boolean  "restrictions_known"
+    t.boolean  "outcomes_known"
+    t.boolean  "documents_known"
+    t.boolean  "decision_makers_known"
+    t.datetime "created_at",                                           null: false
+    t.datetime "updated_at",                                           null: false
+    t.boolean  "open_data",                            default: false
+    t.date     "period_start"
+    t.date     "period_end"
+    t.integer  "grant_count"
+    t.integer  "recipient_count"
+    t.float    "amount_awarded_sum"
+    t.float    "amount_awarded_mean"
+    t.float    "amount_awarded_median"
+    t.float    "amount_awarded_min"
+    t.float    "amount_awarded_max"
+    t.jsonb    "amount_awarded_distribution",          default: {},    null: false
+    t.float    "duration_awarded_months_mean"
+    t.float    "duration_awarded_months_median"
+    t.float    "duration_awarded_months_min"
+    t.float    "duration_awarded_months_max"
+    t.jsonb    "duration_awarded_months_distribution", default: {},    null: false
+    t.jsonb    "award_month_distribution",             default: {},    null: false
+    t.jsonb    "org_type_distribution",                default: {},    null: false
+    t.jsonb    "operating_for_distribution",           default: {},    null: false
+    t.jsonb    "income_distribution",                  default: {},    null: false
+    t.jsonb    "employees_distribution",               default: {},    null: false
+    t.jsonb    "volunteers_distribution",              default: {},    null: false
+    t.jsonb    "gender_distribution",                  default: {},    null: false
+    t.jsonb    "age_group_distribution",               default: {},    null: false
+    t.jsonb    "beneficiary_distribution",             default: {},    null: false
+    t.jsonb    "geographic_scale_distribution",        default: {},    null: false
+    t.jsonb    "country_distribution",                 default: {},    null: false
+    t.jsonb    "district_distribution",                default: {},    null: false
+  end
+
+  add_index "funds", ["funder_id"], name: "index_funds_on_funder_id", using: :btree
+  add_index "funds", ["slug"], name: "index_funds_on_slug", using: :btree
+
+  create_table "funds_outcomes", force: :cascade do |t|
+    t.integer  "fund_id"
+    t.integer  "outcome_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "funds_outcomes", ["fund_id"], name: "index_funds_outcomes_on_fund_id", using: :btree
+  add_index "funds_outcomes", ["outcome_id"], name: "index_funds_outcomes_on_outcome_id", using: :btree
+
+  create_table "funds_restrictions", force: :cascade do |t|
+    t.integer  "fund_id"
+    t.integer  "restriction_id"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
+  add_index "funds_restrictions", ["fund_id"], name: "index_funds_restrictions_on_fund_id", using: :btree
+  add_index "funds_restrictions", ["restriction_id"], name: "index_funds_restrictions_on_restriction_id", using: :btree
+
   create_table "grants", force: :cascade do |t|
     t.integer  "funder_id"
     t.integer  "recipient_id"
@@ -522,20 +681,17 @@ ActiveRecord::Schema.define(version: 20160406095716) do
     t.integer  "income"
     t.integer  "employees"
     t.integer  "volunteers"
+    t.integer  "funds_checked",                               default: 0,                                null: false
   end
 
   add_index "organisations", ["id", "type"], name: "index_organisations_on_id_and_type", using: :btree
   add_index "organisations", ["slug"], name: "index_organisations_on_slug", unique: true, using: :btree
 
-  create_table "plans", force: :cascade do |t|
-    t.string   "name"
-    t.float    "price"
-    t.string   "interval"
-    t.text     "features"
-    t.boolean  "highlight"
-    t.integer  "display_order"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+  create_table "outcomes", force: :cascade do |t|
+    t.string   "outcome"
+    t.string   "link"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "profiles", force: :cascade do |t|
@@ -641,9 +797,14 @@ ActiveRecord::Schema.define(version: 20160406095716) do
     t.float    "org_type_score"
     t.float    "beneficiary_score"
     t.float    "location_score"
+    t.integer  "proposal_id"
+    t.integer  "fund_id"
+    t.string   "fund_slug"
   end
 
   add_index "recommendations", ["funder_id"], name: "index_recommendations_on_funder_id", using: :btree
+  add_index "recommendations", ["proposal_id", "fund_id"], name: "index_recommendations_on_proposal_id_and_fund_id", unique: true, using: :btree
+  add_index "recommendations", ["proposal_id", "fund_slug"], name: "index_recommendations_on_proposal_id_and_fund_slug", unique: true, using: :btree
   add_index "recommendations", ["recipient_id"], name: "index_recommendations_on_recipient_id", using: :btree
 
   create_table "restrictions", force: :cascade do |t|
@@ -653,15 +814,28 @@ ActiveRecord::Schema.define(version: 20160406095716) do
     t.boolean  "invert"
   end
 
+  create_table "stages", force: :cascade do |t|
+    t.integer  "fund_id"
+    t.string   "name"
+    t.integer  "position"
+    t.boolean  "feedback_provided"
+    t.string   "link"
+    t.datetime "created_at",        null: false
+    t.datetime "updated_at",        null: false
+  end
+
+  add_index "stages", ["fund_id"], name: "index_stages_on_fund_id", using: :btree
+
   create_table "subscriptions", force: :cascade do |t|
-    t.integer  "plan_id"
     t.integer  "organisation_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
+    t.string   "stripe_user_id"
+    t.boolean  "active",          default: false, null: false
   end
 
   add_index "subscriptions", ["organisation_id"], name: "index_subscriptions_on_organisation_id", using: :btree
-  add_index "subscriptions", ["plan_id"], name: "index_subscriptions_on_plan_id", using: :btree
+  add_index "subscriptions", ["stripe_user_id"], name: "index_subscriptions_on_stripe_user_id", unique: true, using: :btree
 
   create_table "taggings", force: :cascade do |t|
     t.integer  "tag_id"
@@ -707,4 +881,8 @@ ActiveRecord::Schema.define(version: 20160406095716) do
 
   add_index "users", ["organisation_id"], name: "index_users_on_organisation_id", using: :btree
 
+  add_foreign_key "deadlines", "funds"
+  add_foreign_key "enquiries", "funds"
+  add_foreign_key "enquiries", "proposals"
+  add_foreign_key "stages", "funds"
 end

@@ -1,9 +1,9 @@
 .card
-  %a{href: funder_path(funder), alt: funder.name}
-    .thumbnail
-      .funder{class: funder.slug}
+  .thumbnail
+    .funder{class: fund.funder.slug}
   .details
     .content
+      .muted= fund.name
       %h4.uk-text-bold
         Your recommendation
         %small.muted Beta
@@ -17,47 +17,39 @@
             %td
               Eligibility
             %td
-              - if @recipient.load_recommendation(funder).eligibility
-                - if @recipient.eligible?(funder)
-                  %strong= link_to 'Eligible', recipient_eligibility_path(funder), class: 'excellent'
+              - if @proposal.recommendation(fund).eligibility
+                - if @proposal.eligible?(fund)
+                  %strong= link_to 'Eligible', fund_eligibility_path(fund), class: 'excellent'
                 - else
-                  %strong= link_to 'Ineligible', recipient_eligibility_path(funder), class: 'very-poor'
+                  %strong= link_to 'Ineligible', fund_eligibility_path(fund), class: 'very-poor'
               - else
-                = link_to 'Check', recipient_eligibility_path(funder), class: 'uk-text-bold primary'
-          - unless @recipient.recommended_funder?(funder) || @recipient.eligible?(funder)
+                %strong= link_to 'Check', fund_eligibility_path(fund), class: 'primary'
+          - unless @proposal.show_fund(fund)
             %tr
               %td.muted{colspan: 2}
                 %a{href: '#why-hidden', class: 'uk-text-bold', onclick: '$.UIkit.modal("#why-hidden").show();'} Upgrade to see more
           %tr
             %td Organisation type
-            %td= render_recommendation(funder, 'org_type_score', 2)
+            %td= render_recommendation(fund, 'org_type_score', 2)
           %tr
             %td Beneficiaries
-            %td= render_recommendation(funder, 'beneficiary_score')
+            %td= render_recommendation(fund, 'beneficiary_score', 2)
           %tr
             %td Location
-            %td= render_recommendation(funder, 'location_score', 2)
-          %tr
-            %td Activities
-            %td.muted Coming soon
-          %tr
-            %td Outcomes
-            %td.muted Coming soon
-          %tr
-            %td Type of funding
-            %td.muted Coming soon
+            %td= render_recommendation(fund, 'location_score', 2)
+
           - unless @recipient.transferred?
             %tr
               %td Funding amount
-              %td= render_recommendation(funder, 'grant_amount_recommendation')
+              %td= render_recommendation(fund, 'grant_amount_recommendation')
             %tr
               %td Funding duration
-              %td= render_recommendation(funder, 'grant_duration_recommendation')
+              %td= render_recommendation(fund, 'grant_duration_recommendation')
 
     - unless %w[eligibility update_eligibility apply].include?(params[:action])
       .card-cta
         .content.center
-          = funder_card_cta_button_copy(@recipient, funder)
-        - unless params[:controller] == 'funders' && params[:action] == 'show'
+          = fund_card_cta_button_copy(fund)
+        - unless params[:controller] == 'funds' && params[:action] == 'show'
           .content.center
-            = link_to 'More info', funder_path(funder)
+            = link_to 'More info', fund_path(fund)

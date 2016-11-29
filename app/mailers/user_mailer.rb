@@ -20,5 +20,5 @@ class UserMailer < ApplicationMailer
     @user = user
     mail(to: @user.user_email, subject: 'You have been granted access to your organisation')
   end
-  
+
 end

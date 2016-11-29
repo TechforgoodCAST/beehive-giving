@@ -6,7 +6,7 @@
           %ul.nav
             - if current_user.role == 'Funder'
               %a{href: funder_overview_path(@funder)}
-                %li.first{ class: ('active' if params[:funding_navbar]) }
+                %li.first{ class: ('active' if params[:funders_navbar]) }
                   Funding
                   .highlight
                   .caret.funder
@@ -16,19 +16,15 @@
                   .highlight
                   .caret.funder
             - else
-              %a{href: recommended_funders_path}
-                %li.first{ class: ('active' if params[:funders_navbar]) }
-                  Funders
+              %a{href: recommended_funds_path}
+                %li.first{ class: ('active' if params[:funding_navbar]) }
+                  Funding
                   .highlight
                   .caret
-              -# %a{href: recipient_profiles_path(current_user.organisation)}
-              -#   %li.last{ class: ('active' if recipients_navbar_my_nonprofit_active) }
-              -#     My non-profit
-              -#     .highlight
-              -#     .caret
+
       - if content_for?(:public)
         .uk-navbar-content
-          %a.logo{:href => root_path, title: 'Beehive'}
+          %a.logo{href: root_path, title: 'Beehive'}
 
       .uk-navbar-flip
         - if logged_in?
@@ -41,9 +37,13 @@
                     %i.uk-icon-caret-down
                   .uk-dropdown.uk-dropdown-navbar.uk-dropdown-flip{ class: ('funder-dropdown' if current_user.role == 'Funder') }
                     %ul.uk-nav.uk-nav-navbar
-                      - if current_user.role == 'User' && @recipient.has_proposal?
-                        %li
-                          %a{:href => recipient_proposals_path(current_user.organisation)} Funding proposals
+                      - if current_user.role == 'User' && @recipient
+                        -if @recipient.has_proposal?
+                          %li
+                            %a{href: recipient_proposals_path(current_user.organisation)} Funding proposals
+                      -# TODO:
+                      -# %li
+                      -#   %a{href: account_subscription_path(@recipient)} My account
                       - if current_user.role == 'User'
                         %hr
                       %li
@@ -57,7 +57,7 @@
 
       - unless content_for?(:public)
         .uk-navbar-content.uk-navbar-center
-          %a.logo{:href => root_path, title: 'Beehive'}
+          %a.logo{href: root_path, title: 'Beehive'}
 
 - unless content_for?(:public) || content_for?(:signup) || content_for?(:unauthorised)
   #offcanvas.uk-offcanvas
@@ -65,9 +65,10 @@
       - if logged_in?
         %ul.uk-nav.uk-nav-offcanvas
           %li.uk-nav-header.uk-margin-top.uk-text-center Menu
-          - if current_user.role == 'User' && @recipient.has_proposal?
-            %li
-              %a{:href => recipient_proposals_path(current_user.organisation)} Funding proposals
-            %hr
+          - if current_user.role == 'User' && @recipient
+            - if @recipient.has_proposal?
+              %li
+                %a{href: recipient_proposals_path(current_user.organisation)} Funding proposals
+              %hr
           %li
             %a{href: logout_path, method: :destroy} Sign out

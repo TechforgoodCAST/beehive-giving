@@ -1,16 +1,19 @@
+# TODO: deprecated
 require 'test_helper'
 
 class FunderNavigationTest < ActionDispatch::IntegrationTest
 
   setup do
+    seed_test_db
     @funder = create(:funder)
-    create(:funder_attribute, funder: @funder)
-    3.times { create(:grant, funder: @funder) }
+    create(:funder_attribute, funder: @funder, countries: @countries, districts: @districts, age_groups: @age_groups, beneficiaries: @beneficiaries)
+    3.times { create(:grant, funder: @funder, countries: @countries, districts: @districts) }
     @funder.update_current_attribute
     create_and_auth_user!(role: 'Funder', organisation: @funder)
   end
 
   test 'clicking logo redirects to funder overview path' do
+    skip
     visit funder_recent_path(@funder)
     find(:css, '.logo').click
     assert_equal funder_overview_path(@funder), current_path

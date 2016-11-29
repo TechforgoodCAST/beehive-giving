@@ -1,34 +1,33 @@
-- params[:funders_navbar] = true
+- params[:funding_navbar] = true
 .subnav{"data-uk-sticky" => ""}
   .uk-container.uk-container-center
     %ul.nav{ class: current_user.role == 'Funder' ? 'funder' : 'recipient' }
-      -# %a{href: recommended_funders_path, "data-uk-tooltip" => "{pos:'bottom'}", :title => "Funders Beehive thinks would be suitable for you."}
-      %a{href: recommended_funders_path}
-        %li.first{ class: ('active' if current_page?(recommended_funders_path)) }
+      %a{href: recommended_funds_path}
+        %li.first{ class: ('active' if current_page?(recommended_funds_path)) }
           Recommended
           .highlight
       %span &middot;
 
-      %a{href: eligible_funders_path}
-        %li{ class: ('active' if current_page?(eligible_funders_path)) }
+      %a{ href: eligible_funds_path }
+        %li{ class: ('active' if current_page?(eligible_funds_path)) }
           Eligible
-          - if @recipient.get_funders_by_eligibility('Eligible').count > 0
+          - if @recipient.eligible_funds.any?
             = surround '(', ')' do
-              = @recipient.get_funders_by_eligibility('Eligible').count
+              = @recipient.eligible_funds.count
           .highlight
       %span &middot;
 
-      %a{href: ineligible_funders_path}
-        %li{ class: ('active' if current_page?(ineligible_funders_path)) }
+      %a{ href: ineligible_funds_path }
+        %li{ class: ('active' if current_page?(ineligible_funds_path)) }
           Ineligible
-          - if @recipient.get_funders_by_eligibility('Ineligible').count > 0
+          - if @recipient.ineligible_funds.any?
             = surround '(', ')' do
-              = @recipient.get_funders_by_eligibility('Ineligible').count
+              = @recipient.ineligible_funds.count
           .highlight
       %span &middot;
 
-      %a{href: all_funders_path}
-        %li.last{ class: ('active' if current_page?(all_funders_path)) }
+      %a{href: all_funds_path}
+        %li.last{ class: ('active' if current_page?(all_funds_path)) }
           All
           .highlight
 

@@ -1,5 +1,10 @@
 class Funder < Organisation
 
+  scope :active, -> { where(active_on_beehive: true) }
+
+  CLOSED_FUNDERS = ['Cripplegate Foundation', 'The Baring Foundation']
+
+  has_many :funds
   has_many :grants
   has_many :districts, :through => :grants
   has_many :countries, :through => :grants
@@ -11,9 +16,6 @@ class Funder < Organisation
 
   has_many :age_groups, :through => :funder_attributes
 
-  has_many :features
-  has_many :enquiries
-
   has_many :funder_attributes, dependent: :destroy
   has_many :approval_months, :through => :funder_attributes
   has_many :beneficiaries, :through => :funder_attributes
@@ -21,17 +23,13 @@ class Funder < Organisation
   has_many :recipients, :through => :grants
   has_many :profiles, :through => :recipients, dependent: :destroy
 
-  has_and_belongs_to_many :funding_streams
-  has_many :restrictions, :through => :funding_streams
+  has_and_belongs_to_many :funding_streams # TODO: remove once data migrated
+  has_many :restrictions, through: :funds
   has_many :recommendations
-
-  acts_as_taggable
 
   alias_method :attributes, :funder_attributes
 
-  scope :active, -> {where(active_on_beehive: true)}
-
-  CLOSED_FUNDERS = ['Cripplegate Foundation', 'The Baring Foundation']
+  acts_as_taggable
 
   def get_map_all_data
     features = []

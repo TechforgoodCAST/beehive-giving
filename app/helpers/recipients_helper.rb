@@ -1,15 +1,15 @@
 module RecipientsHelper
 
-  def funder_card_cta_button_copy(recipient, funder)
+  def fund_card_cta_button_copy(fund)
     classes = 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
-    if recipient.load_recommendation(funder).eligibility
-      if recipient.eligible?(funder)
-        content_tag(:a, link_to('Apply', recipient_apply_path(funder), class: classes))
+    if @proposal.recommendation(fund).eligibility
+      if @proposal.eligible?(fund)
+        content_tag(:a, link_to('Apply', fund_apply_path(fund), class: classes))
       else
-        content_tag(:a, link_to('Why ineligible?', recipient_eligibility_path(funder), class: classes))
+        content_tag(:a, link_to('Why ineligible?', fund_eligibility_path(fund), class: classes))
       end
     else
-      content_tag(:a, link_to('Check eligibility', recipient_eligibility_path(funder), class: classes))
+      content_tag(:a, link_to('Check eligibility', fund_eligibility_path(fund), class: classes))
     end
   end
 
@@ -34,6 +34,7 @@ module RecipientsHelper
 
   def score_to_match_copy(score, scale=1)
     {
+      'Not enough data': 0,
       'Very poor':  0.2,
       'Poor':       0.4,
       'Fair':       0.6,
@@ -52,9 +53,9 @@ module RecipientsHelper
     content_tag(:strong, scramble_name(%w[Poor Excellent].sample), class: 'redacted muted')
   end
 
-  def render_recommendation(funder, score, scale=1)
-    if current_user.organisation.recommended_funder?(funder) || current_user.organisation.eligible?(funder)
-      score_to_match_copy(current_user.organisation.load_recommendation(funder)["#{score}"], scale)
+  def render_recommendation(fund, score, scale=1)
+    if @proposal.show_fund(fund)
+      score_to_match_copy(@proposal.recommendation(fund)["#{score}"], scale)
     else
       scramble_recommendations
     end

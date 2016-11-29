@@ -1,0 +1,36 @@
+= content_for :title, "#{@tag.name} funds"
+
+:javascript
+  mixpanel.track("View #{@tag.name} Funds Page");
+
+= render partial: 'recipients/funders/subnav'
+
+.uk-container.uk-container-center.uk-margin-large
+  %h2
+    = @tag.name
+    = surround '(', ')' do
+      = @funds.count
+  %h4
+    You are seeing
+    = @tag.name.downcase
+    funds.
+
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+
+    - @funds.each_with_index do |fund, i|
+
+      - if @recipient.is_subscribed? || i < 1
+        = render partial: 'recipients/funders/summary', locals: { fund: fund }
+        - unless @recipient.is_subscribed?
+          .cta.wide
+            Go unlimited with Beehive Pro to see more
+            = @tag.name
+            funders.
+            %a{href: '#why-hidden', class: ' uk-button uk-button-large uk-button-primary invert', onclick: '$.UIkit.modal("#why-hidden").show();'} Upgrade (coming soon)
+      - else
+        = render partial: 'recipients/funders/summary_redacted', locals: { fund: fund }
+        - unless i == @funds.count-1
+          %hr.thick
+
+- unless @recipient.is_subscribed?
+  = render partial: 'funders/why_hidden'

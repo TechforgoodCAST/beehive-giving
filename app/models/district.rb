@@ -1,16 +1,18 @@
 class District < ActiveRecord::Base
 
   belongs_to :country
-
-  has_and_belongs_to_many :profiles
   has_and_belongs_to_many :proposals
-  has_and_belongs_to_many :grants
-  has_and_belongs_to_many :funder_attributes
-  has_and_belongs_to_many :enquiries
+  has_and_belongs_to_many :funds
+  has_many :funders, -> { distinct }, through: :funds
 
-  serialize :geometry
+  has_and_belongs_to_many :profiles # TODO: deprecated
+  has_and_belongs_to_many :grants # TODO: deprecated
+  has_and_belongs_to_many :funder_attributes # TODO: deprecated
+
+  serialize :geometry # TODO: refactor
 
   validates :country, :label, :district, presence: true
+  validates :district, uniqueness: { scope: :country } # TODO: rename 'district' to 'name'
 
   def grant_count_in_region(year=Date.today.year, region=(self.region||self.sub_country))
     District.joins(:grants).where('region = ? OR sub_country = ?', region, region).where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01").group(:district).count.sort_by { |k,v| v }.reverse.to_h
