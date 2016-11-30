@@ -84,7 +84,7 @@ gem 'geocoder'
 
 gem 'newrelic_rpm'
 gem 'intercom-rails'
-gem 'rollbar', '~> 2.8.3'
+gem 'rollbar', '~> 2.13.2'
 
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
