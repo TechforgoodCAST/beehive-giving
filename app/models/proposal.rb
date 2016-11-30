@@ -126,12 +126,13 @@ class Proposal < ActiveRecord::Base
 
       if fund.open_data?
 
-        # TODO:
-        # # org type recommendation
-        # org_type_score = parse_distribution(
-        #   fund.org_type_distribution,
-        #   Organisation::ORG_TYPE[self.recipient.org_type + 1][0]
-        # )
+        # org type recommendation
+        if fund.org_type_distribution?
+          org_type_score = parse_distribution(
+            fund.org_type_distribution,
+            Organisation::ORG_TYPE[self.recipient.org_type + 1][0]
+          )
+        end
 
         if org_type_score > 0
           [
@@ -148,7 +149,7 @@ class Proposal < ActiveRecord::Base
         end
 
         # beneficiary recommendation
-        if self.gender?
+        if self.gender? && fund.gender_distribution?
           beneficiary_score = parse_distribution(
             fund.gender_distribution,
             self.gender

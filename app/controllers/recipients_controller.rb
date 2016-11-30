@@ -8,7 +8,7 @@ class RecipientsController < ApplicationController
   before_filter :load_feedback, except: [:unlock_funder, :vote]
   before_filter :funder_attribute, only: [:comparison, :eligibility, :update_eligibility]
 
-  # TODO: before_filter :refine_recommendations
+  before_filter :refine_recommendations, except: [:edit, :update]
 
   def edit
     @recipient.get_charity_data
