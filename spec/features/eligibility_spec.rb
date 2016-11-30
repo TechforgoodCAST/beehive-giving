@@ -18,6 +18,35 @@ feature 'Eligibility' do
     visit root_path
   end
 
+  scenario 'When I have previous eligibility checks,
+            I want to see a message explaining new changes,
+            so I understand what happend to my previous work' do
+    def assert(present: true)
+      copy = 'Last time you used Beehive you conducted 1 eligibility check'
+      [
+        recommended_funds_path,
+        eligible_funds_path,
+        ineligible_funds_path
+      ].each do |path|
+        visit path
+        if present
+          expect(page).to have_text copy
+        else
+          expect(page).not_to have_text copy
+        end
+      end
+    end
+
+    assert(present: false)
+
+    RecipientFunderAccess.create(recipient: @db[:recipient], funder_id: Funder.first.id)
+    Recipient.joins(:recipient_funder_accesses).group(:recipient_id).count.each do |k, v|
+      Recipient.find(k).update_column(:funds_checked, v)
+    end
+
+    assert
+  end
+
   scenario "When I check eligibility for the first time and need to update my proposal,
             I want to understand why I need to do it,
             so I feel I'm using my time in the best way" do

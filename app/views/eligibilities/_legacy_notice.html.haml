@@ -1,0 +1,9 @@
+- if @recipient.recipient_funder_accesses.any?
+  .cta.tight.uk-margin-large-bottom
+    %strong We've made some changes
+    %br
+      Last time you used Beehive you conducted
+      %strong= @recipient.funds_checked
+      eligibility check(s). We've made some changes to how this feature works, and if you'd like to reset this please contact
+      = succeed '.' do
+        = link_to 'support@beehivegiving.org', 'mailto:support@beehivegiving.org'

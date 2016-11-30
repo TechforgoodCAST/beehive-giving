@@ -25,6 +25,8 @@
 
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
 
+    = render partial: 'eligibilities/legacy_notice'
+
     - @funds.each_with_index do |fund, i|
       = render partial: 'recipients/funders/summary', locals: { fund: fund }
       - if i == @funds.count-1
