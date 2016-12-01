@@ -129,7 +129,7 @@ class Organisation < ActiveRecord::Base
 
   def get_charity_data
     require 'open-uri'
-    response = Nokogiri::HTML(open(charity_commission_url)) rescue nil
+    response = Nokogiri::HTML(open(charity_commission_url, open_timeout: 3)) rescue nil
     if response
       # refactor
       company_no_scrape = response.at_css('#ContentPlaceHolderDefault_cp_content_ctl00_CharityDetails_4_TabContainer1_tpOverview_plCompanyNumber')

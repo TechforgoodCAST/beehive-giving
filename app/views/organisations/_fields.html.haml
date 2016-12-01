@@ -13,10 +13,6 @@
         .uk-form-controls
           = f.input :charity_number, type: 'text', input_html: { class: 'large uk-width-1-1' }
           = f.error :charity_number, class: 'error-message'
-        - if @recipient.charity_number.present?
-          .uk-width-1-1.uk-margin-small-top
-            .uk-text-small
-              %a{"data-uk-tooltip" => "{pos:'top'}", :title => "If you have difficulties entering a charity number it probably means we have your details on our records. Simply click this link to get in touch with support@beehivegiving.org who will be happy to help you.", :href => "mailto:support@beehivegiving.org"} Having trouble with your charity number?
 
       .uk-width-large-1-2.uk-margin-top.fade-out.company-number
         .label Company No.
