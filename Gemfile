@@ -82,6 +82,8 @@ gem 'httparty'
 gem 'nokogiri'
 gem 'geocoder'
 
+gem 'scout_apm'
+gem 'tunemygc'
 gem 'newrelic_rpm'
 gem 'intercom-rails'
 gem 'rollbar', '~> 2.13.2'
