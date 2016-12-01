@@ -124,6 +124,8 @@ class Proposal < ActiveRecord::Base
     Fund.all.each do |fund|
       org_type_score = beneficiary_score = location_score = amount_score = duration_score = 0
 
+      amount_score = fund_request_scores(fund, beehive_insight_amounts, amount_score)
+
       if fund.open_data?
 
         # org type recommendation
@@ -166,7 +168,6 @@ class Proposal < ActiveRecord::Base
         end
 
         # amount requested recommendation
-        amount_score = fund_request_scores(fund, beehive_insight_amounts, amount_score)
         amount_score = 0 if fund.amount_max_limited? && self.total_costs > fund.amount_max
 
         # duration requested recommendation
@@ -261,7 +262,7 @@ class Proposal < ActiveRecord::Base
         headers: { 'Content-Type' => 'application/json' }
       }
       resp = HTTParty.post(endpoint, options)
-      return JSON.parse(resp.body).map { |k,v| [k.slice(5..-1), v] }.to_h
+      return JSON.parse(resp.body).to_h
     end
 
     def fund_request_scores(fund, data, score)
