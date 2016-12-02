@@ -53,7 +53,7 @@ class RecipientsController < ApplicationController
   end
 
   def all_funds
-    @funds = @recipient.proposals.last.funds.order('recommendations.total_recommendation DESC', 'funds.name')
+    @funds = @recipient.proposals.last.funds.includes(:funder).order('recommendations.total_recommendation DESC', 'funds.name')
 
     render 'recipients/funders/all_funders'
   end

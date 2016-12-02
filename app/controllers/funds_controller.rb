@@ -11,13 +11,13 @@ class FundsController < ApplicationController
   end
 
   def show
-    @fund = Fund.find_by(slug: params[:id])
+    @fund = Fund.includes(:funder).find_by(slug: params[:id])
   end
 
   def tagged
     @tag = ActsAsTaggableOn::Tag.find_by_slug(params[:tag])
     if @tag.present?
-      @funds = @recipient.funds.tagged_with(@tag)
+      @funds = @recipient.funds.includes(:funder).tagged_with(@tag)
     else
       redirect_to root_path, alert: 'Not found'
     end

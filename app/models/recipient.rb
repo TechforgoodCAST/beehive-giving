@@ -132,7 +132,7 @@ class Recipient < Organisation
   end
 
   def recommended_funds # TODO: refactor to proposal
-    self.proposals.last.funds
+    self.proposals.last.funds.includes(:funder)
       .where('recommendations.total_recommendation >= ?', RECOMMENDATION_THRESHOLD)
       .order('recommendations.total_recommendation DESC', 'funds.name')
   end

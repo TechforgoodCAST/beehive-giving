@@ -41,7 +41,7 @@ FactoryGirl.define do
 
       open_data true
       period_start { 1.year.ago }
-      period_end { 1.day.ago }
+      period_end { Date.today }
 
       # Overview
       grant_count 250

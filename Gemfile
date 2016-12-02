@@ -29,6 +29,7 @@ group :development do
   gem 'pry-rails'
   gem 'quiet_assets'
   gem 'meta_request'
+  gem 'bullet'
 end
 
 group :test do
