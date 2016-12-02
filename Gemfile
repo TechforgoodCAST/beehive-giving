@@ -30,6 +30,7 @@ group :development do
   gem 'quiet_assets'
   gem 'meta_request'
   gem 'bullet'
+  gem 'rubocop', require: false
 end
 
 group :test do

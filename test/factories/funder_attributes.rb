@@ -2,7 +2,7 @@
 FactoryGirl.define do
 
   factory :approval_months, class: ApprovalMonth do
-    sequence(:month, (0..11).cycle) { |n| ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][n] }
+    sequence(:month, (0..11).cycle) { |n| %w(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec)[n] }
   end
 
   factory :funder_attribute do

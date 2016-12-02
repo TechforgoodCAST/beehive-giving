@@ -35,7 +35,7 @@ class FundersController < ApplicationController
   end
 
   def map
-    params[:id] == 'all' ? gon.funderSlug = 'all' : gon.funderSlug = @funder.slug
+    gon.funderSlug = params[:id] == 'all' ? 'all' : @funder.slug
     render 'funders/funding/map'
   end
 

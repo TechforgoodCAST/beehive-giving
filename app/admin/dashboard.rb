@@ -136,7 +136,7 @@ ActiveAdmin.register_page "Dashboard" do
           end
           tr do
             td 'Proposals'
-            proposal_count(['initial', 'registered', 'complete']).each_with_index do |count, i|
+            proposal_count(%w(initial registered complete)).each_with_index do |count, i|
               td percentage(count, i) if count[1] > 0
             end
           end
