@@ -32,7 +32,6 @@ class MatchHelper
       select  seeking
       unless seeking == 'Myself OR another individual'
         case seeking
-        when 'An unregistered organisation OR project'
         when 'A registered charity'
           fill_in :user_charity_number, with: charity_number
         when 'A registered company'
@@ -40,7 +39,6 @@ class MatchHelper
         when 'A registered charity & company'
           fill_in :user_charity_number, with: charity_number
           fill_in :user_company_number, with: company_number
-        when 'Another type of organisation'
         end
         fill_in :user_user_email, with: user_email
         fill_in :user_password,   with: password

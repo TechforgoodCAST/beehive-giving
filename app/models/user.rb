@@ -68,9 +68,10 @@ class User < ActiveRecord::Base
   end
 
   def generate_token(column)
-    begin
+    loop do
       self[column] = SecureRandom.urlsafe_base64
-    end while User.exists?(column => self[column])
+      break unless User.exists?(column => self[column])
+    end
   end
 
 end
