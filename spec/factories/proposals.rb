@@ -13,7 +13,7 @@ FactoryGirl.define do
     beneficiaries_other_required false
     affect_geo            Proposal::AFFECT_GEO.sample[1]
     private               false
-    after(:create)        { |proposal| proposal.initial_recommendation }
+    after(:create, &:initial_recommendation)
 
     factory :registered_proposal do
       state            'registered'

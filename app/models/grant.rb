@@ -13,7 +13,7 @@ class Grant < ActiveRecord::Base
 
   attr_accessor :skip_validation
 
-  scope :recent, -> (year=2015) { where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01") }
+  scope :recent, ->(year=2015) { where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01") }
 
   validates :funder, :recipient, presence: true
 

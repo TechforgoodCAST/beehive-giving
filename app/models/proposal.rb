@@ -121,7 +121,7 @@ class Proposal < ActiveRecord::Base
       { duration: self.funding_duration }
     )
 
-    Fund.all.each do |fund|
+    Fund.all.find_each do |fund|
       org_type_score = beneficiary_score = location_score = amount_score = duration_score = 0
 
       amount_score = fund_request_scores(fund, beehive_insight_amounts, amount_score)
@@ -205,7 +205,7 @@ class Proposal < ActiveRecord::Base
   end
 
   def show_fund(fund)
-    recipient.is_subscribed? ||
+    recipient.subscribed? ||
     recipient.recommended_fund?(fund) ||
     recommendation(fund).eligibility?
   end

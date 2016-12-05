@@ -49,7 +49,7 @@ class ActiveSupport::TestCase
       fund.outcomes = @outcomes
       fund.decision_makers = @decision_makers
     end
-    @funds.each { |f| f.save! } if save
+    @funds.each(&:save!) if save
   end
 end
 

@@ -8,11 +8,11 @@ class Funder < Organisation
   has_many :grants
   has_many :districts, -> { distinct }, through: :grants
   has_many :countries, -> { distinct }, through: :grants
-  has_many :countries_by_year, -> (object) { where('grants.approved_on <= ? AND grants.approved_on >= ?', "#{object.current_attribute.year}-12-31", "#{object.current_attribute.year}-01-01") }, :through => :grants, :source => :countries
-  has_many :districts_by_year, -> (object) { where('grants.approved_on <= ? AND grants.approved_on >= ?', "#{object.current_attribute.year}-12-31", "#{object.current_attribute.year}-01-01") }, :through => :grants, :source => :districts
+  has_many :countries_by_year, ->(object) { where('grants.approved_on <= ? AND grants.approved_on >= ?', "#{object.current_attribute.year}-12-31", "#{object.current_attribute.year}-01-01") }, :through => :grants, :source => :countries
+  has_many :districts_by_year, ->(object) { where('grants.approved_on <= ? AND grants.approved_on >= ?', "#{object.current_attribute.year}-12-31", "#{object.current_attribute.year}-01-01") }, :through => :grants, :source => :districts
 
   has_many :recipients, :through => :grants
-  has_many :recent_recipients, -> (object) { where('grants.approved_on <= ? AND grants.approved_on >= ?', "#{object.current_attribute.year}-12-31", "#{object.current_attribute.year}-01-01") }, :through => :grants, :source => :recipient
+  has_many :recent_recipients, ->(object) { where('grants.approved_on <= ? AND grants.approved_on >= ?', "#{object.current_attribute.year}-12-31", "#{object.current_attribute.year}-01-01") }, :through => :grants, :source => :recipient
 
   has_many :age_groups, :through => :funder_attributes
 

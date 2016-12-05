@@ -43,7 +43,7 @@ feature 'Subscriptions' do
       #   @db[:recipient].reload
       #
       #   expect(current_path).to eq account_subscription_path(@db[:recipient])
-      #   expect(@db[:recipient].is_subscribed?).to eq true
+      #   expect(@db[:recipient].subscribed?).to eq true
       # end
 
       scenario 'can only have 1 proposal'

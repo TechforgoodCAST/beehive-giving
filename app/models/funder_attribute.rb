@@ -34,7 +34,8 @@ class FunderAttribute < ActiveRecord::Base
   validates :application_link, format: {
     with: %r/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/,
     multiline: true,
-    message: "enter a valid website address e.g. www.example.com"}, if: :application_link
+    message: "enter a valid website address e.g. www.example.com"
+  }, if: :application_link
 
   # refactor dry?
   def save_all_age_groups_if_all_ages

@@ -13,7 +13,7 @@ FactoryGirl.define do
     funding_stream 'All'
     description 'description'
     approval_months { FactoryGirl.create_list(:approval_months, 1) }
-    funded_average_age { |a| a.funded_organisation_age }
+    funded_average_age(&:funded_organisation_age)
     soft_restrictions 'Soft restrictions'
     application_details 'Application details'
     application_link 'www.example.com'

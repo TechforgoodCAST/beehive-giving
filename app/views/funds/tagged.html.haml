@@ -19,9 +19,9 @@
 
     - @funds.each_with_index do |fund, i|
 
-      - if @recipient.is_subscribed? || i < 1
+      - if @recipient.subscribed? || i < 1
         = render partial: 'recipients/funders/summary', locals: { fund: fund }
-        - unless @recipient.is_subscribed?
+        - unless @recipient.subscribed?
           .cta.wide
             Go unlimited with Beehive Pro to see more
             = @tag.name
@@ -32,5 +32,5 @@
         - unless i == @funds.count-1
           %hr.thick
 
-- unless @recipient.is_subscribed?
+- unless @recipient.subscribed?
   = render partial: 'funds/why_hidden'

@@ -1,3 +1,4 @@
+# TODO: deprecated
 ActiveAdmin.register Profile do
 
   permit_params :organisation_id, :year, :gender, :min_age, :max_age,
@@ -52,7 +53,7 @@ ActiveAdmin.register Profile do
 
   show do
     attributes_table do
-      row("Year of profile") { |profile| profile.year }
+      row("Year of profile", &:year)
       row "Organisation" do |user|
         link_to user.organisation.name, [:admin, user.organisation]
       end
@@ -71,9 +72,9 @@ ActiveAdmin.register Profile do
           li b.label
         end
       end
-      row("Which gender does your organisation target?") { |profile| profile.gender }
-      row("Min. age targeted") { |profile| profile.min_age }
-      row("Max. age targeted") { |profile| profile.max_age }
+      row "Which gender does your organisation target?", &:gender
+      row "Min. age targeted", &:min_age
+      row "Max. age targeted", &:max_age
       row :staff_count
       row :volunteer_count
       row "Who delivers your work?" do |profile|
@@ -86,9 +87,9 @@ ActiveAdmin.register Profile do
           li i.label
         end
       end
-      row("Do you recieve financial payment for your work?") { status_tag(profile.does_sell) }
-      row("Beneficiaries impacted") { |profile| profile.beneficiaries_count }
-      row(:beneficiaries_count_actual) { status_tag(profile.beneficiaries_count_actual) }
+      row "Do you recieve financial payment for your work?", &:does_sell
+      row "Beneficiaries impacted", &:beneficiaries_count
+      row :beneficiaries_count_actual, &:beneficiaries_count_actual
       row :income do |profile|
         number_to_currency(profile.income, unit: '£', precision: 0)
       end

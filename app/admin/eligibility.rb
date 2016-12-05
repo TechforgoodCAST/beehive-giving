@@ -36,7 +36,7 @@ ActiveAdmin.register Eligibility do
 
   show do
     attributes_table do
-      row("Recipient") { |e| e.recipient }
+      row("Recipient", &:recipient)
       row("Restrition") { |e| e.restriction.details }
       row("Funders") do |e|
         e.restriction.funders.uniq.each do |f|

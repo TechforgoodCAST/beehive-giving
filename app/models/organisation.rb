@@ -38,7 +38,7 @@ class Organisation < ActiveRecord::Base
   has_many :profiles, dependent: :destroy # TODO: deprecated
 
   geocoded_by :search_address
-  after_validation :geocode, if: -> (o) { (o.street_address.present?) or (o.postal_code.present? and o.postal_code_changed?) }, unless: -> (o) { o.country != 'GB' }
+  after_validation :geocode, if: ->(o) { (o.street_address.present?) or (o.postal_code.present? and o.postal_code_changed?) }, unless: ->(o) { o.country != 'GB' }
 
   attr_accessor :skip_validation
 
@@ -72,7 +72,8 @@ class Organisation < ActiveRecord::Base
 
   validates :website, format: {
     with: URI.regexp(%w(http https)),
-    message: 'enter a valid website address e.g. http://www.example.com'}, if: :website?
+    message: 'enter a valid website address e.g. http://www.example.com'
+  }, if: :website?
 
   validates :slug, uniqueness: true, presence: true
 
@@ -89,11 +90,13 @@ class Organisation < ActiveRecord::Base
 
   def search_address
     if self.postal_code.present?
-      [ self.postal_code,
+      [
+        self.postal_code,
         self.country
       ].join(", ")
     elsif self.street_address.present?
-      [ self.street_address,
+      [
+        self.street_address,
         self.country
       ].join(", ")
     end

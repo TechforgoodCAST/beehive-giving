@@ -17,9 +17,7 @@ FactoryGirl.define do
     open_call true
     countries {FactoryGirl.create_list(:country, 2)}
     districts {FactoryGirl.create_list(:district, 2)}
-    after(:build) do |object|
-      object.default_values
-    end
+    after(:build, &:default_values)
   end
 
   factory :grants, class: Grant do
@@ -44,9 +42,7 @@ FactoryGirl.define do
     open_call [true, false].sample
     # countries {FactoryGirl.create_list(:country, 2)}
     # districts {FactoryGirl.create_list(:district, 2)}
-    after(:build) do |object|
-      object.default_values
-    end
+    after(:build, &:default_values)
   end
 
   factory :grants_first_jan, class: Grant do
@@ -69,9 +65,7 @@ FactoryGirl.define do
     attention_on Date.new(Date.today.year, 1, 1)
     applied_on Date.new(Date.today.year, 1, 1)
     open_call [true, false].sample
-    after(:build) do |object|
-      object.default_values
-    end
+    after(:build, &:default_values)
   end
 
 end

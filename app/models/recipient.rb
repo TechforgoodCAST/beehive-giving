@@ -20,7 +20,7 @@ class Recipient < Organisation
     self.subscription.update_attribute(:active, true)
   end
 
-  def is_subscribed?
+  def subscribed?
     self.subscription.active?
   end
 
@@ -78,9 +78,11 @@ class Recipient < Organisation
     recipient_restrictions = self.eligibilities.pluck(:restriction_id)
     fund_restrictions = fund.restrictions.pluck(:id)
     if (recipient_restrictions & fund_restrictions).count == fund_restrictions.count
-      (eligible_restrictions & fund_restrictions).count == fund_restrictions.count ?
-        set_eligibility(proposal, fund, 'Eligible') :
+      if (eligible_restrictions & fund_restrictions).count == fund_restrictions.count
+        set_eligibility(proposal, fund, 'Eligible')
+      else
         set_eligibility(proposal, fund, 'Ineligible')
+      end
     end
   end
 
@@ -91,7 +93,7 @@ class Recipient < Organisation
     end
   end
 
-  def has_proposal? # refactor?
+  def proposals? # refactor?
     proposals.count > 0
   end
 
@@ -145,9 +147,7 @@ class Recipient < Organisation
   end
 
   def set_boolean(profile, proposal, category, field)
-    return proposal[field] = profile.beneficiaries
-              .where(category: category)
-              .count > 1 ? true : false
+    proposal[field] = profile.beneficiaries.where(category: category).count > 1
   end
 
   def get_age_segment(age, type='from')

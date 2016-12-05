@@ -37,9 +37,7 @@ ActiveAdmin.register FunderAttribute do
   show do
     attributes_table do
       row :year
-      row "Funder" do |attribute|
-        attribute.funder
-      end
+      row "Funder", &:funder
       row :funding_stream
       row :description
       row :grant_count

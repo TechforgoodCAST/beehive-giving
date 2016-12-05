@@ -7,7 +7,7 @@ class ProposalsController < ApplicationController
   def new
     if @recipient.incomplete_first_proposal?
       redirect_to edit_recipient_proposal_path(@recipient, @recipient.proposals.last)
-    elsif @recipient.has_proposal?
+    elsif @recipient.proposals?
       redirect_to recommended_funds_path
     else
       if @recipient.valid?
@@ -42,7 +42,7 @@ class ProposalsController < ApplicationController
   end
 
   def index
-    if @recipient.has_proposal?
+    if @recipient.proposals?
       @proposals = @recipient.proposals
     else
       redirect_to recommended_funds_path
