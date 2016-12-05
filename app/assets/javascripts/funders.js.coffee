@@ -127,48 +127,7 @@ $(document).ready ->
       fundingRegion.options.preUnits = '£'
       fundingRegion.setData($('#funding_in_region').data('data'))
 
-  if $('#funding_by_regions').length
-    Morris.Bar
-      element: 'funding_by_regions'
-      data: $('#funding_by_regions').data('data')
-      xkey: 'region'
-      ykeys: ['grant_count']
-      postUnits: ' grants'
-      labels: ['Awarded']
-      barColors: ['#F7BA0E']
-      resize: true
-      hideHover: 'auto'
-
-# refactor
-$(document).ready ->
-  if $('#multiple_funding_frequency_distribution').length
-    Morris.Bar
-      element: 'multiple_funding_frequency_distribution'
-      data: $('#multiple_funding_frequency_distribution').data('data')
-      xkey: 'target'
-      ykeys: ['funder1', 'funder2', 'funder3', 'funder4', 'funder5']
-      labels: [gon.funderName1, gon.funderName2, gon.funderName3, gon.funderName4, gon.funderName5]
-      barColors: ['#FFD452', '#75A3D1', '#E05151', '#77BA9B', '#9C6A8D']
-      resize: true
-      hideHover: 'auto'
-      gridTextSize: 10
-
 FundersHelper = ((w, d) ->
-
-  hideWelcomeMessage = ->
-    return unless window.location.pathname.split('/')[1] == 'funders'
-      _cookieName = '_beehiveFunderWelcomeClose'
-      modal = $.UIkit.modal("#welcome")
-      modal.options.bgclose = false
-      modal.options.keyboard = false
-
-      if document.cookie.indexOf(_cookieName) >= 0
-        modal.hide()
-      else
-        modal.show()
-
-      $(document).on 'click', 'li a.blue', ->
-        d.cookie = _cookieName + "=true;path=/";
 
   showMoreRows = ->
     $('.show-more').on 'click', ->
@@ -190,7 +149,6 @@ FundersHelper = ((w, d) ->
         window.location = window.location.pathname.replace($('.funder.nav li.active').text().trim().toLowerCase(), slug)
 
   return {
-    hideWelcomeMessage: hideWelcomeMessage,
     showMoreRows: showMoreRows,
     switchFunders: switchFunders,
     switchRegions: switchRegions
@@ -198,7 +156,6 @@ FundersHelper = ((w, d) ->
 )(window, document)
 
 $(document).ready ->
-  FundersHelper.hideWelcomeMessage()
   FundersHelper.showMoreRows()
   FundersHelper.switchFunders()
   FundersHelper.switchRegions()

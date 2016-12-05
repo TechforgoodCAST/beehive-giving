@@ -14,6 +14,14 @@ describe Organisation do
     @org = @db[:recipient]
   end
 
+  it 'has slug' do
+    expect(@org.slug).to eq 'acme'
+  end
+
+  it 'slug is unique' do
+    expect(create(:recipient, name: 'ACME').slug).to eq 'acme-2'
+  end
+
   it 'has one subscription' do
     expect(@org.subscription).to eq Subscription.first
   end

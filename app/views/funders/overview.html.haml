@@ -4,36 +4,11 @@
 = javascript_include_tag 'raphael'
 = javascript_include_tag 'morris'
 
--# uikit modal fix
-:javascript
-  $('html').css('height', 'auto');
-
-.uk-modal#welcome
-  .uk-modal-dialog
-    .uk-modal-header
-      %h3.uk-text-bold Welcome to Beehive
-      %p
-        This a prototype we've built for funders to gain insights from their data. It uses data from
-        = link_to '360Giving', 'http://www.threesixtygiving.org/', target: '_blank', class: 'blue'
-        at it's core and we welcome you to explore the site and provide feedback. Please select one of the options below to get started.
-      %p
-        %strong What would you like to do?
-      .uk-width-1-1{style: 'padding-left: 15px;'}
-        %ul.uk-list.uk-margin-remove
-          %li{style: 'margin-bottom: 10px;'}
-            %a.blue.uk-modal-close#overview{onclick: "ga('send', 'event', 'Funders', 'click overview in welcome', 'Overview - #{current_user.first_name} #{current_user.last_name}');"} Compare previous funding
-          %li{style: 'margin-bottom: 10px;'}
-            %a.blue#map{href: funder_map_path(@funder), onclick: "ga('send', 'event', 'Funders', 'click map in welcome', 'Map - #{current_user.first_name} #{current_user.last_name}');"} Explore a map of previous funding
-          %li{style: 'margin-bottom: 10px;'}
-            %a.blue#connect{href: funder_recent_path(@funder), onclick: "ga('send', 'event', 'Funders', 'click connect in welcome', 'Connect - #{current_user.first_name} #{current_user.last_name}');"} Connect with organisations seeking funding
-          %li
-            %a.blue#region{href: funder_district_path(@funder, @funder.districts.group(:slug).count.sort_by {|k, v| v}.reverse.to_h.keys.first), onclick: "ga('send', 'event', 'Funders', 'click region in welcome', 'Region - #{current_user.first_name} #{current_user.last_name}');"} Understand the previous funding in a specific region
-
-= render partial: 'funders/funding/subnav'
+= render partial: 'subnav'
 
 .uk-container.uk-container-center.uk-margin-large.uk-margin-large-top.uk-animation-fade
 
-  = render partial: 'funders/prototype'
+  = render partial: 'prototype'
 
   .uk-grid
     .uk-width-medium-1-3
@@ -63,7 +38,75 @@
             in
             = @funder.current_attribute.year
 
-        = render partial: 'funders/funding/insights', locals: {funder: @funder}
+        %p= raw(@funder.current_attribute.description)
+
+        %ul.insights
+          %li
+            - if @funder.current_attribute.application_count
+              Received
+              .highlight= number_with_delimiter(@funder.current_attribute.application_count)
+              applications and awarded
+              = succeed '.' do
+                .highlight= number_with_delimiter(@funder.current_attribute.grant_count)
+              grants
+            - else
+              Awarded
+              .highlight= number_with_delimiter(@funder.current_attribute.grant_count)
+              grants.
+            - if @funder.current_attribute.application_count
+              That's a
+              .highlight= percentage(@funder.current_attribute.grant_count, @funder.current_attribute.application_count)
+              success rate.
+            %a.action.blue{href: funder_overview_path(@funder, anchor: 'how-was-funding-distributed'), "data-uk-smooth-scroll" => ""} More info
+
+          - if @funder.current_attribute.approval_months_by_count
+            %li
+              Awarded funding in
+              = succeed '.' do
+                %strong= raw(@funder.current_attribute.approval_months_by_count)
+              %a.action.blue{href: funder_overview_path(@funder, anchor: 'when-was-funding-awarded'), "data-uk-smooth-scroll" => ""} More info
+
+          - if @funder.recent_grants(@funder.current_attribute.year).where('days_from_start_to_end IS NOT NULL').group(:days_from_start_to_end).count.count > 0
+            %li
+              Most funding lasted for
+              = succeed '.' do
+                %strong= funding_duration(@funder).sort_by { |hsh| hsh[:grant_count] }.last[:years]
+              %a.action.blue{href: funder_overview_path(@funder, anchor: 'how-long-did-funding-last'), "data-uk-smooth-scroll" => ""} More info
+
+          - if @funder.current_attribute.countries_by_count
+            %li
+              The most funded countries were
+              = succeed '.' do
+                %strong= raw(@funder.current_attribute.countries_by_count)
+
+          - if @funder.current_attribute.regions_by_count
+            %li
+              The most funded regions were
+              = succeed '.' do
+                -# TODO: refactor
+                - array = []
+                - @funder.districts_by_year.group(:district).count.sort_by {|k, v| v}.reverse.to_h.keys.take(3).each do |i|
+                  - array << '<a class="blue uk-text-bold" href="' + funder_district_path(@funder, District.find_by_district(i).slug) + '">' + District.find_by_district(i).district + '</a>'
+                = raw(array.to_sentence)
+
+              %a.action.blue{href: funder_map_path(@funder)} Full map
+
+          - if @funder.current_attribute.funding_streams_by_count
+            %li
+              Awarded the most grants in
+              = succeed '.' do
+                %strong=raw(@funder.current_attribute.funding_streams_by_count)
+
+          %li
+            Funded
+            %strong= @funder.current_attribute.shared_recipient_ids.values.flatten.uniq.count
+            of the same organisations as
+            %strong= @funder.current_attribute.shared_recipient_ids.keys.count
+            other funders. Thats
+            %strong= number_to_percentage((@funder.current_attribute.shared_recipient_ids.values.flatten.uniq.count.to_f / @funder.current_attribute.no_of_recipients_funded.to_f)*100, precision: 0)
+            of organisations funded.
+            %a.action.blue{href: funder_overview_path(@funder, anchor: 'shared-recipients'), "data-uk-smooth-scroll" => ""} More info
+
 
         %div.uk-margin-top.shadow{style: 'border: 1px solid #ddd; border-radius: 3px; padding: 10px; color: #333; font-size: 14px; background: white;'}
           %h4.uk-text-bold Coming soon
@@ -91,15 +134,6 @@
           %span.year.muted
             in
             = @funder.current_attribute.year
-
-          -# .data-toggle-buttons.uk-form-select{"data-uk-form-select" => "{target:'span'}", :style => "font-size: 14px;"}
-          -#   %a.blue
-          -#     %span
-          -#     %i.uk-icon.uk-icon-caret-down
-          -#   %select#toggle-funding-stream
-          -#     %option{value: 'all'} All funding
-          -#     - @funder.recent_grants(@funder.current_attribute.year).pluck(:funding_stream).uniq.each do |funding_stream|
-          -#       %option{value: "#{funding_stream}"}= funding_stream
 
         %p
           - if @funder.current_attribute.application_count
@@ -287,4 +321,36 @@
       %hr.thick
 
 - @funder.current_attribute.shared_recipient_ids.each do |k, v|
-  = render partial: 'funders/funding/shared_recipients', locals: {k: k}
+  .uk-modal{id: "#{k}-modal"}
+    .uk-modal-dialog.uk-modal-dialog-medium
+      .uk-modal-close.uk-close
+      .uk-modal-header
+        %h3.uk-text-bold
+          Recipients shared with
+          = Funder.find(k).name
+        .uk-text-muted
+          In
+          = @funder.current_attribute.year
+
+      - Recipient.where(id: @funder.current_attribute.shared_recipient_ids[k]).each do |r|
+        %hr.thick
+        %h4.uk-text-bold.uk-margin-remove
+          %a.blue{"data-uk-tooltip" => "{pos:'right'}", :title => "Recipients profiles coming soon."}= r.name
+        %table.uk-table.uk-table-striped.uk-margin-top-remove
+          %thead
+            %tr
+              %th Funder
+              %th Amount awarded
+              %th Funding stream
+          %tfoot
+            %tr
+              %td Total
+              %td= number_to_currency(r.recent_grants(@funder.current_attribute.year).sum(:amount_awarded), unit: '£', precision: 0)
+          %tbody
+            - r.recent_grants(@funder.current_attribute.year).order(amount_awarded: :desc).each do |g|
+              %tr
+                %td= Funder.find(g.funder_id).name
+                %td= number_to_currency(g.amount_awarded, unit: '£', precision: 0)
+                %td= g.funding_stream
+                %td
+                  %a.blue{"data-uk-tooltip" => "{pos:'left'}", :title => "Coming soon"} More info

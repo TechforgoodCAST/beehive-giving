@@ -1,39 +1,55 @@
-- params[:funders_navbar] = true
+- params[:funding_navbar] = true
 .subnav{"data-uk-sticky" => ""}
   .uk-container.uk-container-center
     .uk-grid
-      .uk-width-2-3
+      .uk-width-1-2
         %ul.nav{ class: current_user.role == 'Funder' ? 'funder' : 'recipient' }
-          %a{href: funder_path(funder)}
-            %li.first{ class: ('active' if current_page?(funder_path(funder))) }
-              = funder.name.truncate(14)
+          %a{href: funder_overview_path(@funder)}
+            %li.first{ class: ('active' if params[:controller] == 'funders' && params[:action] == 'overview') }
+              Overview
               .highlight
-          %span &rsaquo;
+          %span &middot;
 
-          %a{href: recipient_eligibility_path(funder)}
-            %li{ class: ('active' if params[:controller] == 'recipients' && %w(eligibility update_eligibility).include?(params[:action])) }
-              Eligiblity
+          %a{href: funder_map_path(@funder)}
+            %li{ class: ('active' if params[:controller] == 'funders' && params[:action] == 'map') }
+              Map
               .highlight
-          %span &rsaquo;
 
-          - if @recipient.eligible?(funder)
-            %a{href: recipient_apply_path(funder)}
-              %li.last{ class: ('active' if current_page?(recipient_apply_path(funder))) }
-                Apply
+          - if params[:controller] == 'funders' && params[:action] == 'district'
+            %span &rsaquo;
+            %a{href: funder_district_path(@funder, @district.slug)}
+              %li{ class: ('active' if params[:controller] == 'funders' && params[:action] == 'district') }
+                = @district.district
                 .highlight
-          - else
-            %li.muted
-              Apply
 
-      -# .uk-width-1-3
-      -#   %div{style: 'float: right; padding-right: 10px;'}
-      -#     .muted{style: 'padding: 25px 0;'}
-      -#       View funding stream:
-      -#       %span.uk-form-select{"data-uk-form-select" => "{target:'a'}"}
-      -#         %a.uk-text-bold
-      -#         %i.uk-icon.uk-icon-caret-down.yellow
-      -#         %select
-      -#           %option{:value => "1"} All
-      -#           %option{:value => "2"} Main Fund
-      -#           %option{:value => "3"} Environment
-      -#           %option{:value => "4"} Food
+          %span &middot;
+          %a{"data-uk-tooltip" => "{pos:'bottom'}", :title => "Coming soon"}
+            %li
+              Browse
+              .highlight
+
+      .uk-width-1-2.uk-text-right
+        - if params[:controller] == 'funders' && params[:action] == 'district'
+          = javascript_include_tag 'chosen-jquery'
+          = javascript_include_tag 'chosen'
+          = stylesheet_link_tag 'chosen'
+          = stylesheet_link_tag 'overrides/chosen_overrides'
+
+          %p{style: 'padding: 16px 0; text-align: left; width: 200px; float: right;'}
+            = select_tag :district_select, options_from_collection_for_select(District.where(country_id: 741).order(:district), 'slug', 'district', @district.slug), class: 'chosen-select', include_blank: true
+
+        - else
+          %p{style: 'padding: 25px 0;'}
+            %span.uk-form-select{"data-uk-form-select" => "{target:'span'}"}
+              %a.blue
+                %span
+                %i.uk-icon.uk-icon-caret-down
+              %select#funder-select
+                - unless params[:controller] == 'funders' && params[:action] == 'overview'
+                  %option{value: 'all'} All funding
+                - Funder.order(:name).where(active_on_beehive: true).each do |f|
+                  %option{value: "#{f.slug}", selected: ('selected' if params[:id] == f.slug)}= f.name
+            in
+            %a.blue{"data-uk-tooltip" => "{pos:'bottom'}", :title => "Coming soon"}
+              = (params[:id] == 'all' ? '2014' : @funder.current_attribute.year)
+              %i.uk-icon.uk-icon-caret-down

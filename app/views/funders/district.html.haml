@@ -4,10 +4,10 @@
 = javascript_include_tag 'raphael'
 = javascript_include_tag 'morris'
 
-= render partial: 'funders/funding/subnav'
+= render partial: 'subnav'
 
 .uk-container.uk-container-center.uk-margin-large
-  = render partial: 'funders/prototype'
+  = render partial: 'prototype'
 
   %h2= @district.district
   %h4
@@ -203,7 +203,6 @@
           awarded.
         #region_comparison.chart{ data: {data: @district.rank_in_region(@funder.current_attribute.year).to_json} }
         %hr.thick
-
 
       %section#deprivation.offset
         %h3.uk-margin-top

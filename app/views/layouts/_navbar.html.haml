@@ -10,11 +10,6 @@
                   Funding
                   .highlight
                   .caret.funder
-              %a{href: funder_recent_path(current_user.organisation)}
-                %li.first{ class: ('active' if params[:proposals_navbar]) }
-                  Proposals
-                  .highlight
-                  .caret.funder
             - else
               %a{href: recommended_funds_path}
                 %li.first{ class: ('active' if params[:funding_navbar]) }

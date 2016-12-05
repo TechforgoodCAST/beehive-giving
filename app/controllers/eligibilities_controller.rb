@@ -1,6 +1,6 @@
 class EligibilitiesController < ApplicationController
 
-  before_filter :ensure_logged_in # TODO:
+  before_filter :ensure_logged_in, :ensure_recipient # TODO:
   before_filter :load_recipient, :load_fund, :ensure_proposal_present, :load_proposal # TODO: refactor
 
   def new

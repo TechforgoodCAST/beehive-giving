@@ -9,19 +9,22 @@ class District < ActiveRecord::Base
   has_and_belongs_to_many :grants # TODO: deprecated
   has_and_belongs_to_many :funder_attributes # TODO: deprecated
 
-  serialize :geometry # TODO: refactor
+  serialize :geometry # TODO: deprecated
 
   validates :country, :label, :district, presence: true
   validates :district, uniqueness: { scope: :country } # TODO: rename 'district' to 'name'
 
+  # TODO: deprecated
   def grant_count_in_region(year=Date.today.year, region=(self.region||self.sub_country))
     District.joins(:grants).where('region = ? OR sub_country = ?', region, region).where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01").group(:district).count.sort_by { |k,v| v }.reverse.to_h
   end
 
+  # TODO: deprecated
   def amount_awarded_in_region(year=Date.today.year, region=(self.region||self.sub_country))
     District.joins(:grants).where('region = ? OR sub_country = ?', region, region).where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01").group(:district).sum(:amount_awarded).sort_by { |k,v| v }.reverse.to_h
   end
 
+  # TODO: deprecated
   def rank_in_region(year=Date.today.year, region=(self.region||self.sub_country))
     data = []
     grant_count_in_region(year).each do |k, v|
@@ -34,22 +37,27 @@ class District < ActiveRecord::Base
     data
   end
 
+  # TODO: deprecated
   def recent_grants(year=Date.today.year)
     self.grants.where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01")
   end
 
+  # TODO: deprecated
   def district_funder_ids(year=Date.today.year)
     self.recent_grants(year).pluck(:funder_id).uniq
   end
 
+  # TODO: deprecated
   def ids_by_grant_count(org_type, year=Date.today.year)
     self.recent_grants(year).group("#{org_type}_id").count.sort_by {|k, v| v}.reverse.to_h
   end
 
+  # TODO: deprecated
   def ids_by_grant_sum(org_type, year=Date.today.year)
     self.recent_grants(year).group("#{org_type}_id").sum(:amount_awarded).sort_by {|k, v| v}.reverse.to_h
   end
 
+  # TODO: deprecated
   def imd_chart_data
     def create_hash(category, data)
       if data > 0 && data <= 40

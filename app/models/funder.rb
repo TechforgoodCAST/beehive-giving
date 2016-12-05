@@ -6,8 +6,8 @@ class Funder < Organisation
 
   has_many :funds
   has_many :grants
-  has_many :districts, :through => :grants
-  has_many :countries, :through => :grants
+  has_many :districts, -> { distinct }, through: :grants
+  has_many :countries, -> { distinct }, through: :grants
   has_many :countries_by_year, -> (object) { where('grants.approved_on <= ? AND grants.approved_on >= ?', "#{object.current_attribute.year}-12-31", "#{object.current_attribute.year}-01-01") }, :through => :grants, :source => :countries
   has_many :districts_by_year, -> (object) { where('grants.approved_on <= ? AND grants.approved_on >= ?', "#{object.current_attribute.year}-12-31", "#{object.current_attribute.year}-01-01") }, :through => :grants, :source => :districts
 
@@ -33,7 +33,6 @@ class Funder < Organisation
 
   def get_map_all_data
     features = []
-    amount_awarded_max = Grant.recent(2014).joins(:districts).group('districts.district').sum(:amount_awarded).sort_by {|k, v| v}.reverse.to_h.values.first
     grant_count = Grant.recent(2014).joins(:districts).group('districts.district').count
 
     Grant.recent(2014).joins(:districts).group('districts.district').sum(:amount_awarded).each do |k, v|

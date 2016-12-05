@@ -82,24 +82,4 @@ describe 'Ensure logged in' do
     ])
   end
 
-  context 'deprecated' do
-    before(:each) do
-      @funder = create(:funder)
-    end
-
-    it 'funders' do
-      expect_path([
-        funder_overview_path(@funder),
-        funder_map_path(@funder),
-        funder_map_data_path(@funder),
-        funders_map_all_path(@funder),
-        funder_district_path(@funder, District.last),
-        funders_comparison_path,
-        explore_funder_path(@funder),
-        eligible_funder_path(@funder),
-        funders_path,
-        funder_path(@funder)
-      ])
-    end
-  end
 end

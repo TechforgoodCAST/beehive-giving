@@ -32,9 +32,6 @@ Rails.application.routes.draw do
   match '/(:id)/basics', to: 'recipients#edit', via: :get, as: 'edit_recipient'
   match '/(:id)/basics', to: 'recipients#update', via: :patch
 
-  # match '/new-funder', to: 'signup#funder', via: :get, as: 'new_funder'
-  # match '/new-funder', to: 'signup#create_funder', via: :post
-
   # User authorisation for organisational access
   match '/unauthorised', to: 'signup#unauthorised', via: :get, as: 'unauthorised'
   match '/grant_access/(:unlock_token)', to: 'signup#grant_access', via: :get, as: 'grant_access'
@@ -48,27 +45,18 @@ Rails.application.routes.draw do
   # TODO match '/account/(:id)/charge', to: 'accounts#charge', via: :post, as: 'account_charge'
 
   # Funds
-  # match '/funds/home', to: 'funds#home', via: :get, as: 'funds_home'
   match '/recommended/funds', to: 'recipients#recommended_funds', via: :get, as: 'recommended_funds'
   match '/eligible/funds', to: 'recipients#eligible_funds', via: :get, as: 'eligible_funds'
   match '/ineligible/funds', to: 'recipients#ineligible_funds', via: :get, as: 'ineligible_funds'
   match '/all/funds', to: 'recipients#all_funds', via: :get, as: 'all_funds'
   get '/(:tag)/funds', to: 'funds#tagged', as: 'tag'
 
-  # Recipients
-  # match '/organisation/(:id)', to: 'recipients#show', via: :get, as: 'recipient_public'
-  match '/proposals/(:id)/recent', to: 'funders#recent', via: :get, as: 'funder_recent' # TODO: deprecated remove
-
+  # Funders - deprecated
   match '/funding/(:id)/overview', to: 'funders#overview', via: :get, as: 'funder_overview'
-  # match '/funding/(:id)/overview/(:year)', to: 'funders#overview', via: :get, as: 'funder_overview'
-
   match '/funding/(:id)/map', to: 'funders#map', via: :get, as: 'funder_map'
-  # match '/funding/(:id)/map/(:year)', to: 'funders#map', via: :get, as: 'funder_map'
   match '/map-data/(:id)', to: 'funders#map_data', via: :get, as: 'funder_map_data'
   match '/map-data/all', to: 'funders#map_data', via: :get, as: 'funders_map_all'
-
   match '/funding/(:id)/(:district)', to: 'funders#district', via: :get, as: 'funder_district'
-  # match '/funding/(:id)/(:district)/(:year)', to: 'funders#district', via: :get, as: 'funder_district'
 
   # Proposals
   match '/(:id)/proposal', to: 'proposals#new', via: :get, as: 'new_recipient_proposal'
@@ -85,22 +73,12 @@ Rails.application.routes.draw do
   match '/funds/(:id)/apply', to: 'enquiries#new', via: :get, as: 'fund_apply'
   match '/funds/(:id)/apply', to: 'enquiries#create', via: :post
 
-  # Compare funders
-  match '/funders/comparison', to: 'funders#comparison', via: :get, as: 'funders_comparison'
-
   resources :feedback, only: [:new, :create, :edit, :update]
   resources :password_resets, only: [:new, :create, :edit, :update]
 
   resources :recipients, except: [:new, :index] do
     member do
       post :approach_funder
-    end
-  end
-
-  resources :funders, only: [:show, :index] do
-    member do
-      get :explore
-      get :eligible
     end
   end
 

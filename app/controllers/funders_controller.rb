@@ -1,42 +1,18 @@
 class FundersController < ApplicationController
 
-  before_filter :ensure_logged_in
-  before_filter :ensure_admin, only: [:comparison, :explore, :eligible]
-  before_filter :ensure_funder, except: [:show, :tagged]
-  before_filter :ensure_proposal_present, :ensure_recipient, only: [:show, :tagged]
-  before_filter :load_funder, except: [:new, :create]
-  before_filter :check_proposals_ownership, only: :recent
+  before_filter :ensure_logged_in, :ensure_funder, :load_funder
 
   respond_to :html
 
-  def show
-    @recipient = current_user.organisation # refactor
-    @restrictions = @funder.restrictions.uniq
-
-    unless @funder.active_on_beehive?
-      flash[:alert] = "Sorry, you don't have access to that"
-      redirect_to recommended_funds_path
-    end
-  end
-
-  def recent
-    @recipients = @funder.recommended_recipients
-    render 'funders/recipients/recent'
-  end
-
   def overview
-    if params[:id].present?
-      render 'funders/funding/overview'
-    else
+    unless params[:id].present?
       @funder = current_user.organisation
       params[:id] = current_user.organisation.slug
-      render 'funders/funding/overview'
     end
   end
 
   def map
     gon.funderSlug = params[:id] == 'all' ? 'all' : @funder.slug
-    render 'funders/funding/map'
   end
 
   def map_data
@@ -60,43 +36,16 @@ class FundersController < ApplicationController
   end
 
   def district
+    if current_user.organisation != @funder
+      redirect_to funder_district_path(current_user.organisation, params[:district])
+    end
+
     @district = District.find_by_slug(params[:district])
     gon.districtLabel = @district.district
     gon.funderName = @funder.name
 
-    # @top_funders_for_district = '?'
     @amount_awarded = @funder.districts_by_year.group(:district).sum(:amount_awarded)[@district.district]
     @grant_count = @funder.districts_by_year.group(:district).count[@district.district]
-
-    if current_user.organisation != @funder
-      redirect_to funder_district_path(current_user.organisation, @district.slug)
-    else
-      render 'districts/show'
-    end
-  end
-
-  def explore
-    @recipient = Recipient.find_by_slug(params[:id])
-    @grants = @recipient.grants
-    @funder = current_user.organisation
-  end
-
-  def eligible
-    @eligible_organisations = @funder.eligible_organisations
-  end
-
-  def comparison
-    @funders = Funder.where(name: ['The Foundation',
-                    'The Dulverton Trust',
-                    'Paul Hamlyn Foundation',
-                    'The Indigo Trust',
-                    'Nominet Trust']).to_a
-
-    gon.funderName1 = @funders[0].name
-    gon.funderName2 = @funders[1].name
-    gon.funderName3 = @funders[2].name
-    gon.funderName4 = @funders[3].name
-    gon.funderName5 = @funders[4].name
   end
 
   private
