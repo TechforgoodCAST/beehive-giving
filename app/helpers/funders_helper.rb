@@ -20,8 +20,8 @@ module FundersHelper
     top_district = district.grant_count_in_region(year).values.first
     current_district = district.grant_count_in_region(year)[district.district]
     less = 1 - (current_district.to_f / top_district.to_f)
-    if less > 0
-      raw("#{district.district} received <strong>#{number_to_percentage(less * 100, precision: 0)} fewer grants</strong> than <a href='#{funder_district_path(@funder, District.find_by_district(district.amount_awarded_in_region(year).keys.first).slug)}' class='blue'>#{district.amount_awarded_in_region(year).keys.first}</a> which")
+    if less.positive?
+      safe_join("#{district.district} received <strong>#{number_to_percentage(less * 100, precision: 0)} fewer grants</strong> than <a href='#{funder_district_path(@funder, District.find_by_district(district.amount_awarded_in_region(year).keys.first).slug)}' class='blue'>#{district.amount_awarded_in_region(year).keys.first}</a> which")
     else
       district.grant_count_in_region(year).keys.first
     end
@@ -32,8 +32,8 @@ module FundersHelper
     top_district = district.amount_awarded_in_region(year).values.first
     current_district = district.amount_awarded_in_region(year)[district.district]
     less = 1 - (current_district.to_f / top_district.to_f)
-    if less > 0
-      raw("#{district.district} received <strong>#{number_to_percentage(less * 100, precision: 0)} less funding</strong> than <a href='#{funder_district_path(@funder, District.find_by_district(district.amount_awarded_in_region(year).keys.first).slug)}' class='blue'>#{district.amount_awarded_in_region(year).keys.first}</a> which")
+    if less.positive?
+      safe_join("#{district.district} received <strong>#{number_to_percentage(less * 100, precision: 0)} less funding</strong> than <a href='#{funder_district_path(@funder, District.find_by_district(district.amount_awarded_in_region(year).keys.first).slug)}' class='blue'>#{district.amount_awarded_in_region(year).keys.first}</a> which")
     else
       district.amount_awarded_in_region(year).keys.first
     end
