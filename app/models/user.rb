@@ -56,7 +56,7 @@ class User < ActiveRecord::Base
   end
 
   def unlock
-    self.update_attribute(:authorised, true)
+    update_attribute(:authorised, true)
     UserMailer.notify_unlock(self).deliver_now
   end
 

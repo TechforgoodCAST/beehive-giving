@@ -36,7 +36,7 @@ namespace :funds do
     }
 
     def obj_name(obj)
-      return obj.class.name.downcase
+      obj.class.name.downcase
     end
 
     def save(obj, values, last=false)

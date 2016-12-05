@@ -100,17 +100,17 @@ class Fund < ActiveRecord::Base
   before_validation :check_beehive_data, if: proc { |o| o.skip_beehive_data == '0' }
 
   def to_param
-    self.slug
+    slug
   end
 
   def short_name
-    self.name.sub(' Fund', '')
+    name.sub(' Fund', '')
   end
 
   private
 
     def set_slug
-      self.slug = "#{self.funder.slug}-#{self.name.parameterize}" if self.funder
+      self.slug = "#{funder.slug}-#{name.parameterize}" if funder
     end
 
     def period_end_in_past
@@ -126,12 +126,12 @@ class Fund < ActiveRecord::Base
     end
 
     def check_beehive_data
-      if self.open_data && self.slug
+      if open_data && slug
         options = {
           headers: { 'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN'] }
         }
-        resp = HTTParty.get(ENV['BEEHIVE_DATA_FUND_SUMMARY_ENDPOINT'] + self.slug, options)
-        self.assign_attributes(resp.except('fund_slug')) if self.slug == resp['fund_slug']
+        resp = HTTParty.get(ENV['BEEHIVE_DATA_FUND_SUMMARY_ENDPOINT'] + slug, options)
+        assign_attributes(resp.except('fund_slug')) if slug == resp['fund_slug']
       end
     end
 

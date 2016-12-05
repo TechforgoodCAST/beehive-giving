@@ -506,36 +506,10 @@ Style/RedundantParentheses:
     - 'app/models/profile.rb'
     - 'app/models/proposal.rb'
 
-# Offense count: 15
-# Cop supports --auto-correct.
-# Configuration parameters: AllowMultipleReturnValues.
-Style/RedundantReturn:
-  Exclude:
-    - 'app/controllers/application_controller.rb'
-    - 'app/helpers/signup_helper.rb'
-    - 'app/models/district.rb'
-    - 'app/models/funder.rb'
-    - 'app/models/organisation.rb'
-    - 'app/models/proposal.rb'
-    - 'app/models/recipient.rb'
-    - 'lib/tasks/funds.rake'
-
-# Offense count: 334
+# Offense count: 1
 # Cop supports --auto-correct.
 Style/RedundantSelf:
   Exclude:
-    - 'app/models/district.rb'
-    - 'app/models/fund.rb'
-    - 'app/models/funder.rb'
-    - 'app/models/funder_attribute.rb'
-    - 'app/models/grant.rb'
-    - 'app/models/organisation.rb'
-    - 'app/models/profile.rb'
-    - 'app/models/proposal.rb'
-    - 'app/models/recipient.rb'
-    - 'app/models/recommendation.rb'
-    - 'app/models/stage.rb'
-    - 'app/models/user.rb'
     - 'config/application.rb'
 
 # Offense count: 2

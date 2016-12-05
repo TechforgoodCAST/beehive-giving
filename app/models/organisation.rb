@@ -89,21 +89,21 @@ class Organisation < ActiveRecord::Base
   end
 
   def search_address
-    if self.postal_code.present?
+    if postal_code.present?
       [
-        self.postal_code,
-        self.country
+        postal_code,
+        country
       ].join(', ')
-    elsif self.street_address.present?
+    elsif street_address.present?
       [
-        self.street_address,
-        self.country
+        street_address,
+        country
       ].join(', ')
     end
   end
 
   def to_param
-    self.slug
+    slug
   end
 
   def set_slug
@@ -111,8 +111,8 @@ class Organisation < ActiveRecord::Base
   end
 
   def generate_slug(n=1)
-    return nil unless self.name
-    candidate = self.name.downcase.gsub(/[^a-z0-9]+/, '-')
+    return nil unless name
+    candidate = name.downcase.gsub(/[^a-z0-9]+/, '-')
     candidate += "-#{n}" if n > 1
     return candidate unless Organisation.find_by_slug(candidate)
     generate_slug(n+1)
@@ -175,8 +175,8 @@ class Organisation < ActiveRecord::Base
       self.charity_recent_accounts_link = link_scrape['href'] if link_scrape.present?
 
       income_select(income_scrape.text.sub('£','').to_f * financials_multiplier(income_scrape)) if income_scrape.present?
-      staff_select('employees', employee_scrape.text) if self.charity_employees.present?
-      staff_select('volunteers', volunteer_scrape.text) if self.charity_volunteers.present?
+      staff_select('employees', employee_scrape.text) if charity_employees.present?
+      staff_select('volunteers', volunteer_scrape.text) if charity_volunteers.present?
 
       if company_no_scrape.present?
         self.org_type = 3
@@ -195,9 +195,9 @@ class Organisation < ActiveRecord::Base
     if scrape.present?
       case scrape.text.last
       when 'K'
-        return 1000
+        1000
       when 'M'
-        return 1000000
+        1000000
       end
     end
   end
@@ -245,10 +245,10 @@ class Organisation < ActiveRecord::Base
     require 'open-uri'
     response = Nokogiri::HTML(open(companies_house_url)) rescue nil
     if response
-      self.name = response.at_css('#company-name').text.downcase.titleize unless self.charity_number.present?
+      self.name = response.at_css('#company-name').text.downcase.titleize unless charity_number.present?
       self.country = 'GB' if response.at_css('#company-name')
 
-      self.postal_code = response.at_css('.js-tabs+ dl .data').text.split(',').last.strip unless self.postal_code.present?
+      self.postal_code = response.at_css('.js-tabs+ dl .data').text.split(',').last.strip unless postal_code.present?
       self.company_name = response.at_css('#company-name').text.downcase.titleize
       self.company_status = response.at_css('#company-status').text
       self.company_type = response.at_css('#company-type').text
@@ -265,10 +265,10 @@ class Organisation < ActiveRecord::Base
       end
       self.company_sic = sic_array
 
-      self.registered_on = self.company_incorporated_date
+      self.registered_on = company_incorporated_date
 
-      if self.company_incorporated_date
-        self.set_registered_on_if_scraped
+      if company_incorporated_date
+        set_registered_on_if_scraped
       end
 
       return true
@@ -278,7 +278,7 @@ class Organisation < ActiveRecord::Base
   end
 
   def set_registered_on_if_scraped
-    age = ((Date.today - self.company_incorporated_date).to_f / 365)
+    age = ((Date.today - company_incorporated_date).to_f / 365)
     if age <= 1
       self.operating_for = 1
     elsif age > 1 && age <= 3
@@ -295,7 +295,7 @@ class Organisation < ActiveRecord::Base
   private
 
     def clear_registration_numbers_if_unregistered
-      if self.org_type == 0 || self.org_type == 4
+      if org_type == 0 || org_type == 4
         self.charity_number = nil
         self.company_number = nil
       end

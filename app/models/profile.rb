@@ -108,23 +108,23 @@ class Profile < ActiveRecord::Base
             if: ('self.finance? || self.complete?') }
 
   def clear_other_options
-    unless self.beneficiaries_other_required?
+    unless beneficiaries_other_required?
       self.beneficiaries_other = nil
     end
-    unless self.implementors_other_required?
+    unless implementors_other_required?
       self.implementors_other = nil
     end
-    unless self.implementations_other_required?
+    unless implementations_other_required?
       self.implementations_other = nil
     end
   end
 
   def set_year_to_current_year
-    self.year = Date.today.year unless self.year.present?
+    self.year = Date.today.year unless year.present?
   end
 
   def save_all_age_groups_if_all_ages
-    if self.age_group_ids.include?(AgeGroup.first.id)
+    if age_group_ids.include?(AgeGroup.first.id)
       self.age_group_ids = AgeGroup.pluck(:id)
     end
   end

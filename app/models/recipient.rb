@@ -17,15 +17,15 @@ class Recipient < Organisation
   has_many :recipient_funder_accesses # TODO: deprecated
 
   def subscribe!
-    self.subscription.update_attribute(:active, true)
+    subscription.update_attribute(:active, true)
   end
 
   def subscribed?
-    self.subscription.active?
+    subscription.active?
   end
 
   def can_unlock_funder?
-    if self.subscription.active?
+    if subscription.active?
       true
     else
       unlocked_funders.size < MAX_FREE_LIMIT
@@ -59,7 +59,7 @@ class Recipient < Organisation
 
   # TODO: refactor?
   def recent_grants(year=2015)
-    self.grants.where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01")
+    grants.where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01")
   end
 
   def set_eligibility(proposal, fund, eligibility) # TODO: to proposal
@@ -67,15 +67,15 @@ class Recipient < Organisation
   end
 
   def eligible_restrictions
-    self.eligibilities.where(eligible: true).pluck(:restriction_id)
+    eligibilities.where(eligible: true).pluck(:restriction_id)
   end
 
   def ineligible_restrictions
-    self.eligibilities.where(eligible: false).pluck(:restriction_id)
+    eligibilities.where(eligible: false).pluck(:restriction_id)
   end
 
   def check_eligibility(proposal, fund)
-    recipient_restrictions = self.eligibilities.pluck(:restriction_id)
+    recipient_restrictions = eligibilities.pluck(:restriction_id)
     fund_restrictions = fund.restrictions.pluck(:id)
     if (recipient_restrictions & fund_restrictions).count == fund_restrictions.count
       if (eligible_restrictions & fund_restrictions).count == fund_restrictions.count
@@ -87,9 +87,9 @@ class Recipient < Organisation
   end
 
   def check_eligibilities # TODO: remove?
-    self.recipient_funder_accesses.each do |unlocked_funder|
+    recipient_funder_accesses.each do |unlocked_funder|
       funder = Funder.find(unlocked_funder.funder_id)
-      self.check_eligibility(funder)
+      check_eligibility(funder)
     end
   end
 
@@ -122,7 +122,7 @@ class Recipient < Organisation
   end
 
   def recommended_funds # TODO: refactor to proposal
-    self.proposals.last.funds.includes(:funder)
+    proposals.last.funds.includes(:funder)
       .where('recommendations.total_recommendation >= ?', RECOMMENDATION_THRESHOLD)
       .order('recommendations.total_recommendation DESC', 'funds.name')
   end
@@ -141,7 +141,7 @@ class Recipient < Organisation
   end
 
   def similar_funders(funder)
-    array = Funder.joins(:recommendations).where('recipient_id = ?', self.id).order('recommendations.score DESC, name ASC').to_a
+    array = Funder.joins(:recommendations).where('recipient_id = ?', id).order('recommendations.score DESC, name ASC').to_a
 
     array[(array.index(funder)+1)..(array.index(funder)+7)].sample(3)
   end
@@ -155,7 +155,7 @@ class Recipient < Organisation
     AgeGroup.order(id: :desc).pluck(:age_from, :age_to).take(7).each do |from, to|
       result = type == 'from' ? from : to if age >= from && age <= to
     end
-    return result
+    result
   end
 
   def transfer_data(profile, proposal)

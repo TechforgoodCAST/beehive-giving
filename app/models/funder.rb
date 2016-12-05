@@ -43,9 +43,9 @@ class Funder < Organisation
           name: k,
           slug: k.downcase.gsub(/[^a-z0-9]+/, '-'),
           amount_awarded: v,
-          amount_awarded_hue: self.get_hue(v, 9304589),
+          amount_awarded_hue: get_hue(v, 9304589),
           grant_count: grant_count[k],
-          grant_count_hue: self.get_hue(grant_count[k], 301),
+          grant_count_hue: get_hue(grant_count[k], 301),
           rank: district.indices_rank,
           rank_hue: get_hue((district.indices_rank_proportion_most_deprived_ten_percent.to_f * 100).round(0), 49),
           rank_proportion: (district.indices_rank_proportion_most_deprived_ten_percent.to_f * 100).round(0)
@@ -53,18 +53,18 @@ class Funder < Organisation
       }
     end
 
-    return { type: 'FeatureCollection', features: features }.to_json
+    { type: 'FeatureCollection', features: features }.to_json
   end
 
   def get_map_data
-    if self.districts.any?
+    if districts.any?
       features = []
-      amount_awarded_max = self.districts_by_year.group(:district).sum(:amount_awarded).sort_by {|_, v| v}.reverse.to_h.values.first
-      grant_count = self.districts_by_year.group(:district).count
-      grant_count_max = self.districts_by_year.group(:district).count.sort_by {|_, v| v}.reverse.to_h.values.first
-      grant_average = self.districts_by_year.group(:district).average(:amount_awarded)
+      amount_awarded_max = districts_by_year.group(:district).sum(:amount_awarded).sort_by {|_, v| v}.reverse.to_h.values.first
+      grant_count = districts_by_year.group(:district).count
+      grant_count_max = districts_by_year.group(:district).count.sort_by {|_, v| v}.reverse.to_h.values.first
+      grant_average = districts_by_year.group(:district).average(:amount_awarded)
 
-      self.districts_by_year.group(:district).sum(:amount_awarded).each do |k, v|
+      districts_by_year.group(:district).sum(:amount_awarded).each do |k, v|
         district = District.find_by_district(k)
 
         features << {
@@ -72,9 +72,9 @@ class Funder < Organisation
             name: k,
             slug: k.downcase.gsub(/[^a-z0-9]+/, '-'),
             amount_awarded: v,
-            amount_awarded_hue: self.get_hue(v, amount_awarded_max),
+            amount_awarded_hue: get_hue(v, amount_awarded_max),
             grant_count: grant_count[k],
-            grant_count_hue: self.get_hue(grant_count[k], grant_count_max),
+            grant_count_hue: get_hue(grant_count[k], grant_count_max),
             grant_average: grant_average[k],
             rank: district.indices_rank,
             rank_hue: get_hue((district.indices_rank_proportion_most_deprived_ten_percent.to_f * 100).round(0), 49),
@@ -83,17 +83,17 @@ class Funder < Organisation
         }
       end
 
-      return { type: 'FeatureCollection', features: features }.to_json
+      { type: 'FeatureCollection', features: features }.to_json
     end
   end
 
   def save_map_data
-    self.current_attribute.update_column(:map_data, self.get_map_data)
+    current_attribute.update_column(:map_data, get_map_data)
   end
 
   def update_current_attribute
-    self.current_attribute.update_column(:no_of_recipients_funded, self.recent_grants(self.current_attribute.year).pluck(:recipient_id).uniq.count)
-    self.current_attribute.set_shared_recipient_ids
+    current_attribute.update_column(:no_of_recipients_funded, recent_grants(current_attribute.year).pluck(:recipient_id).uniq.count)
+    current_attribute.set_shared_recipient_ids
   end
 
   def get_hue(amount, max, segments=10)
@@ -113,19 +113,19 @@ class Funder < Organisation
 
   def current_attribute
     # self.attributes.where('funding_stream = ? AND grant_count > ?', 'All', 0).order(year: :desc).first
-    self.attributes.where(funding_stream: 'All').order(year: :desc).first
+    attributes.where(funding_stream: 'All').order(year: :desc).first
   end
 
   def recent_grants(year=Date.today.year) # refactor
-    self.grants.where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01")
+    grants.where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01")
   end
 
   def shared_recipient_ids
-    recent_grants_recipient_ids = self.recent_grants(self.current_attribute.year).pluck(:recipient_id).uniq
+    recent_grants_recipient_ids = recent_grants(current_attribute.year).pluck(:recipient_id).uniq
     result = {}
     Funder.active.each do |funder|
       unless funder == self
-        result[funder.id] = recent_grants_recipient_ids & funder.recent_grants(self.current_attribute.year).pluck(:recipient_id).uniq
+        result[funder.id] = recent_grants_recipient_ids & funder.recent_grants(current_attribute.year).pluck(:recipient_id).uniq
       end
     end
     result.delete_if { |_, v| v == [] }
@@ -133,12 +133,12 @@ class Funder < Organisation
   end
 
   def multiple_funding_from_funder
-    self.recent_grants(self.current_attribute.year).group(:recipient_id).having('count(*) > 1').count
+    recent_grants(current_attribute.year).group(:recipient_id).having('count(*) > 1').count
   end
 
   def no_of_grants_per_recipient
     result = {}
-    self.recent_grants(self.current_attribute.year).group(:recipient_id).count.each do |_, v|
+    recent_grants(current_attribute.year).group(:recipient_id).count.each do |_, v|
       result[v] = result[v] || 0
       result[v] += 1
     end
@@ -151,10 +151,10 @@ class Funder < Organisation
               recommendations.score >= ? AND
               recommendations.eligibility = ? AND
               enquiries.funder_id = ?",
-              self.id,
+              id,
               Recipient::RECOMMENDATION_THRESHOLD,
               'Eligible',
-              self.id)
+              id)
       .distinct
       .order('proposals.created_at DESC, recommendations.eligibility ASC, recommendations.score DESC')
       .order(:name)

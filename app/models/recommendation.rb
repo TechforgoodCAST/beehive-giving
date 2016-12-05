@@ -16,11 +16,11 @@ class Recommendation < ActiveRecord::Base
   private
 
     def set_fund_slug
-      self.fund_slug = self.fund.slug
+      self.fund_slug = fund.slug
     end
 
     def calculate_total_recommendation
-      self.total_recommendation = self.score + self.grant_amount_recommendation + self.grant_duration_recommendation if self.grant_amount_recommendation && self.grant_duration_recommendation
+      self.total_recommendation = score + grant_amount_recommendation + grant_duration_recommendation if grant_amount_recommendation && grant_duration_recommendation
     end
 
 end

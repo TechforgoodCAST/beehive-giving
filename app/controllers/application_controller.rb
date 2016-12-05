@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
     session[:original_url] = request.original_url
     return redirect_to sign_in_path, alert: 'Please sign in' unless logged_in?
     gon.currentUserId = current_user.id
-    return ensure_authorised
+    ensure_authorised
   end
 
   def load_recipient

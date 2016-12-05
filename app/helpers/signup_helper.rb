@@ -27,8 +27,6 @@ module SignupHelper
       'is-active'
     elsif current > step
       'is-completed'
-    else
-      return
     end
   end
 
@@ -44,8 +42,6 @@ module SignupHelper
       { count: 4, message: 'What your organisation or project provides.' }
     when 'finance'
       { count: 5, message: 'The finances of your organisation or project.' }
-    else
-      return
     end
   end
 

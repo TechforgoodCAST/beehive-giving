@@ -114,11 +114,11 @@ class Proposal < ActiveRecord::Base
     )
     beehive_insight_amounts = call_beehive_insight(
       ENV['BEEHIVE_INSIGHT_AMOUNTS_ENDPOINT'],
-      { amount: self.total_costs }
+      { amount: total_costs }
     )
     beehive_insight_durations = call_beehive_insight(
       ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'],
-      { duration: self.funding_duration }
+      { duration: funding_duration }
     )
 
     Fund.all.find_each do |fund|
@@ -132,7 +132,7 @@ class Proposal < ActiveRecord::Base
         if fund.org_type_distribution?
           org_type_score = parse_distribution(
             fund.org_type_distribution,
-            Organisation::ORG_TYPE[self.recipient.org_type + 1][0]
+            Organisation::ORG_TYPE[recipient.org_type + 1][0]
           )
         end
 
@@ -145,16 +145,16 @@ class Proposal < ActiveRecord::Base
           ].each do |i|
             org_type_score += parse_distribution(
               fund.send("#{i[1]}_distribution"),
-              i[0][self.recipient[i[1]]][0]
+              i[0][recipient[i[1]]][0]
             )
           end
         end
 
         # beneficiary recommendation
-        if self.gender? && fund.gender_distribution?
+        if gender? && fund.gender_distribution?
           beneficiary_score = parse_distribution(
             fund.gender_distribution,
-            self.gender
+            gender
           )
         else
           beneficiary_score = 0
@@ -168,11 +168,11 @@ class Proposal < ActiveRecord::Base
         end
 
         # amount requested recommendation
-        amount_score = 0 if fund.amount_max_limited? && self.total_costs > fund.amount_max
+        amount_score = 0 if fund.amount_max_limited? && total_costs > fund.amount_max
 
         # duration requested recommendation
         duration_score = fund_request_scores(fund, beehive_insight_durations, duration_score)
-        duration_score = 0 if fund.duration_months_max_limited? && self.funding_duration > fund.duration_months_max
+        duration_score = 0 if fund.duration_months_max_limited? && funding_duration > fund.duration_months_max
       end
 
       # location recommendation
@@ -198,9 +198,9 @@ class Proposal < ActiveRecord::Base
   end
 
   def refine_recommendations
-    unless Fund.active.count == self.funds.count
-      self.initial_recommendation
-      self.recommendations.where(fund_id: Fund.inactive_ids).destroy_all
+    unless Fund.active.count == funds.count
+      initial_recommendation
+      recommendations.where(fund_id: Fund.inactive_ids).destroy_all
     end
   end
 
@@ -212,11 +212,11 @@ class Proposal < ActiveRecord::Base
 
   def check_affect_geo
     # TODO: refactor
-    if self.affect_geo.present?
-      unless self.affect_geo == 2
-        if self.country_ids.uniq.count > 1
+    if affect_geo.present?
+      unless affect_geo == 2
+        if country_ids.uniq.count > 1
           self.affect_geo = 3
-        elsif (self.district_ids & Country.find(self.country_ids[0]).districts.pluck(:id)).count == Country.find(self.country_ids[0]).districts.count
+        elsif (district_ids & Country.find(country_ids[0]).districts.pluck(:id)).count == Country.find(country_ids[0]).districts.count
           self.affect_geo = 2
         elsif District.where(id: district_ids).pluck(:region).uniq.count > 1
           self.affect_geo = 1
@@ -246,13 +246,13 @@ class Proposal < ActiveRecord::Base
     def beneficiaries_request
       request = {}
       Beneficiary::BENEFICIARIES.map do |hash|
-        if self.beneficiaries.pluck(:sort).include?(hash[:sort])
+        if beneficiaries.pluck(:sort).include?(hash[:sort])
           request[hash[:sort]] = 1
         else
           request[hash[:sort]] = 0
         end
       end
-      return request
+      request
     end
 
     def call_beehive_insight(endpoint, data)
@@ -262,7 +262,7 @@ class Proposal < ActiveRecord::Base
         headers: { 'Content-Type' => 'application/json' }
       }
       resp = HTTParty.post(endpoint, options)
-      return JSON.parse(resp.body).to_h
+      JSON.parse(resp.body).to_h
     end
 
     def fund_request_scores(fund, data, score)
@@ -270,7 +270,7 @@ class Proposal < ActiveRecord::Base
       data.each do |k, v|
         score += v if fund.slug == k
       end
-      return score
+      score
     end
 
     def save_recommendation(fund, scores)
@@ -282,31 +282,31 @@ class Proposal < ActiveRecord::Base
     end
 
     def compare_arrays(array, fund) # TODO: refactor
-      comparison = (self.send(array).pluck(:id) & fund.send(array).pluck(:id).uniq).count.to_f
-      return comparison > 0 && fund.send(array).count > 0 ? comparison / self.send(array).count.to_f : 0
+      comparison = (send(array).pluck(:id) & fund.send(array).pluck(:id).uniq).count.to_f
+      comparison > 0 && fund.send(array).count > 0 ? comparison / send(array).count.to_f : 0
     end
 
     def save_all_age_groups_if_all_ages
-      if self.age_group_ids.include?(AgeGroup.first.id)
+      if age_group_ids.include?(AgeGroup.first.id)
         self.age_group_ids = AgeGroup.pluck(:id)
       end
     end
 
     def clear_beneficiary_ids(category)
-      self.beneficiary_ids = self.beneficiary_ids - Beneficiary.where(category: category).pluck(:id)
+      self.beneficiary_ids = beneficiary_ids - Beneficiary.where(category: category).pluck(:id)
     end
 
     def trigger_clear_beneficiary_ids
-      clear_beneficiary_ids('People') unless self.affect_people?
-      clear_beneficiary_ids('Other') unless self.affect_other?
-      self.beneficiaries_other_required = false unless self.affect_other?
+      clear_beneficiary_ids('People') unless affect_people?
+      clear_beneficiary_ids('Other') unless affect_other?
+      self.beneficiaries_other_required = false unless affect_other?
     end
 
     def save_districts_from_countries
       # TODO: refactor into background job too slow
-      if self.affect_geo > 1
+      if affect_geo > 1
         district_ids_array = []
-        self.countries.each do |country|
+        countries.each do |country|
           district_ids_array += District.where(country_id: country.id).pluck(:id)
         end
         self.district_ids = district_ids_array.uniq
@@ -314,7 +314,7 @@ class Proposal < ActiveRecord::Base
     end
 
     def prevent_second_proposal_until_first_is_complete
-      if self.recipient.proposals.count == 1 && self.recipient.proposals.where(state: 'complete').count < 1
+      if recipient.proposals.count == 1 && recipient.proposals.where(state: 'complete').count < 1
         errors.add(:proposal, 'Please complete your first proposal before creating a second.')
       end
     end

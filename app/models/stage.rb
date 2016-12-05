@@ -25,9 +25,9 @@ class Stage < ActiveRecord::Base
   private
 
     def position_in_sequence
-      last_stage = Stage.where('fund_id = ? AND id != ?', self.fund_id, self.id).order(:position).last
-      if last_stage && self.position
-        errors.add(:position, 'Position not in sequence') if self.position > (last_stage.position + 1)
+      last_stage = Stage.where('fund_id = ? AND id != ?', fund_id, id).order(:position).last
+      if last_stage && position
+        errors.add(:position, 'Position not in sequence') if position > (last_stage.position + 1)
       end
     end
 

@@ -47,10 +47,10 @@ class Grant < ActiveRecord::Base
   end
 
   def default_values
-    self.days_from_attention_to_applied = (self.applied_on - self.attention_on).to_i if self.attention_on && self.applied_on
-    self.days_from_applied_to_approved = (self.approved_on - self.applied_on).to_i if self.approved_on && self.applied_on
-    self.days_form_approval_to_start = (self.start_on - self.approved_on).to_i if self.start_on && self.approved_on
-    self.days_from_start_to_end = (self.end_on - self.start_on).to_i if self.end_on && self.start_on
+    self.days_from_attention_to_applied = (applied_on - attention_on).to_i if attention_on && applied_on
+    self.days_from_applied_to_approved = (approved_on - applied_on).to_i if approved_on && applied_on
+    self.days_form_approval_to_start = (start_on - approved_on).to_i if start_on && approved_on
+    self.days_from_start_to_end = (end_on - start_on).to_i if end_on && start_on
   end
 
 end
