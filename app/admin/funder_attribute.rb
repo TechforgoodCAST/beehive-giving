@@ -19,7 +19,7 @@ ActiveAdmin.register FunderAttribute do
   index do
     selectable_column
     column :year
-    column "Funder" do |attribute|
+    column 'Funder' do |attribute|
       link_to attribute.funder.name, [:admin, attribute.funder]
     end
     column :funding_stream
@@ -37,18 +37,18 @@ ActiveAdmin.register FunderAttribute do
   show do
     attributes_table do
       row :year
-      row "Funder", &:funder
+      row 'Funder', &:funder
       row :funding_stream
       row :description
       row :grant_count
       row :application_count
       row :enquiry_count
-      row "Approval month(s)" do |attribute|
+      row 'Approval month(s)' do |attribute|
         attribute.approval_months.each do |t|
           li t.month
         end
       end
-      row "Funding type(s)" do |attribute|
+      row 'Funding type(s)' do |attribute|
         attribute.funding_types.each do |t|
           li t.label
         end
@@ -92,16 +92,16 @@ ActiveAdmin.register FunderAttribute do
       f.input :funder, input_html: {class: 'chosen-select'}
       f.input :funding_stream, collection: Grant.uniq.pluck(:funding_stream) << 'All', input_html: {class: 'chosen-select'}
       f.input :description
-      f.input :countries, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :name, label: "Countries"
-      f.input :districts, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: "Districts"
+      f.input :countries, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :name, label: 'Countries'
+      f.input :districts, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: 'Districts'
       f.input :soft_restrictions
       f.input :application_details
       f.input :application_link
       f.input :grant_count
       f.input :application_count
       f.input :enquiry_count
-      f.input :approval_months, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :month, label: "Approval Month(s)"
-      f.input :funding_types, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: "Funding Type(s)"
+      f.input :approval_months, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :month, label: 'Approval Month(s)'
+      f.input :funding_types, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: 'Funding Type(s)'
       f.input :funding_size_average
       f.input :funding_size_min
       f.input :funding_size_max
@@ -113,7 +113,7 @@ ActiveAdmin.register FunderAttribute do
       f.input :funded_average_income
       f.input :funded_income_temp
       f.input :funded_average_paid_staff
-      f.input :beneficiaries, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: "Beneficiaries"
+      f.input :beneficiaries, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: 'Beneficiaries'
       f.input :beneficiary_min_age
       f.input :beneficiary_max_age
       f.input :age_groups, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: 'Age Groups'

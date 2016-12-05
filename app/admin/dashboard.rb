@@ -1,21 +1,21 @@
-ActiveAdmin.register_page "Dashboard" do
-  menu priority: 1, label: proc { I18n.t("active_admin.dashboard") }
+ActiveAdmin.register_page 'Dashboard' do
+  menu priority: 1, label: proc { I18n.t('active_admin.dashboard') }
 
-  content title: proc { I18n.t("active_admin.dashboard") } do
+  content title: proc { I18n.t('active_admin.dashboard') } do
 
-    div class: "blank_slate_container" do
-      div style: "float:left; width: 20%;" do
-        span class: "blank_slate" do
+    div class: 'blank_slate_container' do
+      div style: 'float:left; width: 20%;' do
+        span class: 'blank_slate' do
           h3 'Users'
           h5 'Non-profits'
-          h1 number_with_delimiter(User.where("role = ?", "User").count)
+          h1 number_with_delimiter(User.where('role = ?', 'User').count)
           h5 'Funders'
-          h1 User.where("role = ?", "Funder").count
+          h1 User.where('role = ?', 'Funder').count
         end
       end
 
-      div style: "float:left; width: 40%;" do
-        span class: "blank_slate" do
+      div style: 'float:left; width: 40%;' do
+        span class: 'blank_slate' do
           h3 'Non-profits'
           h5 'Recipients'
           h1 number_with_delimiter(Recipient.joins(:users).all.count)
@@ -23,7 +23,7 @@ ActiveAdmin.register_page "Dashboard" do
           h1 number_with_delimiter(Profile.joins(:organisation).all.count)
         end
 
-        span class: "blank_slate" do
+        span class: 'blank_slate' do
           h3 'Non-profits'
           h5 'Unlocks'
           h1 number_with_delimiter(RecipientFunderAccess.all.count)
@@ -31,7 +31,7 @@ ActiveAdmin.register_page "Dashboard" do
           h1 number_with_delimiter(Eligibility.all.count)
         end
 
-        span class: "blank_slate" do
+        span class: 'blank_slate' do
           h3 'Other'
           h5 'Feedback'
           h1 Feedback.all.count
@@ -40,16 +40,16 @@ ActiveAdmin.register_page "Dashboard" do
         end
       end
 
-      div style: "float:left; width: 40%;" do
-        span class: "blank_slate" do
+      div style: 'float:left; width: 40%;' do
+        span class: 'blank_slate' do
           h3 'Funders'
           h5 'Active'
-          h1 Funder.where("active_on_beehive = ?", true).count
+          h1 Funder.where('active_on_beehive = ?', true).count
           h5 'Total'
           h1 Funder.all.count
         end
 
-        span class: "blank_slate" do
+        span class: 'blank_slate' do
           h3 'Funders'
           h5 'Grants'
           h1 number_with_delimiter(Grant.all.count)
@@ -57,7 +57,7 @@ ActiveAdmin.register_page "Dashboard" do
           h1 Proposal.all.count
         end
 
-        span class: "blank_slate" do
+        span class: 'blank_slate' do
           h3 'Funders'
           h5 'Funding streams'
           h1 FundingStream.all.uniq.count
@@ -72,7 +72,7 @@ ActiveAdmin.register_page "Dashboard" do
     end
 
     def user_count_by_month
-      User.where(role: 'User').group_by_month(:created_at, last: 8, format: "%b %Y").count
+      User.where(role: 'User').group_by_month(:created_at, last: 8, format: '%b %Y').count
     end
 
     def recipient_count
@@ -100,7 +100,7 @@ ActiveAdmin.register_page "Dashboard" do
     end
 
     def proposal_count_by_month
-      Proposal.where(state: %w(registered complete)).group_by_month(:created_at, last: 8, format: "%b %Y").count
+      Proposal.where(state: %w(registered complete)).group_by_month(:created_at, last: 8, format: '%b %Y').count
     end
 
     def feedback_count
@@ -115,8 +115,8 @@ ActiveAdmin.register_page "Dashboard" do
       "#{count[1]} (#{number_to_percentage((count[1].to_d / user_count.to_a[i][1].to_d)*100, precision: 0)})"
     end
 
-    div style: "float:left; width: 100%; padding: 0 20px; box-sizing: border-box;" do
-      section "Conversion" do
+    div style: 'float:left; width: 100%; padding: 0 20px; box-sizing: border-box;' do
+      section 'Conversion' do
         table do
           thead do
             tr do
@@ -200,8 +200,8 @@ ActiveAdmin.register_page "Dashboard" do
       end
     end
 
-    div style: "float:left; width: 100%; padding: 0 20px; box-sizing: border-box;" do
-      section "Conversion by month" do
+    div style: 'float:left; width: 100%; padding: 0 20px; box-sizing: border-box;' do
+      section 'Conversion by month' do
         table do
           thead do
             tr do
@@ -233,28 +233,28 @@ ActiveAdmin.register_page "Dashboard" do
       end
     end
 
-    div style: "float:left; width: 50%;" do
-      section "Activity by day (2 weeks)" do
+    div style: 'float:left; width: 50%;' do
+      section 'Activity by day (2 weeks)' do
         render :partial => 'metrics/daily_chart', :locals => {:metric => @metric}
       end
     end
 
-    div style: "float:left; width: 50%;" do
-      section "Activity by week (12 weeks)" do
+    div style: 'float:left; width: 50%;' do
+      section 'Activity by week (12 weeks)' do
         render :partial => 'metrics/weekly_chart', :locals => {:metric => @metric}
       end
     end
 
-    div style: "float:left; width: 50%; padding: 0 20px; box-sizing: border-box;" do
-      section "Non-profits by country" do
+    div style: 'float:left; width: 50%; padding: 0 20px; box-sizing: border-box;' do
+      section 'Non-profits by country' do
         @metric = Recipient.joins(:users).group(:country).count
         render :partial => 'metrics/geo_chart', :locals => {:metric => @metric}
       end
     end
 
-    div style: "float:left; width: 50%; padding: 0 20px; box-sizing: border-box;" do
-      section "Recent Non-profits" do
-        table_for Recipient.joins(:users).order("created_at desc").limit(5) do
+    div style: 'float:left; width: 50%; padding: 0 20px; box-sizing: border-box;' do
+      section 'Recent Non-profits' do
+        table_for Recipient.joins(:users).order('created_at desc').limit(5) do
           column :name do |recipient|
             link_to recipient.name, [:admin, recipient]
           end

@@ -39,7 +39,7 @@ class Funder < Organisation
       district = District.find_by_district(k)
 
       features << {
-        type: "Feature", properties: {
+        type: 'Feature', properties: {
           name: k,
           slug: k.downcase.gsub(/[^a-z0-9]+/, '-'),
           amount_awarded: v,
@@ -53,7 +53,7 @@ class Funder < Organisation
       }
     end
 
-    return { type: "FeatureCollection", features: features }.to_json
+    return { type: 'FeatureCollection', features: features }.to_json
   end
 
   def get_map_data
@@ -68,7 +68,7 @@ class Funder < Organisation
         district = District.find_by_district(k)
 
         features << {
-          type: "Feature", properties: {
+          type: 'Feature', properties: {
             name: k,
             slug: k.downcase.gsub(/[^a-z0-9]+/, '-'),
             amount_awarded: v,
@@ -83,7 +83,7 @@ class Funder < Organisation
         }
       end
 
-      return { type: "FeatureCollection", features: features }.to_json
+      return { type: 'FeatureCollection', features: features }.to_json
     end
   end
 
@@ -133,7 +133,7 @@ class Funder < Organisation
   end
 
   def multiple_funding_from_funder
-    self.recent_grants(self.current_attribute.year).group(:recipient_id).having("count(*) > 1").count
+    self.recent_grants(self.current_attribute.year).group(:recipient_id).having('count(*) > 1').count
   end
 
   def no_of_grants_per_recipient
@@ -156,7 +156,7 @@ class Funder < Organisation
               'Eligible',
               self.id)
       .distinct
-      .order("proposals.created_at DESC, recommendations.eligibility ASC, recommendations.score DESC")
+      .order('proposals.created_at DESC, recommendations.eligibility ASC, recommendations.score DESC')
       .order(:name)
   end
 

@@ -13,12 +13,12 @@ ActiveAdmin.register Grant do
 
   index do
     selectable_column
-    column "Organisation", :recipient do |grant|
+    column 'Organisation', :recipient do |grant|
       if grant.recipient
         link_to grant.recipient.name, [:admin, grant.recipient]
       end
     end
-    column "Funder", :funder do |grant|
+    column 'Funder', :funder do |grant|
       if grant.funder
         link_to grant.funder.name, [:admin, grant.funder]
       end
@@ -34,12 +34,12 @@ ActiveAdmin.register Grant do
 
   show do
     attributes_table do
-      row "Funder", :funder do |grant|
+      row 'Funder', :funder do |grant|
         if grant.recipient
           link_to grant.recipient.name, [:admin, grant.recipient]
         end
       end
-      row "Recipient", :recipient do |grant|
+      row 'Recipient', :recipient do |grant|
         if grant.funder
           link_to grant.funder.name, [:admin, grant.funder]
         end

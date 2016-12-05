@@ -103,7 +103,7 @@ class TestHelper
   def stub_fund_summary_endpoint(fund_slug)
     stub_request(:get, ENV['BEEHIVE_DATA_FUND_SUMMARY_ENDPOINT'] + fund_slug)
       .with(headers: { 'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN'] })
-      .to_return(status: 200, body: "", headers: {})
+      .to_return(status: 200, body: '', headers: {})
     self
   end
 

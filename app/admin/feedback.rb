@@ -9,18 +9,18 @@ ActiveAdmin.register Feedback do
   end
 
   index do
-    column "Organisation", :user do |feedback|
+    column 'Organisation', :user do |feedback|
       if feedback.user
         link_to feedback.user.organisation.name, [:admin, feedback.user.organisation]
       end
     end
-    column "Contact", :user do |feedback|
+    column 'Contact', :user do |feedback|
       if feedback.user
         feedback.user.user_email
       end
     end
     column :most_useful
-    column "Net Promoter Score", :nps
+    column 'Net Promoter Score', :nps
     column :taken_away
     column :informs_decision
     column :price

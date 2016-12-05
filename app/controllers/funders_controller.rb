@@ -19,7 +19,7 @@ class FundersController < ApplicationController
     respond_to do |format|
       if params[:id] == 'all'
         # @map_all_data = Rails.cache.clear("map_all_data")
-        @map_all_data = Rails.cache.fetch("map_all_data") do
+        @map_all_data = Rails.cache.fetch('map_all_data') do
           Funder.first.get_map_all_data
         end
         format.json { render json: @map_all_data }

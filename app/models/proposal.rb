@@ -238,9 +238,9 @@ class Proposal < ActiveRecord::Base
   private
 
     def parse_distribution(data, comparison)
-      data.sort_by { |i| i["position"] }
-          .select { |i| i["label"] == comparison unless i["label"] == "Unknown" }
-          .first["percent"]
+      data.sort_by { |i| i['position'] }
+          .select { |i| i['label'] == comparison unless i['label'] == 'Unknown' }
+          .first['percent']
     end
 
     def beneficiaries_request

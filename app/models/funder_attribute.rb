@@ -34,7 +34,7 @@ class FunderAttribute < ActiveRecord::Base
   validates :application_link, format: {
     with: %r/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/,
     multiline: true,
-    message: "enter a valid website address e.g. www.example.com"
+    message: 'enter a valid website address e.g. www.example.com'
   }, if: :application_link
 
   # refactor dry?
@@ -93,12 +93,12 @@ class FunderAttribute < ActiveRecord::Base
       array = []
       if self.funding_stream == 'All'
         self.funder.grants.where('approved_on < ? AND approved_on >= ?', "#{self.year + 1}-01-01", "#{self.year}-01-01").pluck(:approved_on).uniq.each do |d|
-          array << ApprovalMonth.find_by_month(d.strftime("%b"))
+          array << ApprovalMonth.find_by_month(d.strftime('%b'))
         end
         self.approval_months << array.uniq
       else
         self.funder.grants.where('approved_on < ? AND approved_on >= ?', "#{self.year + 1}-01-01", "#{self.year}-01-01").where('funding_stream = ?', self.funding_stream).pluck(:approved_on).uniq.each do |d|
-          array << ApprovalMonth.find_by_month(d.strftime("%b"))
+          array << ApprovalMonth.find_by_month(d.strftime('%b'))
         end
         self.approval_months << array.uniq
       end

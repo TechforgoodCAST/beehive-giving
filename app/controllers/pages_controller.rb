@@ -5,7 +5,7 @@ class PagesController < ApplicationController
   end
 
   def tour
-    redirect_to "/welcome#tell-me-more"
+    redirect_to '/welcome#tell-me-more'
   end
 
   def faq

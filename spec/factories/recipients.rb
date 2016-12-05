@@ -7,10 +7,10 @@ FactoryGirl.define do
     org_type        Organisation::ORG_TYPE[4][1]
     charity_number  { "1AB1C#{n}" }
     company_number  { "1AB1C#{n}" }
-    name            "ACME"
-    country         "GB"
+    name            'ACME'
+    country         'GB'
     operating_for   Organisation::OPERATING_FOR[1][1]
-    website         "http://www.acme.com"
+    website         'http://www.acme.com'
 
     factory :recipient do
       income        Organisation::INCOME[1][1]

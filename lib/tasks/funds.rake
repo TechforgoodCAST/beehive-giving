@@ -85,14 +85,14 @@ namespace :funds do
                                      'sub_country IN (:districts) OR
                                      region IN (:districts) OR
                                      district IN (:districts)',
-                                     districts: row['districts'].split(", ")
+                                     districts: row['districts'].split(', ')
                                    )
                                  end
 
       if row['restriction_ids'] == 'same'
         fund_values[:restriction_ids] = @funder.funding_streams.first.restriction_ids
       else
-        restrictions = row['restriction_ids'].split(" | ")
+        restrictions = row['restriction_ids'].split(' | ')
 
         fund_values[:restriction_ids] = if restrictions.include?('same')
                                           @funder.funding_streams.first.restriction_ids

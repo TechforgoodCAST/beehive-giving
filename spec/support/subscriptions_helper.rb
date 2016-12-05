@@ -19,7 +19,7 @@ class SubscriptionsHelper
     fill_in 'expiry-month', with: '01'
     fill_in 'expiry-year', with: Date.today.year + 1
     fill_in 'cvc', with: '123'
-    find("#stripeToken", visible: false).set stripe.generate_card_token
+    find('#stripeToken', visible: false).set stripe.generate_card_token
     click_on 'Pay securely'
     self
   end

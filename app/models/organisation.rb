@@ -93,12 +93,12 @@ class Organisation < ActiveRecord::Base
       [
         self.postal_code,
         self.country
-      ].join(", ")
+      ].join(', ')
     elsif self.street_address.present?
       [
         self.street_address,
         self.country
-      ].join(", ")
+      ].join(', ')
     end
   end
 

@@ -3,7 +3,7 @@ module FundsHelper
   def period(fund=@fund)
     content_tag(
       :span,
-      fund.period_start.strftime("%b %y'") + " - " + fund.period_end.strftime("%b %y'"),
+      fund.period_start.strftime("%b %y'") + ' - ' + fund.period_end.strftime("%b %y'"),
       class: 'year muted'
     ) if fund.open_data
   end

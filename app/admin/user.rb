@@ -11,7 +11,7 @@ ActiveAdmin.register User do
 
   index do
     column :id
-    column "Organisation" do |user|
+    column 'Organisation' do |user|
       if user.organisation
         link_to user.organisation.name, [:admin, user.organisation]
       end
@@ -38,7 +38,7 @@ ActiveAdmin.register User do
   filter :sign_in_count
 
   form do |f|
-    f.inputs "User Details" do
+    f.inputs 'User Details' do
       f.input :organisation, required: true, input_html: {class: 'chosen-select'}
       f.input :role
       f.input :org_type, as: :select, collection: Organisation::ORG_TYPE

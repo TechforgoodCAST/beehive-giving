@@ -19,9 +19,9 @@ ActiveAdmin.register Eligibility do
 
   index do
     selectable_column
-    column("Recipient") { |e| e.recipient.name }
-    column("Restrition") { |e| e.restriction.details }
-    column("Funders") do |e|
+    column('Recipient') { |e| e.recipient.name }
+    column('Restrition') { |e| e.restriction.details }
+    column('Funders') do |e|
       e.restriction.funders.each do |f|
         li f.name
       end
@@ -36,14 +36,14 @@ ActiveAdmin.register Eligibility do
 
   show do
     attributes_table do
-      row("Recipient", &:recipient)
-      row("Restrition") { |e| e.restriction.details }
-      row("Funders") do |e|
+      row('Recipient', &:recipient)
+      row('Restrition') { |e| e.restriction.details }
+      row('Funders') do |e|
         e.restriction.funders.uniq.each do |f|
           li f.name
         end
       end
-      row("Funding streams") do |e|
+      row('Funding streams') do |e|
         e.restriction.funders.uniq.each do |f|
           f.funding_streams.each do |fs|
             li fs.label

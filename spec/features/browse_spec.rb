@@ -143,7 +143,7 @@ feature 'Browse' do
         expect(page).to have_css '#country_distribution'
       end
 
-      scenario "more info links"
+      scenario 'more info links'
     end
   end
 

@@ -3,9 +3,9 @@ FactoryGirl.define do
   factory :grant do
     association :funder, :factory => :funder
     association :recipient, :factory => :recipient
-    funding_stream "All"
-    grant_type "Unrestricted"
-    attention_how "Headhunting"
+    funding_stream 'All'
+    grant_type 'Unrestricted'
+    attention_how 'Headhunting'
     amount_awarded 10000
     amount_applied 10000
     installments 1
@@ -29,8 +29,8 @@ FactoryGirl.define do
     association :funder, :factory => :funder
     association :recipient, :factory => :recipient
     funding_stream { %w(All Main)[s] }
-    grant_type "Unrestricted"
-    attention_how "Headhunting"
+    grant_type 'Unrestricted'
+    attention_how 'Headhunting'
     amount_awarded { "1000#{n}" }
     amount_applied { "1000#{n}" }
     installments 1
@@ -54,8 +54,8 @@ FactoryGirl.define do
     association :funder, :factory => :funder
     association :recipient, :factory => :recipient
     funding_stream { %w(All Main)[s] }
-    grant_type "Unrestricted"
-    attention_how "Headhunting"
+    grant_type 'Unrestricted'
+    attention_how 'Headhunting'
     amount_awarded { "1000#{n}" }
     amount_applied { "1000#{n}" }
     installments 1

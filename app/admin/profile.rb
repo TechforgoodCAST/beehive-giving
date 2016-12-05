@@ -14,15 +14,15 @@ ActiveAdmin.register Profile do
   end
 
   index do
-    column "Organisation" do |profile|
+    column 'Organisation' do |profile|
       link_to profile.organisation.name, [:admin, profile]
     end
-    column "Locations", :districts do |profile|
+    column 'Locations', :districts do |profile|
       profile.districts.each do |d|
         li d.label
       end
     end
-    column "Organisation Age" do |user|
+    column 'Organisation Age' do |user|
       if user.organisation.founded_on
         "#{((Date.today - user.organisation.founded_on).to_f / 356).round(1)} years"
       end
@@ -33,7 +33,7 @@ ActiveAdmin.register Profile do
     column :income_actual
     column :staff_count
     column :volunteer_count
-    column "Beneficiaries", :beneficiaries do |profile|
+    column 'Beneficiaries', :beneficiaries do |profile|
       profile.beneficiaries.each do |b|
         li b.label
       end
@@ -46,49 +46,49 @@ ActiveAdmin.register Profile do
 
   filter :organisation
   filter :year, as: :select
-  filter :countries, label: "Country", member_label: :name
-  filter :districts, label: "District", member_label: :label, input_html: { multiple: true, class: 'chosen-select' }
+  filter :countries, label: 'Country', member_label: :name
+  filter :districts, label: 'District', member_label: :label, input_html: { multiple: true, class: 'chosen-select' }
   filter :income
   filter :created_at
 
   show do
     attributes_table do
-      row("Year of profile", &:year)
-      row "Organisation" do |user|
+      row('Year of profile', &:year)
+      row 'Organisation' do |user|
         link_to user.organisation.name, [:admin, user.organisation]
       end
-      row "In which countries does your organisation benefit people?" do |profile|
+      row 'In which countries does your organisation benefit people?' do |profile|
         profile.countries.each do |c|
           li c.name
         end
       end
-      row "In which districts does your organisation benefit people?" do |profile|
+      row 'In which districts does your organisation benefit people?' do |profile|
         profile.districts.each do |d|
           li d.label
         end
       end
-      row "Who/what does your organisation target?" do |profile|
+      row 'Who/what does your organisation target?' do |profile|
         profile.beneficiaries.each do |b|
           li b.label
         end
       end
-      row "Which gender does your organisation target?", &:gender
-      row "Min. age targeted", &:min_age
-      row "Max. age targeted", &:max_age
+      row 'Which gender does your organisation target?', &:gender
+      row 'Min. age targeted', &:min_age
+      row 'Max. age targeted', &:max_age
       row :staff_count
       row :volunteer_count
-      row "Who delivers your work?" do |profile|
+      row 'Who delivers your work?' do |profile|
         profile.implementors.each do |i|
           li i.label
         end
       end
-      row "Implementation approach" do |profile|
+      row 'Implementation approach' do |profile|
         profile.implementations.each do |i|
           li i.label
         end
       end
-      row "Do you recieve financial payment for your work?", &:does_sell
-      row "Beneficiaries impacted", &:beneficiaries_count
+      row 'Do you recieve financial payment for your work?', &:does_sell
+      row 'Beneficiaries impacted', &:beneficiaries_count
       row :beneficiaries_count_actual, &:beneficiaries_count_actual
       row :income do |profile|
         number_to_currency(profile.income, unit: '£', precision: 0)
@@ -98,7 +98,7 @@ ActiveAdmin.register Profile do
         number_to_currency(profile.expenditure, unit: '£', precision: 0)
       end
       row(:expenditure_actual) { status_tag(profile.expenditure_actual) }
-      row "Age from founding (years)" do |user|
+      row 'Age from founding (years)' do |user|
         if user.organisation.founded_on
           ((Date.today - user.organisation.founded_on).to_f / 356).round(1)
         end

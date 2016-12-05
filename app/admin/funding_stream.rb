@@ -19,13 +19,13 @@ ActiveAdmin.register FundingStream do
   end
 
   index do
-    column("Funders") do |r|
+    column('Funders') do |r|
       r.funders.each do |f|
         li f.name
       end
     end
-    column "Funding stream", :label
-    column("Restrictions") do |r|
+    column 'Funding stream', :label
+    column('Restrictions') do |r|
       r.restrictions.each do |f|
         li f.details
       end

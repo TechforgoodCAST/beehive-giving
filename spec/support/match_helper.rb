@@ -5,7 +5,7 @@ class MatchHelper
 
   def stub_charity_commission(number='1161998')
     # TODO: refactor
-    stub_request(:get, "http://beta.charitycommission.gov.uk/charity-details/?regid=&subid=0")
+    stub_request(:get, 'http://beta.charitycommission.gov.uk/charity-details/?regid=&subid=0')
       .to_return(status: 200, body: [])
 
     body = File.read(Rails.root.join('spec', 'support', "charity_commision_scrape_stub_#{number}.html"))

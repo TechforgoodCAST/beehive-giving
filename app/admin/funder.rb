@@ -19,13 +19,13 @@ ActiveAdmin.register Funder do
   filter :name
 
   index do
-    column "Funder", :name do |funder|
+    column 'Funder', :name do |funder|
       link_to funder.name, [:admin, funder]
     end
     column :active_on_beehive
-    column("Profiles") {|f| f.profiles.count }
-    column("Grants") {|f| f.grants.count }
-    column("Requests") {|f| f.features.count }
+    column('Profiles') {|f| f.profiles.count }
+    column('Grants') {|f| f.grants.count }
+    column('Requests') {|f| f.features.count }
     actions
   end
 end

@@ -141,7 +141,7 @@ class Recipient < Organisation
   end
 
   def similar_funders(funder)
-    array = Funder.joins(:recommendations).where("recipient_id = ?", self.id).order("recommendations.score DESC, name ASC").to_a
+    array = Funder.joins(:recommendations).where('recipient_id = ?', self.id).order('recommendations.score DESC, name ASC').to_a
 
     array[(array.index(funder)+1)..(array.index(funder)+7)].sample(3)
   end

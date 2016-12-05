@@ -80,7 +80,7 @@ module FundersHelper
   # TODO: deprecated
   def funding_frequency_distribution(funder, year = funder.current_attribute.year)
     grants = funder.grants
-                   .where("approved_on <= ? AND approved_on >= ?", "#{year}-12-31", "#{year}-01-01")
+                   .where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01")
 
     range_limit = 475000
     increment = grants.calculate(:maximum, :amount_awarded) < range_limit ? 5 : 25

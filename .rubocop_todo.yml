@@ -619,10 +619,3 @@ Style/SpaceInsideBlockBraces:
 # SupportedStyles: space, no_space, compact
 Style/SpaceInsideHashLiteralBraces:
   Enabled: false
-
-# Offense count: 1311
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, ConsistentQuotesInMultiline.
-# SupportedStyles: single_quotes, double_quotes
-Style/StringLiterals:
-  Enabled: false

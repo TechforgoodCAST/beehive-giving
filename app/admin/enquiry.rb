@@ -10,10 +10,10 @@ ActiveAdmin.register Enquiry do
 
   index do
     selectable_column
-    column "Recipient" do |enquiry|
+    column 'Recipient' do |enquiry|
       link_to enquiry.recipient.name, [:admin, enquiry.recipient]
     end
-    column "Funder" do |enquiry|
+    column 'Funder' do |enquiry|
       link_to enquiry.funder.name, [:admin, enquiry.funder]
     end
     column :approach_funder_count
