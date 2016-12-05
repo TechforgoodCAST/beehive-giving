@@ -15,17 +15,17 @@ class User < ActiveRecord::Base
             presence: { message: "Can't be blank" }, on: :create
 
   validates :first_name, :last_name,
-            format: {with: /\A(([a-z]+)*(-)*)+\z/i, message: 'Only a-z and -'}, on: :create
+            format: { with: /\A(([a-z]+)*(-)*)+\z/i, message: 'Only a-z and -' }, on: :create
 
   validates :user_email,
-            format: {with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i,
-            message: 'Please enter a valid email'}, on: :create
+            format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i,
+            message: 'Please enter a valid email' }, on: :create
   validates :user_email, uniqueness: { message: "Please 'sign in' using the link above" }, on: :create
 
-  validates :password, presence: { message: "Can't be blank" }, length: {:within => 6..25}, on: [:create, :update]
+  validates :password, presence: { message: "Can't be blank" }, length: { :within => 6..25 }, on: [:create, :update]
   validates :password,
-            format: {with: /\A(?=.*\d)(?=.*[a-zA-Z]).{6,25}\z/,
-            message: 'Must include 6 characters with 1 number'}, on: [:create, :update]
+            format: { with: /\A(?=.*\d)(?=.*[a-zA-Z]).{6,25}\z/,
+            message: 'Must include 6 characters with 1 number' }, on: [:create, :update]
 
   before_create { generate_token(:auth_token) }
 

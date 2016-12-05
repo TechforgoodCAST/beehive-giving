@@ -11,8 +11,8 @@ ActiveAdmin.register FundingStream do
   form do |f|
     f.inputs do
       f.input :label, label: 'Funding stream'
-      f.input :funders, collection: Funder.order('name ASC'), input_html: {multiple: true, class: 'chosen-select'}, member_label: :name, label: 'Funders'
-      f.input :restrictions, collection: Restriction.order('details ASC'), input_html: {multiple: true, class: 'chosen-select'}, member_label: :details, label: 'Restrictions'
+      f.input :funders, collection: Funder.order('name ASC'), input_html: { multiple: true, class: 'chosen-select' }, member_label: :name, label: 'Funders'
+      f.input :restrictions, collection: Restriction.order('details ASC'), input_html: { multiple: true, class: 'chosen-select' }, member_label: :details, label: 'Restrictions'
       f.input :group
     end
     f.actions

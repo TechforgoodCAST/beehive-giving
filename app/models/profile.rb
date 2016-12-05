@@ -1,3 +1,4 @@
+# TODO: deprecated
 class Profile < ActiveRecord::Base
 
   before_save :clear_other_options, :save_all_age_groups_if_all_ages
@@ -38,11 +39,11 @@ class Profile < ActiveRecord::Base
 
   ## beneficiaries state validations
 
-  validates :affect_people, presence: {message: 'you must affect either people or other groups'}, if: ('self.beneficiaries? || self.complete?'), unless: 'self.affect_other?'
+  validates :affect_people, presence: { message: 'you must affect either people or other groups' }, if: ('self.beneficiaries? || self.complete?'), unless: 'self.affect_other?'
 
-  validates :affect_other, presence: {message: 'you must affect either people or other groups'}, if: ('self.beneficiaries? || self.complete?'), unless: 'self.affect_people?'
+  validates :affect_other, presence: { message: 'you must affect either people or other groups' }, if: ('self.beneficiaries? || self.complete?'), unless: 'self.affect_people?'
 
-  validates :affect_people, :affect_other, inclusion: {in: [true, false], message: 'please select an option'}, if: ('self.beneficiaries? || self.complete?')
+  validates :affect_people, :affect_other, inclusion: { in: [true, false], message: 'please select an option' }, if: ('self.beneficiaries? || self.complete?')
 
   validates :organisation, :year,
             presence: true, if: ('self.beneficiaries? || self.complete?')
@@ -55,7 +56,7 @@ class Profile < ActiveRecord::Base
   validates :gender, :age_groups,
             presence: { message: 'Please select an option' }, if: ('self.affect_people? && self.beneficiaries? || self.complete?'), unless: '!self.affect_people? && self.affect_other?'
 
-  validates :gender, inclusion: { in: GENDERS, message: 'please select an option'}, if: ('self.affect_people? && self.beneficiaries? || self.complete?'), unless: '!self.affect_people? && self.affect_other?'
+  validates :gender, inclusion: { in: GENDERS, message: 'please select an option' }, if: ('self.affect_people? && self.beneficiaries? || self.complete?'), unless: '!self.affect_people? && self.affect_other?'
 
   validate :beneficiaries_people, :beneficiaries_other_categories, if: ('self.beneficiaries? || self.complete?')
 

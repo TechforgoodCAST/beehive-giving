@@ -28,7 +28,7 @@ ActiveAdmin.register User do
   end
 
   filter :id
-  filter :organisation, input_html: {class: 'chosen-select'}
+  filter :organisation, input_html: { class: 'chosen-select' }
   filter :role
   filter :first_name
   filter :last_name
@@ -39,7 +39,7 @@ ActiveAdmin.register User do
 
   form do |f|
     f.inputs 'User Details' do
-      f.input :organisation, required: true, input_html: {class: 'chosen-select'}
+      f.input :organisation, required: true, input_html: { class: 'chosen-select' }
       f.input :role
       f.input :org_type, as: :select, collection: Organisation::ORG_TYPE
       f.input :first_name

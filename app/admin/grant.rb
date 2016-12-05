@@ -27,8 +27,8 @@ ActiveAdmin.register Grant do
     actions
   end
 
-  filter :funder, input_html: {class: 'chosen-select'}
-  filter :recipient, input_html: {class: 'chosen-select'}
+  filter :funder, input_html: { class: 'chosen-select' }
+  filter :recipient, input_html: { class: 'chosen-select' }
   filter :created_at
   filter :updated_at
 
@@ -84,8 +84,8 @@ ActiveAdmin.register Grant do
       f.input :approved_on
       f.input :start_on
       f.input :end_on
-      f.input :countries, collection: Country.order('name ASC'), input_html: {multiple: true, class: 'chosen-select'}, member_label: :name
-      f.input :districts, collection: District.order('label ASC'), input_html: {multiple: true, class: 'chosen-select'}, member_label: :label
+      f.input :countries, collection: Country.order('name ASC'), input_html: { multiple: true, class: 'chosen-select' }, member_label: :name
+      f.input :districts, collection: District.order('label ASC'), input_html: { multiple: true, class: 'chosen-select' }, member_label: :label
     end
     f.actions
   end

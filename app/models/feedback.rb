@@ -13,11 +13,11 @@ class Feedback < ActiveRecord::Base
   validates :user, :suitable, :most_useful, :nps, :taken_away, :informs_decision,
             :application_frequency, :grant_frequency, :marketing_frequency,
             presence: true
-  validates :most_useful, inclusion: {in: MOST_USEFUL}
-  validates :suitable, :nps, :taken_away, :informs_decision, inclusion: {in: 1..10}
-  validates :application_frequency, inclusion: {in: APP_AND_GRANT_FREQUENCY}
-  validates :grant_frequency, inclusion: {in: APP_AND_GRANT_FREQUENCY}
-  validates :marketing_frequency, inclusion: {in: MARKETING_FREQUENCY}
+  validates :most_useful, inclusion: { in: MOST_USEFUL }
+  validates :suitable, :nps, :taken_away, :informs_decision, inclusion: { in: 1..10 }
+  validates :application_frequency, inclusion: { in: APP_AND_GRANT_FREQUENCY }
+  validates :grant_frequency, inclusion: { in: APP_AND_GRANT_FREQUENCY }
+  validates :marketing_frequency, inclusion: { in: MARKETING_FREQUENCY }
 
   validates :price, presence: true, on: :update
   validates :price, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, on: :update

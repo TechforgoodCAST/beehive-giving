@@ -65,7 +65,7 @@ class Proposal < ActiveRecord::Base
   validates :gender, :age_groups,
               presence: { message: 'Please select an option' },
               unless: '!self.affect_people? && self.affect_other?'
-  validates :gender, inclusion: { in: GENDERS, message: 'please select an option'},
+  validates :gender, inclusion: { in: GENDERS, message: 'please select an option' },
               unless: '!self.affect_people? && self.affect_other?'
   validate :beneficiaries_people, :beneficiaries_other_group
   validates :beneficiaries_other,
@@ -87,7 +87,7 @@ class Proposal < ActiveRecord::Base
   end
 
   # Location
-  validates :affect_geo, inclusion: { in: 0..3, message: 'please select an option'}
+  validates :affect_geo, inclusion: { in: 0..3, message: 'please select an option' }
   validates :countries, presence: true
   validates :districts, presence: true,
               if: proc { |o| o.affect_geo.present? && o.affect_geo < 2 } # TODO: test

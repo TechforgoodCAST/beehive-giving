@@ -28,9 +28,9 @@ class FunderAttribute < ActiveRecord::Base
   validates :funder, :year, :countries, :funding_stream, :description, presence: true
   validates :soft_restrictions, presence: true
 
-  validates :year, inclusion: {in: Profile::VALID_YEARS}
-  validates :year, uniqueness: {scope: [:funding_stream, :funder_id], message: 'only one year per funder'}
-  validates :funding_stream, uniqueness: {scope: [:year, :funder_id], message: 'only one funding stream of each kind per funder'}
+  validates :year, inclusion: { in: Profile::VALID_YEARS }
+  validates :year, uniqueness: { scope: [:funding_stream, :funder_id], message: 'only one year per funder' }
+  validates :funding_stream, uniqueness: { scope: [:year, :funder_id], message: 'only one funding stream of each kind per funder' }
   validates :application_link, format: {
     with: %r/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/,
     multiline: true,

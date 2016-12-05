@@ -23,23 +23,23 @@ class Grant < ActiveRecord::Base
   unless: :skip_validation
 
   validates :amount_applied,
-  numericality: {only_integer: true, greater_than_or_equal_to: 0},
+  numericality: { only_integer: true, greater_than_or_equal_to: 0 },
   unless: :skip_validation
 
-  validates :funding_stream, inclusion: {in: FUNDING_STREAM},
+  validates :funding_stream, inclusion: { in: FUNDING_STREAM },
   unless: :skip_validation
 
-  validates :grant_type, inclusion: {in: GRANT_TYPE},
+  validates :grant_type, inclusion: { in: GRANT_TYPE },
   unless: :skip_validation
 
-  validates :attention_how, inclusion: {in: ATTENTION_HOW},
+  validates :attention_how, inclusion: { in: ATTENTION_HOW },
   unless: :skip_validation
 
   validates :amount_awarded, :days_from_attention_to_applied, :days_from_applied_to_approved,
   :days_form_approval_to_start, :days_from_start_to_end,
-  numericality: {only_integer: true, greater_than_or_equal_to: 0}, unless: :skip_validation
+  numericality: { only_integer: true, greater_than_or_equal_to: 0 }, unless: :skip_validation
   validates :installments,
-  numericality: {only_integer: true, greater_than_or_equal_to: 0},
+  numericality: { only_integer: true, greater_than_or_equal_to: 0 },
   unless: :skip_validation
 
   ransacker :months_from_start_to_end, formatter: proc {|v| v.to_i * 30.4368 } do |parent|

@@ -118,7 +118,7 @@ class TestHelper
     self
   end
 
-  def with_user(opts={organisation: @recipient})
+  def with_user(opts={ organisation: @recipient })
     @user = create(:user, opts)
     self
   end
