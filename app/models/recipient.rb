@@ -15,8 +15,6 @@ class Recipient < Organisation
   has_many :grants # TODO: deprecated
   has_many :features, dependent: :destroy # TODO: deprecated
   has_many :recipient_funder_accesses # TODO: deprecated
-  has_one :recipient_attribute # TODO: deprecated
-  alias_method :attribute, :recipient_attribute # TODO: deprecated
 
   def subscribe!
     self.subscription.update_attribute(:active, true)
@@ -26,7 +24,7 @@ class Recipient < Organisation
     self.subscription.active?
   end
 
-  def can_unlock_funder?(funder)
+  def can_unlock_funder?
     if self.subscription.active?
       true
     else
@@ -57,16 +55,6 @@ class Recipient < Organisation
 
   def locked_fund?(fund) # TODO: to proposal
     !unlocked_fund?(fund)
-  end
-
-  def full_address
-    [
-      "#{self.street_address}",
-      "#{self.region}",
-      "#{self.city}",
-      "#{self.postal_code}",
-      Country.find_by_alpha2(self.country).name
-    ].join(", ")
   end
 
   # TODO: refactor?

@@ -60,23 +60,23 @@ class Organisation < ActiveRecord::Base
   validates :operating_for, inclusion: { in: 0..3, message: 'please select a valid option' },
     unless: :skip_validation
 
-  validates :street_address, presence: true, if: Proc.new { |o| o.org_type == 0 || o.org_type == 4 },
+  validates :street_address, presence: true, if: proc { |o| o.org_type == 0 || o.org_type == 4 },
     unless: :skip_validation
-  validates :charity_number, presence: true, if: Proc.new { |o| o.org_type == 1 || o.org_type == 3 },
+  validates :charity_number, presence: true, if: proc { |o| o.org_type == 1 || o.org_type == 3 },
     unless: :skip_validation
-  validates :company_number, presence: true, if: Proc.new { |o| o.org_type == 2 || o.org_type == 3 },
+  validates :company_number, presence: true, if: proc { |o| o.org_type == 2 || o.org_type == 3 },
     unless: :skip_validation
 
   validates :charity_number, uniqueness: { on: :create, scope: :company_number }, allow_nil: true, allow_blank: true
   validates :company_number, uniqueness: { on: :create, scope: :charity_number }, allow_nil: true, allow_blank: true
 
   validates :website, format: {
-    with: URI::regexp(%w(http https)),
+    with: URI.regexp(%w(http https)),
     message: 'enter a valid website address e.g. http://www.example.com'}, if: :website?
 
   validates :slug, uniqueness: true, presence: true
 
-  validates :postal_code, presence: true, if: Proc.new { |o| o.charity_name.present? || o.company_name.present? },
+  validates :postal_code, presence: true, if: proc { |o| o.charity_name.present? || o.company_name.present? },
     unless: :skip_validation
 
   before_validation :set_slug, unless: :slug
@@ -89,12 +89,12 @@ class Organisation < ActiveRecord::Base
 
   def search_address
     if self.postal_code.present?
-      [ "#{self.postal_code}",
-        "#{self.country}"
+      [ self.postal_code,
+        self.country
       ].join(", ")
     elsif self.street_address.present?
-      [ "#{self.street_address}",
-        "#{self.country}"
+      [ self.street_address,
+        self.country
       ].join(", ")
     end
   end
@@ -154,14 +154,14 @@ class Organisation < ActiveRecord::Base
       self.charity_name = name_scrape.text if name_scrape.present?
 
       if website_scrape.present?
-        self.website = website_scrape.text if website_scrape.text.match(URI::regexp(%w(http https)))
+        self.website = website_scrape.text if website_scrape.text.match(URI.regexp(%w(http https)))
       end
       self.country = 'GB' if name_scrape.present?
 
       self.postal_code = address_scrape.text.split(',').last.strip if address_scrape.present?
       self.contact_email = email_scrape.text if email_scrape.present?
-      self.charity_status = status_scrape.text.gsub('-',' ').capitalize if status_scrape.present?
-      self.charity_status = out_of_date_scrape.text.gsub('-',' ').capitalize if out_of_date_scrape.present?
+      self.charity_status = status_scrape.text.tr('-',' ').capitalize if status_scrape.present?
+      self.charity_status = out_of_date_scrape.text.tr('-',' ').capitalize if out_of_date_scrape.present?
       self.charity_year_ending = year_ending_scrape.text.gsub('Data for financial year ending ','').to_date if year_ending_scrape.present? && year_ending_scrape.include?('Data')
       self.charity_days_overdue = days_overdue_scrape.text.gsub('Documents ','').gsub(' days overdue','') if days_overdue_scrape.present?
       self.charity_income = income_scrape.text.sub('£','').to_f * financials_multiplier(income_scrape) if income_scrape.present?

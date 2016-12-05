@@ -8,7 +8,7 @@ ActiveAdmin.register_page "Dashboard" do
         span class: "blank_slate" do
           h3 'Users'
           h5 'Non-profits'
-          h1  number_with_delimiter(User.where("role = ?", "User").count)
+          h1 number_with_delimiter(User.where("role = ?", "User").count)
           h5 'Funders'
           h1 User.where("role = ?", "Funder").count
         end
@@ -92,7 +92,7 @@ ActiveAdmin.register_page "Dashboard" do
     end
 
     def unlock_by_month
-      Recipient.joins(:recipient_funder_accesses).where('recipient_funder_accesses_count': [1, 2, 3]).uniq.group_by_month('recipient_funder_accesses.created_at', last: 8).count
+      Recipient.joins(:recipient_funder_accesses).where('recipient_funder_accesses_count' => [1, 2, 3]).uniq.group_by_month('recipient_funder_accesses.created_at', last: 8).count
     end
 
     def proposal_count(state)
@@ -100,7 +100,7 @@ ActiveAdmin.register_page "Dashboard" do
     end
 
     def proposal_count_by_month
-      Proposal.where(state: ['registered', 'complete']).group_by_month(:created_at, last: 8, format: "%b %Y").count
+      Proposal.where(state: %w(registered complete)).group_by_month(:created_at, last: 8, format: "%b %Y").count
     end
 
     def feedback_count

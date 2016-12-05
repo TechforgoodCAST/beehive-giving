@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :enquiry do
-    :proposal
-    :fund
+    proposal
+    fund
   end
 end

@@ -1,3 +1,4 @@
+# TODO: deprecated
 ActiveAdmin.register FunderAttribute do
 
   permit_params :funder_id, :year, :grant_count, :application_count, :description,
@@ -91,7 +92,7 @@ ActiveAdmin.register FunderAttribute do
     f.inputs do
       f.input :year, as: :select, collection: Profile::VALID_YEARS
       f.input :funder, input_html: {class: 'chosen-select'}
-      f.input :funding_stream, collection: Grant.pluck(:funding_stream).uniq << 'All', input_html: {class: 'chosen-select'}
+      f.input :funding_stream, collection: Grant.uniq.pluck(:funding_stream) << 'All', input_html: {class: 'chosen-select'}
       f.input :description
       f.input :countries, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :name, label: "Countries"
       f.input :districts, as: :select, input_html: {multiple: true, class: 'chosen-select'}, member_label: :label, label: "Districts"

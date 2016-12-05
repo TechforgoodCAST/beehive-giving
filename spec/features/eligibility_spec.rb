@@ -187,7 +187,7 @@ feature 'Eligibility' do
         helper
           .visit_first_fund.complete_proposal.submit_proposal
           .visit_first_fund.answer.check_eligibility
-          visit root_path
+        visit root_path
       end
 
       scenario "When I'm browsing funds,
@@ -220,7 +220,7 @@ feature 'Eligibility' do
         helper
           .visit_first_fund.complete_proposal.submit_proposal
           .visit_first_fund.answer(eligible: false).check_eligibility
-          visit root_path
+        visit root_path
       end
 
       scenario "When I'm browsing funds,

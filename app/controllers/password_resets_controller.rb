@@ -1,6 +1,6 @@
 class PasswordResetsController < ApplicationController
 
-  before_filter :ensure_not_logged_in, :if => Proc.new { logged_in? }
+  before_filter :ensure_not_logged_in, if: proc { logged_in? }
 
   def create
     if params[:user_email].present?
@@ -23,7 +23,7 @@ class PasswordResetsController < ApplicationController
 
   def update
     @user = User.find_by_password_reset_token(params[:id])
-    if @user.password_reset_sent_at < 1.hours.ago
+    if @user.password_reset_sent_at < 1.hour.ago
       redirect_to new_password_reset_path, alert: 'Password reset has expired, please request a new password reset.'
     elsif @user.update_attributes(params.require(:user).permit(:password, :password_confirmation))
       redirect_to sign_in_path, notice: 'Your password has been reset. Please sign in below.'

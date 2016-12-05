@@ -6,8 +6,8 @@ class User < ActiveRecord::Base
   attr_accessor :org_type, :charity_number, :company_number
 
   validates :org_type, inclusion: { in: %w[0 1 2 3 4], message: 'Please select a valid option' }, on: :create
-  validates :charity_number, presence: { message: "Can't be blank" }, if: Proc.new { |o| o.org_type == '1' || o.org_type == '3' }
-  validates :company_number, presence: { message: "Can't be blank" }, if: Proc.new { |o| o.org_type == '2' || o.org_type == '3' }
+  validates :charity_number, presence: { message: "Can't be blank" }, if: proc { |o| o.org_type == '1' || o.org_type == '3' }
+  validates :company_number, presence: { message: "Can't be blank" }, if: proc { |o| o.org_type == '2' || o.org_type == '3' }
 
   validates :org_type, presence: { message: "Can't be blank" }, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, on: :create
 

@@ -1,6 +1,15 @@
 inherit_from: .rubocop_todo.yml
 
+Style/IndentationConsistency:
+  EnforcedStyle: rails
+
 AllCops:
   Exclude:
     - db/schema.rb
+    - db/*/**
     - lib/tasks/transfer.rake # TODO
+
+# Deprecated
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'test/test_helper.rb'

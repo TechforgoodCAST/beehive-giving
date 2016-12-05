@@ -27,7 +27,7 @@ class Funder < Organisation
   has_many :restrictions, through: :funds
   has_many :recommendations
 
-  alias_method :attributes, :funder_attributes
+  alias_method :attributes, :funder_attributes # TODO: deprecated
 
   acts_as_taggable
 
@@ -59,9 +59,9 @@ class Funder < Organisation
   def get_map_data
     if self.districts.any?
       features = []
-      amount_awarded_max = self.districts_by_year.group(:district).sum(:amount_awarded).sort_by {|k, v| v}.reverse.to_h.values.first
+      amount_awarded_max = self.districts_by_year.group(:district).sum(:amount_awarded).sort_by {|_, v| v}.reverse.to_h.values.first
       grant_count = self.districts_by_year.group(:district).count
-      grant_count_max = self.districts_by_year.group(:district).count.sort_by {|k, v| v}.reverse.to_h.values.first
+      grant_count_max = self.districts_by_year.group(:district).count.sort_by {|_, v| v}.reverse.to_h.values.first
       grant_average = self.districts_by_year.group(:district).average(:amount_awarded)
 
       self.districts_by_year.group(:district).sum(:amount_awarded).each do |k, v|
@@ -128,8 +128,8 @@ class Funder < Organisation
         result[funder.id] = recent_grants_recipient_ids & funder.recent_grants(self.current_attribute.year).pluck(:recipient_id).uniq
       end
     end
-    result.delete_if { |k, v| v == [] }
-    result.sort_by {|k, v| v.count}.reverse.to_h
+    result.delete_if { |_, v| v == [] }
+    result.sort_by {|_, v| v.count}.reverse.to_h
   end
 
   def multiple_funding_from_funder
@@ -138,11 +138,11 @@ class Funder < Organisation
 
   def no_of_grants_per_recipient
     result = {}
-    self.recent_grants(self.current_attribute.year).group(:recipient_id).count.each do |k, v|
+    self.recent_grants(self.current_attribute.year).group(:recipient_id).count.each do |_, v|
       result[v] = result[v] || 0
       result[v] += 1
     end
-    result = result.sort_by {|k, v| k}.to_h
+    result = result.sort_by {|k, _| k}.to_h
   end
 
   def recommended_recipients

@@ -34,7 +34,7 @@ describe Recipient do
 
   context 'eligibilities' do
     before(:each) do
-      2.times do |i|
+      2.times do
         create(:eligibility,
           recipient: @recipient,
           restriction: create(:restriction)

@@ -12,7 +12,7 @@ class DeprecatedHelper
   end
 
   def create_funder_attributes(num: 2)
-    Array.new(num) do |i|
+    Array.new(num) do
       create(:funder_attribute,
         funder: create(:funder),
         countries: @countries,

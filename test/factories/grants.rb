@@ -30,7 +30,7 @@ FactoryGirl.define do
     end
     association :funder, :factory => :funder
     association :recipient, :factory => :recipient
-    funding_stream { ["All", "Main"][s] }
+    funding_stream { %w(All Main)[s] }
     grant_type "Unrestricted"
     attention_how "Headhunting"
     amount_awarded { "1000#{n}" }
@@ -57,7 +57,7 @@ FactoryGirl.define do
     end
     association :funder, :factory => :funder
     association :recipient, :factory => :recipient
-    funding_stream { ["All", "Main"][s] }
+    funding_stream { %w(All Main)[s] }
     grant_type "Unrestricted"
     attention_how "Headhunting"
     amount_awarded { "1000#{n}" }

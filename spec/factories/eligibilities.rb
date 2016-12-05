@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :eligibility do
-    :recipient
-    :restriction
+    recipient
+    restriction
     eligible true
   end
 end

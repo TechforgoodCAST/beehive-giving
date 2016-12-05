@@ -1,3 +1,4 @@
+# TODO: deprecated
 class FunderAttribute < ActiveRecord::Base
 
   before_validation :grant_count_from_grants,
@@ -31,7 +32,7 @@ class FunderAttribute < ActiveRecord::Base
   validates :year, uniqueness: {scope: [:funding_stream, :funder_id], message: 'only one year per funder'}
   validates :funding_stream, uniqueness: {scope: [:year, :funder_id], message: 'only one funding stream of each kind per funder'}
   validates :application_link, format: {
-    with: /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/,
+    with: %r/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/,
     multiline: true,
     message: "enter a valid website address e.g. www.example.com"}, if: :application_link
 
@@ -188,7 +189,7 @@ class FunderAttribute < ActiveRecord::Base
   end
 
   def order_by_count(data)
-    data.sort_by {|k, v| v}.reverse.to_h
+    data.sort_by {|_, v| v}.reverse.to_h
   end
 
   def build_insights(column, array)

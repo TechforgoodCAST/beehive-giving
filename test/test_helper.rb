@@ -77,20 +77,22 @@ class ActionDispatch::IntegrationTest
     seed_test_db
     @funding_types = create_list(:funding_type, FundingType::FUNDING_TYPE.count)
 
-    @funders = Array.new(num) { |i| create(:funder) }
+    @funders = Array.new(num) { create(:funder) }
     @grants = Array.new(num) do |i|
       create(:grants, funder: @funders[i], recipient: @recipient,
               countries: @countries, districts: @uk_districts + @kenya_districts
             )
     end
-    @attributes = Array.new(num) { |i| create(:funder_attribute, funder: @funders[i],
-                    beneficiaries: Beneficiary.limit(i+1),
-                    age_groups: AgeGroup.limit(i+1),
-                    countries: @countries,
-                    districts: @uk_districts + @kenya_districts,
-                    funding_types: @funding_types
-                  ) }
-    @restrictions = Array.new(3) { |i| create(:restriction) }
+    @attributes = Array.new(num) do |i|
+      create(:funder_attribute, funder: @funders[i],
+        beneficiaries: Beneficiary.limit(i+1),
+        age_groups: AgeGroup.limit(i+1),
+        countries: @countries,
+        districts: @uk_districts + @kenya_districts,
+        funding_types: @funding_types
+      )
+    end
+    @restrictions = Array.new(3) { create(:restriction) }
     @funding_streams = Array.new(num) { |i| create(:funding_stream, restrictions: @restrictions, funders: [@funders[i]]) }
     create_and_auth_user!(organisation: @recipient, user_email: 'email@email.com')
 

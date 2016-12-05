@@ -97,7 +97,7 @@ class Fund < ActiveRecord::Base
   attr_accessor :skip_beehive_data
 
   before_validation :set_slug, unless: :slug
-  before_validation :check_beehive_data, if: Proc.new { |o| o.skip_beehive_data == '0' }
+  before_validation :check_beehive_data, if: proc { |o| o.skip_beehive_data == '0' }
 
   def to_param
     self.slug

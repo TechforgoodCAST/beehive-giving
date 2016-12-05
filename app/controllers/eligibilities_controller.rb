@@ -25,7 +25,7 @@ class EligibilitiesController < ApplicationController
 
   def create
     if @recipient.update_attributes(eligibility_params)
-      @recipient.increment!(:funds_checked) if @proposal.recommendation(@fund).eligibility == nil # TODO: refactor
+      @recipient.increment!(:funds_checked) if @proposal.recommendation(@fund).eligibility.nil? # TODO: refactor
       @proposal.funds.each do |fund| # TODO: performance?
         @recipient.check_eligibility(@proposal, fund)
       end

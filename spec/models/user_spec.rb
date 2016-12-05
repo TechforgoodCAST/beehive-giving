@@ -14,7 +14,7 @@ describe User do
   end
 
   it 'has many feedbacks' do
-    2.times { |i| create(:feedback, user: @user) }
+    2.times { create(:feedback, user: @user) }
     expect(@user.feedbacks.count).to eq 2
   end
 

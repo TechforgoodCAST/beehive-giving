@@ -34,12 +34,12 @@ module RecipientsHelper
 
   def score_to_match_copy(score, scale=1)
     {
-      'Not enough data': 0,
-      'Very poor':  0.2,
-      'Poor':       0.4,
-      'Fair':       0.6,
-      'Good':       0.8,
-      'Excellent':  1.0
+      'Not enough data' => 0,
+      'Very poor'       => 0.2,
+      'Poor'            => 0.4,
+      'Fair'            => 0.6,
+      'Good'            => 0.8,
+      'Excellent'       => 1.0
     }.each do |k,v|
       return content_tag(:strong, k, class: k.downcase.to_s.sub(' ', '-')) if score <= (v * scale)
     end
@@ -55,7 +55,7 @@ module RecipientsHelper
 
   def render_recommendation(fund, score, scale=1)
     if @proposal.show_fund(fund)
-      score_to_match_copy(@proposal.recommendation(fund)["#{score}"], scale)
+      score_to_match_copy(@proposal.recommendation(fund)[score.to_s], scale)
     else
       scramble_recommendations
     end

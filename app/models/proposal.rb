@@ -90,7 +90,7 @@ class Proposal < ActiveRecord::Base
   validates :affect_geo, inclusion: { in: 0..3, message: 'please select an option'}
   validates :countries, presence: true
   validates :districts, presence: true,
-              if: Proc.new { |o| o.affect_geo.present? && o.affect_geo < 2 } # TODO: test
+              if: proc { |o| o.affect_geo.present? && o.affect_geo < 2 } # TODO: test
 
   # Privacy
   validates :private, inclusion: { in: [true, false], message: 'please select an option' }
@@ -161,7 +161,7 @@ class Proposal < ActiveRecord::Base
         end
         # TODO: add age_groups
 
-        if beehive_insight.has_key?(fund.slug)
+        if beehive_insight.key?(fund.slug)
           beneficiary_score += beehive_insight[fund.slug]
         else
           beneficiary_score = 0
@@ -228,7 +228,7 @@ class Proposal < ActiveRecord::Base
   end
 
   def recommendation(fund)
-    Recommendation.where(proposal: self, fund: fund).first
+    Recommendation.find_by(proposal: self, fund: fund)
   end
 
   def eligible?(fund)
@@ -316,27 +316,6 @@ class Proposal < ActiveRecord::Base
     def prevent_second_proposal_until_first_is_complete
       if self.recipient.proposals.count == 1 && self.recipient.proposals.where(state: 'complete').count < 1
         errors.add(:proposal, 'Please complete your first proposal before creating a second.')
-      end
-    end
-
-    def funding_request_recommendation(funder, group, request, precision)
-      score = 0
-      total_grants = funder.recent_grants(funder.current_attribute.year).count
-      funder.recent_grants(funder.current_attribute.year).group(group).count.each do |k, v|
-        score += (v.to_f / total_grants) if (k-precision..k+precision).include?(request)
-      end
-      score
-    end
-
-    def calculate_grant_amount_recommendation(funder)
-      funding_request_recommendation(funder, 'amount_awarded', total_costs, 5000)
-    end
-
-    def calculate_grant_duration_recommendation(funder)
-      if funder.recent_grants(funder.current_attribute.year).where('days_from_start_to_end is NULL').count == 0
-        funding_request_recommendation(funder, 'days_from_start_to_end', (funding_duration * 30), 28)
-      else
-        0
       end
     end
 

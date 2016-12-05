@@ -22,20 +22,24 @@ class AccountsController < ApplicationController
 
   def charge
     unless @recipient.is_subscribed?
-      token = params[:stripeToken]
+      create_stripe_customer
+      redirect_to account_subscription_path(@recipient)
+    end
+  end
+
+  private
+
+    def create_stripe_customer
       customer = Stripe::Customer.create(
-        source: token,
+        source: params[:stripeToken],
         plan: 'pro-annual',
         email: current_user.user_email,
         description: "#{current_user.full_name}, #{@recipient.slug}"
       )
-
-      @recipient.subscription.stripe_user_id = customer.id
-      @recipient.subscription.active = true
-      @recipient.subscription.save!
-
-      redirect_to account_subscription_path(@recipient)
+      @recipient.update!(
+        stripe_user_id: customer.id,
+        active: true
+      )
     end
-  end
 
 end

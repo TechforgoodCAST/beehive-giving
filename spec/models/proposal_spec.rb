@@ -144,7 +144,7 @@ describe Proposal do
     end
 
     it 'does not clear beneficiaries if both affect_people and affect_other' do
-      @app.stub_beneficiaries_endpoint(['People', 'Other'])
+      @app.stub_beneficiaries_endpoint(%w(People Other))
       @initial_proposal.affect_other = true
       @initial_proposal.save
       expect(@initial_proposal.beneficiaries).to eq @db[:beneficiaries]
