@@ -190,7 +190,7 @@ class FunderAttribute < ActiveRecord::Base
   end
 
   def order_by_count(data)
-    data.sort_by {|_, v| v}.reverse.to_h
+    data.sort_by { |_, v| v }.reverse.to_h
   end
 
   def build_insights(column, array)

@@ -49,12 +49,12 @@ class District < ActiveRecord::Base
 
   # TODO: deprecated
   def ids_by_grant_count(org_type, year=Date.today.year)
-    recent_grants(year).group("#{org_type}_id").count.sort_by {|_, v| v}.reverse.to_h
+    recent_grants(year).group("#{org_type}_id").count.sort_by { |_, v| v }.reverse.to_h
   end
 
   # TODO: deprecated
   def ids_by_grant_sum(org_type, year=Date.today.year)
-    recent_grants(year).group("#{org_type}_id").sum(:amount_awarded).sort_by {|_, v| v}.reverse.to_h
+    recent_grants(year).group("#{org_type}_id").sum(:amount_awarded).sort_by { |_, v| v }.reverse.to_h
   end
 
   # TODO: deprecated

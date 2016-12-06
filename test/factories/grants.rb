@@ -15,8 +15,8 @@ FactoryGirl.define do
     attention_on Date.new(Date.today.year, 1, 2)
     applied_on Date.new(Date.today.year, 1, 2)
     open_call true
-    countries {FactoryGirl.create_list(:country, 2)}
-    districts {FactoryGirl.create_list(:district, 2)}
+    countries { FactoryGirl.create_list(:country, 2) }
+    districts { FactoryGirl.create_list(:district, 2) }
     after(:build, &:default_values)
   end
 

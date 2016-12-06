@@ -30,18 +30,18 @@ ActiveAdmin.register Recipient do
     end
     column :website
     column :country
-    column('Users') {|f| f.users.count }
+    column('Users') { |f| f.users.count }
     column :org_type
-    column('Profiles') {|f| f.profiles.count }
+    column('Profiles') { |f| f.profiles.count }
     column 'Unlocks', :recipient_funder_accesses_count
     column 'Unlocked Funders' do |r|
       r.recipient_funder_accesses.each do |f|
         li "#{Funder.find(f.funder_id).name} (#{Recipient.find(f.recipient_id).created_at.strftime('%d-%b')}) / (#{f.created_at.strftime('%d-%b')})"
       end
     end
-    column('Proposals') {|f| f.proposals.count }
-    column('Grants') {|f| f.grants.count }
-    column('Requests') {|f| f.features.count }
+    column('Proposals') { |f| f.proposals.count }
+    column('Grants') { |f| f.grants.count }
+    column('Requests') { |f| f.features.count }
     column 'Scrape' do |r|
       if r.charity_name.present? && r.company_name.present?
         'Both'

@@ -59,9 +59,9 @@ class Funder < Organisation
   def get_map_data
     if districts.any?
       features = []
-      amount_awarded_max = districts_by_year.group(:district).sum(:amount_awarded).sort_by {|_, v| v}.reverse.to_h.values.first
+      amount_awarded_max = districts_by_year.group(:district).sum(:amount_awarded).sort_by { |_, v| v }.reverse.to_h.values.first
       grant_count = districts_by_year.group(:district).count
-      grant_count_max = districts_by_year.group(:district).count.sort_by {|_, v| v}.reverse.to_h.values.first
+      grant_count_max = districts_by_year.group(:district).count.sort_by { |_, v| v }.reverse.to_h.values.first
       grant_average = districts_by_year.group(:district).average(:amount_awarded)
 
       districts_by_year.group(:district).sum(:amount_awarded).each do |k, v|
@@ -129,7 +129,7 @@ class Funder < Organisation
       end
     end
     result.delete_if { |_, v| v == [] }
-    result.sort_by {|_, v| v.count}.reverse.to_h
+    result.sort_by { |_, v| v.count }.reverse.to_h
   end
 
   def multiple_funding_from_funder
@@ -142,7 +142,7 @@ class Funder < Organisation
       result[v] = result[v] || 0
       result[v] += 1
     end
-    result = result.sort_by {|k, _| k}.to_h
+    result = result.sort_by { |k, _| k }.to_h
   end
 
   def recommended_recipients
