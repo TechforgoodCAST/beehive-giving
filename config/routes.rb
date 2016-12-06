@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   # Sessions
   root :to => 'sessions#check'
-  get '/logout'  => 'sessions#destroy'
+  get '/logout' => 'sessions#destroy'
   match '/sign-in', to: 'sessions#new', via: :get, as: 'sign_in'
   match '/sign-in', to: 'sessions#create', via: :post
 

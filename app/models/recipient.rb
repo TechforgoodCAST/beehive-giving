@@ -143,7 +143,7 @@ class Recipient < Organisation
   def similar_funders(funder)
     array = Funder.joins(:recommendations).where('recipient_id = ?', id).order('recommendations.score DESC, name ASC').to_a
 
-    array[(array.index(funder)+1)..(array.index(funder)+7)].sample(3)
+    array[(array.index(funder) + 1)..(array.index(funder) + 7)].sample(3)
   end
 
   def set_boolean(profile, proposal, category, field)

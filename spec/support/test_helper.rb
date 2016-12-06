@@ -69,7 +69,7 @@ class TestHelper
     stub_request(:post, endpoint).with(
       body: { data: data }.to_json,
       basic_auth: [ENV['BEEHIVE_INSIGHT_TOKEN'], ENV['BEEHIVE_INSIGHT_SECRET']],
-      headers: { 'Content-Type'=>'application/json' }
+      headers: { 'Content-Type' => 'application/json' }
     ).to_return(
       status: 200,
       body: body.to_json

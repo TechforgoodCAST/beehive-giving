@@ -50,7 +50,7 @@ class FunderAttribute < ActiveRecord::Base
         self.grant_count = funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").count
         self.no_of_recipients_funded = funder.recent_grants(year).pluck(:recipient_id).uniq.count
       else
-        self.grant_count = funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year  + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).count
+        self.grant_count = funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).count
         self.no_of_recipients_funded = funder.recent_grants(year).where('funding_stream = ?', funding_stream).pluck(:recipient_id).uniq.count
       end
     end

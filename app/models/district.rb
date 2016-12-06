@@ -15,12 +15,12 @@ class District < ActiveRecord::Base
   validates :district, uniqueness: { scope: :country } # TODO: rename 'district' to 'name'
 
   # TODO: deprecated
-  def grant_count_in_region(year=Date.today.year, region=(self.region||sub_country))
+  def grant_count_in_region(year=Date.today.year, region=(self.region || sub_country))
     District.joins(:grants).where('region = ? OR sub_country = ?', region, region).where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01").group(:district).count.sort_by { |_,v| v }.reverse.to_h
   end
 
   # TODO: deprecated
-  def amount_awarded_in_region(year=Date.today.year, region=(self.region||sub_country))
+  def amount_awarded_in_region(year=Date.today.year, region=(self.region || sub_country))
     District.joins(:grants).where('region = ? OR sub_country = ?', region, region).where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01").group(:district).sum(:amount_awarded).sort_by { |_,v| v }.reverse.to_h
   end
 
@@ -78,7 +78,7 @@ class District < ActiveRecord::Base
     {
       category: category,
       rank: data,
-      inverted_rank: (326-data),
+      inverted_rank: (326 - data),
       deprivation: deprivation,
       class: class_name
     }

@@ -112,7 +112,7 @@ ActiveAdmin.register_page 'Dashboard' do
     end
 
     def percentage(count, i)
-      "#{count[1]} (#{number_to_percentage((count[1].to_d / user_count.to_a[i][1].to_d)*100, precision: 0)})"
+      "#{count[1]} (#{number_to_percentage((count[1].to_d / user_count.to_a[i][1].to_d) * 100, precision: 0)})"
     end
 
     div style: 'float:left; width: 100%; padding: 0 20px; box-sizing: border-box;' do

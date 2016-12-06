@@ -99,7 +99,7 @@ class Funder < Organisation
   def get_hue(amount, max, segments=10)
     segment = max.to_f / segments
     segments.times do |i|
-      return i if amount > segment * i && amount <= segment * (i+1)
+      return i if amount > segment * i && amount <= segment * (i + 1)
     end
   end
 

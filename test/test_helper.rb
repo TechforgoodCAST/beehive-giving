@@ -85,8 +85,8 @@ class ActionDispatch::IntegrationTest
     end
     @attributes = Array.new(num) do |i|
       create(:funder_attribute, funder: @funders[i],
-        beneficiaries: Beneficiary.limit(i+1),
-        age_groups: AgeGroup.limit(i+1),
+        beneficiaries: Beneficiary.limit(i + 1),
+        age_groups: AgeGroup.limit(i + 1),
         countries: @countries,
         districts: @uk_districts + @kenya_districts,
         funding_types: @funding_types

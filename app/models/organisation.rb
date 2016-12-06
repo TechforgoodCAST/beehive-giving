@@ -115,7 +115,7 @@ class Organisation < ActiveRecord::Base
     candidate = name.downcase.gsub(/[^a-z0-9]+/, '-')
     candidate += "-#{n}" if n > 1
     return candidate unless Organisation.find_by_slug(candidate)
-    generate_slug(n+1)
+    generate_slug(n + 1)
   end
 
   def send_authorisation_email(user_to_authorise)
