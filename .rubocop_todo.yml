@@ -455,15 +455,6 @@ Style/MultilineMethodCallIndentation:
     - 'spec/features/match_spec.rb'
     - 'spec/support/test_helper.rb'
 
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.
-# SupportedStyles: aligned, indented
-Style/MultilineOperationIndentation:
-  Exclude:
-    - 'app/controllers/signup_controller.rb'
-    - 'app/models/proposal.rb'
-
 # Offense count: 30
 # Cop supports --auto-correct.
 Style/NumericLiterals:

@@ -206,8 +206,8 @@ class Proposal < ActiveRecord::Base
 
   def show_fund(fund)
     recipient.subscribed? ||
-    recipient.recommended_fund?(fund) ||
-    recommendation(fund).eligibility?
+      recipient.recommended_fund?(fund) ||
+      recommendation(fund).eligibility?
   end
 
   def check_affect_geo
