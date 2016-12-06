@@ -25,7 +25,7 @@ module FundsHelper
   def award_month_distribution
     @fund.award_month_distribution
       .sort_by { |i| i['sort'] }
-      .each { |m| m['month'] = Date::MONTHNAMES[m['month']].slice(0,3) }
+      .each { |m| m['month'] = Date::MONTHNAMES[m['month']].slice(0, 3) }
       .to_json
   end
 

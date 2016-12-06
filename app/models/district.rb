@@ -16,12 +16,12 @@ class District < ActiveRecord::Base
 
   # TODO: deprecated
   def grant_count_in_region(year = Date.today.year, region = (self.region || sub_country))
-    District.joins(:grants).where('region = ? OR sub_country = ?', region, region).where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01").group(:district).count.sort_by { |_,v| v }.reverse.to_h
+    District.joins(:grants).where('region = ? OR sub_country = ?', region, region).where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01").group(:district).count.sort_by { |_, v| v }.reverse.to_h
   end
 
   # TODO: deprecated
   def amount_awarded_in_region(year = Date.today.year, region = (self.region || sub_country))
-    District.joins(:grants).where('region = ? OR sub_country = ?', region, region).where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01").group(:district).sum(:amount_awarded).sort_by { |_,v| v }.reverse.to_h
+    District.joins(:grants).where('region = ? OR sub_country = ?', region, region).where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01").group(:district).sum(:amount_awarded).sort_by { |_, v| v }.reverse.to_h
   end
 
   # TODO: deprecated

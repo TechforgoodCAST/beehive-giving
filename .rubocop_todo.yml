@@ -525,13 +525,3 @@ Style/SafeNavigation:
   Exclude:
     - 'app/admin/feedback.rb'
     - 'app/controllers/password_resets_controller.rb'
-
-# Offense count: 14
-# Cop supports --auto-correct.
-Style/SpaceAfterComma:
-  Exclude:
-    - 'app/helpers/funds_helper.rb'
-    - 'app/helpers/recipients_helper.rb'
-    - 'app/models/district.rb'
-    - 'app/models/organisation.rb'
-    - 'app/models/recipient.rb'

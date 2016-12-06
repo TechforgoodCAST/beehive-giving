@@ -40,7 +40,7 @@ module RecipientsHelper
       'Fair'            => 0.6,
       'Good'            => 0.8,
       'Excellent'       => 1.0
-    }.each do |k,v|
+    }.each do |k, v|
       return content_tag(:strong, k, class: k.downcase.to_s.sub(' ', '-')) if score <= (v * scale)
     end
   end

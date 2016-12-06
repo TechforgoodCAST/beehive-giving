@@ -163,18 +163,18 @@ class Organisation < ActiveRecord::Base
 
       self.postal_code = address_scrape.text.split(',').last.strip if address_scrape.present?
       self.contact_email = email_scrape.text if email_scrape.present?
-      self.charity_status = status_scrape.text.tr('-',' ').capitalize if status_scrape.present?
-      self.charity_status = out_of_date_scrape.text.tr('-',' ').capitalize if out_of_date_scrape.present?
-      self.charity_year_ending = year_ending_scrape.text.gsub('Data for financial year ending ','').to_date if year_ending_scrape.present? && year_ending_scrape.include?('Data')
-      self.charity_days_overdue = days_overdue_scrape.text.gsub('Documents ','').gsub(' days overdue','') if days_overdue_scrape.present?
-      self.charity_income = income_scrape.text.sub('£','').to_f * financials_multiplier(income_scrape) if income_scrape.present?
-      self.charity_spending = spending_scrape.text.sub('£','').to_f * financials_multiplier(spending_scrape) if spending_scrape.present?
+      self.charity_status = status_scrape.text.tr('-', ' ').capitalize if status_scrape.present?
+      self.charity_status = out_of_date_scrape.text.tr('-', ' ').capitalize if out_of_date_scrape.present?
+      self.charity_year_ending = year_ending_scrape.text.gsub('Data for financial year ending ', '').to_date if year_ending_scrape.present? && year_ending_scrape.include?('Data')
+      self.charity_days_overdue = days_overdue_scrape.text.gsub('Documents ', '').gsub(' days overdue', '') if days_overdue_scrape.present?
+      self.charity_income = income_scrape.text.sub('£', '').to_f * financials_multiplier(income_scrape) if income_scrape.present?
+      self.charity_spending = spending_scrape.text.sub('£', '').to_f * financials_multiplier(spending_scrape) if spending_scrape.present?
       self.charity_trustees = trustee_scrape.text if trustee_scrape.present?
       self.charity_employees = employee_scrape.text if employee_scrape.present?
       self.charity_volunteers = volunteer_scrape.text if volunteer_scrape.present?
       self.charity_recent_accounts_link = link_scrape['href'] if link_scrape.present?
 
-      income_select(income_scrape.text.sub('£','').to_f * financials_multiplier(income_scrape)) if income_scrape.present?
+      income_select(income_scrape.text.sub('£', '').to_f * financials_multiplier(income_scrape)) if income_scrape.present?
       staff_select('employees', employee_scrape.text) if charity_employees.present?
       staff_select('volunteers', volunteer_scrape.text) if charity_volunteers.present?
 

@@ -115,9 +115,9 @@ class Recipient < Organisation
 
   def restriction_truthy(restriction)
     if restriction.invert
-      [['Yes', true],['No', false]]
+      [['Yes', true], ['No', false]]
     else
-      [['Yes', false],['No', true]]
+      [['Yes', false], ['No', true]]
     end
   end
 
