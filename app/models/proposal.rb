@@ -136,7 +136,7 @@ class Proposal < ActiveRecord::Base
           )
         end
 
-        if org_type_score > 0
+        if org_type_score.positive?
           [
             [Organisation::OPERATING_FOR, 'operating_for'],
             [Organisation::INCOME, 'income'],
@@ -283,7 +283,7 @@ class Proposal < ActiveRecord::Base
 
     def compare_arrays(array, fund) # TODO: refactor
       comparison = (send(array).pluck(:id) & fund.send(array).pluck(:id).uniq).count.to_f
-      comparison > 0 && fund.send(array).count > 0 ? comparison / send(array).count.to_f : 0
+      comparison.positive? && fund.send(array).count.positive? ? comparison / send(array).count.to_f : 0
     end
 
     def save_all_age_groups_if_all_ages

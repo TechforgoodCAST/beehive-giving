@@ -60,7 +60,7 @@ class Organisation < ActiveRecord::Base
   validates :operating_for, inclusion: { in: 0..3, message: 'please select a valid option' },
     unless: :skip_validation
 
-  validates :street_address, presence: true, if: proc { |o| o.org_type == 0 || o.org_type == 4 },
+  validates :street_address, presence: true, if: proc { |o| o.org_type.zero? || o.org_type == 4 },
     unless: :skip_validation
   validates :charity_number, presence: true, if: proc { |o| o.org_type == 1 || o.org_type == 3 },
     unless: :skip_validation
@@ -220,7 +220,7 @@ class Organisation < ActiveRecord::Base
 
   def staff_select(field_name, count)
     count = count.to_i
-    if count == 0
+    if count.zero?
       self[field_name] = 0
     elsif count >= 1 && count <= 5
       self[field_name] = 1
@@ -295,7 +295,7 @@ class Organisation < ActiveRecord::Base
   private
 
     def clear_registration_numbers_if_unregistered
-      if org_type == 0 || org_type == 4
+      if org_type.zero? || org_type == 4
         self.charity_number = nil
         self.company_number = nil
       end

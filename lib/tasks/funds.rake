@@ -111,7 +111,7 @@ namespace :funds do
 
     puts "\n\n"
     log(@fund)
-    if @errors.count > 0
+    if @errors.count.positive?
       puts "\nErrors\n------"
       puts @errors
     end

@@ -16,14 +16,14 @@
 
   - if @recipient.proposals? && !@recipient.transferred?
     -# TODO:
-    - if @proposal.recommendation(fund).grant_amount_recommendation > 0
+    - if @proposal.recommendation(fund).grant_amount_recommendation.positive?
       %li
         %strong= number_to_percentage((@proposal.recommendation(fund).grant_amount_recommendation * 100), precision: 0)
         of funding was similar to the
         %strong amount
         you're seeking.
     -# TODO:
-    - if @proposal.recommendation(fund).grant_duration_recommendation > 0
+    - if @proposal.recommendation(fund).grant_duration_recommendation.positive?
       %li
         %strong= number_to_percentage((@proposal.recommendation(fund).grant_duration_recommendation * 100), precision: 0)
         of funding was similar to the
@@ -45,7 +45,7 @@
       %a.action{href: fund_path(fund, anchor: 'when-was-funding-awarded')} More info
 
   -# TODO:
-  -# - if fund.geographic_scale_distribution.size > 0
+  -# - if fund.geographic_scale_distribution.size.positive?
   -#   %li
   -#     %strong= number_to_percentage(fund.geographic_scale_distribution.map { |i| [i['percent'], i['label']] }.max[0], precision: 0)
   -#     of projects funded affected

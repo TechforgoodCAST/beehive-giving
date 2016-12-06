@@ -46,7 +46,7 @@ module FundsHelper
   private
 
     def to_k(amount)
-      amount > 0 ? "#{amount / 1000}k" : '0'
+      amount.positive? ? "#{amount / 1000}k" : '0'
     end
 
 end

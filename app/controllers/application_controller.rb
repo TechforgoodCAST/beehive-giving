@@ -40,7 +40,7 @@ class ApplicationController < ActionController::Base
   end
 
   def load_proposal
-    @proposal = @recipient.proposals.last if logged_in? && @recipient.proposals.count > 0
+    @proposal = @recipient.proposals.last if logged_in? && @recipient.proposals.count.positive?
   end
 
   def ensure_authorised
@@ -102,7 +102,7 @@ class ApplicationController < ActionController::Base
 
   # refactor
   def ensure_profile_for_current_year
-    unless current_user.organisation.profiles.where(year: Date.today.year).count > 0
+    unless current_user.organisation.profiles.where(year: Date.today.year).count.positive?
       redirect_to new_recipient_profile_path(current_user.organisation)
     end
   end

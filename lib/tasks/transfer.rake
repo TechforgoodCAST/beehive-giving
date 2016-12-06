@@ -62,7 +62,7 @@ namespace :transfer do
   task :profiles => :environment do
 
     Recipient.joins(:users, :profiles).where('founded_on is not null').limit(ENV['LIMIT'] || 10).each do |recipient|
-      if recipient.proposals.count == 0 && recipient.profiles.where(state: 'complete').count > 0
+      if recipient.proposals.count == 0 && recipient.profiles.where(state: 'complete').count.positive?
 
         profile = recipient.profiles.where(state: 'complete').last
 
@@ -107,8 +107,8 @@ namespace :transfer do
 
         people_ids = profile.beneficiaries.where(category: 'People').pluck(:id)
         other_groups_ids = profile.beneficiaries.where(category: 'Other').pluck(:id)
-        people_ids.count > 0 ? proposal.affect_people = true : proposal.affect_people = false
-        other_groups_ids.count > 0 ? proposal.affect_other = true : proposal.affect_other = false
+        people_ids.count.positive? ? proposal.affect_people = true : proposal.affect_people = false
+        other_groups_ids.count.positive? ? proposal.affect_other = true : proposal.affect_other = false
         proposal.beneficiary_ids = people_ids + other_groups_ids
         proposal.beneficiaries_other_required = profile.beneficiaries_other_required
         proposal.beneficiaries_other = recipient.profiles.pluck(:beneficiaries_other)[0]

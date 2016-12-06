@@ -485,22 +485,3 @@ Style/MutableConstant:
 # Cop supports --auto-correct.
 Style/NumericLiterals:
   MinDigits: 9
-
-# Offense count: 32
-# Cop supports --auto-correct.
-# Configuration parameters: AutoCorrect, EnforcedStyle, SupportedStyles.
-# SupportedStyles: predicate, comparison
-Style/NumericPredicate:
-  Exclude:
-    - 'spec/**/*'
-    - 'app/admin/dashboard.rb'
-    - 'app/controllers/application_controller.rb'
-    - 'app/controllers/feedback_controller.rb'
-    - 'app/controllers/sessions_controller.rb'
-    - 'app/helpers/funds_helper.rb'
-    - 'app/models/district.rb'
-    - 'app/models/funder_attribute.rb'
-    - 'app/models/organisation.rb'
-    - 'app/models/proposal.rb'
-    - 'app/models/recipient.rb'
-    - 'lib/tasks/funds.rake'

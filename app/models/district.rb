@@ -59,7 +59,7 @@ class District < ActiveRecord::Base
 
   # TODO: deprecated
   def create_hash(category, data)
-    if data > 0 && data <= 40
+    if data.positive? && data <= 40
       deprivation = 'Very poor'
       class_name = 'very-poor'
     elsif data > 40 && data <= 80

@@ -22,7 +22,7 @@
             %a{:href => "#summary"} Summary
           %li
             %a{:href => "#how-was-funding-distributed"} How was funding distributed?
-          - if @funder.recent_grants(@funder.current_attribute.year).where('days_from_start_to_end IS NOT NULL').group(:days_from_start_to_end).count.count > 0
+          - if @funder.recent_grants(@funder.current_attribute.year).where('days_from_start_to_end IS NOT NULL').group(:days_from_start_to_end).count.count.positive?
             %li
               %a{:href => "#how-long-did-funding-last"} How long did funding last?
           %li
@@ -66,7 +66,7 @@
                 %strong= raw(@funder.current_attribute.approval_months_by_count)
               %a.action.blue{href: funder_overview_path(@funder, anchor: 'when-was-funding-awarded'), "data-uk-smooth-scroll" => ""} More info
 
-          - if @funder.recent_grants(@funder.current_attribute.year).where('days_from_start_to_end IS NOT NULL').group(:days_from_start_to_end).count.count > 0
+          - if @funder.recent_grants(@funder.current_attribute.year).where('days_from_start_to_end IS NOT NULL').group(:days_from_start_to_end).count.count.positive?
             %li
               Most funding lasted for
               = succeed '.' do
@@ -197,7 +197,7 @@
 
         %hr.thick
 
-      - if @funder.recent_grants(@funder.current_attribute.year).where('days_from_start_to_end IS NOT NULL').group(:days_from_start_to_end).count.count > 0
+      - if @funder.recent_grants(@funder.current_attribute.year).where('days_from_start_to_end IS NOT NULL').group(:days_from_start_to_end).count.count.positive?
         %section#how-long-did-funding-last.offset
           %h3.uk-margin-top
             How long did funding last?

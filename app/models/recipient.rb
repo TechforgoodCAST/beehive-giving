@@ -94,15 +94,15 @@ class Recipient < Organisation
   end
 
   def proposals? # refactor?
-    proposals.count > 0
+    proposals.count.positive?
   end
 
   def transferred? # refactor?
-    proposals.where(state: 'transferred').count > 0
+    proposals.where(state: 'transferred').count.positive?
   end
 
   def incomplete_proposals? # refactor?
-    proposals.where(state: 'initial').count > 0
+    proposals.where(state: 'initial').count.positive?
   end
 
   def incomplete_first_proposal?
@@ -110,7 +110,7 @@ class Recipient < Organisation
   end
 
   def profile_for_migration?
-    proposals.count < 1 && profiles.where(state: 'complete').count > 0
+    proposals.count < 1 && profiles.where(state: 'complete').count.positive?
   end
 
   def restriction_truthy(restriction)

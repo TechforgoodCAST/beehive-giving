@@ -48,7 +48,7 @@ class SessionsController < ApplicationController
   def start_path_for_user(user)
     if user.role == 'User'
       return signup_organisation_path unless user.organisation
-      return new_recipient_proposal_path(user.organisation) unless user.organisation.proposals.count > 0
+      return new_recipient_proposal_path(user.organisation) unless user.organisation.proposals.count.positive?
       recommended_funds_path
     else
       funder_overview_path(user.organisation)

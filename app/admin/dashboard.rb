@@ -131,25 +131,25 @@ ActiveAdmin.register_page 'Dashboard' do
           tr do
             td 'Register non-profit'
             recipient_count.each_with_index do |count, i|
-              td percentage(count, i) if count[1] > 0
+              td percentage(count, i) if count[1].positive?
             end
           end
           tr do
             td 'Proposals'
             proposal_count(%w(initial registered complete)).each_with_index do |count, i|
-              td percentage(count, i) if count[1] > 0
+              td percentage(count, i) if count[1].positive?
             end
           end
           tr do
             td 'Inital proposal'
             proposal_count('initial').each_with_index do |count, i|
-              td percentage(count, i) if count[1] > 0
+              td percentage(count, i) if count[1].positive?
             end
           end
           tr do
             td 'Registered proposal'
             proposal_count('registered').each_with_index do |count, i|
-              if count[1] > 0
+              if count[1].positive?
                 td percentage(count, i)
               else
                 td '-'
@@ -159,7 +159,7 @@ ActiveAdmin.register_page 'Dashboard' do
           tr do
             td 'Complete proposal'
             proposal_count('complete').each_with_index do |count, i|
-              if count[1] > 0
+              if count[1].positive?
                 td percentage(count, i)
               else
                 td '-'
@@ -169,31 +169,31 @@ ActiveAdmin.register_page 'Dashboard' do
           tr do
             td '1 Funder unlock'
             unlock_count(1).each_with_index do |count, i|
-              td percentage(count, i) if count[1] > 0
+              td percentage(count, i) if count[1].positive?
             end
           end
           tr do
             td '2 Funder unlocks'
             unlock_count(2).each_with_index do |count, i|
-              td percentage(count, i) if count[1] > 0
+              td percentage(count, i) if count[1].positive?
             end
           end
           tr do
             td '3 Funder unlocks'
             unlock_count(3).each_with_index do |count, i|
-              td percentage(count, i) if count[1] > 0
+              td percentage(count, i) if count[1].positive?
             end
           end
           tr do
             td 'Feedback'
             feedback_count.each_with_index do |count, i|
-              td count[1] > 0 ? percentage(count, i) : '-'
+              td count[1].positive? ? percentage(count, i) : '-'
             end
           end
           tr do
             td 'Profiles'
             profile_count.each_with_index do |count, i|
-              td count[1] > 0 ? percentage(count, i) : '-'
+              td count[1].positive? ? percentage(count, i) : '-'
             end
           end
         end

@@ -45,7 +45,7 @@ class FunderAttribute < ActiveRecord::Base
   end
 
   def grant_count_from_grants
-    if funder && funder.grants.count > 0
+    if funder && funder.grants.count.positive?
       if funding_stream == 'All'
         self.grant_count = funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").count
         self.no_of_recipients_funded = funder.recent_grants(year).pluck(:recipient_id).uniq.count
@@ -57,7 +57,7 @@ class FunderAttribute < ActiveRecord::Base
   end
 
   def success_percentage
-    self.enquiry_count = ((funder.grants.count.to_d / application_count.to_d) * 100).round(0) if application_count && funder.grants.count > 0
+    self.enquiry_count = ((funder.grants.count.to_d / application_count.to_d) * 100).round(0) if application_count && funder.grants.count.positive?
   end
 
   def countries_from_grants
@@ -143,7 +143,7 @@ class FunderAttribute < ActiveRecord::Base
 
   def funded_organisation_age
     if funder && funder.recipients.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).count == funder.recipients.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:founded_on).count
-      if funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).count > 0
+      if funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).count.positive?
         if funding_stream == 'All'
           count = 0
           sum = 0.0
@@ -154,7 +154,7 @@ class FunderAttribute < ActiveRecord::Base
           self.funded_average_age = (sum / count).round(1) if funded_average_age.nil?
         end
       else
-        if funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).count > 0
+        if funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).count.positive?
           count = 0
           sum = 0.0
           funder.recipients.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:founded_on).uniq.each do |d|
@@ -194,7 +194,7 @@ class FunderAttribute < ActiveRecord::Base
   end
 
   def build_insights(column, array)
-    update_attribute(column, (array.count > 0 ? array.to_sentence : nil))
+    update_attribute(column, (array.count.positive? ? array.to_sentence : nil))
   end
 
   def set_approval_months_by_count

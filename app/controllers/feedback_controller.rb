@@ -7,7 +7,7 @@ class FeedbackController < ApplicationController
     @feedback = current_user.feedbacks.new
     @fund = Fund.find_by_slug(@redirect_to_funder) # TODO: refactor
 
-    redirect_to recommended_funds_path, alert: "It looks like you've already provided feedback" if current_user.feedbacks.count > 0
+    redirect_to recommended_funds_path, alert: "It looks like you've already provided feedback" if current_user.feedbacks.count.positive?
   end
 
   def create
