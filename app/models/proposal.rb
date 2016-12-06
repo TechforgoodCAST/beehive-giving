@@ -97,12 +97,12 @@ class Proposal < ActiveRecord::Base
 
   # Registered
   validates :title, uniqueness: { scope: :recipient_id, message: 'each proposal must have a unique title' },
-              if: ('self.registered? || self.complete?')
+              if: 'self.registered? || self.complete?'
   validates :title, :tagline, :outcome1, presence: true, length: { maximum: 280, message: 'please use 280 characters or less' },
-              if: ('self.registered? || self.complete?')
+              if: 'self.registered? || self.complete?'
   validates :implementations, presence: true,
               unless: :implementations_other_required,
-              if: ('self.registered? || self.complete?')
+              if: 'self.registered? || self.complete?'
   validates :implementations_other,
               presence: { message: "please uncheck 'Other' or specify details" },
               if: :implementations_other_required

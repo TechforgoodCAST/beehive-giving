@@ -38,7 +38,7 @@ class Organisation < ActiveRecord::Base
   has_many :profiles, dependent: :destroy # TODO: deprecated
 
   geocoded_by :search_address
-  after_validation :geocode, if: ->(o) { (o.street_address.present?) or (o.postal_code.present? and o.postal_code_changed?) }, unless: ->(o) { o.country != 'GB' }
+  after_validation :geocode, if: ->(o) { o.street_address.present? or (o.postal_code.present? and o.postal_code_changed?) }, unless: ->(o) { o.country != 'GB' }
 
   attr_accessor :skip_validation
 

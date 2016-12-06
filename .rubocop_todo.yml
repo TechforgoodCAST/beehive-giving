@@ -18,6 +18,26 @@ Lint/UselessAssignment:
   Exclude:
     - 'app/controllers/application_controller.rb'
 
+# Offense count: 2
+# Cop supports --auto-correct.
+# Configuration parameters: ConvertCodeThatCanStartToReturnNil.
+Style/SafeNavigation:
+  Exclude:
+    - 'app/admin/feedback.rb'
+    - 'app/controllers/password_resets_controller.rb'
+
+# Offense count: 2
+# Cop supports --auto-correct.
+Style/RescueModifier:
+  Exclude:
+    - 'app/models/organisation.rb'
+
+# Offense count: 1
+# Cop supports --auto-correct.
+Style/RedundantSelf:
+  Exclude:
+    - 'config/application.rb'
+
 # Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
@@ -497,31 +517,3 @@ Style/PercentLiteralDelimiters:
     - 'spec/models/age_spec.rb'
     - 'spec/models/beneficiary_spec.rb'
     - 'spec/models/fund_spec.rb'
-
-# Offense count: 21
-# Cop supports --auto-correct.
-Style/RedundantParentheses:
-  Exclude:
-    - 'app/models/organisation.rb'
-    - 'app/models/profile.rb'
-    - 'app/models/proposal.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/RedundantSelf:
-  Exclude:
-    - 'config/application.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/RescueModifier:
-  Exclude:
-    - 'app/models/organisation.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-# Configuration parameters: ConvertCodeThatCanStartToReturnNil.
-Style/SafeNavigation:
-  Exclude:
-    - 'app/admin/feedback.rb'
-    - 'app/controllers/password_resets_controller.rb'
