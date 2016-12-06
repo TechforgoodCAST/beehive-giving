@@ -110,7 +110,7 @@ class Organisation < ActiveRecord::Base
     self.slug = generate_slug
   end
 
-  def generate_slug(n=1)
+  def generate_slug(n = 1)
     return nil unless name
     candidate = name.downcase.gsub(/[^a-z0-9]+/, '-')
     candidate += "-#{n}" if n > 1

@@ -30,7 +30,7 @@ class ActiveSupport::TestCase
     @implementations = create_list(:implementation, Implementation::IMPLEMENTATIONS.count)
   end
 
-  def setup_funds(num=1, save=false)
+  def setup_funds(num = 1, save = false)
     FactoryGirl.reload
     seed_test_db
     @funder = create(:funder)
@@ -73,7 +73,7 @@ class ActionDispatch::IntegrationTest
     create_cookie(:auth_token, @user.auth_token)
   end
 
-  def setup_funders(num, proposal=false)
+  def setup_funders(num, proposal = false)
     seed_test_db
     @funding_types = create_list(:funding_type, FundingType::FUNDING_TYPE.count)
 

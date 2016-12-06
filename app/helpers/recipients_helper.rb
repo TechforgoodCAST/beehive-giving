@@ -32,7 +32,7 @@ module RecipientsHelper
     ].sample
   end
 
-  def score_to_match_copy(score, scale=1)
+  def score_to_match_copy(score, scale = 1)
     {
       'Not enough data' => 0,
       'Very poor'       => 0.2,
@@ -53,7 +53,7 @@ module RecipientsHelper
     content_tag(:strong, scramble_name(%w[Poor Excellent].sample), class: 'redacted muted')
   end
 
-  def render_recommendation(fund, score, scale=1)
+  def render_recommendation(fund, score, scale = 1)
     if @proposal.show_fund(fund)
       score_to_match_copy(@proposal.recommendation(fund)[score.to_s], scale)
     else

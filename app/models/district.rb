@@ -15,17 +15,17 @@ class District < ActiveRecord::Base
   validates :district, uniqueness: { scope: :country } # TODO: rename 'district' to 'name'
 
   # TODO: deprecated
-  def grant_count_in_region(year=Date.today.year, region=(self.region || sub_country))
+  def grant_count_in_region(year = Date.today.year, region = (self.region || sub_country))
     District.joins(:grants).where('region = ? OR sub_country = ?', region, region).where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01").group(:district).count.sort_by { |_,v| v }.reverse.to_h
   end
 
   # TODO: deprecated
-  def amount_awarded_in_region(year=Date.today.year, region=(self.region || sub_country))
+  def amount_awarded_in_region(year = Date.today.year, region = (self.region || sub_country))
     District.joins(:grants).where('region = ? OR sub_country = ?', region, region).where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01").group(:district).sum(:amount_awarded).sort_by { |_,v| v }.reverse.to_h
   end
 
   # TODO: deprecated
-  def rank_in_region(year=Date.today.year)
+  def rank_in_region(year = Date.today.year)
     data = []
     grant_count_in_region(year).each do |k, v|
       data << {
@@ -38,22 +38,22 @@ class District < ActiveRecord::Base
   end
 
   # TODO: deprecated
-  def recent_grants(year=Date.today.year)
+  def recent_grants(year = Date.today.year)
     grants.where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01")
   end
 
   # TODO: deprecated
-  def district_funder_ids(year=Date.today.year)
+  def district_funder_ids(year = Date.today.year)
     recent_grants(year).pluck(:funder_id).uniq
   end
 
   # TODO: deprecated
-  def ids_by_grant_count(org_type, year=Date.today.year)
+  def ids_by_grant_count(org_type, year = Date.today.year)
     recent_grants(year).group("#{org_type}_id").count.sort_by { |_, v| v }.reverse.to_h
   end
 
   # TODO: deprecated
-  def ids_by_grant_sum(org_type, year=Date.today.year)
+  def ids_by_grant_sum(org_type, year = Date.today.year)
     recent_grants(year).group("#{org_type}_id").sum(:amount_awarded).sort_by { |_, v| v }.reverse.to_h
   end
 

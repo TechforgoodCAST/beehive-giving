@@ -96,7 +96,7 @@ class Funder < Organisation
     current_attribute.set_shared_recipient_ids
   end
 
-  def get_hue(amount, max, segments=10)
+  def get_hue(amount, max, segments = 10)
     segment = max.to_f / segments
     segments.times do |i|
       return i if amount > segment * i && amount <= segment * (i + 1)
@@ -116,7 +116,7 @@ class Funder < Organisation
     attributes.where(funding_stream: 'All').order(year: :desc).first
   end
 
-  def recent_grants(year=Date.today.year) # refactor
+  def recent_grants(year = Date.today.year) # refactor
     grants.where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01")
   end
 

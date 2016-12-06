@@ -39,7 +39,7 @@ namespace :funds do
       obj.class.name.downcase
     end
 
-    def save(obj, values, last=false)
+    def save(obj, values, last = false)
       obj.assign_attributes(values)
       obj_name = obj_name(obj)
 

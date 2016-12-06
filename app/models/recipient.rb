@@ -58,7 +58,7 @@ class Recipient < Organisation
   end
 
   # TODO: refactor?
-  def recent_grants(year=2015)
+  def recent_grants(year = 2015)
     grants.where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01")
   end
 
@@ -150,7 +150,7 @@ class Recipient < Organisation
     proposal[field] = profile.beneficiaries.where(category: category).count > 1
   end
 
-  def get_age_segment(age, type='from')
+  def get_age_segment(age, type = 'from')
     result = nil
     AgeGroup.order(id: :desc).pluck(:age_from, :age_to).take(7).each do |from, to|
       result = type == 'from' ? from : to if age >= from && age <= to

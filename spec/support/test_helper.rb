@@ -77,14 +77,14 @@ class TestHelper
     self
   end
 
-  def stub_beneficiaries_endpoint(categories=['People'])
+  def stub_beneficiaries_endpoint(categories = ['People'])
     data = Beneficiary::BENEFICIARIES
             .map { |i| [i[:sort], categories.include?(i[:category]) ? 1 : 0] }.to_h
     stub_beehive_insight(ENV['BEEHIVE_INSIGHT_ENDPOINT'], data)
     self
   end
 
-  def stub_amounts_endpoint(data=10000.0)
+  def stub_amounts_endpoint(data = 10000.0)
     stub_beehive_insight(
       ENV['BEEHIVE_INSIGHT_AMOUNTS_ENDPOINT'],
       { amount: data }
@@ -92,7 +92,7 @@ class TestHelper
     self
   end
 
-  def stub_durations_endpoint(data=12)
+  def stub_durations_endpoint(data = 12)
     stub_beehive_insight(
       ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'],
       { duration: data }
@@ -107,18 +107,18 @@ class TestHelper
     self
   end
 
-  def create_admin(opts={})
+  def create_admin(opts = {})
     create(:admin_user, opts)
     self
   end
 
-  def create_recipient(opts={})
+  def create_recipient(opts = {})
     @recipient = create(:recipient, opts)
     @recipient.reload
     self
   end
 
-  def with_user(opts={ organisation: @recipient })
+  def with_user(opts = { organisation: @recipient })
     @user = create(:user, opts)
     self
   end

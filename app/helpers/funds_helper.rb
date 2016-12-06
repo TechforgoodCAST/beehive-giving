@@ -1,6 +1,6 @@
 module FundsHelper
 
-  def period(fund=@fund)
+  def period(fund = @fund)
     content_tag(
       :span,
       fund.period_start.strftime("%b %y'") + ' - ' + fund.period_end.strftime("%b %y'"),
@@ -14,7 +14,7 @@ module FundsHelper
     }.to_json
   end
 
-  def top_award_months(fund=@fund)
+  def top_award_months(fund = @fund)
     fund.award_month_distribution
       .group_by { |i| i['count'] }
       .sort.last[1]
@@ -29,7 +29,7 @@ module FundsHelper
       .to_json
   end
 
-  def top_countries(fund=@fund)
+  def top_countries(fund = @fund)
     fund.country_distribution
       .group_by { |i| i['count'] }
       .sort.last[1]
