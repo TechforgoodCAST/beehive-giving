@@ -62,8 +62,8 @@ namespace :funds do
     CSV.parse(open(ENV['FILE']).read, headers: true) do |row|
       @funder = Funder.where(name: row['funder']).first
       @fund = @funder.funds
-                .where(funder: @funder, name: row['name'])
-                .first_or_initialize
+                     .where(funder: @funder, name: row['name'])
+                     .first_or_initialize
 
       fund_values = row.to_hash.except('funder', 'valid', 'old_description', 'soft_restrictions')
 

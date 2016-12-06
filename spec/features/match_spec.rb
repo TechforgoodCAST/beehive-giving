@@ -94,7 +94,7 @@ feature 'Match' do
             I want to make sure my details are correct,
             so I feel confident my results will be accurate' do
     helper.fill_user_form(seeking: 'A registered charity & company')
-      .submit_user_form
+          .submit_user_form
     expect_company_scrape
   end
 

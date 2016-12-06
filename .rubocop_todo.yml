@@ -440,21 +440,6 @@ Style/MultilineMethodCallBraceLayout:
     - 'test/models/grant_test.rb'
     - 'test/test_helper.rb'
 
-# Offense count: 35
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.
-# SupportedStyles: aligned, indented, indented_relative_to_receiver
-Style/MultilineMethodCallIndentation:
-  Exclude:
-    - 'app/helpers/funds_helper.rb'
-    - 'app/models/funder.rb'
-    - 'app/models/recipient.rb'
-    - 'lib/tasks/funds.rake'
-    - 'lib/tasks/legacy.rake'
-    - 'spec/features/apply_spec.rb'
-    - 'spec/features/match_spec.rb'
-    - 'spec/support/test_helper.rb'
-
 # Offense count: 30
 # Cop supports --auto-correct.
 Style/NumericLiterals:

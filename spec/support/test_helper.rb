@@ -79,7 +79,7 @@ class TestHelper
 
   def stub_beneficiaries_endpoint(categories = ['People'])
     data = Beneficiary::BENEFICIARIES
-            .map { |i| [i[:sort], categories.include?(i[:category]) ? 1 : 0] }.to_h
+           .map { |i| [i[:sort], categories.include?(i[:category]) ? 1 : 0] }.to_h
     stub_beehive_insight(ENV['BEEHIVE_INSIGHT_ENDPOINT'], data)
     self
   end

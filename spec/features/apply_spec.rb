@@ -18,10 +18,10 @@ feature 'Apply' do
     @fund = @db[:funds].last
     visit root_path
     helper.visit_first_fund
-        .complete_proposal
-        .submit_proposal
-        .answer
-        .check_eligibility
+          .complete_proposal
+          .submit_proposal
+          .answer
+          .check_eligibility
     within '.card' do
       click_link 'Apply'
     end

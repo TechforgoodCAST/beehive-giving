@@ -147,7 +147,7 @@ class Funder < Organisation
 
   def recommended_recipients
     Recipient.includes(:recommendations, :proposals, :enquiries)
-      .where("recommendations.funder_id = ? AND
+             .where("recommendations.funder_id = ? AND
               recommendations.score >= ? AND
               recommendations.eligibility = ? AND
               enquiries.funder_id = ?",
@@ -155,9 +155,9 @@ class Funder < Organisation
               Recipient::RECOMMENDATION_THRESHOLD,
               'Eligible',
               id)
-      .distinct
-      .order('proposals.created_at DESC, recommendations.eligibility ASC, recommendations.score DESC')
-      .order(:name)
+             .distinct
+             .order('proposals.created_at DESC, recommendations.eligibility ASC, recommendations.score DESC')
+             .order(:name)
   end
 
 end

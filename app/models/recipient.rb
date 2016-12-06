@@ -123,14 +123,14 @@ class Recipient < Organisation
 
   def recommended_funds # TODO: refactor to proposal
     proposals.last.funds.includes(:funder)
-      .where('recommendations.total_recommendation >= ?', RECOMMENDATION_THRESHOLD)
-      .order('recommendations.total_recommendation DESC', 'funds.name')
+             .where('recommendations.total_recommendation >= ?', RECOMMENDATION_THRESHOLD)
+             .order('recommendations.total_recommendation DESC', 'funds.name')
   end
 
   def recommended_with_eligible_funds # TODO: refactor  to proposal
     fund_ids = recommended_funds
-      .pluck(:fund_id)
-      .take(RECOMMENDATION_LIMIT)
+               .pluck(:fund_id)
+               .take(RECOMMENDATION_LIMIT)
     recommended_funds
       .where(id: fund_ids)
       .where('eligibility is NULL OR eligibility != ?', 'Ineligible')
