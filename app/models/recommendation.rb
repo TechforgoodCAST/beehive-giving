@@ -1,6 +1,6 @@
 class Recommendation < ActiveRecord::Base
 
-  RECOMMENDATION_QUALITY = ['Good suggestion', 'Neutral suggestion', 'Poor suggestion']
+  RECOMMENDATION_QUALITY = ['Good suggestion', 'Neutral suggestion', 'Poor suggestion'].freeze
 
   belongs_to :proposal
   belongs_to :fund

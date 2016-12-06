@@ -12,7 +12,7 @@ class Stage < ActiveRecord::Base
     'Meeting',
     'Funding approved',
     'Funding awarded'
-  ]
+  ].freeze
 
   belongs_to :fund
 

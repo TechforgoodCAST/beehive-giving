@@ -464,23 +464,6 @@ Style/MultilineOperationIndentation:
     - 'app/controllers/signup_controller.rb'
     - 'app/models/proposal.rb'
 
-# Offense count: 26
-# Cop supports --auto-correct.
-Style/MutableConstant:
-  Exclude:
-    - 'app/models/age_group.rb'
-    - 'app/models/beneficiary.rb'
-    - 'app/models/feedback.rb'
-    - 'app/models/funder.rb'
-    - 'app/models/funding_type.rb'
-    - 'app/models/grant.rb'
-    - 'app/models/implementation.rb'
-    - 'app/models/organisation.rb'
-    - 'app/models/profile.rb'
-    - 'app/models/proposal.rb'
-    - 'app/models/recommendation.rb'
-    - 'app/models/stage.rb'
-
 # Offense count: 30
 # Cop supports --auto-correct.
 Style/NumericLiterals:

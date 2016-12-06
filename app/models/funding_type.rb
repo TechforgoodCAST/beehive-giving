@@ -6,7 +6,7 @@ class FundingType < ActiveRecord::Base
     'Revenue funding - running costs',
     'Revenue funding - unrestricted (both project and running costs)',
     'Other'
-  ]
+  ].freeze
 
   has_and_belongs_to_many :funds
   has_many :funders, -> { distinct }, through: :funds

@@ -2,7 +2,7 @@ class Funder < Organisation
 
   scope :active, -> { where(active_on_beehive: true) }
 
-  CLOSED_FUNDERS = ['Cripplegate Foundation', 'The Baring Foundation']
+  CLOSED_FUNDERS = ['Cripplegate Foundation', 'The Baring Foundation'].freeze
 
   has_many :funds
   has_many :grants

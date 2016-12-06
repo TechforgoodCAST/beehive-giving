@@ -2,9 +2,9 @@ class Grant < ActiveRecord::Base
 
   before_validation :default_values
 
-  FUNDING_STREAM = ['All', 'Main', 'Theme 1', 'Theme 2']
-  GRANT_TYPE = ['Unrestricted', 'Core costs', 'Project costs']
-  ATTENTION_HOW = ['Headhunting', 'Referral', 'Unsolicited application']
+  FUNDING_STREAM = ['All', 'Main', 'Theme 1', 'Theme 2'].freeze
+  GRANT_TYPE = ['Unrestricted', 'Core costs', 'Project costs'].freeze
+  ATTENTION_HOW = ['Headhunting', 'Referral', 'Unsolicited application'].freeze
 
   belongs_to :funder
   belongs_to :recipient, counter_cache: true

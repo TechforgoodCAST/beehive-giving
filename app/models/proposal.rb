@@ -17,19 +17,19 @@ class Proposal < ActiveRecord::Base
   has_and_belongs_to_many :districts
   has_and_belongs_to_many :implementations
 
-  TYPE_OF_SUPPORT = ['Only financial', 'Mostly financial', 'Equal financial and non-financial', 'Mostly non-financial', 'Only non-financial']
-  GENDERS = ['All genders', 'Female', 'Male', 'Transgender', 'Other']
+  TYPE_OF_SUPPORT = ['Only financial', 'Mostly financial', 'Equal financial and non-financial', 'Mostly non-financial', 'Only non-financial'].freeze
+  GENDERS = ['All genders', 'Female', 'Male', 'Transgender', 'Other'].freeze
   FUNDING_TYPE = [
     'Revenue funding - running costs, salaries and activity costs',
     'Capital funding - purchase and refurbishment of equipment, and buildings',
     'Other', "Don't know"
-  ]
+  ].freeze
   AFFECT_GEO = [
     ['One or more local areas', 0],
     ['One or more regions', 1],
     ['An entire country', 2],
     ['Across many countries', 3]
-  ]
+  ].freeze
 
   include Workflow
   workflow_column :state

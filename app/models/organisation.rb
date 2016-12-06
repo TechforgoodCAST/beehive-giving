@@ -7,20 +7,20 @@ class Organisation < ActiveRecord::Base
     ['A registered company', 2],
     ['A registered charity & company', 3],
     ['Another type of organisation', 4]
-  ]
+  ].freeze
   OPERATING_FOR = [
     ['Yet to start', 0],
     ['Less than 12 months', 1],
     ['Less than 3 years', 2],
     ['4 years or more', 3]
-  ]
+  ].freeze
   INCOME = [
     ['Less than £10k', 0],
     ['£10k - £100k', 1],
     ['£100k - £1m', 2],
     ['£1m - £10m', 3],
     ['£10m+', 4]
-  ]
+  ].freeze
   EMPLOYEES = [
     ['None', 0],
     ['1 - 5', 1],
@@ -30,7 +30,7 @@ class Organisation < ActiveRecord::Base
     ['101 - 250', 5],
     ['251 - 500', 6],
     ['500+', 7]
-  ]
+  ].freeze
 
   has_one :subscription, dependent: :destroy
   has_many :users, dependent: :destroy

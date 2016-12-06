@@ -1,12 +1,12 @@
 class Feedback < ActiveRecord::Base
 
-  SUITABLE = ['- Very unsuitable', '', '', '', '', '', '', '', '', '', '- Very suitable']
-  MOST_USEFUL = ['The information about funders', 'Recommendations of funders', 'Being able to check your eligibility', 'Other']
-  NPS = ['- Not at all likely', '', '', '', '', '', '', '', '', '', '- Extremely likely']
-  TAKEN_AWAY = ['- Very satisfied', '', '', '', '', '', '', '', '', '', '- Very dissatisfied']
-  INFORMS_DECISION = ['- Strongly disagree', '', '', '', '', '', '', '', '', '', '- Strongly agree']
-  APP_AND_GRANT_FREQUENCY = ['None', '1-3', '4-6', '7-9', '10 or more']
-  MARKETING_FREQUENCY = %w(Weekly Monthly Quartetly Never)
+  SUITABLE = ['- Very unsuitable', '', '', '', '', '', '', '', '', '', '- Very suitable'].freeze
+  MOST_USEFUL = ['The information about funders', 'Recommendations of funders', 'Being able to check your eligibility', 'Other'].freeze
+  NPS = ['- Not at all likely', '', '', '', '', '', '', '', '', '', '- Extremely likely'].freeze
+  TAKEN_AWAY = ['- Very satisfied', '', '', '', '', '', '', '', '', '', '- Very dissatisfied'].freeze
+  INFORMS_DECISION = ['- Strongly disagree', '', '', '', '', '', '', '', '', '', '- Strongly agree'].freeze
+  APP_AND_GRANT_FREQUENCY = ['None', '1-3', '4-6', '7-9', '10 or more'].freeze
+  MARKETING_FREQUENCY = %w(Weekly Monthly Quartetly Never).freeze
 
   belongs_to :user
 
