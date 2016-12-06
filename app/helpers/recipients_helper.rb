@@ -50,7 +50,7 @@ module RecipientsHelper
   end
 
   def scramble_recommendations
-    content_tag(:strong, scramble_name(%w[Poor Excellent].sample), class: 'redacted muted')
+    content_tag(:strong, scramble_name(%w(Poor Excellent).sample), class: 'redacted muted')
   end
 
   def render_recommendation(fund, score, scale = 1)

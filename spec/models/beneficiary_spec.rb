@@ -8,7 +8,7 @@ describe Beneficiary do
 
   it 'is valid' do
     24.times do |i|
-      %w[label category sort].each do |field|
+      %w(label category sort).each do |field|
         expect(@db[:beneficiaries][i][field]).to eq Beneficiary::BENEFICIARIES[i][field.to_sym]
       end
     end

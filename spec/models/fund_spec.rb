@@ -208,7 +208,7 @@ describe Fund do
     end
 
     it 'requires open data fields' do
-      %w[
+      %w(
         period_start period_end grant_count recipient_count amount_awarded_sum
         amount_awarded_mean amount_awarded_median amount_awarded_min
         amount_awarded_max amount_awarded_distribution
@@ -219,7 +219,7 @@ describe Fund do
         employees_distribution volunteers_distribution gender_distribution
         age_group_distribution beneficiary_distribution
         geographic_scale_distribution country_distribution district_distribution
-      ].each do |attribute|
+      ).each do |attribute|
         @fund[attribute] = nil
         expect(@fund).not_to be_valid
       end
@@ -233,9 +233,9 @@ describe Fund do
       #   duration_awarded_months_mean duration_awarded_months_median
       #   duration_awarded_months_min duration_awarded_months_max
       # ]
-      %w[
+      %w(
         grant_count
-      ].each do |attribute|
+      ).each do |attribute|
         @fund[attribute] = -1
         expect(@fund).not_to be_valid
         @fund[attribute] = 0

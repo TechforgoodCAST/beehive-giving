@@ -6,7 +6,7 @@ class Feedback < ActiveRecord::Base
   TAKEN_AWAY = ['- Very satisfied', '', '', '', '', '', '', '', '', '', '- Very dissatisfied']
   INFORMS_DECISION = ['- Strongly disagree', '', '', '', '', '', '', '', '', '', '- Strongly agree']
   APP_AND_GRANT_FREQUENCY = ['None', '1-3', '4-6', '7-9', '10 or more']
-  MARKETING_FREQUENCY = %w[Weekly Monthly Quartetly Never]
+  MARKETING_FREQUENCY = %w(Weekly Monthly Quartetly Never)
 
   belongs_to :user
 

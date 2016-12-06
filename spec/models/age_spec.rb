@@ -8,7 +8,7 @@ describe AgeGroup do
 
   it 'is valid' do
     8.times do |i|
-      %w[label age_from age_to].each do |field|
+      %w(label age_from age_to).each do |field|
         expect(@db[:age_groups][i][field]).to eq AgeGroup::AGE_GROUPS[i][field.to_sym]
       end
     end
