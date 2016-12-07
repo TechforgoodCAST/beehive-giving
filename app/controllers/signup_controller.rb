@@ -25,7 +25,7 @@ class SignupController < ApplicationController
           @user.update_attribute(:last_seen, Time.now)
           UserMailer.welcome_email(@user).deliver_now
           if @user.role == 'User'
-            render :js => "mixpanel.identify('#{@user.id}');
+            render js: "mixpanel.identify('#{@user.id}');
                           mixpanel.people.set({
                             '$first_name': '#{@user.first_name}',
                             '$last_name': '#{@user.last_name}',
@@ -40,7 +40,7 @@ class SignupController < ApplicationController
                           $('button[type=submit]').prop('disabled', true)
                           .removeAttr('data-disable-with');"
           elsif @user.role == 'Funder'
-            render :js => "window.location.href = '#{new_funder_path}';
+            render js: "window.location.href = '#{new_funder_path}';
                           $('button[type=submit]').prop('disabled', true)
                           .removeAttr('data-disable-with');"
           end
@@ -128,7 +128,7 @@ class SignupController < ApplicationController
         reset_session
         format.js   {
           current_user.update_attribute(:organisation_id, @recipient.id)
-          render :js => "mixpanel.identify('#{current_user.id}');
+          render js: "mixpanel.identify('#{current_user.id}');
                         mixpanel.people.set({
                           'Organisation': '#{@recipient.name}',
                           'Country': '#{@recipient.country}',
@@ -153,7 +153,7 @@ class SignupController < ApplicationController
                        (Organisation.find_by_company_number(company_number) if company_number)
 
         current_user.lock_access_to_organisation(organisation)
-        render :js => "window.location.href = '#{unauthorised_path}';"
+        render js: "window.location.href = '#{unauthorised_path}';"
       }
       format.html {
         charity_number = @recipient.charity_number

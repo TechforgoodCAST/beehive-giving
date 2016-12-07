@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
             message: 'Please enter a valid email' }, on: :create
   validates :user_email, uniqueness: { message: "Please 'sign in' using the link above" }, on: :create
 
-  validates :password, presence: { message: "Can't be blank" }, length: { :within => 6..25 }, on: [:create, :update]
+  validates :password, presence: { message: "Can't be blank" }, length: { within: 6..25 }, on: [:create, :update]
   validates :password,
             format: { with: /\A(?=.*\d)(?=.*[a-zA-Z]).{6,25}\z/,
             message: 'Must include 6 characters with 1 number' }, on: [:create, :update]

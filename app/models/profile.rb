@@ -20,19 +20,19 @@ class Profile < ActiveRecord::Base
   workflow_column :state
   workflow do
     state :beneficiaries do
-      event :next_step, :transitions_to => :location
+      event :next_step, transitions_to: :location
     end
     state :location do
-      event :next_step, :transitions_to => :team
+      event :next_step, transitions_to: :team
     end
     state :team do
-      event :next_step, :transitions_to => :work
+      event :next_step, transitions_to: :work
     end
     state :work do
-      event :next_step, :transitions_to => :finance
+      event :next_step, transitions_to: :finance
     end
     state :finance do
-      event :next_step, :transitions_to => :complete
+      event :next_step, transitions_to: :complete
     end
     state :complete
   end

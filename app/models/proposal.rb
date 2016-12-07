@@ -35,13 +35,13 @@ class Proposal < ActiveRecord::Base
   workflow_column :state
   workflow do
     state :initial do
-      event :next_step, :transitions_to => :registered
+      event :next_step, transitions_to: :registered
     end
     state :transferred do
-      event :next_step, :transitions_to => :registered
+      event :next_step, transitions_to: :registered
     end
     state :registered do
-      event :next_step, :transitions_to => :complete
+      event :next_step, transitions_to: :complete
     end
     state :complete
   end

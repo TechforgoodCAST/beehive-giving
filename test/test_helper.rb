@@ -7,7 +7,7 @@ class ActiveSupport::TestCase
   # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
   fixtures :all
   include FactoryGirl::Syntax::Methods
-  Geocoder.configure(:lookup => :test)
+  Geocoder.configure(lookup: :test)
   Geocoder::Lookup::Test.add_stub(
     'A1 B2, GB', [{ 'latitude' => 40.7143528, 'longitude' => -74.0059731 }]
   )

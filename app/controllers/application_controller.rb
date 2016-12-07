@@ -80,10 +80,11 @@ class ApplicationController < ActionController::Base
     @feedback = current_user.feedbacks.new
   end
 
+  # TODO:
   unless Rails.application.config.consider_all_requests_local
     rescue_from StandardError do |exception|
       NewRelic::Agent.notice_error(exception)
-      render "errors/#{status_code}", :status => status_code
+      render "errors/#{status_code}", status: status_code
     end
   end
 

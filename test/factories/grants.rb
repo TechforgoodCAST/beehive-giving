@@ -1,8 +1,8 @@
 # TODO: deprecated
 FactoryGirl.define do
   factory :grant do
-    association :funder, :factory => :funder
-    association :recipient, :factory => :recipient
+    association :funder, factory: :funder
+    association :recipient, factory: :recipient
     funding_stream 'All'
     grant_type 'Unrestricted'
     attention_how 'Headhunting'
@@ -26,8 +26,8 @@ FactoryGirl.define do
       s { rand(0..1) }
       c { rand(0..3) }
     end
-    association :funder, :factory => :funder
-    association :recipient, :factory => :recipient
+    association :funder, factory: :funder
+    association :recipient, factory: :recipient
     funding_stream { %w(All Main)[s] }
     grant_type 'Unrestricted'
     attention_how 'Headhunting'
@@ -51,8 +51,8 @@ FactoryGirl.define do
       s { rand(0..1) }
       c { rand(0..3) }
     end
-    association :funder, :factory => :funder
-    association :recipient, :factory => :recipient
+    association :funder, factory: :funder
+    association :recipient, factory: :recipient
     funding_stream { %w(All Main)[s] }
     grant_type 'Unrestricted'
     attention_how 'Headhunting'

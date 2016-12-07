@@ -28,7 +28,7 @@ FactoryGirl.define do
 
   factory :funder_attribute_no_grants, class: FunderAttribute do
     year Date.today.year
-    association :funder, :factory => :funder
+    association :funder, factory: :funder
     countries { FactoryGirl.create_list(:country, 2) }
     funding_stream 'All'
     description 'description'

@@ -49,7 +49,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'guard-rspec', require: false
-  gem 'stripe-ruby-mock', :require => 'stripe_mock'
+  gem 'stripe-ruby-mock', require: 'stripe_mock'
 end
 
 gem 'haml'

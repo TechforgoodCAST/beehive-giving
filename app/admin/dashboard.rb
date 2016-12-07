@@ -235,20 +235,20 @@ ActiveAdmin.register_page 'Dashboard' do
 
     div style: 'float:left; width: 50%;' do
       section 'Activity by day (2 weeks)' do
-        render :partial => 'metrics/daily_chart', :locals => { :metric => @metric }
+        render partial: 'metrics/daily_chart', locals: { metric: @metric }
       end
     end
 
     div style: 'float:left; width: 50%;' do
       section 'Activity by week (12 weeks)' do
-        render :partial => 'metrics/weekly_chart', :locals => { :metric => @metric }
+        render partial: 'metrics/weekly_chart', locals: { metric: @metric }
       end
     end
 
     div style: 'float:left; width: 50%; padding: 0 20px; box-sizing: border-box;' do
       section 'Non-profits by country' do
         @metric = Recipient.joins(:users).group(:country).count
-        render :partial => 'metrics/geo_chart', :locals => { :metric => @metric }
+        render partial: 'metrics/geo_chart', locals: { metric: @metric }
       end
     end
 

@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   # Errors
   %w(404 422 500).each do |code|
-    get code, :to => 'errors#show', :code => code
+    get code, to: 'errors#show', code: code
   end
 
   # Admin
@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 
   # Sessions
-  root :to => 'sessions#check'
+  root to: 'sessions#check'
   get '/logout' => 'sessions#destroy'
   match '/sign-in', to: 'sessions#new', via: :get, as: 'sign_in'
   match '/sign-in', to: 'sessions#create', via: :post

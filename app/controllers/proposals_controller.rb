@@ -24,7 +24,7 @@ class ProposalsController < ApplicationController
       if @proposal.save
         format.js {
           @proposal.next_step!
-          render :js => "window.location.href = '#{recommended_funds_path}';
+          render js: "window.location.href = '#{recommended_funds_path}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
         }
@@ -64,11 +64,11 @@ class ProposalsController < ApplicationController
 
           if session[:return_to]
             fund = Fund.find_by_slug(session.delete(:return_to))
-            render :js => "window.location.href = '#{fund_eligibility_path(fund)}';
+            render js: "window.location.href = '#{fund_eligibility_path(fund)}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
           else
-            render :js => "window.location.href = '#{recommended_funds_path}';
+            render js: "window.location.href = '#{recommended_funds_path}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
           end

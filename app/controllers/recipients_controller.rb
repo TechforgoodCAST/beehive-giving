@@ -20,7 +20,7 @@ class RecipientsController < ApplicationController
     respond_to do |format|
       if @recipient.update_attributes(recipient_params)
         format.js {
-          render :js => "window.location.href = '#{new_recipient_proposal_path(@recipient)}';
+          render js: "window.location.href = '#{new_recipient_proposal_path(@recipient)}';
                       $('button[type=submit]').prop('disabled', true)
                       .removeAttr('data-disable-with');"
         }
