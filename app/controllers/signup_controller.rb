@@ -24,23 +24,26 @@ class SignupController < ApplicationController
           cookies[:auth_token] = @user.auth_token
           @user.update_attribute(:last_seen, Time.now)
           UserMailer.welcome_email(@user).deliver_now
-          render :js => "mixpanel.identify('#{@user.id}');
-                        mixpanel.people.set({
-                          '$first_name': '#{@user.first_name}',
-                          '$last_name': '#{@user.last_name}',
-                          '$email': '#{@user.user_email}',
-                          '$created': '#{@user.created_at}',
-                          '$last_login': '#{@user.last_seen}',
-                          'Updated At': '#{@user.updated_at}',
-                          'Sign In Count': '#{@user.sign_in_count}',
-                          'Job Role': '#{@user.job_role}'
-                        });
-                        window.location.href = '#{signup_organisation_path}';
-                        $('button[type=submit]').prop('disabled', true)
-                        .removeAttr('data-disable-with');" if @user.role == 'User'
-          render :js => "window.location.href = '#{new_funder_path}';
-                        $('button[type=submit]').prop('disabled', true)
-                        .removeAttr('data-disable-with');" if @user.role == 'Funder'
+          if @user.role == 'User'
+            render :js => "mixpanel.identify('#{@user.id}');
+                          mixpanel.people.set({
+                            '$first_name': '#{@user.first_name}',
+                            '$last_name': '#{@user.last_name}',
+                            '$email': '#{@user.user_email}',
+                            '$created': '#{@user.created_at}',
+                            '$last_login': '#{@user.last_seen}',
+                            'Updated At': '#{@user.updated_at}',
+                            'Sign In Count': '#{@user.sign_in_count}',
+                            'Job Role': '#{@user.job_role}'
+                          });
+                          window.location.href = '#{signup_organisation_path}';
+                          $('button[type=submit]').prop('disabled', true)
+                          .removeAttr('data-disable-with');"
+          elsif @user.role == 'Funder'
+            render :js => "window.location.href = '#{new_funder_path}';
+                          $('button[type=submit]').prop('disabled', true)
+                          .removeAttr('data-disable-with');"
+          end
         }
         format.html {
           cookies[:auth_token] = @user.auth_token

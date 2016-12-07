@@ -418,14 +418,6 @@ Style/IndentationWidth:
     - 'config/initializers/staging_auth.rb'
     - 'lib/tasks/legacy.rake'
 
-# Offense count: 4
-# Cop supports --auto-correct.
-Style/MultilineIfModifier:
-  Exclude:
-    - 'app/controllers/signup_controller.rb'
-    - 'app/helpers/funds_helper.rb'
-    - 'test/test_helper.rb'
-
 # Offense count: 30
 # Cop supports --auto-correct.
 Style/NumericLiterals:
