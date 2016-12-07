@@ -395,13 +395,6 @@ Style/IfUnlessModifier:
     - 'app/models/profile.rb'
     - 'config/initializers/rollbar.rb'
 
-# Offense count: 14
-# Cop supports --auto-correct.
-# Configuration parameters: SupportedStyles, IndentationWidth.
-# SupportedStyles: special_inside_parentheses, consistent, align_brackets
-Style/IndentArray:
-  EnforcedStyle: consistent
-
 # Offense count: 30
 # Cop supports --auto-correct.
 Style/NumericLiterals:

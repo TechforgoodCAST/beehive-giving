@@ -32,54 +32,54 @@ describe 'Ensure logged in' do
 
   it 'eligibilities' do
     expect_path([
-      fund_eligibility_path(@fund)
-    ])
+                  fund_eligibility_path(@fund)
+                ])
   end
 
   it 'enquiries' do
     expect_path([
-      fund_apply_path(@fund)
-    ])
+                  fund_apply_path(@fund)
+                ])
   end
 
   it 'feedback' do
     expect_path([
-      new_feedback_path,
-      edit_feedback_path(create(:feedback, user: @user))
-    ])
+                  new_feedback_path,
+                  edit_feedback_path(create(:feedback, user: @user))
+                ])
   end
 
   it 'funds' do
     expect_path([
-      fund_path(@fund),
-      tag_path('Tag')
-    ])
+                  fund_path(@fund),
+                  tag_path('Tag')
+                ])
   end
 
   it 'proposals' do
     expect_path([
-      new_recipient_proposal_path(@recipient),
-      edit_recipient_proposal_path(@recipient, @proposal),
-      recipient_proposals_path(@recipient)
-    ])
+                  new_recipient_proposal_path(@recipient),
+                  edit_recipient_proposal_path(@recipient, @proposal),
+                  recipient_proposals_path(@recipient)
+                ])
   end
 
   it 'recipients' do
     expect_path([
-      edit_recipient_path(@recipient),
-      recommended_funds_path,
-      eligible_funds_path,
-      ineligible_funds_path,
-      all_funds_path,
-      recipient_path(@recipient)
-    ])
+                  edit_recipient_path(@recipient),
+                  recommended_funds_path,
+                  eligible_funds_path,
+                  ineligible_funds_path,
+                  all_funds_path,
+                  recipient_path(@recipient)
+                ])
   end
 
   it 'signup' do
     expect_path([
-      signup_organisation_path,
-      unauthorised_path
-    ])
+                  signup_organisation_path,
+                  unauthorised_path
+                ])
   end
 
 end
