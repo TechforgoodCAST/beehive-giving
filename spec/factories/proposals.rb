@@ -4,7 +4,7 @@ FactoryGirl.define do
     type_of_support       Proposal::TYPE_OF_SUPPORT.sample
     funding_duration      12
     funding_type          Proposal::FUNDING_TYPE.sample
-    total_costs           10000
+    total_costs           10_000
     total_costs_estimated false
     all_funding_required  true
     affect_people         true

@@ -18,7 +18,7 @@ FactoryGirl.define do
     application_details 'Application details'
     application_link 'www.example.com'
     funded_age_temp 365
-    funded_income_temp 10000
+    funded_income_temp 10_000
     after(:build) do |a|
       a.grant_count_from_grants
       a.funding_size_and_duration_from_grants

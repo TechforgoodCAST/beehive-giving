@@ -80,7 +80,7 @@ class ApplicationController < ActionController::Base
     @feedback = current_user.feedbacks.new
   end
 
-  # TODO:
+  # TODO: refactor
   unless Rails.application.config.consider_all_requests_local
     rescue_from StandardError do |exception|
       NewRelic::Agent.notice_error(exception)

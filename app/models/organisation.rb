@@ -197,21 +197,21 @@ class Organisation < ActiveRecord::Base
       when 'K'
         1000
       when 'M'
-        1000000
+        1_000_000
       end
     end
   end
 
   def income_select(income)
-    if income < 10000
+    if income < 10_000
       self.income = 0
-    elsif income >= 10000 && income < 100000
+    elsif income >= 10_000 && income < 100_000
       self.income = 1
-    elsif income >= 100000 && income < 1000000
+    elsif income >= 100_000 && income < 1_000_000
       self.income = 2
-    elsif income >= 1000000 && income < 10000000
+    elsif income >= 1_000_000 && income < 10_000_000
       self.income = 3
-    elsif income >= 10000000
+    elsif income >= 10_000_000
       self.income = 4
     else
       self.income = nil

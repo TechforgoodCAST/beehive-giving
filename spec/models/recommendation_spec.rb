@@ -73,7 +73,7 @@ describe Recommendation do
 
     it 'grant_amount_recommendation is zero if total_costs greater than
         amount_max if amount_max_limited' do
-      over_max = 10001.0
+      over_max = 10_001.0
       @app.stub_amounts_endpoint(over_max)
       @proposal.total_costs = over_max
       @proposal.save

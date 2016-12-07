@@ -16,7 +16,7 @@ FactoryGirl.define do
     amount_min_limited true
     amount_max_limited true
     amount_min 300
-    amount_max 10000
+    amount_max 10_000
     amount_notes 'Notes about amount'
 
     duration_months_known true
@@ -47,16 +47,16 @@ FactoryGirl.define do
       grant_count 250
       recipient_count 225
 
-      amount_awarded_sum 7089684
-      amount_awarded_mean 120164.14
-      amount_awarded_median 90000
+      amount_awarded_sum 7_089_684
+      amount_awarded_mean 120_164.14
+      amount_awarded_median 90_000
       amount_awarded_min 5000
-      amount_awarded_max 1500000
+      amount_awarded_max 1_500_000
       amount_awarded_distribution do
         [
           { "segment": 0, "start": 0,     "end": 4999,  "count": 3  },
           { "segment": 1, "start": 5000,  "end": 9999,  "count": 87 },
-          { "segment": 2, "start": 10000, "end": 14999, "count": 10 }
+          { "segment": 2, "start": 10_000, "end": 14_999, "count": 10 }
         ]
       end
 
@@ -72,9 +72,9 @@ FactoryGirl.define do
       end
       award_month_distribution do
         [
-          { "month": 1, "count": 24, "percent": 0.40, "amount": 3732076 },
-          { "month": 2, "count": 24, "percent": 0.40, "amount": 2297650 },
-          { "month": 3, "count": 11, "percent": 0.20, "amount": 1059958 }
+          { "month": 1, "count": 24, "percent": 0.40, "amount": 3_732_076 },
+          { "month": 2, "count": 24, "percent": 0.40, "amount": 2_297_650 },
+          { "month": 3, "count": 11, "percent": 0.20, "amount": 1_059_958 }
         ]
       end
 

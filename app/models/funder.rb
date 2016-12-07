@@ -43,7 +43,7 @@ class Funder < Organisation
           name: k,
           slug: k.downcase.gsub(/[^a-z0-9]+/, '-'),
           amount_awarded: v,
-          amount_awarded_hue: get_hue(v, 9304589),
+          amount_awarded_hue: get_hue(v, 9_304_589),
           grant_count: grant_count[k],
           grant_count_hue: get_hue(grant_count[k], 301),
           rank: district.indices_rank,

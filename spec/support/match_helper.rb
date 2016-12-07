@@ -84,7 +84,7 @@ class MatchHelper
     select 'Mostly financial'
     fill_in :proposal_funding_duration, with: 12
     select 'Revenue funding - running costs, salaries and activity costs'
-    fill_in :proposal_total_costs, with: 10000.0
+    fill_in :proposal_total_costs, with: 10_000.0
 
     # Beneficiaries
     choose :proposal_all_funding_required_true

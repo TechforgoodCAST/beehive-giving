@@ -82,7 +82,7 @@ module FundersHelper
     grants = funder.grants
                    .where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01")
 
-    range_limit = 475000
+    range_limit = 475_000
     increment = grants.calculate(:maximum, :amount_awarded) < range_limit ? 5 : 25
 
     range = grants.calculate(:maximum, :amount_awarded) < range_limit ? grants.calculate(:maximum, :amount_awarded) : grants.calculate(:minimum, :amount_awarded) + range_limit

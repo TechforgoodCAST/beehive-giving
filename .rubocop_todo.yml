@@ -360,8 +360,3 @@ Style/GuardClause:
     - 'app/models/proposal.rb'
     - 'app/models/recipient.rb'
     - 'app/models/stage.rb'
-
-# Offense count: 30
-# Cop supports --auto-correct.
-Style/NumericLiterals:
-  MinDigits: 9

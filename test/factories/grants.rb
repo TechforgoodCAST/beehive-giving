@@ -6,8 +6,8 @@ FactoryGirl.define do
     funding_stream 'All'
     grant_type 'Unrestricted'
     attention_how 'Headhunting'
-    amount_awarded 10000
-    amount_applied 10000
+    amount_awarded 10_000
+    amount_applied 10_000
     installments 1
     approved_on Date.new(Date.today.year, 1, 2)
     start_on Date.new(Date.today.year, 1, 2)

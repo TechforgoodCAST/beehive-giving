@@ -15,8 +15,8 @@ FactoryGirl.define do
     staff_count         1
     trustee_count       3
     does_sell           true
-    income              10000
-    expenditure         10000
+    income              10_000
+    expenditure         10_000
     income_actual       true
     expenditure_actual  true
     implementors        { FactoryGirl.create_list(:implementor, 2) }
