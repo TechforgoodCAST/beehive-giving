@@ -383,18 +383,6 @@ Style/IfInsideElse:
     - 'app/controllers/proposals_controller.rb'
     - 'app/models/funder_attribute.rb'
 
-# Offense count: 10
-# Cop supports --auto-correct.
-# Configuration parameters: MaxLineLength.
-Style/IfUnlessModifier:
-  Exclude:
-    - 'app/admin/feature.rb'
-    - 'app/admin/feedback.rb'
-    - 'app/admin/grant.rb'
-    - 'app/models/organisation.rb'
-    - 'app/models/profile.rb'
-    - 'config/initializers/rollbar.rb'
-
 # Offense count: 30
 # Cop supports --auto-correct.
 Style/NumericLiterals:

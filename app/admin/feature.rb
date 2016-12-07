@@ -18,9 +18,7 @@ ActiveAdmin.register Feature do
     column 'Funding streams', :request_funding_streams
     column 'Approval months', :request_approval_months
     column 'for', :funder do |feature|
-      if feature.funder
-        link_to feature.funder.name, [:admin, feature.recipient]
-      end
+      link_to feature.funder.name, [:admin, feature.recipient] if feature.funder
     end
     column 'by', :recipient do |feature|
       if feature.recipient

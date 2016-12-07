@@ -14,14 +14,10 @@ ActiveAdmin.register Grant do
   index do
     selectable_column
     column 'Organisation', :recipient do |grant|
-      if grant.recipient
-        link_to grant.recipient.name, [:admin, grant.recipient]
-      end
+      link_to grant.recipient.name, [:admin, grant.recipient] if grant.recipient
     end
     column 'Funder', :funder do |grant|
-      if grant.funder
-        link_to grant.funder.name, [:admin, grant.funder]
-      end
+      link_to grant.funder.name, [:admin, grant.funder] if grant.funder
     end
     column :amount_awarded
     actions
@@ -40,9 +36,7 @@ ActiveAdmin.register Grant do
         end
       end
       row 'Recipient', :recipient do |grant|
-        if grant.funder
-          link_to grant.funder.name, [:admin, grant.funder]
-        end
+        link_to grant.funder.name, [:admin, grant.funder] if grant.funder
       end
       row :funding_stream
       row :grant_type

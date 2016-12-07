@@ -267,9 +267,7 @@ class Organisation < ActiveRecord::Base
 
       self.registered_on = company_incorporated_date
 
-      if company_incorporated_date
-        set_registered_on_if_scraped
-      end
+      set_registered_on_if_scraped if company_incorporated_date
 
       return true
     else

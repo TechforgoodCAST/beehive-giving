@@ -108,15 +108,9 @@ class Profile < ActiveRecord::Base
             if: 'self.finance? || self.complete?' }
 
   def clear_other_options
-    unless beneficiaries_other_required?
-      self.beneficiaries_other = nil
-    end
-    unless implementors_other_required?
-      self.implementors_other = nil
-    end
-    unless implementations_other_required?
-      self.implementations_other = nil
-    end
+    self.beneficiaries_other = nil unless beneficiaries_other_required?
+    self.implementors_other = nil unless implementors_other_required?
+    self.implementations_other = nil unless implementations_other_required?
   end
 
   def set_year_to_current_year
