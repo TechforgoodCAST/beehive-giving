@@ -402,22 +402,6 @@ Style/IfUnlessModifier:
 Style/IndentArray:
   EnforcedStyle: consistent
 
-# Offense count: 14
-# Cop supports --auto-correct.
-# Configuration parameters: Width.
-Style/IndentationWidth:
-  Exclude:
-    - 'app/controllers/application_controller.rb'
-    - 'app/controllers/errors_controller.rb'
-    - 'app/controllers/feedback_controller.rb'
-    - 'app/controllers/funders_controller.rb'
-    - 'app/controllers/password_resets_controller.rb'
-    - 'app/controllers/proposals_controller.rb'
-    - 'app/controllers/sessions_controller.rb'
-    - 'app/controllers/signup_controller.rb'
-    - 'config/initializers/staging_auth.rb'
-    - 'lib/tasks/legacy.rake'
-
 # Offense count: 30
 # Cop supports --auto-correct.
 Style/NumericLiterals:

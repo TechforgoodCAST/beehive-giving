@@ -95,26 +95,26 @@ class ProposalsController < ApplicationController
 
   private
 
-  def proposal_params
-    params.require(:proposal).permit(
-      :type_of_support, :funding_duration, :funding_type, :total_costs,
-      :total_costs_estimated, :all_funding_required, :affect_people,
-      :affect_other, :gender, :beneficiaries_other, :beneficiaries_other_required,
-      :affect_geo, :title, :tagline, :private, :outcome1,
-      :implementations_other_required, :implementations_other,
-      age_group_ids: [], beneficiary_ids: [], country_ids: [],
-      district_ids: [], implementation_ids: []
-    )
-  end
+    def proposal_params
+      params.require(:proposal).permit(
+        :type_of_support, :funding_duration, :funding_type, :total_costs,
+        :total_costs_estimated, :all_funding_required, :affect_people,
+        :affect_other, :gender, :beneficiaries_other, :beneficiaries_other_required,
+        :affect_geo, :title, :tagline, :private, :outcome1,
+        :implementations_other_required, :implementations_other,
+        age_group_ids: [], beneficiary_ids: [], country_ids: [],
+        district_ids: [], implementation_ids: []
+      )
+    end
 
-  def load_proposal
-    @proposal = @recipient.proposals.find(params[:id])
-  end
+    def load_proposal
+      @proposal = @recipient.proposals.find(params[:id])
+    end
 
-  def recipient_country
-    # refactor
-    @recipient_country = Country.find_by_alpha2(@recipient.country) || @recipient.profiles.first.countries.first
-    gon.orgCountry = @recipient_country.name
-  end
+    def recipient_country
+      # refactor
+      @recipient_country = Country.find_by_alpha2(@recipient.country) || @recipient.profiles.first.countries.first
+      gon.orgCountry = @recipient_country.name
+    end
 
 end

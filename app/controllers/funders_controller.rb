@@ -50,8 +50,8 @@ class FundersController < ApplicationController
 
   private
 
-  def load_funder
-    @funder = Funder.find_by_slug(params[:id])
-  end
+    def load_funder
+      @funder = Funder.find_by_slug(params[:id])
+    end
 
 end

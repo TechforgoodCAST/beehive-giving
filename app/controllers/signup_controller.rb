@@ -146,24 +146,24 @@ class SignupController < ApplicationController
       # If company/charity number has already been taken
     elsif (@recipient.errors.added? :charity_number, :taken) ||
           (@recipient.errors.added? :company_number, :taken)
-        format.js {
-          charity_number = @recipient.charity_number
-          company_number = @recipient.company_number
-          organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
-                         (Organisation.find_by_company_number(company_number) if company_number)
+      format.js {
+        charity_number = @recipient.charity_number
+        company_number = @recipient.company_number
+        organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
+                       (Organisation.find_by_company_number(company_number) if company_number)
 
-          current_user.lock_access_to_organisation(organisation)
-          render :js => "window.location.href = '#{unauthorised_path}';"
-        }
-        format.html {
-          charity_number = @recipient.charity_number
-          company_number = @recipient.company_number
-          organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
-                         (Organisation.find_by_company_number(company_number) if company_number)
+        current_user.lock_access_to_organisation(organisation)
+        render :js => "window.location.href = '#{unauthorised_path}';"
+      }
+      format.html {
+        charity_number = @recipient.charity_number
+        company_number = @recipient.company_number
+        organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
+                       (Organisation.find_by_company_number(company_number) if company_number)
 
-          current_user.lock_access_to_organisation(organisation)
-          redirect_to unauthorised_path
-        }
+        current_user.lock_access_to_organisation(organisation)
+        redirect_to unauthorised_path
+      }
       else
         format.js
         format.html { render :organisation }
@@ -201,27 +201,27 @@ class SignupController < ApplicationController
 
   private
 
-  def get_districts
-    @districts_count = Funder.active.joins(:countries).group('countries.id').uniq.count
-    @districts = Country.order(priority: :desc).order(:name).find(@districts_count.keys)
-  end
+    def get_districts
+      @districts_count = Funder.active.joins(:countries).group('countries.id').uniq.count
+      @districts = Country.order(priority: :desc).order(:name).find(@districts_count.keys)
+    end
 
-  def user_params
-    params.require(:user).permit(:first_name, :last_name, :job_role,
-    :user_email, :password, :password_confirmation, :role, :agree_to_terms,
-    :org_type, :charity_number, :company_number)
-  end
+    def user_params
+      params.require(:user).permit(:first_name, :last_name, :job_role,
+      :user_email, :password, :password_confirmation, :role, :agree_to_terms,
+      :org_type, :charity_number, :company_number)
+    end
 
-  def recipient_params
-    params.require(:recipient).permit(:name, :website, :street_address,
-      :country, :charity_number, :company_number, :operating_for,
-      :multi_national, :income, :employees, :volunteers, :org_type,
-      organisation_ids: [])
-  end
+    def recipient_params
+      params.require(:recipient).permit(:name, :website, :street_address,
+        :country, :charity_number, :company_number, :operating_for,
+        :multi_national, :income, :employees, :volunteers, :org_type,
+        organisation_ids: [])
+    end
 
-  def funder_params
-    params.require(:funder).permit(:name, :contact_number, :website,
-    :street_address, :city, :region, :postal_code, :country, :charity_number,
-    :company_number, :founded_on, :registered_on, :mission, :status, :registered, organisation_ids: [])
-  end
+    def funder_params
+      params.require(:funder).permit(:name, :contact_number, :website,
+      :street_address, :city, :region, :postal_code, :country, :charity_number,
+      :company_number, :founded_on, :registered_on, :mission, :status, :registered, organisation_ids: [])
+    end
 end

@@ -34,8 +34,8 @@ class PasswordResetsController < ApplicationController
 
   private
 
-  def ensure_not_logged_in
-    redirect_to root_path, alert: "Sorry, you don't have access to that"
-  end
+    def ensure_not_logged_in
+      redirect_to root_path, alert: "Sorry, you don't have access to that"
+    end
 
 end
