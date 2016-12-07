@@ -95,7 +95,8 @@ class ApplicationController < ActionController::Base
       elsif current_user.organisation.proposals.last.initial?
         redirect_to edit_recipient_proposal_path(
                   current_user.organisation,
-                  current_user.organisation.proposals.last)
+                  current_user.organisation.proposals.last
+        )
       end
     end
   end

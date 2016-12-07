@@ -103,7 +103,8 @@ class ProposalsController < ApplicationController
       :affect_geo, :title, :tagline, :private, :outcome1,
       :implementations_other_required, :implementations_other,
       age_group_ids: [], beneficiary_ids: [], country_ids: [],
-      district_ids: [], implementation_ids: [])
+      district_ids: [], implementation_ids: []
+    )
   end
 
   def load_proposal

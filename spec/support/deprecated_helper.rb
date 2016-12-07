@@ -17,8 +17,7 @@ class DeprecatedHelper
         funder: create(:funder),
         countries: @countries,
         districts: @districts,
-        funding_types: @funding_types
-      )
+        funding_types: @funding_types)
     end
     self
   end
@@ -31,8 +30,7 @@ class DeprecatedHelper
         countries: @countries,
         districts: @districts,
         age_groups: @age_groups,
-        beneficiaries: @beneficiaries
-      )
+        beneficiaries: @beneficiaries)
     end
     self
   end
@@ -41,8 +39,7 @@ class DeprecatedHelper
     create_list(:grant, num,
       funder: create(:funder),
       countries: @countries,
-      districts: @districts
-    )
+      districts: @districts)
     self
   end
 

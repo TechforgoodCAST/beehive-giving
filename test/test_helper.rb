@@ -9,15 +9,20 @@ class ActiveSupport::TestCase
   include FactoryGirl::Syntax::Methods
   Geocoder.configure(:lookup => :test)
   Geocoder::Lookup::Test.add_stub(
-    'A1 B2, GB', [{ 'latitude' => 40.7143528, 'longitude' => -74.0059731 }])
+    'A1 B2, GB', [{ 'latitude' => 40.7143528, 'longitude' => -74.0059731 }]
+  )
   Geocoder::Lookup::Test.add_stub(
-    'BS48 3PA, GB', [{ 'latitude' => 2, 'longitude' => 2 }])
+    'BS48 3PA, GB', [{ 'latitude' => 2, 'longitude' => 2 }]
+  )
   Geocoder::Lookup::Test.add_stub(
-    'GL6 0QL, GB', [{ 'latitude' => 1, 'longitude' => 1 }])
+    'GL6 0QL, GB', [{ 'latitude' => 1, 'longitude' => 1 }]
+  )
   Geocoder::Lookup::Test.add_stub(
-    'London Road, GB', [{ 'latitude' => 0, 'longitude' => 0 }])
+    'London Road, GB', [{ 'latitude' => 0, 'longitude' => 0 }]
+  )
   Geocoder::Lookup::Test.add_stub(
-    'SE1 7TP, GB', [{ 'latitude' => 3, 'longitude' => 3 }])
+    'SE1 7TP, GB', [{ 'latitude' => 3, 'longitude' => 3 }]
+  )
 
   def seed_test_db
     FactoryGirl.reload
@@ -80,8 +85,7 @@ class ActionDispatch::IntegrationTest
     @funders = Array.new(num) { create(:funder) }
     @grants = Array.new(num) do |i|
       create(:grants, funder: @funders[i], recipient: @recipient,
-              countries: @countries, districts: @uk_districts + @kenya_districts
-            )
+              countries: @countries, districts: @uk_districts + @kenya_districts)
     end
     @attributes = Array.new(num) do |i|
       create(:funder_attribute, funder: @funders[i],
@@ -89,8 +93,7 @@ class ActionDispatch::IntegrationTest
         age_groups: AgeGroup.limit(i + 1),
         countries: @countries,
         districts: @uk_districts + @kenya_districts,
-        funding_types: @funding_types
-      )
+        funding_types: @funding_types)
     end
     @restrictions = Array.new(3) { create(:restriction) }
     @funding_streams = Array.new(num) { |i| create(:funding_stream, restrictions: @restrictions, funders: [@funders[i]]) }
@@ -101,7 +104,6 @@ class ActionDispatch::IntegrationTest
                         age_groups: @age_groups,
                         countries: @countries,
                         districts: @uk_districts + @kenya_districts,
-                        implementations: @implementations
-                      ) if proposal
+                        implementations: @implementations) if proposal
   end
 end

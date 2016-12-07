@@ -426,20 +426,6 @@ Style/MultilineIfModifier:
     - 'app/helpers/funds_helper.rb'
     - 'test/test_helper.rb'
 
-# Offense count: 19
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: symmetrical, new_line, same_line
-Style/MultilineMethodCallBraceLayout:
-  Exclude:
-    - 'app/controllers/application_controller.rb'
-    - 'app/controllers/proposals_controller.rb'
-    - 'app/models/funder_attribute.rb'
-    - 'spec/models/recipient_spec.rb'
-    - 'spec/support/deprecated_helper.rb'
-    - 'test/models/grant_test.rb'
-    - 'test/test_helper.rb'
-
 # Offense count: 30
 # Cop supports --auto-correct.
 Style/NumericLiterals:

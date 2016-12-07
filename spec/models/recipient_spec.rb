@@ -37,8 +37,7 @@ describe Recipient do
       2.times do
         create(:eligibility,
           recipient: @recipient,
-          restriction: create(:restriction)
-        )
+          restriction: create(:restriction))
       end
     end
 
