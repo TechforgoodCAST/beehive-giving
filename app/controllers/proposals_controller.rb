@@ -9,13 +9,11 @@ class ProposalsController < ApplicationController
       redirect_to edit_recipient_proposal_path(@recipient, @recipient.proposals.last)
     elsif @recipient.proposals?
       redirect_to recommended_funds_path
+    elsif @recipient.valid?
+      @proposal = @recipient.proposals.new(state: 'initial')
+      @recipient.transfer_profile_to_new_proposal(@recipient.profiles.last, @proposal)
     else
-      if @recipient.valid?
-        @proposal = @recipient.proposals.new(state: 'initial')
-        @recipient.transfer_profile_to_new_proposal(@recipient.profiles.last, @proposal)
-      else
-        redirect_to edit_recipient_path(@recipient)
-      end
+      redirect_to edit_recipient_path(@recipient)
     end
   end
 
@@ -24,7 +22,7 @@ class ProposalsController < ApplicationController
 
     respond_to do |format|
       if @proposal.save
-        format.js   {
+        format.js {
           @proposal.next_step!
           render :js => "window.location.href = '#{recommended_funds_path}';
                         $('button[type=submit]').prop('disabled', true)

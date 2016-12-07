@@ -23,14 +23,11 @@ class FundersController < ApplicationController
           Funder.first.get_map_all_data
         end
         format.json { render json: @map_all_data }
+      elsif @funder.current_attribute.map_data.present? # TODO: refactor check if map data updated?
+        format.json { render json: @funder.current_attribute.map_data }
       else
-        # refactor check if map data updated?
-        if @funder.current_attribute.map_data.present?
-          format.json { render json: @funder.current_attribute.map_data }
-        else
-          @funder.save_map_data
-          format.json { render json: @funder.get_map_data }
-        end
+        @funder.save_map_data
+        format.json { render json: @funder.get_map_data }
       end
     end
   end

@@ -376,13 +376,6 @@ Style/IdenticalConditionalBranches:
     - 'app/models/funder_attribute.rb'
     - 'spec/models/user_spec.rb'
 
-# Offense count: 4
-Style/IfInsideElse:
-  Exclude:
-    - 'app/controllers/funders_controller.rb'
-    - 'app/controllers/proposals_controller.rb'
-    - 'app/models/funder_attribute.rb'
-
 # Offense count: 30
 # Cop supports --auto-correct.
 Style/NumericLiterals:

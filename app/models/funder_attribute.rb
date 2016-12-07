@@ -153,16 +153,14 @@ class FunderAttribute < ActiveRecord::Base
           end
           self.funded_average_age = (sum / count).round(1) if funded_average_age.nil?
         end
-      else
-        if funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).count.positive?
-          count = 0
-          sum = 0.0
-          funder.recipients.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:founded_on).uniq.each do |d|
-            count += 1
-            sum += (Date.today - d) unless d.nil?
-          end
-          self.funded_average_age = (sum / count).round(1) if funded_average_age.nil?
+      elsif funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).count.positive?
+        count = 0
+        sum = 0.0
+        funder.recipients.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:founded_on).uniq.each do |d|
+          count += 1
+          sum += (Date.today - d) unless d.nil?
         end
+        self.funded_average_age = (sum / count).round(1) if funded_average_age.nil?
       end
     end
   end
@@ -204,12 +202,10 @@ class FunderAttribute < ActiveRecord::Base
     end
     if array.count == 1 && array[0] == 'Jan'
       update_attribute(:approval_months_by_count, nil)
+    elsif array.count == 12
+      update_attribute(:approval_months_by_count, 'every month of the year')
     else
-      if array.count == 12
-        update_attribute(:approval_months_by_count, 'every month of the year')
-      else
-        build_insights(:approval_months_by_count, array.take(3))
-      end
+      build_insights(:approval_months_by_count, array.take(3))
     end
   end
 
