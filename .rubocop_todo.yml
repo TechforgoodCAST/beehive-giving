@@ -368,14 +368,6 @@ Style/GuardClause:
 Style/HashSyntax:
   Enabled: false
 
-# Offense count: 10
-Style/IdenticalConditionalBranches:
-  Exclude:
-    - 'app/controllers/eligibilities_controller.rb'
-    - 'app/controllers/sessions_controller.rb'
-    - 'app/models/funder_attribute.rb'
-    - 'spec/models/user_spec.rb'
-
 # Offense count: 30
 # Cop supports --auto-correct.
 Style/NumericLiterals:

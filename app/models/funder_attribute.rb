@@ -95,13 +95,12 @@ class FunderAttribute < ActiveRecord::Base
         funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").pluck(:approved_on).uniq.each do |d|
           array << ApprovalMonth.find_by_month(d.strftime('%b'))
         end
-        approval_months << array.uniq
       else
         funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:approved_on).uniq.each do |d|
           array << ApprovalMonth.find_by_month(d.strftime('%b'))
         end
-        approval_months << array.uniq
       end
+      approval_months << array.uniq
     end
   end
 

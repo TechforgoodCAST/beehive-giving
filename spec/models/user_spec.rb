@@ -42,21 +42,18 @@ describe User do
     when 1
       expect(@user).not_to be_valid
       @user.charity_number = '123'
-      expect(@user).to be_valid
     when 2
       expect(@user).not_to be_valid
       @user.company_number = '123'
-      expect(@user).to be_valid
     when 3
       expect(@user).not_to be_valid
       @user.charity_number = '123'
       @user.company_number = '123'
-      expect(@user).to be_valid
     else
       expect(@user.charity_number).to be_nil
       expect(@user.company_number).to be_nil
-      expect(@user).to be_valid
     end
+    expect(@user).to be_valid
   end
 
   it 'user_email is downcased' do

@@ -29,10 +29,8 @@ class EligibilitiesController < ApplicationController
       @proposal.funds.each do |fund| # TODO: performance?
         @recipient.check_eligibility(@proposal, fund)
       end
-      render :new
-    else
-      render :new
     end
+    render :new
   end
 
   private

@@ -17,11 +17,10 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:password])
       if params[:remember_me]
         cookies.permanent[:auth_token] = user.auth_token
-        sign_in_metrics
       else
         cookies[:auth_token] = user.auth_token
-        sign_in_metrics
       end
+      sign_in_metrics
       if session[:original_url]
         redirect_to session.delete(:original_url)
       else
