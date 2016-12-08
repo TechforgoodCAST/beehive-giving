@@ -48,7 +48,7 @@ class Profile < ActiveRecord::Base
             presence: true, if: 'self.beneficiaries? || self.complete?'
 
   validates :year, uniqueness: { scope: :organisation_id,
-            message: 'only one is allowed per year', if: 'self.beneficiaries? || self.complete?' }
+                                 message: 'only one is allowed per year', if: 'self.beneficiaries? || self.complete?' }
 
   validates :year, inclusion: { in: VALID_YEARS }, if: 'self.beneficiaries? || self.complete?'
 
@@ -86,7 +86,7 @@ class Profile < ActiveRecord::Base
 
   validates :staff_count, :volunteer_count, :trustee_count,
             numericality: { only_integer: true, greater_than_or_equal_to: 0,
-            if: 'self.team? || self.complete?' }
+                            if: 'self.team? || self.complete?' }
 
   ## work state validations
 
@@ -100,7 +100,7 @@ class Profile < ActiveRecord::Base
 
   validates :income, :expenditure,
             numericality: { only_integer: true, greater_than_or_equal_to: 0,
-            if: 'self.finance? || self.complete?' }
+                            if: 'self.finance? || self.complete?' }
 
   def clear_other_options
     self.beneficiaries_other = nil unless beneficiaries_other_required?

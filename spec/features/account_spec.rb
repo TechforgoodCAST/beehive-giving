@@ -1,4 +1,3 @@
-# TODO:
 require 'rails_helper'
 
 feature 'Account' do

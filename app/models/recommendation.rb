@@ -6,8 +6,7 @@ class Recommendation < ActiveRecord::Base
 
   validates :proposal, :fund, :fund_slug, :score, presence: true
   validates :fund, :fund_slug, uniqueness: { scope: :proposal }
-  # TODO:
-  # validates :eligibility, inclusion: {in: ['Eligible', 'Ineligible']}
+  # TODO: validates :eligibility, inclusion: {in: ['Eligible', 'Ineligible']}
 
   before_validation :set_fund_slug, unless: :fund_slug
   before_save :calculate_total_recommendation

@@ -18,13 +18,13 @@ class User < ActiveRecord::Base
 
   validates :user_email,
             format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i,
-            message: 'Please enter a valid email' }, on: :create
+                      message: 'Please enter a valid email' }, on: :create
   validates :user_email, uniqueness: { message: "Please 'sign in' using the link above" }, on: :create
 
   validates :password, presence: { message: "Can't be blank" }, length: { within: 6..25 }, on: [:create, :update]
   validates :password,
             format: { with: /\A(?=.*\d)(?=.*[a-zA-Z]).{6,25}\z/,
-            message: 'Must include 6 characters with 1 number' }, on: [:create, :update]
+                      message: 'Must include 6 characters with 1 number' }, on: [:create, :update]
 
   before_create { generate_token(:auth_token) }
 

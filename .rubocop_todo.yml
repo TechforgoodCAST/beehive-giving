@@ -115,48 +115,12 @@ Rails/Validation:
   Exclude:
     - 'app/models/feature.rb'
 
-# Offense count: 58
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedHashRocketStyle, EnforcedColonStyle, EnforcedLastArgumentHashStyle, SupportedLastArgumentHashStyles.
-# SupportedLastArgumentHashStyles: always_inspect, always_ignore, ignore_implicit, ignore_explicit
-Style/AlignHash:
-  Exclude:
-    - 'app/admin/fund.rb'
-    - 'app/admin/funder_attribute.rb'
-    - 'app/admin/profile.rb'
-    - 'app/models/approval_month.rb'
-    - 'app/models/grant.rb'
-    - 'app/models/organisation.rb'
-    - 'app/models/profile.rb'
-    - 'app/models/proposal.rb'
-    - 'app/models/user.rb'
-    - 'config/initializers/simple_form.rb'
-    - 'spec/features/proposal_spec.rb'
-    - 'spec/support/test_helper.rb'
-    - 'test/models/grant_test.rb'
-    - 'test/test_helper.rb'
-
 # Offense count: 62
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.
 # SupportedStyles: with_first_parameter, with_fixed_indentation
 Style/AlignParameters:
   Enabled: false
-
-# Offense count: 3
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: always, conditionals
-Style/AndOr:
-  Exclude:
-    - 'app/controllers/application_controller.rb'
-    - 'app/models/organisation.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/BlockComments:
-  Exclude:
-    - 'spec/spec_helper.rb'
 
 # Offense count: 14
 # Cop supports --auto-correct.
@@ -183,22 +147,6 @@ Style/BracesAroundHashParameters:
     - 'app/models/proposal.rb'
     - 'lib/tasks/funds.rake'
     - 'spec/support/test_helper.rb'
-
-# Offense count: 11
-# Cop supports --auto-correct.
-# Configuration parameters: Keywords.
-# Keywords: TODO, FIXME, OPTIMIZE, HACK, REVIEW
-Style/CommentAnnotation:
-  Exclude:
-    - 'app/controllers/eligibilities_controller.rb'
-    - 'app/models/fund.rb'
-    - 'app/models/recipient.rb'
-    - 'app/models/recommendation.rb'
-    - 'spec/features/account_spec.rb'
-    - 'spec/features/apply_spec.rb'
-    - 'spec/features/sessions_spec.rb'
-    - 'spec/features/subscriptions_spec.rb'
-    - 'spec/models/fund_spec.rb'
 
 # Offense count: 174
 # Cop supports --auto-correct.

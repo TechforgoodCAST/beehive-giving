@@ -7,7 +7,7 @@ ActiveAdmin.register Fund do
                 :amount_awarded_distribution, :award_month_distribution,
                 :country_distribution, :geographic_scale,
                 :geographic_scale_limited, country_ids: [], district_ids: [],
-                restriction_ids: []
+                                           restriction_ids: []
 
   controller do
     def find_resource
@@ -101,7 +101,7 @@ ActiveAdmin.register Fund do
       inputs 'Restrictions' do
         f.input :restrictions_known
         f.input :restrictions, collection: Restriction.all, member_label: :details,
-          input_html: { multiple: true, class: 'chosen-select' }
+                               input_html: { multiple: true, class: 'chosen-select' }
       end
 
       # inputs 'Amounts' do
@@ -158,9 +158,9 @@ ActiveAdmin.register Fund do
         f.input :geographic_scale, as: :select, collection: Proposal::AFFECT_GEO
         f.input :geographic_scale_limited
         f.input :countries, collection: Country.all, member_label: :name,
-          input_html: { multiple: true, class: 'chosen-select' }
+                            input_html: { multiple: true, class: 'chosen-select' }
         f.input :districts, collection: District.all, member_label: :label,
-          input_html: { multiple: true, class: 'chosen-select' }
+                            input_html: { multiple: true, class: 'chosen-select' }
       end
 
       # f.input :restrictions_known # boolean

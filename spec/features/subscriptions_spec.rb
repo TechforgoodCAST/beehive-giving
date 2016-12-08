@@ -23,7 +23,6 @@ feature 'Subscriptions' do
         expect(@db[:recipient].subscription.active).to eq false
       end
 
-      # TODO:
       scenario 'can view current subscription'
       #   visit(account_subscription_path(@db[:recipient]))
       #   expect(current_path).to eq account_subscription_path(@db[:recipient])
@@ -57,7 +56,6 @@ feature 'Subscriptions' do
         @db[:recipient].reload
       end
 
-      # TODO:
       scenario 'is active'
       #   expect(@db[:recipient].subscription.active).to eq true
       # end

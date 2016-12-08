@@ -6,8 +6,8 @@ class GrantTest < ActiveSupport::TestCase
     seed_test_db
     @funder = create(:funder)
     @grant  = build(:grant, funder: @funder,
-                     countries: [@countries.first],
-                     districts: @uk_districts)
+                            countries: [@countries.first],
+                            districts: @uk_districts)
   end
 
   test 'is valid' do

@@ -56,7 +56,6 @@ describe Recipient do
   end
 
   it 'unlocked_funds'
-  # it 'locked_funds'
   it 'eligible_funds'
   it 'ineligible_funds'
   it 'unlocked_fund?'

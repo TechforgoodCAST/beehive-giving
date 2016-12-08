@@ -35,11 +35,6 @@ class Recipient < Organisation
     funds.where('eligibility IS NOT NULL')
   end
 
-  # TODO:
-  # def locked_funds
-  #   funds.where('eligibility IS NULL')
-  # end
-
   def eligible_funds # TODO: to proposal
     unlocked_funds.where('eligibility = ?', 'Eligible')
   end

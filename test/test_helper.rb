@@ -84,16 +84,18 @@ class ActionDispatch::IntegrationTest
 
     @funders = Array.new(num) { create(:funder) }
     @grants = Array.new(num) do |i|
-      create(:grants, funder: @funders[i], recipient: @recipient,
-              countries: @countries, districts: @uk_districts + @kenya_districts)
+      create(:grants, funder: @funders[i],
+                      recipient: @recipient,
+                      countries: @countries,
+                      districts: @uk_districts + @kenya_districts)
     end
     @attributes = Array.new(num) do |i|
       create(:funder_attribute, funder: @funders[i],
-        beneficiaries: Beneficiary.limit(i + 1),
-        age_groups: AgeGroup.limit(i + 1),
-        countries: @countries,
-        districts: @uk_districts + @kenya_districts,
-        funding_types: @funding_types)
+                                beneficiaries: Beneficiary.limit(i + 1),
+                                age_groups: AgeGroup.limit(i + 1),
+                                countries: @countries,
+                                districts: @uk_districts + @kenya_districts,
+                                funding_types: @funding_types)
     end
     @restrictions = Array.new(3) { create(:restriction) }
     @funding_streams = Array.new(num) { |i| create(:funding_stream, restrictions: @restrictions, funders: [@funders[i]]) }
@@ -101,10 +103,10 @@ class ActionDispatch::IntegrationTest
 
     return unless proposal
     @proposal = create(:proposal, recipient: @recipient,
-                        beneficiaries: @beneficiaries,
-                        age_groups: @age_groups,
-                        countries: @countries,
-                        districts: @uk_districts + @kenya_districts,
-                        implementations: @implementations)
+                                  beneficiaries: @beneficiaries,
+                                  age_groups: @age_groups,
+                                  countries: @countries,
+                                  districts: @uk_districts + @kenya_districts,
+                                  implementations: @implementations)
   end
 end

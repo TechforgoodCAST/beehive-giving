@@ -37,34 +37,34 @@ class Organisation < ActiveRecord::Base
   has_many :profiles, dependent: :destroy # TODO: deprecated
 
   geocoded_by :search_address
-  after_validation :geocode, if: ->(o) { o.street_address.present? or (o.postal_code.present? and o.postal_code_changed?) }, unless: ->(o) { o.country != 'GB' }
+  after_validation :geocode, if: ->(o) { o.street_address.present? || (o.postal_code.present? && o.postal_code_changed?) }, unless: ->(o) { o.country != 'GB' }
 
   attr_accessor :skip_validation
 
   validates :income, :employees, :volunteers, presence: true, numericality: { greater_than_or_equal_to: 0 },
-    unless: :skip_validation
+                                              unless: :skip_validation
 
   validates :income, inclusion: { in: 0..4 },
-    unless: :skip_validation
+                     unless: :skip_validation
 
   validates :employees, :volunteers, inclusion: { in: 0..7 },
-    unless: :skip_validation
+                                     unless: :skip_validation
 
   validates :org_type, :name, :status, :country, :operating_for, presence: true,
-    unless: :skip_validation
+                                                                 unless: :skip_validation
 
   validates :org_type, inclusion: { in: 0..4, message: 'please select a valid option' },
-    unless: :skip_validation
+                       unless: :skip_validation
 
   validates :operating_for, inclusion: { in: 0..3, message: 'please select a valid option' },
-    unless: :skip_validation
+                            unless: :skip_validation
 
   validates :street_address, presence: true, if: proc { |o| o.org_type.zero? || o.org_type == 4 },
-    unless: :skip_validation
+                             unless: :skip_validation
   validates :charity_number, presence: true, if: proc { |o| o.org_type == 1 || o.org_type == 3 },
-    unless: :skip_validation
+                             unless: :skip_validation
   validates :company_number, presence: true, if: proc { |o| o.org_type == 2 || o.org_type == 3 },
-    unless: :skip_validation
+                             unless: :skip_validation
 
   validates :charity_number, uniqueness: { on: :create, scope: :company_number }, allow_nil: true, allow_blank: true
   validates :company_number, uniqueness: { on: :create, scope: :charity_number }, allow_nil: true, allow_blank: true
@@ -77,7 +77,7 @@ class Organisation < ActiveRecord::Base
   validates :slug, uniqueness: true, presence: true
 
   validates :postal_code, presence: true, if: proc { |o| o.charity_name.present? || o.company_name.present? },
-    unless: :skip_validation
+                          unless: :skip_validation
 
   before_validation :set_slug, unless: :slug
   before_validation :clear_registration_numbers_if_unregistered

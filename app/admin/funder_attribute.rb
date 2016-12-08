@@ -7,7 +7,7 @@ ActiveAdmin.register FunderAttribute do
   :funded_average_paid_staff, :beneficiary_min_age, :beneficiary_max_age,
   :funded_age_temp, :funded_income_temp, :application_link, :soft_restrictions,
   :application_details, country_ids: [], district_ids: [], approval_month_ids: [],
-  funding_type_ids: [], beneficiary_ids: [], age_group_ids: []
+                        funding_type_ids: [], beneficiary_ids: [], age_group_ids: []
 
   controller do
     def scoped_collection

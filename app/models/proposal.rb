@@ -65,7 +65,7 @@ class Proposal < ActiveRecord::Base
               presence: { message: 'Please select an option' },
               unless: '!self.affect_people? && self.affect_other?'
   validates :gender, inclusion: { in: GENDERS, message: 'please select an option' },
-              unless: '!self.affect_people? && self.affect_other?'
+                     unless: '!self.affect_people? && self.affect_other?'
   validate :beneficiaries_people, :beneficiaries_other_group
   validates :beneficiaries_other,
               presence: { message: "please uncheck 'Other' or specify details" },
@@ -85,19 +85,19 @@ class Proposal < ActiveRecord::Base
   validates :affect_geo, inclusion: { in: 0..3, message: 'please select an option' }
   validates :countries, presence: true
   validates :districts, presence: true,
-              if: proc { |o| o.affect_geo.present? && o.affect_geo < 2 } # TODO: test
+                        if: proc { |o| o.affect_geo.present? && o.affect_geo < 2 } # TODO: test
 
   # Privacy
   validates :private, inclusion: { in: [true, false], message: 'please select an option' }
 
   # Registered
   validates :title, uniqueness: { scope: :recipient_id, message: 'each proposal must have a unique title' },
-              if: 'self.registered? || self.complete?'
+                    if: 'self.registered? || self.complete?'
   validates :title, :tagline, :outcome1, presence: true, length: { maximum: 280, message: 'please use 280 characters or less' },
-              if: 'self.registered? || self.complete?'
+                                         if: 'self.registered? || self.complete?'
   validates :implementations, presence: true,
-              unless: :implementations_other_required,
-              if: 'self.registered? || self.complete?'
+                              unless: :implementations_other_required,
+                              if: 'self.registered? || self.complete?'
   validates :implementations_other,
               presence: { message: "please uncheck 'Other' or specify details" },
               if: :implementations_other_required

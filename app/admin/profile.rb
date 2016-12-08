@@ -4,7 +4,7 @@ ActiveAdmin.register Profile do
   :income, :expenditure, :volunteer_count, :staff_count, :does_sell,
   :beneficiaries_count, :beneficiaries_count_actual, :income_actual,
   :expenditure_actual, beneficiary_ids: [], country_ids: [], district_ids: [],
-  implementation_ids: [], implementor_ids: []
+                       implementation_ids: [], implementor_ids: []
 
   controller do
     def scoped_collection

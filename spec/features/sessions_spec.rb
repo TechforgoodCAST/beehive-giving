@@ -21,7 +21,6 @@ describe 'Ensure logged in' do
     end
   end
 
-  # TODO:
   it 'accounts'
   #   expect_path([
   #     account_subscription_path(@recipient),

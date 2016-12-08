@@ -33,7 +33,7 @@ class Fund < ActiveRecord::Base
 
   validates :name, uniqueness: { scope: :funder }
 
-  # TODO:
+  # TODO: validations
   # validates :amount_min_limited, :amount_max_limited,
   #             inclusion: { in: [true, false] },
   #             if: :amount_known?

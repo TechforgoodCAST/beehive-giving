@@ -91,11 +91,11 @@ feature 'Proposal' do
   context 'legacy' do
     before(:each) do
       @current_profile = build(:current_profile, organisation: @recipient,
-        countries: @db[:countries], districts: @db[:districts],
-        age_groups: @db[:age_groups], beneficiaries: @db[:beneficiaries])
+                                                 countries: @db[:countries], districts: @db[:districts],
+                                                 age_groups: @db[:age_groups], beneficiaries: @db[:beneficiaries])
       @legacy_profile = build(:legacy_profile, organisation: @recipient,
-        countries: @db[:countries], districts: @db[:districts],
-        age_groups: @db[:age_groups], beneficiaries: @db[:beneficiaries])
+                                               countries: @db[:countries], districts: @db[:districts],
+                                               age_groups: @db[:age_groups], beneficiaries: @db[:beneficiaries])
     end
 
     scenario "When I have a 'current profile',

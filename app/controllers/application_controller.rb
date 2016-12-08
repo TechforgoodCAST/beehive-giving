@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   end
 
   def logged_in?
-    @logged_in ||= (cookies[:auth_token].present? and current_user.present?)
+    @logged_in ||= (cookies[:auth_token].present? && current_user.present?)
   end
 
   def ensure_logged_in

@@ -225,8 +225,7 @@ describe Fund do
     end
 
     it 'correct attributes greater than or equal to zero' do
-      # TODO:
-      # %w[
+      # TODO: %w[
       #   grant_count recipient_count amount_awarded_sum amount_awarded_mean
       #   amount_awarded_median amount_awarded_min amount_awarded_max
       #   duration_awarded_months_mean duration_awarded_months_median
