@@ -3,7 +3,7 @@ class PasswordResetsController < ApplicationController
 
   def create
     if params[:user_email].present?
-      user = User.find_by_user_email(params[:user_email])
+      user = User.find_by(user_email: params[:user_email])
       user.send_password_reset if user
       redirect_to sign_in_path, notice: 'Email sent with password reset instructions. Please check your inbox.'
     else
@@ -13,15 +13,15 @@ class PasswordResetsController < ApplicationController
   end
 
   def edit
-    if User.find_by_password_reset_token(params[:id])
-      @user = User.find_by_password_reset_token(params[:id])
+    if User.find_by(password_reset_token: params[:id])
+      @user = User.find_by(password_reset_token: params[:id])
     else
       redirect_to new_password_reset_path, alert: 'Password reset has expired, please request a new password reset.'
     end
   end
 
   def update
-    @user = User.find_by_password_reset_token(params[:id])
+    @user = User.find_by(password_reset_token: params[:id])
     if @user.password_reset_sent_at < 1.hour.ago
       redirect_to new_password_reset_path, alert: 'Password reset has expired, please request a new password reset.'
     elsif @user.update_attributes(params.require(:user).permit(:password, :password_confirmation))

@@ -63,7 +63,7 @@ class RecipientsController < ApplicationController
   end
 
   def show # TODO: refactor
-    @recipient = Recipient.find_by_slug(params[:id])
+    @recipient = Recipient.find_by(slug: params[:id])
   end
 
   private
@@ -73,11 +73,11 @@ class RecipientsController < ApplicationController
     end
 
     def load_recipient
-      @recipient = Recipient.find_by_slug(params[:id]) || current_user.organisation if logged_in?
+      @recipient = Recipient.find_by(slug: params[:id]) || current_user.organisation if logged_in?
     end
 
     def load_funder
-      @funder = Funder.find_by_slug(params[:id])
+      @funder = Funder.find_by(slug: params[:id])
     end
 
     def load_feedback

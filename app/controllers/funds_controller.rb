@@ -14,7 +14,7 @@ class FundsController < ApplicationController
   end
 
   def tagged
-    @tag = ActsAsTaggableOn::Tag.find_by_slug(params[:tag])
+    @tag = ActsAsTaggableOn::Tag.find_by(slug: params[:tag])
     if @tag.present?
       @funds = @recipient.funds.includes(:funder).tagged_with(@tag)
     else

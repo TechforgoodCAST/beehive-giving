@@ -13,7 +13,7 @@ namespace :fund do
 
     FundingType.create(label: 'Other')
 
-    @funder = Funder.find_by_name(['Lloyds Bank Foundation', 'Lloyds Bank Foundation for England and Wales'])
+    @funder = Funder.find_by(name: ['Lloyds Bank Foundation', 'Lloyds Bank Foundation for England and Wales'])
     @funder.update_column(:name, 'Lloyds Bank Foundation for England and Wales')
     @funder.update_column(:slug, 'lloyds-bank-foundation-for-england-and-wales')
     @funds = build_list(:fund_with_open_data, 11, funder: @funder)
@@ -22,8 +22,8 @@ namespace :fund do
       fund.deadlines = create_list(:deadline, 2, fund: fund)
       fund.stages = create_list(:stage, 1, fund: fund)
       fund.funding_types = [FundingType.last]
-      fund.countries = [Country.find_by_alpha2('GB')]
-      fund.districts = Country.find_by_alpha2('GB').districts.take(3)
+      fund.countries = [Country.find_by(alpha2: 'GB')]
+      fund.districts = Country.find_by(alpha2: 'GB').districts.take(3)
       fund.restrictions = Restriction.limit(2)
       fund.outcomes = create_list(:outcome, 2)
       fund.decision_makers = create_list(:decision_maker, 2)
@@ -41,7 +41,7 @@ namespace :fund do
   end
 
   task restrictions: :environment do
-    funder = Funder.find_by_name('Lloyds Bank Foundation England and Wales')
+    funder = Funder.find_by(name: 'Lloyds Bank Foundation England and Wales')
     fund = funder.funds.first
     restrictions = funder.funding_streams.first.restrictions
     fund.restriction_ids = restrictions.pluck(:id)

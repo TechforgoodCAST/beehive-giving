@@ -61,11 +61,11 @@ class FunderAttribute < ActiveRecord::Base
     return unless funder && countries.empty?
     if funding_stream == 'All'
       funder.countries.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").pluck(:alpha2).uniq.each do |c|
-        countries << Country.find_by_alpha2(c) unless c.blank?
+        countries << Country.find_by(alpha2: c) unless c.blank?
       end
     else
       funder.countries.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:alpha2).uniq.each do |c|
-        countries << Country.find_by_alpha2(c) unless c.blank?
+        countries << Country.find_by(alpha2: c) unless c.blank?
       end
     end
   end
@@ -74,11 +74,11 @@ class FunderAttribute < ActiveRecord::Base
     return unless funder && districts.empty?
     if funding_stream == 'All'
       funder.districts.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").pluck(:district).uniq.each do |d|
-        districts << District.find_by_district(d) unless d.blank?
+        districts << District.find_by(district: d) unless d.blank?
       end
     else
       funder.districts.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:district).uniq.each do |d|
-        districts << District.find_by_district(d) unless d.blank?
+        districts << District.find_by(district: d) unless d.blank?
       end
     end
   end
@@ -88,11 +88,11 @@ class FunderAttribute < ActiveRecord::Base
     array = []
     if funding_stream == 'All'
       funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").pluck(:approved_on).uniq.each do |d|
-        array << ApprovalMonth.find_by_month(d.strftime('%b'))
+        array << ApprovalMonth.find_by(month: d.strftime('%b'))
       end
     else
       funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:approved_on).uniq.each do |d|
-        array << ApprovalMonth.find_by_month(d.strftime('%b'))
+        array << ApprovalMonth.find_by(month: d.strftime('%b'))
       end
     end
     approval_months << array.uniq
@@ -102,11 +102,11 @@ class FunderAttribute < ActiveRecord::Base
     return unless funder && funding_types.empty?
     if funding_stream == 'All'
       funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").pluck(:grant_type).uniq.each do |t|
-        funding_types << FundingType.find_by_label(t) unless t.blank?
+        funding_types << FundingType.find_by(label: t) unless t.blank?
       end
     else
       funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:grant_type).uniq.each do |t|
-        funding_types << FundingType.find_by_label(t) unless t.blank?
+        funding_types << FundingType.find_by(label: t) unless t.blank?
       end
     end
   end

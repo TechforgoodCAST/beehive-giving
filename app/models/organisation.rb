@@ -113,7 +113,7 @@ class Organisation < ActiveRecord::Base
     return nil unless name
     candidate = name.downcase.gsub(/[^a-z0-9]+/, '-')
     candidate += "-#{n}" if n > 1
-    return candidate unless Organisation.find_by_slug(candidate)
+    return candidate unless Organisation.find_by(slug: candidate)
     generate_slug(n + 1)
   end
 

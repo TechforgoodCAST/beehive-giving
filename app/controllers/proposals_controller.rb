@@ -61,7 +61,7 @@ class ProposalsController < ApplicationController
           flash[:notice] = 'Funding recommendations updated!'
 
           if session[:return_to]
-            fund = Fund.find_by_slug(session.delete(:return_to))
+            fund = Fund.find_by(slug: session.delete(:return_to))
             render js: "window.location.href = '#{fund_eligibility_path(fund)}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
@@ -76,7 +76,7 @@ class ProposalsController < ApplicationController
           flash[:notice] = 'Funding recommendations updated!'
 
           if session[:return_to]
-            fund = Fund.find_by_slug(session.delete(:return_to))
+            fund = Fund.find_by(slug: session.delete(:return_to))
             redirect_to fund_eligibility_path(fund)
           else
             redirect_to recommended_funds_path
@@ -109,7 +109,7 @@ class ProposalsController < ApplicationController
 
     def recipient_country
       # refactor
-      @recipient_country = Country.find_by_alpha2(@recipient.country) || @recipient.profiles.first.countries.first
+      @recipient_country = Country.find_by(alpha2: @recipient.country) || @recipient.profiles.first.countries.first
       gon.orgCountry = @recipient_country.name
     end
 end

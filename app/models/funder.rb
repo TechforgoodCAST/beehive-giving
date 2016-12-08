@@ -35,7 +35,7 @@ class Funder < Organisation
     grant_count = Grant.recent(2014).joins(:districts).group('districts.district').count
 
     Grant.recent(2014).joins(:districts).group('districts.district').sum(:amount_awarded).each do |k, v|
-      district = District.find_by_district(k)
+      district = District.find_by(district: k)
 
       features << {
         type: 'Feature', properties: {
@@ -64,7 +64,7 @@ class Funder < Organisation
     grant_average = districts_by_year.group(:district).average(:amount_awarded)
 
     districts_by_year.group(:district).sum(:amount_awarded).each do |k, v|
-      district = District.find_by_district(k)
+      district = District.find_by(district: k)
 
       features << {
         type: 'Feature', properties: {

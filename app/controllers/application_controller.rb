@@ -17,7 +17,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    current_user ||= User.includes(:organisation).find_by_auth_token(cookies[:auth_token])
+    current_user ||= User.includes(:organisation).find_by(auth_token: cookies[:auth_token])
   end
 
   def set_new_relic_user
@@ -63,12 +63,12 @@ class ApplicationController < ActionController::Base
 
   def check_organisation_ownership
     redirect_to root_path, alert: "Sorry, you don't have access to that" unless
-      current_user.organisation == Recipient.find_by_slug(params[:id])
+      current_user.organisation == Recipient.find_by(slug: params[:id])
   end
 
   def check_organisation_ownership_or_funder
     redirect_to root_path, alert: "Sorry, you don't have access to that" unless
-      logged_in? && current_user.organisation == Recipient.find_by_slug(params[:id]) ||
+      logged_in? && current_user.organisation == Recipient.find_by(slug: params[:id]) ||
       logged_in? && current_user.role == 'Funder'
   end
 

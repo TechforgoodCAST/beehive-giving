@@ -35,7 +35,7 @@ class FundersController < ApplicationController
       redirect_to funder_district_path(current_user.organisation, params[:district])
     end
 
-    @district = District.find_by_slug(params[:district])
+    @district = District.find_by(slug: params[:district])
     gon.districtLabel = @district.district
     gon.funderName = @funder.name
 
@@ -46,6 +46,6 @@ class FundersController < ApplicationController
   private
 
     def load_funder
-      @funder = Funder.find_by_slug(params[:id])
+      @funder = Funder.find_by(slug: params[:id])
     end
 end

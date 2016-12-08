@@ -24,7 +24,7 @@ feature 'Browse' do
   context 'signed in' do
     before(:each) do
       @unsuitable_fund = Fund.first
-      @low_fund = Fund.find_by_name('Awards for All 2')
+      @low_fund = Fund.find_by(name: 'Awards for All 2')
       @top_fund = Fund.last
       @app.sign_in
       visit root_path

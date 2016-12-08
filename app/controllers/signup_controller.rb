@@ -85,8 +85,8 @@ class SignupController < ApplicationController
             (@recipient.errors.added? :company_number, :taken)
         charity_number = @recipient.charity_number
         company_number = @recipient.company_number
-        organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
-                       (Organisation.find_by_company_number(company_number) if company_number)
+        organisation = (Organisation.find_by(charity_number: charity_number) if charity_number) ||
+                       (Organisation.find_by(company_number: company_number) if company_number)
 
         current_user.lock_access_to_organisation(organisation)
         redirect_to unauthorised_path
@@ -148,8 +148,8 @@ class SignupController < ApplicationController
         format.js do
           charity_number = @recipient.charity_number
           company_number = @recipient.company_number
-          organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
-                         (Organisation.find_by_company_number(company_number) if company_number)
+          organisation = (Organisation.find_by(charity_number: charity_number) if charity_number) ||
+                         (Organisation.find_by(company_number: company_number) if company_number)
 
           current_user.lock_access_to_organisation(organisation)
           render js: "window.location.href = '#{unauthorised_path}';"
@@ -157,8 +157,8 @@ class SignupController < ApplicationController
         format.html do
           charity_number = @recipient.charity_number
           company_number = @recipient.company_number
-          organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
-                         (Organisation.find_by_company_number(company_number) if company_number)
+          organisation = (Organisation.find_by(charity_number: charity_number) if charity_number) ||
+                         (Organisation.find_by(company_number: company_number) if company_number)
 
           current_user.lock_access_to_organisation(organisation)
           redirect_to unauthorised_path
@@ -185,13 +185,13 @@ class SignupController < ApplicationController
   end
 
   def grant_access
-    @user = User.find_by_unlock_token(params[:unlock_token])
+    @user = User.find_by(unlock_token: params[:unlock_token])
     @user.unlock
     redirect_to granted_access_path(@user.unlock_token)
   end
 
   def granted_access
-    @user = User.find_by_unlock_token(params[:unlock_token])
+    @user = User.find_by(unlock_token: params[:unlock_token])
   end
 
   def unauthorised

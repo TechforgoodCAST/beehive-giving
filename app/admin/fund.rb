@@ -11,7 +11,7 @@ ActiveAdmin.register Fund do
 
   controller do
     def find_resource
-      Fund.find_by_slug(params[:id])
+      Fund.find_by(slug: params[:id])
     end
   end
 
