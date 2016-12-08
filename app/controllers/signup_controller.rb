@@ -143,26 +143,26 @@ class SignupController < ApplicationController
           redirect_to new_recipient_proposal_path(@recipient)
         }
       # If company/charity number has already been taken
-    elsif (@recipient.errors.added? :charity_number, :taken) ||
-          (@recipient.errors.added? :company_number, :taken)
-      format.js {
-        charity_number = @recipient.charity_number
-        company_number = @recipient.company_number
-        organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
-                       (Organisation.find_by_company_number(company_number) if company_number)
+      elsif (@recipient.errors.added? :charity_number, :taken) ||
+            (@recipient.errors.added? :company_number, :taken)
+        format.js {
+          charity_number = @recipient.charity_number
+          company_number = @recipient.company_number
+          organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
+                         (Organisation.find_by_company_number(company_number) if company_number)
 
-        current_user.lock_access_to_organisation(organisation)
-        render js: "window.location.href = '#{unauthorised_path}';"
-      }
-      format.html {
-        charity_number = @recipient.charity_number
-        company_number = @recipient.company_number
-        organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
-                       (Organisation.find_by_company_number(company_number) if company_number)
+          current_user.lock_access_to_organisation(organisation)
+          render js: "window.location.href = '#{unauthorised_path}';"
+        }
+        format.html {
+          charity_number = @recipient.charity_number
+          company_number = @recipient.company_number
+          organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
+                         (Organisation.find_by_company_number(company_number) if company_number)
 
-        current_user.lock_access_to_organisation(organisation)
-        redirect_to unauthorised_path
-      }
+          current_user.lock_access_to_organisation(organisation)
+          redirect_to unauthorised_path
+        }
       else
         format.js
         format.html { render :organisation }

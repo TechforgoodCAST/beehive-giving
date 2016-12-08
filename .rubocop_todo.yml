@@ -277,9 +277,3 @@ Style/ConditionalAssignment:
 # Offense count: 57
 Style/Documentation:
   Enabled: false
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/ElseAlignment:
-  Exclude:
-    - 'app/controllers/signup_controller.rb'
