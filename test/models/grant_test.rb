@@ -22,5 +22,4 @@ class GrantTest < ActiveSupport::TestCase
     @grant.amount_awarded = -10
     assert_not @grant.valid?
   end
-
 end

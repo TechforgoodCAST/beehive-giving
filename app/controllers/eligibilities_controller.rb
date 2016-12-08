@@ -1,5 +1,4 @@
 class EligibilitiesController < ApplicationController
-
   before_filter :ensure_logged_in, :ensure_recipient # TODO:
   before_filter :load_recipient, :load_fund, :ensure_proposal_present, :load_proposal # TODO: refactor
 
@@ -42,5 +41,4 @@ class EligibilitiesController < ApplicationController
     def eligibility_params
       params.require(:recipient).permit(eligibilities_attributes: [:id, :eligible, :restriction_id, :recipient_id])
     end
-
 end

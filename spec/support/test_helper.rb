@@ -1,5 +1,4 @@
 class TestHelper
-
   include FactoryGirl::Syntax::Methods
   include ShowMeTheCookies
   include WebMock::API
@@ -206,5 +205,4 @@ class TestHelper
     end
     instances
   end
-
 end

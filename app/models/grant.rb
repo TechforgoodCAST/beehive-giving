@@ -1,5 +1,4 @@
 class Grant < ActiveRecord::Base
-
   before_validation :default_values
 
   FUNDING_STREAM = ['All', 'Main', 'Theme 1', 'Theme 2'].freeze
@@ -52,5 +51,4 @@ class Grant < ActiveRecord::Base
     self.days_form_approval_to_start = (start_on - approved_on).to_i if start_on && approved_on
     self.days_from_start_to_end = (end_on - start_on).to_i if end_on && start_on
   end
-
 end

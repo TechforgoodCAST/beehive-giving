@@ -1,5 +1,4 @@
 class PasswordResetsController < ApplicationController
-
   before_filter :ensure_not_logged_in, if: proc { logged_in? }
 
   def create
@@ -37,5 +36,4 @@ class PasswordResetsController < ApplicationController
     def ensure_not_logged_in
       redirect_to root_path, alert: "Sorry, you don't have access to that"
     end
-
 end

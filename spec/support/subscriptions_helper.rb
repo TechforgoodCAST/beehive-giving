@@ -1,5 +1,4 @@
 class SubscriptionsHelper
-
   include Capybara::DSL
 
   def create_stripe_plan(stripe)
@@ -23,5 +22,4 @@ class SubscriptionsHelper
     click_on 'Pay securely'
     self
   end
-
 end

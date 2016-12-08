@@ -2,7 +2,6 @@
 require 'test_helper'
 
 class RecipientNavbarTest < ActionDispatch::IntegrationTest
-
   setup do
     @recipient = create(:recipient)
   end
@@ -30,5 +29,4 @@ class RecipientNavbarTest < ActionDispatch::IntegrationTest
     assert page.has_content?('Funding proposals')
     assert page.has_content?('Sign out')
   end
-
 end

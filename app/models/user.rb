@@ -1,5 +1,4 @@
 class User < ActiveRecord::Base
-
   belongs_to :organisation
   has_many :feedbacks
 
@@ -73,5 +72,4 @@ class User < ActiveRecord::Base
       break unless User.exists?(column => self[column])
     end
   end
-
 end

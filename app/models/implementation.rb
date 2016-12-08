@@ -1,5 +1,4 @@
 class Implementation < ActiveRecord::Base
-
   IMPLEMENTATIONS = [
     { label: 'Buildings/facilities' },
     { label: 'Campaigns' },
@@ -15,5 +14,4 @@ class Implementation < ActiveRecord::Base
   has_and_belongs_to_many :profiles # TODO: deprecated
 
   validates :label, presence: true
-
 end

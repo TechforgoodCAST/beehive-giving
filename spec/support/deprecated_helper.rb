@@ -1,5 +1,4 @@
 class DeprecatedHelper
-
   include FactoryGirl::Syntax::Methods
 
   def initialize
@@ -42,5 +41,4 @@ class DeprecatedHelper
       districts: @districts)
     self
   end
-
 end

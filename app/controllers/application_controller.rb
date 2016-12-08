@@ -112,5 +112,4 @@ class ApplicationController < ActionController::Base
     def status_code
       params[:code] || 500
     end
-
 end

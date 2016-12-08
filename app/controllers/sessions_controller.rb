@@ -1,5 +1,4 @@
 class SessionsController < ApplicationController
-
   def new
     redirect_to start_path_for_user(current_user) if current_user
   end
@@ -53,5 +52,4 @@ class SessionsController < ApplicationController
         funder_overview_path(user.organisation)
       end
     end
-
 end

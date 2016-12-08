@@ -1,5 +1,4 @@
 class RecipientsController < ApplicationController
-
   before_filter :ensure_logged_in, :load_recipient, :ensure_recipient,
                 :years_ago, :load_proposal
   before_filter :ensure_proposal_present, except: [:edit, :update]
@@ -111,5 +110,4 @@ class RecipientsController < ApplicationController
         :multi_national, :income, :employees, :volunteers, :org_type,
         organisation_ids: [])
     end
-
 end

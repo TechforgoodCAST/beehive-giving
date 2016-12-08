@@ -1,5 +1,4 @@
 class Recipient < Organisation
-
   RECOMMENDATION_THRESHOLD = 1
   MAX_FREE_LIMIT = 3
   RECOMMENDATION_LIMIT = 6
@@ -209,5 +208,4 @@ class Recipient < Organisation
 
     proposal.valid?
   end
-
 end

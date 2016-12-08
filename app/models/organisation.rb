@@ -1,5 +1,4 @@
 class Organisation < ActiveRecord::Base
-
   ORG_TYPE = [
     ['Myself OR another individual', -1],
     ['An unregistered organisation OR project', 0],
@@ -295,5 +294,4 @@ class Organisation < ActiveRecord::Base
       self.charity_number = nil
       self.company_number = nil
     end
-
 end

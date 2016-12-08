@@ -1,5 +1,4 @@
 class AgeGroup < ActiveRecord::Base
-
   AGE_GROUPS = [
     { label: 'All ages',                    age_from: 0,  age_to: 150 },
     { label: 'Infants (0-3 years)',         age_from: 0,  age_to: 3   },
@@ -16,5 +15,4 @@ class AgeGroup < ActiveRecord::Base
 
   validates :label, :age_from, :age_to, presence: true
   validates :label, uniqueness: true
-
 end

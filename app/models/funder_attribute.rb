@@ -1,6 +1,5 @@
 # TODO: deprecated
 class FunderAttribute < ActiveRecord::Base
-
   before_validation :grant_count_from_grants,
                     :success_percentage,
                     :countries_from_grants,
@@ -231,5 +230,4 @@ class FunderAttribute < ActiveRecord::Base
     set_funding_streams_by_giving
     set_shared_recipient_ids
   end
-
 end

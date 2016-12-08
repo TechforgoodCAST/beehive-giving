@@ -1,5 +1,4 @@
 class PagesController < ApplicationController
-
   def about
     redirect_to signup_user_path
   end
@@ -11,5 +10,4 @@ class PagesController < ApplicationController
   def faq
     @recipient = current_user.organisation if logged_in?
   end
-
 end

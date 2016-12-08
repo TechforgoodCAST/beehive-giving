@@ -1,6 +1,5 @@
 # TODO: deprecated
 class Profile < ActiveRecord::Base
-
   before_save :clear_other_options, :save_all_age_groups_if_all_ages
   before_validation :set_year_to_current_year
 
@@ -117,5 +116,4 @@ class Profile < ActiveRecord::Base
     return unless age_group_ids.include?(AgeGroup.first.id)
     self.age_group_ids = AgeGroup.pluck(:id)
   end
-
 end

@@ -1,5 +1,4 @@
 class Restriction < ActiveRecord::Base
-
   has_and_belongs_to_many :funds
   has_many :funders, -> { distinct }, through: :funds
   has_many :eligibilities
@@ -9,5 +8,4 @@ class Restriction < ActiveRecord::Base
   # TODO: has_many :proposals, through: :proposal_eligibilities
 
   validates :details, presence: true, uniqueness: true
-
 end

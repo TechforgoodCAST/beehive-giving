@@ -1,5 +1,4 @@
 class FundingType < ActiveRecord::Base
-
   FUNDING_TYPE = [
     'Capital funding',
     'Revenue funding - project costs',
@@ -13,5 +12,4 @@ class FundingType < ActiveRecord::Base
   has_and_belongs_to_many :funder_attributes # TODO: deprecated
 
   validates :label, presence: true, inclusion: { in: FUNDING_TYPE }, uniqueness: true
-
 end

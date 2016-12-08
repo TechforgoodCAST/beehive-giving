@@ -2,7 +2,6 @@
 require 'test_helper'
 
 class PasswordResetTest < ActionDispatch::IntegrationTest
-
   setup do
     @user = create(:user)
     ActionMailer::Base.deliveries = []
@@ -51,5 +50,4 @@ class PasswordResetTest < ActionDispatch::IntegrationTest
     visit edit_password_reset_path(User.last.password_reset_token)
     assert_equal faq_path(anchor: 'set-password'), find('.faq-link')[:href]
   end
-
 end

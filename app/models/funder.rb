@@ -1,5 +1,4 @@
 class Funder < Organisation
-
   scope :active, -> { where(active_on_beehive: true) }
 
   CLOSED_FUNDERS = ['Cripplegate Foundation', 'The Baring Foundation'].freeze
@@ -158,5 +157,4 @@ class Funder < Organisation
              .order('proposals.created_at DESC, recommendations.eligibility ASC, recommendations.score DESC')
              .order(:name)
   end
-
 end

@@ -1,5 +1,4 @@
 class MatchHelper
-
   include Capybara::DSL
   include WebMock::API
 
@@ -111,5 +110,4 @@ class MatchHelper
     click_button 'Save and recommend funders'
     self
   end
-
 end

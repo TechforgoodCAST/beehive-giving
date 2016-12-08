@@ -1,5 +1,4 @@
 class Proposal < ActiveRecord::Base
-
   after_validation :trigger_clear_beneficiary_ids
   after_validation :check_affect_geo
   before_save :save_all_age_groups_if_all_ages
@@ -311,5 +310,4 @@ class Proposal < ActiveRecord::Base
       return unless recipient.proposals.count == 1 && recipient.proposals.where(state: 'complete').count < 1
       errors.add(:proposal, 'Please complete your first proposal before creating a second.')
     end
-
 end

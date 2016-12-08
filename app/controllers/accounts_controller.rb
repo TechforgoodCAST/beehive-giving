@@ -1,5 +1,4 @@
 class AccountsController < ApplicationController
-
   before_filter :ensure_logged_in, :load_recipient, :ensure_proposal_present
 
   def user; end
@@ -39,5 +38,4 @@ class AccountsController < ApplicationController
         active: true
       )
     end
-
 end

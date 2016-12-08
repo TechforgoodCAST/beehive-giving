@@ -1,5 +1,4 @@
 class EligibilityHelper
-
   include Capybara::DSL
 
   def visit_first_fund
@@ -53,5 +52,4 @@ class EligibilityHelper
     click_button 'Submit feedback'
     self
   end
-
 end

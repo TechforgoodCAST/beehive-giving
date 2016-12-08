@@ -1,5 +1,4 @@
 class SignupController < ApplicationController
-
   before_filter :ensure_logged_in, except: [:user, :create_user, :grant_access, :granted_access]
   before_filter :get_districts, only: [:user, :create_user]
 

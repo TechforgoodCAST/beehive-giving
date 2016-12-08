@@ -1,5 +1,4 @@
 class District < ActiveRecord::Base
-
   belongs_to :country
   has_and_belongs_to_many :proposals
   has_and_belongs_to_many :funds
@@ -97,5 +96,4 @@ class District < ActiveRecord::Base
       create_hash('Living environment', indices_living_rank)
     ]
   end
-
 end

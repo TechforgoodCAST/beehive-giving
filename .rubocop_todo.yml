@@ -297,10 +297,3 @@ Style/EmptyLines:
 # SupportedStyles: empty_lines, no_empty_lines
 Style/EmptyLinesAroundBlockBody:
   Enabled: false
-
-# Offense count: 102
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: empty_lines, empty_lines_except_namespace, no_empty_lines
-Style/EmptyLinesAroundClassBody:
-  Enabled: false

@@ -1,5 +1,4 @@
 class Beneficiary < ActiveRecord::Base
-
   scope :people, -> { where(category: 'People') }
   scope :other,  -> { where(category: 'Other') }
 
@@ -136,5 +135,4 @@ class Beneficiary < ActiveRecord::Base
 
   validates :label, :sort, :category, presence: true
   validates :label, :sort, uniqueness: true
-
 end

@@ -1,5 +1,4 @@
 class ProposalsController < ApplicationController
-
   before_filter :ensure_logged_in, :load_recipient,
                 :prevent_funder_access, :recipient_country
   before_filter :load_proposal, only: [:edit, :update]
@@ -113,5 +112,4 @@ class ProposalsController < ApplicationController
       @recipient_country = Country.find_by_alpha2(@recipient.country) || @recipient.profiles.first.countries.first
       gon.orgCountry = @recipient_country.name
     end
-
 end

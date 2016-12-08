@@ -1,5 +1,4 @@
 class Fund < ActiveRecord::Base
-
   scope :active, -> { where(active: true) }
   scope :inactive_ids, -> { where(active: false).pluck(:id) }
 
@@ -131,5 +130,4 @@ class Fund < ActiveRecord::Base
       resp = HTTParty.get(ENV['BEEHIVE_DATA_FUND_SUMMARY_ENDPOINT'] + slug, options)
       assign_attributes(resp.except('fund_slug')) if slug == resp['fund_slug']
     end
-
 end

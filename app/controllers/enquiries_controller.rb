@@ -1,5 +1,4 @@
 class EnquiriesController < ApplicationController # TODO: ApplicationsController?
-
   before_filter :ensure_logged_in, :ensure_recipient # TODO:
   before_filter :load_recipient, :load_fund, :ensure_proposal_present, :load_proposal # TODO: refactor
 
@@ -29,5 +28,4 @@ class EnquiriesController < ApplicationController # TODO: ApplicationsController
     def load_fund # TODO: refactor to applicaiton controller?
       @fund = Fund.includes(:funder).find_by(slug: params[:id])
     end
-
 end

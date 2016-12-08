@@ -1,5 +1,4 @@
 class UserMailer < ApplicationMailer
-
   def welcome_email(user)
     @user = user
     mail(to: @user.user_email, subject: 'Welcome to Beehive!')
@@ -20,5 +19,4 @@ class UserMailer < ApplicationMailer
     @user = user
     mail(to: @user.user_email, subject: 'You have been granted access to your organisation')
   end
-
 end

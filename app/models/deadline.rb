@@ -1,5 +1,4 @@
 class Deadline < ActiveRecord::Base
-
   belongs_to :fund
 
   validates :fund, :deadline, presence: true
@@ -10,5 +9,4 @@ class Deadline < ActiveRecord::Base
     def future_deadline
       errors.add(:deadline) if deadline < Date.today
     end
-
 end

@@ -1,5 +1,4 @@
 class Feedback < ActiveRecord::Base
-
   SUITABLE = ['- Very unsuitable', '', '', '', '', '', '', '', '', '', '- Very suitable'].freeze
   MOST_USEFUL = ['The information about funders', 'Recommendations of funders', 'Being able to check your eligibility', 'Other'].freeze
   NPS = ['- Not at all likely', '', '', '', '', '', '', '', '', '', '- Extremely likely'].freeze

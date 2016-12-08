@@ -1,5 +1,4 @@
 class Eligibility < ActiveRecord::Base
-
   belongs_to :recipient
   belongs_to :restriction
 
@@ -10,5 +9,4 @@ class Eligibility < ActiveRecord::Base
   validates :eligible,
     uniqueness: { scope: [:recipient, :restriction], message: 'only one per funder' },
     if: :eligible?
-
 end

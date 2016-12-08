@@ -1,5 +1,4 @@
 class Stage < ActiveRecord::Base
-
   STAGES = [
     'Speak with member of staff',
     'Expression of interest',
@@ -29,5 +28,4 @@ class Stage < ActiveRecord::Base
       return unless last_stage && position > (last_stage.position + 1)
       errors.add(:position, 'Position not in sequence')
     end
-
 end
