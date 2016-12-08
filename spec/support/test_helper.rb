@@ -173,7 +173,6 @@ class TestHelper
     self
   end
 
-
   def subscribed
     @recipient.subscribe!
     self

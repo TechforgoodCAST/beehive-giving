@@ -283,10 +283,3 @@ Style/Documentation:
 Style/ElseAlignment:
   Exclude:
     - 'app/controllers/signup_controller.rb'
-
-# Offense count: 2
-# Cop supports --auto-correct.
-Style/EmptyLines:
-  Exclude:
-    - 'spec/features/proposal_spec.rb'
-    - 'spec/support/test_helper.rb'

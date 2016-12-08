@@ -98,7 +98,6 @@ feature 'Proposal' do
         age_groups: @db[:age_groups], beneficiaries: @db[:beneficiaries])
     end
 
-
     scenario "When I have a 'current profile',
               I want to be redirected to the edit proposal page,
               so I can update my proposal" do
