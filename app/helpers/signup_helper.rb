@@ -1,5 +1,4 @@
 module SignupHelper
-
   def org_type_hidden(state, type)
     if !state.present?
       false
@@ -44,5 +43,4 @@ module SignupHelper
       { count: 5, message: 'The finances of your organisation or project.' }
     end
   end
-
 end

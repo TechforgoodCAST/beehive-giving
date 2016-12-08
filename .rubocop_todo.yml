@@ -304,14 +304,3 @@ Style/EmptyLinesAroundBlockBody:
 # SupportedStyles: empty_lines, empty_lines_except_namespace, no_empty_lines
 Style/EmptyLinesAroundClassBody:
   Enabled: false
-
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: empty_lines, empty_lines_except_namespace, no_empty_lines
-Style/EmptyLinesAroundModuleBody:
-  Exclude:
-    - 'app/helpers/funds_helper.rb'
-    - 'app/helpers/profiles_helper.rb'
-    - 'app/helpers/recipients_helper.rb'
-    - 'app/helpers/signup_helper.rb'

@@ -1,5 +1,4 @@
 module RecipientsHelper
-
   def fund_card_cta_button_copy(fund)
     classes = 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
     if @proposal.recommendation(fund).eligibility
@@ -64,5 +63,4 @@ module RecipientsHelper
   def percentage(percent, total)
     "#{((percent.to_d / total.to_d).round(3) * 100)}%"
   end
-
 end

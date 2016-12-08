@@ -1,5 +1,4 @@
 module FundsHelper
-
   def period(fund = @fund)
     return unless fund.open_data
     content_tag(
@@ -49,5 +48,4 @@ module FundsHelper
     def to_k(amount)
       amount.positive? ? "#{amount / 1000}k" : '0'
     end
-
 end
