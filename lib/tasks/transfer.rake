@@ -67,7 +67,7 @@ namespace :transfer do
         profile = recipient.profiles.where(state: 'complete').last
 
         def set_operating_for(recipient)
-          age = ((Date.today - recipient.founded_on).to_f / 365)
+          age = ((Time.zone.today - recipient.founded_on).to_f / 365)
           if age <= 1
             recipient.operating_for = 1
           elsif age > 1 && age <= 3

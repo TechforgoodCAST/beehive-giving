@@ -6,7 +6,7 @@ FactoryGirl.define do
 
   factory :legacy_profile, class: Profile do
     association         :organisation, factory: :recipient
-    year                Date.today.year
+    year                Time.zone.today.year
     gender              'All genders'
     min_age             14
     max_age             28

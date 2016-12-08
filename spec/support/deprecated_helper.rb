@@ -24,7 +24,7 @@ class DeprecatedHelper
   def create_profiles(num: 2)
     Array.new(num) do |i|
       create(:current_profile,
-             year: Date.today.year - i,
+             year: Time.zone.today.year - i,
              organisation: @recipient,
              countries: @countries,
              districts: @districts,

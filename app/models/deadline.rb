@@ -7,6 +7,6 @@ class Deadline < ActiveRecord::Base
   private
 
     def future_deadline
-      errors.add(:deadline) if deadline < Date.today
+      errors.add(:deadline) if deadline < Time.zone.today
     end
 end

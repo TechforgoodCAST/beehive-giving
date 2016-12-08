@@ -84,7 +84,7 @@ class Organisation < ActiveRecord::Base
   after_create :create_subscription
 
   def name=(s)
-    write_attribute(:name, s.sub(s.first, s.first.upcase))
+    self[:name] = s.sub(s.first, s.first.upcase)
   end
 
   def search_address
@@ -269,7 +269,7 @@ class Organisation < ActiveRecord::Base
   end
 
   def set_registered_on_if_scraped
-    age = ((Date.today - company_incorporated_date).to_f / 365)
+    age = ((Time.zone.today - company_incorporated_date).to_f / 365)
     if age <= 1
       self.operating_for = 1
     elsif age > 1 && age <= 3

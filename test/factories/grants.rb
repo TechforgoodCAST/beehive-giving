@@ -9,11 +9,11 @@ FactoryGirl.define do
     amount_awarded 10_000
     amount_applied 10_000
     installments 1
-    approved_on Date.new(Date.today.year, 1, 2)
-    start_on Date.new(Date.today.year, 1, 2)
-    end_on Date.new(Date.today.year, 12, 2)
-    attention_on Date.new(Date.today.year, 1, 2)
-    applied_on Date.new(Date.today.year, 1, 2)
+    approved_on Date.new(Time.zone.today.year, 1, 2)
+    start_on Date.new(Time.zone.today.year, 1, 2)
+    end_on Date.new(Time.zone.today.year, 12, 2)
+    attention_on Date.new(Time.zone.today.year, 1, 2)
+    applied_on Date.new(Time.zone.today.year, 1, 2)
     open_call true
     countries { FactoryGirl.create_list(:country, 2) }
     districts { FactoryGirl.create_list(:district, 2) }
@@ -34,11 +34,11 @@ FactoryGirl.define do
     amount_awarded { "1000#{n}" }
     amount_applied { "1000#{n}" }
     installments 1
-    approved_on Date.new(Date.today.year, 1, 2)
-    start_on Date.new(Date.today.year, 1, 2)
-    end_on Date.new(Date.today.year, 12, 2)
-    attention_on Date.new(Date.today.year, 1, 2)
-    applied_on Date.new(Date.today.year, 1, 2)
+    approved_on Date.new(Time.zone.today.year, 1, 2)
+    start_on Date.new(Time.zone.today.year, 1, 2)
+    end_on Date.new(Time.zone.today.year, 12, 2)
+    attention_on Date.new(Time.zone.today.year, 1, 2)
+    applied_on Date.new(Time.zone.today.year, 1, 2)
     open_call [true, false].sample
     # countries {FactoryGirl.create_list(:country, 2)}
     # districts {FactoryGirl.create_list(:district, 2)}
@@ -59,11 +59,11 @@ FactoryGirl.define do
     amount_awarded { "1000#{n}" }
     amount_applied { "1000#{n}" }
     installments 1
-    approved_on Date.new(Date.today.year, 1, 1)
-    start_on Date.new(Date.today.year, 1, 1)
-    end_on Date.new(Date.today.year, 1, 1)
-    attention_on Date.new(Date.today.year, 1, 1)
-    applied_on Date.new(Date.today.year, 1, 1)
+    approved_on Date.new(Time.zone.today.year, 1, 1)
+    start_on Date.new(Time.zone.today.year, 1, 1)
+    end_on Date.new(Time.zone.today.year, 1, 1)
+    attention_on Date.new(Time.zone.today.year, 1, 1)
+    applied_on Date.new(Time.zone.today.year, 1, 1)
     open_call [true, false].sample
     after(:build, &:default_values)
   end

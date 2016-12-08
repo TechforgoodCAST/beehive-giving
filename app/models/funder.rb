@@ -114,7 +114,7 @@ class Funder < Organisation
     attributes.where(funding_stream: 'All').order(year: :desc).first
   end
 
-  def recent_grants(year = Date.today.year) # refactor
+  def recent_grants(year = Time.zone.today.year) # refactor
     grants.where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01")
   end
 

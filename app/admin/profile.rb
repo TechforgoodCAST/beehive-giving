@@ -23,7 +23,7 @@ ActiveAdmin.register Profile do
     end
     column 'Organisation Age' do |user|
       if user.organisation.founded_on
-        "#{((Date.today - user.organisation.founded_on).to_f / 356).round(1)} years"
+        "#{((Time.zone.today - user.organisation.founded_on).to_f / 356).round(1)} years"
       end
     end
     column :income do |profile|
@@ -99,7 +99,7 @@ ActiveAdmin.register Profile do
       row(:expenditure_actual) { status_tag(profile.expenditure_actual) }
       row 'Age from founding (years)' do |user|
         if user.organisation.founded_on
-          ((Date.today - user.organisation.founded_on).to_f / 356).round(1)
+          ((Time.zone.today - user.organisation.founded_on).to_f / 356).round(1)
         end
       end
     end

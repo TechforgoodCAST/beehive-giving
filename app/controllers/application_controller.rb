@@ -103,7 +103,7 @@ class ApplicationController < ActionController::Base
 
   # refactor
   def ensure_profile_for_current_year
-    return if current_user.organisation.profiles.where(year: Date.today.year).count.positive?
+    return if current_user.organisation.profiles.where(year: Time.zone.today.year).count.positive?
     redirect_to new_recipient_profile_path(current_user.organisation)
   end
 

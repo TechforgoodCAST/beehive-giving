@@ -70,26 +70,11 @@ Rails/ActionFilter:
     - 'app/controllers/recipients_controller.rb'
     - 'app/controllers/signup_controller.rb'
 
-# Offense count: 41
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: strict, flexible
-Rails/Date:
-  Enabled: false
-
 # Offense count: 51
 # Configuration parameters: Include.
 # Include: app/models/**/*.rb
 Rails/HasAndBelongsToMany:
   Enabled: false
-
-# Offense count: 4
-# Cop supports --auto-correct.
-# Configuration parameters: Include.
-# Include: app/models/**/*.rb
-Rails/ReadWriteAttribute:
-  Exclude:
-    - 'app/models/organisation.rb'
-    - 'app/models/user.rb'
 
 # Offense count: 174
 # Cop supports --auto-correct.

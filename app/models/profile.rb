@@ -12,7 +12,7 @@ class Profile < ActiveRecord::Base
   has_and_belongs_to_many :districts
   has_and_belongs_to_many :age_groups
 
-  VALID_YEARS = ((Date.today.year - 3)..(Date.today.year)).to_a.reverse
+  VALID_YEARS = ((Time.zone.today.year - 3)..(Time.zone.today.year)).to_a.reverse
   GENDERS = ['All genders', 'Female', 'Male', 'Transgender', 'Other'].freeze # refactor
 
   include Workflow
@@ -109,7 +109,7 @@ class Profile < ActiveRecord::Base
   end
 
   def set_year_to_current_year
-    self.year = Date.today.year unless year.present?
+    self.year = Time.zone.today.year unless year.present?
   end
 
   def save_all_age_groups_if_all_ages

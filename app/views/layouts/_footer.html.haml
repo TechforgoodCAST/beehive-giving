@@ -17,7 +17,7 @@
     = link_to 'Contact', 'mailto:support@beehivegiving.org', class: 'white'
 
     %p.muted
-      &copy; #{Date.today.year}
+      &copy; #{Time.zone.today.year}
       = succeed ';' do
         = link_to 'BeehiveGiving.org', root_path, class: 'muted'
       Incubated by

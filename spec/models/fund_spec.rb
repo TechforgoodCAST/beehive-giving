@@ -257,7 +257,7 @@ describe Fund do
     end
 
     it 'period_end is in the past' do
-      @fund.period_end = Date.today + 1
+      @fund.period_end = Time.zone.today + 1
       expect(@fund).not_to be_valid
     end
   end

@@ -114,7 +114,7 @@ class Fund < ActiveRecord::Base
 
     def period_end_in_past
       return unless period_end
-      errors.add(:period_end, 'Period end must be in the past') if period_end > Date.today
+      errors.add(:period_end, 'Period end must be in the past') if period_end > Time.zone.today
     end
 
     def period_start_before_period_end

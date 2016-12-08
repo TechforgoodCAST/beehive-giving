@@ -31,15 +31,15 @@ class User < ActiveRecord::Base
   has_secure_password
 
   def first_name=(s)
-    write_attribute(:first_name, s.to_s.strip.capitalize)
+    self[:first_name] = s.to_s.strip.capitalize
   end
 
   def last_name=(s)
-    write_attribute(:last_name, s.to_s.strip.capitalize)
+    self[:last_name] = s.to_s.strip.capitalize
   end
 
   def user_email=(s)
-    write_attribute(:user_email, s.downcase)
+    self[:user_email] = s.downcase
   end
 
   def full_name

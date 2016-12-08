@@ -6,7 +6,7 @@ FactoryGirl.define do
 
   factory :funder_attribute do
     funder
-    year Date.today.year
+    year Time.zone.today.year
     application_count nil
     enquiry_count nil
     funding_stream 'All'
@@ -26,7 +26,7 @@ FactoryGirl.define do
   end
 
   factory :funder_attribute_no_grants, class: FunderAttribute do
-    year Date.today.year
+    year Time.zone.today.year
     association :funder, factory: :funder
     countries { FactoryGirl.create_list(:country, 2) }
     funding_stream 'All'

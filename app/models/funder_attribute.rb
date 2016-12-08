@@ -140,7 +140,7 @@ class FunderAttribute < ActiveRecord::Base
         sum = 0.0
         funder.recipients.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").pluck(:founded_on).uniq.each do |d|
           count += 1
-          sum += (Date.today - d) unless d.nil?
+          sum += (Time.zone.today - d) unless d.nil?
         end
         self.funded_average_age = (sum / count).round(1) if funded_average_age.nil?
       end
@@ -149,7 +149,7 @@ class FunderAttribute < ActiveRecord::Base
       sum = 0.0
       funder.recipients.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:founded_on).uniq.each do |d|
         count += 1
-        sum += (Date.today - d) unless d.nil?
+        sum += (Time.zone.today - d) unless d.nil?
       end
       self.funded_average_age = (sum / count).round(1) if funded_average_age.nil?
     end
