@@ -1,5 +1,4 @@
 ActiveAdmin.register Proposal do
-
   # controller do
   #   def scoped_collection
   #     Feature.includes(:funder, :recipient)

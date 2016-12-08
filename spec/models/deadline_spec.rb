@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Deadline do
-
   before(:each) do
     @app.seed_test_db.setup_funds
     @db = @app.instances
@@ -26,5 +25,4 @@ describe Deadline do
     @fund.destroy
     expect(Deadline.count).to eq 0
   end
-
 end

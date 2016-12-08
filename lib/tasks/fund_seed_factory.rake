@@ -1,7 +1,6 @@
 namespace :fund do
   desc 'Seed fund data for development'
   task seed_factory: :environment do
-
     require 'factory_girl_rails'
     include FactoryGirl::Syntax::Methods
 

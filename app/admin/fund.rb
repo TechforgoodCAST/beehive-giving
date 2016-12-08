@@ -1,5 +1,4 @@
 ActiveAdmin.register Fund do
-
   permit_params :funder_id, :type_of_fund, :name, :description, :open_call,
                 :active, :currency, :application_link, :key_criteria,
                 :match_funding_restrictions, :payment_procedure,
@@ -216,5 +215,4 @@ ActiveAdmin.register Fund do
     end
     f.actions
   end
-
 end

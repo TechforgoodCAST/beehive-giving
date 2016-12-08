@@ -1,6 +1,5 @@
 # TODO: deprecated
 ActiveAdmin.register FunderAttribute do
-
   permit_params :funder_id, :year, :grant_count, :application_count, :description,
   :enquiry_count, :funding_stream, :funding_size_average, :funding_size_min,
   :funding_size_max, :funding_duration_average, :funding_duration_min,
@@ -120,5 +119,4 @@ ActiveAdmin.register FunderAttribute do
     end
     f.actions
   end
-
 end

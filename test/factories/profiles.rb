@@ -1,6 +1,5 @@
 # TODO: deprecated
 FactoryGirl.define do
-
   factory :implementor do
     label 'Paid staff'
   end
@@ -28,5 +27,4 @@ FactoryGirl.define do
       affect_other        false
     end
   end
-
 end

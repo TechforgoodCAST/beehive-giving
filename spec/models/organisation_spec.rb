@@ -2,7 +2,6 @@ require 'rails_helper'
 require_relative '../support/match_helper'
 
 describe Organisation do
-
   let(:helper) { MatchHelper.new }
 
   before(:each) do
@@ -111,5 +110,4 @@ describe Organisation do
     @org.get_company_data
     expect(@org.operating_for).to eq 2
   end
-
 end

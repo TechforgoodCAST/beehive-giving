@@ -1,5 +1,4 @@
 ActiveAdmin.register Eligibility do
-
   permit_params :recipient_id, :restriction_id, :eligible
 
   controller do
@@ -53,5 +52,4 @@ ActiveAdmin.register Eligibility do
       row :eligible
     end
   end
-
 end

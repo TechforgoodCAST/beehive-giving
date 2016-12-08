@@ -1,5 +1,4 @@
 FactoryGirl.define do
-
   factory :funder do
     transient do
       n { rand(9999) }
@@ -16,5 +15,4 @@ FactoryGirl.define do
     website 'http://www.acme.com'
     active_on_beehive true
   end
-
 end

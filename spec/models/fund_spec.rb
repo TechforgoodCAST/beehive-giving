@@ -2,7 +2,6 @@ require 'rails_helper'
 
 describe Fund do
   context 'single' do
-
     before(:each) do
       @app.seed_test_db
           .setup_funds(save: false)

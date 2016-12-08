@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Feedback do
-
   before(:each) do
     @app.seed_test_db.with_user
     @db = @app.instances
@@ -23,5 +22,4 @@ describe Feedback do
     @feedback.save!
     expect(@feedback).to be_valid
   end
-
 end

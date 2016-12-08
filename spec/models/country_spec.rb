@@ -2,7 +2,6 @@ require 'rails_helper'
 require_relative '../support/deprecated_helper'
 
 describe Country do
-
   let(:deprecated) { DeprecatedHelper.new }
 
   before(:each) do
@@ -63,5 +62,4 @@ describe Country do
       expect(@uk.grants.count).to eq 2
     end
   end
-
 end

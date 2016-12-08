@@ -2,7 +2,6 @@ require 'rails_helper'
 require_relative '../support/deprecated_helper'
 
 describe District do
-
   let(:deprecated) { DeprecatedHelper.new }
 
   before(:each) do
@@ -59,5 +58,4 @@ describe District do
       expect(@arun.grants.count).to eq 2
     end
   end
-
 end

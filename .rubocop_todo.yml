@@ -290,10 +290,3 @@ Style/EmptyLines:
   Exclude:
     - 'spec/features/proposal_spec.rb'
     - 'spec/support/test_helper.rb'
-
-# Offense count: 100
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: empty_lines, no_empty_lines
-Style/EmptyLinesAroundBlockBody:
-  Enabled: false

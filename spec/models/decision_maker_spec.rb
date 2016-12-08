@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe DecisionMaker do
-
   before(:each) do
     @app.seed_test_db.setup_funds(num: 2)
     @db = @app.instances
@@ -27,5 +26,4 @@ describe DecisionMaker do
   it 'name is unique' do
     expect(build(:decision_maker, name: @decision_maker.name)).not_to be_valid
   end
-
 end

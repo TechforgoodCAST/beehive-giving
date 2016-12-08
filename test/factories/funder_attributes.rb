@@ -1,6 +1,5 @@
 # TODO: deprecated
 FactoryGirl.define do
-
   factory :approval_months, class: ApprovalMonth do
     sequence(:month, (0..11).cycle) { |n| %w(Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec)[n] }
   end
@@ -35,5 +34,4 @@ FactoryGirl.define do
     soft_restrictions 'Soft restrictions'
     application_details 'Application details'
   end
-
 end

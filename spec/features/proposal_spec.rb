@@ -3,7 +3,6 @@ require_relative '../support/match_helper'
 require_relative '../support/eligibility_helper'
 
 feature 'Proposal' do
-
   let(:match) { MatchHelper.new }
   let(:eligibility) { EligibilityHelper.new }
 
@@ -169,5 +168,4 @@ feature 'Proposal' do
       expect(page).to have_text 'Your details are out of date'
     end
   end
-
 end

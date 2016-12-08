@@ -1,5 +1,4 @@
 ActiveAdmin.register Recommendation do
-
   permit_params :recipient_id, :funder_id, :score
 
   controller do
@@ -22,5 +21,4 @@ ActiveAdmin.register Recommendation do
   filter :score
   filter :recommendation_quality, as: :select, collection: Recommendation::RECOMMENDATION_QUALITY
   filter :updated_at
-
 end

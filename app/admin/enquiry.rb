@@ -1,5 +1,4 @@
 ActiveAdmin.register Enquiry do
-
   permit_params :recipient_id, :funder_id, :funding_stream
 
   controller do
@@ -20,5 +19,4 @@ ActiveAdmin.register Enquiry do
     column :funding_stream
     actions
   end
-
 end

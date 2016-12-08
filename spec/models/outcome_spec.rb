@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Outcome do
-
   before(:each) do
     @app.seed_test_db.setup_funds(num: 2)
     @db = @app.instances
@@ -26,5 +25,4 @@ describe Outcome do
   it 'outcome is unique' do
     expect(build(:outcome, outcome: @outcome.outcome)).not_to be_valid
   end
-
 end

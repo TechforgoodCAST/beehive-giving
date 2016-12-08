@@ -2,7 +2,6 @@ require 'rails_helper'
 require_relative '../support/deprecated_helper'
 
 describe FundingType do
-
   let(:deprecated) { DeprecatedHelper.new }
 
   before(:each) do
@@ -36,5 +35,4 @@ describe FundingType do
       expect(@funding_type.funder_attributes.count).to eq 2
     end
   end
-
 end

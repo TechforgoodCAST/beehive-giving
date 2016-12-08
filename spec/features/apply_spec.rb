@@ -2,7 +2,6 @@ require 'rails_helper'
 require_relative '../support/eligibility_helper'
 
 feature 'Apply' do
-
   let(:helper) { EligibilityHelper.new }
 
   before(:each) do
@@ -46,5 +45,4 @@ feature 'Apply' do
     click_link "Apply to #{@fund.name}"
     expect(@proposal.enquiries.last.approach_funder_count).to eq 2
   end
-
 end

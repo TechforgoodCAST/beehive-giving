@@ -1,5 +1,4 @@
 namespace :funds do
-
   # usage: rake funds:import FILE=/path/to/file.csv
   # add: SAVE=true to save
   desc 'Add new restrictions for import task'
@@ -25,7 +24,6 @@ namespace :funds do
   # add: SAVE=true to save
   desc 'Import production data'
   task import: :environment do
-
     require 'open-uri'
     require 'csv'
 
@@ -116,6 +114,5 @@ namespace :funds do
       puts @errors
     end
     puts "\n"
-
   end
 end

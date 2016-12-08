@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Stage do
-
   before(:each) do
     @app.seed_test_db.setup_funds
     @db = @app.instances
@@ -43,5 +42,4 @@ describe Stage do
     @fund.destroy
     expect(Stage.count).to eq 0
   end
-
 end

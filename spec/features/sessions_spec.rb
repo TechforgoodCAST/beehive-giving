@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'Ensure logged in' do
-
   before(:each) do
     @app.seed_test_db
         .setup_funds
@@ -81,5 +80,4 @@ describe 'Ensure logged in' do
                   unauthorised_path
                 ])
   end
-
 end

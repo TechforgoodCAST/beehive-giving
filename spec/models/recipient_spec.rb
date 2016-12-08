@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe Recipient do
-
   before(:each) do
     @app.seed_test_db
         .setup_funds(num: 2, open_data: true)
@@ -63,5 +62,4 @@ describe Recipient do
   it 'unlocked_fund?'
   it 'locked_fund?'
   it 'recommended_with_eligible_funds'
-
 end

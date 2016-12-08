@@ -1,5 +1,4 @@
 FactoryGirl.define do
-
   factory :legacy_recipient, class: Recipient do
     transient do
       n { rand(9999) }
@@ -20,5 +19,4 @@ FactoryGirl.define do
   end
 
   factory :blank_org, class: Recipient do; end
-
 end

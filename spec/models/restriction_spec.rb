@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'Restriction' do
-
   before(:each) do
     @app.seed_test_db.setup_funds(num: 2)
     @db = @app.instances
@@ -47,5 +46,4 @@ describe 'Restriction' do
   end
 
   it 'truthy invert'
-
 end

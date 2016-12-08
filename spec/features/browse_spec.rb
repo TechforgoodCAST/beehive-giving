@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 feature 'Browse' do
-
   before(:each) do
     @app.seed_test_db
         .setup_funds(num: 7, open_data: true)
@@ -146,5 +145,4 @@ feature 'Browse' do
       scenario 'more info links'
     end
   end
-
 end

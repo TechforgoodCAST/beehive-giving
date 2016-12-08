@@ -40,5 +40,4 @@ describe Enquiry do
     unique = build(:enquiry, proposal: @proposal, fund: @db[:funds].last)
     expect(unique).to be_valid
   end
-
 end

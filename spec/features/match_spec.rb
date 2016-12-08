@@ -2,7 +2,6 @@ require 'rails_helper'
 require_relative '../support/match_helper'
 
 feature 'Match' do
-
   let(:helper) { MatchHelper.new }
 
   before(:each) do
@@ -228,5 +227,4 @@ feature 'Match' do
 
     expect(page.first('.yellow').text).to eq 'Awards for All 3'
   end
-
 end

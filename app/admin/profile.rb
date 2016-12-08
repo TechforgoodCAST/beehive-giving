@@ -1,6 +1,5 @@
 # TODO: deprecated
 ActiveAdmin.register Profile do
-
   permit_params :organisation_id, :year, :gender, :min_age, :max_age,
   :income, :expenditure, :volunteer_count, :staff_count, :does_sell,
   :beneficiaries_count, :beneficiaries_count_actual, :income_actual,
@@ -130,5 +129,4 @@ ActiveAdmin.register Profile do
     end
     f.actions
   end
-
 end

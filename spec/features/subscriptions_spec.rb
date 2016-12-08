@@ -3,7 +3,6 @@ require_relative '../support/subscriptions_helper'
 require 'stripe_mock'
 
 feature 'Subscriptions' do
-
   let(:subscriptions_helper) { SubscriptionsHelper.new }
   let(:stripe) { StripeMock.create_test_helper }
   before { StripeMock.start }
@@ -49,7 +48,6 @@ feature 'Subscriptions' do
       scenario 'can only have 1 proposal'
       scenario 'can only check 3 eligibilty'
       scenario 'can only see 6 funds'
-
     end
 
     context 'active' do

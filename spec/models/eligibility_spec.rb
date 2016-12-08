@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe 'Eligibility' do
-
   before(:each) do
     @app.seed_test_db.setup_funds(num: 2).create_recipient
     @db = @app.instances
@@ -31,5 +30,4 @@ describe 'Eligibility' do
       build(:eligibility, recipient: @recipient, restriction: Restriction.last)
     ).to be_valid
   end
-
 end

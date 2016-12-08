@@ -67,5 +67,4 @@ FactoryGirl.define do
     open_call [true, false].sample
     after(:build, &:default_values)
   end
-
 end

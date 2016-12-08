@@ -2,7 +2,6 @@
 require 'rails_helper'
 
 feature 'DEPRECATED Funder' do
-
   before(:each) do
     @app.seed_test_db
         .setup_funds(num: 7, open_data: true)
@@ -57,5 +56,4 @@ feature 'DEPRECATED Funder' do
     click_link('Overview')
     expect(current_path).to eq '/funding/overview'
   end
-
 end

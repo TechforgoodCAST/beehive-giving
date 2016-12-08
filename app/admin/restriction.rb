@@ -1,5 +1,4 @@
 ActiveAdmin.register Restriction do
-
   permit_params :restriction, :details, :invert
 
   controller do
@@ -31,5 +30,4 @@ ActiveAdmin.register Restriction do
     column :invert
     actions
   end
-
 end

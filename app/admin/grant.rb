@@ -1,5 +1,4 @@
 ActiveAdmin.register Grant do
-
   permit_params :funding_stream, :grant_type, :attention_how, :amount_awarded,
   :amount_applied, :installments, :approved_on, :start_on, :end_on, :attention_on, :applied_on,
   :recipient_id, :funder_id, :days_from_start_to_end, :open_call,
@@ -83,5 +82,4 @@ ActiveAdmin.register Grant do
     end
     f.actions
   end
-
 end

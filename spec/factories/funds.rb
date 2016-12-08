@@ -38,7 +38,6 @@ FactoryGirl.define do
     decision_makers_known true
 
     factory :fund_with_open_data, class: Fund do
-
       open_data true
       period_start { 1.year.ago }
       period_end { Date.today }

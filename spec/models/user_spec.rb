@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe User do
-
   before(:each) do
     @app.create_recipient.with_user
     @db = @app.instances
@@ -61,5 +60,4 @@ describe User do
     @user.save!
     expect(@user.user_email).to eq 'upcase@email.com'
   end
-
 end

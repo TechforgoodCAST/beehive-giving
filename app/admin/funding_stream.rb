@@ -1,5 +1,4 @@
 ActiveAdmin.register FundingStream do
-
   permit_params :label, :group, funder_ids: [], restriction_ids: []
 
   controller do
@@ -32,5 +31,4 @@ ActiveAdmin.register FundingStream do
     end
     actions
   end
-
 end

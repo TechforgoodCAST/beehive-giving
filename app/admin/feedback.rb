@@ -1,5 +1,4 @@
 ActiveAdmin.register Feedback do
-
   permit_params :user_id, :most_useful, :nps, :taken_away, :informs_decision, :other
 
   controller do

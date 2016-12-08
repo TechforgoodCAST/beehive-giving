@@ -2,7 +2,6 @@ require 'rails_helper'
 require_relative '../support/eligibility_helper'
 
 feature 'Eligibility' do
-
   let(:helper) { EligibilityHelper.new }
 
   before(:each) do
@@ -240,5 +239,4 @@ feature 'Eligibility' do
       end
     end
   end
-
 end
