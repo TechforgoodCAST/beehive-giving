@@ -98,23 +98,6 @@ Rails/ReadWriteAttribute:
     - 'app/models/organisation.rb'
     - 'app/models/user.rb'
 
-# Offense count: 3
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: strict, flexible
-Rails/TimeZone:
-  Exclude:
-    - 'app/controllers/accounts_controller.rb'
-    - 'app/controllers/sessions_controller.rb'
-    - 'app/controllers/signup_controller.rb'
-
-# Offense count: 10
-# Cop supports --auto-correct.
-# Configuration parameters: Include.
-# Include: app/models/**/*.rb
-Rails/Validation:
-  Exclude:
-    - 'app/models/feature.rb'
-
 # Offense count: 174
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.

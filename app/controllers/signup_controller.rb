@@ -21,7 +21,7 @@ class SignupController < ApplicationController
       if @user.save
         format.js do
           cookies[:auth_token] = @user.auth_token
-          @user.update_attribute(:last_seen, Time.now)
+          @user.update_attribute(:last_seen, Time.zone.now)
           UserMailer.welcome_email(@user).deliver_now
           if @user.role == 'User'
             render js: "mixpanel.identify('#{@user.id}');

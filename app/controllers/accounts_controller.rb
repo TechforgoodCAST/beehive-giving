@@ -10,7 +10,7 @@ class AccountsController < ApplicationController
     return unless @subscription.active?
     stripe_customer = Stripe::Customer.retrieve(@subscription.stripe_user_id)
     stripe_subscription = stripe_customer.subscriptions.first
-    expiry_date = Time.at(stripe_subscription[:current_period_end]).to_date
+    expiry_date = Time.zone.at(stripe_subscription[:current_period_end]).to_date
     @expiry = expiry_date.strftime("#{expiry_date.day.ordinalize} %B %Y")
   end
 
