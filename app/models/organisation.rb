@@ -129,7 +129,7 @@ class Organisation < ActiveRecord::Base
     "https://beta.companieshouse.gov.uk/company/#{CGI.escape(company_number)}"
   end
 
-  def get_charity_data
+  def scrape_charity_data
     require 'open-uri'
     response = Nokogiri::HTML(open(charity_commission_url, open_timeout: 3)) rescue nil
     if response
@@ -179,7 +179,7 @@ class Organisation < ActiveRecord::Base
 
       if company_no_scrape.present?
         self.org_type = 3
-        get_company_data
+        scrape_company_data
       else
         self.company_number = nil
       end
@@ -234,7 +234,7 @@ class Organisation < ActiveRecord::Base
                        end
   end
 
-  def get_company_data
+  def scrape_company_data
     require 'open-uri'
     response = Nokogiri::HTML(open(companies_house_url)) rescue nil
     if response

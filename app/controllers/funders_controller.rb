@@ -18,14 +18,14 @@ class FundersController < ApplicationController
       if params[:id] == 'all'
         # @map_all_data = Rails.cache.clear("map_all_data")
         @map_all_data = Rails.cache.fetch('map_all_data') do
-          Funder.first.get_map_all_data
+          Funder.first.load_map_all_data
         end
         format.json { render json: @map_all_data }
       elsif @funder.current_attribute.map_data.present? # TODO: refactor check if map data updated?
         format.json { render json: @funder.current_attribute.map_data }
       else
         @funder.save_map_data
-        format.json { render json: @funder.get_map_data }
+        format.json { render json: @funder.load_map_data }
       end
     end
   end

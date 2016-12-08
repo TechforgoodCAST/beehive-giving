@@ -53,7 +53,7 @@ class Proposal < ActiveRecord::Base
   validates :funding_type, inclusion: { in: FUNDING_TYPE, message: 'please select an option' }
   validates :funding_duration, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
   validates :total_costs, numericality: { greater_than_or_equal_to: 0, message: 'please enter the amount of funding you are seeking' }
-              # format: { with: /\A\d+\.?\d{0,2}\z/, message: 'only two decimal places allowed' }
+  # TODO: format: { with: /\A\d+\.?\d{0,2}\z/, message: 'only two decimal places allowed' }
   validates :total_costs_estimated, inclusion: { message: 'please select an option', in: [true, false] }
   validates :all_funding_required, inclusion: { message: 'please select an option', in: [true, false] }
 

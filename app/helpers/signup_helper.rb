@@ -18,7 +18,7 @@ module SignupHelper
   end
 
   def scrape_success?
-    (@recipient.charity_number.present? && @recipient.get_charity_data) || (@recipient.company_number.present? && @recipient.get_company_data)
+    (@recipient.charity_number.present? && @recipient.scrape_charity_data) || (@recipient.company_number.present? && @recipient.scrape_company_data)
   end
 
   def progress_step_helper(step, current)

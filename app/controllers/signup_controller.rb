@@ -1,6 +1,6 @@
 class SignupController < ApplicationController
   before_filter :ensure_logged_in, except: [:user, :create_user, :grant_access, :granted_access]
-  before_filter :get_districts, only: [:user, :create_user]
+  before_filter :load_districts, only: [:user, :create_user]
 
   def user
     if logged_in?
@@ -69,12 +69,12 @@ class SignupController < ApplicationController
 
       case @recipient.org_type
       when 1
-        @recipient.get_charity_data
+        @recipient.scrape_charity_data
       when 2
-        @recipient.get_company_data
+        @recipient.scrape_company_data
       when 3
-        @recipient.get_charity_data
-        @recipient.get_company_data
+        @recipient.scrape_charity_data
+        @recipient.scrape_company_data
       end
 
       # refactor
@@ -107,17 +107,17 @@ class SignupController < ApplicationController
     when 1
       @recipient.destroy
       @recipient = Recipient.new(recipient_params)
-      @recipient.get_charity_data
+      @recipient.scrape_charity_data
     when 2
       @recipient.destroy
       @recipient = Recipient.new(recipient_params)
-      @recipient.get_company_data
+      @recipient.scrape_company_data
       @recipient.charity_number = nil
     when 3
       @recipient.destroy
       @recipient = Recipient.new(recipient_params)
-      @recipient.get_charity_data if @recipient.charity_number.present?
-      @recipient.get_company_data if @recipient.company_number.present?
+      @recipient.scrape_charity_data if @recipient.charity_number.present?
+      @recipient.scrape_company_data if @recipient.company_number.present?
     else
       @recipient.registered_on = nil
     end
@@ -200,7 +200,7 @@ class SignupController < ApplicationController
 
   private
 
-    def get_districts
+    def load_districts
       @districts_count = Funder.active.joins(:countries).group('countries.id').uniq.count
       @districts = Country.order(priority: :desc).order(:name).find(@districts_count.keys)
     end

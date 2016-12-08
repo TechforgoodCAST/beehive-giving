@@ -30,7 +30,7 @@ class Funder < Organisation
 
   acts_as_taggable
 
-  def get_map_all_data
+  def load_map_all_data
     features = []
     grant_count = Grant.recent(2014).joins(:districts).group('districts.district').count
 
@@ -55,7 +55,7 @@ class Funder < Organisation
     { type: 'FeatureCollection', features: features }.to_json
   end
 
-  def get_map_data
+  def load_map_data
     return unless districts.any?
     features = []
     amount_awarded_max = districts_by_year.group(:district).sum(:amount_awarded).sort_by { |_, v| v }.reverse.to_h.values.first

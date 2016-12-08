@@ -48,7 +48,7 @@
     = f.input :country, error: false, type: 'text', input_html: { class: 'large uk-width-1-1 chosen-select' }, include_blank: true, priority: ['United Kingdom']
     = f.error :country, class: 'error-message'
 
-    - if @recipient.get_charity_data && !@recipient.postal_code.present?
+    - if @recipient.scrape_charity_data && !@recipient.postal_code.present?
       .uk-margin-top
         = f.input :postal_code, type: 'text', placeholder: 'Postal Code', input_html: { class: 'large uk-width-1-1' }
         = f.error :postal_code, class: 'error-message'

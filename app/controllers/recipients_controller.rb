@@ -10,8 +10,8 @@ class RecipientsController < ApplicationController
   before_filter :refine_recommendations, except: [:edit, :update]
 
   def edit
-    @recipient.get_charity_data
-    @recipient.get_company_data
+    @recipient.scrape_charity_data
+    @recipient.scrape_company_data
     redirect_to new_recipient_proposal_path(@recipient) if @recipient.save
   end
 
