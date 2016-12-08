@@ -8,12 +8,11 @@ class AccountsController < ApplicationController
 
   def subscription
     @subscription = @recipient.subscription
-    if @subscription.active?
-      stripe_customer = Stripe::Customer.retrieve(@subscription.stripe_user_id)
-      stripe_subscription = stripe_customer.subscriptions.first
-      expiry_date = Time.at(stripe_subscription[:current_period_end]).to_date
-      @expiry = expiry_date.strftime("#{expiry_date.day.ordinalize} %B %Y")
-    end
+    return unless @subscription.active?
+    stripe_customer = Stripe::Customer.retrieve(@subscription.stripe_user_id)
+    stripe_subscription = stripe_customer.subscriptions.first
+    expiry_date = Time.at(stripe_subscription[:current_period_end]).to_date
+    @expiry = expiry_date.strftime("#{expiry_date.day.ordinalize} %B %Y")
   end
 
   def upgrade
@@ -21,10 +20,9 @@ class AccountsController < ApplicationController
   end
 
   def charge
-    unless @recipient.subscribed?
-      create_stripe_customer
-      redirect_to account_subscription_path(@recipient)
-    end
+    return if @recipient.subscribed?
+    create_stripe_customer
+    redirect_to account_subscription_path(@recipient)
   end
 
   private

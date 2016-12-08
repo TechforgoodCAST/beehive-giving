@@ -77,12 +77,13 @@ class Recipient < Organisation
   def check_eligibility(proposal, fund)
     recipient_restrictions = eligibilities.pluck(:restriction_id)
     fund_restrictions = fund.restrictions.pluck(:id)
-    if (recipient_restrictions & fund_restrictions).count == fund_restrictions.count
-      if (eligible_restrictions & fund_restrictions).count == fund_restrictions.count
-        set_eligibility(proposal, fund, 'Eligible')
-      else
-        set_eligibility(proposal, fund, 'Ineligible')
-      end
+
+    return unless (recipient_restrictions & fund_restrictions).count == fund_restrictions.count
+
+    if (eligible_restrictions & fund_restrictions).count == fund_restrictions.count
+      set_eligibility(proposal, fund, 'Eligible')
+    else
+      set_eligibility(proposal, fund, 'Ineligible')
     end
   end
 
@@ -186,29 +187,27 @@ class Recipient < Organisation
   end
 
   def transfer_profile_to_existing_proposal(profile, proposal)
-    if proposal.initial? || proposal.transferred?
-      transfer_data(profile, proposal)
-      proposal.check_affect_geo
-      proposal.state = 'transferred'
-      proposal.valid?
-    end
+    return unless proposal.initial? || proposal.transferred?
+    transfer_data(profile, proposal)
+    proposal.check_affect_geo
+    proposal.state = 'transferred'
+    proposal.valid?
   end
 
   def transfer_profile_to_new_proposal(profile, proposal)
-    if profile_for_migration?
-      transfer_data(profile, proposal)
+    return unless profile_for_migration?
+    transfer_data(profile, proposal)
 
-      # beneficiaries
-      proposal.beneficiary_ids = profile.beneficiary_ids
-      proposal.gender = profile.gender if proposal.affect_people?
+    # beneficiaries
+    proposal.beneficiary_ids = profile.beneficiary_ids
+    proposal.gender = profile.gender if proposal.affect_people?
 
-      # location
-      proposal.country_ids = profile.country_ids
-      proposal.district_ids = profile.district_ids
-      proposal.check_affect_geo
+    # location
+    proposal.country_ids = profile.country_ids
+    proposal.district_ids = profile.district_ids
+    proposal.check_affect_geo
 
-      proposal.valid?
-    end
+    proposal.valid?
   end
 
 end

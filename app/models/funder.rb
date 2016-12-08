@@ -57,34 +57,33 @@ class Funder < Organisation
   end
 
   def get_map_data
-    if districts.any?
-      features = []
-      amount_awarded_max = districts_by_year.group(:district).sum(:amount_awarded).sort_by { |_, v| v }.reverse.to_h.values.first
-      grant_count = districts_by_year.group(:district).count
-      grant_count_max = districts_by_year.group(:district).count.sort_by { |_, v| v }.reverse.to_h.values.first
-      grant_average = districts_by_year.group(:district).average(:amount_awarded)
+    return unless districts.any?
+    features = []
+    amount_awarded_max = districts_by_year.group(:district).sum(:amount_awarded).sort_by { |_, v| v }.reverse.to_h.values.first
+    grant_count = districts_by_year.group(:district).count
+    grant_count_max = districts_by_year.group(:district).count.sort_by { |_, v| v }.reverse.to_h.values.first
+    grant_average = districts_by_year.group(:district).average(:amount_awarded)
 
-      districts_by_year.group(:district).sum(:amount_awarded).each do |k, v|
-        district = District.find_by_district(k)
+    districts_by_year.group(:district).sum(:amount_awarded).each do |k, v|
+      district = District.find_by_district(k)
 
-        features << {
-          type: 'Feature', properties: {
-            name: k,
-            slug: k.downcase.gsub(/[^a-z0-9]+/, '-'),
-            amount_awarded: v,
-            amount_awarded_hue: get_hue(v, amount_awarded_max),
-            grant_count: grant_count[k],
-            grant_count_hue: get_hue(grant_count[k], grant_count_max),
-            grant_average: grant_average[k],
-            rank: district.indices_rank,
-            rank_hue: get_hue((district.indices_rank_proportion_most_deprived_ten_percent.to_f * 100).round(0), 49),
-            rank_proportion: (district.indices_rank_proportion_most_deprived_ten_percent.to_f * 100).round(0)
-          }, geometry: district.geometry
-        }
-      end
-
-      { type: 'FeatureCollection', features: features }.to_json
+      features << {
+        type: 'Feature', properties: {
+          name: k,
+          slug: k.downcase.gsub(/[^a-z0-9]+/, '-'),
+          amount_awarded: v,
+          amount_awarded_hue: get_hue(v, amount_awarded_max),
+          grant_count: grant_count[k],
+          grant_count_hue: get_hue(grant_count[k], grant_count_max),
+          grant_average: grant_average[k],
+          rank: district.indices_rank,
+          rank_hue: get_hue((district.indices_rank_proportion_most_deprived_ten_percent.to_f * 100).round(0), 49),
+          rank_proportion: (district.indices_rank_proportion_most_deprived_ten_percent.to_f * 100).round(0)
+        }, geometry: district.geometry
+      }
     end
+
+    { type: 'FeatureCollection', features: features }.to_json
   end
 
   def save_map_data

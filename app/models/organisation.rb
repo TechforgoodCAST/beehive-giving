@@ -184,21 +184,19 @@ class Organisation < ActiveRecord::Base
       else
         self.company_number = nil
       end
-
-      return true
+      true
     else
-      return false
+      false
     end
   end
 
   def financials_multiplier(scrape)
-    if scrape.present?
-      case scrape.text.last
-      when 'K'
-        1000
-      when 'M'
-        1_000_000
-      end
+    return unless scrape.present?
+    case scrape.text.last
+    when 'K'
+      1000
+    when 'M'
+      1_000_000
     end
   end
 
@@ -269,9 +267,9 @@ class Organisation < ActiveRecord::Base
 
       set_registered_on_if_scraped if company_incorporated_date
 
-      return true
+      true
     else
-      return false
+      false
     end
   end
 
@@ -293,10 +291,9 @@ class Organisation < ActiveRecord::Base
   private
 
     def clear_registration_numbers_if_unregistered
-      if org_type.zero? || org_type == 4
-        self.charity_number = nil
-        self.company_number = nil
-      end
+      return unless org_type.zero? || org_type == 4
+      self.charity_number = nil
+      self.company_number = nil
     end
 
 end

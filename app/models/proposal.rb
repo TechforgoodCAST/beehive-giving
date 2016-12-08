@@ -73,17 +73,13 @@ class Proposal < ActiveRecord::Base
               if: :beneficiaries_other_required
 
   def beneficiaries_people
-    if (beneficiary_ids & Beneficiary.where(category: 'People').pluck(:id)).count < 1
-      errors.add(:beneficiaries, 'Please select an option') if affect_people?
-    end
+    return unless beneficiaries_not_selected('People')
+    errors.add(:beneficiaries, 'Please select an option') if affect_people?
   end
 
   def beneficiaries_other_group
-    if (beneficiary_ids & Beneficiary.where(category: 'Other').pluck(:id)).count < 1
-      unless beneficiaries_other_required?
-        errors.add(:beneficiaries, 'Please select an option') if affect_other?
-      end
-    end
+    return unless beneficiaries_not_selected('Other') && beneficiaries_other_required?
+    errors.add(:beneficiaries, 'Please select an option') if affect_other?
   end
 
   # Location
@@ -198,10 +194,9 @@ class Proposal < ActiveRecord::Base
   end
 
   def refine_recommendations
-    unless Fund.active.count == funds.count
-      initial_recommendation
-      recommendations.where(fund_id: Fund.inactive_ids).destroy_all
-    end
+    return if Fund.active.count == funds.count
+    initial_recommendation
+    recommendations.where(fund_id: Fund.inactive_ids).destroy_all
   end
 
   def show_fund(fund)
@@ -212,18 +207,15 @@ class Proposal < ActiveRecord::Base
 
   def check_affect_geo
     # TODO: refactor
-    if affect_geo.present?
-      unless affect_geo == 2
-        if country_ids.uniq.count > 1
-          self.affect_geo = 3
-        elsif (district_ids & Country.find(country_ids[0]).districts.pluck(:id)).count == Country.find(country_ids[0]).districts.count
-          self.affect_geo = 2
-        elsif District.where(id: district_ids).pluck(:region).uniq.count > 1
-          self.affect_geo = 1
-        else
-          self.affect_geo = 0
-        end
-      end
+    return if affect_geo.blank? || affect_geo == 2
+    if country_ids.uniq.count > 1
+      self.affect_geo = 3
+    elsif (district_ids & Country.find(country_ids[0]).districts.pluck(:id)).count == Country.find(country_ids[0]).districts.count
+      self.affect_geo = 2
+    elsif District.where(id: district_ids).pluck(:region).uniq.count > 1
+      self.affect_geo = 1
+    else
+      self.affect_geo = 0
     end
   end
 
@@ -236,6 +228,10 @@ class Proposal < ActiveRecord::Base
   end
 
   private
+
+    def beneficiaries_not_selected(category)
+      (beneficiary_ids & Beneficiary.where(category: category).pluck(:id)).count < 1
+    end
 
     def parse_distribution(data, comparison)
       data.sort_by { |i| i['position'] }
@@ -287,9 +283,8 @@ class Proposal < ActiveRecord::Base
     end
 
     def save_all_age_groups_if_all_ages
-      if age_group_ids.include?(AgeGroup.first.id)
-        self.age_group_ids = AgeGroup.pluck(:id)
-      end
+      return unless age_group_ids.include?(AgeGroup.first.id)
+      self.age_group_ids = AgeGroup.pluck(:id)
     end
 
     def clear_beneficiary_ids(category)
@@ -304,19 +299,17 @@ class Proposal < ActiveRecord::Base
 
     def save_districts_from_countries
       # TODO: refactor into background job too slow
-      if affect_geo > 1
-        district_ids_array = []
-        countries.each do |country|
-          district_ids_array += District.where(country_id: country.id).pluck(:id)
-        end
-        self.district_ids = district_ids_array.uniq
+      return unless affect_geo > 1
+      district_ids_array = []
+      countries.each do |country|
+        district_ids_array += District.where(country_id: country.id).pluck(:id)
       end
+      self.district_ids = district_ids_array.uniq
     end
 
     def prevent_second_proposal_until_first_is_complete
-      if recipient.proposals.count == 1 && recipient.proposals.where(state: 'complete').count < 1
-        errors.add(:proposal, 'Please complete your first proposal before creating a second.')
-      end
+      return unless recipient.proposals.count == 1 && recipient.proposals.where(state: 'complete').count < 1
+      errors.add(:proposal, 'Please complete your first proposal before creating a second.')
     end
 
 end

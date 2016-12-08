@@ -114,25 +114,22 @@ class Fund < ActiveRecord::Base
     end
 
     def period_end_in_past
-      if period_end
-        errors.add(:period_end, 'Period end must be in the past') if period_end > Date.today
-      end
+      return unless period_end
+      errors.add(:period_end, 'Period end must be in the past') if period_end > Date.today
     end
 
     def period_start_before_period_end
-      if period_start && period_end
-        errors.add(:period_start, 'Period start must be before period end') if period_start > period_end
-      end
+      return unless period_start && period_end
+      errors.add(:period_start, 'Period start must be before period end') if period_start > period_end
     end
 
     def check_beehive_data
-      if open_data && slug
-        options = {
-          headers: { 'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN'] }
-        }
-        resp = HTTParty.get(ENV['BEEHIVE_DATA_FUND_SUMMARY_ENDPOINT'] + slug, options)
-        assign_attributes(resp.except('fund_slug')) if slug == resp['fund_slug']
-      end
+      return unless open_data && slug
+      options = {
+        headers: { 'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN'] }
+      }
+      resp = HTTParty.get(ENV['BEEHIVE_DATA_FUND_SUMMARY_ENDPOINT'] + slug, options)
+      assign_attributes(resp.except('fund_slug')) if slug == resp['fund_slug']
     end
 
 end

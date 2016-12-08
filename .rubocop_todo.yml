@@ -342,21 +342,3 @@ Style/FirstParameterIndentation:
 # SupportedStyles: when_needed, always
 Style/FrozenStringLiteralComment:
   Enabled: false
-
-# Offense count: 39
-# Configuration parameters: MinBodyLength.
-Style/GuardClause:
-  Exclude:
-    - 'app/controllers/accounts_controller.rb'
-    - 'app/controllers/application_controller.rb'
-    - 'app/controllers/funders_controller.rb'
-    - 'app/controllers/proposals_controller.rb'
-    - 'app/controllers/recipients_controller.rb'
-    - 'app/models/fund.rb'
-    - 'app/models/funder.rb'
-    - 'app/models/funder_attribute.rb'
-    - 'app/models/organisation.rb'
-    - 'app/models/profile.rb'
-    - 'app/models/proposal.rb'
-    - 'app/models/recipient.rb'
-    - 'app/models/stage.rb'

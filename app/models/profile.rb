@@ -61,17 +61,13 @@ class Profile < ActiveRecord::Base
   validate :beneficiaries_people, :beneficiaries_other_categories, if: 'self.beneficiaries? || self.complete?'
 
   def beneficiaries_people
-    if (beneficiary_ids & Beneficiary.where(category: 'People').pluck(:id)).count < 1
-      errors.add(:beneficiaries, 'Please select an option') if affect_people?
-    end
+    return unless (beneficiary_ids & Beneficiary.where(category: 'People').pluck(:id)).count < 1
+    errors.add(:beneficiaries, 'Please select an option') if affect_people?
   end
 
   def beneficiaries_other_categories
-    if (beneficiary_ids & Beneficiary.where(category: 'Other').pluck(:id)).count < 1
-      unless beneficiaries_other_required?
-        errors.add(:beneficiaries, 'Please select an option') if affect_other?
-      end
-    end
+    return unless (beneficiary_ids & Beneficiary.where(category: 'Other').pluck(:id)).count < 1 && beneficiaries_other_required?
+    errors.add(:beneficiaries, 'Please select an option') if affect_other?
   end
 
   validates :beneficiaries_other, presence: { message: "please uncheck 'Other' or specify details" }, if: :beneficiaries_other_required
@@ -118,9 +114,8 @@ class Profile < ActiveRecord::Base
   end
 
   def save_all_age_groups_if_all_ages
-    if age_group_ids.include?(AgeGroup.first.id)
-      self.age_group_ids = AgeGroup.pluck(:id)
-    end
+    return unless age_group_ids.include?(AgeGroup.first.id)
+    self.age_group_ids = AgeGroup.pluck(:id)
   end
 
 end

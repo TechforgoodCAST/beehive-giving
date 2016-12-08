@@ -27,7 +27,7 @@ class EnquiriesController < ApplicationController # TODO: ApplicationsController
   private
 
     def load_fund # TODO: refactor to applicaiton controller?
-      @fund = Fund.find_by(slug: params[:id])
+      @fund = Fund.includes(:funder).find_by(slug: params[:id])
     end
 
 end

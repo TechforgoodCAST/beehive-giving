@@ -49,9 +49,8 @@ class ProposalsController < ApplicationController
 
   def edit
     @recipient.transfer_profile_to_existing_proposal(@recipient.profiles.last, @proposal)
-    if request.referer
-      session.delete(:return_to) if request.referer.ends_with?('/proposals')
-    end
+    return unless request.referer
+    session.delete(:return_to) if request.referer.ends_with?('/proposals')
   end
 
   def update

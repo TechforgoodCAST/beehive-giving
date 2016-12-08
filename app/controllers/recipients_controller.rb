@@ -96,10 +96,9 @@ class RecipientsController < ApplicationController
     def funder_attribute # TODO: refactor
       @funding_stream = params[:funding_stream] || 'All'
 
-      if @funder.attributes.any?
-        @year_of_funding = @funder.attributes.where('grant_count > ?', 0).order(year: :desc).first.year
-        @funder_attribute = @funder.attributes.where('year = ? AND funding_stream = ?', @year_of_funding, @funding_stream).first
-      end
+      return unless @funder.attributes.any?
+      @year_of_funding = @funder.attributes.where('grant_count > ?', 0).order(year: :desc).first.year
+      @funder_attribute = @funder.attributes.where('year = ? AND funding_stream = ?', @year_of_funding, @funding_stream).first
     end
 
     def eligibility_params # TODO: refactor

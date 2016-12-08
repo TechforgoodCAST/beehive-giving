@@ -5,10 +5,9 @@ class FundersController < ApplicationController
   respond_to :html
 
   def overview
-    unless params[:id].present?
-      @funder = current_user.organisation
-      params[:id] = current_user.organisation.slug
-    end
+    return if params[:id].present?
+    @funder = current_user.organisation
+    params[:id] = current_user.organisation.slug
   end
 
   def map
