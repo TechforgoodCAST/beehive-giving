@@ -122,21 +122,6 @@ Rails/Validation:
 Style/AlignParameters:
   Enabled: false
 
-# Offense count: 14
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, ProceduralMethods, FunctionalMethods, IgnoredMethods.
-# SupportedStyles: line_count_based, semantic, braces_for_chaining
-# ProceduralMethods: benchmark, bm, bmbm, create, each_with_object, measure, new, realtime, tap, with_object
-# FunctionalMethods: let, let!, subject, watch
-# IgnoredMethods: lambda, proc, it
-Style/BlockDelimiters:
-  Exclude:
-    - 'app/controllers/proposals_controller.rb'
-    - 'app/controllers/recipients_controller.rb'
-    - 'app/controllers/signup_controller.rb'
-    - 'app/helpers/funds_helper.rb'
-    - 'spec/factories/recipients.rb'
-
 # Offense count: 174
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.

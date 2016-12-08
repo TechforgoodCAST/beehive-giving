@@ -9,9 +9,9 @@ module FundsHelper
   end
 
   def amount_awarded_distribution
-    @fund.amount_awarded_distribution.each { |s|
-      s['segment'] = "#{to_k(s['start'])} - #{to_k(s['end'])}"
-    }.to_json
+    @fund.amount_awarded_distribution
+         .each { |s| s['segment'] = "#{to_k(s['start'])} - #{to_k(s['end'])}" }
+         .to_json
   end
 
   def top_award_months(fund = @fund)

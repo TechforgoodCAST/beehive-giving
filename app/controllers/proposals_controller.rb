@@ -21,16 +21,16 @@ class ProposalsController < ApplicationController
 
     respond_to do |format|
       if @proposal.save
-        format.js {
+        format.js do
           @proposal.next_step!
           render js: "window.location.href = '#{recommended_funds_path}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
-        }
-        format.html {
+        end
+        format.html do
           @proposal.next_step!
           redirect_to recommended_funds_path
-        }
+        end
       else
         format.js
         format.html { render :new }
@@ -56,7 +56,7 @@ class ProposalsController < ApplicationController
     @proposal.state = 'transferred' if @proposal.initial?
     respond_to do |format|
       if @proposal.update_attributes(proposal_params)
-        format.js   {
+        format.js do
           @proposal.next_step! unless @proposal.complete?
           flash[:notice] = 'Funding recommendations updated!'
 
@@ -70,8 +70,8 @@ class ProposalsController < ApplicationController
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
           end
-        }
-        format.html {
+        end
+        format.html do
           @proposal.next_step! unless @proposal.complete?
           flash[:notice] = 'Funding recommendations updated!'
 
@@ -81,7 +81,7 @@ class ProposalsController < ApplicationController
           else
             redirect_to recommended_funds_path
           end
-        }
+        end
       else
         format.js
         format.html { render :edit }

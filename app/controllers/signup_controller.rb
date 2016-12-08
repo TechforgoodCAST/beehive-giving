@@ -19,7 +19,7 @@ class SignupController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.js {
+        format.js do
           cookies[:auth_token] = @user.auth_token
           @user.update_attribute(:last_seen, Time.now)
           UserMailer.welcome_email(@user).deliver_now
@@ -43,13 +43,13 @@ class SignupController < ApplicationController
                           $('button[type=submit]').prop('disabled', true)
                           .removeAttr('data-disable-with');"
           end
-        }
-        format.html {
+        end
+        format.html do
           cookies[:auth_token] = @user.auth_token
           UserMailer.welcome_email(@user).deliver_now
           redirect_to signup_organisation_path if @user.role == 'User'
           redirect_to new_funder_path if @user.role == 'Funder'
-        }
+        end
       else
         format.js
         format.html { render :user }
@@ -125,7 +125,7 @@ class SignupController < ApplicationController
     respond_to do |format|
       if @recipient.save
         reset_session
-        format.js {
+        format.js do
           current_user.update_attribute(:organisation_id, @recipient.id)
           render js: "mixpanel.identify('#{current_user.id}');
                         mixpanel.people.set({
@@ -137,15 +137,15 @@ class SignupController < ApplicationController
                         window.location.href = '#{new_recipient_proposal_path(@recipient)}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
-        }
-        format.html {
+        end
+        format.html do
           current_user.update_attribute(:organisation_id, @recipient.id)
           redirect_to new_recipient_proposal_path(@recipient)
-        }
+        end
       # If company/charity number has already been taken
       elsif (@recipient.errors.added? :charity_number, :taken) ||
             (@recipient.errors.added? :company_number, :taken)
-        format.js {
+        format.js do
           charity_number = @recipient.charity_number
           company_number = @recipient.company_number
           organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
@@ -153,8 +153,8 @@ class SignupController < ApplicationController
 
           current_user.lock_access_to_organisation(organisation)
           render js: "window.location.href = '#{unauthorised_path}';"
-        }
-        format.html {
+        end
+        format.html do
           charity_number = @recipient.charity_number
           company_number = @recipient.company_number
           organisation = (Organisation.find_by_charity_number(charity_number) if charity_number) ||
@@ -162,7 +162,7 @@ class SignupController < ApplicationController
 
           current_user.lock_access_to_organisation(organisation)
           redirect_to unauthorised_path
-        }
+        end
       else
         format.js
         format.html { render :organisation }

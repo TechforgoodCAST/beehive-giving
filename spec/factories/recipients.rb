@@ -17,6 +17,4 @@ FactoryGirl.define do
       volunteers    Organisation::EMPLOYEES[1][1]
     end
   end
-
-  factory :blank_org, class: Recipient do; end
 end
