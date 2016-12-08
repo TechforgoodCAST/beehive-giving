@@ -86,7 +86,7 @@ class TestHelper
   def stub_amounts_endpoint(data = 10_000.0)
     stub_beehive_insight(
       ENV['BEEHIVE_INSIGHT_AMOUNTS_ENDPOINT'],
-      { amount: data }
+      amount: data
     )
     self
   end
@@ -94,7 +94,7 @@ class TestHelper
   def stub_durations_endpoint(data = 12)
     stub_beehive_insight(
       ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'],
-      { duration: data }
+      duration: data
     )
     self
   end

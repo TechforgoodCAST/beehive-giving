@@ -109,11 +109,11 @@ class Proposal < ActiveRecord::Base
     )
     beehive_insight_amounts = call_beehive_insight(
       ENV['BEEHIVE_INSIGHT_AMOUNTS_ENDPOINT'],
-      { amount: total_costs }
+      amount: total_costs
     )
     beehive_insight_durations = call_beehive_insight(
       ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'],
-      { duration: funding_duration }
+      duration: funding_duration
     )
 
     Fund.all.find_each do |fund|

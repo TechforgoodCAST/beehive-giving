@@ -137,17 +137,6 @@ Style/BlockDelimiters:
     - 'app/helpers/funds_helper.rb'
     - 'spec/factories/recipients.rb'
 
-# Offense count: 6
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: braces, no_braces, context_dependent
-Style/BracesAroundHashParameters:
-  Exclude:
-    - 'app/controllers/application_controller.rb'
-    - 'app/models/proposal.rb'
-    - 'lib/tasks/funds.rake'
-    - 'spec/support/test_helper.rb'
-
 # Offense count: 174
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.

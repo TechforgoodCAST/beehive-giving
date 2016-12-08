@@ -21,7 +21,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_new_relic_user
-    ::NewRelic::Agent.add_custom_attributes({ user_id: current_user.id })
+    ::NewRelic::Agent.add_custom_attributes(user_id: current_user.id)
   end
 
   def logged_in?

@@ -66,14 +66,12 @@ namespace :funds do
       fund_values = row.to_hash.except('funder', 'valid', 'old_description', 'soft_restrictions')
 
       fund_values = fund_values.merge(
-        {
-          'type_of_fund' => 'Grant',
-          'currency' => 'GB',
-          'restrictions_known' => true,
-          'geographic_scale' => Proposal::AFFECT_GEO.map { |arr| arr[0] }.index(row['geographic_scale']),
-          'tags' => ActsAsTaggableOn::Tag.where(slug: row['tags'].split),
-          'countries' => Country.where(alpha2: row['countries'].split(', '))
-        }
+        'type_of_fund' => 'Grant',
+        'currency' => 'GB',
+        'restrictions_known' => true,
+        'geographic_scale' => Proposal::AFFECT_GEO.map { |arr| arr[0] }.index(row['geographic_scale']),
+        'tags' => ActsAsTaggableOn::Tag.where(slug: row['tags'].split),
+        'countries' => Country.where(alpha2: row['countries'].split(', '))
       )
 
       fund_values['districts'] = if row['districts'] == 'all'
