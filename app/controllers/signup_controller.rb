@@ -20,7 +20,7 @@ class SignupController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        format.js   {
+        format.js {
           cookies[:auth_token] = @user.auth_token
           @user.update_attribute(:last_seen, Time.now)
           UserMailer.welcome_email(@user).deliver_now
@@ -126,7 +126,7 @@ class SignupController < ApplicationController
     respond_to do |format|
       if @recipient.save
         reset_session
-        format.js   {
+        format.js {
           current_user.update_attribute(:organisation_id, @recipient.id)
           render js: "mixpanel.identify('#{current_user.id}');
                         mixpanel.people.set({

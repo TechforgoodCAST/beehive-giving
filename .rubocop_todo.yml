@@ -38,6 +38,13 @@ Style/RedundantSelf:
   Exclude:
     - 'config/application.rb'
 
+# Offense count: 179
+# Cop supports --auto-correct.
+# Configuration parameters: EnforcedStyle, SupportedStyles.
+# SupportedStyles: when_needed, always
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
 # Offense count: 1
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.
@@ -314,31 +321,3 @@ Style/EmptyLinesAroundModuleBody:
 Style/EvenOdd:
   Exclude:
     - 'spec/support/test_helper.rb'
-
-# Offense count: 8
-# Cop supports --auto-correct.
-# Configuration parameters: AllowForAlignment, ForceEqualSignAlignment.
-Style/ExtraSpacing:
-  Exclude:
-    - 'Gemfile'
-    - 'app/controllers/signup_controller.rb'
-    - 'app/models/funder_attribute.rb'
-    - 'bin/rails'
-    - 'config.ru'
-    - 'config/environments/test.rb'
-    - 'config/routes.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.
-# SupportedStyles: consistent, special_for_inner_method_call, special_for_inner_method_call_in_parentheses
-Style/FirstParameterIndentation:
-  Exclude:
-    - 'app/controllers/application_controller.rb'
-
-# Offense count: 179
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles.
-# SupportedStyles: when_needed, always
-Style/FrozenStringLiteralComment:
-  Enabled: false

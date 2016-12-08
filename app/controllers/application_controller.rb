@@ -95,8 +95,8 @@ class ApplicationController < ActionController::Base
                   alert: 'Please create a funding proposal before continuing.'
     elsif current_user.organisation.proposals.last.initial?
       redirect_to edit_recipient_proposal_path(
-                current_user.organisation,
-                current_user.organisation.proposals.last
+        current_user.organisation,
+        current_user.organisation.proposals.last
       )
     end
   end
