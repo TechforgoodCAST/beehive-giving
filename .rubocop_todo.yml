@@ -315,9 +315,3 @@ Style/EmptyLinesAroundModuleBody:
     - 'app/helpers/profiles_helper.rb'
     - 'app/helpers/recipients_helper.rb'
     - 'app/helpers/signup_helper.rb'
-
-# Offense count: 1
-# Cop supports --auto-correct.
-Style/EvenOdd:
-  Exclude:
-    - 'spec/support/test_helper.rb'

@@ -40,7 +40,7 @@ class TestHelper
       fund.funding_types = @funding_types
       fund.countries = @countries
       fund.districts = @uk_districts + @kenya_districts
-      fund.restrictions = (i % 2 == 0 ? @restrictions.first(3) : @restrictions.last(3))
+      fund.restrictions = (i.even? ? @restrictions.first(3) : @restrictions.last(3))
       fund.outcomes = @outcomes
       fund.decision_makers = @decision_makers
       fund.save! if save
