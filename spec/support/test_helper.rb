@@ -22,11 +22,11 @@ class TestHelper
   def setup_funds(num: 1, save: true, open_data: false) # TODO: refactor
     FactoryGirl.reload
     @funder = create(:funder)
-    if open_data
-      @funds = build_list(:fund_with_open_data, num, funder: @funder)
-    else
-      @funds = build_list(:fund, num, funder: @funder)
-    end
+    @funds = if open_data
+               build_list(:fund_with_open_data, num, funder: @funder)
+             else
+               build_list(:fund, num, funder: @funder)
+             end
     @funding_types = create_list(:funding_type, FundingType::FUNDING_TYPE.count)
     @restrictions = create_list(:restriction, 5)
     @outcomes = create_list(:outcome, 2)

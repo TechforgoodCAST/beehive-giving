@@ -146,14 +146,14 @@ class Proposal < ActiveRecord::Base
         end
 
         # beneficiary recommendation
-        if gender? && fund.gender_distribution?
-          beneficiary_score = parse_distribution(
-            fund.gender_distribution,
-            gender
-          )
-        else
-          beneficiary_score = 0
-        end
+        beneficiary_score = if gender? && fund.gender_distribution?
+                              parse_distribution(
+                                fund.gender_distribution,
+                                gender
+                              )
+                            else
+                              0
+                            end
         # TODO: add age_groups
 
         if beehive_insight.key?(fund.slug)
@@ -207,15 +207,15 @@ class Proposal < ActiveRecord::Base
   def check_affect_geo
     # TODO: refactor
     return if affect_geo.blank? || affect_geo == 2
-    if country_ids.uniq.count > 1
-      self.affect_geo = 3
-    elsif (district_ids & Country.find(country_ids[0]).districts.pluck(:id)).count == Country.find(country_ids[0]).districts.count
-      self.affect_geo = 2
-    elsif District.where(id: district_ids).pluck(:region).uniq.count > 1
-      self.affect_geo = 1
-    else
-      self.affect_geo = 0
-    end
+    self.affect_geo = if country_ids.uniq.count > 1
+                        3
+                      elsif (district_ids & Country.find(country_ids[0]).districts.pluck(:id)).count == Country.find(country_ids[0]).districts.count
+                        2
+                      elsif District.where(id: district_ids).pluck(:region).uniq.count > 1
+                        1
+                      else
+                        0
+                      end
   end
 
   def recommendation(fund)
@@ -241,11 +241,11 @@ class Proposal < ActiveRecord::Base
     def beneficiaries_request
       request = {}
       Beneficiary::BENEFICIARIES.map do |hash|
-        if beneficiaries.pluck(:sort).include?(hash[:sort])
-          request[hash[:sort]] = 1
-        else
-          request[hash[:sort]] = 0
-        end
+        request[hash[:sort]] = if beneficiaries.pluck(:sort).include?(hash[:sort])
+                                 1
+                               else
+                                 0
+                               end
       end
       request
     end

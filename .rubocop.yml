@@ -3,6 +3,9 @@ inherit_from: .rubocop_todo.yml
 Style/IndentationConsistency:
   EnforcedStyle: rails
 
+Style/Documentation:
+  Enabled: false
+
 AllCops:
   Exclude:
     - db/schema.rb

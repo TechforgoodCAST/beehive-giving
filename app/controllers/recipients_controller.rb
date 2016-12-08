@@ -85,11 +85,11 @@ class RecipientsController < ApplicationController
     end
 
     def years_ago
-      if params[:years_ago].present?
-        @years_ago = params[:years_ago].to_i
-      else
-        @years_ago = 1
-      end
+      @years_ago = if params[:years_ago].present?
+                     params[:years_ago].to_i
+                   else
+                     1
+                   end
     end
 
     def funder_attribute # TODO: refactor

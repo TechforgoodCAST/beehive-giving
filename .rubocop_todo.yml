@@ -262,18 +262,3 @@ Style/CommentAnnotation:
 Style/CommentIndentation:
   Exclude:
     - 'app/models/proposal.rb'
-
-# Offense count: 5
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, SingleLineConditionsOnly.
-# SupportedStyles: assign_to_condition, assign_inside_condition
-Style/ConditionalAssignment:
-  Exclude:
-    - 'app/controllers/recipients_controller.rb'
-    - 'app/models/organisation.rb'
-    - 'app/models/proposal.rb'
-    - 'spec/support/test_helper.rb'
-
-# Offense count: 57
-Style/Documentation:
-  Enabled: false

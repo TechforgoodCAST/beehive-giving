@@ -200,42 +200,38 @@ class Organisation < ActiveRecord::Base
   end
 
   def income_select(income)
-    if income < 10_000
-      self.income = 0
-    elsif income >= 10_000 && income < 100_000
-      self.income = 1
-    elsif income >= 100_000 && income < 1_000_000
-      self.income = 2
-    elsif income >= 1_000_000 && income < 10_000_000
-      self.income = 3
-    elsif income >= 10_000_000
-      self.income = 4
-    else
-      self.income = nil
-    end
+    self.income = if income < 10_000
+                    0
+                  elsif income >= 10_000 && income < 100_000
+                    1
+                  elsif income >= 100_000 && income < 1_000_000
+                    2
+                  elsif income >= 1_000_000 && income < 10_000_000
+                    3
+                  elsif income >= 10_000_000
+                    4
+                  end
   end
 
   def staff_select(field_name, count)
     count = count.to_i
-    if count.zero?
-      self[field_name] = 0
-    elsif count >= 1 && count <= 5
-      self[field_name] = 1
-    elsif count >= 6 && count <= 25
-      self[field_name] = 2
-    elsif count >= 26 && count <= 50
-      self[field_name] = 3
-    elsif count >= 51 && count <= 100
-      self[field_name] = 4
-    elsif count >= 101 && count <= 250
-      self[field_name] = 5
-    elsif count >= 251 && count <= 500
-      self[field_name] = 6
-    elsif count > 500
-      self[field_name] = 7
-    else
-      self[field_name] = nil
-    end
+    self[field_name] = if count.zero?
+                         0
+                       elsif count >= 1 && count <= 5
+                         1
+                       elsif count >= 6 && count <= 25
+                         2
+                       elsif count >= 26 && count <= 50
+                         3
+                       elsif count >= 51 && count <= 100
+                         4
+                       elsif count >= 101 && count <= 250
+                         5
+                       elsif count >= 251 && count <= 500
+                         6
+                       elsif count > 500
+                         7
+                       end
   end
 
   def get_company_data
