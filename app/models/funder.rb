@@ -26,7 +26,7 @@ class Funder < Organisation
   has_many :restrictions, through: :funds
   has_many :recommendations
 
-  alias_method :attributes, :funder_attributes # TODO: deprecated
+  alias attributes funder_attributes # TODO: deprecated
 
   acts_as_taggable
 
