@@ -26,10 +26,10 @@ class Fund < ActiveRecord::Base
 
   validates :funder, :type_of_fund, :slug, :name, :description, :currency,
             :key_criteria, :application_link,
-              presence: true
+            presence: true
 
   validates :open_call, :active, :restrictions_known,
-              inclusion: { in: [true, false] }
+            inclusion: { in: [true, false] }
 
   validates :name, uniqueness: { scope: :funder }
 
@@ -70,11 +70,11 @@ class Fund < ActiveRecord::Base
   validates :open_data, :period_start, :period_end,
             :amount_awarded_distribution, :award_month_distribution,
             :country_distribution,
-              presence: true, if: :open_data?
+            presence: true, if: :open_data?
   validates :grant_count,
-              presence: true, numericality: { greater_than_or_equal_to: 0 }, if: :open_data?
+            presence: true, numericality: { greater_than_or_equal_to: 0 }, if: :open_data?
 
-  # TODO:
+  # TODO: validations
   # validates :period_start, :period_end, :org_type_distribution,
   #           :operating_for_distribution, :income_distribution,
   #           :employees_distribution, :volunteers_distribution,

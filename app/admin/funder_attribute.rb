@@ -1,13 +1,13 @@
 # TODO: deprecated
 ActiveAdmin.register FunderAttribute do
   permit_params :funder_id, :year, :grant_count, :application_count, :description,
-  :enquiry_count, :funding_stream, :funding_size_average, :funding_size_min,
-  :funding_size_max, :funding_duration_average, :funding_duration_min,
-  :funding_duration_max, :funded_average_age, :funded_average_income,
-  :funded_average_paid_staff, :beneficiary_min_age, :beneficiary_max_age,
-  :funded_age_temp, :funded_income_temp, :application_link, :soft_restrictions,
-  :application_details, country_ids: [], district_ids: [], approval_month_ids: [],
-                        funding_type_ids: [], beneficiary_ids: [], age_group_ids: []
+                :enquiry_count, :funding_stream, :funding_size_average, :funding_size_min,
+                :funding_size_max, :funding_duration_average, :funding_duration_min,
+                :funding_duration_max, :funded_average_age, :funded_average_income,
+                :funded_average_paid_staff, :beneficiary_min_age, :beneficiary_max_age,
+                :funded_age_temp, :funded_income_temp, :application_link, :soft_restrictions,
+                :application_details, country_ids: [], district_ids: [], approval_month_ids: [],
+                                      funding_type_ids: [], beneficiary_ids: [], age_group_ids: []
 
   controller do
     def scoped_collection

@@ -200,22 +200,22 @@ class FunderAttribute < ActiveRecord::Base
 
   def set_countries_by_count
     build_insights(:countries_by_count,
-      order_by_count(funder.countries_by_year.group(:name).count).keys.take(3))
+                   order_by_count(funder.countries_by_year.group(:name).count).keys.take(3))
   end
 
   def set_regions_by_count
     build_insights(:regions_by_count,
-      order_by_count(funder.districts_by_year.group(:district).count).keys.take(3))
+                   order_by_count(funder.districts_by_year.group(:district).count).keys.take(3))
   end
 
   def set_funding_streams_by_count
     build_insights(:funding_streams_by_count,
-      order_by_count(funder.grants.group(:funding_stream).count).keys.take(3))
+                   order_by_count(funder.grants.group(:funding_stream).count).keys.take(3))
   end
 
   def set_funding_streams_by_giving
     build_insights(:funding_streams_by_giving,
-      order_by_count(funder.grants.group(:funding_stream).calculate(:sum, :amount_awarded)).keys.take(3))
+                   order_by_count(funder.grants.group(:funding_stream).calculate(:sum, :amount_awarded)).keys.take(3))
   end
 
   def set_shared_recipient_ids

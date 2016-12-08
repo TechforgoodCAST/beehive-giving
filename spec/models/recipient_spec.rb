@@ -35,8 +35,8 @@ describe Recipient do
     before(:each) do
       2.times do
         create(:eligibility,
-          recipient: @recipient,
-          restriction: create(:restriction))
+               recipient: @recipient,
+               restriction: create(:restriction))
       end
     end
 

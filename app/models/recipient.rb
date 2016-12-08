@@ -163,8 +163,8 @@ class Recipient < Organisation
         proposal.age_group_ids = profile.age_group_ids
       else
         age_ids = AgeGroup.where('age_from >= ? AND age_to <= ?',
-                                  get_age_segment(profile.min_age),
-                                  get_age_segment(profile.max_age, 'to')).pluck(:id)
+                                 get_age_segment(profile.min_age),
+                                 get_age_segment(profile.max_age, 'to')).pluck(:id)
         age_ids + [AgeGroup.first.id] if age_ids.count > 7
         proposal.age_group_ids = age_ids
       end

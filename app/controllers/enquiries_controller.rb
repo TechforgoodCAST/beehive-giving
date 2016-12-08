@@ -7,10 +7,10 @@ class EnquiriesController < ApplicationController # TODO: ApplicationsController
       render :new
     elsif !@recipient.proposals?
       redirect_to new_recipient_proposal_path(@recipient, return_to: @fund),
-        alert: 'Please provide details of your funding request before applying.'
+                  alert: 'Please provide details of your funding request before applying.'
     else
       redirect_to fund_eligibility_path(@fund),
-        alert: 'You need to check your eligibility before applying.'
+                  alert: 'You need to check your eligibility before applying.'
     end
   end
 

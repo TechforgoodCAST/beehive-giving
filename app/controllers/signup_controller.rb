@@ -207,20 +207,20 @@ class SignupController < ApplicationController
 
     def user_params
       params.require(:user).permit(:first_name, :last_name, :job_role,
-      :user_email, :password, :password_confirmation, :role, :agree_to_terms,
-      :org_type, :charity_number, :company_number)
+                                   :user_email, :password, :password_confirmation, :role, :agree_to_terms,
+                                   :org_type, :charity_number, :company_number)
     end
 
     def recipient_params
       params.require(:recipient).permit(:name, :website, :street_address,
-        :country, :charity_number, :company_number, :operating_for,
-        :multi_national, :income, :employees, :volunteers, :org_type,
-        organisation_ids: [])
+                                        :country, :charity_number, :company_number, :operating_for,
+                                        :multi_national, :income, :employees, :volunteers, :org_type,
+                                        organisation_ids: [])
     end
 
     def funder_params
       params.require(:funder).permit(:name, :contact_number, :website,
-      :street_address, :city, :region, :postal_code, :country, :charity_number,
-      :company_number, :founded_on, :registered_on, :mission, :status, :registered, organisation_ids: [])
+                                     :street_address, :city, :region, :postal_code, :country, :charity_number,
+                                     :company_number, :founded_on, :registered_on, :mission, :status, :registered, organisation_ids: [])
     end
 end

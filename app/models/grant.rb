@@ -17,13 +17,13 @@ class Grant < ActiveRecord::Base
   validates :funder, :recipient, presence: true
 
   validates :funding_stream, :grant_type, :attention_how, :amount_awarded,
-  :amount_applied, :installments, :approved_on, :start_on, :end_on,
-  :attention_on, :applied_on, :countries, :districts, presence: true,
-                                                      unless: :skip_validation
+            :amount_applied, :installments, :approved_on, :start_on, :end_on,
+            :attention_on, :applied_on, :countries, :districts, presence: true,
+                                                                unless: :skip_validation
 
   validates :amount_applied,
-  numericality: { only_integer: true, greater_than_or_equal_to: 0 },
-  unless: :skip_validation
+            numericality: { only_integer: true, greater_than_or_equal_to: 0 },
+            unless: :skip_validation
 
   validates :funding_stream, inclusion: { in: FUNDING_STREAM },
                              unless: :skip_validation
@@ -35,11 +35,11 @@ class Grant < ActiveRecord::Base
                             unless: :skip_validation
 
   validates :amount_awarded, :days_from_attention_to_applied, :days_from_applied_to_approved,
-  :days_form_approval_to_start, :days_from_start_to_end,
-  numericality: { only_integer: true, greater_than_or_equal_to: 0 }, unless: :skip_validation
+            :days_form_approval_to_start, :days_from_start_to_end,
+            numericality: { only_integer: true, greater_than_or_equal_to: 0 }, unless: :skip_validation
   validates :installments,
-  numericality: { only_integer: true, greater_than_or_equal_to: 0 },
-  unless: :skip_validation
+            numericality: { only_integer: true, greater_than_or_equal_to: 0 },
+            unless: :skip_validation
 
   ransacker :months_from_start_to_end, formatter: proc { |v| v.to_i * 30.4368 } do |parent|
     parent.table[:days_from_start_to_end]

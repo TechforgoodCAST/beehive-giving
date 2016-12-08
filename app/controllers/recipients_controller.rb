@@ -106,8 +106,8 @@ class RecipientsController < ApplicationController
 
     def recipient_params
       params.require(:recipient).permit(:name, :website, :street_address,
-        :country, :charity_number, :company_number, :operating_for,
-        :multi_national, :income, :employees, :volunteers, :org_type,
-        organisation_ids: [])
+                                        :country, :charity_number, :company_number, :operating_for,
+                                        :multi_national, :income, :employees, :volunteers, :org_type,
+                                        organisation_ids: [])
     end
 end

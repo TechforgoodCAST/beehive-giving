@@ -62,14 +62,14 @@ class Proposal < ActiveRecord::Base
   validates :affect_other, presence: { message: 'you must affect either people or other groups' }, unless: 'self.affect_people?'
   validates :affect_people, :affect_other, inclusion: { in: [true, false], message: 'please select an option' }
   validates :gender, :age_groups,
-              presence: { message: 'Please select an option' },
-              unless: '!self.affect_people? && self.affect_other?'
+            presence: { message: 'Please select an option' },
+            unless: '!self.affect_people? && self.affect_other?'
   validates :gender, inclusion: { in: GENDERS, message: 'please select an option' },
                      unless: '!self.affect_people? && self.affect_other?'
   validate :beneficiaries_people, :beneficiaries_other_group
   validates :beneficiaries_other,
-              presence: { message: "please uncheck 'Other' or specify details" },
-              if: :beneficiaries_other_required
+            presence: { message: "please uncheck 'Other' or specify details" },
+            if: :beneficiaries_other_required
 
   def beneficiaries_people
     return unless beneficiaries_not_selected('People')
@@ -99,8 +99,8 @@ class Proposal < ActiveRecord::Base
                               unless: :implementations_other_required,
                               if: 'self.registered? || self.complete?'
   validates :implementations_other,
-              presence: { message: "please uncheck 'Other' or specify details" },
-              if: :implementations_other_required
+            presence: { message: "please uncheck 'Other' or specify details" },
+            if: :implementations_other_required
 
   def initial_recommendation
     beehive_insight = call_beehive_insight(

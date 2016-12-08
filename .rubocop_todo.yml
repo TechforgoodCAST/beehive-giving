@@ -115,13 +115,6 @@ Rails/Validation:
   Exclude:
     - 'app/models/feature.rb'
 
-# Offense count: 62
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, IndentationWidth.
-# SupportedStyles: with_first_parameter, with_fixed_indentation
-Style/AlignParameters:
-  Enabled: false
-
 # Offense count: 174
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.

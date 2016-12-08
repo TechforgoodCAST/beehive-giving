@@ -16,7 +16,7 @@ class FeedbackController < ApplicationController
     if @feedback.save
       session.delete(:redirect_to_funder)
       redirect_to fund_eligibility_path(@fund),
-        notice: "You're a star! Thanks for the feedback."
+                  notice: "You're a star! Thanks for the feedback."
     else
       render :new
     end
@@ -41,8 +41,8 @@ class FeedbackController < ApplicationController
 
     def feedback_params
       params.require(:feedback).permit(:suitable, :most_useful, :nps, :taken_away,
-      :informs_decision, :other, :application_frequency, :grant_frequency,
-      :marketing_frequency)
+                                       :informs_decision, :other, :application_frequency, :grant_frequency,
+                                       :marketing_frequency)
     end
 
     def redirect_to_funder

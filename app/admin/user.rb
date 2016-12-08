@@ -1,6 +1,6 @@
 ActiveAdmin.register User do
   permit_params :first_name, :last_name, :org_type, :agree_to_terms,
-  :user_email, :password, :password_confirmation, :role, :organisation_id
+                :user_email, :password, :password_confirmation, :role, :organisation_id
 
   controller do
     def scoped_collection

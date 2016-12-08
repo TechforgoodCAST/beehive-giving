@@ -149,10 +149,10 @@ class Funder < Organisation
               recommendations.score >= ? AND
               recommendations.eligibility = ? AND
               enquiries.funder_id = ?",
-              id,
-              Recipient::RECOMMENDATION_THRESHOLD,
-              'Eligible',
-              id)
+                    id,
+                    Recipient::RECOMMENDATION_THRESHOLD,
+                    'Eligible',
+                    id)
              .distinct
              .order('proposals.created_at DESC, recommendations.eligibility ASC, recommendations.score DESC')
              .order(:name)
