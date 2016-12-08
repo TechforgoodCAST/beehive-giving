@@ -6,8 +6,8 @@ class ApplicationController < ActionController::Base
   helper_method :logged_in?
   helper_method :current_user
 
-  before_filter :load_feedback, if: proc { logged_in? }
-  before_filter :set_new_relic_user, if: proc { logged_in? }
+  before_action :load_feedback, if: proc { logged_in? }
+  before_action :set_new_relic_user, if: proc { logged_in? }
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :bad_token
 

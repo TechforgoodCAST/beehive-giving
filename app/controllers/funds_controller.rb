@@ -1,5 +1,5 @@
 class FundsController < ApplicationController
-  before_filter :ensure_logged_in, :load_recipient, :ensure_proposal_present, :load_proposal
+  before_action :ensure_logged_in, :load_recipient, :ensure_proposal_present, :load_proposal
 
   def home
     # TODO: refactor

@@ -1,7 +1,7 @@
 class ProposalsController < ApplicationController
-  before_filter :ensure_logged_in, :load_recipient,
+  before_action :ensure_logged_in, :load_recipient,
                 :prevent_funder_access, :recipient_country
-  before_filter :load_proposal, only: [:edit, :update]
+  before_action :load_proposal, only: [:edit, :update]
 
   def new
     if @recipient.incomplete_first_proposal?

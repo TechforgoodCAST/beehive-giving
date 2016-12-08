@@ -1,5 +1,5 @@
 class PasswordResetsController < ApplicationController
-  before_filter :ensure_not_logged_in, if: proc { logged_in? }
+  before_action :ensure_not_logged_in, if: proc { logged_in? }
 
   def create
     if params[:user_email].present?

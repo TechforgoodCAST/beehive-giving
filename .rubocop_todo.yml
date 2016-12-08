@@ -51,25 +51,6 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 28
 
-# Offense count: 23
-# Cop supports --auto-correct.
-# Configuration parameters: EnforcedStyle, SupportedStyles, Include.
-# SupportedStyles: action, filter
-# Include: app/controllers/**/*.rb
-Rails/ActionFilter:
-  Exclude:
-    - 'app/controllers/accounts_controller.rb'
-    - 'app/controllers/application_controller.rb'
-    - 'app/controllers/eligibilities_controller.rb'
-    - 'app/controllers/enquiries_controller.rb'
-    - 'app/controllers/feedback_controller.rb'
-    - 'app/controllers/funders_controller.rb'
-    - 'app/controllers/funds_controller.rb'
-    - 'app/controllers/password_resets_controller.rb'
-    - 'app/controllers/proposals_controller.rb'
-    - 'app/controllers/recipients_controller.rb'
-    - 'app/controllers/signup_controller.rb'
-
 # Offense count: 51
 # Configuration parameters: Include.
 # Include: app/models/**/*.rb

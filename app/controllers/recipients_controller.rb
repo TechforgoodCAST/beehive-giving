@@ -1,13 +1,13 @@
 class RecipientsController < ApplicationController
-  before_filter :ensure_logged_in, :load_recipient, :ensure_recipient,
+  before_action :ensure_logged_in, :load_recipient, :ensure_recipient,
                 :years_ago, :load_proposal
-  before_filter :ensure_proposal_present, except: [:edit, :update]
-  before_filter :check_organisation_ownership_or_funder, only: :show
-  before_filter :load_funder, only: [:comparison, :eligibility, :update_eligibility, :apply]
-  before_filter :load_feedback, except: [:unlock_funder, :vote]
-  before_filter :funder_attribute, only: [:comparison, :eligibility, :update_eligibility]
+  before_action :ensure_proposal_present, except: [:edit, :update]
+  before_action :check_organisation_ownership_or_funder, only: :show
+  before_action :load_funder, only: [:comparison, :eligibility, :update_eligibility, :apply]
+  before_action :load_feedback, except: [:unlock_funder, :vote]
+  before_action :funder_attribute, only: [:comparison, :eligibility, :update_eligibility]
 
-  before_filter :refine_recommendations, except: [:edit, :update]
+  before_action :refine_recommendations, except: [:edit, :update]
 
   def edit
     @recipient.scrape_charity_data

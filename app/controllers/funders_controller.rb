@@ -1,5 +1,5 @@
 class FundersController < ApplicationController
-  before_filter :ensure_logged_in, :ensure_funder, :load_funder
+  before_action :ensure_logged_in, :ensure_funder, :load_funder
 
   respond_to :html
 
