@@ -124,7 +124,8 @@ class Beneficiary < ActiveRecord::Base
       sort:  'care'
     },
     {
-      label: 'At risk of sexual exploitation, trafficking, forced labour, or servitude',
+      label: 'At risk of sexual exploitation, trafficking, forced labour, or ' \
+             'servitude',
       category: 'People',
       sort:  'exploitation'
     }

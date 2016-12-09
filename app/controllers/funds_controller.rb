@@ -1,13 +1,6 @@
 class FundsController < ApplicationController
-  before_action :ensure_logged_in, :load_recipient, :ensure_proposal_present, :load_proposal
-
-  def home
-    # TODO: refactor
-    current_user.organisation.proposals.first.initial_recommendation
-    @recommended_funds = @recipient.proposals.first.funds.order('recommendations.total_recommendation DESC')
-    @popular_funds = Fund.all
-    @recommendations = @recipient.proposals.first.recommendations
-  end
+  before_action :ensure_logged_in, :load_recipient, :ensure_proposal_present,
+                :load_proposal
 
   def show
     @fund = Fund.includes(:funder).find_by(slug: params[:id])

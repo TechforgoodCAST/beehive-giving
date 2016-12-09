@@ -1,5 +1,6 @@
 ActiveAdmin.register Feedback do
-  permit_params :user_id, :most_useful, :nps, :taken_away, :informs_decision, :other
+  permit_params :user_id, :most_useful, :nps, :taken_away, :informs_decision,
+                :other
 
   controller do
     def scoped_collection
@@ -10,7 +11,8 @@ ActiveAdmin.register Feedback do
   index do
     column 'Organisation', :user do |feedback|
       if feedback.user
-        link_to feedback.user.organisation.name, [:admin, feedback.user.organisation]
+        link_to feedback.user.organisation.name,
+                [:admin, feedback.user.organisation]
       end
     end
     column 'Contact', :user do |feedback|

@@ -67,15 +67,23 @@ ActiveAdmin.register_page 'Dashboard' do
     end
 
     def user_count
-      User.where(role: 'User').group_by_week(:created_at, week_start: :mon, last: 8, format: 'w/o %d %b').count
+      User.where(role: 'User')
+          .group_by_week(:created_at,
+                         week_start: :mon,
+                         last: 8,
+                         format: 'w/o %d %b').count
     end
 
     def user_count_by_month
-      User.where(role: 'User').group_by_month(:created_at, last: 8, format: '%b %Y').count
+      User.where(role: 'User')
+          .group_by_month(:created_at, last: 8, format: '%b %Y').count
     end
 
     def recipient_count
-      Recipient.joins(:users).group_by_week('users.created_at', week_start: :mon, last: 8).count
+      Recipient.joins(:users)
+               .group_by_week('users.created_at',
+                              week_start: :mon,
+                              last: 8).count
     end
 
     def recipient_count_by_month
@@ -83,23 +91,36 @@ ActiveAdmin.register_page 'Dashboard' do
     end
 
     def profile_count
-      Profile.where(state: 'complete').select(:organisation_id).group_by_week(:created_at, week_start: :mon, last: 8).count
+      Profile.where(state: 'complete')
+             .select(:organisation_id)
+             .group_by_week(:created_at, week_start: :mon, last: 8).count
     end
 
     def unlock_count(count)
-      Recipient.joins(:recipient_funder_accesses).where('recipient_funder_accesses_count = ?', count).uniq.group_by_week('recipient_funder_accesses.created_at', week_start: :mon, last: 8).count
+      Recipient.joins(:recipient_funder_accesses)
+               .where('recipient_funder_accesses_count = ?', count)
+               .uniq
+               .group_by_week('recipient_funder_accesses.created_at',
+                              week_start: :mon,
+                              last: 8).count
     end
 
     def unlock_by_month
-      Recipient.joins(:recipient_funder_accesses).where('recipient_funder_accesses_count' => [1, 2, 3]).uniq.group_by_month('recipient_funder_accesses.created_at', last: 8).count
+      Recipient.joins(:recipient_funder_accesses)
+               .where('recipient_funder_accesses_count' => [1, 2, 3])
+               .uniq
+               .group_by_month('recipient_funder_accesses.created_at',
+                               last: 8).count
     end
 
     def proposal_count(state)
-      Proposal.where(state: state).group_by_week(:created_at, week_start: :mon, last: 8).count
+      Proposal.where(state: state)
+              .group_by_week(:created_at, week_start: :mon, last: 8).count
     end
 
     def proposal_count_by_month
-      Proposal.where(state: %w(registered complete)).group_by_month(:created_at, last: 8, format: '%b %Y').count
+      Proposal.where(state: %w(registered complete))
+              .group_by_month(:created_at, last: 8, format: '%b %Y').count
     end
 
     def feedback_count
@@ -111,10 +132,17 @@ ActiveAdmin.register_page 'Dashboard' do
     end
 
     def percentage(count, i)
-      "#{count[1]} (#{number_to_percentage((count[1].to_d / user_count.to_a[i][1].to_d) * 100, precision: 0)})"
+      percent = number_to_percentage(
+        (count[1].to_d / user_count.to_a[i][1].to_d) * 100,
+        precision: 0
+      )
+      "#{count[1]} (#{percent})"
     end
 
-    div style: 'float:left; width: 100%; padding: 0 20px; box-sizing: border-box;' do
+    div style: 'float:left;
+                width: 100%;
+                padding: 0 20px;
+                box-sizing: border-box;' do
       section 'Conversion' do
         table do
           thead do
@@ -135,9 +163,10 @@ ActiveAdmin.register_page 'Dashboard' do
           end
           tr do
             td 'Proposals'
-            proposal_count(%w(initial registered complete)).each_with_index do |count, i|
-              td percentage(count, i) if count[1].positive?
-            end
+            proposal_count(%w(initial registered complete))
+              .each_with_index do |count, i|
+                td percentage(count, i) if count[1].positive?
+              end
           end
           tr do
             td 'Inital proposal'
@@ -199,7 +228,10 @@ ActiveAdmin.register_page 'Dashboard' do
       end
     end
 
-    div style: 'float:left; width: 100%; padding: 0 20px; box-sizing: border-box;' do
+    div style: 'float:left;
+                width: 100%;
+                padding: 0 20px;
+                box-sizing: border-box;' do
       section 'Conversion by month' do
         table do
           thead do
@@ -244,14 +276,20 @@ ActiveAdmin.register_page 'Dashboard' do
       end
     end
 
-    div style: 'float:left; width: 50%; padding: 0 20px; box-sizing: border-box;' do
+    div style: 'float:left;
+                width: 50%;
+                padding: 0 20px;
+                box-sizing: border-box;' do
       section 'Non-profits by country' do
         @metric = Recipient.joins(:users).group(:country).count
         render partial: 'metrics/geo_chart', locals: { metric: @metric }
       end
     end
 
-    div style: 'float:left; width: 50%; padding: 0 20px; box-sizing: border-box;' do
+    div style: 'float:left;
+                width: 50%;
+                padding: 0 20px;
+                box-sizing: border-box;' do
       section 'Recent Non-profits' do
         table_for Recipient.joins(:users).order('created_at desc').limit(5) do
           column :name do |recipient|

@@ -1,10 +1,11 @@
 ActiveAdmin.register Funder do
   config.sort_order = 'created_at_asc'
 
-  permit_params :name, :contact_number, :website,
-                :street_address, :city, :region, :postal_code, :country, :charity_number,
-                :company_number, :founded_on, :registered_on, :mission, :status, :registered,
-                :active_on_beehive, :slug, :org_type, organisation_ids: []
+  permit_params :name, :contact_number, :website, :street_address, :city,
+                :region, :postal_code, :country, :charity_number,
+                :company_number, :founded_on, :registered_on, :mission, :status,
+                :registered, :active_on_beehive, :slug, :org_type,
+                organisation_ids: []
 
   controller do
     def find_resource

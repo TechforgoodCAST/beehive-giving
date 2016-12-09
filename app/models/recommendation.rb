@@ -1,5 +1,6 @@
 class Recommendation < ActiveRecord::Base
-  RECOMMENDATION_QUALITY = ['Good suggestion', 'Neutral suggestion', 'Poor suggestion'].freeze
+  RECOMMENDATION_QUALITY = ['Good suggestion', 'Neutral suggestion',
+                            'Poor suggestion'].freeze
 
   belongs_to :proposal
   belongs_to :fund
@@ -18,6 +19,8 @@ class Recommendation < ActiveRecord::Base
     end
 
     def calculate_total_recommendation
-      self.total_recommendation = score + grant_amount_recommendation + grant_duration_recommendation if grant_amount_recommendation && grant_duration_recommendation
+      return unless grant_amount_recommendation && grant_duration_recommendation
+      self.total_recommendation = score + grant_amount_recommendation +
+                                  grant_duration_recommendation
     end
 end

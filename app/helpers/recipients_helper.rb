@@ -5,10 +5,14 @@ module RecipientsHelper
       if @proposal.eligible?(fund)
         content_tag(:a, link_to('Apply', fund_apply_path(fund), class: classes))
       else
-        content_tag(:a, link_to('Why ineligible?', fund_eligibility_path(fund), class: classes))
+        content_tag(:a, link_to('Why ineligible?',
+                                fund_eligibility_path(fund),
+                                class: classes))
       end
     else
-      content_tag(:a, link_to('Check eligibility', fund_eligibility_path(fund), class: classes))
+      content_tag(:a, link_to('Check eligibility',
+                              fund_eligibility_path(fund),
+                              class: classes))
     end
   end
 
@@ -33,14 +37,12 @@ module RecipientsHelper
 
   def score_to_match_copy(score, scale = 1)
     {
-      'Not enough data' => 0,
-      'Very poor'       => 0.2,
-      'Poor'            => 0.4,
-      'Fair'            => 0.6,
-      'Good'            => 0.8,
-      'Excellent'       => 1.0
+      'Not enough data' => 0,   'Very poor' => 0.2,
+      'Poor'            => 0.4, 'Fair'      => 0.6,
+      'Good'            => 0.8, 'Excellent' => 1.0
     }.each do |k, v|
-      return content_tag(:strong, k, class: k.downcase.to_s.sub(' ', '-')) if score <= (v * scale)
+      return content_tag(:strong, k, class: k.downcase.to_s.sub(' ', '-')) if
+        score <= (v * scale)
     end
   end
 
@@ -49,7 +51,8 @@ module RecipientsHelper
   end
 
   def scramble_recommendations
-    content_tag(:strong, scramble_name(%w(Poor Excellent).sample), class: 'redacted muted')
+    content_tag(:strong, scramble_name(%w(Poor Excellent).sample),
+                class: 'redacted muted')
   end
 
   def render_recommendation(fund, score, scale = 1)

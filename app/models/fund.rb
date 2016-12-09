@@ -45,8 +45,10 @@ class Fund < ActiveRecord::Base
   #             inclusion: { in: [true, false] },
   #             if: :duration_months_known?
   #
-  # validates :duration_months_min, presence: true, if: :duration_months_min_limited?
-  # validates :duration_months_max, presence: true, if: :duration_months_max_limited?
+  # validates :duration_months_min, presence: true,
+  #                                 if: :duration_months_min_limited?
+  # validates :duration_months_max, presence: true,
+  #                                 if: :duration_months_max_limited?
   #
   # validates :deadlines_known, :stages_known, inclusion: { in: [true, false] }
   #
@@ -59,8 +61,14 @@ class Fund < ActiveRecord::Base
   # validates :accepts_calls, presence: true, if: :accepts_calls_known?
   # validates :contact_number, presence: true, if: :accepts_calls?
 
-  validates :geographic_scale, numericality: { only_integer: true, greater_than_or_equal_to: Proposal::AFFECT_GEO.first[1], less_than_or_equal_to: Proposal::AFFECT_GEO.last[1] }
-  validates :countries, :districts, presence: true, if: :geographic_scale_limited?
+  validates :geographic_scale,
+            numericality: {
+              only_integer: true,
+              greater_than_or_equal_to: Proposal::AFFECT_GEO.first[1],
+              less_than_or_equal_to: Proposal::AFFECT_GEO.last[1]
+            }
+  validates :countries, :districts, presence: true,
+                                    if: :geographic_scale_limited?
   validates :restrictions, presence: true, if: :restrictions_known?
   # validates :outcomes, presence: true, if: :outcomes_known?
   # validates :decision_makers, presence: true, if: :decision_makers_known?
@@ -71,8 +79,9 @@ class Fund < ActiveRecord::Base
             :amount_awarded_distribution, :award_month_distribution,
             :country_distribution,
             presence: true, if: :open_data?
-  validates :grant_count,
-            presence: true, numericality: { greater_than_or_equal_to: 0 }, if: :open_data?
+  validates :grant_count, presence: true,
+                          numericality: { greater_than_or_equal_to: 0 },
+                          if: :open_data?
 
   # TODO: validations
   # validates :period_start, :period_end, :org_type_distribution,
@@ -89,14 +98,16 @@ class Fund < ActiveRecord::Base
   #           :amount_awarded_min, :amount_awarded_max,
   #           :duration_awarded_months_mean, :duration_awarded_months_median,
   #           :duration_awarded_months_min, :duration_awarded_months_max,
-  #             presence: true, numericality: { greater_than_or_equal_to: 0 }, if: :open_data?
+  #           presence: true, numericality: { greater_than_or_equal_to: 0 },
+  #           if: :open_data?
 
   validate :period_start_before_period_end, :period_end_in_past, if: :open_data?
 
   attr_accessor :skip_beehive_data
 
   before_validation :set_slug, unless: :slug
-  before_validation :check_beehive_data, if: proc { |o| o.skip_beehive_data == '0' }
+  before_validation :check_beehive_data,
+                    if: proc { |o| o.skip_beehive_data.to_i.zero? }
 
   def to_param
     slug
@@ -114,20 +125,26 @@ class Fund < ActiveRecord::Base
 
     def period_end_in_past
       return unless period_end
-      errors.add(:period_end, 'Period end must be in the past') if period_end > Time.zone.today
+      errors.add(:period_end, 'Period end must be in the past') if
+        period_end > Time.zone.today
     end
 
     def period_start_before_period_end
       return unless period_start && period_end
-      errors.add(:period_start, 'Period start must be before period end') if period_start > period_end
+      errors.add(:period_start, 'Period start must be before period end') if
+        period_start > period_end
     end
 
     def check_beehive_data
       return unless open_data && slug
       options = {
-        headers: { 'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN'] }
+        headers: {
+          'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN']
+        }
       }
-      resp = HTTParty.get(ENV['BEEHIVE_DATA_FUND_SUMMARY_ENDPOINT'] + slug, options)
+      resp = HTTParty.get(
+        ENV['BEEHIVE_DATA_FUND_SUMMARY_ENDPOINT'] + slug, options
+      )
       assign_attributes(resp.except('fund_slug')) if slug == resp['fund_slug']
     end
 end

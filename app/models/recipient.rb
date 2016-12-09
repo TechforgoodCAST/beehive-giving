@@ -53,7 +53,8 @@ class Recipient < Organisation
 
   # TODO: refactor?
   def recent_grants(year = 2015)
-    grants.where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01")
+    grants.where('approved_on <= ? AND approved_on >= ?',
+                 "#{year}-12-31", "#{year}-01-01")
   end
 
   def set_eligibility(proposal, fund, eligibility) # TODO: to proposal
@@ -118,7 +119,8 @@ class Recipient < Organisation
 
   def recommended_funds # TODO: refactor to proposal
     proposals.last.funds.includes(:funder)
-             .where('recommendations.total_recommendation >= ?', RECOMMENDATION_THRESHOLD)
+             .where('recommendations.total_recommendation >= ?',
+                    RECOMMENDATION_THRESHOLD)
              .order('recommendations.total_recommendation DESC', 'funds.name')
   end
 
@@ -132,11 +134,13 @@ class Recipient < Organisation
   end
 
   def recommended_fund?(fund) # TODO: refactor to proposal
-    recommended_funds.pluck(:fund_id).take(RECOMMENDATION_LIMIT).include?(fund.id)
+    recommended_funds.pluck(:fund_id).take(RECOMMENDATION_LIMIT)
+                     .include?(fund.id)
   end
 
   def similar_funders(funder)
-    array = Funder.joins(:recommendations).where('recipient_id = ?', id).order('recommendations.score DESC, name ASC').to_a
+    array = Funder.joins(:recommendations).where('recipient_id = ?', id)
+                  .order('recommendations.score DESC, name ASC').to_a
 
     array[(array.index(funder) + 1)..(array.index(funder) + 7)].sample(3)
   end
@@ -147,7 +151,8 @@ class Recipient < Organisation
 
   def get_age_segment(age, type = 'from')
     result = nil
-    AgeGroup.order(id: :desc).pluck(:age_from, :age_to).take(7).each do |from, to|
+    AgeGroup.order(id: :desc).pluck(:age_from, :age_to)
+            .take(7).each do |from, to|
       result = type == 'from' ? from : to if age >= from && age <= to
     end
     result
@@ -164,7 +169,8 @@ class Recipient < Organisation
       else
         age_ids = AgeGroup.where('age_from >= ? AND age_to <= ?',
                                  get_age_segment(profile.min_age),
-                                 get_age_segment(profile.max_age, 'to')).pluck(:id)
+                                 get_age_segment(profile.max_age, 'to'))
+                          .pluck(:id)
         age_ids + [AgeGroup.first.id] if age_ids.count > 7
         proposal.age_group_ids = age_ids
       end
@@ -176,7 +182,8 @@ class Recipient < Organisation
 
     # implementations
     proposal.implementation_ids = profile.implementation_ids
-    proposal.implementations_other_required = profile.implementations_other_required
+    proposal.implementations_other_required = profile
+                                              .implementations_other_required
     proposal.implementations_other = profile.implementations_other
   end
 

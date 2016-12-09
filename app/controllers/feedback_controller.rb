@@ -1,12 +1,15 @@
 class FeedbackController < ApplicationController
-  before_action :ensure_logged_in, :load_recipient, :prevent_funder_access, :ensure_proposal_present # TODO: refactor
+  before_action :ensure_logged_in, :load_recipient, :prevent_funder_access,
+                :ensure_proposal_present # TODO: refactor
   before_action :redirect_to_funder, only: [:new, :create]
 
   def new
     @feedback = current_user.feedbacks.new
     @fund = Fund.find_by(slug: @redirect_to_funder) # TODO: refactor
 
-    redirect_to recommended_funds_path, alert: "It looks like you've already provided feedback" if current_user.feedbacks.count.positive?
+    return unless current_user.feedbacks.count.positive?
+    redirect_to recommended_funds_path,
+                alert: "It looks like you've already provided feedback"
   end
 
   def create
@@ -40,9 +43,10 @@ class FeedbackController < ApplicationController
   private
 
     def feedback_params
-      params.require(:feedback).permit(:suitable, :most_useful, :nps, :taken_away,
-                                       :informs_decision, :other, :application_frequency, :grant_frequency,
-                                       :marketing_frequency)
+      params.require(:feedback)
+            .permit(:suitable, :most_useful, :nps, :taken_away,
+                    :informs_decision, :other, :application_frequency,
+                    :grant_frequency, :marketing_frequency)
     end
 
     def redirect_to_funder

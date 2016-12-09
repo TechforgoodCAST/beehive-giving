@@ -15,7 +15,9 @@ class AccountsController < ApplicationController
   end
 
   def upgrade
-    redirect_to account_subscription_path(@recipient), alert: "You're already subscribed!" if @recipient.subscribed?
+    return unless @recipient.subscribed?
+    redirect_to account_subscription_path(@recipient),
+                alert: "You're already subscribed!"
   end
 
   def charge

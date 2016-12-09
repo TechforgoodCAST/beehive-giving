@@ -12,8 +12,9 @@ class Profile < ActiveRecord::Base
   has_and_belongs_to_many :districts
   has_and_belongs_to_many :age_groups
 
-  VALID_YEARS = ((Time.zone.today.year - 3)..(Time.zone.today.year)).to_a.reverse
-  GENDERS = ['All genders', 'Female', 'Male', 'Transgender', 'Other'].freeze # refactor
+  VALID_YEARS = ((Time.zone.today.year - 3)..(Time.zone.today.year))
+                .to_a.reverse
+  GENDERS = ['All genders', 'Female', 'Male', 'Transgender', 'Other'].freeze
 
   include Workflow
   workflow_column :state

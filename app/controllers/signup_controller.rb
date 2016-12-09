@@ -1,5 +1,6 @@
 class SignupController < ApplicationController
-  before_action :ensure_logged_in, except: [:user, :create_user, :grant_access, :granted_access]
+  before_action :ensure_logged_in, except: [:user, :create_user, :grant_access,
+                                            :granted_access]
   before_action :load_districts, only: [:user, :create_user]
 
   def user
@@ -170,20 +171,6 @@ class SignupController < ApplicationController
     end
   end
 
-  def funder
-    @funder = Funder.new
-  end
-
-  def create_funder
-    @funder = Funder.new(funder_params)
-    if @funder.save
-      current_user.update_attribute(:organisation_id, @funder.id)
-      redirect_to funder_path(current_user.organisation)
-    else
-      render :funder
-    end
-  end
-
   def grant_access
     @user = User.find_by(unlock_token: params[:unlock_token])
     @user.unlock
@@ -201,26 +188,23 @@ class SignupController < ApplicationController
   private
 
     def load_districts
-      @districts_count = Funder.active.joins(:countries).group('countries.id').uniq.count
-      @districts = Country.order(priority: :desc).order(:name).find(@districts_count.keys)
+      @districts_count = Funder.active.joins(:countries).group('countries.id')
+                               .uniq.count
+      @districts = Country.order(priority: :desc).order(:name)
+                          .find(@districts_count.keys)
     end
 
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :job_role,
-                                   :user_email, :password, :password_confirmation, :role, :agree_to_terms,
-                                   :org_type, :charity_number, :company_number)
+      params.require(:user)
+            .permit(:first_name, :last_name, :job_role, :user_email, :password,
+                    :password_confirmation, :role, :agree_to_terms, :org_type,
+                    :charity_number, :company_number)
     end
 
     def recipient_params
-      params.require(:recipient).permit(:name, :website, :street_address,
-                                        :country, :charity_number, :company_number, :operating_for,
-                                        :multi_national, :income, :employees, :volunteers, :org_type,
-                                        organisation_ids: [])
-    end
-
-    def funder_params
-      params.require(:funder).permit(:name, :contact_number, :website,
-                                     :street_address, :city, :region, :postal_code, :country, :charity_number,
-                                     :company_number, :founded_on, :registered_on, :mission, :status, :registered, organisation_ids: [])
+      params.require(:recipient)
+            .permit(:name, :website, :street_address, :country, :charity_number,
+                    :company_number, :operating_for, :multi_national, :income,
+                    :employees, :volunteers, :org_type, organisation_ids: [])
     end
 end

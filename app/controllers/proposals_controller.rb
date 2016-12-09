@@ -1,16 +1,18 @@
 class ProposalsController < ApplicationController
-  before_action :ensure_logged_in, :load_recipient,
-                :prevent_funder_access, :recipient_country
+  before_action :ensure_logged_in, :load_recipient, :prevent_funder_access,
+                :recipient_country
   before_action :load_proposal, only: [:edit, :update]
 
   def new
     if @recipient.incomplete_first_proposal?
-      redirect_to edit_recipient_proposal_path(@recipient, @recipient.proposals.last)
+      redirect_to edit_recipient_proposal_path(@recipient,
+                                               @recipient.proposals.last)
     elsif @recipient.proposals?
       redirect_to recommended_funds_path
     elsif @recipient.valid?
       @proposal = @recipient.proposals.new(state: 'initial')
-      @recipient.transfer_profile_to_new_proposal(@recipient.profiles.last, @proposal)
+      @recipient.transfer_profile_to_new_proposal(@recipient.profiles.last,
+                                                  @proposal)
     else
       redirect_to edit_recipient_path(@recipient)
     end
@@ -47,7 +49,8 @@ class ProposalsController < ApplicationController
   end
 
   def edit
-    @recipient.transfer_profile_to_existing_proposal(@recipient.profiles.last, @proposal)
+    @recipient.transfer_profile_to_existing_proposal(@recipient.profiles.last,
+                                                     @proposal)
     return unless request.referer
     session.delete(:return_to) if request.referer.ends_with?('/proposals')
   end
@@ -95,9 +98,9 @@ class ProposalsController < ApplicationController
       params.require(:proposal).permit(
         :type_of_support, :funding_duration, :funding_type, :total_costs,
         :total_costs_estimated, :all_funding_required, :affect_people,
-        :affect_other, :gender, :beneficiaries_other, :beneficiaries_other_required,
-        :affect_geo, :title, :tagline, :private, :outcome1,
-        :implementations_other_required, :implementations_other,
+        :affect_other, :gender, :beneficiaries_other,
+        :beneficiaries_other_required, :affect_geo, :title, :tagline, :private,
+        :outcome1, :implementations_other_required, :implementations_other,
         age_group_ids: [], beneficiary_ids: [], country_ids: [],
         district_ids: [], implementation_ids: []
       )
@@ -108,8 +111,9 @@ class ProposalsController < ApplicationController
     end
 
     def recipient_country
-      # refactor
-      @recipient_country = Country.find_by(alpha2: @recipient.country) || @recipient.profiles.first.countries.first
+      # TODO: refactor
+      @recipient_country = Country.find_by(alpha2: @recipient.country) ||
+                           @recipient.profiles.first.countries.first
       gon.orgCountry = @recipient_country.name
     end
 end

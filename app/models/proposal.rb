@@ -16,7 +16,9 @@ class Proposal < ActiveRecord::Base
   has_and_belongs_to_many :districts
   has_and_belongs_to_many :implementations
 
-  TYPE_OF_SUPPORT = ['Only financial', 'Mostly financial', 'Equal financial and non-financial', 'Mostly non-financial', 'Only non-financial'].freeze
+  TYPE_OF_SUPPORT = ['Only financial', 'Mostly financial',
+                     'Equal financial and non-financial',
+                     'Mostly non-financial', 'Only non-financial'].freeze
   GENDERS = ['All genders', 'Female', 'Male', 'Transgender', 'Other'].freeze
   FUNDING_TYPE = [
     'Revenue funding - running costs, salaries and activity costs',
@@ -45,26 +47,40 @@ class Proposal < ActiveRecord::Base
     state :complete
   end
 
-  validate :prevent_second_proposal_until_first_is_complete, if: 'self.initial?', on: :create
+  validate :prevent_second_proposal_until_first_is_complete,
+           if: 'self.initial?', on: :create
 
   # Requirements
   validates :recipient, :funding_duration, presence: true
-  validates :type_of_support, inclusion: { in: TYPE_OF_SUPPORT, message: 'please select an option' }
-  validates :funding_type, inclusion: { in: FUNDING_TYPE, message: 'please select an option' }
-  validates :funding_duration, numericality: { only_integer: true, greater_than_or_equal_to: 1 }
-  validates :total_costs, numericality: { greater_than_or_equal_to: 0, message: 'please enter the amount of funding you are seeking' }
-  # TODO: format: { with: /\A\d+\.?\d{0,2}\z/, message: 'only two decimal places allowed' }
-  validates :total_costs_estimated, inclusion: { message: 'please select an option', in: [true, false] }
-  validates :all_funding_required, inclusion: { message: 'please select an option', in: [true, false] }
+  validates :type_of_support, inclusion: { in: TYPE_OF_SUPPORT,
+                                           message: 'please select an option' }
+  validates :funding_type, inclusion: { in: FUNDING_TYPE,
+                                        message: 'please select an option' }
+  validates :funding_duration,
+            numericality: { only_integer: true, greater_than_or_equal_to: 1 }
+  validates :total_costs, numericality: {
+    greater_than_or_equal_to: 0,
+    message: 'please enter the amount of funding you are seeking'
+  }
+  validates :total_costs_estimated,
+            inclusion: { message: 'please select an option', in: [true, false] }
+  validates :all_funding_required,
+            inclusion: { message: 'please select an option', in: [true, false] }
 
   # Beneficiaries
-  validates :affect_people, presence: { message: 'you must affect either people or other groups' }, unless: 'self.affect_other?'
-  validates :affect_other, presence: { message: 'you must affect either people or other groups' }, unless: 'self.affect_people?'
-  validates :affect_people, :affect_other, inclusion: { in: [true, false], message: 'please select an option' }
+  validates :affect_people, presence: {
+    message: 'you must affect either people or other groups'
+  }, unless: 'self.affect_other?'
+  validates :affect_other, presence: {
+    message: 'you must affect either people or other groups'
+  }, unless: 'self.affect_people?'
+  validates :affect_people, :affect_other,
+            inclusion: { in: [true, false], message: 'please select an option' }
   validates :gender, :age_groups,
             presence: { message: 'Please select an option' },
             unless: '!self.affect_people? && self.affect_other?'
-  validates :gender, inclusion: { in: GENDERS, message: 'please select an option' },
+  validates :gender, inclusion: { in: GENDERS,
+                                  message: 'please select an option' },
                      unless: '!self.affect_people? && self.affect_other?'
   validate :beneficiaries_people, :beneficiaries_other_group
   validates :beneficiaries_other,
@@ -77,24 +93,32 @@ class Proposal < ActiveRecord::Base
   end
 
   def beneficiaries_other_group
-    return unless beneficiaries_not_selected('Other') && beneficiaries_other_required?
+    return unless beneficiaries_not_selected('Other') &&
+                  beneficiaries_other_required?
     errors.add(:beneficiaries, 'Please select an option') if affect_other?
   end
 
   # Location
-  validates :affect_geo, inclusion: { in: 0..3, message: 'please select an option' }
+  validates :affect_geo, inclusion: { in: 0..3,
+                                      message: 'please select an option' }
   validates :countries, presence: true
-  validates :districts, presence: true,
-                        if: proc { |o| o.affect_geo.present? && o.affect_geo < 2 } # TODO: test
+  validates :districts,
+            presence: true,
+            if: proc { |o| o.affect_geo.present? && o.affect_geo < 2 }
+  # TODO: test
 
   # Privacy
-  validates :private, inclusion: { in: [true, false], message: 'please select an option' }
+  validates :private, inclusion: { in: [true, false],
+                                   message: 'please select an option' }
 
   # Registered
-  validates :title, uniqueness: { scope: :recipient_id, message: 'each proposal must have a unique title' },
-                    if: 'self.registered? || self.complete?'
-  validates :title, :tagline, :outcome1, presence: true, length: { maximum: 280, message: 'please use 280 characters or less' },
-                                         if: 'self.registered? || self.complete?'
+  validates :title, uniqueness: {
+    scope: :recipient_id,
+    message: 'each proposal must have a unique title'
+  }, if: 'self.registered? || self.complete?'
+  validates :title, :tagline, :outcome1, presence: true, length: {
+    maximum: 280, message: 'please use 280 characters or less'
+  }, if: 'self.registered? || self.complete?'
   validates :implementations, presence: true,
                               unless: :implementations_other_required,
                               if: 'self.registered? || self.complete?'
@@ -117,9 +141,11 @@ class Proposal < ActiveRecord::Base
     )
 
     Fund.all.find_each do |fund|
-      org_type_score = beneficiary_score = location_score = amount_score = duration_score = 0
+      org_type_score = beneficiary_score = location_score = amount_score =
+                                                              duration_score = 0
 
-      amount_score = fund_request_scores(fund, beehive_insight_amounts, amount_score)
+      amount_score = fund_request_scores(fund, beehive_insight_amounts,
+                                         amount_score)
 
       if fund.open_data?
 
@@ -163,11 +189,15 @@ class Proposal < ActiveRecord::Base
         end
 
         # amount requested recommendation
-        amount_score = 0 if fund.amount_max_limited? && total_costs > fund.amount_max
+        amount_score = 0 if
+          fund.amount_max_limited? && total_costs > fund.amount_max
 
         # duration requested recommendation
-        duration_score = fund_request_scores(fund, beehive_insight_durations, duration_score)
-        duration_score = 0 if fund.duration_months_max_limited? && funding_duration > fund.duration_months_max
+        duration_score = fund_request_scores(fund, beehive_insight_durations,
+                                             duration_score)
+        duration_score = 0 if
+          fund.duration_months_max_limited? &&
+          funding_duration > fund.duration_months_max
       end
 
       # location recommendation
@@ -211,7 +241,8 @@ class Proposal < ActiveRecord::Base
                         3
                       elsif (district_ids & Country.find(country_ids[0]).districts.pluck(:id)).count == Country.find(country_ids[0]).districts.count
                         2
-                      elsif District.where(id: district_ids).pluck(:region).uniq.count > 1
+                      elsif District.where(id: district_ids)
+                                    .pluck(:region).uniq.count > 1
                         1
                       else
                         0
@@ -229,19 +260,22 @@ class Proposal < ActiveRecord::Base
   private
 
     def beneficiaries_not_selected(category)
-      (beneficiary_ids & Beneficiary.where(category: category).pluck(:id)).count < 1
+      (beneficiary_ids & Beneficiary.where(category: category)
+      .pluck(:id)).count < 1
     end
 
     def parse_distribution(data, comparison)
-      data.sort_by { |i| i['position'] }
-          .select { |i| i['label'] == comparison unless i['label'] == 'Unknown' }
-          .first['percent']
+      data
+        .sort_by { |i| i['position'] }
+        .select { |i| i['label'] == comparison unless i['label'] == 'Unknown' }
+        .first['percent']
     end
 
     def beneficiaries_request
       request = {}
       Beneficiary::BENEFICIARIES.map do |hash|
-        request[hash[:sort]] = if beneficiaries.pluck(:sort).include?(hash[:sort])
+        request[hash[:sort]] = if beneficiaries.pluck(:sort)
+                                               .include?(hash[:sort])
                                  1
                                else
                                  0
@@ -253,7 +287,8 @@ class Proposal < ActiveRecord::Base
     def call_beehive_insight(endpoint, data)
       options = {
         body: { data: data }.to_json,
-        basic_auth: { username: ENV['BEEHIVE_INSIGHT_TOKEN'], password: ENV['BEEHIVE_INSIGHT_SECRET'] },
+        basic_auth: { username: ENV['BEEHIVE_INSIGHT_TOKEN'],
+                      password: ENV['BEEHIVE_INSIGHT_SECRET'] },
         headers: { 'Content-Type' => 'application/json' }
       }
       resp = HTTParty.post(endpoint, options)
@@ -277,8 +312,13 @@ class Proposal < ActiveRecord::Base
     end
 
     def compare_arrays(array, fund) # TODO: refactor
-      comparison = (send(array).pluck(:id) & fund.send(array).pluck(:id).uniq).count.to_f
-      comparison.positive? && fund.send(array).count.positive? ? comparison / send(array).count.to_f : 0
+      comparison = (send(array).pluck(:id) & fund.send(array).pluck(:id).uniq)
+                   .count.to_f
+      if comparison.positive? && fund.send(array).count.positive?
+        comparison / send(array).count.to_f
+      else
+        0
+      end
     end
 
     def save_all_age_groups_if_all_ages
@@ -287,7 +327,8 @@ class Proposal < ActiveRecord::Base
     end
 
     def clear_beneficiary_ids(category)
-      self.beneficiary_ids = beneficiary_ids - Beneficiary.where(category: category).pluck(:id)
+      self.beneficiary_ids = beneficiary_ids -
+                             Beneficiary.where(category: category).pluck(:id)
     end
 
     def trigger_clear_beneficiary_ids
@@ -307,7 +348,11 @@ class Proposal < ActiveRecord::Base
     end
 
     def prevent_second_proposal_until_first_is_complete
-      return unless recipient.proposals.count == 1 && recipient.proposals.where(state: 'complete').count < 1
-      errors.add(:proposal, 'Please complete your first proposal before creating a second.')
+      return unless recipient.proposals.count == 1 &&
+                    recipient.proposals.where(state: 'complete').count < 1
+      errors.add(
+        :proposal,
+        'Please complete your first proposal before creating a second.'
+      )
     end
 end

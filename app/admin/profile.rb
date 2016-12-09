@@ -1,10 +1,11 @@
 # TODO: deprecated
 ActiveAdmin.register Profile do
-  permit_params :organisation_id, :year, :gender, :min_age, :max_age,
-                :income, :expenditure, :volunteer_count, :staff_count, :does_sell,
-                :beneficiaries_count, :beneficiaries_count_actual, :income_actual,
-                :expenditure_actual, beneficiary_ids: [], country_ids: [], district_ids: [],
-                                     implementation_ids: [], implementor_ids: []
+  permit_params :organisation_id, :year, :gender, :min_age, :max_age, :income,
+                :expenditure, :volunteer_count, :staff_count, :does_sell,
+                :beneficiaries_count, :beneficiaries_count_actual,
+                :income_actual, :expenditure_actual,
+                beneficiary_ids: [], country_ids: [], district_ids: [],
+                implementation_ids: [], implementor_ids: []
 
   controller do
     def scoped_collection
@@ -23,7 +24,8 @@ ActiveAdmin.register Profile do
     end
     column 'Organisation Age' do |user|
       if user.organisation.founded_on
-        "#{((Time.zone.today - user.organisation.founded_on).to_f / 356).round(1)} years"
+        "#{((Time.zone.today - user.organisation.founded_on).to_f / 356)
+          .round(1)} years"
       end
     end
     column :income do |profile|
@@ -46,7 +48,9 @@ ActiveAdmin.register Profile do
   filter :organisation
   filter :year, as: :select
   filter :countries, label: 'Country', member_label: :name
-  filter :districts, label: 'District', member_label: :label, input_html: { multiple: true, class: 'chosen-select' }
+  filter :districts, label: 'District',
+                     member_label: :label,
+                     input_html: { multiple: true, class: 'chosen-select' }
   filter :income
   filter :created_at
 
@@ -56,12 +60,14 @@ ActiveAdmin.register Profile do
       row 'Organisation' do |user|
         link_to user.organisation.name, [:admin, user.organisation]
       end
-      row 'In which countries does your organisation benefit people?' do |profile|
+      row 'In which countries
+           does your organisation benefit people?' do |profile|
         profile.countries.each do |c|
           li c.name
         end
       end
-      row 'In which districts does your organisation benefit people?' do |profile|
+      row 'In which districts
+           does your organisation benefit people?' do |profile|
         profile.districts.each do |d|
           li d.label
         end
@@ -108,18 +114,41 @@ ActiveAdmin.register Profile do
   form do |f|
     f.inputs do
       f.input :organisation
-      f.input :year, as: :select, collection: Profile::VALID_YEARS.map { |label| label }
-      f.input :countries, collection: Country.order('name ASC'), input_html: { multiple: true, class: 'chosen-select' }, member_label: :name, label: 'In which countries does your organisation benefit people?'
-      f.input :districts, collection: District.order('label ASC'), input_html: { multiple: true, class: 'chosen-select' }, member_label: :label, label: 'In which districts does your organisation benefit people?'
-      f.input :beneficiaries, collection: Beneficiary.order('label ASC'), input_html: { multiple: true, class: 'chosen-select' }, member_label: :label, label: 'Who/what does your organisation target?'
-      f.input :gender, collection: Profile::GENDERS.map { |label| label }
+      f.input :year, as: :select, collection: Profile::VALID_YEARS
+      f.input :countries, collection: Country.order('name ASC'),
+                          input_html: { multiple: true,
+                                        class: 'chosen-select' },
+                          member_label: :name,
+                          label: 'In which countries does your organisation
+                                  benefit people?'
+      f.input :districts, collection: District.order('label ASC'),
+                          input_html: { multiple: true,
+                                        class: 'chosen-select' },
+                          member_label: :label,
+                          label: 'In which districts does your organisation
+                                  benefit people?'
+      f.input :beneficiaries, collection: Beneficiary.order('label ASC'),
+                              input_html: { multiple: true,
+                                            class: 'chosen-select' },
+                              member_label: :label,
+                              label: 'Who/what does yourorganisation target?'
+      f.input :gender, collection: Profile::GENDERS
       f.input :min_age
       f.input :max_age
       f.input :volunteer_count
       f.input :staff_count
-      f.input :implementors, collection: Implementor.order('label ASC'), input_html: { multiple: true, class: 'chosen-select' }, member_label: :label, label: 'Who delivers your work?'
-      f.input :implementations, collection: Implementation.order('label ASC'), input_html: { multiple: true, class: 'chosen-select' }, member_label: :label, label: 'How fo you implement your work?'
-      f.input :does_sell, label: 'Do you recieve financial payment for your work?'
+      f.input :implementors, collection: Implementor.order('label ASC'),
+                             input_html: { multiple: true,
+                                           class: 'chosen-select' },
+                             member_label: :label,
+                             label: 'Who delivers your work?'
+      f.input :implementations, collection: Implementation.order('label ASC'),
+                                input_html: { multiple: true,
+                                              class: 'chosen-select' },
+                                member_label: :label,
+                                label: 'How fo you implement your work?'
+      f.input :does_sell,
+              label: 'Do you recieve financial payment for your work?'
       f.input :beneficiaries_count
       f.input :beneficiaries_count_actual
       f.input :income

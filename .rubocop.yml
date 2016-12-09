@@ -6,13 +6,61 @@ Style/IndentationConsistency:
 Style/Documentation:
   Enabled: false
 
+Style/ClassAndModuleChildren:
+  Exclude:
+    - 'test/test_helper.rb' # TODO: deprecated
+
+Lint/HandleExceptions:
+  Exclude:
+    - 'bin/rails'
+    - 'bin/rake'
+    - 'bin/rspec'
+
+Metrics/AbcSize:
+  Exclude:
+    - lib/tasks/**
+    - spec/**/**
+    - app/models/funder.rb # TODO: deprecated
+    - app/models/funder_attribute.rb # TODO: deprecated
+    - test/**/** # TODO: deprecated
+
+Metrics/BlockLength:
+  Exclude:
+    - app/admin/*
+    - config/**/**
+    - lib/tasks/**
+    - spec/**/**
+    - Guardfile
+    - test/**/** # TODO: deprecated
+
+Metrics/ClassLength:
+  Exclude:
+    - spec/**/**
+    - app/models/beneficiary.rb
+    - app/models/funder.rb # TODO: deprecated
+    - app/models/funder_attribute.rb # TODO: deprecated
+
+Metrics/LineLength:
+  Exclude:
+    - bin/**
+    - config/**/**
+    - lib/tasks/**
+    - spec/**/**
+    - app/models/funder.rb # TODO: deprecated
+    - app/models/funder_attribute.rb # TODO: deprecated
+    - app/models/profile.rb # TODO: deprecated
+    - test/**/** # TODO: deprecated
+
+Metrics/MethodLength:
+  Exclude:
+    - spec/**/**
+    - lib/tasks/**
+    - app/models/funder.rb # TODO: deprecated
+    - app/models/funder_attribute.rb # TODO: deprecated
+    - test/**/** # TODO: deprecated
+
 AllCops:
   Exclude:
     - db/schema.rb
     - db/*/**
-    - lib/tasks/transfer.rake # TODO
-
-# Deprecated
-Style/ClassAndModuleChildren:
-  Exclude:
-    - 'test/test_helper.rb'
+    - lib/tasks/transfer.rake

@@ -11,7 +11,8 @@ class District < ActiveRecord::Base
   serialize :geometry # TODO: deprecated
 
   validates :country, :label, :district, presence: true
-  validates :district, uniqueness: { scope: :country } # TODO: rename 'district' to 'name'
+  validates :district, uniqueness: { scope: :country }
+  # TODO: rename 'district' to 'name'
 
   # TODO: deprecated
   def grant_count_in_region(year = Time.zone.today.year, region = (self.region || sub_country))

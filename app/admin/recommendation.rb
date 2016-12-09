@@ -19,6 +19,8 @@ ActiveAdmin.register Recommendation do
   filter :funder, input_html: { class: 'chosen-select' }
   filter :recipient, input_html: { class: 'chosen-select' }
   filter :score
-  filter :recommendation_quality, as: :select, collection: Recommendation::RECOMMENDATION_QUALITY
+  filter :recommendation_quality,
+         as: :select,
+         collection: Recommendation::RECOMMENDATION_QUALITY
   filter :updated_at
 end

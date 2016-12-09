@@ -32,15 +32,20 @@ class FundersController < ApplicationController
 
   def district
     if current_user.organisation != @funder
-      redirect_to funder_district_path(current_user.organisation, params[:district])
+      redirect_to funder_district_path(current_user.organisation,
+                                       params[:district])
     end
 
     @district = District.find_by(slug: params[:district])
     gon.districtLabel = @district.district
     gon.funderName = @funder.name
 
-    @amount_awarded = @funder.districts_by_year.group(:district).sum(:amount_awarded)[@district.district]
-    @grant_count = @funder.districts_by_year.group(:district).count[@district.district]
+    @amount_awarded = @funder.districts_by_year
+                             .group(:district)
+                             .sum(:amount_awarded)[@district.district]
+    @grant_count = @funder.districts_by_year
+                          .group(:district)
+                          .count[@district.district]
   end
 
   private

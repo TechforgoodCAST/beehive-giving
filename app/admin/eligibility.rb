@@ -30,7 +30,8 @@ ActiveAdmin.register Eligibility do
   end
 
   filter :recipient, input_html: { class: 'chosen-select' }
-  filter :restriction, member_label: :details, input_html: { class: 'chosen-select' }
+  filter :restriction, member_label: :details,
+                       input_html: { class: 'chosen-select' }
   filter :eligible
 
   show do

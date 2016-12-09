@@ -11,5 +11,7 @@ class FundingType < ActiveRecord::Base
   has_many :funders, -> { distinct }, through: :funds
   has_and_belongs_to_many :funder_attributes # TODO: deprecated
 
-  validates :label, presence: true, inclusion: { in: FUNDING_TYPE }, uniqueness: true
+  validates :label, presence: true,
+                    inclusion: { in: FUNDING_TYPE },
+                    uniqueness: true
 end

@@ -1,17 +1,22 @@
 class EligibilitiesController < ApplicationController
   before_action :ensure_logged_in, :ensure_recipient # TODO: refactor
-  before_action :load_recipient, :load_fund, :ensure_proposal_present, :load_proposal # TODO: refactor
+  before_action :load_recipient, :load_fund, :ensure_proposal_present,
+                :load_proposal # TODO: refactor
 
   def new
     @criteria = []
     @fund.restrictions.order(:id).uniq.each do |r|
-      @criteria << @recipient.eligibilities.where(restriction: r).first_or_initialize
+      @criteria << @recipient.eligibilities
+                   .where(restriction: r)
+                   .first_or_initialize
     end
 
     if @recipient.incomplete_first_proposal?
       session[:return_to] = @fund.slug
-      redirect_to edit_recipient_proposal_path(@recipient, @recipient.proposals.last)
-    elsif current_user.feedbacks.count < 1 && (@recipient.locked_fund?(@fund) && @recipient.funds_checked == 2)
+      redirect_to edit_recipient_proposal_path(@recipient,
+                                               @recipient.proposals.last)
+    elsif current_user.feedbacks.count < 1 &&
+          (@recipient.locked_fund?(@fund) && @recipient.funds_checked == 2)
       session[:redirect_to_funder] = @fund.slug
       redirect_to new_feedback_path
     elsif @recipient.funds_checked < 3 || @recipient.unlocked_fund?(@fund)
@@ -24,7 +29,8 @@ class EligibilitiesController < ApplicationController
 
   def create
     if @recipient.update_attributes(eligibility_params)
-      @recipient.increment!(:funds_checked) if @proposal.recommendation(@fund).eligibility.nil? # TODO: refactor
+      @recipient.increment!(:funds_checked) if
+        @proposal.recommendation(@fund).eligibility.nil? # TODO: refactor
       @proposal.funds.each do |fund| # TODO: performance?
         @recipient.check_eligibility(@proposal, fund)
       end
@@ -39,6 +45,8 @@ class EligibilitiesController < ApplicationController
     end
 
     def eligibility_params
-      params.require(:recipient).permit(eligibilities_attributes: [:id, :eligible, :restriction_id, :recipient_id])
+      params.require(:recipient)
+            .permit(eligibilities_attributes:
+                      [:id, :eligible, :restriction_id, :recipient_id])
     end
 end

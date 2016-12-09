@@ -17,7 +17,8 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user
-    current_user ||= User.includes(:organisation).find_by(auth_token: cookies[:auth_token])
+    current_user ||= User.includes(:organisation)
+                         .find_by(auth_token: cookies[:auth_token])
   end
 
   def set_new_relic_user
@@ -40,11 +41,13 @@ class ApplicationController < ActionController::Base
   end
 
   def load_proposal
-    @proposal = @recipient.proposals.last if logged_in? && @recipient.proposals.count.positive?
+    @proposal = @recipient.proposals.last if
+      logged_in? && @recipient.proposals.count.positive?
   end
 
   def ensure_authorised
-    redirect_to unauthorised_path unless current_user.authorised || params[:action] == 'unauthorised'
+    redirect_to unauthorised_path unless
+      current_user.authorised || params[:action] == 'unauthorised'
   end
 
   def ensure_recipient
@@ -58,18 +61,14 @@ class ApplicationController < ActionController::Base
   end
 
   def prevent_funder_access
-    redirect_to funder_overview_path(current_user.organisation), alert: "Sorry, you don't have access to that" if current_user.role == 'Funder'
+    return unless current_user.role == 'Funder'
+    redirect_to funder_overview_path(current_user.organisation),
+                alert: "Sorry, you don't have access to that"
   end
 
   def check_organisation_ownership
     redirect_to root_path, alert: "Sorry, you don't have access to that" unless
       current_user.organisation == Recipient.find_by(slug: params[:id])
-  end
-
-  def check_organisation_ownership_or_funder
-    redirect_to root_path, alert: "Sorry, you don't have access to that" unless
-      logged_in? && current_user.organisation == Recipient.find_by(slug: params[:id]) ||
-      logged_in? && current_user.role == 'Funder'
   end
 
   def check_user_ownership
@@ -89,6 +88,7 @@ class ApplicationController < ActionController::Base
   end
 
   def ensure_proposal_present
+    # TODO: refactor
     return unless current_user.role == 'User'
     if current_user.organisation.proposals.count < 1
       redirect_to new_recipient_proposal_path(current_user.organisation),
@@ -99,12 +99,6 @@ class ApplicationController < ActionController::Base
         current_user.organisation.proposals.last
       )
     end
-  end
-
-  # refactor
-  def ensure_profile_for_current_year
-    return if current_user.organisation.profiles.where(year: Time.zone.today.year).count.positive?
-    redirect_to new_recipient_profile_path(current_user.organisation)
   end
 
   protected

@@ -1,7 +1,8 @@
 ActiveAdmin.register Recipient do
-  permit_params :name, :contact_number, :website,
-                :street_address, :city, :region, :postal_code, :country, :charity_number,
-                :company_number, :founded_on, :registered_on, :mission, :status, :registered, :active_on_beehive, organisation_ids: []
+  permit_params :name, :contact_number, :website, :street_address, :city,
+                :region, :postal_code, :country, :charity_number,
+                :company_number, :founded_on, :registered_on, :mission, :status,
+                :registered, :active_on_beehive, organisation_ids: []
 
   controller do
     def find_resource
@@ -31,13 +32,6 @@ ActiveAdmin.register Recipient do
     column :country
     column('Users') { |f| f.users.count }
     column :org_type
-    column('Profiles') { |f| f.profiles.count }
-    column 'Unlocks', :recipient_funder_accesses_count
-    column 'Unlocked Funders' do |r|
-      r.recipient_funder_accesses.each do |f|
-        li "#{Funder.find(f.funder_id).name} (#{Recipient.find(f.recipient_id).created_at.strftime('%d-%b')}) / (#{f.created_at.strftime('%d-%b')})"
-      end
-    end
     column('Proposals') { |f| f.proposals.count }
     column('Grants') { |f| f.grants.count }
     column('Requests') { |f| f.features.count }

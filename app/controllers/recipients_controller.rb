@@ -2,10 +2,10 @@ class RecipientsController < ApplicationController
   before_action :ensure_logged_in, :load_recipient, :ensure_recipient,
                 :years_ago, :load_proposal
   before_action :ensure_proposal_present, except: [:edit, :update]
-  before_action :check_organisation_ownership_or_funder, only: :show
-  before_action :load_funder, only: [:comparison, :eligibility, :update_eligibility, :apply]
+  before_action :check_organisation_ownership, only: :show
+  before_action :load_funder, only: [:comparison, :eligibility,
+                                     :update_eligibility, :apply]
   before_action :load_feedback, except: [:unlock_funder, :vote]
-  before_action :funder_attribute, only: [:comparison, :eligibility, :update_eligibility]
 
   before_action :refine_recommendations, except: [:edit, :update]
 
@@ -19,7 +19,9 @@ class RecipientsController < ApplicationController
     respond_to do |format|
       if @recipient.update_attributes(recipient_params)
         format.js do
-          render js: "window.location.href = '#{new_recipient_proposal_path(@recipient)}';
+          render js: "window.location.href =
+                      '#{new_recipient_proposal_path(@recipient)}';
+
                       $('button[type=submit]').prop('disabled', true)
                       .removeAttr('data-disable-with');"
         end
@@ -52,7 +54,11 @@ class RecipientsController < ApplicationController
   end
 
   def all_funds
-    @funds = @recipient.proposals.last.funds.includes(:funder).order('recommendations.total_recommendation DESC', 'funds.name')
+    @funds = @recipient.proposals.last
+                       .funds
+                       .includes(:funder)
+                       .order('recommendations.total_recommendation DESC',
+                              'funds.name')
 
     render 'recipients/funders/all_funders'
   end
@@ -73,7 +79,9 @@ class RecipientsController < ApplicationController
     end
 
     def load_recipient
-      @recipient = Recipient.find_by(slug: params[:id]) || current_user.organisation if logged_in?
+      return unless logged_in?
+      @recipient = Recipient.find_by(slug: params[:id]) ||
+                   current_user.organisation
     end
 
     def load_funder
@@ -92,22 +100,10 @@ class RecipientsController < ApplicationController
                    end
     end
 
-    def funder_attribute # TODO: refactor
-      @funding_stream = params[:funding_stream] || 'All'
-
-      return unless @funder.attributes.any?
-      @year_of_funding = @funder.attributes.where('grant_count > ?', 0).order(year: :desc).first.year
-      @funder_attribute = @funder.attributes.where('year = ? AND funding_stream = ?', @year_of_funding, @funding_stream).first
-    end
-
-    def eligibility_params # TODO: refactor
-      params.require(:recipient).permit(eligibilities_attributes: [:id, :eligible, :restriction_id, :recipient_id])
-    end
-
     def recipient_params
-      params.require(:recipient).permit(:name, :website, :street_address,
-                                        :country, :charity_number, :company_number, :operating_for,
-                                        :multi_national, :income, :employees, :volunteers, :org_type,
-                                        organisation_ids: [])
+      params.require(:recipient)
+            .permit(:name, :website, :street_address, :country, :charity_number,
+                    :company_number, :operating_for, :multi_national, :income,
+                    :employees, :volunteers, :org_type, organisation_ids: [])
     end
 end
