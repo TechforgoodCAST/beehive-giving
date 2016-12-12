@@ -81,14 +81,14 @@ gem 'jquery-turbolinks'
 gem 'nokogiri'
 gem 'nprogress-rails'
 gem 'simple_form'
-gem 'stripe', git: 'https://github.com/stripe/stripe-ruby'
+gem 'stripe'
 gem 'uikit-sass-rails'
 gem 'workflow'
 
 # Admin
-gem 'activeadmin', github: 'activeadmin'
+gem 'activeadmin', git: 'https://github.com/activeadmin/activeadmin'
 gem 'devise'
-gem 'inherited_resources', github: 'activeadmin/inherited_resources'
+gem 'inherited_resources', git: 'https://github.com/activeadmin/inherited_resources'
 
 # Monitoring & metrics
 gem 'intercom-rails'
