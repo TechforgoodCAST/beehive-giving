@@ -189,7 +189,7 @@ class SignupController < ApplicationController
 
     def load_districts
       @districts_count = Funder.active.joins(:countries).group('countries.id')
-                               .uniq.count
+                               .distinct.count
       @districts = Country.order(priority: :desc).order(:name)
                           .find(@districts_count.keys)
     end

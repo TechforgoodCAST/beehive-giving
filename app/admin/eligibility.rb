@@ -39,12 +39,12 @@ ActiveAdmin.register Eligibility do
       row('Recipient', &:recipient)
       row('Restrition') { |e| e.restriction.details }
       row('Funders') do |e|
-        e.restriction.funders.uniq.each do |f|
+        e.restriction.funders.distinct.each do |f|
           li f.name
         end
       end
       row('Funding streams') do |e|
-        e.restriction.funders.uniq.each do |f|
+        e.restriction.funders.distinct.each do |f|
           f.funding_streams.each do |fs|
             li fs.label
           end

@@ -5,7 +5,7 @@ class EligibilitiesController < ApplicationController
 
   def new
     @criteria = []
-    @fund.restrictions.order(:id).uniq.each do |r|
+    @fund.restrictions.order(:id).distinct.each do |r|
       @criteria << @recipient.eligibilities
                    .where(restriction: r)
                    .first_or_initialize

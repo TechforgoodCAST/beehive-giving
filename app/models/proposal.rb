@@ -239,10 +239,12 @@ class Proposal < ActiveRecord::Base
     return if affect_geo.blank? || affect_geo == 2
     self.affect_geo = if country_ids.uniq.count > 1
                         3
-                      elsif (district_ids & Country.find(country_ids[0]).districts.pluck(:id)).count == Country.find(country_ids[0]).districts.count
+                      elsif (district_ids & Country.find(country_ids[0])
+                            .districts.pluck(:id)).count ==
+                            Country.find(country_ids[0]).districts.count
                         2
                       elsif District.where(id: district_ids)
-                                    .pluck(:region).uniq.count > 1
+                                    .distinct.pluck(:region).count > 1
                         1
                       else
                         0

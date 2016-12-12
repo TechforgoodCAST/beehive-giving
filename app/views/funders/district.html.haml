@@ -43,7 +43,7 @@
           awarded to
           = succeed '.' do
             %strong
-              = @district.recent_grants(@funder.current_attribute.year).pluck(:recipient_id).uniq.count
+              = @district.recent_grants(@funder.current_attribute.year).pluck(:recipient_id).distinct.count
             organisations
         %li
           = @funder.name

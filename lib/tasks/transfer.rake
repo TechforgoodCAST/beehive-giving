@@ -118,7 +118,7 @@ namespace :transfer do
           proposal.affect_geo = 3
         elsif (profile.districts.pluck(:id) & Country.find(profile.country_ids[0]).districts.pluck(:id)).count == 0
           proposal.affect_geo = 2
-        elsif profile.districts.pluck(:region).uniq.count > 1
+        elsif profile.districts.pluck(:region).distinct.count > 1
           proposal.affect_geo = 1
         else
           proposal.affect_geo = 0

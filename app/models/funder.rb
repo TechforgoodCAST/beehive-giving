@@ -90,7 +90,7 @@ class Funder < Organisation
   end
 
   def update_current_attribute
-    current_attribute.update_column(:no_of_recipients_funded, recent_grants(current_attribute.year).pluck(:recipient_id).uniq.count)
+    current_attribute.update_column(:no_of_recipients_funded, recent_grants(current_attribute.year).distinct.pluck(:recipient_id).count)
     current_attribute.set_shared_recipient_ids
   end
 
@@ -103,7 +103,7 @@ class Funder < Organisation
 
   def eligible_organisations
     array = []
-    Recipient.joins(:eligibilities).order(:id).uniq.each do |recipient|
+    Recipient.joins(:eligibilities).distinct.order(:id).each do |recipient|
       array << recipient if recipient.eligible?(self)
     end
     array
