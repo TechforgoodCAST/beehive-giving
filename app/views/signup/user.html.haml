@@ -47,11 +47,11 @@
             #preview{data: @districts_count}
               %h3.white See if Beehive has funders for you
               %h4.white Where are you seeking funding for?
-              = select_tag :country, options_from_collection_for_select(@districts, 'id', 'name'), class: 'chosen-select large', include_blank: true
+              = select_tag :country, options_for_select(@districts), class: 'chosen-select large', include_blank: true
             #result.fade-out
               #count 0
               %span.year.white
-                funder(s) found.
+                fund(s) found.
                 Create an account to find out more
                 .arrow
 

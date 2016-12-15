@@ -1,9 +1,10 @@
 class RecipientsController < ApplicationController
-  before_action :ensure_logged_in, :load_recipient, :ensure_recipient,
-                :years_ago, :load_proposal
+  before_action :ensure_logged_in, :ensure_recipient
+
   before_action :ensure_proposal_present, except: [:edit, :update]
+
   before_action :check_organisation_ownership, only: :show
-  before_action :load_funder, only: [:comparison, :eligibility,
+  before_action :load_funder, only: [:eligibility,
                                      :update_eligibility, :apply]
   before_action :load_feedback, except: [:unlock_funder, :vote]
 
@@ -78,26 +79,12 @@ class RecipientsController < ApplicationController
       @recipient.proposals.last.refine_recommendations
     end
 
-    def load_recipient
-      return unless logged_in?
-      @recipient = Recipient.find_by(slug: params[:id]) ||
-                   current_user.organisation
-    end
-
     def load_funder
       @funder = Funder.find_by(slug: params[:id])
     end
 
     def load_feedback
       @feedback = current_user.feedbacks.new if logged_in?
-    end
-
-    def years_ago
-      @years_ago = if params[:years_ago].present?
-                     params[:years_ago].to_i
-                   else
-                     1
-                   end
     end
 
     def recipient_params

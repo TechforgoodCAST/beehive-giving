@@ -1,21 +1,17 @@
 class ProposalsController < ApplicationController
-  before_action :ensure_logged_in, :load_recipient, :prevent_funder_access,
-                :recipient_country
+  before_action :ensure_logged_in, :recipient_country
   before_action :load_proposal, only: [:edit, :update]
 
   def new
-    if @recipient.incomplete_first_proposal?
-      redirect_to edit_recipient_proposal_path(@recipient,
-                                               @recipient.proposals.last)
-    elsif @recipient.proposals?
-      redirect_to recommended_funds_path
-    elsif @recipient.valid?
-      @proposal = @recipient.proposals.new(state: 'initial')
-      @recipient.transfer_profile_to_new_proposal(@recipient.profiles.last,
-                                                  @proposal)
-    else
-      redirect_to edit_recipient_path(@recipient)
-    end
+    return edit_recipient_proposal_path(@recipient, @proposal) if
+                                        @recipient.incomplete_first_proposal?
+    return recommended_funds_path if @proposal
+    return edit_recipient_path(@recipient) unless @recipient.valid?
+    # TODO: without db call?
+    @proposal = @recipient.proposals.new(state: 'initial')
+    return unless @recipient.created_at < Date.new(2016, 4, 30) # TODO: refactor
+    @recipient.transfer_profile_to_new_proposal(@recipient.profiles.last,
+                                                @proposal)
   end
 
   def create

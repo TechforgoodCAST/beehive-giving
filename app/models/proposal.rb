@@ -342,11 +342,11 @@ class Proposal < ActiveRecord::Base
     def save_districts_from_countries
       # TODO: refactor into background job too slow
       return unless affect_geo > 1
-      district_ids_array = []
-      countries.each do |country|
-        district_ids_array += District.where(country_id: country.id).pluck(:id)
-      end
-      self.district_ids = district_ids_array.uniq
+      # district_ids_array = []
+      # countries.each do |country|
+      #   district_ids_array += District.where(country_id: country.id).pluck(:id)
+      # end
+      # self.district_ids = district_ids_array.uniq
     end
 
     def prevent_second_proposal_until_first_is_complete

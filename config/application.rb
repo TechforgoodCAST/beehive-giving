@@ -16,37 +16,39 @@ module Beehive
 
     # controller assets
     config.assets.precompile += %w(
-      sessions.css
-      pages.css
-      signup.css
-      organisations.css
-      profiles.css
-      funders.css
-      recipients.css
-      feedback.css
-      password_resets.css
-      proposals.css
       accounts.css
-      funds.css
       eligibilities.css
       enquiries.css
+      errors.css
+      feedback.css
+      funders.css
+      funds.css
+      organisations.css
+      pages.css
+      password_resets.css
+      profiles.css
+      proposals.css
+      recipients.css
+      signup.css
+      sessions.css
     )
     config.assets.precompile += %w(
-      sessions.js
-      pages.js
-      signup.js
-      organisations.js
-      profiles.js
-      funders.js
-      recipients.js
-      feedback.js
-      password_resets.js
-      proposals.js
-      map.js
       accounts.js
-      funds.js
       eligibilities.js
       enquiries.js
+      errors.js
+      feedback.js
+      funders.js
+      funds.js
+      map.js
+      organisations.js
+      pages.js
+      password_resets.js
+      profiles.js
+      proposals.js
+      recipients.js
+      signup.js
+      sessions.js
     )
 
     # vendor assets
@@ -58,9 +60,9 @@ module Beehive
     config.assets.precompile += %w(
       chosen.js
       chosen-jquery.js
+      jquery.tree-multiselect.min.js
       morris.js
       raphael.js
-      jquery.tree-multiselect.min.js
     )
   end
 end

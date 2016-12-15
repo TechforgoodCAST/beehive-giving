@@ -47,13 +47,13 @@ feature 'Match' do
             I want to make sure my details are correct,
             so I feel confident my results will be accurate' do
     helper.fill_user_form(seeking: 'An unregistered organisation OR project')
-          .submit_user_form
+          .submit_user_form.submit_organisation_form
     expect(page).to have_text "can't be blank", count: 7
   end
 
   def expect_charity_scrape
     expect(page).to have_selector("input[value='Centre For The Acceleration Of Social Technology']")
-    expect(page).to have_text "can't be blank", count: 5
+    expect(page).to have_text "can't be blank", count: 4
     self
   end
 
@@ -101,7 +101,7 @@ feature 'Match' do
             I want to make sure my details are correct,
             so I feel confident my results will be accurate' do
     helper.fill_user_form(seeking: 'Another type of organisation')
-          .submit_user_form
+          .submit_user_form.submit_organisation_form
     expect(page).to have_text "can't be blank", count: 7
   end
 
@@ -132,7 +132,8 @@ feature 'Match' do
     @db = @app.instances
     helper.fill_user_form(
       seeking: 'A registered company', company_number: company_number
-    ).submit_user_form.submit_organisation_form!
+    ).submit_user_form
+    expect(current_path).to eq unauthorised_path
     expect(ActionMailer::Base.deliveries.last.subject)
       .to eq "#{User.last.first_name} has requested access to #{@db[:recipient].name}"
     expect(current_path).to eq unauthorised_path

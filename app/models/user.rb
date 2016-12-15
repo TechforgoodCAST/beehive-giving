@@ -80,10 +80,12 @@ class User < ActiveRecord::Base
     UserMailer.password_reset(self).deliver_now
   end
 
-  def generate_token(column)
-    loop do
-      self[column] = SecureRandom.urlsafe_base64
-      break unless User.exists?(column => self[column])
+  private
+
+    def generate_token(column)
+      loop do
+        self[column] = SecureRandom.urlsafe_base64
+        break unless User.exists?(column => self[column])
+      end
     end
-  end
 end

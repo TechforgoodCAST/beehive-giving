@@ -3,7 +3,7 @@ class ErrorsController < ApplicationController
     render status_code.to_s, status: status_code
   end
 
-  protected
+  private
 
     def status_code
       params[:code] || 500

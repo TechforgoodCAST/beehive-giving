@@ -21,11 +21,11 @@
           = f.error :company_number, class: 'error-message'
 
       .uk-width-1-1.uk-margin-top.registered-on
-        .cta.tight.green.uk-margin-bottom.find-success{class: ('fade-out' unless scrape_success?) }
+        .cta.tight.green.uk-margin-bottom.find-success{class: ('fade-out' unless @scrape_success) }
           %strong Success!
           We found your organisations details, please complete any missing information below and hit 'Next' to continue.
 
-        .cta.tight.red.uk-margin-bottom.find-organisation{class: ('fade-out' if scrape_success?) }
+        .cta.tight.red.uk-margin-bottom.find-organisation{class: ('fade-out' if @scrape_success) }
           .uk-grid
             .uk-width-medium-2-3
               %strong Uh oh!
@@ -48,10 +48,11 @@
     = f.input :country, error: false, type: 'text', input_html: { class: 'large uk-width-1-1 chosen-select' }, include_blank: true, priority: ['United Kingdom']
     = f.error :country, class: 'error-message'
 
-    - if @recipient.scrape_charity_data && !@recipient.postal_code.present?
-      .uk-margin-top
-        = f.input :postal_code, type: 'text', placeholder: 'Postal Code', input_html: { class: 'large uk-width-1-1' }
-        = f.error :postal_code, class: 'error-message'
+    -# TODO: refactor
+    -# - if @recipient.show_postal_code?
+    -#   .uk-margin-top
+    -#     = f.input :postal_code, type: 'text', placeholder: 'Postal Code', input_html: { class: 'large uk-width-1-1' }
+    -#     = f.error :postal_code, class: 'error-message'
 
   .uk-width-medium-1-1.uk-margin-top.fade-out.name
     .label How long has your organisation or project been operating for?

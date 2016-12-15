@@ -40,6 +40,7 @@ group :development, :test do
   gem 'guard-rspec', require: false
   gem 'rspec-rails'
   gem 'stripe-ruby-mock', require: 'stripe_mock'
+  gem 'thor', '0.19.1' # TODO: guard dependency
 end
 
 group :development do
