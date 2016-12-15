@@ -66,7 +66,7 @@ class Organisation < ActiveRecord::Base
 
   validates :street_address,
             presence: true,
-            if: proc { |o| o.org_type.zero? || o.org_type == 4 },
+            if: :unregistered_org,
             unless: :skip_validation
   validates :charity_number,
             presence: true,
@@ -347,8 +347,12 @@ class Organisation < ActiveRecord::Base
         (postal_code.present? && postal_code_changed?)
     end
 
+    def unregistered_org
+      org_type.nil? || (org_type.zero? || org_type == 4)
+    end
+
     def clear_registration_numbers_if_unregistered
-      return unless org_type.zero? || org_type == 4
+      return unless unregistered_org
       self.charity_number = nil
       self.company_number = nil
     end
