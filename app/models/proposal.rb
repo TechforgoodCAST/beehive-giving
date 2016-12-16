@@ -140,6 +140,8 @@ class Proposal < ActiveRecord::Base
       duration: funding_duration
     )
 
+    recommendations = []
+
     Fund.all.find_each do |fund|
       org_type_score = beneficiary_score = location_score = amount_score =
                                                               duration_score = 0
@@ -218,8 +220,31 @@ class Proposal < ActiveRecord::Base
         grant_duration_recommendation: duration_score,
         score: score
       }
-      save_recommendation(fund, scores)
+      recommendations << build_recommendation(fund, scores)
     end
+
+    # TODO: refactor
+    Recommendation.import recommendations, on_duplicate_key_update: {
+      conflict_target: [:id], columns: [:eligibility,
+                                        :grant_amount_recommendation,
+                                        :grant_duration_recommendation,
+                                        :total_recommendation,
+                                        :org_type_score,
+                                        :beneficiary_score,
+                                        :location_score,
+                                        :score]
+    }
+
+    # TODO: refactor
+    recommended_funds = funds
+                        .where('recommendations.total_recommendation >= ?',
+                               Recipient::RECOMMENDATION_THRESHOLD)
+                        .order('recommendations.total_recommendation DESC',
+                               'name')
+    update_column(
+      :recommended_funds,
+      recommended_funds.pluck(:id)
+    )
   end
 
   def refine_recommendations
@@ -230,7 +255,7 @@ class Proposal < ActiveRecord::Base
 
   def show_fund(fund)
     recipient.subscribed? ||
-      recipient.recommended_fund?(fund) ||
+      recommended_funds.take(Recipient::RECOMMENDATION_THRESHOLD).include?(fund.id) || # TODO: refactor
       recommendation(fund).eligibility?
   end
 
@@ -255,11 +280,23 @@ class Proposal < ActiveRecord::Base
     Recommendation.find_by(proposal: self, fund: fund)
   end
 
+  # TODO: review
   def eligible?(fund)
     recommendation(fund).eligibility == 'Eligible'
   end
 
+  def set_eligibility_fields
+    update_columns(
+      eligible_funds: fund_ids_by_eligibility('Eligible'),
+      ineligible_funds: fund_ids_by_eligibility('Ineligible')
+    )
+  end
+
   private
+
+    def fund_ids_by_eligibility(eligibility)
+      funds.where('eligibility = ?', eligibility).distinct.pluck(:id)
+    end
 
     def beneficiaries_not_selected(category)
       (beneficiary_ids & Beneficiary.where(category: category)
@@ -305,12 +342,12 @@ class Proposal < ActiveRecord::Base
       score
     end
 
-    def save_recommendation(fund, scores)
-      r = Recommendation.where(
-        proposal: self,
-        fund: fund
-      ).first_or_create
-      r.update_attributes(scores)
+    def build_recommendation(fund, scores)
+      r = Recommendation.where(proposal: self, fund: fund).first_or_initialize
+      r.assign_attributes(scores)
+      r.run_callbacks(:validation) { false }
+      r.run_callbacks(:save) { false }
+      r
     end
 
     def compare_arrays(array, fund) # TODO: refactor

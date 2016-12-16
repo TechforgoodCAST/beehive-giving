@@ -14,7 +14,7 @@
           You are ineligible for funding.
           %a.action{href: fund_eligibility_path(fund)} Find out why
 
-  - if @recipient.proposals? && !@recipient.transferred?
+  - if @proposal && !@recipient.transferred?
     -# TODO:
     - if @proposal.recommendation(fund).grant_amount_recommendation.positive?
       %li

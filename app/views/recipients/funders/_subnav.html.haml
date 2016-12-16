@@ -11,18 +11,18 @@
       %a{ href: eligible_funds_path }
         %li{ class: ('active' if current_page?(eligible_funds_path)) }
           Eligible
-          - if @recipient.eligible_funds.any?
+          - unless @proposal.eligible_funds.empty?
             = surround '(', ')' do
-              = @recipient.eligible_funds.count
+              = @proposal.eligible_funds.count
           .highlight
       %span &middot;
 
       %a{ href: ineligible_funds_path }
         %li{ class: ('active' if current_page?(ineligible_funds_path)) }
           Ineligible
-          - if @recipient.ineligible_funds.any?
+          - unless @proposal.ineligible_funds.empty?
             = surround '(', ')' do
-              = @recipient.ineligible_funds.count
+              = @proposal.ineligible_funds.count
           .highlight
       %span &middot;
 

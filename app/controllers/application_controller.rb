@@ -62,19 +62,19 @@ class ApplicationController < ActionController::Base
   #   @feedback = current_user.feedbacks.new
   # end
 
-  # def ensure_proposal_present
-  #   # TODO: refactor
-  #   return unless current_user.role == 'User'
-  #   if current_user.organisation.proposals.count < 1
-  #     redirect_to new_recipient_proposal_path(current_user.organisation),
-  #                 alert: 'Please create a funding proposal before continuing.'
-  #   elsif current_user.organisation.proposals.last.initial?
-  #     redirect_to edit_recipient_proposal_path(
-  #       current_user.organisation,
-  #       current_user.organisation.proposals.last
-  #     )
-  #   end
-  # end
+  def ensure_proposal_present
+    # TODO: refactor
+    return unless current_user.role == 'User'
+    if current_user.organisation.proposals.count < 1
+      redirect_to new_recipient_proposal_path(current_user.organisation),
+                  alert: 'Please create a funding proposal before continuing.'
+    elsif current_user.organisation.proposals.last.initial?
+      redirect_to edit_recipient_proposal_path(
+        current_user.organisation,
+        current_user.organisation.proposals.last
+      )
+    end
+  end
 
   private
 

@@ -1,14 +1,14 @@
 class RecipientsController < ApplicationController
-  before_action :ensure_logged_in, :ensure_recipient
+  before_action :ensure_logged_in
 
-  before_action :ensure_proposal_present, except: [:edit, :update]
+  # before_action :ensure_proposal_present, except: [:edit, :update]
 
-  before_action :check_organisation_ownership, only: :show
-  before_action :load_funder, only: [:eligibility,
-                                     :update_eligibility, :apply]
-  before_action :load_feedback, except: [:unlock_funder, :vote]
+  # before_action :check_organisation_ownership, only: :show
+  # before_action :load_funder, only: [:eligibility,
+  #                                    :update_eligibility, :apply]
+  # before_action :load_feedback, except: [:unlock_funder, :vote]
 
-  before_action :refine_recommendations, except: [:edit, :update]
+  # before_action :refine_recommendations, except: [:edit, :update]
 
   def edit
     @recipient.scrape_charity_data
@@ -37,7 +37,10 @@ class RecipientsController < ApplicationController
   end
 
   def recommended_funds
-    @funds = @recipient.recommended_with_eligible_funds
+    @funds = Fund.includes(:funder).find(
+      (@proposal.recommended_funds - @proposal.ineligible_funds)
+      .take(Recipient::RECOMMENDATION_LIMIT) # TODO: move constant
+    )
 
     render 'recipients/funders/recommended_funders'
   end

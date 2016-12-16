@@ -1,7 +1,6 @@
 class EligibilitiesController < ApplicationController
-  before_action :ensure_logged_in, :ensure_recipient # TODO: refactor
-  before_action :load_recipient, :load_fund, :ensure_proposal_present,
-                :load_proposal # TODO: refactor
+  before_action :ensure_logged_in
+  before_action :load_fund, :ensure_proposal_present # TODO: refactor
 
   def new
     @criteria = []
