@@ -255,8 +255,9 @@ class Proposal < ActiveRecord::Base
 
   def show_fund(fund)
     recipient.subscribed? ||
-      recommended_funds.take(Recipient::RECOMMENDATION_THRESHOLD).include?(fund.id) || # TODO: refactor
-      recommendation(fund).eligibility?
+      recommended_funds.take(Recipient::RECOMMENDATION_LIMIT).include?(fund.id)
+    #  || # TODO: refactor
+    # recommendation(fund).eligibility?
   end
 
   def check_affect_geo

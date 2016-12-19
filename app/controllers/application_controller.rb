@@ -44,10 +44,20 @@ class ApplicationController < ActionController::Base
     @proposal = Proposal.order(:created_at).find_by(recipient_id: @recipient.id)
   end
 
-  # TODO: def ensure_funder
-  #   redirect_to root_path, alert: "Sorry, you don't have access to that" unless
-  #     current_user.role == 'Funder'
-  # end
+  def ensure_proposal_present
+    ensure_user
+    if !@proposal
+      redirect_to new_recipient_proposal_path(@recipient),
+                  alert: 'Please create a funding proposal before continuing.'
+    elsif @proposal.initial?
+      redirect_to edit_recipient_proposal_path(@recipient, @proposal)
+    end
+  end
+
+  def ensure_funder # TODO: deprecated
+    return if logged_in? && current_user.role == 'Funder'
+    redirect_to sign_in_path, alert: "Sorry, you don't have access to that"
+  end
 
   # TODO: def check_organisation_ownership
   #   redirect_to root_path, alert: "Sorry, you don't have access to that" unless
@@ -61,20 +71,6 @@ class ApplicationController < ActionController::Base
   # TODO: def load_feedback
   #   @feedback = current_user.feedbacks.new
   # end
-
-  def ensure_proposal_present
-    # TODO: refactor
-    return unless current_user.role == 'User'
-    if current_user.organisation.proposals.count < 1
-      redirect_to new_recipient_proposal_path(current_user.organisation),
-                  alert: 'Please create a funding proposal before continuing.'
-    elsif current_user.organisation.proposals.last.initial?
-      redirect_to edit_recipient_proposal_path(
-        current_user.organisation,
-        current_user.organisation.proposals.last
-      )
-    end
-  end
 
   private
 

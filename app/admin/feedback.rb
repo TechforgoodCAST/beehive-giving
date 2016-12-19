@@ -16,7 +16,7 @@ ActiveAdmin.register Feedback do
       end
     end
     column 'Contact', :user do |feedback|
-      feedback.user.user_email if feedback.user
+      feedback&.user.user_email
     end
     column :most_useful
     column 'Net Promoter Score', :nps

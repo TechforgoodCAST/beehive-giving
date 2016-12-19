@@ -1,7 +1,6 @@
 class RecipientsController < ApplicationController
   before_action :ensure_logged_in
-
-  # before_action :ensure_proposal_present, except: [:edit, :update]
+  before_action :ensure_proposal_present, except: [:edit, :update]
 
   # before_action :check_organisation_ownership, only: :show
   # before_action :load_funder, only: [:eligibility,
@@ -11,8 +10,7 @@ class RecipientsController < ApplicationController
   # before_action :refine_recommendations, except: [:edit, :update]
 
   def edit
-    @recipient.scrape_charity_data
-    @recipient.scrape_company_data
+    @recipient.scrape_org
     redirect_to new_recipient_proposal_path(@recipient) if @recipient.save
   end
 

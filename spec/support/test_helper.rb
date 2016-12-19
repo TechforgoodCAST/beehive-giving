@@ -49,7 +49,7 @@ class TestHelper
 
   def tag_funds
     Fund.all.each do |fund|
-      fund.tag_list << 'Arts'
+      fund.tags += ['Arts']
       fund.save
     end
     self

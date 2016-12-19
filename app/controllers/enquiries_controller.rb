@@ -1,15 +1,14 @@
-class EnquiriesController < ApplicationController # TODO: ApplicationsController
-  before_action :ensure_logged_in, :ensure_recipient # TODO:
-  before_action :load_recipient, :load_fund, :ensure_proposal_present,
-                :load_proposal # TODO: refactor
+class EnquiriesController < ApplicationController
+  before_action :ensure_logged_in, :ensure_proposal_present
+  before_action :load_fund # TODO: refactor
 
   def new
-    if @proposal.eligible?(@fund) && @recipient.proposals?
+    if @proposal && @proposal.eligible?(@fund)
       render :new
-    elsif !@recipient.proposals?
+    elsif !@proposal
       redirect_to new_recipient_proposal_path(@recipient, return_to: @fund),
-                  alert: 'Please provide details of your funding request before' \
-                         ' applying.'
+                  alert: 'Please provide details of your funding request ' \
+                         'before applying.'
     else
       redirect_to fund_eligibility_path(@fund),
                   alert: 'You need to check your eligibility before applying.'

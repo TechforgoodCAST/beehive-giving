@@ -22,15 +22,7 @@
 
         = render partial: 'recipients/funders/insights', locals: {fund: @fund}
 
-        -# TODO: refactor DRY see _summary.html.haml
-        - if @fund.tag_list.present?
-          .uk-margin-top
-            - if @proposal.show_fund(@fund)
-              = raw @fund.tags.order(:name).map { |t| link_to t, tag_path(t.slug), class: 'uk-button uk-button-small uk-button-primary invert uk-margin-small-bottom' }.join(' ')
-            - else
-              .uk-margin-small-bottom
-                %a{href: '#why-hidden', class: 'uk-text-bold', onclick: '$.UIkit.modal("#why-hidden").show();'} Upgrade to see funding themes (coming soon)
-              = raw @fund.tags.order(:name).map { |t| link_to scramble_name(t.name), '#why-hidden', class: 'uk-button uk-button-small uk-button-primary invert uk-margin-small-bottom redacted', onclick: '$.UIkit.modal("#why-hidden").show();' }.join(' ')
+        = render_tag_list(@fund)
 
         %hr.thick
 

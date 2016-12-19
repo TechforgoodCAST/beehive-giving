@@ -28,8 +28,6 @@ class Funder < Organisation
 
   alias attributes funder_attributes # TODO: deprecated
 
-  acts_as_taggable
-
   def load_map_all_data
     features = []
     grant_count = Grant.recent(2014).joins(:districts).group('districts.district').count

@@ -36,21 +36,22 @@ class SessionsController < ApplicationController
     redirect_to root_path, notice: 'Signed out!'
   end
 
-  def sign_in_metrics
-    current_user.increment!(:sign_in_count)
-    current_user.update_attribute(:last_seen, Time.zone.now)
-  end
-
   private
 
+    def sign_in_metrics
+      current_user.increment!(:sign_in_count)
+      current_user.update_attribute(:last_seen, Time.zone.now)
+    end
+
     def start_path_for_user
+      org = current_user.organisation
       if current_user.role == 'User'
-        return signup_organisation_path unless @recipient
-        return new_recipient_proposal_path(@recipient) unless
-          @recipient.proposals.count.positive?
+        return signup_organisation_path unless org
+        return new_recipient_proposal_path(org) unless
+          org.proposals.count.positive?
         recommended_funds_path
       else
-        funder_overview_path(@recipient)
+        funder_overview_path(org)
       end
     end
 end

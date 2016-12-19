@@ -22,8 +22,6 @@ class Fund < ActiveRecord::Base
   has_and_belongs_to_many :outcomes
   has_and_belongs_to_many :decision_makers
 
-  acts_as_taggable
-
   validates :funder, :type_of_fund, :slug, :name, :description, :currency,
             :key_criteria, :application_link,
             presence: true
@@ -115,6 +113,10 @@ class Fund < ActiveRecord::Base
 
   def short_name
     name.sub(' Fund', '')
+  end
+
+  def tags?
+    tags.count.positive?
   end
 
   private

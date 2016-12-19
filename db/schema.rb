@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161216124213) do
+ActiveRecord::Schema.define(version: 20161219101508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -502,8 +502,10 @@ ActiveRecord::Schema.define(version: 20161216124213) do
     t.jsonb    "geographic_scale_distribution",        default: {},    null: false
     t.jsonb    "country_distribution",                 default: {},    null: false
     t.jsonb    "district_distribution",                default: {},    null: false
+    t.jsonb    "tags",                                 default: [],    null: false
     t.index ["funder_id"], name: "index_funds_on_funder_id", using: :btree
     t.index ["slug"], name: "index_funds_on_slug", using: :btree
+    t.index ["tags"], name: "index_funds_on_tags", using: :gin
   end
 
   create_table "funds_outcomes", force: :cascade do |t|
@@ -790,26 +792,6 @@ ActiveRecord::Schema.define(version: 20161216124213) do
     t.boolean  "active",          default: false, null: false
     t.index ["organisation_id"], name: "index_subscriptions_on_organisation_id", using: :btree
     t.index ["stripe_user_id"], name: "index_subscriptions_on_stripe_user_id", unique: true, using: :btree
-  end
-
-  create_table "taggings", force: :cascade do |t|
-    t.integer  "tag_id"
-    t.integer  "taggable_id"
-    t.string   "taggable_type"
-    t.integer  "tagger_id"
-    t.string   "tagger_type"
-    t.string   "context",       limit: 128
-    t.datetime "created_at"
-    t.index ["tag_id", "taggable_id", "taggable_type", "context", "tagger_id", "tagger_type"], name: "taggings_idx", unique: true, using: :btree
-    t.index ["taggable_id", "taggable_type", "context"], name: "index_taggings_on_taggable_id_and_taggable_type_and_context", using: :btree
-  end
-
-  create_table "tags", force: :cascade do |t|
-    t.string  "name"
-    t.integer "taggings_count", default: 0
-    t.string  "slug"
-    t.index ["name"], name: "index_tags_on_name", unique: true, using: :btree
-    t.index ["slug"], name: "index_tags_on_slug", using: :btree
   end
 
   create_table "users", force: :cascade do |t|
