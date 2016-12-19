@@ -72,7 +72,7 @@ module RecipientsHelper
 
   def render_tags(fund)
     safe_join fund.tags.sort.map { |t|
-      link_to t, tag_path(t.parameterize), class: TAG_CLASSES
+      link_to t, tag_path(t.parameterize), class: TAG_CLASSES # TODO: refactor
     }, ' '
   end
 
@@ -82,7 +82,7 @@ module RecipientsHelper
                            onclick: '$.UIkit.modal("#why-hidden").show();') +
       safe_join(['</br>'.html_safe]) +
       safe_join(fund.tags.sort.map do |t|
-        link_to scramble_name(t.parameterize),
+        link_to scramble_name(t.parameterize), # TODO: refactor
                 '#why-hidden', class: TAG_CLASSES +
                                  %w(redacted uk-margin-small-top),
                                onclick: '$.UIkit.modal("#why-hidden").show();'

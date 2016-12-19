@@ -69,7 +69,7 @@ group :test do
 end
 
 gem 'activerecord-import'
-gem 'acts-as-taggable-on', '~> 4.0'
+gem 'acts-as-taggable-on', '~> 4.0' # TODO: remove
 gem 'chartkick'
 gem 'chosen-rails'
 gem 'country_select'

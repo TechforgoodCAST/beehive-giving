@@ -33,7 +33,8 @@
 
       - if params[:tag]
         %span &rsaquo;
-        %a{href: tag_path(@tag)}
+        -# TODO: refactor
+        %a{href: tag_path(@tag.parameterize)}
           %li.last.active
             = @tag
             .highlight

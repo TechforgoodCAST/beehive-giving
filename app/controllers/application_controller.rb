@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
 
   unless Rails.application.config.consider_all_requests_local
     rescue_from StandardError do
-      render "errors/#{status_code}", status: status_code
+      render "errors/#{response.status}", status: response.status
     end
   end
 
