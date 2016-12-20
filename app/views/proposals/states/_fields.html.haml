@@ -54,7 +54,7 @@
 
     .label.question-padding Which types of people?
     %small.question-padding Select as many as applicable.
-    #people= f.association :beneficiaries, as: :check_boxes, collection: Beneficiary.order(:sort).where(category: 'People'), label_method: :label, value_method: :id
+    #people= f.association :beneficiaries, as: :check_boxes, collection: @beneficiaries_people, label_method: :label, value_method: :id
 
 .uk-width-1-1.uk-margin-top
   .label Other (not people)
@@ -64,7 +64,7 @@
 
   #other-options{class: ('uk-hidden' unless @proposal.affect_other?)}
     %small.question-padding Select as many as applicable.
-    #other= f.association :beneficiaries, as: :check_boxes, collection: Beneficiary.order(:sort).where(category: 'Other'), label_method: :label, value_method: :id
+    #other= f.association :beneficiaries, as: :check_boxes, collection: @beneficiaries_other, label_method: :label, value_method: :id
     .uk-width-medium-1-2
       .checkbox.wide= f.input :beneficiaries_other_required, as: :boolean, inline_label: 'Other', input_html: { class: 'toggle-other' }
       .other.uk-hidden
@@ -84,7 +84,7 @@
   %a{"data-uk-tooltip" => "{pos:'top'}", :title => "Please select 'Across many countries' and pick the countries you affect."}
     %small Affect regions in a different country?
   = f.association :districts do
-    = f.select :district_ids, country.districts.order(:region, :district).map { |d| [d.district, d.id, {"data-section": d.region.nil? ? d.sub_country.nil? ? 'All regions' : "#{d.sub_country}" : "#{d.sub_country}/#{d.region}"}] }, {}, {multiple: true, class: ('field_with_errors' unless f.object.errors.any? && f.object.districts.present?)}
+    = f.select :district_ids, @district_ids, {}, {multiple: true, class: ('field_with_errors' unless f.object.errors.any? && f.object.districts.present?)}
   - if f.object.errors.any? && (f.object.affect_geo == 0 || f.object.affect_geo == 1)
     .field_with_errors
     = f.error :districts, class: 'error-message'

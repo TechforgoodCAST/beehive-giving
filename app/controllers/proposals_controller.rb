@@ -1,5 +1,6 @@
 class ProposalsController < ApplicationController
-  before_action :ensure_logged_in, :recipient_country
+  before_action :ensure_logged_in
+  before_action :recipient_country, :load_select_options, except: :index
   before_action :load_proposal, only: [:edit, :update]
 
   def new
@@ -113,5 +114,26 @@ class ProposalsController < ApplicationController
       @recipient_country = Country.find_by(alpha2: @recipient.country) ||
                            @recipient.profiles.first.countries.first
       gon.orgCountry = @recipient_country.name
+    end
+
+    def district_section(district)
+      if district.region.nil?
+        district.sub_country.nil? ? 'All regions' : district.sub_country
+      else
+        "#{district.sub_country}/#{district.region}"
+      end
+    end
+
+    def load_select_options
+      @beneficiaries_people = Beneficiary.order(:sort).where(category: 'People')
+      @beneficiaries_other = Beneficiary.order(:sort).where(category: 'Other')
+      @district_ids = @recipient_country
+                      .districts.order(:region, :district).map do |d|
+                        [
+                          d.district,
+                          d.id,
+                          { "data-section": district_section(d) }
+                        ]
+                      end
     end
 end
