@@ -4,7 +4,7 @@ class PasswordResetsController < ApplicationController
   def create
     if params[:user_email].present?
       user = User.find_by(user_email: params[:user_email])
-      user.send_password_reset if user
+      user&.send_password_reset
       redirect_to sign_in_path,
                   notice: 'Email sent with password reset instructions. ' \
                           'Please check your inbox.'

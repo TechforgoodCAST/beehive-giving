@@ -82,7 +82,7 @@ describe Organisation do
 
   it 'geocoded if postal_code' do
     expect(@org.postal_code).to be_nil
-    @org.scrape_charity_data
+    @org.scrape_org
     @org.save!
     expect(@org.postal_code).to eq 'GL6 0QL'
     expect(@org.latitude).to eq 0.0
@@ -107,7 +107,7 @@ describe Organisation do
 
   it 'set registered on if scraped' do
     @org.operating_for = nil
-    @org.scrape_company_data
+    @org.scrape_org
     expect(@org.operating_for).to eq 2
   end
 end

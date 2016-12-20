@@ -10,12 +10,6 @@ Style/ClassAndModuleChildren:
   Exclude:
     - 'test/test_helper.rb' # TODO: deprecated
 
-Lint/HandleExceptions:
-  Exclude:
-    - 'bin/rails'
-    - 'bin/rake'
-    - 'bin/rspec'
-
 Metrics/AbcSize:
   Exclude:
     - lib/tasks/**
@@ -42,7 +36,8 @@ Metrics/ClassLength:
 
 Metrics/LineLength:
   Exclude:
-    - bin/**
+    - Gemfile
+    - bin/spring
     - config/**/**
     - lib/tasks/**
     - spec/**/**
@@ -60,6 +55,7 @@ Metrics/MethodLength:
     - test/**/** # TODO: deprecated
 
 AllCops:
+  TargetRubyVersion: 2.3
   Exclude:
     - db/schema.rb
     - db/*/**

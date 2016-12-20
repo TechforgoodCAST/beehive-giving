@@ -1,10 +1,10 @@
 class SignupController < ApplicationController
-  before_action :ensure_logged_in, except: [:user, :create_user, :grant_access,
-                                            :granted_access]
+  before_action :ensure_logged_in, only: [:organisation, :create_organisation,
+                                          :unauthorised]
   before_action :load_districts, only: [:user, :create_user]
 
   def user
-    if logged_in?
+    if @logged_in
       redirect_to root_path
     else
       reset_session
@@ -59,42 +59,25 @@ class SignupController < ApplicationController
   end
 
   def organisation
-    if current_user.organisation
+    if current_user.organisation_id
       redirect_to new_recipient_proposal_path(current_user.organisation)
     else
-      @recipient = Recipient.new(
-        org_type: session[:org_type],
-        charity_number: session[:charity_number],
-        company_number: session[:company_number]
-      )
+      @recipient = Recipient.new(org_type:       session[:org_type],
+                                 charity_number: session[:charity_number],
+                                 company_number: session[:company_number])
 
-      case @recipient.org_type
-      when 1
-        @recipient.scrape_charity_data
-      when 2
-        @recipient.scrape_company_data
-      when 3
-        @recipient.scrape_charity_data
-        @recipient.scrape_company_data
-      end
-
+      @scrape_success = @recipient.scrape_org
+      return unless @scrape_success
       # refactor
       if @recipient.save
         current_user.update_attribute(:organisation_id, @recipient.id)
         redirect_to new_recipient_proposal_path(@recipient)
       elsif (@recipient.errors.added? :charity_number, :taken) ||
             (@recipient.errors.added? :company_number, :taken)
-        charity_number = @recipient.charity_number
-        company_number = @recipient.company_number
-        organisation = (Organisation.find_by(charity_number: charity_number) if charity_number) ||
-                       (Organisation.find_by(company_number: company_number) if company_number)
-
+        organisation = @recipient.find_with_reg_nos
         current_user.lock_access_to_organisation(organisation)
         redirect_to unauthorised_path
-      else
-        render :organisation
       end
-
     end
   end
 
@@ -104,24 +87,7 @@ class SignupController < ApplicationController
     session[:charity_number] = @recipient.charity_number
     session[:company_number] = @recipient.company_number
 
-    case @recipient.org_type
-    when 1
-      @recipient.destroy
-      @recipient = Recipient.new(recipient_params)
-      @recipient.scrape_charity_data
-    when 2
-      @recipient.destroy
-      @recipient = Recipient.new(recipient_params)
-      @recipient.scrape_company_data
-      @recipient.charity_number = nil
-    when 3
-      @recipient.destroy
-      @recipient = Recipient.new(recipient_params)
-      @recipient.scrape_charity_data if @recipient.charity_number.present?
-      @recipient.scrape_company_data if @recipient.company_number.present?
-    else
-      @recipient.registered_on = nil
-    end
+    @scrape_success = @recipient.scrape_org
 
     respond_to do |format|
       if @recipient.save
@@ -147,20 +113,12 @@ class SignupController < ApplicationController
       elsif (@recipient.errors.added? :charity_number, :taken) ||
             (@recipient.errors.added? :company_number, :taken)
         format.js do
-          charity_number = @recipient.charity_number
-          company_number = @recipient.company_number
-          organisation = (Organisation.find_by(charity_number: charity_number) if charity_number) ||
-                         (Organisation.find_by(company_number: company_number) if company_number)
-
+          organisation = @recipient.find_with_reg_nos
           current_user.lock_access_to_organisation(organisation)
           render js: "window.location.href = '#{unauthorised_path}';"
         end
         format.html do
-          charity_number = @recipient.charity_number
-          company_number = @recipient.company_number
-          organisation = (Organisation.find_by(charity_number: charity_number) if charity_number) ||
-                         (Organisation.find_by(company_number: company_number) if company_number)
-
+          organisation = @recipient.find_with_reg_nos
           current_user.lock_access_to_organisation(organisation)
           redirect_to unauthorised_path
         end
@@ -188,10 +146,8 @@ class SignupController < ApplicationController
   private
 
     def load_districts
-      @districts_count = Funder.active.joins(:countries).group('countries.id')
-                               .uniq.count
-      @districts = Country.order(priority: :desc).order(:name)
-                          .find(@districts_count.keys)
+      @districts = Fund.active.joins(:countries).group('countries.name')
+                       .count.to_a
     end
 
     def user_params

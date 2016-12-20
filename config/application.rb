@@ -1,5 +1,5 @@
-require File.expand_path('../boot', __FILE__)
-ENV['RANSACK_FORM_BUILDER'] = '::SimpleForm::FormBuilder'
+require_relative 'boot'
+
 require 'rails/all'
 
 # Require the gems listed in Gemfile, including any gems
@@ -12,49 +12,43 @@ module Beehive
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
-    # Set Time.zone default to the specified zone and make Active Record auto-convert to this zone.
-    # Run "rake -D time" for a list of tasks for finding time zone names. Default is UTC.
-    # config.time_zone = 'Central Time (US & Canada)'
-
-    # The default locale is :en and all translations from config/locales/*.rb,yml are auto loaded.
-    # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
-    # config.i18n.default_locale = :de
-
     config.exceptions_app = routes
 
     # controller assets
     config.assets.precompile += %w(
-      sessions.css
-      pages.css
-      signup.css
-      organisations.css
-      profiles.css
-      funders.css
-      recipients.css
-      feedback.css
-      password_resets.css
-      proposals.css
       accounts.css
-      funds.css
       eligibilities.css
       enquiries.css
+      errors.css
+      feedback.css
+      funders.css
+      funds.css
+      organisations.css
+      pages.css
+      password_resets.css
+      profiles.css
+      proposals.css
+      recipients.css
+      signup.css
+      sessions.css
     )
     config.assets.precompile += %w(
-      sessions.js
-      pages.js
-      signup.js
-      organisations.js
-      profiles.js
-      funders.js
-      recipients.js
-      feedback.js
-      password_resets.js
-      proposals.js
-      map.js
       accounts.js
-      funds.js
       eligibilities.js
       enquiries.js
+      errors.js
+      feedback.js
+      funders.js
+      funds.js
+      map.js
+      organisations.js
+      pages.js
+      password_resets.js
+      profiles.js
+      proposals.js
+      recipients.js
+      signup.js
+      sessions.js
     )
 
     # vendor assets
@@ -62,16 +56,13 @@ module Beehive
       chosen.css
       overrides/chosen_overrides.css
       overrides/morris_overrides.css
-      timelineJS/timeline.css
-      timelineJS/themes/font/BreeSerif-OpenSans.css
     )
     config.assets.precompile += %w(
       chosen.js
       chosen-jquery.js
+      jquery.tree-multiselect.min.js
       morris.js
       raphael.js
-      jquery.tree-multiselect.min.js
-      timelineJS/embed.js
     )
   end
 end

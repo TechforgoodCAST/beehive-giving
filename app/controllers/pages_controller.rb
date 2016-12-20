@@ -8,6 +8,6 @@ class PagesController < ApplicationController
   end
 
   def faq
-    @recipient = current_user.organisation if logged_in?
+    @recipient = current_user.organisation if @logged_in
   end
 end

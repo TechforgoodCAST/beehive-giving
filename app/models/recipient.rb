@@ -51,12 +51,6 @@ class Recipient < Organisation
     !unlocked_fund?(fund)
   end
 
-  # TODO: refactor?
-  def recent_grants(year = 2015)
-    grants.where('approved_on <= ? AND approved_on >= ?',
-                 "#{year}-12-31", "#{year}-01-01")
-  end
-
   def set_eligibility(proposal, fund, eligibility) # TODO: to proposal
     proposal.recommendation(fund).update_attributes(eligibility: eligibility)
   end
@@ -80,25 +74,12 @@ class Recipient < Organisation
     else
       set_eligibility(proposal, fund, 'Ineligible')
     end
-  end
 
-  def check_eligibilities # TODO: remove?
-    recipient_funder_accesses.each do |unlocked_funder|
-      funder = Funder.find(unlocked_funder.funder_id)
-      check_eligibility(funder)
-    end
-  end
-
-  def proposals? # refactor?
-    proposals.count.positive?
+    proposal.set_eligibility_fields
   end
 
   def transferred? # refactor?
     proposals.where(state: 'transferred').count.positive?
-  end
-
-  def incomplete_proposals? # refactor?
-    proposals.where(state: 'initial').count.positive?
   end
 
   def incomplete_first_proposal?
@@ -106,7 +87,7 @@ class Recipient < Organisation
   end
 
   def profile_for_migration?
-    proposals.count < 1 && profiles.where(state: 'complete').count.positive?
+    @proposal.nil? && profiles.where(state: 'complete').any?
   end
 
   def restriction_truthy(restriction)
@@ -117,33 +98,26 @@ class Recipient < Organisation
     end
   end
 
-  def recommended_funds # TODO: refactor to proposal
-    proposals.last.funds.includes(:funder)
-             .where('recommendations.total_recommendation >= ?',
-                    RECOMMENDATION_THRESHOLD)
-             .order('recommendations.total_recommendation DESC', 'funds.name')
-  end
+  # def recommended_funds # TODO: remove
+  #   proposals.last.funds.includes(:funder, :taggings)
+  #            .where('recommendations.total_recommendation >= ?',
+  #                   RECOMMENDATION_THRESHOLD)
+  #            .order('recommendations.total_recommendation DESC', 'funds.name')
+  # end
 
-  def recommended_with_eligible_funds # TODO: refactor  to proposal
-    fund_ids = recommended_funds
-               .pluck(:fund_id)
-               .take(RECOMMENDATION_LIMIT)
-    recommended_funds
-      .where(id: fund_ids)
-      .where('eligibility is NULL OR eligibility != ?', 'Ineligible')
-  end
+  # def recommended_with_eligible_funds # TODO: remove
+  #   fund_ids = recommended_funds
+  #              .pluck(:fund_id)
+  #              .take(RECOMMENDATION_LIMIT)
+  #   recommended_funds
+  #     .where(id: fund_ids)
+  #     .where('eligibility is NULL OR eligibility != ?', 'Ineligible')
+  # end
 
-  def recommended_fund?(fund) # TODO: refactor to proposal
-    recommended_funds.pluck(:fund_id).take(RECOMMENDATION_LIMIT)
-                     .include?(fund.id)
-  end
-
-  def similar_funders(funder)
-    array = Funder.joins(:recommendations).where('recipient_id = ?', id)
-                  .order('recommendations.score DESC, name ASC').to_a
-
-    array[(array.index(funder) + 1)..(array.index(funder) + 7)].sample(3)
-  end
+  # def recommended_fund?(fund) # TODO: remove
+  #   recommended_funds.pluck(:fund_id).take(RECOMMENDATION_LIMIT)
+  #                    .include?(fund.id)
+  # end
 
   def set_boolean(profile, proposal, category, field)
     proposal[field] = profile.beneficiaries.where(category: category).count > 1

@@ -1,16 +1,15 @@
 class ProposalsController < ApplicationController
-  before_action :ensure_logged_in, :load_recipient, :prevent_funder_access,
-                :recipient_country
+  before_action :ensure_logged_in
+  before_action :recipient_country, :load_select_options, except: :index
   before_action :load_proposal, only: [:edit, :update]
 
   def new
-    if @recipient.incomplete_first_proposal?
-      redirect_to edit_recipient_proposal_path(@recipient,
-                                               @recipient.proposals.last)
-    elsif @recipient.proposals?
-      redirect_to recommended_funds_path
-    elsif @recipient.valid?
+    return edit_recipient_proposal_path(@recipient, @proposal) if
+                                        @recipient.incomplete_first_proposal?
+    return recommended_funds_path if @proposal
+    if @recipient.valid? # TODO: without db call?
       @proposal = @recipient.proposals.new(state: 'initial')
+      return unless @recipient.created_at < Date.new(2016, 4, 30) # TODO: refactor
       @recipient.transfer_profile_to_new_proposal(@recipient.profiles.last,
                                                   @proposal)
     else
@@ -41,7 +40,7 @@ class ProposalsController < ApplicationController
   end
 
   def index
-    if @recipient.proposals?
+    if @proposal
       @proposals = @recipient.proposals
     else
       redirect_to recommended_funds_path
@@ -115,5 +114,26 @@ class ProposalsController < ApplicationController
       @recipient_country = Country.find_by(alpha2: @recipient.country) ||
                            @recipient.profiles.first.countries.first
       gon.orgCountry = @recipient_country.name
+    end
+
+    def district_section(district)
+      if district.region.nil?
+        district.sub_country.nil? ? 'All regions' : district.sub_country
+      else
+        "#{district.sub_country}/#{district.region}"
+      end
+    end
+
+    def load_select_options
+      @beneficiaries_people = Beneficiary.order(:sort).where(category: 'People')
+      @beneficiaries_other = Beneficiary.order(:sort).where(category: 'Other')
+      @district_ids = @recipient_country
+                      .districts.order(:region, :district).map do |d|
+                        [
+                          d.district,
+                          d.id,
+                          { "data-section": district_section(d) }
+                        ]
+                      end
     end
 end

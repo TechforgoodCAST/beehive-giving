@@ -1,4 +1,7 @@
 module RecipientsHelper
+  TAG_CLASSES = %w(uk-button uk-button-small uk-button-primary invert
+                   uk-margin-small-bottom).freeze
+
   def fund_card_cta_button_copy(fund)
     classes = 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
     if @proposal.recommendation(fund).eligibility
@@ -65,5 +68,35 @@ module RecipientsHelper
 
   def percentage(percent, total)
     "#{((percent.to_d / total.to_d).round(3) * 100)}%"
+  end
+
+  def render_tags(fund)
+    safe_join fund.tags.sort.map { |t|
+      link_to t, tag_path(t.parameterize), class: TAG_CLASSES # TODO: refactor
+    }, ' '
+  end
+
+  def render_redacted_tags(fund)
+    link_to('Upgrade to see funding themes (coming soon)',
+            '#why-hidden', class: 'uk-text-bold',
+                           onclick: '$.UIkit.modal("#why-hidden").show();') +
+      safe_join(['</br>'.html_safe]) +
+      safe_join(fund.tags.sort.map do |t|
+        link_to scramble_name(t.parameterize), # TODO: refactor
+                '#why-hidden', class: TAG_CLASSES +
+                                 %w(redacted uk-margin-small-top),
+                               onclick: '$.UIkit.modal("#why-hidden").show();'
+      end, ' ')
+  end
+
+  def render_tag_list(fund)
+    return unless fund.tags?
+    content_tag :div, class: 'uk-margin-top' do
+      if @proposal.show_fund(fund)
+        render_tags(fund)
+      else
+        render_redacted_tags(fund)
+      end
+    end
   end
 end

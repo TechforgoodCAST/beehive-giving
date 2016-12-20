@@ -35,5 +35,5 @@
             - if i < 2
               .action.redacted.yellow= redacted_actions
 
-      - if fund.tag_list.present?
-        .uk-margin-top= raw fund.tags.order(:name).map { |t| link_to scramble_name(t.name), '#why-hidden', class: 'uk-button uk-button-small uk-button-primary invert uk-margin-small-bottom redacted', onclick: '$.UIkit.modal("#why-hidden").show();' }.join(' ')
+      - if fund.tags?
+        .uk-margin-top= render_redacted_tags(fund)

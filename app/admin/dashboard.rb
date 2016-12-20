@@ -59,7 +59,7 @@ ActiveAdmin.register_page 'Dashboard' do
         span class: 'blank_slate' do
           h3 'Funders'
           h5 'Funding streams'
-          h1 FundingStream.all.uniq.count
+          h1 FundingStream.all.distinct.count
           h5 'Restrictions'
           h1 Restriction.all.count
         end

@@ -3,30 +3,28 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  helper_method :logged_in?
-  helper_method :current_user
+  helper_method :current_user, :logged_in?
 
-  before_action :load_feedback, if: proc { logged_in? }
-  before_action :set_new_relic_user, if: proc { logged_in? }
+  before_action :load_recipient, :load_last_proposal, unless: :error?
+  # TODO: before_action :load_feedback, if: proc { logged_in? }
+  # TODO: before_action :set_new_relic_user, if: proc { logged_in? }
+
+  unless Rails.application.config.consider_all_requests_local
+    rescue_from StandardError do
+      render "errors/#{response.status}", status: response.status
+    end
+  end
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :bad_token
 
-  def bad_token
-    flash[:warning] = 'Please sign in.'
-    redirect_to '/logout'
-  end
-
   def current_user
-    current_user ||= User.includes(:organisation)
-                         .find_by(auth_token: cookies[:auth_token])
-  end
-
-  def set_new_relic_user
-    ::NewRelic::Agent.add_custom_attributes(user_id: current_user.id)
+    return unless cookies[:auth_token]
+    @current_user ||= User.includes(:organisation)
+                          .find_by(auth_token: cookies[:auth_token])
   end
 
   def logged_in?
-    @logged_in ||= (cookies[:auth_token].present? && current_user.present?)
+    current_user != nil
   end
 
   def ensure_logged_in
@@ -34,76 +32,63 @@ class ApplicationController < ActionController::Base
     return redirect_to sign_in_path, alert: 'Please sign in' unless logged_in?
     gon.currentUserId = current_user.id
     ensure_authorised
+    ensure_user
   end
 
   def load_recipient
     @recipient = current_user.organisation if logged_in?
   end
 
-  def load_proposal
-    @proposal = @recipient.proposals.last if
-      logged_in? && @recipient.proposals.count.positive?
-  end
-
-  def ensure_authorised
-    redirect_to unauthorised_path unless
-      current_user.authorised || params[:action] == 'unauthorised'
-  end
-
-  def ensure_recipient
-    redirect_to root_path, alert: "Sorry, you don't have access to that" unless
-      current_user.role == 'User'
-  end
-
-  def ensure_funder
-    redirect_to root_path, alert: "Sorry, you don't have access to that" unless
-      current_user.role == 'Funder'
-  end
-
-  def prevent_funder_access
-    return unless current_user.role == 'Funder'
-    redirect_to funder_overview_path(current_user.organisation),
-                alert: "Sorry, you don't have access to that"
-  end
-
-  def check_organisation_ownership
-    redirect_to root_path, alert: "Sorry, you don't have access to that" unless
-      current_user.organisation == Recipient.find_by(slug: params[:id])
-  end
-
-  def check_user_ownership
-    redirect_to sign_in_path unless @user == current_user
-  end
-
-  def load_feedback
-    @feedback = current_user.feedbacks.new
-  end
-
-  # TODO: refactor
-  unless Rails.application.config.consider_all_requests_local
-    rescue_from StandardError do |exception|
-      NewRelic::Agent.notice_error(exception)
-      render "errors/#{status_code}", status: status_code
-    end
+  def load_last_proposal
+    return unless @recipient && logged_in?
+    @proposal = Proposal.order(:created_at).find_by(recipient_id: @recipient.id)
   end
 
   def ensure_proposal_present
-    # TODO: refactor
-    return unless current_user.role == 'User'
-    if current_user.organisation.proposals.count < 1
-      redirect_to new_recipient_proposal_path(current_user.organisation),
+    ensure_user
+    if !@proposal
+      redirect_to new_recipient_proposal_path(@recipient),
                   alert: 'Please create a funding proposal before continuing.'
-    elsif current_user.organisation.proposals.last.initial?
-      redirect_to edit_recipient_proposal_path(
-        current_user.organisation,
-        current_user.organisation.proposals.last
-      )
+    elsif @proposal.initial?
+      redirect_to edit_recipient_proposal_path(@recipient, @proposal)
     end
   end
 
-  protected
+  def ensure_funder # TODO: deprecated
+    return if logged_in? && current_user.role == 'Funder'
+    redirect_to sign_in_path, alert: "Sorry, you don't have access to that"
+  end
 
-    def status_code
-      params[:code] || 500
+  # TODO: def check_organisation_ownership
+  #   redirect_to root_path, alert: "Sorry, you don't have access to that" unless
+  #     current_user.organisation == Recipient.find_by(slug: params[:id])
+  # end
+
+  # TODO: def check_user_ownership
+  #   redirect_to sign_in_path unless @user == current_user
+  # end
+
+  # TODO: def load_feedback
+  #   @feedback = current_user.feedbacks.new
+  # end
+
+  private
+
+    def error?
+      params[:controller] == 'errors'
+    end
+
+    def bad_token
+      redirect_to '/logout', warning: 'Please sign in'
+    end
+
+    def ensure_authorised
+      redirect_to unauthorised_path unless
+        current_user.authorised || params[:action] == 'unauthorised'
+    end
+
+    def ensure_user
+      return if current_user.role == 'User'
+      redirect_to root_path, alert: "Sorry, you don't have access to that"
     end
 end

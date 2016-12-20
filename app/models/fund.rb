@@ -1,5 +1,5 @@
 class Fund < ActiveRecord::Base
-  scope :active, -> { where(active: true) }
+  scope :active, -> { distinct.where(active: true) }
   scope :inactive_ids, -> { where(active: false).pluck(:id) }
 
   belongs_to :funder
@@ -21,8 +21,6 @@ class Fund < ActiveRecord::Base
   # TODO: has_and_belongs_to_many :proposal_restrictions
   has_and_belongs_to_many :outcomes
   has_and_belongs_to_many :decision_makers
-
-  acts_as_taggable
 
   validates :funder, :type_of_fund, :slug, :name, :description, :currency,
             :key_criteria, :application_link,
@@ -115,6 +113,10 @@ class Fund < ActiveRecord::Base
 
   def short_name
     name.sub(' Fund', '')
+  end
+
+  def tags?
+    tags.count.positive?
   end
 
   private

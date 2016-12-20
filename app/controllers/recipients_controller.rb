@@ -1,17 +1,16 @@
 class RecipientsController < ApplicationController
-  before_action :ensure_logged_in, :load_recipient, :ensure_recipient,
-                :years_ago, :load_proposal
+  before_action :ensure_logged_in
   before_action :ensure_proposal_present, except: [:edit, :update]
-  before_action :check_organisation_ownership, only: :show
-  before_action :load_funder, only: [:comparison, :eligibility,
-                                     :update_eligibility, :apply]
-  before_action :load_feedback, except: [:unlock_funder, :vote]
 
-  before_action :refine_recommendations, except: [:edit, :update]
+  # before_action :check_organisation_ownership, only: :show
+  # before_action :load_funder, only: [:eligibility,
+  #                                    :update_eligibility, :apply]
+  # before_action :load_feedback, except: [:unlock_funder, :vote]
+
+  # before_action :refine_recommendations, except: [:edit, :update]
 
   def edit
-    @recipient.scrape_charity_data
-    @recipient.scrape_company_data
+    @recipient.scrape_org
     redirect_to new_recipient_proposal_path(@recipient) if @recipient.save
   end
 
@@ -36,7 +35,10 @@ class RecipientsController < ApplicationController
   end
 
   def recommended_funds
-    @funds = @recipient.recommended_with_eligible_funds
+    @funds = Fund.includes(:funder).find(
+      (@proposal.recommended_funds - @proposal.ineligible_funds)
+      .take(Recipient::RECOMMENDATION_LIMIT) # TODO: move constant
+    )
 
     render 'recipients/funders/recommended_funders'
   end
@@ -78,26 +80,12 @@ class RecipientsController < ApplicationController
       @recipient.proposals.last.refine_recommendations
     end
 
-    def load_recipient
-      return unless logged_in?
-      @recipient = Recipient.find_by(slug: params[:id]) ||
-                   current_user.organisation
-    end
-
     def load_funder
       @funder = Funder.find_by(slug: params[:id])
     end
 
     def load_feedback
       @feedback = current_user.feedbacks.new if logged_in?
-    end
-
-    def years_ago
-      @years_ago = if params[:years_ago].present?
-                     params[:years_ago].to_i
-                   else
-                     1
-                   end
     end
 
     def recipient_params

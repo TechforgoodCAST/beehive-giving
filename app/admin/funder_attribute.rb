@@ -93,7 +93,7 @@ ActiveAdmin.register FunderAttribute do
       f.input :year, as: :select, collection: Profile::VALID_YEARS
       f.input :funder, input_html: { class: 'chosen-select' }
       f.input :funding_stream,
-              collection: Grant.uniq.pluck(:funding_stream) << 'All',
+              collection: Grant.distinct.pluck(:funding_stream) << 'All',
               input_html: { class: 'chosen-select' }
       f.input :description
       f.input :countries, as: :select,

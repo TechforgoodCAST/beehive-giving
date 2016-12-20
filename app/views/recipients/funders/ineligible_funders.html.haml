@@ -23,3 +23,5 @@
       = render partial: 'recipients/funders/summary', locals: { fund: fund }
       - unless i == @funds.count-1
         %hr.thick
+
+= render partial: 'funds/why_hidden'

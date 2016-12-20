@@ -1,6 +1,5 @@
 class FeedbackController < ApplicationController
-  before_action :ensure_logged_in, :load_recipient, :prevent_funder_access,
-                :ensure_proposal_present # TODO: refactor
+  before_action :ensure_logged_in, :ensure_proposal_present
   before_action :redirect_to_funder, only: [:new, :create]
 
   def new

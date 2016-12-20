@@ -1,4 +1,5 @@
-- if @recipient.recipient_funder_accesses.any?
+-# TODO: performance
+- if @recipient.recipient_funder_accesses.count > 0
   .cta.tight.uk-margin-large-bottom
     %strong We've made some changes
     %br

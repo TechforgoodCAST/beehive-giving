@@ -140,6 +140,8 @@ class Proposal < ActiveRecord::Base
       duration: funding_duration
     )
 
+    recommendations = []
+
     Fund.all.find_each do |fund|
       org_type_score = beneficiary_score = location_score = amount_score =
                                                               duration_score = 0
@@ -218,8 +220,31 @@ class Proposal < ActiveRecord::Base
         grant_duration_recommendation: duration_score,
         score: score
       }
-      save_recommendation(fund, scores)
+      recommendations << build_recommendation(fund, scores)
     end
+
+    # TODO: refactor
+    Recommendation.import recommendations, on_duplicate_key_update: {
+      conflict_target: [:id], columns: [:eligibility,
+                                        :grant_amount_recommendation,
+                                        :grant_duration_recommendation,
+                                        :total_recommendation,
+                                        :org_type_score,
+                                        :beneficiary_score,
+                                        :location_score,
+                                        :score]
+    }
+
+    # TODO: refactor
+    recommended_funds = funds
+                        .where('recommendations.total_recommendation >= ?',
+                               Recipient::RECOMMENDATION_THRESHOLD)
+                        .order('recommendations.total_recommendation DESC',
+                               'name')
+    update_column(
+      :recommended_funds,
+      recommended_funds.pluck(:id)
+    )
   end
 
   def refine_recommendations
@@ -230,8 +255,9 @@ class Proposal < ActiveRecord::Base
 
   def show_fund(fund)
     recipient.subscribed? ||
-      recipient.recommended_fund?(fund) ||
-      recommendation(fund).eligibility?
+      recommended_funds.take(Recipient::RECOMMENDATION_LIMIT).include?(fund.id)
+    #  || # TODO: refactor
+    # recommendation(fund).eligibility?
   end
 
   def check_affect_geo
@@ -239,10 +265,12 @@ class Proposal < ActiveRecord::Base
     return if affect_geo.blank? || affect_geo == 2
     self.affect_geo = if country_ids.uniq.count > 1
                         3
-                      elsif (district_ids & Country.find(country_ids[0]).districts.pluck(:id)).count == Country.find(country_ids[0]).districts.count
+                      elsif (district_ids & Country.find(country_ids[0])
+                            .districts.pluck(:id)).count ==
+                            Country.find(country_ids[0]).districts.count
                         2
                       elsif District.where(id: district_ids)
-                                    .pluck(:region).uniq.count > 1
+                                    .distinct.pluck(:region).count > 1
                         1
                       else
                         0
@@ -253,11 +281,23 @@ class Proposal < ActiveRecord::Base
     Recommendation.find_by(proposal: self, fund: fund)
   end
 
+  # TODO: review
   def eligible?(fund)
     recommendation(fund).eligibility == 'Eligible'
   end
 
+  def set_eligibility_fields
+    update_columns(
+      eligible_funds: fund_ids_by_eligibility('Eligible'),
+      ineligible_funds: fund_ids_by_eligibility('Ineligible')
+    )
+  end
+
   private
+
+    def fund_ids_by_eligibility(eligibility)
+      funds.where('eligibility = ?', eligibility).distinct.pluck(:id)
+    end
 
     def beneficiaries_not_selected(category)
       (beneficiary_ids & Beneficiary.where(category: category)
@@ -303,12 +343,12 @@ class Proposal < ActiveRecord::Base
       score
     end
 
-    def save_recommendation(fund, scores)
-      r = Recommendation.where(
-        proposal: self,
-        fund: fund
-      ).first_or_create
-      r.update_attributes(scores)
+    def build_recommendation(fund, scores)
+      r = Recommendation.where(proposal: self, fund: fund).first_or_initialize
+      r.assign_attributes(scores)
+      r.run_callbacks(:validation) { false }
+      r.run_callbacks(:save) { false }
+      r
     end
 
     def compare_arrays(array, fund) # TODO: refactor
@@ -339,12 +379,12 @@ class Proposal < ActiveRecord::Base
 
     def save_districts_from_countries
       # TODO: refactor into background job too slow
-      return unless affect_geo > 1
-      district_ids_array = []
-      countries.each do |country|
-        district_ids_array += District.where(country_id: country.id).pluck(:id)
-      end
-      self.district_ids = district_ids_array.uniq
+      # return unless affect_geo > 1
+      # district_ids_array = []
+      # countries.each do |country|
+      #   district_ids_array += District.where(country_id: country.id).pluck(:id)
+      # end
+      # self.district_ids = district_ids_array.uniq
     end
 
     def prevent_second_proposal_until_first_is_complete

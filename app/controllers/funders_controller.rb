@@ -1,5 +1,7 @@
+# TODO: deprecated
 class FundersController < ApplicationController
-  before_action :ensure_logged_in, :ensure_funder, :load_funder
+  before_action :ensure_funder, :load_funder
+  before_action :load_district, only: :district
 
   respond_to :html
 
@@ -16,12 +18,12 @@ class FundersController < ApplicationController
   def map_data
     respond_to do |format|
       if params[:id] == 'all'
-        # @map_all_data = Rails.cache.clear("map_all_data")
         @map_all_data = Rails.cache.fetch('map_all_data') do
           Funder.first.load_map_all_data
         end
         format.json { render json: @map_all_data }
-      elsif @funder.current_attribute.map_data.present? # TODO: refactor check if map data updated?
+      elsif @funder.current_attribute.map_data.present?
+        # TODO: refactor check if map data updated?
         format.json { render json: @funder.current_attribute.map_data }
       else
         @funder.save_map_data
@@ -31,15 +33,7 @@ class FundersController < ApplicationController
   end
 
   def district
-    if current_user.organisation != @funder
-      redirect_to funder_district_path(current_user.organisation,
-                                       params[:district])
-    end
-
-    @district = District.find_by(slug: params[:district])
-    gon.districtLabel = @district.district
-    gon.funderName = @funder.name
-
+    ensure_own_district_path
     @amount_awarded = @funder.districts_by_year
                              .group(:district)
                              .sum(:amount_awarded)[@district.district]
@@ -52,5 +46,17 @@ class FundersController < ApplicationController
 
     def load_funder
       @funder = Funder.find_by(slug: params[:id])
+    end
+
+    def load_district
+      @district = District.find_by(slug: params[:district])
+      gon.districtLabel = @district.district
+      gon.funderName = @funder.name
+    end
+
+    def ensure_own_district_path
+      return if current_user.organisation == @funder
+      redirect_to funder_district_path(current_user.organisation,
+                                       params[:district])
     end
 end

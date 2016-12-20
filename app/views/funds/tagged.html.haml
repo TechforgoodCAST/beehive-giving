@@ -1,18 +1,18 @@
-= content_for :title, "#{@tag.name} funds"
+= content_for :title, "#{@tag} funds"
 
 :javascript
-  mixpanel.track("View #{@tag.name} Funds Page");
+  mixpanel.track("View #{@tag} Funds Page");
 
 = render partial: 'recipients/funders/subnav'
 
 .uk-container.uk-container-center.uk-margin-large
   %h2
-    = @tag.name
+    = @tag
     = surround '(', ')' do
       = @funds.count
   %h4
     You are seeing
-    = @tag.name.downcase
+    = @tag.downcase
     funds.
 
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
@@ -24,7 +24,7 @@
         - unless @recipient.subscribed?
           .cta.wide
             Go unlimited with Beehive Pro to see more
-            = @tag.name
+            = @tag
             funders.
             %a{href: '#why-hidden', class: ' uk-button uk-button-large uk-button-primary invert', onclick: '$.UIkit.modal("#why-hidden").show();'} Upgrade (coming soon)
       - else

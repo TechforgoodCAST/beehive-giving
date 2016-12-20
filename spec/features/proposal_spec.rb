@@ -119,6 +119,7 @@ feature 'Proposal' do
     context 'no proposal' do
       before(:each) do
         @recipient.proposals.destroy_all
+        @recipient.update_column(:created_at, Date.new(2016, 4, 29))
       end
 
       scenario "When I have a 'transferred proposal',

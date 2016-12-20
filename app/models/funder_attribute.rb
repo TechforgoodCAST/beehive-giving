@@ -46,10 +46,10 @@ class FunderAttribute < ActiveRecord::Base
     return unless funder && funder.grants.count.positive?
     if funding_stream == 'All'
       self.grant_count = funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").count
-      self.no_of_recipients_funded = funder.recent_grants(year).pluck(:recipient_id).uniq.count
+      self.no_of_recipients_funded = funder.recent_grants(year).pluck(:recipient_id).distinct.count
     else
       self.grant_count = funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).count
-      self.no_of_recipients_funded = funder.recent_grants(year).where('funding_stream = ?', funding_stream).pluck(:recipient_id).uniq.count
+      self.no_of_recipients_funded = funder.recent_grants(year).where('funding_stream = ?', funding_stream).pluck(:recipient_id).distinct.count
     end
   end
 
@@ -60,11 +60,11 @@ class FunderAttribute < ActiveRecord::Base
   def countries_from_grants
     return unless funder && countries.empty?
     if funding_stream == 'All'
-      funder.countries.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").pluck(:alpha2).uniq.each do |c|
+      funder.countries.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").pluck(:alpha2).distinct.each do |c|
         countries << Country.find_by(alpha2: c) unless c.blank?
       end
     else
-      funder.countries.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:alpha2).uniq.each do |c|
+      funder.countries.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:alpha2).distinct.each do |c|
         countries << Country.find_by(alpha2: c) unless c.blank?
       end
     end
@@ -73,11 +73,11 @@ class FunderAttribute < ActiveRecord::Base
   def districts_from_grants
     return unless funder && districts.empty?
     if funding_stream == 'All'
-      funder.districts.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").pluck(:district).uniq.each do |d|
+      funder.districts.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").pluck(:district).distinct.each do |d|
         districts << District.find_by(district: d) unless d.blank?
       end
     else
-      funder.districts.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:district).uniq.each do |d|
+      funder.districts.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:district).distinct.each do |d|
         districts << District.find_by(district: d) unless d.blank?
       end
     end
@@ -87,11 +87,11 @@ class FunderAttribute < ActiveRecord::Base
     return unless funder && approval_months.empty?
     array = []
     if funding_stream == 'All'
-      funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").pluck(:approved_on).uniq.each do |d|
+      funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").pluck(:approved_on).distinct.each do |d|
         array << ApprovalMonth.find_by(month: d.strftime('%b'))
       end
     else
-      funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:approved_on).uniq.each do |d|
+      funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:approved_on).distinct.each do |d|
         array << ApprovalMonth.find_by(month: d.strftime('%b'))
       end
     end
@@ -101,11 +101,11 @@ class FunderAttribute < ActiveRecord::Base
   def funding_type_from_grants
     return unless funder && funding_types.empty?
     if funding_stream == 'All'
-      funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").pluck(:grant_type).uniq.each do |t|
+      funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").distinct.pluck(:grant_type).each do |t|
         funding_types << FundingType.find_by(label: t) unless t.blank?
       end
     else
-      funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:grant_type).uniq.each do |t|
+      funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:grant_type).distinct.each do |t|
         funding_types << FundingType.find_by(label: t) unless t.blank?
       end
     end
@@ -138,7 +138,7 @@ class FunderAttribute < ActiveRecord::Base
       if funding_stream == 'All'
         count = 0
         sum = 0.0
-        funder.recipients.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").pluck(:founded_on).uniq.each do |d|
+        funder.recipients.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").pluck(:founded_on).distinct.each do |d|
           count += 1
           sum += (Time.zone.today - d) unless d.nil?
         end
@@ -147,7 +147,7 @@ class FunderAttribute < ActiveRecord::Base
     elsif funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).count.positive?
       count = 0
       sum = 0.0
-      funder.recipients.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:founded_on).uniq.each do |d|
+      funder.recipients.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:founded_on).distinct.each do |d|
         count += 1
         sum += (Time.zone.today - d) unless d.nil?
       end

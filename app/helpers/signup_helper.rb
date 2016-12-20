@@ -17,11 +17,6 @@ module SignupHelper
     org_type_hidden(state, 2)
   end
 
-  def scrape_success?
-    (@recipient.charity_number.present? && @recipient.scrape_charity_data) ||
-      (@recipient.company_number.present? && @recipient.scrape_company_data)
-  end
-
   def progress_step_helper(step, current)
     if current == step
       'is-active'

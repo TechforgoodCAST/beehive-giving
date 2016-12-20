@@ -123,7 +123,7 @@ SignupHelpers = ((w, d) ->
   checkFunders = ->
     selector = '#country'
     $(selector).change (e) ->
-      $('#count').html($('#preview').attr('data-' + $(selector).val()))
+      $('#count').html($(selector).val())
       $('#result').removeClass('fade-out').addClass('fade-in')
       $('#preview').addClass('fade-out')
       return
