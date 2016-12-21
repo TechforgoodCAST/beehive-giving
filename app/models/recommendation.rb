@@ -6,7 +6,7 @@ class Recommendation < ActiveRecord::Base
   belongs_to :fund
 
   validates :proposal, :fund, :fund_slug, :score, presence: true
-  # validates :fund, :fund_slug, uniqueness: { scope: :proposal } # TODO: https://github.com/zdennis/activerecord-import/wiki/On-Duplicate-Key-Update#conflict-with-activerecord-uniqueness-validation
+  validates :fund, :fund_slug, uniqueness: { scope: :proposal }
   # TODO: validates :eligibility, inclusion: {in: ['Eligible', 'Ineligible']}
 
   before_validation :set_fund_slug, unless: :fund_slug

@@ -114,7 +114,7 @@ describe Recommendation do
       expect(Recommendation.count).to eq 2
       @fund1_recommendation.fund_slug = @fund2_recommendation.fund_slug
       expect { @fund1_recommendation.save!(validate: false) }.to raise_error(ActiveRecord::RecordNotUnique)
-      # expect(@fund1_recommendation).not_to be_valid # TODO: https://github.com/zdennis/activerecord-import/wiki/On-Duplicate-Key-Update#conflict-with-activerecord-uniqueness-validation
+      expect(@fund1_recommendation).not_to be_valid
     end
   end
 
