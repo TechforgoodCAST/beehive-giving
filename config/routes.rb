@@ -44,10 +44,10 @@ Rails.application.routes.draw do
   # TODO match '/account/(:id)/charge', to: 'accounts#charge', via: :post, as: 'account_charge'
 
   # Funds
-  match '/recommended/funds', to: 'recipients#recommended_funds', via: :get, as: 'recommended_funds'
-  match '/eligible/funds', to: 'recipients#eligible_funds', via: :get, as: 'eligible_funds'
-  match '/ineligible/funds', to: 'recipients#ineligible_funds', via: :get, as: 'ineligible_funds'
-  match '/all/funds', to: 'recipients#all_funds', via: :get, as: 'all_funds'
+  get '/recommended/funds', to: 'funds#recommended', as: 'recommended_funds'
+  get '/eligible/funds', to: 'funds#eligible', as: 'eligible_funds'
+  get '/ineligible/funds', to: 'funds#ineligible', as: 'ineligible_funds'
+  get '/all/funds', to: 'funds#all', as: 'all_funds'
   get '/(:tag)/funds', to: 'funds#tagged', as: 'tag'
 
   # Funders - deprecated

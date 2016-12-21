@@ -11,45 +11,6 @@ Lint/HandleExceptions:
   Exclude:
     - 'bin/rspec'
 
-# Offense count: 24
-Metrics/AbcSize:
-  Max: 105
-
-# Offense count: 4
-# Configuration parameters: CountComments.
-Metrics/BlockLength:
-  Max: 61
-
-# Offense count: 5
-# Configuration parameters: CountComments.
-Metrics/ClassLength:
-  Max: 331
-
-# Offense count: 12
-Metrics/CyclomaticComplexity:
-  Max: 26
-
-# Offense count: 54
-# Configuration parameters: AllowHeredoc, AllowURI, URISchemes, IgnoreCopDirectives, IgnoredPatterns.
-# URISchemes: http, https
-Metrics/LineLength:
-  Max: 338
-
-# Offense count: 24
-# Configuration parameters: CountComments.
-Metrics/MethodLength:
-  Max: 95
-
-# Offense count: 15
-Metrics/PerceivedComplexity:
-  Max: 28
-
-# Offense count: 51
-# Configuration parameters: Include.
-# Include: app/models/**/*.rb
-Rails/HasAndBelongsToMany:
-  Enabled: false
-
 # Offense count: 177
 # Cop supports --auto-correct.
 # Configuration parameters: EnforcedStyle, SupportedStyles.

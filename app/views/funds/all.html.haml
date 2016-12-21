@@ -1,9 +1,9 @@
 = content_for :title, 'All funds'
 
 :javascript
-  mixpanel.track("View All Funds Page");
+  mixpanel.track('View All Funds Page');
 
-= render partial: 'recipients/funders/subnav'
+= render partial: 'subnav'
 
 .uk-container.uk-container-center.uk-margin-large
   %h2 All funds
@@ -13,14 +13,14 @@
 
     - @funds.each_with_index do |fund, i|
 
-      = render partial: 'recipients/funders/summary', locals: { fund: fund }
+      = render partial: 'summary', locals: { fund: fund }
 
       - if i == 5
         .cta.wide
           Go unlimited with Beehive Pro and see all funders with complete profiles.
-          %a{href: '#why-hidden', class: ' uk-button uk-button-large uk-button-primary invert', onclick: '$.UIkit.modal("#why-hidden").show();'} Upgrade (coming soon)
+          %a{ href: '#why-hidden', class: ' uk-button uk-button-large uk-button-primary invert', onclick: '$.UIkit.modal("#why-hidden").show();' } Upgrade (coming soon)
 
-      - if i == @funds.count-1
+      - if i == @funds.count - 1
         .cta.wide
           More funds coming soon. Drop us an
           = link_to 'email', 'mailto:support@beehivegiving.org'
@@ -29,4 +29,4 @@
         - unless i == 5
           %hr.thick
 
-= render partial: 'funds/why_hidden'
+= render partial: 'why_hidden'

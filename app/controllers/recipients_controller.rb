@@ -1,13 +1,6 @@
 class RecipientsController < ApplicationController
   before_action :ensure_logged_in
-  before_action :ensure_proposal_present, except: [:edit, :update]
-
   # before_action :check_organisation_ownership, only: :show
-  # before_action :load_funder, only: [:eligibility,
-  #                                    :update_eligibility, :apply]
-  # before_action :load_feedback, except: [:unlock_funder, :vote]
-
-  # before_action :refine_recommendations, except: [:edit, :update]
 
   def edit
     @recipient.scrape_org
@@ -34,59 +27,7 @@ class RecipientsController < ApplicationController
     end
   end
 
-  def recommended_funds
-    @funds = Fund.includes(:funder).find(
-      (@proposal.recommended_funds - @proposal.ineligible_funds)
-      .take(Recipient::RECOMMENDATION_LIMIT) # TODO: move constant
-    )
-
-    render 'recipients/funders/recommended_funders'
-  end
-
-  def eligible_funds
-    @funds = @recipient.eligible_funds
-
-    render 'recipients/funders/eligible_funders'
-  end
-
-  def ineligible_funds
-    @funds = @recipient.ineligible_funds
-
-    render 'recipients/funders/ineligible_funders'
-  end
-
-  def all_funds
-    @funds = @recipient.proposals.last
-                       .funds
-                       .includes(:funder)
-                       .order('recommendations.total_recommendation DESC',
-                              'funds.name')
-
-    render 'recipients/funders/all_funders'
-  end
-
-  def dashboard # TODO: refactor
-    @search = Funder.ransack(params[:q])
-    @profile = @recipient.profiles.where('year = ?', 2015).first
-  end
-
-  def show # TODO: refactor
-    @recipient = Recipient.find_by(slug: params[:id])
-  end
-
   private
-
-    def refine_recommendations
-      @recipient.proposals.last.refine_recommendations
-    end
-
-    def load_funder
-      @funder = Funder.find_by(slug: params[:id])
-    end
-
-    def load_feedback
-      @feedback = current_user.feedbacks.new if logged_in?
-    end
 
     def recipient_params
       params.require(:recipient)

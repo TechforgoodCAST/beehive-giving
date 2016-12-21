@@ -7,7 +7,7 @@
           .thumbnail
             .funder{class: (@tag.present? ? 'locked' : fund.funder.slug)}
         - else
-          %a{onclick: '$.UIkit.modal("#why-hidden").show();', alt: (@tag.present? ? scramble_name(fund.name) : fund.name)}
+          %a{ onclick: '$.UIkit.modal("#why-hidden").show();', alt: (@tag.present? ? scramble_name(fund.name) : fund.name) }
             .thumbnail
               .funder{class: (@tag.present? ? 'locked' : fund.funder.slug)}
         .details

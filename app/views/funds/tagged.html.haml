@@ -3,7 +3,7 @@
 :javascript
   mixpanel.track("View #{@tag} Funds Page");
 
-= render partial: 'recipients/funders/subnav'
+= render partial: 'subnav'
 
 .uk-container.uk-container-center.uk-margin-large
   %h2
@@ -20,17 +20,17 @@
     - @funds.each_with_index do |fund, i|
 
       - if @recipient.subscribed? || i < 1
-        = render partial: 'recipients/funders/summary', locals: { fund: fund }
+        = render partial: 'summary', locals: { fund: fund }
         - unless @recipient.subscribed?
           .cta.wide
             Go unlimited with Beehive Pro to see more
             = @tag
             funders.
-            %a{href: '#why-hidden', class: ' uk-button uk-button-large uk-button-primary invert', onclick: '$.UIkit.modal("#why-hidden").show();'} Upgrade (coming soon)
+            %a{ href: '#why-hidden', class: ' uk-button uk-button-large uk-button-primary invert', onclick: '$.UIkit.modal("#why-hidden").show();' } Upgrade (coming soon)
       - else
-        = render partial: 'recipients/funders/summary_redacted', locals: { fund: fund }
-        - unless i == @funds.count-1
+        = render partial: 'summary_redacted', locals: { fund: fund }
+        - unless i == @funds.count - 1
           %hr.thick
 
 - unless @recipient.subscribed?
-  = render partial: 'funds/why_hidden'
+  = render partial: 'why_hidden'

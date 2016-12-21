@@ -50,6 +50,10 @@ describe 'Ensure logged in' do
   it 'funds' do
     expect_path([
                   fund_path(@fund),
+                  recommended_funds_path,
+                  eligible_funds_path,
+                  ineligible_funds_path,
+                  all_funds_path,
                   tag_path('Tag')
                 ])
   end
@@ -62,16 +66,12 @@ describe 'Ensure logged in' do
                 ])
   end
 
-  it 'recipients' do
-    expect_path([
-                  edit_recipient_path(@recipient),
-                  recommended_funds_path,
-                  eligible_funds_path,
-                  ineligible_funds_path,
-                  all_funds_path,
-                  recipient_path(@recipient)
-                ])
-  end
+  it 'recipients'
+  #   expect_path([
+  #                 recipient_path(@recipient),
+  #                 edit_recipient_path(@recipient)
+  #               ])
+  # end
 
   it 'signup' do
     expect_path([

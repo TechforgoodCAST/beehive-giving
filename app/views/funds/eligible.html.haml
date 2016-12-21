@@ -1,10 +1,10 @@
 = content_for :title, 'Eligible funds'
 
 :javascript
-  mixpanel.track("View Eligible Funds Page");
-  mixpanel.identify('#{current_user.id}');
+  mixpanel.track('View Eligible Funds Page');
+  mixpanel.identify("#{current_user.id}");
 
-= render partial: 'recipients/funders/subnav'
+= render partial: 'subnav'
 
 .uk-container.uk-container-center.uk-margin-large
   %h2 Eligible funds
@@ -20,8 +20,8 @@
         = link_to 'Find a fund', recommended_funds_path, class: 'uk-button uk-button-large uk-button-primary invert'
 
     - @funds.each_with_index do |fund, i|
-      = render partial: 'recipients/funders/summary', locals: { fund: fund }
-      - unless i == @funds.count-1
+      = render partial: 'summary', locals: { fund: fund }
+      - unless i == @funds.count - 1
         %hr.thick
 
-= render partial: 'funds/why_hidden'
+= render partial: 'why_hidden'

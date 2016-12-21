@@ -1,31 +1,40 @@
 - params[:funding_navbar] = true
-.subnav{"data-uk-sticky" => ""}
+.subnav{ "data-uk-sticky" => "" }
   .uk-container.uk-container-center
-    .uk-grid
-      .uk-width-2-3
-        %ul.nav{ class: current_user.role == 'Funder' ? 'funder' : 'recipient' }
+    %ul.nav{ class: current_user.role == 'Funder' ? 'funder' : 'recipient' }
+      %a{href: recommended_funds_path}
+        %li.first{ class: ('active' if current_page?(recommended_funds_path)) }
+          Recommended
+          .highlight
+      %span &middot;
 
-          %li.muted{ title: fund.funder.name }
-            = fund.funder.name.truncate(14)
-          %span &rsaquo;
+      %a{ href: eligible_funds_path }
+        %li{ class: ('active' if current_page?(eligible_funds_path)) }
+          Eligible
+          - unless @proposal.eligible_funds.empty?
+            = surround '(', ')' do
+              = @proposal.eligible_funds.count
+          .highlight
+      %span &middot;
 
-          %a{ href: fund_path(fund), title: fund.name }
-            %li{ class: ('active' if current_page?(fund_path(fund))) }
-              = fund.name.truncate(14)
-              .highlight
-          %span &rsaquo;
+      %a{ href: ineligible_funds_path }
+        %li{ class: ('active' if current_page?(ineligible_funds_path)) }
+          Ineligible
+          - unless @proposal.ineligible_funds.empty?
+            = surround '(', ')' do
+              = @proposal.ineligible_funds.count
+          .highlight
+      %span &middot;
 
-          %a{ href: fund_eligibility_path(fund) }
-            %li{ class: ('active' if current_page?(fund_eligibility_path(fund))) }
-              Eligiblity
-              .highlight
-          %span &rsaquo;
+      %a{ href: all_funds_path }
+        %li.last{ class: ('active' if current_page?(all_funds_path)) }
+          All
+          .highlight
 
-          - if @proposal.eligible?(fund)
-            %a{ href: fund_apply_path(fund) }
-              %li.last{ class: ('active' if current_page?(fund_apply_path(fund))) }
-                Apply
-                .highlight
-          - else
-            %li.muted
-              Apply
+      - if params[:tag]
+        %span &rsaquo;
+        -# TODO: refactor
+        %a{ href: tag_path(@tag.parameterize) }
+          %li.last.active
+            = @tag
+            .highlight

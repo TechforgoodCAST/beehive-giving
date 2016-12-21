@@ -1,6 +1,6 @@
 .card
   .thumbnail
-    .funder{class: fund.funder.slug}
+    .funder{ class: fund.funder.slug }
   .details
     .content
       .muted= fund.name
@@ -26,7 +26,7 @@
                 %strong= link_to 'Check', fund_eligibility_path(fund), class: 'primary'
           - unless @proposal.show_fund(fund)
             %tr
-              %td.muted{colspan: 2}
+              %td.muted{ colspan: 2 }
                 %a{href: '#why-hidden', class: 'uk-text-bold', onclick: '$.UIkit.modal("#why-hidden").show();'} Upgrade to see more
           %tr
             %td Organisation type
