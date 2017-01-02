@@ -109,7 +109,10 @@ feature 'Browse' do
 
       scenario 'I want to see which time period the analysis relates to,
                 so I can understand how up to date it is' do
-        expect(page).to have_text "Dec 15' - Dec 16'", count: 4
+        expect(page).to have_text 1.year.ago.strftime("%b %y'") +
+                                  ' - ' +
+                                  Time.zone.today.strftime("%b %y'"),
+                                  count: 4
       end
 
       scenario 'I want to see the grant_count,

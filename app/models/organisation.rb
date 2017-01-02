@@ -195,7 +195,7 @@ class Organisation < ActiveRecord::Base
                  rescue
                    nil
                  end
-      if response.at_css('h1')
+      if response && response.at_css('h1') # TODO: test
         # TODO: refactor
         company_no_scrape = response.at_css('#ContentPlaceHolderDefault_cp_content_ctl00_CharityDetails_4_TabContainer1_tpOverview_plCompanyNumber')
         name_scrape = response.at_css('h1')
