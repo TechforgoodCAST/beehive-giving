@@ -9,12 +9,6 @@ class ApplicationController < ActionController::Base
   # TODO: before_action :load_feedback, if: proc { logged_in? }
   # TODO: before_action :set_new_relic_user, if: proc { logged_in? }
 
-  unless Rails.application.config.consider_all_requests_local
-    rescue_from StandardError do
-      render "errors/#{response.status}", status: response.status
-    end
-  end
-
   rescue_from ActionController::InvalidAuthenticityToken, with: :bad_token
 
   def current_user

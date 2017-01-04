@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
   # Errors
-  %w(404 422 500).each do |code|
-    get code, to: 'errors#show', code: code
-  end
+  match '/404', to: 'errors#not_found', via: :all
+  match '/500', to: 'errors#internal_server_error', via: :all
 
   # Admin
   devise_for :admin_users, ActiveAdmin::Devise.config
