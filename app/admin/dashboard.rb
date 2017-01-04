@@ -97,20 +97,12 @@ ActiveAdmin.register_page 'Dashboard' do
     end
 
     def unlock_count(count)
-      Recipient.joins(:recipient_funder_accesses)
-               .where('recipient_funder_accesses_count = ?', count)
-               .uniq
-               .group_by_week('recipient_funder_accesses.created_at',
-                              week_start: :mon,
-                              last: 8).count
+      Recipient.where(funds_checked: count)
+               .group_by_week(:created_at, week_start: :mon, last: 8).count
     end
 
     def unlock_by_month
-      Recipient.joins(:recipient_funder_accesses)
-               .where('recipient_funder_accesses_count' => [1, 2, 3])
-               .uniq
-               .group_by_month('recipient_funder_accesses.created_at',
-                               last: 8).count
+      Recipient.all.group_by_month(:created_at, last: 8).sum(:funds_checked)
     end
 
     def proposal_count(state)
