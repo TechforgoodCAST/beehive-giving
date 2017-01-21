@@ -257,7 +257,8 @@ class Organisation < ActiveRecord::Base
                                   .to_f * financials_multiplier(spending_scrape)
         end
         self.charity_trustees = trustee_scrape.text if trustee_scrape.present?
-        self.charity_employees = employee_scrape.text if employee_scrape.present?
+        self.charity_employees = employee_scrape.text if
+                                   employee_scrape.present?
         self.charity_volunteers = volunteer_scrape.text if
                                     volunteer_scrape.present?
         self.charity_recent_accounts_link = link_scrape['href'] if
@@ -267,9 +268,9 @@ class Organisation < ActiveRecord::Base
           income_select(income_scrape.text.sub('£', '')
           .to_f * financials_multiplier(income_scrape))
         end
-        staff_select('employees', employee_scrape.text) if
+        staff_select('employees', charity_employees) if
           charity_employees.present?
-        staff_select('volunteers', volunteer_scrape.text) if
+        staff_select('volunteers', charity_volunteers) if
           charity_volunteers.present?
 
         if company_no_scrape.present?

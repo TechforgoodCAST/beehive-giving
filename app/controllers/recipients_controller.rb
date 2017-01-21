@@ -1,10 +1,10 @@
 class RecipientsController < ApplicationController
   before_action :ensure_logged_in
-  # before_action :check_organisation_ownership, only: :show
+  # TODO: before_action :check_organisation_ownership, only: :show
 
   def edit
     @recipient.scrape_org
-    redirect_to new_recipient_proposal_path(@recipient) if @recipient.save
+    redirect_to root_path if @recipient.save
   end
 
   def update
