@@ -40,7 +40,10 @@ class ApplicationController < ActionController::Base
 
   def ensure_proposal_present
     ensure_user
-    if !@proposal
+    # TODO: test case legacy recipient with valid proposal
+    if !@recipient.valid?
+      redirect_to edit_recipient_path(@recipient)
+    elsif !@proposal
       redirect_to new_recipient_proposal_path(@recipient),
                   alert: 'Please create a funding proposal before continuing.'
     elsif @proposal.initial?
