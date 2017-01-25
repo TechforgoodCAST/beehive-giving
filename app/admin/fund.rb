@@ -24,6 +24,8 @@ ActiveAdmin.register Fund do
     actions
   end
 
+  filter :funder, input_html: { class: 'chosen-select' }
+  filter :name
   filter :updated_at
 
   show do
