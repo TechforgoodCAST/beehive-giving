@@ -39,7 +39,7 @@ describe District do
   end
 
   it 'is unique for country' do
-    expect(build(:district, district: 'Arun', country: @uk)).not_to be_valid
+    expect(build(:district, name: 'Arun', country: @uk)).not_to be_valid
   end
 
   context 'deprecated' do

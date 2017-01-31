@@ -57,7 +57,7 @@ ActiveAdmin.register Grant do
       end
       row :districts do |grant|
         grant.districts.each do |d|
-          li d.district
+          li d.name
         end
       end
     end

@@ -38,8 +38,10 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'guard-rspec', require: false
   gem 'rspec-rails'
+  gem 'show_me_the_cookies'
   gem 'stripe-ruby-mock', require: 'stripe_mock'
   gem 'thor', '0.19.1' # TODO: guard dependency
+  gem 'webmock'
 end
 
 group :development do
@@ -64,8 +66,6 @@ group :test do
   gem 'capybara'
   gem 'poltergeist'
   gem 'selenium-webdriver'
-  gem 'show_me_the_cookies'
-  gem 'webmock'
 end
 
 gem 'activerecord-import'

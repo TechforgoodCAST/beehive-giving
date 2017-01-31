@@ -30,9 +30,9 @@ class Funder < Organisation
 
   def load_map_all_data
     features = []
-    grant_count = Grant.recent(2014).joins(:districts).group('districts.district').count
+    grant_count = Grant.recent(2014).joins(:districts).group('districts.name').count
 
-    Grant.recent(2014).joins(:districts).group('districts.district').sum(:amount_awarded).each do |k, v|
+    Grant.recent(2014).joins(:districts).group('districts.name').sum(:amount_awarded).each do |k, v|
       district = District.find_by(district: k)
 
       features << {
@@ -56,12 +56,12 @@ class Funder < Organisation
   def load_map_data
     return unless districts.any?
     features = []
-    amount_awarded_max = districts_by_year.group(:district).sum(:amount_awarded).sort_by { |_, v| v }.reverse.to_h.values.first
-    grant_count = districts_by_year.group(:district).count
-    grant_count_max = districts_by_year.group(:district).count.sort_by { |_, v| v }.reverse.to_h.values.first
-    grant_average = districts_by_year.group(:district).average(:amount_awarded)
+    amount_awarded_max = districts_by_year.group(:name).sum(:amount_awarded).sort_by { |_, v| v }.reverse.to_h.values.first
+    grant_count = districts_by_year.group(:name).count
+    grant_count_max = districts_by_year.group(:name).count.sort_by { |_, v| v }.reverse.to_h.values.first
+    grant_average = districts_by_year.group(:name).average(:amount_awarded)
 
-    districts_by_year.group(:district).sum(:amount_awarded).each do |k, v|
+    districts_by_year.group(:name).sum(:amount_awarded).each do |k, v|
       district = District.find_by(district: k)
 
       features << {

@@ -73,11 +73,11 @@ class FunderAttribute < ActiveRecord::Base
   def districts_from_grants
     return unless funder && districts.empty?
     if funding_stream == 'All'
-      funder.districts.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").pluck(:district).distinct.each do |d|
+      funder.districts.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").pluck(:name).distinct.each do |d|
         districts << District.find_by(district: d) unless d.blank?
       end
     else
-      funder.districts.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:district).distinct.each do |d|
+      funder.districts.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:name).distinct.each do |d|
         districts << District.find_by(district: d) unless d.blank?
       end
     end
@@ -205,7 +205,7 @@ class FunderAttribute < ActiveRecord::Base
 
   def set_regions_by_count
     build_insights(:regions_by_count,
-                   order_by_count(funder.districts_by_year.group(:district).count).keys.take(3))
+                   order_by_count(funder.districts_by_year.group(:name).count).keys.take(3))
   end
 
   def set_funding_streams_by_count

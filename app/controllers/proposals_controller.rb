@@ -128,9 +128,9 @@ class ProposalsController < ApplicationController
       @beneficiaries_people = Beneficiary.order(:sort).where(category: 'People')
       @beneficiaries_other = Beneficiary.order(:sort).where(category: 'Other')
       @district_ids = @recipient_country
-                      .districts.order(:region, :district).map do |d|
+                      .districts.order(:region, :name).map do |d|
                         [
-                          d.district,
+                          d.name,
                           d.id,
                           { "data-section": district_section(d) }
                         ]

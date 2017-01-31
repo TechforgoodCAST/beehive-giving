@@ -23,14 +23,14 @@ namespace :transfer do
   task :profile_districts => :environment do
 
     def query(region)
-      Profile.joins(:districts).where('districts.district = ?', region).count
+      Profile.joins(:districts).where('districts.name = ?', region).count
     end
 
     def migrate(region)
       remove_id = [District.where(district: region).first.id]
       region_ids = District.where(region: region).pluck(:id)
 
-      Profile.joins(:districts).where('districts.district = ?', region).each do |p|
+      Profile.joins(:districts).where('districts.name = ?', region).each do |p|
         p.district_ids = ((p.district_ids + region_ids) - remove_id).uniq
         p.save(validate: false)
       end
