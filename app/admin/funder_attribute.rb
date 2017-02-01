@@ -104,7 +104,7 @@ ActiveAdmin.register FunderAttribute do
       f.input :districts, as: :select,
                           input_html: { multiple: true,
                                         class: 'chosen-select' },
-                          member_label: :label,
+                          member_label: :name,
                           label: 'Districts'
       f.input :soft_restrictions
       f.input :application_details
