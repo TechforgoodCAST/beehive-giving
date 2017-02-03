@@ -16,7 +16,7 @@ describe Country do
   end
 
   it 'has many districts' do
-    expect(@uk.districts.order(:district).to_a).to eq @uk_districts
+    expect(@uk.districts.order(:name).to_a).to eq @uk_districts
   end
 
   it 'has many proposals' do

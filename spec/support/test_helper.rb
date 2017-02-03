@@ -64,6 +64,7 @@ class TestHelper
 
   def stub_beehive_insight(endpoint, data)
     body = {}
+    # TODO: match records in seeds
     7.times { |i| body["acme-awards-for-all-#{i + 1}"] = (i + 1).to_f / 10 }
     stub_request(:post, endpoint).with(
       body: { data: data }.to_json,

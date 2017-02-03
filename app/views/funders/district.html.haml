@@ -1,4 +1,4 @@
-= content_for :title, "#{@district.district} in #{@funder.current_attribute.year}"
+= content_for :title, "#{@district.name} in #{@funder.current_attribute.year}"
 
 = stylesheet_link_tag 'overrides/morris_overrides'
 = javascript_include_tag 'raphael'
@@ -9,12 +9,12 @@
 .uk-container.uk-container-center.uk-margin-large
   = render partial: 'prototype'
 
-  %h2= @district.district
+  %h2= @district.name
   %h4
     Explore how
     = @funder.name
     contributed to funding in
-    = @district.district
+    = @district.name
     during
     = succeed '.' do
       = @funder.current_attribute.year
@@ -36,7 +36,7 @@
             grants
           awarded to benefit
           = succeed ',' do
-            = @district.district
+            = @district.name
           totalling
           = succeed ',' do
             %strong= number_to_currency(@district.recent_grants(@funder.current_attribute.year).sum(:amount_awarded), unit: '£', precision: 0)
@@ -53,7 +53,7 @@
             organisations
           that benefit
           = succeed ',' do
-            = @district.district
+            = @district.name
           thats
           %strong= number_to_percentage((@district.ids_by_grant_count('funder', @funder.current_attribute.year)[@funder.id].to_f / @funder.current_attribute.grant_count.to_f)*100, precision: 0)
           of all the organisations
@@ -62,7 +62,7 @@
           %strong= number_to_percentage((@district.ids_by_grant_count('funder', @funder.current_attribute.year)[@funder.id].to_f / @district.recent_grants(@funder.current_attribute.year).count.to_f)*100, precision: 0)
           of all organisations in
           = succeed '.' do
-            = @district.district
+            = @district.name
           %a.action.blue{href: funder_district_path(@funder, @district, anchor: 'most-active-funders'), "data-uk-smooth-scroll" => ""} More info
         %li
           = region_difference_amount(@district)
@@ -83,7 +83,7 @@
         - if @district.indices_year.present?
           %li
             Overall
-            = @district.district
+            = @district.name
             is rated
             %strong= @district.imd_chart_data.first[:deprivation]
             in the
@@ -99,7 +99,7 @@
             %strong 27 organisations
             seeking funding in
             = succeed ',' do
-              = @district.district
+              = @district.name
             of which
             %strong 19 are eligible
             for your support.
@@ -107,13 +107,13 @@
           %li
             %strong 78%
             of organisations funded in
-            = @district.district
+            = @district.name
             were
             %strong registered charities
           %li
             %strong Eduction and Health
             were the most funded themes in
-            = @district.district
+            = @district.name
           %li And more...
 
     %hr.thick
@@ -121,7 +121,7 @@
     %section#most-active-funders.offset
       %h3.uk-margin-top
         Most active funders in
-        = @district.district
+        = @district.name
         %span.year.muted
           in
           = @funder.current_attribute.year
@@ -137,14 +137,14 @@
           organisations
         in
         = succeed ',' do
-          = @district.district
+          = @district.name
         thats
         %strong= number_to_percentage((@district.ids_by_grant_count('funder', @funder.current_attribute.year)[@funder.id].to_f / @funder.current_attribute.grant_count.to_f)*100, precision: 0)
         of all the organisations you funded, and
         %strong= number_to_percentage((@district.ids_by_grant_count('funder', @funder.current_attribute.year)[@funder.id].to_f / @district.recent_grants(@funder.current_attribute.year).count.to_f)*100, precision: 0)
         of all organisations in
         = succeed '.' do
-          = @district.district
+          = @district.name
 
       #funding_in_region.chart{ data: {data: funding_in_region(@district, @funder).to_json} }
 
@@ -159,13 +159,13 @@
           %tr.uk-hidden
             %td Total
             %td= @district.ids_by_grant_count('funder', @funder.current_attribute.year).values.sum
-            %td= number_to_currency(Grant.joins(:districts).recent(@funder.current_attribute.year).where('districts.district': @district.district).sum(:amount_awarded), unit: '£', precision: 0)
+            %td= number_to_currency(Grant.joins(:districts).recent(@funder.current_attribute.year).where('districts.name': @district.name).sum(:amount_awarded), unit: '£', precision: 0)
         %tbody
           - @district.ids_by_grant_count('funder', @funder.current_attribute.year).each_with_index do |(k, v), i|
             %tr{class: ('uk-hidden' if i > 4)}
               %td= link_to Funder.find(k).name, funder_overview_path(Funder.find(k)), class: 'blue'
               %td= v
-              %td= number_to_currency(Funder.find(k).recent_grants(@funder.current_attribute.year).joins(:districts).where('districts.district': @district.district).sum(:amount_awarded), unit: '£', precision: 0)
+              %td= number_to_currency(Funder.find(k).recent_grants(@funder.current_attribute.year).joins(:districts).where('districts.name': @district.name).sum(:amount_awarded), unit: '£', precision: 0)
               %td
                 = number_to_percentage((v.to_f / Funder.find(k).recent_grants(@funder.current_attribute.year).count.to_f)*100, precision: 1)
 
@@ -177,7 +177,7 @@
       %section#region-comparison.offset
         %h3.uk-margin-top
           How did
-          = @district.district
+          = @district.name
           compare to the rest of
           = succeed '?' do
             = @district.region || @district.sub_country
@@ -208,13 +208,13 @@
         %h3.uk-margin-top
           How deprived is
           = succeed '?' do
-            = @district.district
+            = @district.name
           %span.year.muted
             in
             = @district.indices_year
         %p
           The smaller the bars the more deprived
-          = @district.district
+          = @district.name
           is.
 
         .uk-grid

@@ -35,11 +35,11 @@ class FundersController < ApplicationController
   def district
     ensure_own_district_path
     @amount_awarded = @funder.districts_by_year
-                             .group(:district)
-                             .sum(:amount_awarded)[@district.district]
+                             .group(:name)
+                             .sum(:amount_awarded)[@district.name]
     @grant_count = @funder.districts_by_year
-                          .group(:district)
-                          .count[@district.district]
+                          .group(:name)
+                          .count[@district.name]
   end
 
   private
@@ -49,14 +49,14 @@ class FundersController < ApplicationController
     end
 
     def load_district
-      @district = District.find_by(slug: params[:district])
-      gon.districtLabel = @district.district
+      @district = District.find_by(slug: params[:name])
+      gon.districtLabel = @district.name
       gon.funderName = @funder.name
     end
 
     def ensure_own_district_path
       return if current_user.organisation == @funder
       redirect_to funder_district_path(current_user.organisation,
-                                       params[:district])
+                                       params[:name])
     end
 end

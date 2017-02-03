@@ -85,8 +85,8 @@
               = succeed '.' do
                 -# TODO: refactor
                 - array = []
-                - @funder.districts_by_year.group(:district).count.sort_by {|k, v| v}.reverse.to_h.keys.take(3).each do |i|
-                  - array << '<a class="blue uk-text-bold" href="' + funder_district_path(@funder, District.find_by_district(i).slug) + '">' + District.find_by_district(i).district + '</a>'
+                - @funder.districts_by_year.group(:name).count.sort_by {|k, v| v}.reverse.to_h.keys.take(3).each do |i|
+                  - array << '<a class="blue uk-text-bold" href="' + funder_district_path(@funder, District.find_by_district(i).slug) + '">' + District.find_by_district(i).name + '</a>'
                 = raw(array.to_sentence)
 
               %a.action.blue{href: funder_map_path(@funder)} Full map
