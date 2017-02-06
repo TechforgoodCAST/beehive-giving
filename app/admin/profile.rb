@@ -49,7 +49,7 @@ ActiveAdmin.register Profile do
   filter :year, as: :select
   filter :countries, label: 'Country', member_label: :name
   filter :districts, label: 'District',
-                     member_label: :label,
+                     member_label: :name,
                      input_html: { multiple: true, class: 'chosen-select' }
   filter :income
   filter :created_at

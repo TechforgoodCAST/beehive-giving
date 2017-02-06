@@ -82,7 +82,7 @@ ActiveAdmin.register Grant do
                           input_html: { multiple: true,
                                         class: 'chosen-select' },
                           member_label: :name
-      f.input :districts, collection: District.order('label ASC'),
+      f.input :districts, collection: District.order('name ASC'),
                           input_html: { multiple: true,
                                         class: 'chosen-select' },
                           member_label: :label
