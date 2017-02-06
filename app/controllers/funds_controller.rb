@@ -4,6 +4,8 @@ class FundsController < ApplicationController
 
   def show
     @fund = Fund.includes(:funder).find_by(slug: params[:id])
+    redirect_to request.referer || root_path, alert: 'Fund not found' unless
+      @fund
   end
 
   def recommended

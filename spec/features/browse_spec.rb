@@ -47,6 +47,13 @@ feature 'Browse' do
       expect(current_path).to eq fund_path(@top_fund)
     end
 
+    scenario "When I visit a fund that doesn't exist,
+               I want to be redirected to where I came from and see a message,
+               so I avoid an error and understand what happened" do
+      visit fund_path 'missing-fund'
+      expect(current_path).to eq recommended_funds_path
+    end
+
     scenario 'When I click for more details on funding distribution,
               I want to see a column chart of funding distribution,
               so I can decide if I want to apply' do
