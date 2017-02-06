@@ -117,7 +117,7 @@ SignupHelpers = ((w, d) ->
   jsSubmitForm = ->
     $('.check-numbers').click (event) ->
       event.preventDefault()
-      $('#new_recipient').submit()
+      $('form').submit()
       return
 
   checkFunders = ->
