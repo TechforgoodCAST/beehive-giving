@@ -18,7 +18,7 @@
       - if i == 5
         .cta.wide
           Go unlimited with Beehive Pro and see all funders with complete profiles.
-          %a{ href: '#why-hidden', class: ' uk-button uk-button-large uk-button-primary invert', onclick: '$.UIkit.modal("#why-hidden").show();' } Upgrade (coming soon)
+          %a{ href: '#why-hidden', class: ' uk-button uk-button-large uk-button-primary invert why-hidden', onclick: "goog_report_conversion('#why-hidden')" } Upgrade (coming soon)
 
       - if i == @funds.count - 1
         .cta.wide
