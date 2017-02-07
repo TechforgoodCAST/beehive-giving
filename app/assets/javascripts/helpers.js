@@ -1,6 +1,6 @@
-let ApplicationHelper = function(d, w) {
+var ApplicationHelper = function(d, w) {
 
-  let comingSoonModal = function() {
+  var comingSoonModal = function() {
     $('.why-hidden').on('click', function(e) {
       e.preventDefault();
       $.UIkit.modal("#why-hidden").show();
