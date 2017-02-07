@@ -10,6 +10,6 @@
       = e.input :eligible, as: :radio_buttons, collection: @recipient.restriction_truthy(e.object.restriction)
       - if e.object.errors.any?
         = e.error :eligible, class: 'error-message'
-      - elsif e.object.eligible == false && @recipient.valid? && @recipient.unlocked_fund?(@fund)
+      - elsif e.object.eligible == false && @recipient.valid? && @proposal.checked_fund?(@fund)
         .error-message You did not meet this criteria
     %hr

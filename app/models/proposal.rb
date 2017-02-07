@@ -253,11 +253,8 @@ class Proposal < ActiveRecord::Base
     recommendations.where(fund_id: Fund.inactive_ids).destroy_all
   end
 
-  def show_fund(fund)
-    recipient.subscribed? ||
-      recommended_funds.take(Recipient::RECOMMENDATION_LIMIT).include?(fund.id)
-    #  || # TODO: refactor
-    # recommendation(fund).eligibility?
+  def recommendation(fund)
+    Recommendation.find_by(proposal: self, fund: fund)
   end
 
   def check_affect_geo
@@ -277,13 +274,39 @@ class Proposal < ActiveRecord::Base
                       end
   end
 
-  def recommendation(fund)
-    Recommendation.find_by(proposal: self, fund: fund)
+  def show_fund?(fund)
+    recipient.subscribed? ||
+      recommended_funds.take(Recipient::RECOMMENDATION_LIMIT).include?(fund.id)
   end
 
-  # TODO: review
+  def checked_funds
+    eligible_funds + ineligible_funds
+  end
+
+  def checked_fund?(fund)
+    checked_funds.include?(fund.id)
+  end
+
+  def eligibility(fund_id)
+    return 1 if eligible_funds.include?(fund_id)
+    return -1 if ineligible_funds.include?(fund_id)
+    0
+  end
+
+  def eligibility_as_text(fund_id)
+    {
+      "-1": 'Ineligible',
+      "0": 'Check',
+      "1": 'Eligible'
+    }[eligibility(fund_id).to_s.to_sym]
+  end
+
   def eligible?(fund)
-    recommendation(fund).eligibility == 'Eligible'
+    eligibility(fund.id).positive?
+  end
+
+  def ineligible?(fund)
+    eligibility(fund.id).negative?
   end
 
   def set_eligibility_fields

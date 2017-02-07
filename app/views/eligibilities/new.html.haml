@@ -7,12 +7,13 @@
     'Fund Unlocks': '#{@recipient.funds_checked}',
   });
 
-- if @recipient.unlocked_fund?(@fund)
+- if @proposal.checked_fund?(@fund)
+  -# TODO: refactor
   :javascript
     mixpanel.people.set({
-      'Last Unlocked Fund': '#{@recipient.unlocked_funds.last.name}',
-      'Last Fund Eligibility': '#{@recipient.proposals.last.eligible?(@recipient.unlocked_funds.last)}',
-      'Eligibility #{@fund.slug}': '#{@recipient.proposals.last.eligible?(@fund)}'
+      'Last Unlocked Fund': '#{Fund.find(@proposal.checked_funds.last).name}',
+      'Last Fund Eligibility': '#{@proposal.eligibility_as_text(@proposal.checked_funds.last)}',
+      'Eligibility #{@fund.slug}': '#{@proposal.eligibility_as_text(@fund.id)}'
     });
 
 = render partial: 'funds/subnav', locals: { fund: @fund }
@@ -23,7 +24,7 @@
       = render partial: 'funds/card', locals: { fund: @fund }
 
     .uk-width-medium-2-3
-      - if @proposal.recommendation(@fund).eligibility
+      - unless @proposal.eligibility(@fund.id).zero?
         - if @proposal.eligible?(@fund)
           .cta.wide.green
             You are eligible for the

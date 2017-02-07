@@ -55,15 +55,15 @@ class Recipient < Organisation
     proposal.recommendation(fund).update_attributes(eligibility: eligibility)
   end
 
-  def eligible_restrictions
+  def eligible_restrictions # TODO: to proposal
     eligibilities.where(eligible: true).pluck(:restriction_id)
   end
 
-  def ineligible_restrictions
+  def ineligible_restrictions # TODO: to proposal
     eligibilities.where(eligible: false).pluck(:restriction_id)
   end
 
-  def check_eligibility(proposal, fund)
+  def check_eligibility(proposal, fund) # TODO: to proposal
     recipient_restrictions = eligibilities.pluck(:restriction_id)
     fund_restrictions = fund.restrictions.pluck(:id)
 
@@ -97,27 +97,6 @@ class Recipient < Organisation
       [['Yes', false], ['No', true]]
     end
   end
-
-  # def recommended_funds # TODO: remove
-  #   proposals.last.funds.includes(:funder, :taggings)
-  #            .where('recommendations.total_recommendation >= ?',
-  #                   RECOMMENDATION_THRESHOLD)
-  #            .order('recommendations.total_recommendation DESC', 'funds.name')
-  # end
-
-  # def recommended_with_eligible_funds # TODO: remove
-  #   fund_ids = recommended_funds
-  #              .pluck(:fund_id)
-  #              .take(RECOMMENDATION_LIMIT)
-  #   recommended_funds
-  #     .where(id: fund_ids)
-  #     .where('eligibility is NULL OR eligibility != ?', 'Ineligible')
-  # end
-
-  # def recommended_fund?(fund) # TODO: remove
-  #   recommended_funds.pluck(:fund_id).take(RECOMMENDATION_LIMIT)
-  #                    .include?(fund.id)
-  # end
 
   def set_boolean(profile, proposal, category, field)
     proposal[field] = profile.beneficiaries.where(category: category).count > 1

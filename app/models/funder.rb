@@ -99,13 +99,14 @@ class Funder < Organisation
     end
   end
 
-  def eligible_organisations
-    array = []
-    Recipient.joins(:eligibilities).distinct.order(:id).each do |recipient|
-      array << recipient if recipient.eligible?(self)
-    end
-    array
-  end
+  # TODO: remove
+  # def eligible_organisations
+  #   array = []
+  #   Recipient.joins(:eligibilities).distinct.order(:id).each do |recipient|
+  #     array << recipient if recipient.eligible?(self)
+  #   end
+  #   array
+  # end
 
   def current_attribute
     # self.attributes.where('funding_stream = ? AND grant_count > ?', 'All', 0).order(year: :desc).first

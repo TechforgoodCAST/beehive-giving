@@ -2,20 +2,26 @@ module RecipientsHelper
   TAG_CLASSES = %w(uk-button uk-button-small uk-button-primary invert
                    uk-margin-small-bottom).freeze
 
+  def fund_card_eligibility_text(fund)
+    case @proposal.eligibility(fund.id)
+    when -1
+      link_to('Ineligible', fund_eligibility_path(fund), class: 'very-poor')
+    when 1
+      link_to('Eligible', fund_eligibility_path(fund), class: 'excellent')
+    else
+      link_to('Check', fund_eligibility_path(fund), class: 'primary')
+    end
+  end
+
   def fund_card_cta_button_copy(fund)
     classes = 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
-    if @proposal.recommendation(fund).eligibility
-      if @proposal.eligible?(fund)
-        content_tag(:a, link_to('Apply', fund_apply_path(fund), class: classes))
-      else
-        content_tag(:a, link_to('Why ineligible?',
-                                fund_eligibility_path(fund),
-                                class: classes))
-      end
+    case @proposal.eligibility(fund.id)
+    when -1
+      link_to('Why ineligible?', fund_eligibility_path(fund), class: classes)
+    when 1
+      link_to('Apply', fund_apply_path(fund), class: classes)
     else
-      content_tag(:a, link_to('Check eligibility',
-                              fund_eligibility_path(fund),
-                              class: classes))
+      link_to('Check eligibility', fund_eligibility_path(fund), class: classes)
     end
   end
 
@@ -59,7 +65,7 @@ module RecipientsHelper
   end
 
   def render_recommendation(fund, score, scale = 1)
-    if @proposal.show_fund(fund)
+    if @proposal.show_fund?(fund)
       score_to_match_copy(@proposal.recommendation(fund)[score.to_s], scale)
     else
       scramble_recommendations
@@ -92,7 +98,7 @@ module RecipientsHelper
   def render_tag_list(fund)
     return unless fund.tags?
     content_tag :div, class: 'uk-margin-top' do
-      if @proposal.show_fund(fund)
+      if @proposal.show_fund?(fund)
         render_tags(fund)
       else
         render_redacted_tags(fund)
