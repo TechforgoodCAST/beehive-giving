@@ -7,22 +7,22 @@
           .thumbnail
             .funder{class: (@tag.present? ? 'locked' : fund.funder.slug)}
         - else
-          %a{ onclick: '$.UIkit.modal("#why-hidden").show();', alt: (@tag.present? ? scramble_name(fund.name) : fund.name) }
+          %a.why-hidden{ onclick: "goog_report_conversion('#why-hidden')", alt: (@tag.present? ? scramble_name(fund.name) : fund.name) }
             .thumbnail
               .funder{class: (@tag.present? ? 'locked' : fund.funder.slug)}
         .details
           .content.center
-            = link_to 'Show fund', '#why-hidden', class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large', onclick: '$.UIkit.modal("#why-hidden").show();'
+            = link_to 'Show fund', '#why-hidden', class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large why-hidden', onclick: "goog_report_conversion('#why-hidden')"
           .content.center
-            = link_to 'Why is this hidden?', '#why-hidden', onclick: '$.UIkit.modal("#why-hidden").show();'
+            = link_to 'Why is this hidden?', '#why-hidden', onclick: "goog_report_conversion('#why-hidden')", class: 'why-hidden'
 
     .uk-width-medium-2-3
       %h3.uk-margin-top
-        -# refactor
+        -# TODO: refactor
         - if current_user.feedbacks.count.positive?
           = link_to (@tag.present? ? scramble_name(fund.name) : fund.name), fund_path(fund), class: (@tag.present? ? 'yellow redacted large': 'yellow')
         - else
-          = link_to (@tag.present? ? scramble_name(fund.name) : fund.name), '#why-hidden', class: (@tag.present? ? 'yellow redacted large': 'yellow'), onclick: '$.UIkit.modal("#why-hidden").show();'
+          = link_to (@tag.present? ? scramble_name(fund.name) : fund.name), '#why-hidden', class: (@tag.present? ? 'yellow redacted large why-hidden': 'yellow why-hidden'), onclick: "goog_report_conversion('#why-hidden')"
         %span.year.muted
           %span.redacted= scramble_name(fund.funder.name)
 

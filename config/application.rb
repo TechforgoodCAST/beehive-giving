@@ -40,6 +40,7 @@ module Beehive
       feedback.js
       funders.js
       funds.js
+      helpers.js
       map.js
       organisations.js
       pages.js

@@ -27,7 +27,7 @@
           - unless @proposal.show_fund(fund)
             %tr
               %td.muted{ colspan: 2 }
-                %a{href: '#why-hidden', class: 'uk-text-bold', onclick: '$.UIkit.modal("#why-hidden").show();'} Upgrade to see more
+                %a{ href: '#why-hidden', class: 'uk-text-bold why-hidden', onclick: "goog_report_conversion('#why-hidden')" } Upgrade to see more
           %tr
             %td Organisation type
             %td= render_recommendation(fund, 'org_type_score', 2)

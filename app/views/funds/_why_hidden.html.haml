@@ -1,17 +1,30 @@
 -# Google Code for View &quot;Coming soon&quot; beta message Conversion Page
 :javascript
   /* <![CDATA[ */
-  var google_conversion_id = 937505505;
-  var google_conversion_language = "en";
-  var google_conversion_format = "3";
-  var google_conversion_color = "ffffff";
-  var google_conversion_label = "Dpk2COHQnm4Q4eWEvwM";
-  var google_remarketing_only = false;
+    goog_snippet_vars = function() {
+      var w = window;
+      w.google_conversion_id = 937505505;
+      w.google_conversion_label = "Dpk2COHQnm4Q4eWEvwM";
+      w.google_remarketing_only = false;
+    }
+    // DO NOT CHANGE THE CODE BELOW.
+    goog_report_conversion = function(url) {
+      goog_snippet_vars();
+      window.google_conversion_format = "3";
+      var opt = new Object();
+      opt.onload_callback = function() {
+      if (typeof(url) != 'undefined') {
+        window.location = url;
+      }
+    }
+    var conv_handler = window['google_trackConversion'];
+    if (typeof(conv_handler) == 'function') {
+      conv_handler(opt);
+    }
+  }
   /* ]]> */
-%script{:src => "//www.googleadservices.com/pagead/conversion.js", :type => "text/javascript"}
-%noscript
-  %div{:style => "display:inline;"}
-    %img{:alt => "", :height => "1", :src => "//www.googleadservices.com/pagead/conversion/937505505/?label=Dpk2COHQnm4Q4eWEvwM&guid=ON&script=0", :style => "border-style:none;", :width => "1"}
+%script{:src => "//www.googleadservices.com/pagead/conversion_async.js", :type => "text/javascript"}
+
 
 .uk-modal#why-hidden
   .uk-modal-dialog

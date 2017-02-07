@@ -78,14 +78,14 @@ module RecipientsHelper
 
   def render_redacted_tags(fund)
     link_to('Upgrade to see funding themes (coming soon)',
-            '#why-hidden', class: 'uk-text-bold',
-                           onclick: '$.UIkit.modal("#why-hidden").show();') +
+            '#why-hidden', class: 'uk-text-bold why-hidden',
+                           onclick: "goog_report_conversion('#why-hidden')") +
       safe_join(['</br>'.html_safe]) +
       safe_join(fund.tags.sort.map do |t|
         link_to scramble_name(t.parameterize), # TODO: refactor
                 '#why-hidden', class: TAG_CLASSES +
-                                 %w(redacted uk-margin-small-top),
-                               onclick: '$.UIkit.modal("#why-hidden").show();'
+                                 %w(redacted uk-margin-small-top why-hidden),
+                               onclick: "goog_report_conversion('#why-hidden')"
       end, ' ')
   end
 
