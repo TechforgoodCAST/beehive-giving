@@ -19,7 +19,7 @@ feature 'Apply' do
     helper.visit_first_fund
           .complete_proposal
           .submit_proposal
-          .answer
+          .answer_restrictions
           .check_eligibility
     within '.card' do
       click_link 'Apply'

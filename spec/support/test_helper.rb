@@ -28,7 +28,9 @@ class TestHelper
                build_list(:fund, num, funder: @funder)
              end
     @funding_types = create_list(:funding_type, FundingType::FUNDING_TYPE.count)
-    @restrictions = create_list(:restriction, 5)
+    recipient_restrictions = create_list(:recipient_restriction, 2)
+    proposal_restrictions = create_list(:restriction, 5)
+    @restrictions = recipient_restrictions + proposal_restrictions
     @outcomes = create_list(:outcome, 2)
     @decision_makers = create_list(:decision_maker, 2)
     @funds.each_with_index do |fund, i|
@@ -39,7 +41,7 @@ class TestHelper
       fund.funding_types = @funding_types
       fund.countries = @countries
       fund.districts = @uk_districts + @kenya_districts
-      fund.restrictions = (i.even? ? @restrictions.first(3) : @restrictions.last(3))
+      fund.restrictions = (i.even? ? recipient_restrictions + proposal_restrictions.first(3) : recipient_restrictions + proposal_restrictions.last(3))
       fund.outcomes = @outcomes
       fund.decision_makers = @decision_makers
       fund.save! if save

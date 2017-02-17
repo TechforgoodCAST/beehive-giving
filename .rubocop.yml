@@ -40,7 +40,7 @@ Metrics/LineLength:
     - bin/spring
     - config/**/**
     - lib/tasks/**
-    - spec/**/**
+    # - spec/**/**
     - app/models/funder.rb # TODO: deprecated
     - app/models/funder_attribute.rb # TODO: deprecated
     - app/models/profile.rb # TODO: deprecated

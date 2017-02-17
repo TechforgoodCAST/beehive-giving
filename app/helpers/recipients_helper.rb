@@ -3,8 +3,8 @@ module RecipientsHelper
                    uk-margin-small-bottom).freeze
 
   def fund_card_eligibility_text(fund)
-    case @proposal.eligibility(fund.id)
-    when -1
+    case @proposal.eligibility_for(fund)
+    when 0
       link_to('Ineligible', fund_eligibility_path(fund), class: 'very-poor')
     when 1
       link_to('Eligible', fund_eligibility_path(fund), class: 'excellent')
@@ -15,8 +15,8 @@ module RecipientsHelper
 
   def fund_card_cta_button_copy(fund)
     classes = 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
-    case @proposal.eligibility(fund.id)
-    when -1
+    case @proposal.eligibility_for(fund)
+    when 0
       link_to('Why ineligible?', fund_eligibility_path(fund), class: classes)
     when 1
       link_to('Apply', fund_apply_path(fund), class: classes)

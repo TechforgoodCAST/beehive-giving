@@ -18,7 +18,6 @@ class Fund < ActiveRecord::Base
   has_and_belongs_to_many :funding_types
   has_and_belongs_to_many :restrictions
   accepts_nested_attributes_for :restrictions
-  # TODO: has_and_belongs_to_many :proposal_restrictions
   has_and_belongs_to_many :outcomes
   has_and_belongs_to_many :decision_makers
 
@@ -106,6 +105,7 @@ class Fund < ActiveRecord::Base
   before_validation :set_slug, unless: :slug
   before_validation :check_beehive_data,
                     if: proc { |o| o.skip_beehive_data.to_i.zero? }
+  before_save :set_restriction_ids, if: :restrictions_known?
 
   def to_param
     slug
@@ -148,5 +148,9 @@ class Fund < ActiveRecord::Base
         ENV['BEEHIVE_DATA_FUND_SUMMARY_ENDPOINT'] + slug, options
       )
       assign_attributes(resp.except('fund_slug')) if slug == resp['fund_slug']
+    end
+
+    def set_restriction_ids
+      self[:restriction_ids] = restrictions.pluck(:id)
     end
 end

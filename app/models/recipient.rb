@@ -7,8 +7,7 @@ class Recipient < Organisation
   has_many :funds, -> { distinct }, through: :proposals
   has_many :countries, -> { distinct }, through: :proposals
   has_many :districts, -> { distinct }, through: :proposals
-  has_many :eligibilities, dependent: :destroy
-  has_many :restrictions, through: :eligibilities
+  has_many :eligibilities, as: :category, dependent: :destroy
   accepts_nested_attributes_for :eligibilities
 
   has_many :grants # TODO: deprecated
@@ -23,62 +22,7 @@ class Recipient < Organisation
     subscription.active?
   end
 
-  def can_unlock_funder?
-    if subscription.active?
-      true
-    else
-      unlocked_funders.size < MAX_FREE_LIMIT
-    end
-  end
-
-  def unlocked_funds # TODO: to proposal
-    funds.where('eligibility IS NOT NULL')
-  end
-
-  def eligible_funds # TODO: to proposal
-    unlocked_funds.where('eligibility = ?', 'Eligible')
-  end
-
-  def ineligible_funds # TODO: to proposal
-    unlocked_funds.where('eligibility = ?', 'Ineligible')
-  end
-
-  def unlocked_fund?(fund) # TODO: to proposal
-    unlocked_funds.pluck(:id).include?(fund.id)
-  end
-
-  def locked_fund?(fund) # TODO: to proposal
-    !unlocked_fund?(fund)
-  end
-
-  def set_eligibility(proposal, fund, eligibility) # TODO: to proposal
-    proposal.recommendation(fund).update_attributes(eligibility: eligibility)
-  end
-
-  def eligible_restrictions # TODO: to proposal
-    eligibilities.where(eligible: true).pluck(:restriction_id)
-  end
-
-  def ineligible_restrictions # TODO: to proposal
-    eligibilities.where(eligible: false).pluck(:restriction_id)
-  end
-
-  def check_eligibility(proposal, fund) # TODO: to proposal
-    recipient_restrictions = eligibilities.pluck(:restriction_id)
-    fund_restrictions = fund.restrictions.pluck(:id)
-
-    return unless (recipient_restrictions & fund_restrictions).count == fund_restrictions.count
-
-    if (eligible_restrictions & fund_restrictions).count == fund_restrictions.count
-      set_eligibility(proposal, fund, 'Eligible')
-    else
-      set_eligibility(proposal, fund, 'Ineligible')
-    end
-
-    proposal.set_eligibility_fields
-  end
-
-  def transferred? # refactor?
+  def transferred? # TODO: refactor
     proposals.where(state: 'transferred').count.positive?
   end
 
@@ -88,14 +32,6 @@ class Recipient < Organisation
 
   def profile_for_migration?
     @proposal.nil? && profiles.where(state: 'complete').any?
-  end
-
-  def restriction_truthy(restriction)
-    if restriction.invert
-      [['Yes', true], ['No', false]]
-    else
-      [['Yes', false], ['No', true]]
-    end
   end
 
   def set_boolean(profile, proposal, category, field)

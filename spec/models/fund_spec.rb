@@ -10,6 +10,8 @@ describe Fund do
       @funder = @db[:funder]
     end
 
+    # TODO: test restriction_ids field
+
     it 'generates summary for last 12 months from most recent grant'
     it 'org_type_distribution has correct format'
     # TODO: remaining distribution fields
@@ -156,7 +158,7 @@ describe Fund do
 
     it 'has many restrictions' do
       @fund.save
-      expect(@fund.restrictions.count).to eq 3
+      expect(@fund.restrictions.count).to eq 5
     end
 
     it 'outcomes present if outcomes_known'

@@ -99,25 +99,15 @@ class Funder < Organisation
     end
   end
 
-  # TODO: remove
-  # def eligible_organisations
-  #   array = []
-  #   Recipient.joins(:eligibilities).distinct.order(:id).each do |recipient|
-  #     array << recipient if recipient.eligible?(self)
-  #   end
-  #   array
-  # end
-
-  def current_attribute
-    # self.attributes.where('funding_stream = ? AND grant_count > ?', 'All', 0).order(year: :desc).first
+  def current_attribute # TODO: deprecated
     attributes.where(funding_stream: 'All').order(year: :desc).first
   end
 
-  def recent_grants(year = Time.zone.today.year) # refactor
+  def recent_grants(year = Time.zone.today.year) # TODO: deprecated
     grants.where('approved_on <= ? AND approved_on >= ?', "#{year}-12-31", "#{year}-01-01")
   end
 
-  def shared_recipient_ids
+  def shared_recipient_ids # TODO: deprecated
     recent_grants_recipient_ids = recent_grants(current_attribute.year).pluck(:recipient_id).uniq
     result = {}
     Funder.active.each do |funder|
@@ -129,11 +119,11 @@ class Funder < Organisation
     result.sort_by { |_, v| v.count }.reverse.to_h
   end
 
-  def multiple_funding_from_funder
+  def multiple_funding_from_funder # TODO: deprecated
     recent_grants(current_attribute.year).group(:recipient_id).having('count(*) > 1').count
   end
 
-  def no_of_grants_per_recipient
+  def no_of_grants_per_recipient # TODO: deprecated
     result = {}
     recent_grants(current_attribute.year).group(:recipient_id).count.each do |_, v|
       result[v] = result[v] || 0
@@ -142,7 +132,7 @@ class Funder < Organisation
     result = result.sort_by { |k, _| k }.to_h
   end
 
-  def recommended_recipients
+  def recommended_recipients # TODO: deprecated
     Recipient.includes(:recommendations, :proposals, :enquiries)
              .where("recommendations.funder_id = ? AND
               recommendations.score >= ? AND
