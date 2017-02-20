@@ -120,6 +120,11 @@ class TestHelper
     self
   end
 
+  def subscribe_recipient
+    @recipient.subscribe!
+    self
+  end
+
   def with_user(opts = { organisation: @recipient })
     @user = create(:user, opts)
     self

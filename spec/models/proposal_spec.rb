@@ -164,14 +164,6 @@ describe Proposal do
       end
     end
 
-    it 'populates districts by country selection if at country level'
-    #   @initial_proposal.affect_geo = 2
-    #   @initial_proposal.countries = [@db[:kenya]]
-    #   @initial_proposal.districts = []
-    #   @initial_proposal.save
-    #   expect(@initial_proposal.districts).to eq @db[:kenya].districts
-    # end
-
     it 'sets affect_geo unless affects entire country'
   end
 
@@ -229,27 +221,6 @@ describe Proposal do
       @complete_proposal.funding_duration = nil
       expect(@complete_proposal).not_to be_valid
     end
-
-    context 'with second proposal' do
-      before(:each) do
-        @app.build_registered_proposal
-        @db = @app.instances
-        @registered_proposal = @db[:registered_proposal]
-        @complete_proposal   = @db[:complete_proposal]
-      end
-
-      it 'can create multiple proposals once first proposal complete' do
-        @complete_proposal.save
-        @registered_proposal.save
-        expect(@db[:recipient].proposals.count).to eq 2
-      end
-
-      it 'cannot have duplicate titles' do
-        @complete_proposal.save
-        @registered_proposal.title = @complete_proposal.title
-        expect(@registered_proposal).not_to be_valid
-      end
-    end
   end
 
   context 'eligibilities' do
@@ -273,6 +244,31 @@ describe Proposal do
       expect(Eligibility.count).to eq 2
       @proposal.destroy
       expect(Eligibility.count).to eq 0
+    end
+  end
+
+  context 'multiple' do
+    before(:each) do
+      @app.create_complete_proposal.build_registered_proposal
+      @proposal = @app.instances[:complete_proposal]
+      @proposal2 = @app.instances[:registered_proposal]
+    end
+
+    it 'cannot have duplicate titles' do
+      @proposal2.title = @proposal.title
+      expect(@proposal2).not_to be_valid
+    end
+
+    it 'can create multiple proposals once first proposal complete ' \
+       'and subscribed' do
+      @app.subscribe_recipient
+      @proposal2.save!
+      expect(@app.instances[:recipient].proposals.count).to eq 2
+    end
+
+    it 'cannot create multiple proposals unless subscribed' do
+      expect(@proposal2.recipient.subscribed?).to eq false
+      expect { @proposal2.save! }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
 end

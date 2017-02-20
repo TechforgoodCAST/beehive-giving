@@ -2,7 +2,6 @@ class Proposal < ActiveRecord::Base
   after_validation :trigger_clear_beneficiary_ids
   after_validation :check_affect_geo
   before_save :save_all_age_groups_if_all_ages
-  after_save :save_districts_from_countries
   after_save :initial_recommendation
 
   has_many :recommendations, dependent: :destroy
@@ -127,6 +126,13 @@ class Proposal < ActiveRecord::Base
   validates :implementations_other,
             presence: { message: "please uncheck 'Other' or specify details" },
             if: :implementations_other_required
+
+  validate :recipient_subscribed, on: :create
+
+  def recipient_subscribed
+    return if recipient.subscribed? || recipient.proposals.count.zero?
+    errors.add(:title, 'Upgrade subscription to create multiple proposals')
+  end
 
   def initial_recommendation
     beehive_insight = call_beehive_insight(
@@ -417,16 +423,6 @@ class Proposal < ActiveRecord::Base
       clear_beneficiary_ids('People') unless affect_people?
       clear_beneficiary_ids('Other') unless affect_other?
       self.beneficiaries_other_required = false unless affect_other?
-    end
-
-    def save_districts_from_countries
-      # TODO: refactor into background job too slow
-      # return unless affect_geo > 1
-      # district_ids_array = []
-      # countries.each do |country|
-      #   district_ids_array += District.where(country_id: country.id).pluck(:id)
-      # end
-      # self.district_ids = district_ids_array.uniq
     end
 
     def prevent_second_proposal_until_first_is_complete

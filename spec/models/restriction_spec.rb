@@ -59,7 +59,8 @@ describe 'Restriction' do
 
     context 'for Proposal' do
       before(:each) do
-        @app.create_registered_proposal
+        @app.subscribe_recipient
+            .create_registered_proposal
             .create_complete_proposal
         Proposal.all.each do |proposal|
           create(:eligibility, restriction: @r2,
