@@ -1,0 +1,23 @@
+%nav.uk-navbar.navbar.recipient-bg{ class: background_color }
+  .uk-container.uk-container-center
+
+    - if logged_in?
+
+      - if signup?
+        .uk-navbar-content.uk-navbar-center
+          = logo
+
+      - else
+        = cell(:main_nav, model)
+        = cell(:secondary_nav, model)
+        .uk-navbar-content.uk-navbar-center
+          = logo
+        = cell(:mobile_nav, model)
+
+    - else
+      .uk-navbar-content
+        = logo
+      .uk-navbar-flip
+        -# TODO: refactor
+        .uk-navbar-content{ style: 'padding-right: 0;' }
+          = link_to 'Sign in', sign_in_path, class: 'uk-button uk-button-primary'

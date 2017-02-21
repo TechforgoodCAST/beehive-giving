@@ -45,7 +45,7 @@
         ga('set', 'userId', gon.currentUserId);
 
   %body#top
-    = render partial: 'layouts/navbar'
+    = cell(:navbar, current_user)
 
     .uk-container.uk-container-center
       - if flash[:notice]
@@ -75,6 +75,7 @@
           });
         #notice
 
+    -# TODO: refactor
     = yield(:public) if content_for?(:public)
     = yield(:signup) if content_for?(:signup)
     = yield(:sign_in) if content_for?(:sign_in)
