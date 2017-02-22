@@ -122,6 +122,9 @@ hr
   color: $mid-grey
 .very-poor
   color: $red-base !important
+a.very-poor
+  &:hover
+    color: $red-hover !important
 .poor
   color: $red-active
 .fair
@@ -130,8 +133,11 @@ hr
   color: $green-active
 .excellent
   color: $green-base !important
+a.excellent
+  &:hover
+    color: $green-hover !important
 
-// refactor
+// TODO: refactor
 .shadow
   -webkit-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.15)
   -moz-box-shadow: 0px 2px 4px 0px rgba(0,0,0,0.15)
@@ -146,7 +152,7 @@ hr
     .uk-button-danger
       background: $red-hover
 
-// refactor
+// TODO: refactor
 .bounce
   -webkit-transition: all 0.25s ease
   -o-transition: all 0.25s ease

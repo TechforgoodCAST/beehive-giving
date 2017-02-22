@@ -17,14 +17,10 @@
             %td
               Eligibility
             %td
-              - if @proposal.recommendation(fund).eligibility
-                - if @proposal.eligible?(fund)
-                  %strong= link_to 'Eligible', fund_eligibility_path(fund), class: 'excellent'
-                - else
-                  %strong= link_to 'Ineligible', fund_eligibility_path(fund), class: 'very-poor'
-              - else
-                %strong= link_to 'Check', fund_eligibility_path(fund), class: 'primary'
-          - unless @proposal.show_fund(fund)
+              %strong
+                = fund_card_eligibility_text(fund)
+
+          - unless @proposal.show_fund?(fund)
             %tr
               %td.muted{ colspan: 2 }
                 %a{ href: '#why-hidden', class: 'uk-text-bold why-hidden', onclick: "goog_report_conversion('#why-hidden')" } Upgrade to see more

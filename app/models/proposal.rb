@@ -7,6 +7,8 @@ class Proposal < ActiveRecord::Base
 
   has_many :recommendations, dependent: :destroy
   has_many :funds, through: :recommendations
+  has_many :eligibilities, as: :category, dependent: :destroy
+  accepts_nested_attributes_for :eligibilities
 
   belongs_to :recipient
   has_many :enquiries, dependent: :destroy
@@ -253,11 +255,8 @@ class Proposal < ActiveRecord::Base
     recommendations.where(fund_id: Fund.inactive_ids).destroy_all
   end
 
-  def show_fund(fund)
-    recipient.subscribed? ||
-      recommended_funds.take(Recipient::RECOMMENDATION_LIMIT).include?(fund.id)
-    #  || # TODO: refactor
-    # recommendation(fund).eligibility?
+  def recommendation(fund)
+    Recommendation.find_by(proposal: self, fund: fund)
   end
 
   def check_affect_geo
@@ -277,26 +276,69 @@ class Proposal < ActiveRecord::Base
                       end
   end
 
-  def recommendation(fund)
-    Recommendation.find_by(proposal: self, fund: fund)
+  def show_fund?(fund)
+    recipient.subscribed? ||
+      recommended_funds.take(Recipient::RECOMMENDATION_LIMIT).include?(fund.id)
   end
 
-  # TODO: review
+  def check_eligibility!
+    result = {}
+    answers = Eligibility.where(category_id: [id, recipient.id])
+                         .pluck(:restriction_id, :eligible).to_h
+
+    funds.pluck(:slug, :restriction_ids).to_h.each do |slug, restrictions|
+      comparison = (answers.keys & restrictions)
+      next unless comparison.count == restrictions.count
+      result[slug] = {
+        eligible: !answers.slice(*comparison).values.include?(false),
+        count_failing: answers.slice(*comparison).values.select { |i| i == false }.count
+      }
+    end
+
+    update_column(:eligibility, result)
+  end
+
+  def checked_fund?(fund)
+    eligibility.key?(fund.slug)
+  end
+
+  def eligible_funds
+    filter_eligibility(true)
+  end
+
+  def ineligible_funds
+    filter_eligibility(false)
+  end
+
+  def ineligible_fund_ids # TODO: refactor
+    Fund.where(slug: filter_eligibility(false).keys).pluck(:id)
+  end
+
+  def eligibility_for(fund)
+    return -1 unless eligibility[fund.slug]
+    eligibility[fund.slug]['eligible'] ? 1 : 0
+  end
+
   def eligible?(fund)
-    recommendation(fund).eligibility == 'Eligible'
+    eligibility_for(fund).positive?
   end
 
-  def set_eligibility_fields
-    update_columns(
-      eligible_funds: fund_ids_by_eligibility('Eligible'),
-      ineligible_funds: fund_ids_by_eligibility('Ineligible')
-    )
+  def count_failing(fund)
+    eligibility[fund.slug]['count_failing']
+  end
+
+  def eligibility_as_text(fund) # TODO: refactor
+    {
+      "-1": 'Check',
+      "0": 'Ineligible',
+      "1": 'Eligible'
+    }[eligibility_for(fund).to_s.to_sym]
   end
 
   private
 
-    def fund_ids_by_eligibility(eligibility)
-      funds.where('eligibility = ?', eligibility).distinct.pluck(:id)
+    def filter_eligibility(eligible)
+      eligibility.select { |_, v| v['eligible'] == eligible }
     end
 
     def beneficiaries_not_selected(category)

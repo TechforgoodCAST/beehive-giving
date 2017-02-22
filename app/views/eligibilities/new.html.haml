@@ -7,12 +7,12 @@
     'Fund Unlocks': '#{@recipient.funds_checked}',
   });
 
-- if @recipient.unlocked_fund?(@fund)
+- if params[:mixpanel_eligibility_tracking]
   :javascript
     mixpanel.people.set({
-      'Last Unlocked Fund': '#{@recipient.unlocked_funds.last.name}',
-      'Last Fund Eligibility': '#{@recipient.proposals.last.eligible?(@recipient.unlocked_funds.last)}',
-      'Eligibility #{@fund.slug}': '#{@recipient.proposals.last.eligible?(@fund)}'
+      'Last Unlocked Fund': '#{@fund.name}',
+      'Last Fund Eligibility': '#{@proposal.eligibility_as_text(@fund)}',
+      'Eligibility #{@fund.slug}': '#{@proposal.eligibility_as_text(@fund)}'
     });
 
 = render partial: 'funds/subnav', locals: { fund: @fund }
@@ -23,7 +23,7 @@
       = render partial: 'funds/card', locals: { fund: @fund }
 
     .uk-width-medium-2-3
-      - if @proposal.recommendation(@fund).eligibility
+      - unless @proposal.eligibility_for(@fund).negative?
         - if @proposal.eligible?(@fund)
           .cta.wide.green
             You are eligible for the
@@ -33,7 +33,7 @@
         - else
           .cta.wide.red
             You are ineligible, and did not meet
-            %strong= @recipient.ineligible_restrictions.count
+            %strong= @proposal.count_failing(@fund)
             of the criteria below.
 
       %h3.uk-margin-top Eligibility questions
@@ -47,13 +47,51 @@
 
       %hr.thick
 
-      %h4.uk-text-bold Are you seeking funding for?
+      %h3.uk-text-bold Are you seeking funding for?
       .uk-form.uk-form-stacked
-        = simple_form_for @recipient, url: fund_eligibility_path(@fund) do |f|
-          = f.simple_fields_for :eligibilities, @criteria do |e|
-            - if @fund.restrictions.pluck(:restriction_id).include?(e.object.restriction_id) # TODO: refactor
-              = render partial: 'restriction', locals: {e: e}
-          - if @proposal.recommendation(@fund).eligibility
+        = simple_form_for :check, url: fund_eligibility_path(@fund), method: :patch do |f|
+
+          - if ensure_restriction_category('Organisation')
+            %h4.uk-text-bold About your organisation
+            = f.simple_fields_for @recipient do |r|
+              = r.simple_fields_for :eligibilities, @org_criteria do |e|
+                - if ensure_fund_restriction(e)
+                  .uk-width-1-1.recipient_restriction.recipient_restriction
+                    .restrictions
+                      .restriction
+                        %label.capitalize
+                          = succeed '?' do
+                            = raw(render_restriction_details(e))
+                      .answer
+                        = e.hidden_field :restriction_id
+                        = e.input :eligible, as: :radio_buttons, collection: render_restriction_radio_buttons(e)
+                        - if e.object.errors.any?
+                          = e.error :eligible, class: 'error-message'
+                        - elsif e.object.eligible == false && @recipient.valid? && @proposal.checked_fund?(@fund)
+                          .error-message You did not meet this criteria
+                      %hr
+
+          - if ensure_restriction_category('Proposal')
+            %h4.uk-text-bold About your funding proposal
+            = f.simple_fields_for @proposal do |proposal|
+              = proposal.simple_fields_for :eligibilities, @proposal_criteria do |e|
+                - if ensure_fund_restriction(e)
+                  .uk-width-1-1.proposal_restriction
+                    .restrictions
+                      .restriction
+                        %label.capitalize
+                          = succeed '?' do
+                            = raw(render_restriction_details(e))
+                      .answer
+                        = e.hidden_field :restriction_id
+                        = e.input :eligible, as: :radio_buttons, collection: render_restriction_radio_buttons(e)
+                        - if e.object.errors.any?
+                          = e.error :eligible, class: 'error-message'
+                        - elsif e.object.eligible == false && @recipient.valid? && @proposal.checked_fund?(@fund)
+                          .error-message You did not meet this criteria
+                      %hr
+
+          - if @proposal.checked_fund?(@fund)
             = f.button :button, 'Update', class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right', data: {disable_with: "<i class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i> Updating..."}
           - else
             = f.button :button, "Check eligibility (#{(Recipient::MAX_FREE_LIMIT - @recipient.funds_checked)} left)", class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right', data: {disable_with: "<i class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i> Checking..."}, "data-uk-tooltip" => "{pos:'top'}", :title => "This will use one of your free eligibility checks."

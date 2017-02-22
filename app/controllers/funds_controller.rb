@@ -10,17 +10,17 @@ class FundsController < ApplicationController
 
   def recommended
     @funds = Fund.includes(:funder).find(
-      (@proposal.recommended_funds - @proposal.ineligible_funds)
+      (@proposal.recommended_funds - @proposal.ineligible_fund_ids)
       .take(Recipient::RECOMMENDATION_LIMIT) # TODO: move constant
     )
   end
 
   def eligible
-    @funds = @recipient.eligible_funds
+    @funds = Fund.where(slug: @proposal.eligible_funds.keys)
   end
 
   def ineligible
-    @funds = @recipient.ineligible_funds
+    @funds = Fund.where(slug: @proposal.ineligible_funds.keys)
   end
 
   def all

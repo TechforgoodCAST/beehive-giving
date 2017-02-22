@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170201163133) do
+ActiveRecord::Schema.define(version: 20170216140649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -277,12 +277,14 @@ ActiveRecord::Schema.define(version: 20170201163133) do
   end
 
   create_table "eligibilities", force: :cascade do |t|
-    t.integer  "recipient_id"
-    t.integer  "restriction_id"
-    t.boolean  "eligible"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
-    t.index ["recipient_id"], name: "index_eligibilities_on_recipient_id", using: :btree
+    t.integer  "category_id",                         null: false
+    t.integer  "restriction_id",                      null: false
+    t.boolean  "eligible",                            null: false
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+    t.string   "category_type",  default: "Proposal", null: false
+    t.index ["category_id"], name: "index_eligibilities_on_category_id", using: :btree
+    t.index ["category_type"], name: "index_eligibilities_on_category_type", using: :btree
     t.index ["restriction_id"], name: "index_eligibilities_on_restriction_id", using: :btree
   end
 
@@ -502,6 +504,7 @@ ActiveRecord::Schema.define(version: 20170201163133) do
     t.jsonb    "country_distribution",                 default: {},    null: false
     t.jsonb    "district_distribution",                default: {},    null: false
     t.jsonb    "tags",                                 default: [],    null: false
+    t.jsonb    "restriction_ids",                      default: [],    null: false
     t.index ["funder_id"], name: "index_funds_on_funder_id", using: :btree
     t.index ["slug"], name: "index_funds_on_slug", using: :btree
     t.index ["tags"], name: "index_funds_on_tags", using: :gin
@@ -731,6 +734,7 @@ ActiveRecord::Schema.define(version: 20170201163133) do
     t.jsonb    "recommended_funds",              default: []
     t.jsonb    "eligible_funds",                 default: []
     t.jsonb    "ineligible_funds",               default: []
+    t.jsonb    "eligibility",                    default: {},        null: false
     t.index ["recipient_id"], name: "index_proposals_on_recipient_id", using: :btree
     t.index ["state"], name: "index_proposals_on_state", using: :btree
   end
@@ -766,10 +770,13 @@ ActiveRecord::Schema.define(version: 20170201163133) do
   end
 
   create_table "restrictions", force: :cascade do |t|
-    t.string   "details"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean  "invert"
+    t.string   "details",                            null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.boolean  "invert",        default: false,      null: false
+    t.string   "category",      default: "Proposal", null: false
+    t.boolean  "has_condition", default: false,      null: false
+    t.string   "condition"
   end
 
   create_table "stages", force: :cascade do |t|

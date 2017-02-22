@@ -19,10 +19,19 @@ class EligibilityHelper
     self
   end
 
-  def answer(eligible: true, n: 3)
-    n.times do |i|
-      choose "recipient_eligibilities_attributes_#{i}_eligible_#{eligible}"
-    end
+  def answer_recipient_restrictions(eligible: true)
+    answer(eligible: eligible, category: 'recipient', n: 2)
+    self
+  end
+
+  def answer_proposal_restrictions(eligible: true, n: 3)
+    answer(eligible: eligible, n: n)
+    self
+  end
+
+  def answer_restrictions
+    answer_recipient_restrictions
+    answer_proposal_restrictions
     self
   end
 
@@ -52,4 +61,20 @@ class EligibilityHelper
     click_button 'Submit feedback'
     self
   end
+
+  def remove_restrictions(fund, category)
+    fund.restrictions.where(category: category).destroy_all
+    fund.skip_beehive_data = 1
+    fund.save!
+    self
+  end
+
+  private
+
+    def answer(category: 'proposal', eligible: true, n: 3)
+      n.times do |i|
+        choose "check_#{category}_eligibilities_attributes_" \
+               "#{i}_eligible_#{eligible}"
+      end
+    end
 end

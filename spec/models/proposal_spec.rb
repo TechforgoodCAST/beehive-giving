@@ -7,6 +7,8 @@ describe Proposal do
     @db = @app.instances
   end
 
+  it 'eligibility field'
+
   context 'initial' do
     before(:each) do
       @app.build_initial_proposal
@@ -247,6 +249,30 @@ describe Proposal do
         @registered_proposal.title = @complete_proposal.title
         expect(@registered_proposal).not_to be_valid
       end
+    end
+  end
+
+  context 'eligibilities' do
+    before(:each) do
+      @app.create_registered_proposal
+      @proposal = @app.instances[:registered_proposal]
+      2.times do
+        create(:proposal_eligibility,
+               category: @proposal,
+               restriction: create(:restriction))
+      end
+    end
+
+    it 'has many eligibilities' do
+      expect(@proposal.eligibilities.count).to eq 2
+      expect(@proposal.eligibilities.last.category_type)
+        .to eq 'Proposal'
+    end
+
+    it 'destroys eligibilities' do
+      expect(Eligibility.count).to eq 2
+      @proposal.destroy
+      expect(Eligibility.count).to eq 0
     end
   end
 end

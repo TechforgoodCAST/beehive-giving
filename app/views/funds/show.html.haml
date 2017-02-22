@@ -78,10 +78,9 @@
         - else
           = render partial: 'not_enough_data'
 
-      -# TODO:
-      -# - if @recipient.can_unlock_funder?(@funder) && !@recipient.load_recommendation(@funder).eligibility
-      -#   .cta.wide
-      -#     See if you are eligible for funding.
-      -#     %a.uk-button.uk-button-large.uk-button-primary.invert{href: recipient_eligibility_path(@funder)} Check eligibility
+      - unless @proposal.checked_fund?(@fund)
+        .cta.wide
+          See if you are eligible for funding.
+          %a.uk-button.uk-button-large.uk-button-primary.invert{ href: fund_eligibility_path(@fund) } Check eligibility
 
 = render partial: 'why_hidden'

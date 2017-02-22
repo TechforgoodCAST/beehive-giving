@@ -1,3 +1,4 @@
+# TODO: update
 if Rails.env.development?
   require 'factory_girl_rails'
   require 'webmock'
@@ -48,7 +49,8 @@ if Rails.env.development?
   require_relative '../spec/support/test_helper'
   app = TestHelper.new
 
-  restrictions = create_list(:restriction, 10)
+  restrictions = create_list(:recipient_restriction, 2) +
+                 create_list(:restriction, 3)
   funders = create_list(:funder, 20)
   funders.each do |funder|
     uk = Country.find_by(alpha2: 'GB')

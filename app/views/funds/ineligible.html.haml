@@ -11,10 +11,9 @@
   %h4 You are seeing funds that you are not able to apply for.
 
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
-
     = render partial: 'eligibilities/legacy_notice'
 
-    - if @funds.count == 0
+    - if @funds.empty?
       .cta.wide
         Awesome, you're not ineligible for any funds!
         = link_to 'Find a fund', recommended_funds_path, class: 'uk-button uk-button-large uk-button-primary invert'
