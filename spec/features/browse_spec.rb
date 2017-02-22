@@ -77,6 +77,20 @@ feature 'Browse' do
       expect(page).to have_css '.locked-funder', count: 6
     end
 
+    scenario "When I visit a funding theme which isn't listed,
+              I want to see a message and be directed to safety,
+              so I can continue my search" do
+      visit tag_path('')
+      expect(page.all('body script', visible: false)[0].native.text)
+        .to have_text 'Not found'
+      expect(current_path).to eq recommended_funds_path
+
+      visit tag_path('missing')
+      expect(page.all('body script', visible: false)[0].native.text)
+        .to have_text 'Not found'
+      expect(current_path).to eq recommended_funds_path
+    end
+
     scenario "When I navigate to 'Recommended' funds,
               I want to see my recommended funds,
               so I compare them" do
