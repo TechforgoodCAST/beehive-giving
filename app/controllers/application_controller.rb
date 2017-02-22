@@ -35,7 +35,7 @@ class ApplicationController < ActionController::Base
 
   def load_last_proposal
     return unless @recipient && logged_in?
-    @proposal = Proposal.order(:created_at).find_by(recipient_id: @recipient.id)
+    @proposal = Proposal.find_by(recipient_id: @recipient.id)
   end
 
   def ensure_proposal_present
