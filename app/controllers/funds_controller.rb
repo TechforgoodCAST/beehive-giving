@@ -32,7 +32,7 @@ class FundsController < ApplicationController
   end
 
   def tagged
-    @tag = params[:tag].tr('-', ' ').capitalize
+    @tag = params[:tag].tr('-', ' ').capitalize unless params[:tag].blank?
     @funds = Fund.includes(:funder).where('tags ?| array[:tags]', tags: @tag)
     redirect_to root_path, alert: 'Not found' if @funds.empty?
   end

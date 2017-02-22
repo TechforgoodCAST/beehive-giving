@@ -65,7 +65,7 @@ class EligibilitiesController < ApplicationController
           category_id: category.id, restriction_id: restriction_id
         )
       end
-      eligibilities
+      eligibilities.sort_by { |i| i[:restriction_id] }
     end
 
     def eligibility_params(parent)
