@@ -81,7 +81,7 @@ feature 'Eligibility' do
               so I recieve an accurate check' do
       @fund.restrictions.first.update(invert: true)
       helper.visit_first_fund
-      within 'label[for=check_recipient_eligibilities_attributes_1_eligible' \
+      within 'label[for=check_recipient_eligibilities_attributes_0_eligible' \
              '_true]' do
         expect(page).to have_text 'Yes'
       end
