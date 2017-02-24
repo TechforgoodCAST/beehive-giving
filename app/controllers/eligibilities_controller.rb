@@ -74,7 +74,16 @@ class EligibilitiesController < ApplicationController
                       [:id, :eligible, :restriction_id, :category_id])
     end
 
+    def migrate_legacy_eligibilities
+      eligbilities = Eligibility.where(
+        category_id: @recipient.id, category_type: 'Proposal'
+      )
+      eligbilities&.update_all(category_id: @proposal.id)
+    end
+
     def update_eligibility_params
+      migrate_legacy_eligibilities
+
       # TODO: refactor performance
       categories = @restrictions.pluck(:category).uniq
       check = [categories.include?('Organisation'),
