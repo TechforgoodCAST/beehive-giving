@@ -1,4 +1,4 @@
-%nav.uk-navbar.navbar.recipient-bg{ class: background_color }
+nav.uk-navbar.navbar.recipient-bg class=background_color
   .uk-container.uk-container-center
 
     - if logged_in?
@@ -18,6 +18,6 @@
       .uk-navbar-content
         = logo
       .uk-navbar-flip
-        -# TODO: refactor
-        .uk-navbar-content{ style: 'padding-right: 0;' }
+        / TODO: refactor
+        .uk-navbar-content style='padding-right: 0;'
           = link_to 'Sign in', sign_in_path, class: 'uk-button uk-button-primary'

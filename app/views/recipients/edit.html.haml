@@ -2,20 +2,18 @@
 = javascript_include_tag 'chosen'
 = stylesheet_link_tag 'chosen'
 = stylesheet_link_tag 'overrides/chosen_overrides'
-= stylesheet_link_tag 'pages'
 = stylesheet_link_tag 'signup'
-= stylesheet_link_tag 'profiles'
 = javascript_include_tag 'signup'
-= javascript_include_tag 'profiles'
 
-- content_for :signup do
-  = content_for :title, "Basics #{@recipient.name}"
-  = render partial: 'signup/subnav', locals: { current_step: 0 }
-  .uk-container.uk-container-center.uk-margin-large
-    %h2 Basics
-    %h4 Which type of organisation or project you are seeking funding for?
+= content_for :title, "Basics #{@recipient.name}"
 
-    .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
-      = render partial: 'proposals/cta'
+= render partial: 'signup/subnav', locals: { current_step: 0 }
 
-      = render partial: 'organisations/edit'
+.uk-container.uk-container-center.uk-margin-large
+  %h2 Basics
+  %h4 Which type of organisation or project you are seeking funding for?
+
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+    = render partial: 'proposals/cta'
+
+    = render partial: 'organisations/edit'

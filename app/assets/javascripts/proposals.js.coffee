@@ -236,7 +236,6 @@ ProposalForm = ((w, d) ->
 
   triggerFunctions = ->
     $('.currency input').currencyFormat()
-    $('#proposal_district_ids').treeMultiselect()
     triggerToggleBeneficiaryGroups()
     highlightChecked('checkbox')
     highlightChecked('radio')
@@ -248,6 +247,8 @@ ProposalForm = ((w, d) ->
     affectGeo()
     multiSelectChecked()
     charCount()
+    if $('#proposal_district_ids').length > 0
+      $('#proposal_district_ids').treeMultiselect()
 
   return {
     triggerFunctions: triggerFunctions

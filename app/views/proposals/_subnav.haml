@@ -1,0 +1,26 @@
+- params[:proposals_navbar] = true
+.subnav{ "data-uk-sticky" => "" }
+  .uk-container.uk-container-center
+    %ul.nav{ class: @current_user.role == 'Funder' ? 'funder' : 'recipient' }
+      %a{href: recipient_proposals_path(@recipient)}
+        %li.first{ class: ('active' if current_page?(recipient_proposals_path(@recipient))) }
+          All
+          = surround '(', ')' do
+            = @recipient.proposals.count
+          .highlight
+      %span &middot;
+
+      %a{href: new_recipient_proposal_path(@recipient)}
+        %li.first{ class: ('active' if current_page?(new_recipient_proposal_path(@recipient))) }
+          New
+          .highlight
+      %span &middot;
+
+      - if params[:action] == 'edit'
+        %a{href: edit_recipient_proposal_path(@recipient, @proposal)}
+          %li.first{ class: ('active' if current_page?(edit_recipient_proposal_path(@recipient, @proposal))) }
+            Edit
+            .highlight
+      - else
+        %li.muted
+          Edit

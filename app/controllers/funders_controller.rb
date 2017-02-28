@@ -8,7 +8,7 @@ class FundersController < ApplicationController
   def overview
     return if params[:id].present?
     @funder = current_user.organisation
-    params[:id] = current_user.organisation.slug
+    params[:id] = @funder.slug
   end
 
   def map
@@ -43,6 +43,11 @@ class FundersController < ApplicationController
   end
 
   private
+
+    def ensure_funder
+      return if logged_in? && funder?
+      redirect_to sign_in_path, alert: "Sorry, you don't have access to that"
+    end
 
     def load_funder
       @funder = Funder.find_by(slug: params[:id])

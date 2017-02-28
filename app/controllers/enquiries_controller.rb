@@ -1,5 +1,5 @@
 class EnquiriesController < ApplicationController
-  before_action :ensure_logged_in, :ensure_proposal_present
+  before_action :ensure_logged_in
   before_action :load_fund # TODO: refactor
 
   def new

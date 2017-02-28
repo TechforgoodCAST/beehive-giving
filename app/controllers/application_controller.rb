@@ -3,73 +3,20 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
-  helper_method :current_user, :logged_in?
+  helper_method :logged_in?
 
   before_action :load_recipient, :load_last_proposal, unless: :error?
-  # TODO: before_action :load_feedback, if: proc { logged_in? }
-  # TODO: before_action :set_new_relic_user, if: proc { logged_in? }
+  before_action :ensure_signed_up
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :bad_token
-
-  def current_user
-    return unless cookies[:auth_token]
-    @current_user ||= User.includes(:organisation)
-                          .find_by(auth_token: cookies[:auth_token])
-  end
 
   def logged_in?
     current_user != nil
   end
 
-  def ensure_logged_in
-    session[:original_url] = request.original_url
-    return redirect_to sign_in_path, alert: 'Please sign in' unless logged_in?
-    gon.currentUserId = current_user.id
-    ensure_authorised
-    ensure_user
-  end
-
-  def load_recipient
-    @recipient = current_user.organisation if logged_in?
-  end
-
-  def load_last_proposal
-    return unless @recipient && logged_in?
-    @proposal = Proposal.find_by(recipient_id: @recipient.id)
-  end
-
-  def ensure_proposal_present
-    ensure_user
-    # TODO: test case legacy recipient with valid proposal
-    if !@recipient.valid?
-      redirect_to edit_recipient_path(@recipient)
-    elsif !@proposal
-      redirect_to new_recipient_proposal_path(@recipient),
-                  alert: 'Please create a funding proposal before continuing.'
-    elsif @proposal.initial?
-      redirect_to edit_recipient_proposal_path(@recipient, @proposal)
-    end
-  end
-
-  def ensure_funder # TODO: deprecated
-    return if logged_in? && current_user.role == 'Funder'
-    redirect_to sign_in_path, alert: "Sorry, you don't have access to that"
-  end
-
-  # TODO: def check_organisation_ownership
-  #   redirect_to root_path, alert: "Sorry, you don't have access to that" unless
-  #     current_user.organisation == Recipient.find_by(slug: params[:id])
-  # end
-
-  # TODO: def check_user_ownership
-  #   redirect_to sign_in_path unless @user == current_user
-  # end
-
-  # TODO: def load_feedback
-  #   @feedback = current_user.feedbacks.new
-  # end
-
   private
+
+    include StrongParameters
 
     def error?
       params[:controller] == 'errors'
@@ -79,13 +26,60 @@ class ApplicationController < ActionController::Base
       redirect_to '/logout', warning: 'Please sign in'
     end
 
-    def ensure_authorised
-      redirect_to unauthorised_path unless
-        current_user.authorised || params[:action] == 'unauthorised'
+    def current_user
+      return unless cookies[:auth_token]
+      @current_user ||= User.includes(:organisation)
+                            .find_by(auth_token: cookies[:auth_token])
     end
 
-    def ensure_user
-      return if current_user.role == 'User'
-      redirect_to root_path, alert: "Sorry, you don't have access to that"
+    def load_recipient
+      return unless logged_in?
+      @recipient = current_user.organisation
+    end
+
+    def load_last_proposal
+      return unless @recipient
+      return if funder? # NOTE: legacy support
+      @proposal = @recipient.proposals.last
+    end
+
+    def funder? # NOTE: legacy support
+      current_user.role == 'Funder'
+    end
+
+    def ensure_logged_in
+      session[:original_url] = request.original_url
+      return redirect_to sign_in_path, alert: 'Please sign in' unless logged_in?
+    end
+
+    def ensure_signed_up
+      return unless logged_in?
+      return if params[:controller] =~ /admin|funders|pages|sessions/
+      return redirect_funder if funder? # NOTE: legacy support
+      redirect start_path unless signed_up?
+    end
+
+    def signed_up?
+      current_user.authorised? &&
+        (@proposal && !@proposal.initial?) # NOTE: legacy support
+    end
+
+    def redirect(path, opts = {})
+      return unless path
+      redirect_to path, opts unless request.path == path
+    end
+
+    def redirect_funder # NOTE: legacy support
+      redirect funder_overview_path(current_user.organisation),
+               alert: "Sorry, you don't have access to that"
+    end
+
+    def start_path
+      return unauthorised_path               unless current_user.authorised?
+      return signup_organisation_path        unless @recipient
+      return edit_recipient_path(@recipient) unless @recipient.valid? # legacy
+      return signup_proposal_path            unless @proposal
+      return signup_proposal_path            if @proposal.initial?    # legacy
+      recommended_funds_path
     end
 end

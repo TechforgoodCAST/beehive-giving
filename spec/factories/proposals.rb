@@ -11,7 +11,7 @@ FactoryGirl.define do
     affect_other          false
     gender                Proposal::GENDERS[1]
     beneficiaries_other_required false
-    affect_geo            Proposal::AFFECT_GEO.sample[1]
+    affect_geo            1
     private               false
     after(:create, &:initial_recommendation)
 

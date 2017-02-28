@@ -2,7 +2,7 @@
 
 :javascript
   mixpanel.track("View Subscription Page");
-  mixpanel.identify("#{current_user.id}");
+  mixpanel.identify("#{@current_user.id}");
 
 = render partial: 'subnav'
 

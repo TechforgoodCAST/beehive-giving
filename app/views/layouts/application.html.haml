@@ -40,12 +40,12 @@
       })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
 
     - if logged_in?
-      = intercom_script_tag(email: current_user.user_email, name: current_user.full_name)
+      = intercom_script_tag(email: @current_user.user_email, name: @current_user.full_name)
       :javascript
         ga('set', 'userId', gon.currentUserId);
 
   %body#top
-    = cell(:navbar, current_user)
+    = cell(:navbar, @current_user)
 
     .uk-container.uk-container-center
       - if flash[:notice]
@@ -77,7 +77,6 @@
 
     -# TODO: refactor
     = yield(:public) if content_for?(:public)
-    = yield(:signup) if content_for?(:signup)
     = yield(:sign_in) if content_for?(:sign_in)
     = yield
 

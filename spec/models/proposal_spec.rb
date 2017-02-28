@@ -164,7 +164,8 @@ describe Proposal do
       end
     end
 
-    it 'sets affect_geo unless affects entire country'
+    # TODO:
+    # fit 'sets affect_geo unless affects entire country'
   end
 
   context 'registered' do

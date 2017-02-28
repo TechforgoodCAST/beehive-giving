@@ -2,7 +2,7 @@
 
 :javascript
   mixpanel.track("View Eligibility Page", {"Fund": "#{@fund.name}"});
-  mixpanel.identify('#{current_user.id}');
+  mixpanel.identify('#{@current_user.id}');
   mixpanel.people.set({
     'Fund Unlocks': '#{@recipient.funds_checked}',
   });

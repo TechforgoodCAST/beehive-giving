@@ -3,14 +3,13 @@
 :javascript
   mixpanel.track('View Waiting for Access Page');
 
-- content_for :signup do
-  .uk-container.uk-container-center.uk-margin-large-top.uk-margin-large-bottom.uk-animation-fade
-    .uk-width-1-2.uk-container-center
-      %h2 Waiting for access
-      %h4
-        %strong You have tried to register an organisation that is already in our database.
-      %p An email has been sent to the organisation's original registrant or the site administrator to grant access.
-      %p
-        If you think you are receiving this message in error, please contact
-        = succeed '.' do
-          = link_to 'support', 'mailto:support@beehivegiving.org'
+.uk-container.uk-container-center.uk-margin-large-top.uk-margin-large-bottom.uk-animation-fade
+  .uk-width-1-2.uk-container-center
+    %h2 Waiting for access
+    %h4
+      %strong You have tried to register an organisation that is already in our database.
+    %p An email has been sent to the organisation's original registrant or the site administrator to grant access.
+    %p
+      If you think you are receiving this message in error, please contact
+      = succeed '.' do
+        = link_to 'support', 'mailto:support@beehivegiving.org'

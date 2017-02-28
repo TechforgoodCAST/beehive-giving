@@ -1,5 +1,5 @@
 class AccountsController < ApplicationController
-  before_action :ensure_logged_in, :ensure_proposal_present
+  before_action :ensure_logged_in
 
   def user; end
 

@@ -1,7 +1,7 @@
 - params[:funding_navbar] = true
 .subnav{ "data-uk-sticky" => "" }
   .uk-container.uk-container-center
-    %ul.nav{ class: current_user.role == 'Funder' ? 'funder' : 'recipient' }
+    %ul.nav{ class: @current_user.role == 'Funder' ? 'funder' : 'recipient' }
       %a{href: recommended_funds_path}
         %li.first{ class: ('active' if current_page?(recommended_funds_path)) }
           Recommended

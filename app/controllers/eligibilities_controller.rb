@@ -1,5 +1,5 @@
 class EligibilitiesController < ApplicationController
-  before_action :ensure_logged_in, :ensure_proposal_present
+  before_action :ensure_logged_in
   before_action :load_fund, # TODO: refactor
                 :load_restrictions, :load_eligibilities
 

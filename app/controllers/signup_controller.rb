@@ -1,11 +1,13 @@
 class SignupController < ApplicationController
-  before_action :ensure_logged_in, only: [:organisation, :create_organisation,
-                                          :unauthorised]
+  before_action :ensure_logged_in, :ensure_not_signed_up, only: [
+    :organisation, :create_organisation,
+    :proposal, :create_proposal, :unauthorised
+  ]
   before_action :load_districts, only: [:user, :create_user]
 
   def user
-    if @logged_in
-      redirect_to root_path
+    if logged_in?
+      redirect_to start_path
     else
       reset_session
       @user = User.new
@@ -59,25 +61,21 @@ class SignupController < ApplicationController
   end
 
   def organisation
-    if current_user.organisation_id
-      redirect_to new_recipient_proposal_path(current_user.organisation)
-    else
-      @recipient = Recipient.new(org_type:       session[:org_type],
-                                 charity_number: session[:charity_number],
-                                 company_number: session[:company_number])
+    @recipient = Recipient.new(org_type:       session[:org_type],
+                               charity_number: session[:charity_number],
+                               company_number: session[:company_number])
 
-      @scrape_success = @recipient.scrape_org
-      return unless @scrape_success
-      # refactor
-      if @recipient.save
-        current_user.update_attribute(:organisation_id, @recipient.id)
-        redirect_to new_recipient_proposal_path(@recipient)
-      elsif (@recipient.errors.added? :charity_number, :taken) ||
-            (@recipient.errors.added? :company_number, :taken)
-        organisation = @recipient.find_with_reg_nos
-        current_user.lock_access_to_organisation(organisation)
-        redirect_to unauthorised_path
-      end
+    @scrape_success = @recipient.scrape_org
+    return unless @scrape_success
+    # refactor
+    if @recipient.save
+      current_user.update_attribute(:organisation_id, @recipient.id)
+      redirect_to signup_proposal_path
+    elsif (@recipient.errors.added? :charity_number, :taken) ||
+          (@recipient.errors.added? :company_number, :taken)
+      organisation = @recipient.find_with_reg_nos
+      current_user.lock_access_to_organisation(organisation)
+      redirect_to unauthorised_path
     end
   end
 
@@ -101,13 +99,13 @@ class SignupController < ApplicationController
                           'Registered?': '#{@recipient.registered}',
                           'Founded On': '#{@recipient.founded_on}'
                         });
-                        window.location.href = '#{new_recipient_proposal_path(@recipient)}';
+                        window.location.href = '#{signup_proposal_path}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
         end
         format.html do
           current_user.update_attribute(:organisation_id, @recipient.id)
-          redirect_to new_recipient_proposal_path(@recipient)
+          redirect_to signup_proposal_path
         end
       # If company/charity number has already been taken
       elsif (@recipient.errors.added? :charity_number, :taken) ||
@@ -129,38 +127,49 @@ class SignupController < ApplicationController
     end
   end
 
-  def grant_access
+  def proposal
+    if @proposal # NOTE: if legacy invalid proposal
+      @proposal.state = 'transferred'
+    else
+      @proposal = SignupProposal.new(@recipient).build_or_transfer
+    end
+  end
+
+  def create_proposal
+    if @proposal # NOTE: if legacy invalid proposal
+      @proposal.assign_attributes(proposal_params)
+    else
+      @proposal = @recipient.proposals.new(proposal_params)
+    end
+    if @proposal.save
+      @proposal.next_step!
+      redirect_to recommended_funds_path
+    else
+      render :proposal
+    end
+  end
+
+  def grant_access # TODO: refactor into UnauthorisedController
     @user = User.find_by(unlock_token: params[:unlock_token])
     @user.unlock
     redirect_to granted_access_path(@user.unlock_token)
   end
 
-  def granted_access
+  def granted_access # TODO: refactor into UnauthorisedController
     @user = User.find_by(unlock_token: params[:unlock_token])
   end
 
-  def unauthorised
-    redirect_to root_path if current_user.authorised
-  end
+  # def unauthorised # TODO: refactor into UnauthorisedController
+  # end
 
   private
+
+    def ensure_not_signed_up
+      redirect_to recommended_funds_path if signed_up?
+    end
 
     def load_districts
       @districts = Fund.active.joins(:countries).group('countries.name')
                        .count.to_a
-    end
-
-    def user_params
-      params.require(:user)
-            .permit(:first_name, :last_name, :job_role, :user_email, :password,
-                    :password_confirmation, :role, :agree_to_terms, :org_type,
-                    :charity_number, :company_number)
-    end
-
-    def recipient_params
-      params.require(:recipient)
-            .permit(:name, :website, :street_address, :country, :charity_number,
-                    :company_number, :operating_for, :multi_national, :income,
-                    :employees, :volunteers, :org_type, organisation_ids: [])
     end
 end

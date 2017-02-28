@@ -32,15 +32,15 @@ gem 'bcrypt', '~> 3.1.7'
 # gem 'capistrano-rails', group: :development
 
 gem 'activerecord-import'
-gem 'cells-hamlit'
 gem 'cells-rails'
+gem 'cells-slim'
 gem 'chartkick'
 gem 'chosen-rails'
 gem 'country_select'
 gem 'geocoder'
 gem 'gon'
 gem 'groupdate'
-gem 'hamlit'
+gem 'hamlit' # TODO: replace with gem 'slim'
 gem 'httparty'
 gem 'jquery-turbolinks'
 gem 'nokogiri'
@@ -99,6 +99,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 group :test do
+  gem 'database_cleaner'
   gem 'poltergeist'
   gem 'selenium-webdriver'
 end

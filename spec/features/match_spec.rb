@@ -8,7 +8,7 @@ feature 'Match' do
     @app.seed_test_db.setup_funds(num: 3, open_data: true)
     @db = @app.instances
     helper.stub_charity_commission.stub_companies_house
-    visit signup_user_path
+    visit root_path
   end
 
   scenario 'When I sign up with an invalid email address,
@@ -33,6 +33,7 @@ feature 'Match' do
     expect(page).to have_text "Please 'sign in' using the link above"
   end
 
+  # TODO: inconsistent
   scenario 'When I sign up as an individual,
             I want to be directed to appropriate support,
             so I can avoid wasted effort', js: true do
@@ -220,7 +221,7 @@ feature 'Match' do
     end
 
     helper.submit_organisation_form!
-    expect(current_path).to eq new_recipient_proposal_path(Recipient.last)
+    expect(current_path).to eq signup_proposal_path
 
     helper.submit_proposal_form
     expect(current_path).to eq recommended_funds_path

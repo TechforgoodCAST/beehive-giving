@@ -4,16 +4,13 @@ class ProposalsController < ApplicationController
   before_action :load_proposal, only: [:edit, :update]
 
   def new
-    return edit_recipient_proposal_path(@recipient, @proposal) if
-                                        @recipient.incomplete_first_proposal?
-    return recommended_funds_path if @proposal
-    if @recipient.valid? # TODO: without db call?
-      @proposal = @recipient.proposals.new(state: 'initial')
-      return unless @recipient.created_at < Date.new(2016, 4, 30) # TODO: refactor
-      @recipient.transfer_profile_to_new_proposal(@recipient.profiles.last,
-                                                  @proposal)
+    if @proposal.complete?
+      @proposal = @recipient.proposals.new
+      return if @recipient.subscribed?
+      redirect_to request.referer || root_path,
+                  alert: 'Please upgrade to create multiple funding proposals'
     else
-      redirect_to edit_recipient_path(@recipient)
+      redirect_to edit_recipient_proposal_path(@recipient, @proposal)
     end
   end
 
@@ -48,8 +45,6 @@ class ProposalsController < ApplicationController
   end
 
   def edit
-    @recipient.transfer_profile_to_existing_proposal(@recipient.profiles.last,
-                                                     @proposal)
     return unless request.referer
     session.delete(:return_to) if request.referer.ends_with?('/proposals')
   end
@@ -92,18 +87,6 @@ class ProposalsController < ApplicationController
   end
 
   private
-
-    def proposal_params
-      params.require(:proposal).permit(
-        :type_of_support, :funding_duration, :funding_type, :total_costs,
-        :total_costs_estimated, :all_funding_required, :affect_people,
-        :affect_other, :gender, :beneficiaries_other,
-        :beneficiaries_other_required, :affect_geo, :title, :tagline, :private,
-        :outcome1, :implementations_other_required, :implementations_other,
-        age_group_ids: [], beneficiary_ids: [], country_ids: [],
-        district_ids: [], implementation_ids: []
-      )
-    end
 
     def load_proposal
       @proposal = @recipient.proposals.find(params[:id])

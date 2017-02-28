@@ -1,6 +1,6 @@
 class Proposal < ActiveRecord::Base
+  before_validation :clear_districts_if_country_wide
   after_validation :trigger_clear_beneficiary_ids
-  after_validation :check_affect_geo
   before_save :save_all_age_groups_if_all_ages
   after_save :initial_recommendation
 
@@ -265,21 +265,9 @@ class Proposal < ActiveRecord::Base
     Recommendation.find_by(proposal: self, fund: fund)
   end
 
-  def check_affect_geo
-    # TODO: refactor
-    return if affect_geo.blank? || affect_geo == 2
-    self.affect_geo = if country_ids.uniq.count > 1
-                        3
-                      elsif (district_ids & Country.find(country_ids[0])
-                            .districts.pluck(:id)).count ==
-                            Country.find(country_ids[0]).districts.count
-                        2
-                      elsif District.where(id: district_ids)
-                                    .distinct.pluck(:region).count > 1
-                        1
-                      else
-                        0
-                      end
+  def clear_districts_if_country_wide
+    return if affect_geo.nil?
+    self.districts = [] if affect_geo > 1
   end
 
   def show_fund?(fund)

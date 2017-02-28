@@ -53,8 +53,8 @@ SignupHelpers = ((w, d) ->
 
   # refactor
   triggerOrgFieldToggle = (state) ->
-    required       = 'hr, .name, .founded-on, .website, .next'
-    country        = $('.country')
+    required       = 'hr.uk-margin-bottom, .name, .founded-on, .website, .next'
+    country        = $('.recipient-country')
     registerd_on   = $('.registered-on')
     charity_number = $('.charity-number')
     company_number = $('.company-number')

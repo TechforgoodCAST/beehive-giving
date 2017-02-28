@@ -7,25 +7,30 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
+  # Deprecated
+  get '/about',   to: redirect('/')
+  get '/tour',    to: redirect('#tell-me-more')
+  get '/welcome', to: redirect('/')
+
   # Sessions
-  root to: 'sessions#check'
-  get '/logout' => 'sessions#destroy'
-  match '/sign-in', to: 'sessions#new', via: :get, as: 'sign_in'
-  match '/sign-in', to: 'sessions#create', via: :post
+  get  '/logout',  to: 'sessions#destroy'
+  get  '/sign-in', to: 'sessions#new', as: 'sign_in'
+  post '/sign-in', to: 'sessions#create'
 
   # Pages
-  match '/tour', to: 'pages#tour', via: :get, as: 'tour'
-  match '/about', to: 'pages#about', via: :get, as: 'about'
-  match '/privacy', to: 'pages#privacy', via: :get, as: 'privacy'
-  match '/terms', to: 'pages#terms', via: :get, as: 'terms'
-  match '/faq', to: 'pages#faq', via: :get, as: 'faq'
+  get '/faq',     to: 'pages#faq',     as: 'faq'
+  get '/privacy', to: 'pages#privacy', as: 'privacy'
+  get '/terms',   to: 'pages#terms',   as: 'terms'
 
   # Sign up
-  match '/welcome', to: 'signup#user', via: :get, as: 'signup_user'
-  match '/welcome', to: 'signup#create_user', via: :post
+  root 'signup#user'
+  post '/', to: 'signup#create_user'
 
   match '/basics', to: 'signup#organisation', via: :get, as: 'signup_organisation'
   match '/basics', to: 'signup#create_organisation', via: :post
+
+  match '/proposal', to: 'signup#proposal', via: :get, as: 'signup_proposal'
+  match '/proposal', to: 'signup#create_proposal', via: :post
 
   match '/(:id)/basics', to: 'recipients#edit', via: :get, as: 'edit_recipient'
   match '/(:id)/basics', to: 'recipients#update', via: :patch

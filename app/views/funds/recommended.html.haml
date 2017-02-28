@@ -2,7 +2,7 @@
 
 :javascript
   mixpanel.track('View Recommended Funds Page');
-  mixpanel.identify("#{current_user.id}");
+  mixpanel.identify("#{@current_user.id}");
   mixpanel.people.set({
     'Fund Unlocks': "#{@recipient.funds_checked}",
   });
@@ -10,12 +10,22 @@
 = render partial: 'subnav'
 
 .uk-container.uk-container-center.uk-margin-large
-  .uk-grid
-    .uk-width-medium-2-3
-      %h2
-        Recommended funds
-        %span.uk-text-small.muted Beta
-      %h4 You are seeing funds that Beehive thinks would be suitable for you.
+  %h2
+    Recommended funds
+    %span.uk-text-small.muted Beta
+  %h4
+    You are seeing funds that Beehive thinks would be suitable for
+    - if @proposal.complete?
+      #proposal-title
+        = succeed '.' do
+          .text= @proposal.title
+    - else
+      your
+      #proposal-title
+        = succeed '.' do
+          .text current proposal
+
+    = cell(:new_proposal_links, @proposal)
 
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
 
