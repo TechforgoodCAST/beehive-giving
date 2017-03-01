@@ -221,7 +221,7 @@ feature 'Match' do
     end
 
     helper.submit_organisation_form!
-    expect(current_path).to eq signup_proposal_path
+    expect(current_path).to eq new_signup_proposal_path
 
     helper.submit_proposal_form
     expect(current_path).to eq recommended_funds_path

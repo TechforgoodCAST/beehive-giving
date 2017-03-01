@@ -15,7 +15,7 @@ describe NewProposalLinksCell do
     expect_change_proposal(incomplete)
     expect(incomplete)
       .to have_link 'New proposal',
-                    href: edit_recipient_proposal_path(@recipient, @proposal)
+                    href: edit_signup_proposal_path(@proposal)
   end
 
   it 'complete and subscribed shows new link' do

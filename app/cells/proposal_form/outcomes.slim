@@ -1,0 +1,12 @@
+.uk-form.uk-form-stacked.form
+
+  h3 Outcomes
+
+  .uk-width-medium-1-1.uk-margin-top
+    .label List 1-5 outcomes for your proposed work below:
+    - 5.times do |i|
+      = f.input "outcome#{i + 1}".to_sym, input_html: { class: classes }
+      - if i < 1
+        = f.error :outcome1, class: 'error-message'
+
+hr.thick

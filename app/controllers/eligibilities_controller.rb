@@ -9,8 +9,7 @@ class EligibilitiesController < ApplicationController
 
     if @recipient.incomplete_first_proposal?
       session[:return_to] = @fund.slug
-      redirect_to edit_recipient_proposal_path(@recipient,
-                                               @recipient.proposals.last)
+      redirect_to edit_signup_proposal_path(@proposal)
     elsif current_user.feedbacks.count < 1 &&
           (!@proposal.checked_fund?(@fund) && @recipient.funds_checked == 2)
       session[:redirect_to_funder] = @fund.slug

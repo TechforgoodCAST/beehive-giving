@@ -1,7 +1,5 @@
-= stylesheet_link_tag 'profiles'
 = stylesheet_link_tag 'chosen'
 = stylesheet_link_tag 'overrides/chosen_overrides'
-= stylesheet_link_tag 'signup'
 
 = javascript_include_tag 'proposals'
 = javascript_include_tag 'chosen-jquery'
@@ -39,4 +37,11 @@
     - if @proposal.transferred?
       = render partial: 'proposals/cta'
 
-    = cell(:proposal_form, @proposal)
+    = simple_form_for [@recipient, @proposal], url: new_signup_proposal_path, method: :post do |f|
+
+      = cell(:proposal_form, @proposal, f: f).call(:requirements)
+      = cell(:proposal_form, @proposal, f: f).call(:beneficiaries)
+      = cell(:proposal_form, @proposal, f: f).call(:location)
+      = cell(:proposal_form, @proposal, f: f).call(:privacy)
+
+      = cell(:proposal_form, @proposal, f: f).call(:submit)

@@ -8,10 +8,41 @@ class ProposalFormCell < Cell::ViewModel
   property :affect_other
   property :affect_geo
 
-  def show
+  def summary
+    render locals: { f: options[:f] }
+  end
+
+  def requirements
+    render locals: { f: options[:f] }
+  end
+
+  def beneficiaries
     load_beneficiaries
+    render locals: { f: options[:f] }
+  end
+
+  def location
     load_districts
-    render
+    render locals: { f: options[:f] }
+  end
+
+  def activities
+    render locals: { f: options[:f] }
+  end
+
+  def outcomes
+    render locals: {
+      f: options[:f],
+      classes: 'large uk-width-1-1 uk-margin-small-top'
+    }
+  end
+
+  def privacy
+    render locals: { f: options[:f] }
+  end
+
+  def submit
+    render locals: { f: options[:f] }
   end
 
   private

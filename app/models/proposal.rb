@@ -265,11 +265,6 @@ class Proposal < ActiveRecord::Base
     Recommendation.find_by(proposal: self, fund: fund)
   end
 
-  def clear_districts_if_country_wide
-    return if affect_geo.nil?
-    self.districts = [] if affect_geo > 1
-  end
-
   def show_fund?(fund)
     recipient.subscribed? ||
       recommended_funds.take(Recipient::RECOMMENDATION_LIMIT).include?(fund.id)
@@ -420,5 +415,10 @@ class Proposal < ActiveRecord::Base
         :proposal,
         'Please complete your first proposal before creating a second.'
       )
+    end
+
+    def clear_districts_if_country_wide
+      return if affect_geo.nil?
+      self.districts = [] if affect_geo > 1
     end
 end

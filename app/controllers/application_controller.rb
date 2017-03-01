@@ -78,8 +78,12 @@ class ApplicationController < ActionController::Base
       return unauthorised_path               unless current_user.authorised?
       return signup_organisation_path        unless @recipient
       return edit_recipient_path(@recipient) unless @recipient.valid? # legacy
-      return signup_proposal_path            unless @proposal
-      return signup_proposal_path            if @proposal.initial?    # legacy
+      return new_signup_proposal_path        unless @proposal
+      return new_signup_proposal_path        if @proposal.initial?    # legacy
       recommended_funds_path
+    end
+
+    def ensure_not_signed_up
+      redirect_to recommended_funds_path if signed_up?
     end
 end

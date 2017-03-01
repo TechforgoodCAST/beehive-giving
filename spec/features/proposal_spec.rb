@@ -46,7 +46,7 @@ feature 'Proposal' do
     click_link 'New proposal'
 
     # expect first to be completed
-    expect(current_path).to eq edit_recipient_proposal_path(@recipient, @proposal)
+    expect(current_path).to eq edit_signup_proposal_path(@proposal)
     expect(page).to have_text 'Please fully complete'
 
     eligibility_helper.complete_proposal
@@ -77,7 +77,7 @@ feature 'Proposal' do
 
     click_link 'New proposal'
     expect(current_path)
-      .to eq edit_recipient_proposal_path(@recipient, @proposal)
+      .to eq edit_signup_proposal_path(@proposal)
     expect(page).to have_text 'Please fully complete'
   end
 
@@ -121,14 +121,14 @@ feature 'Proposal' do
       edit_feedback_path(1)
     ].each do |path|
       visit path
-      expect(current_path).to eq signup_proposal_path
+      expect(current_path).to eq new_signup_proposal_path
     end
   end
 
   scenario 'When I sign into an incomplete proposal,
             I want to complete the proposal quickly,
             so I can see my results' do
-    expect(current_path).to eq signup_proposal_path
+    expect(current_path).to eq new_signup_proposal_path
     match.submit_proposal_form
     expect(current_path).to eq recommended_funds_path
   end
@@ -144,22 +144,8 @@ feature 'Proposal' do
     end
     expect(current_path).to eq recipient_proposals_path(@recipient)
     click_link 'Update proposal'
-    [
-      'Improve your results',
-      'Summary',
-      'Activities',
-      'Outcomes'
-    ].each do |text|
-      expect(page).to have_text text
-    end
-    eligibility.complete_proposal
-    # TODO: redirect to edit_recipient_proposal_path
-    click_button 'Update and review recommendations'
-    within '.uk-dropdown' do
-      click_link 'Funding proposals'
-    end
-    click_link 'Update proposal'
-    expect(current_path).to eq edit_recipient_proposal_path(@recipient, @proposal)
+    expect(current_path)
+      .to eq edit_recipient_proposal_path(@recipient, @proposal)
     [
       'Funding proposal',
       'Summary',
@@ -172,7 +158,8 @@ feature 'Proposal' do
     ].each do |text|
       expect(page).to have_text text
     end
-    click_button 'Save and recommend funders'
+    eligibility.complete_proposal
+    click_button 'Update and review recommendations'
     expect(current_path).to eq recommended_funds_path
   end
 
@@ -192,7 +179,7 @@ feature 'Proposal' do
               so I can update my proposal" do
       @current_profile.save!
       visit recommended_funds_path
-      expect(current_path).to eq signup_proposal_path
+      expect(current_path).to eq new_signup_proposal_path
       expect(page).to have_text 'Your details are out of date'
     end
 
@@ -201,7 +188,7 @@ feature 'Proposal' do
               so I can update my proposal" do
       @legacy_profile.save(validate: false)
       visit recommended_funds_path
-      expect(current_path).to eq signup_proposal_path
+      expect(current_path).to eq new_signup_proposal_path
       expect(page).to have_text 'Your details are out of date'
     end
 
@@ -217,7 +204,7 @@ feature 'Proposal' do
         @current_profile.gender = 'Other'
         @current_profile.save!
         visit recommended_funds_path
-        expect(current_path).to eq signup_proposal_path
+        expect(current_path).to eq new_signup_proposal_path
         expect(find('#proposal_gender').value).to eq 'Other'
         # TODO: check other fields
       end
@@ -228,7 +215,7 @@ feature 'Proposal' do
         @legacy_profile.gender = 'Other'
         @legacy_profile.save(validate: false)
         visit recommended_funds_path
-        expect(current_path).to eq signup_proposal_path
+        expect(current_path).to eq new_signup_proposal_path
         expect(find('#proposal_gender').value).to eq 'Other'
         # TODO: check other fields
       end
@@ -254,7 +241,7 @@ feature 'Proposal' do
       select 'None', from: :recipient_employees
       select 'None', from: :recipient_volunteers
       click_button 'Next'
-      expect(current_path).to eq signup_proposal_path
+      expect(current_path).to eq new_signup_proposal_path
       expect(page).to have_text 'Your details are out of date'
     end
   end

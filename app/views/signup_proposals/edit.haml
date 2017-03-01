@@ -4,31 +4,30 @@
 = javascript_include_tag 'chosen'
 = javascript_include_tag 'jquery.tree-multiselect.min'
 
-:javascript
-  mixpanel.track("View Proposal #{@proposal.state.capitalize} Page");
-  mixpanel.identify('#{@current_user.id}');
-  mixpanel.people.set({
-    'Proposal State': '#{@proposal.state}'
-  });
-
-= render partial: 'subnav'
+-# TODO:
+-# :javascript
+-#   mixpanel.track("View Proposal #{@proposal.state.capitalize} Page");
+-#   mixpanel.identify('#{@current_user.id}');
+-#   mixpanel.people.set({
+-#     'Proposal State': '#{@proposal.state}'
+-#   });
 
 .uk-container.uk-container-center.uk-margin-large
 
-  %h2 Funding proposal
-  %h4 Update your funding proposal to update your funding recommendations.
+  %h2 Improve your results
+  %h4 Complete your funding proposal to access more features on Beehive.
 
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
 
-    = simple_form_for [@recipient, @proposal], url: edit_recipient_proposal_path(@recipient, @proposal), method: :patch, remote: true, authenticity_token: true do |f|
+    = simple_form_for @proposal, url: edit_signup_proposal_path(@proposal), method: :patch, remote: true, authenticity_token: true do |f|
+
+      .cta.red
+        %strong Important:
+        Please fully complete your inital funding proposal to continue.
 
       = cell(:proposal_form, @proposal, f: f).call(:summary)
-      = cell(:proposal_form, @proposal, f: f).call(:requirements)
-      = cell(:proposal_form, @proposal, f: f).call(:beneficiaries)
-      = cell(:proposal_form, @proposal, f: f).call(:location)
       = cell(:proposal_form, @proposal, f: f).call(:activities)
       = cell(:proposal_form, @proposal, f: f).call(:outcomes)
-      = cell(:proposal_form, @proposal, f: f).call(:privacy)
 
       .uk-width-medium-1-1
         - if session[:return_to]

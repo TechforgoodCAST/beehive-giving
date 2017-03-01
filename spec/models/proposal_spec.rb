@@ -164,8 +164,13 @@ describe Proposal do
       end
     end
 
-    # TODO:
-    # fit 'sets affect_geo unless affects entire country'
+    it '#clear_districts_if_country_wide' do
+      expect(@initial_proposal.district_ids.count).to eq 3
+      expect(@initial_proposal.affect_geo).to eq 1
+      @initial_proposal.affect_geo = 2
+      @initial_proposal.save
+      expect(@initial_proposal.district_ids.count).to eq 0
+    end
   end
 
   context 'registered' do

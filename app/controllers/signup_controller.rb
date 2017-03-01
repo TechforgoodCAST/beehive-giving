@@ -1,7 +1,6 @@
 class SignupController < ApplicationController
   before_action :ensure_logged_in, :ensure_not_signed_up, only: [
-    :organisation, :create_organisation,
-    :proposal, :create_proposal, :unauthorised
+    :organisation, :create_organisation, :unauthorised
   ]
   before_action :load_districts, only: [:user, :create_user]
 
@@ -70,7 +69,7 @@ class SignupController < ApplicationController
     # refactor
     if @recipient.save
       current_user.update_attribute(:organisation_id, @recipient.id)
-      redirect_to signup_proposal_path
+      redirect_to new_signup_proposal_path
     elsif (@recipient.errors.added? :charity_number, :taken) ||
           (@recipient.errors.added? :company_number, :taken)
       organisation = @recipient.find_with_reg_nos
@@ -99,13 +98,13 @@ class SignupController < ApplicationController
                           'Registered?': '#{@recipient.registered}',
                           'Founded On': '#{@recipient.founded_on}'
                         });
-                        window.location.href = '#{signup_proposal_path}';
+                        window.location.href = '#{new_signup_proposal_path}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
         end
         format.html do
           current_user.update_attribute(:organisation_id, @recipient.id)
-          redirect_to signup_proposal_path
+          redirect_to new_signup_proposal_path
         end
       # If company/charity number has already been taken
       elsif (@recipient.errors.added? :charity_number, :taken) ||
@@ -127,28 +126,6 @@ class SignupController < ApplicationController
     end
   end
 
-  def proposal
-    if @proposal # NOTE: if legacy invalid proposal
-      @proposal.state = 'transferred'
-    else
-      @proposal = SignupProposal.new(@recipient).build_or_transfer
-    end
-  end
-
-  def create_proposal
-    if @proposal # NOTE: if legacy invalid proposal
-      @proposal.assign_attributes(proposal_params)
-    else
-      @proposal = @recipient.proposals.new(proposal_params)
-    end
-    if @proposal.save
-      @proposal.next_step!
-      redirect_to recommended_funds_path
-    else
-      render :proposal
-    end
-  end
-
   def grant_access # TODO: refactor into UnauthorisedController
     @user = User.find_by(unlock_token: params[:unlock_token])
     @user.unlock
@@ -163,10 +140,6 @@ class SignupController < ApplicationController
   # end
 
   private
-
-    def ensure_not_signed_up
-      redirect_to recommended_funds_path if signed_up?
-    end
 
     def load_districts
       @districts = Fund.active.joins(:countries).group('countries.name')

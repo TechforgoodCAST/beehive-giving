@@ -1,0 +1,34 @@
+.uk-form.uk-form-stacked.form
+
+  h3 Requirements
+
+  .uk-width-medium-1-2.uk-margin-top
+    .label What type of support are you seeking?
+    = f.input :type_of_support, collection: Proposal::TYPE_OF_SUPPORT, input_html: { class: 'large uk-width-medium-1-1' }
+    = f.error :type_of_support, class: 'error-message'
+
+  .uk-width-medium-1-2.uk-margin-top
+    .label How long do you require funding for?
+    = f.input :funding_duration, as: :month, input_html: { class: 'numeric integer large', min: 0 }, placeholder: 'e.g. 12'
+    = f.error :funding_duration, class: 'error-message'
+
+  .uk-width-medium-1-2.uk-margin-top
+    .label What type of funding are you seeking?
+    = f.input :funding_type, collection: Proposal::FUNDING_TYPE, input_html: { class: 'large uk-width-medium-1-1' }
+    = f.error :funding_type, class: 'error-message'
+
+  .uk-width-medium-1-1.uk-margin-top
+    .label How much funding are you seeking?
+    .uk-grid
+      .uk-width-medium-1-2
+        = f.input :total_costs, as: :currency, input_html: { class: 'numeric integer uk-width-1-1 large', min: 0 }, placeholder: 'e.g. 1234'
+        = f.error :total_costs, class: 'error-message'
+      .uk-display-block.boolean-padding
+        = f.input :total_costs_estimated, as: :boolean, inline_label: 'Are these estimated figures?'
+
+  .uk-width-medium-1-1.uk-margin-top
+    .label Is this all of the funding required for the proposed work?
+    = f.input :all_funding_required, as: :radio_buttons
+    = f.error :all_funding_required, class: 'error-message'
+
+hr.thick

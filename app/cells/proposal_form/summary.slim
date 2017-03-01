@@ -1,0 +1,16 @@
+.uk-form.uk-form-stacked.form
+
+  h3 Summary
+
+  .uk-width-medium-1-2.uk-margin-top
+    .label Proposal title
+    = f.input :title, input_html: { class: 'large uk-width-medium-1-1' }
+    = f.error :title, class: 'error-message'
+
+  .uk-width-medium-1-1.uk-margin-top
+    .label Describe your proposed work in a sentence or two
+    = f.input :tagline, as: :text, input_html: { class: 'uk-width-1-1' }
+    = f.error :tagline, class: 'error-message'
+    .muted.uk-float-right#char_count
+
+hr.thick

@@ -1,8 +1,0 @@
-= content_for :title, 'Transferred Proposal'
-
-= simple_form_for [@recipient, @proposal], url: edit_recipient_proposal_path(@recipient, @proposal), method: :patch, remote: true, authenticity_token: true do |f|
-
-  = render partial: 'proposals/cta'
-
-  .uk-form.uk-form-stacked.form
-    = render partial: 'proposals/states/fields', locals: { f: f, country: @recipient_country }

@@ -7,7 +7,7 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
-  # Deprecated
+  # Legacy support
   get '/about',   to: redirect('/')
   get '/tour',    to: redirect('#tell-me-more')
   get '/welcome', to: redirect('/')
@@ -26,14 +26,15 @@ Rails.application.routes.draw do
   root 'signup#user'
   post '/', to: 'signup#create_user'
 
-  match '/basics', to: 'signup#organisation', via: :get, as: 'signup_organisation'
-  match '/basics', to: 'signup#create_organisation', via: :post
+  get   '/basics',       to: 'signup#organisation', as: 'signup_organisation'
+  post  '/basics',       to: 'signup#create_organisation'
+  get   '/(:id)/basics', to: 'recipients#edit', as: 'edit_recipient'
+  patch '/(:id)/basics', to: 'recipients#update'
 
-  match '/proposal', to: 'signup#proposal', via: :get, as: 'signup_proposal'
-  match '/proposal', to: 'signup#create_proposal', via: :post
-
-  match '/(:id)/basics', to: 'recipients#edit', via: :get, as: 'edit_recipient'
-  match '/(:id)/basics', to: 'recipients#update', via: :patch
+  get  '/proposal',       to: 'signup_proposals#new', as: 'new_signup_proposal'
+  post '/proposal',       to: 'signup_proposals#create'
+  get  '/proposal/(:id)', to: 'signup_proposals#edit', as: 'edit_signup_proposal'
+  post '/proposal/(:id)', to: 'signup_proposals#update'
 
   # User authorisation for organisational access
   match '/unauthorised', to: 'signup#unauthorised', via: :get, as: 'unauthorised'
