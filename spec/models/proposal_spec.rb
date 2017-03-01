@@ -276,5 +276,11 @@ describe Proposal do
       expect(@proposal2.recipient.subscribed?).to eq false
       expect { @proposal2.save! }.to raise_error(ActiveRecord::RecordInvalid)
     end
+
+    it 'can create multiple proposals if subscribed' do
+      @proposal2.recipient.subscribe!
+      expect(@proposal2.recipient.subscribed?).to eq true
+      expect(@proposal2).to be_valid
+    end
   end
 end

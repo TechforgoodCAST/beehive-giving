@@ -163,6 +163,33 @@ feature 'Proposal' do
     expect(current_path).to eq recommended_funds_path
   end
 
+  context 'subscribed' do
+    before(:each) do
+      @match_helper = MatchHelper.new
+      @eligibility_helper = EligibilityHelper.new
+      @app.create_complete_proposal
+      @recipient.subscribe!
+      visit root_path
+    end
+
+    scenario 'When I am subscribed,
+               I want to be able to create multiple proposals,
+               so I can search for alternative funds' do
+      click_link 'Change proposal'
+      expect(page).to have_css '.card', count: 1
+
+      click_link 'New proposal'
+      @match_helper.fill_proposal_form
+      @eligibility_helper.complete_proposal
+      click_button 'Save and recommend funders'
+
+      expect(current_path).to eq recommended_funds_path
+
+      click_link 'Change proposal'
+      expect(page).to have_css '.card', count: 2
+    end
+  end
+
   context 'legacy' do
     before(:each) do
       @recipient.update(created_at: Date.new(2016, 4, 27))
