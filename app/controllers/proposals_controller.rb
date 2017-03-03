@@ -1,6 +1,6 @@
 class ProposalsController < ApplicationController
   before_action :ensure_logged_in
-  before_action :load_proposal, only: [:edit, :update]
+  before_action :load_proposal, only: [:edit, :update] # TODO: refactor
 
   def new
     if @proposal.complete?
@@ -22,18 +22,14 @@ class ProposalsController < ApplicationController
     )
     if @proposal.save
       @proposal.next_step!
-      redirect_to recommended_funds_path
+      redirect_to recommended_proposal_funds_path(@proposal)
     else
       render :new
     end
   end
 
   def index
-    if @proposal
-      @proposals = @recipient.proposals
-    else
-      redirect_to recommended_funds_path
-    end
+    @proposals = @recipient.proposals
   end
 
   def edit
@@ -51,11 +47,11 @@ class ProposalsController < ApplicationController
 
           if session[:return_to]
             fund = Fund.find_by(slug: session.delete(:return_to))
-            render js: "window.location.href = '#{fund_eligibility_path(fund)}';
+            render js: "window.location.href = '#{eligibility_proposal_funds_path(@proposal, fund)}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
           else
-            render js: "window.location.href = '#{recommended_funds_path}';
+            render js: "window.location.href = '#{recommended_proposal_funds_path(@proposal)}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
           end
@@ -66,9 +62,9 @@ class ProposalsController < ApplicationController
 
           if session[:return_to]
             fund = Fund.find_by(slug: session.delete(:return_to))
-            redirect_to fund_eligibility_path(fund)
+            redirect_to eligibility_proposal_fund_path(@proposal, fund)
           else
-            redirect_to recommended_funds_path
+            redirect_to recommended_proposal_funds_path(@proposal)
           end
         end
       else
@@ -80,7 +76,7 @@ class ProposalsController < ApplicationController
 
   private
 
-    def load_proposal
-      @proposal = Proposal.find(params[:id])
+    def load_proposal # TODO: refactor
+      @proposal = @recipient.proposals.find(params[:id])
     end
 end

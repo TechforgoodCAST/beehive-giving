@@ -30,13 +30,13 @@ describe 'Ensure logged in' do
 
   it 'eligibilities' do
     expect_path([
-                  fund_eligibility_path(@fund)
+                  eligibility_proposal_fund_path(@proposal, @fund)
                 ])
   end
 
   it 'enquiries' do
     expect_path([
-                  fund_apply_path(@fund)
+                  apply_proposal_fund_path(@proposal, @fund)
                 ])
   end
 
@@ -49,12 +49,12 @@ describe 'Ensure logged in' do
 
   it 'funds' do
     expect_path([
-                  fund_path(@fund),
-                  recommended_funds_path,
-                  eligible_funds_path,
-                  ineligible_funds_path,
-                  all_funds_path,
-                  tag_path('Tag')
+                  proposal_fund_path(@proposal, @fund),
+                  recommended_proposal_funds_path(@proposal),
+                  eligible_proposal_funds_path(@proposal),
+                  ineligible_proposal_funds_path(@proposal),
+                  all_proposal_funds_path(@proposal),
+                  tag_proposal_funds_path(@proposal, 'Tag')
                 ])
   end
 

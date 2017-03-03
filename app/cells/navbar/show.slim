@@ -8,7 +8,7 @@ nav.uk-navbar.navbar.recipient-bg class=background_color
           = logo
 
       - else
-        = cell(:main_nav, model)
+        = cell(:main_nav, model, proposal: options[:proposal])
         = cell(:secondary_nav, model)
         .uk-navbar-content.uk-navbar-center
           = logo

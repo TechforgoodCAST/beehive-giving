@@ -44,7 +44,7 @@
         ga('set', 'userId', gon.currentUserId);
 
   %body#top
-    = cell(:navbar, @current_user)
+    = cell(:navbar, @current_user, proposal: @proposal)
 
     .uk-container.uk-container-center
       - if flash[:notice]

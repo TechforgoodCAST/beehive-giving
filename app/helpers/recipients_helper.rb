@@ -5,11 +5,11 @@ module RecipientsHelper
   def fund_card_eligibility_text(fund)
     case @proposal.eligibility_for(fund)
     when 0
-      link_to('Ineligible', fund_eligibility_path(fund), class: 'very-poor')
+      link_to('Ineligible', eligibility_proposal_fund_path(@proposal, fund), class: 'very-poor')
     when 1
-      link_to('Eligible', fund_eligibility_path(fund), class: 'excellent')
+      link_to('Eligible', eligibility_proposal_fund_path(@proposal, fund), class: 'excellent')
     else
-      link_to('Check', fund_eligibility_path(fund), class: 'primary')
+      link_to('Check', eligibility_proposal_fund_path(@proposal, fund), class: 'primary')
     end
   end
 
@@ -17,11 +17,11 @@ module RecipientsHelper
     classes = 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
     case @proposal.eligibility_for(fund)
     when 0
-      link_to('Why ineligible?', fund_eligibility_path(fund), class: classes)
+      link_to('Why ineligible?', eligibility_proposal_fund_path(@proposal, fund), class: classes)
     when 1
-      link_to('Apply', fund_apply_path(fund), class: classes)
+      link_to('Apply', apply_proposal_fund_path(@proposal, fund), class: classes)
     else
-      link_to('Check eligibility', fund_eligibility_path(fund), class: classes)
+      link_to('Check eligibility', eligibility_proposal_fund_path(@proposal, fund), class: classes)
     end
   end
 
@@ -78,7 +78,8 @@ module RecipientsHelper
 
   def render_tags(fund)
     safe_join fund.tags.sort.map { |t|
-      link_to t, tag_path(t.parameterize), class: TAG_CLASSES # TODO: refactor
+      link_to t, tag_proposal_funds_path(@proposal, t.parameterize),
+              class: TAG_CLASSES # TODO: refactor
     }, ' '
   end
 

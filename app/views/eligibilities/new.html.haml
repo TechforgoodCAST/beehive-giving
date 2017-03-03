@@ -29,7 +29,7 @@
             You are eligible for the
             = @fund.short_name
             fund.
-            = link_to 'Apply for funding', fund_apply_path(@fund), class: 'uk-button uk-button-large uk-button-success invert'
+            = link_to 'Apply for funding', apply_proposal_fund_path(@proposal, @fund), class: 'uk-button uk-button-large uk-button-success invert'
         - else
           .cta.wide.red
             You are ineligible, and did not meet
@@ -42,14 +42,14 @@
         = succeed ',' do
           = @fund.funder.name
         complete them to see if you are eligible for their
-        = link_to @fund.short_name, fund_path(@fund)
+        = link_to @fund.short_name, proposal_fund_path(@proposal, @fund)
         fund.
 
       %hr.thick
 
       %h3.uk-text-bold Are you seeking funding for?
       .uk-form.uk-form-stacked
-        = simple_form_for :check, url: fund_eligibility_path(@fund), method: :patch do |f|
+        = simple_form_for :check, url: eligibility_proposal_fund_path(@proposal, @fund), method: :patch do |f|
 
           - if ensure_restriction_category('Organisation')
             %h4.uk-text-bold About your organisation
@@ -68,7 +68,7 @@
                         - if e.object.errors.any?
                           = e.error :eligible, class: 'error-message'
                         - elsif e.object.eligible == false && @recipient.valid? && @proposal.checked_fund?(@fund)
-                          .error-message You did not meet this criteria
+                          .restriction-error-message You did not meet this criteria
                       %hr
 
           - if ensure_restriction_category('Proposal')
@@ -88,7 +88,7 @@
                         - if e.object.errors.any?
                           = e.error :eligible, class: 'error-message'
                         - elsif e.object.eligible == false && @recipient.valid? && @proposal.checked_fund?(@fund)
-                          .error-message You did not meet this criteria
+                          .restriction-error-message You did not meet this criteria
                       %hr
 
           - if @proposal.checked_fund?(@fund)

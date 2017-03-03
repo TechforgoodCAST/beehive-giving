@@ -5,7 +5,7 @@
 
   .uk-width-medium-2-3
     %h3.uk-margin-top
-      = link_to fund.name, fund_path(fund), class: 'yellow'
+      = link_to fund.name, proposal_fund_path(@proposal, fund), class: 'yellow'
       %span.year.muted= fund.funder.name
 
     -# TODO: performance & cache

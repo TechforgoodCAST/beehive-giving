@@ -27,7 +27,7 @@
     - if @funds.empty?
       .cta.wide
         Awesome, you're not ineligible for any funds!
-        = link_to 'Find a fund', recommended_funds_path, class: 'uk-button uk-button-large uk-button-primary invert'
+        = link_to 'Find a fund', recommended_proposal_funds_path(@proposal), class: 'uk-button uk-button-large uk-button-primary invert'
 
     - @funds.each_with_index do |fund, i|
       = render partial: 'summary', locals: { fund: fund }

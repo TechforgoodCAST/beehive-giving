@@ -40,7 +40,11 @@ class ApplicationController < ActionController::Base
     def load_last_proposal
       return unless @recipient
       return if funder? # NOTE: legacy support
-      @proposal = @recipient.proposals.last
+      @proposal = if params[:proposal_id]
+                    @recipient.proposals.find_by(id: params[:proposal_id])
+                  else
+                    @recipient.proposals.last
+                  end
     end
 
     def funder? # NOTE: legacy support
@@ -80,10 +84,10 @@ class ApplicationController < ActionController::Base
       return edit_recipient_path(@recipient) unless @recipient.valid? # legacy
       return new_signup_proposal_path        unless @proposal
       return new_signup_proposal_path        if @proposal.initial?    # legacy
-      recommended_funds_path
+      recommended_proposal_funds_path(@proposal)
     end
 
     def ensure_not_signed_up
-      redirect_to recommended_funds_path if signed_up?
+      redirect_to recommended_proposal_funds_path(@proposal) if signed_up?
     end
 end

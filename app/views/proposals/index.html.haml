@@ -40,8 +40,8 @@
               %hr
               .content.uk-grid.uk-grid-small{style: 'margin-top: 15px;'}
                 .uk-width-1-2
-                  = link_to 'Update proposal', edit_recipient_proposal_path(@recipient, @proposal), class: 'invert uk-button uk-button-primary uk-button-large uk-width-1-1', style: 'font-size: 14px;'
+                  = link_to 'Update proposal', edit_recipient_proposal_path(@recipient, proposal), class: 'invert uk-button uk-button-primary uk-button-large uk-width-1-1', style: 'font-size: 14px;'
                 .uk-width-1-2
-                  = link_to 'Matched funds', recommended_funds_path, class: 'uk-button uk-button-primary uk-button-large uk-width-1-1', style: 'font-size: 14px;'
+                  = link_to 'Matched funds', recommended_proposal_funds_path(proposal), class: 'uk-button uk-button-primary uk-button-large uk-width-1-1', style: 'font-size: 14px;'
 
 = render partial: 'funds/why_hidden'

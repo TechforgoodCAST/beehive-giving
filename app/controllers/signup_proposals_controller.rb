@@ -1,7 +1,7 @@
 class SignupProposalsController < ApplicationController
   before_action :ensure_logged_in
   before_action :ensure_not_signed_up, only: [:new, :create]
-  before_action :load_proposal, only: [:edit, :update]
+  before_action :load_proposal, only: [:edit, :update] # TODO: refactor
 
   def new
     if @proposal # NOTE: if invalid legacy proposal
@@ -19,7 +19,7 @@ class SignupProposalsController < ApplicationController
     end
     if @proposal.save
       @proposal.next_step!
-      redirect_to recommended_funds_path
+      redirect_to recommended_proposal_funds_path(@proposal)
     else
       render :new
     end
@@ -34,7 +34,7 @@ class SignupProposalsController < ApplicationController
       if session[:return_to]
         redirect_to fund_eligibility_path(session.delete(:return_to))
       else
-        redirect_to recommended_funds_path
+        redirect_to recommended_proposal_funds_path(@proposal)
       end
     else
       render :edit
@@ -43,7 +43,7 @@ class SignupProposalsController < ApplicationController
 
   private
 
-    def load_proposal
-      @proposal = Proposal.find(params[:id])
+    def load_proposal # TODO: refactor
+      @proposal = @recipient.proposals.find(params[:id])
     end
 end

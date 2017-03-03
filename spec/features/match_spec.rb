@@ -224,7 +224,7 @@ feature 'Match' do
     expect(current_path).to eq new_signup_proposal_path
 
     helper.submit_proposal_form
-    expect(current_path).to eq recommended_funds_path
+    expect(current_path).to eq recommended_proposal_funds_path(Proposal.last)
     expect(page).to have_css '.funder', count: 3
 
     expect(page.first('.yellow').text).to eq 'Awards for All 3'

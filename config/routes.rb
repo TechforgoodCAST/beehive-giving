@@ -48,14 +48,26 @@ Rails.application.routes.draw do
   # TODO match '/account/(:id)/upgrade', to: 'accounts#upgrade', via: :get, as: 'account_upgrade'
   # TODO match '/account/(:id)/charge', to: 'accounts#charge', via: :post, as: 'account_charge'
 
-  # Funds
-  get '/recommended/funds', to: 'funds#recommended', as: 'recommended_funds'
-  get '/eligible/funds', to: 'funds#eligible', as: 'eligible_funds'
-  get '/ineligible/funds', to: 'funds#ineligible', as: 'ineligible_funds'
-  get '/all/funds', to: 'funds#all', as: 'all_funds'
-  get '/(:tag)/funds', to: 'funds#tagged', as: 'tag'
+  resources :proposals, except: [:show, :destroy] do
+    resources :funds, only: :show do
+      collection do
+        get :recommended
+        get :eligible
+        get :ineligible
+        get :all
+        get '/theme/:tag', to: 'funds#tagged', as: 'tag'
+      end
+      member do
+        get   :eligibility, to: 'eligibilities#new'
+        patch :eligibility, to: 'eligibilities#create'
+        get   :apply,       to: 'enquiries#new'
+        post  :apply,       to: 'enquiries#create'
+      end
+    end
+  end
 
-  # Funders - deprecated
+  # Funders
+  # NOTE: deprecated
   match '/funding/(:id)/overview', to: 'funders#overview', via: :get, as: 'funder_overview'
   match '/funding/(:id)/map', to: 'funders#map', via: :get, as: 'funder_map'
   match '/map-data/(:id)', to: 'funders#map_data', via: :get, as: 'funder_map_data'
@@ -69,14 +81,6 @@ Rails.application.routes.draw do
   match '/(:recipient_id)/proposal/(:id)', to: 'proposals#update', via: :patch
   match '/(:recipient_id)/proposals', to: 'proposals#index', via: :get, as: 'recipient_proposals'
 
-  # Eligibilities
-  match '/funds/(:id)/eligibility', to: 'eligibilities#new', via: :get, as: 'fund_eligibility'
-  match '/funds/(:id)/eligibility', to: 'eligibilities#create', via: :patch
-
-  # Enquiries
-  match '/funds/(:id)/apply', to: 'enquiries#new', via: :get, as: 'fund_apply'
-  match '/funds/(:id)/apply', to: 'enquiries#create', via: :post
-
   resources :feedback, only: [:new, :create, :edit, :update]
   resources :password_resets, only: [:new, :create, :edit, :update]
 
@@ -85,6 +89,4 @@ Rails.application.routes.draw do
       post :approach_funder
     end
   end
-
-  resources :funds, only: :show
 end

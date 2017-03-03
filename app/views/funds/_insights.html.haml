@@ -6,13 +6,13 @@
     - unless @proposal.eligibility_for(fund).negative?
       %li{ class: (@proposal.eligible?(fund) ? 'eligible' : 'ineligible')}
         - if @proposal.eligible?(fund)
-          %a.badge{href: eligible_funds_path} Eligible
+          %a.badge{ href: eligible_proposal_funds_path(@proposal) } Eligible
           You are eligible for funding.
-          %a.action{href: fund_eligibility_path(fund)} See criteria
+          %a.action{href: eligibility_proposal_fund_path(@proposal, fund)} See criteria
         - else
-          %a.badge{href: ineligible_funds_path} Ineligible
+          %a.badge{ href: ineligible_proposal_funds_path(@proposal) } Ineligible
           You are ineligible for funding.
-          %a.action{href: fund_eligibility_path(fund)} Find out why
+          %a.action{href: eligibility_proposal_fund_path(@proposal, fund)} Find out why
 
   - if @proposal && !@recipient.transferred?
     -# TODO:
@@ -35,14 +35,14 @@
       Awarded
       .highlight= number_with_delimiter(fund.grant_count)
       grants.
-      %a.action{href: fund_path(fund, anchor: 'how-was-funding-distributed')} More info
+      %a.action{href: proposal_fund_path(@proposal, fund, anchor: 'how-was-funding-distributed')} More info
 
   - if fund.open_data? && fund.award_month_distribution?
     %li
       Awarded the most funding in
       = succeed '.' do
         %strong= top_award_months(fund)
-      %a.action{href: fund_path(fund, anchor: 'when-was-funding-awarded')} More info
+      %a.action{href: proposal_fund_path(@proposal, fund, anchor: 'when-was-funding-awarded')} More info
 
   -# TODO:
   -# - if fund.geographic_scale_distribution.size.positive?
@@ -58,7 +58,7 @@
       Awarded most funding in the
       = succeed '.' do
         %strong= top_countries(fund)
-      %a.action{href: fund_path(fund, anchor: 'where-was-funding-awarded')} More info
+      %a.action{href: proposal_fund_path(@proposal, fund, anchor: 'where-was-funding-awarded')} More info
 
   -# TODO:
   -# - if fund.district_distribution
