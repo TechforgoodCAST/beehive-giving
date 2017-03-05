@@ -34,6 +34,7 @@ module Beehive
       signup.js
       sessions.js
       signup_proposals.js
+      signup_recipients.js
     )
 
     # vendor assets

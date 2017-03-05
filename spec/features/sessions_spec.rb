@@ -60,9 +60,9 @@ describe 'Ensure logged in' do
 
   it 'proposals' do
     expect_path([
-                  new_recipient_proposal_path(@recipient),
-                  edit_recipient_proposal_path(@recipient, @proposal),
-                  recipient_proposals_path(@recipient)
+                  new_proposal_path,
+                  edit_proposal_path(@proposal),
+                  proposals_path
                 ])
   end
 
@@ -75,7 +75,7 @@ describe 'Ensure logged in' do
 
   it 'signup' do
     expect_path([
-                  signup_organisation_path,
+                  new_signup_recipient_path,
                   unauthorised_path
                 ])
   end

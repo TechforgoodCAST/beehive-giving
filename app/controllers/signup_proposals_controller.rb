@@ -31,17 +31,21 @@ class SignupProposalsController < ApplicationController
     if @proposal.update(proposal_params)
       @proposal.next_step!
       flash[:notice] = 'Funding recommendations updated!'
-      if session[:return_to]
-        redirect_to fund_eligibility_path(session.delete(:return_to))
-      else
-        redirect_to recommended_proposal_funds_path(@proposal)
-      end
+      redirect_to return_to_path
     else
       render :edit
     end
   end
 
   private
+
+    def return_to_path
+      if session[:return_to]
+        eligibility_proposal_fund_path(@proposal, session.delete(:return_to))
+      else
+        recommended_proposal_funds_path(@proposal)
+      end
+    end
 
     def load_proposal # TODO: refactor
       @proposal = @recipient.proposals.find(params[:id])

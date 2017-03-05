@@ -2,23 +2,23 @@
 .subnav{ "data-uk-sticky" => "" }
   .uk-container.uk-container-center
     %ul.nav{ class: @current_user.role == 'Funder' ? 'funder' : 'recipient' }
-      %a{href: recipient_proposals_path(@recipient)}
-        %li.first{ class: ('active' if current_page?(recipient_proposals_path(@recipient))) }
+      %a{ href: proposals_path }
+        %li.first{ class: ('active' if current_page?(proposals_path)) }
           All
           = surround '(', ')' do
             = @recipient.proposals.count
           .highlight
       %span &middot;
 
-      %a{href: new_recipient_proposal_path(@recipient)}
-        %li.first{ class: ('active' if current_page?(new_recipient_proposal_path(@recipient))) }
+      %a{ href: new_proposal_path }
+        %li.first{ class: ('active' if current_page?(new_proposal_path)) }
           New
           .highlight
       %span &middot;
 
       - if params[:action] == 'edit'
-        %a{href: edit_recipient_proposal_path(@recipient, @proposal)}
-          %li.first{ class: ('active' if current_page?(edit_recipient_proposal_path(@recipient, @proposal))) }
+        %a{ href: edit_proposal_path(@proposal) }
+          %li.first{ class: ('active' if current_page?(edit_proposal_path(@proposal))) }
             Edit
             .highlight
       - else

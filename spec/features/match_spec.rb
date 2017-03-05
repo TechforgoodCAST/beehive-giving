@@ -164,7 +164,7 @@ feature 'Match' do
     fill_in :email, with: @db[:user].user_email
     fill_in :password, with: @db[:user].password
     click_button 'Sign in'
-    expect(current_path).to eq signup_organisation_path
+    expect(current_path).to eq new_signup_recipient_path
   end
 
   context 'unauthorised' do
@@ -178,7 +178,7 @@ feature 'Match' do
               I want to see a relevant message,
               so I understand why I was unauthorised" do
       @app.sign_in
-      visit signup_organisation_path
+      visit new_signup_recipient_path
       expect(current_path).to eq unauthorised_path
       visit faq_path
       expect(current_path).to eq faq_path
@@ -206,7 +206,7 @@ feature 'Match' do
             I want to see a shortlist of the most relevant funds,
             so I feel I've found suitable funding opportunities" do
     helper.submit_user_form!
-    expect(current_path).to eq signup_organisation_path
+    expect(current_path).to eq new_signup_recipient_path
 
     {
       org_type: '3',

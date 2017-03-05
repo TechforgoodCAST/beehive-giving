@@ -1,4 +1,26 @@
 Rails.application.routes.draw do
+  resources :password_resets, except: [:show, :index]
+
+  resources :proposals, except: [:show, :destroy] do
+    resources :funds, only: :show do
+      collection do
+        get :recommended
+        get :eligible
+        get :ineligible
+        get :all
+        get '/theme/:tag', to: 'funds#tagged', as: 'tag'
+      end
+      member do
+        get   :eligibility, to: 'eligibilities#new'
+        patch :eligibility, to: 'eligibilities#create'
+        get   :apply,       to: 'enquiries#new'
+        post  :apply,       to: 'enquiries#create'
+      end
+    end
+  end
+
+  resources :feedback, except: [:show, :destroy]
+
   # Errors
   match '/404', to: 'errors#not_found', via: :all
   match '/500', to: 'errors#internal_server_error', via: :all
@@ -26,15 +48,15 @@ Rails.application.routes.draw do
   root 'signup#user'
   post '/', to: 'signup#create_user'
 
-  get   '/basics',       to: 'signup#organisation', as: 'signup_organisation'
-  post  '/basics',       to: 'signup#create_organisation'
-  get   '/(:id)/basics', to: 'recipients#edit', as: 'edit_recipient'
-  patch '/(:id)/basics', to: 'recipients#update'
+  get   '/basics',       to: 'signup_recipients#new', as: 'new_signup_recipient'
+  post  '/basics',       to: 'signup_recipients#create'
+  get   '/basics/(:id)', to: 'signup_recipients#edit', as: 'edit_signup_recipient'
+  patch '/basics/(:id)', to: 'signup_recipients#update'
 
-  get  '/proposal',       to: 'signup_proposals#new', as: 'new_signup_proposal'
-  post '/proposal',       to: 'signup_proposals#create'
-  get  '/proposal/(:id)', to: 'signup_proposals#edit', as: 'edit_signup_proposal'
-  post '/proposal/(:id)', to: 'signup_proposals#update'
+  get   '/proposal',       to: 'signup_proposals#new', as: 'new_signup_proposal'
+  post  '/proposal',       to: 'signup_proposals#create'
+  get   '/proposal/(:id)', to: 'signup_proposals#edit', as: 'edit_signup_proposal'
+  patch '/proposal/(:id)', to: 'signup_proposals#update'
 
   # User authorisation for organisational access
   match '/unauthorised', to: 'signup#unauthorised', via: :get, as: 'unauthorised'
@@ -48,24 +70,6 @@ Rails.application.routes.draw do
   # TODO match '/account/(:id)/upgrade', to: 'accounts#upgrade', via: :get, as: 'account_upgrade'
   # TODO match '/account/(:id)/charge', to: 'accounts#charge', via: :post, as: 'account_charge'
 
-  resources :proposals, except: [:show, :destroy] do
-    resources :funds, only: :show do
-      collection do
-        get :recommended
-        get :eligible
-        get :ineligible
-        get :all
-        get '/theme/:tag', to: 'funds#tagged', as: 'tag'
-      end
-      member do
-        get   :eligibility, to: 'eligibilities#new'
-        patch :eligibility, to: 'eligibilities#create'
-        get   :apply,       to: 'enquiries#new'
-        post  :apply,       to: 'enquiries#create'
-      end
-    end
-  end
-
   # Funders
   # NOTE: deprecated
   match '/funding/(:id)/overview', to: 'funders#overview', via: :get, as: 'funder_overview'
@@ -73,20 +77,4 @@ Rails.application.routes.draw do
   match '/map-data/(:id)', to: 'funders#map_data', via: :get, as: 'funder_map_data'
   match '/map-data/all', to: 'funders#map_data', via: :get, as: 'funders_map_all'
   match '/funding/(:id)/(:district)', to: 'funders#district', via: :get, as: 'funder_district'
-
-  # Proposals
-  match '/(:id)/proposal', to: 'proposals#new', via: :get, as: 'new_recipient_proposal'
-  match '/(:id)/proposal', to: 'proposals#create', via: :post
-  match '/(:recipient_id)/proposal/(:id)', to: 'proposals#edit', via: :get, as: 'edit_recipient_proposal'
-  match '/(:recipient_id)/proposal/(:id)', to: 'proposals#update', via: :patch
-  match '/(:recipient_id)/proposals', to: 'proposals#index', via: :get, as: 'recipient_proposals'
-
-  resources :feedback, only: [:new, :create, :edit, :update]
-  resources :password_resets, only: [:new, :create, :edit, :update]
-
-  resources :recipients, except: [:new, :index] do
-    member do
-      post :approach_funder
-    end
-  end
 end

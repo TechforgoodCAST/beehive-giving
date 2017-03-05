@@ -25,7 +25,7 @@ feature 'Proposal' do
       all_proposal_funds_path('missing'),
       # TODO: account_subscription_path(@recipient),
       # TODO: account_upgrade_path(@recipient),
-      edit_recipient_proposal_path(@recipient),
+      edit_proposal_path('missing'),
       eligibility_proposal_fund_path('missing', @fund),
       apply_proposal_fund_path('missing', @fund),
       proposal_fund_path('missing', @fund),
@@ -91,7 +91,7 @@ feature 'Proposal' do
       find('.uk-modal-close.uk-close').click
       @recipient.subscribe!
       click_link 'New proposal'
-      expect(current_path).not_to eq new_recipient_proposal_path(@recipient)
+      expect(current_path).not_to eq new_proposal_path
     end
 
     scenario "When I visit a proposal that doesn't belong to me,
@@ -112,7 +112,7 @@ feature 'Proposal' do
       visit root_path
 
       click_link 'Change proposal'
-      expect(current_path).to eq recipient_proposals_path(@recipient)
+      expect(current_path).to eq proposals_path
 
       click_link 'New proposal'
       expect(current_path)
@@ -129,10 +129,10 @@ feature 'Proposal' do
       within '.uk-dropdown' do
         click_link 'Funding proposals'
       end
-      expect(current_path).to eq recipient_proposals_path(@recipient)
+      expect(current_path).to eq proposals_path
       click_link 'Update proposal'
       expect(current_path)
-        .to eq edit_recipient_proposal_path(@recipient, @proposal)
+        .to eq edit_proposal_path(@proposal)
       [
         'Funding proposal',
         'Summary',
@@ -159,7 +159,7 @@ feature 'Proposal' do
 
     scenario 'usubscribed and complete on proposals#index
               shows coming soon', js: true do
-      visit recipient_proposals_path(@recipient)
+      visit proposals_path
       click_link 'New proposal'
       expect(page).to have_selector('#why-hidden', visible: true)
     end
@@ -168,9 +168,9 @@ feature 'Proposal' do
               shows new proposal page' do
       @recipient.subscribe!
 
-      visit recipient_proposals_path(@recipient)
+      visit proposals_path
       click_link 'New proposal'
-      expect(current_path).to eq new_recipient_proposal_path(@recipient)
+      expect(current_path).to eq new_proposal_path
     end
   end
 
@@ -294,7 +294,7 @@ feature 'Proposal' do
       @db[:user].save
       @app.sign_in
       visit recommended_proposal_funds_path(@current_profile)
-      expect(current_path).to eq edit_recipient_path(@recipient)
+      expect(current_path).to eq edit_signup_recipient_path(@recipient)
       expect(page).to have_text 'Your details are out of date'
       select 'Less than £10k'
       select 'None', from: :recipient_employees
