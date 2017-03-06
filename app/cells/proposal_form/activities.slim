@@ -1,0 +1,14 @@
+.uk-form.uk-form-stacked.form
+
+  h3 Activities
+
+  .uk-width-medium-1-1.uk-margin-top
+    .label What will you proposed work provide?
+    = f.association :implementations, as: :check_boxes, label_method: :label, value_method: :id
+    .uk-width-medium-1-2
+      .checkbox.wide= f.input :implementations_other_required, as: :boolean, inline_label: 'Other', input_html: { class: 'toggle-other' }
+      .other.uk-hidden
+        = f.input :implementations_other, input_html: { class: 'large other uk-width-medium-1-1' }
+        = f.error :implementations_other, class: 'error-message other'
+
+hr.thick

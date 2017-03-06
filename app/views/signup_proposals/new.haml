@@ -1,0 +1,49 @@
+= content_for :title, 'Proposal'
+
+= stylesheet_link_tag 'chosen'
+= stylesheet_link_tag 'overrides/chosen_overrides'
+
+= javascript_include_tag 'proposals'
+= javascript_include_tag 'chosen-jquery'
+= javascript_include_tag 'chosen'
+= javascript_include_tag 'jquery.tree-multiselect.min'
+
+:javascript
+  mixpanel.track("View Proposal #{@proposal.state.capitalize} Page");
+  mixpanel.identify('#{@current_user.id}');
+  mixpanel.people.set({
+    'Proposal State': '#{@proposal.state}'
+  });
+
+:javascript
+  var google_conversion_id = 937505505;
+  var google_conversion_language = "en";
+  var google_conversion_format = "3";
+  var google_conversion_color = "ffffff";
+  var google_conversion_label = "fR8GCJamvWMQ4eWEvwM";
+  var google_remarketing_only = false;
+%script{ src: "//www.googleadservices.com/pagead/conversion.js", type: "text/javascript" }
+%noscript
+  %div{ style: "display:inline;" }
+    %img{ alt: "", height: "1", src: "//www.googleadservices.com/pagead/conversion/937505505/?label=fR8GCJamvWMQ4eWEvwM&amp;guid=ON&amp;script=0", style: "border-style:none;", width: "1" }
+
+= render partial: 'signup/subnav', locals: { current_step: 1 }
+
+.uk-container.uk-container-center.uk-margin-large
+
+  %h2 What are you seeking funding for?
+  %h4 Beehive will use this to provide recommendations of suitable funds.
+
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+
+    - if @proposal.transferred?
+      = render partial: 'proposals/cta'
+
+    = simple_form_for [@recipient, @proposal], url: new_signup_proposal_path, method: :post do |f|
+
+      = cell(:proposal_form, @proposal, f: f).call(:requirements)
+      = cell(:proposal_form, @proposal, f: f).call(:beneficiaries)
+      = cell(:proposal_form, @proposal, f: f).call(:location)
+      = cell(:proposal_form, @proposal, f: f).call(:privacy)
+
+      = cell(:proposal_form, @proposal, f: f).call(:submit)

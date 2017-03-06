@@ -40,19 +40,13 @@
     = f.input :name, type: 'text', input_html: { class: 'large uk-width-1-1' }
     = f.error :name, class: 'error-message'
 
-  .uk-width-medium-1-1.uk-margin-top.country
+  .uk-width-medium-1-1.uk-margin-top.recipient-country
     .label Where is your organisation or project based?
     .street-address.uk-margin-bottom.fade-out
       = f.input :street_address, type: 'text', input_html: { class: 'large uk-width-1-1' }
       = f.error :street_address, class: 'error-message'
     = f.input :country, error: false, type: 'text', input_html: { class: 'large uk-width-1-1 chosen-select' }, include_blank: true, priority: ['United Kingdom']
     = f.error :country, class: 'error-message'
-
-    -# TODO: refactor
-    -# - if @recipient.show_postal_code?
-    -#   .uk-margin-top
-    -#     = f.input :postal_code, type: 'text', placeholder: 'Postal Code', input_html: { class: 'large uk-width-1-1' }
-    -#     = f.error :postal_code, class: 'error-message'
 
   .uk-width-medium-1-1.uk-margin-top.fade-out.name
     .label How long has your organisation or project been operating for?

@@ -1,5 +1,5 @@
 class EnquiriesController < ApplicationController
-  before_action :ensure_logged_in, :ensure_proposal_present
+  before_action :ensure_logged_in
   before_action :load_fund # TODO: refactor
 
   def new
@@ -10,7 +10,7 @@ class EnquiriesController < ApplicationController
                   alert: 'Please provide details of your funding request ' \
                          'before applying.'
     else
-      redirect_to fund_eligibility_path(@fund),
+      redirect_to eligibility_proposal_fund_path(@proposal, @fund),
                   alert: 'You need to check your eligibility before applying.'
     end
   end

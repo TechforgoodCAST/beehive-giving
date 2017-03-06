@@ -1,8 +1,7 @@
 class Proposal < ActiveRecord::Base
+  before_validation :clear_districts_if_country_wide
   after_validation :trigger_clear_beneficiary_ids
-  after_validation :check_affect_geo
   before_save :save_all_age_groups_if_all_ages
-  after_save :save_districts_from_countries
   after_save :initial_recommendation
 
   has_many :recommendations, dependent: :destroy
@@ -127,6 +126,13 @@ class Proposal < ActiveRecord::Base
   validates :implementations_other,
             presence: { message: "please uncheck 'Other' or specify details" },
             if: :implementations_other_required
+
+  validate :recipient_subscribed, on: :create
+
+  def recipient_subscribed
+    return if recipient.subscribed? || recipient.proposals.count.zero?
+    errors.add(:title, 'Upgrade subscription to create multiple proposals')
+  end
 
   def initial_recommendation
     beehive_insight = call_beehive_insight(
@@ -257,23 +263,6 @@ class Proposal < ActiveRecord::Base
 
   def recommendation(fund)
     Recommendation.find_by(proposal: self, fund: fund)
-  end
-
-  def check_affect_geo
-    # TODO: refactor
-    return if affect_geo.blank? || affect_geo == 2
-    self.affect_geo = if country_ids.uniq.count > 1
-                        3
-                      elsif (district_ids & Country.find(country_ids[0])
-                            .districts.pluck(:id)).count ==
-                            Country.find(country_ids[0]).districts.count
-                        2
-                      elsif District.where(id: district_ids)
-                                    .distinct.pluck(:region).count > 1
-                        1
-                      else
-                        0
-                      end
   end
 
   def show_fund?(fund)
@@ -419,16 +408,6 @@ class Proposal < ActiveRecord::Base
       self.beneficiaries_other_required = false unless affect_other?
     end
 
-    def save_districts_from_countries
-      # TODO: refactor into background job too slow
-      # return unless affect_geo > 1
-      # district_ids_array = []
-      # countries.each do |country|
-      #   district_ids_array += District.where(country_id: country.id).pluck(:id)
-      # end
-      # self.district_ids = district_ids_array.uniq
-    end
-
     def prevent_second_proposal_until_first_is_complete
       return unless recipient.proposals.count == 1 &&
                     recipient.proposals.where(state: 'complete').count < 1
@@ -436,5 +415,10 @@ class Proposal < ActiveRecord::Base
         :proposal,
         'Please complete your first proposal before creating a second.'
       )
+    end
+
+    def clear_districts_if_country_wide
+      return if affect_geo.nil?
+      self.districts = [] if affect_geo > 1
     end
 end

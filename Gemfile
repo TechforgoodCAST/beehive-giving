@@ -31,12 +31,48 @@ gem 'bcrypt', '~> 3.1.7'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+gem 'activerecord-import'
+gem 'cells-rails'
+gem 'cells-slim'
+gem 'chartkick'
+gem 'chosen-rails'
+gem 'country_select'
+gem 'geocoder'
+gem 'gon'
+gem 'groupdate'
+gem 'hamlit' # TODO: replace with gem 'slim'
+gem 'httparty'
+gem 'jquery-turbolinks'
+gem 'nokogiri'
+gem 'nprogress-rails'
+gem 'simple_form'
+gem 'stripe'
+gem 'uikit-sass-rails'
+gem 'workflow'
+
+# Admin
+gem 'activeadmin', git: 'https://github.com/activeadmin/activeadmin'
+gem 'devise'
+gem 'inherited_resources', git: 'https://github.com/activeadmin/inherited_resources'
+
+# Monitoring & metrics
+gem 'intercom-rails'
+gem 'newrelic_rpm'
+gem 'rollbar'
+group :production do
+  gem 'rails_12factor'
+  gem 'scout_apm'
+  gem 'tunemygc'
+end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
+  gem 'capybara'
   gem 'dotenv-rails'
   gem 'factory_girl_rails'
   gem 'guard-rspec', require: false
+  gem 'rspec-cells'
   gem 'rspec-rails'
   gem 'show_me_the_cookies'
   gem 'stripe-ruby-mock', require: 'stripe_mock'
@@ -63,39 +99,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 group :test do
-  gem 'capybara'
+  gem 'database_cleaner'
   gem 'poltergeist'
   gem 'selenium-webdriver'
-end
-
-gem 'activerecord-import'
-gem 'chartkick'
-gem 'chosen-rails'
-gem 'country_select'
-gem 'geocoder'
-gem 'gon'
-gem 'groupdate'
-gem 'haml'
-gem 'httparty'
-gem 'jquery-turbolinks'
-gem 'nokogiri'
-gem 'nprogress-rails'
-gem 'simple_form'
-gem 'stripe'
-gem 'uikit-sass-rails'
-gem 'workflow'
-
-# Admin
-gem 'activeadmin', git: 'https://github.com/activeadmin/activeadmin'
-gem 'devise'
-gem 'inherited_resources', git: 'https://github.com/activeadmin/inherited_resources'
-
-# Monitoring & metrics
-gem 'intercom-rails'
-gem 'newrelic_rpm'
-gem 'rollbar'
-group :production do
-  gem 'rails_12factor'
-  gem 'scout_apm'
-  gem 'tunemygc'
 end

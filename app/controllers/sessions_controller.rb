@@ -1,14 +1,6 @@
 class SessionsController < ApplicationController
   def new
-    redirect_to start_path_for_user if logged_in?
-  end
-
-  def check
-    if logged_in?
-      redirect_to start_path_for_user
-    else
-      redirect_to signup_user_path
-    end
+    redirect_to start_path if logged_in?
   end
 
   def create
@@ -23,7 +15,7 @@ class SessionsController < ApplicationController
       if session[:original_url]
         redirect_to session.delete(:original_url)
       else
-        redirect_to start_path_for_user, notice: 'Signed in!'
+        redirect_to start_path, notice: 'Signed in!'
       end
     else
       flash[:error] = 'Incorrect email/password combination, please try again.'
@@ -33,7 +25,7 @@ class SessionsController < ApplicationController
 
   def destroy
     cookies.delete(:auth_token)
-    redirect_to root_path, notice: 'Signed out!'
+    redirect_to root_path, notice: 'Signed out!' # TODO: flash not showing
   end
 
   private
@@ -41,17 +33,5 @@ class SessionsController < ApplicationController
     def sign_in_metrics
       current_user.increment!(:sign_in_count)
       current_user.update_attribute(:last_seen, Time.zone.now)
-    end
-
-    def start_path_for_user
-      org = current_user.organisation
-      if current_user.role == 'User'
-        return signup_organisation_path unless org
-        return new_recipient_proposal_path(org) unless
-          org.proposals.count.positive?
-        recommended_funds_path
-      else
-        funder_overview_path(org)
-      end
     end
 end

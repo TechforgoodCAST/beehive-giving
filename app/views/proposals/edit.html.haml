@@ -1,4 +1,5 @@
-= stylesheet_link_tag 'profiles'
+= content_for :title, 'Edit Proposal'
+
 = stylesheet_link_tag 'chosen'
 = stylesheet_link_tag 'overrides/chosen_overrides'
 = javascript_include_tag 'chosen-jquery'
@@ -7,19 +8,32 @@
 
 :javascript
   mixpanel.track("View Proposal #{@proposal.state.capitalize} Page");
-  mixpanel.identify('#{current_user.id}');
+  mixpanel.identify('#{@current_user.id}');
   mixpanel.people.set({
     'Proposal State': '#{@proposal.state}'
   });
 
+= render partial: 'subnav'
+
 .uk-container.uk-container-center.uk-margin-large
 
-  - if @proposal.complete?
-    %h2 Funding proposal
-    %h4 Update your funding proposal to update your funding recommendations.
-  - else
-    %h2 Improve your results
-    %h4 Complete your funding proposal to gain access to eligibility checking features on Beehive.
+  %h2 Funding proposal
+  %h4 Update your funding proposal to update your funding recommendations.
 
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
-    = render partial: "proposals/states/#{@proposal.state}"
+
+    = simple_form_for [@recipient, @proposal], url: edit_recipient_proposal_path(@recipient, @proposal), method: :patch, remote: true, authenticity_token: true do |f|
+
+      = cell(:proposal_form, @proposal, f: f).call(:summary)
+      = cell(:proposal_form, @proposal, f: f).call(:requirements)
+      = cell(:proposal_form, @proposal, f: f).call(:beneficiaries)
+      = cell(:proposal_form, @proposal, f: f).call(:location)
+      = cell(:proposal_form, @proposal, f: f).call(:activities)
+      = cell(:proposal_form, @proposal, f: f).call(:outcomes)
+      = cell(:proposal_form, @proposal, f: f).call(:privacy)
+
+      .uk-width-medium-1-1
+        - if session[:return_to]
+          = f.button :button, 'Update and check eligibility', class: 'uk-button uk-button-primary uk-margin-top uk-button-large uk-width-medium-1-2 uk-float-right', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> That wasn't so bad...</span>"}
+        - else
+          = f.button :button, 'Update and review recommendations', class: 'uk-button uk-button-primary uk-margin-top uk-button-large uk-width-medium-1-2 uk-float-right', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> That wasn't so bad...</span>"}

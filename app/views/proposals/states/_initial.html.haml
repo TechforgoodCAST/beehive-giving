@@ -1,5 +1,0 @@
-= content_for :title, 'New Proposal'
-
-= simple_form_for [@recipient, @proposal], url: new_recipient_proposal_path, method: :post, remote: true, authenticity_token: true do |f|
-  .uk-form.uk-form-stacked.form
-    = render partial: 'proposals/states/fields', locals: { f: f, country: @recipient_country }

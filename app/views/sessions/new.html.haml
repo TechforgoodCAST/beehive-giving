@@ -1,3 +1,5 @@
+= content_for :title, 'Sign in'
+
 - content_for :sign_in do
   :css
     html, body {
@@ -10,7 +12,7 @@
       .uk-container.uk-container-center.uk-margin-large-top.uk-margin-large
 
         .uk-text-center.uk-margin-bottom
-          %a.logo-large{href: welcome_path, alt: 'Beehive'}
+          %a.logo-large{ href: root_path, alt: 'Beehive' }
           %h3.white.uk-margin-top-remove Intelligently connecting non-profits with funders
         .sign-in-container.uk-container-center
 
@@ -39,4 +41,4 @@
                 = link_to 'Forgot Password?', new_password_reset_path, class: 'uk-float-right uk-link'
 
         .uk-text-center.uk-margin-top
-          = link_to 'Create account', welcome_path, style: 'font-size: 16px;'
+          = link_to 'Create account', root_path, style: 'font-size: 16px;'

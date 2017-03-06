@@ -4,7 +4,6 @@
     %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
       %title= content_for?(:title) ? "#{yield(:title)} | Beehive" : 'Beehive'
       = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
-      = stylesheet_link_tag    params[:controller]
       = javascript_include_tag 'application', 'data-turbolinks-track' => true
       = javascript_include_tag params[:controller]
       = javascript_include_tag 'helpers'
@@ -40,12 +39,12 @@
       })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
 
     - if logged_in?
-      = intercom_script_tag(email: current_user.user_email, name: current_user.full_name)
+      = intercom_script_tag(email: @current_user.user_email, name: @current_user.full_name)
       :javascript
         ga('set', 'userId', gon.currentUserId);
 
   %body#top
-    = render partial: 'layouts/navbar'
+    = cell(:navbar, @current_user, proposal: @proposal)
 
     .uk-container.uk-container-center
       - if flash[:notice]
@@ -75,8 +74,8 @@
           });
         #notice
 
+    -# TODO: refactor
     = yield(:public) if content_for?(:public)
-    = yield(:signup) if content_for?(:signup)
     = yield(:sign_in) if content_for?(:sign_in)
     = yield
 

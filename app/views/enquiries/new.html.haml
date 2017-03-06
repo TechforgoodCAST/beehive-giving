@@ -1,4 +1,4 @@
-= content_for :title, "Apply to #{@fund.name}"
+= content_for :title, "Apply to #{@fund.name}, #{@fund.funder.name}"
 
 :javascript
   mixpanel.track("View Apply Page", {"Fund": "#{@fund.name}"});
@@ -29,7 +29,7 @@
       %p.uk-margin-bottom
         If you haven't already, be sure to explore our analysis of
         = succeed ',' do
-          = link_to "#{@fund.name}", fund_path(@fund)
+          = link_to "#{@fund.name}", proposal_fund_path(@proposal, @fund)
         otherwise below are a few things to consider before you proceed.
 
       %hr.thick
@@ -42,4 +42,4 @@
         -#   %h4.uk-text-bold Match funding restrictions
         -#   = raw(@fund.match_funding_restrictions)
 
-        = link_to "Apply to #{@fund.name}", fund_apply_path(@fund), method: :post, target: '_blank', 'data-uk-tooltip': "{pos:'top'}", title: 'A new page will be opened with application details', class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right'
+        = link_to "Apply to #{@fund.name}", apply_proposal_fund_path(@proposal, @fund), method: :post, target: '_blank', 'data-uk-tooltip': "{pos:'top'}", title: 'A new page will be opened with application details', class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right'

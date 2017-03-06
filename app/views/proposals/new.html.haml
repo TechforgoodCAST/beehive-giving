@@ -1,7 +1,7 @@
-= stylesheet_link_tag 'profiles'
+= content_for :title, 'New Proposal'
+
 = stylesheet_link_tag 'chosen'
 = stylesheet_link_tag 'overrides/chosen_overrides'
-= stylesheet_link_tag 'signup'
 
 = javascript_include_tag 'chosen-jquery'
 = javascript_include_tag 'chosen'
@@ -9,7 +9,7 @@
 
 :javascript
   mixpanel.track("View Proposal #{@proposal.state.capitalize} Page");
-  mixpanel.identify('#{current_user.id}');
+  mixpanel.identify('#{@current_user.id}');
   mixpanel.people.set({
     'Proposal State': '#{@proposal.state}'
   });
@@ -26,17 +26,23 @@
   %div{ style: "display:inline;" }
     %img{ alt: "", height: "1", src: "//www.googleadservices.com/pagead/conversion/937505505/?label=fR8GCJamvWMQ4eWEvwM&amp;guid=ON&amp;script=0", style: "border-style:none;", width: "1" }
 
-- content_for :signup do
-  = render partial: 'signup/subnav', locals: { current_step: 1 }
+= render partial: 'subnav'
 
-  .uk-container.uk-container-center.uk-margin-large
+.uk-container.uk-container-center.uk-margin-large
 
-    %h2 What are you seeking funding for?
-    %h4 Beehive will use this to provide recommendations of suitable funder.
+  %h2 What are you seeking funding for?
+  %h4 Beehive will use this to provide recommendations of suitable funds.
 
-    .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
-      -# TODO: refactor
-      - if @recipient.profile_for_migration?
-        = render partial: 'proposals/cta'
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
 
-      = render partial: "proposals/states/#{@proposal.state}"
+    = simple_form_for [@recipient, @proposal], url: new_recipient_proposal_path(@recipient), method: :post do |f|
+
+      = cell(:proposal_form, @proposal, f: f).call(:summary)
+      = cell(:proposal_form, @proposal, f: f).call(:requirements)
+      = cell(:proposal_form, @proposal, f: f).call(:beneficiaries)
+      = cell(:proposal_form, @proposal, f: f).call(:location)
+      = cell(:proposal_form, @proposal, f: f).call(:activities)
+      = cell(:proposal_form, @proposal, f: f).call(:outcomes)
+      = cell(:proposal_form, @proposal, f: f).call(:privacy)
+
+      = cell(:proposal_form, @proposal, f: f).call(:submit)

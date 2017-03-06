@@ -44,7 +44,7 @@ class PasswordResetsController < ApplicationController
             .permit(:password, :password_confirmation)
     end
 
-    def ensure_not_logged_in
+    def ensure_not_logged_in # TODO: review
       redirect_to root_path, alert: "Sorry, you don't have access to that"
     end
 end

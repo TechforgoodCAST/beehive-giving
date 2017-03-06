@@ -16,23 +16,6 @@ module Beehive
 
     # controller assets
     config.assets.precompile += %w(
-      accounts.css
-      eligibilities.css
-      enquiries.css
-      errors.css
-      feedback.css
-      funders.css
-      funds.css
-      organisations.css
-      pages.css
-      password_resets.css
-      profiles.css
-      proposals.css
-      recipients.css
-      signup.css
-      sessions.css
-    )
-    config.assets.precompile += %w(
       accounts.js
       eligibilities.js
       enquiries.js
@@ -50,6 +33,7 @@ module Beehive
       recipients.js
       signup.js
       sessions.js
+      signup_proposals.js
     )
 
     # vendor assets

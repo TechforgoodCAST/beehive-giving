@@ -1,5 +1,5 @@
 class FeedbackController < ApplicationController
-  before_action :ensure_logged_in, :ensure_proposal_present
+  before_action :ensure_logged_in
   before_action :redirect_to_funder, only: [:new, :create]
 
   def new
@@ -17,7 +17,7 @@ class FeedbackController < ApplicationController
 
     if @feedback.save
       session.delete(:redirect_to_funder)
-      redirect_to fund_eligibility_path(@fund),
+      redirect_to eligibility_proposal_fund_path(@proposal, @fund),
                   notice: "You're a star! Thanks for the feedback."
     else
       render :new
@@ -40,13 +40,6 @@ class FeedbackController < ApplicationController
   end
 
   private
-
-    def feedback_params
-      params.require(:feedback)
-            .permit(:suitable, :most_useful, :nps, :taken_away,
-                    :informs_decision, :other, :application_frequency,
-                    :grant_frequency, :marketing_frequency)
-    end
 
     def redirect_to_funder
       @redirect_to_funder = session[:redirect_to_funder]

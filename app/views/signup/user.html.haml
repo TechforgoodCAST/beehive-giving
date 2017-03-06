@@ -1,9 +1,9 @@
+= content_for :title, 'Beehive - Intelligently connecting non-profits with funders'
+
 = javascript_include_tag 'chosen-jquery'
 = javascript_include_tag 'chosen'
 = stylesheet_link_tag 'chosen'
 = stylesheet_link_tag 'overrides/chosen_overrides'
-
-= stylesheet_link_tag 'pages'
 
 :javascript
   mixpanel.track("View Welcome Page");
@@ -65,7 +65,7 @@
         .uk-width-medium-2-3.uk-vertical-align.uk-float-left{style: 'height: 224px;'}
           .uk-vertical-align-middle
             %h3 Smart
-            %h4.hero Beehive analyses thousands of grants to identify suitable funders for your organisation or project.
+            %h4.hero Beehive analyses thousands of grants to identify suitable funds for your organisation or project.
       #personal{"data-uk-scrollspy" => "{cls:'uk-animation-slide-left'}"}
         .uk-width-medium-1-3.uk-float-left
           .feature.personal

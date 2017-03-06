@@ -1,15 +1,15 @@
 - params[:funding_navbar] = true
 .subnav{ "data-uk-sticky" => "" }
   .uk-container.uk-container-center
-    %ul.nav{ class: current_user.role == 'Funder' ? 'funder' : 'recipient' }
-      %a{href: recommended_funds_path}
-        %li.first{ class: ('active' if current_page?(recommended_funds_path)) }
+    %ul.nav{ class: @current_user.role == 'Funder' ? 'funder' : 'recipient' }
+      %a{ href: recommended_proposal_funds_path(@proposal) }
+        %li.first{ class: ('active' if current_page?(recommended_proposal_funds_path(@proposal))) }
           Recommended
           .highlight
       %span &middot;
 
-      %a{ href: eligible_funds_path }
-        %li{ class: ('active' if current_page?(eligible_funds_path)) }
+      %a{ href: eligible_proposal_funds_path(@proposal) }
+        %li{ class: ('active' if current_page?(eligible_proposal_funds_path(@proposal))) }
           Eligible
           - unless @proposal.eligible_funds.empty?
             = surround '(', ')' do
@@ -17,8 +17,8 @@
           .highlight
       %span &middot;
 
-      %a{ href: ineligible_funds_path }
-        %li{ class: ('active' if current_page?(ineligible_funds_path)) }
+      %a{ href: ineligible_proposal_funds_path(@proposal) }
+        %li{ class: ('active' if current_page?(ineligible_proposal_funds_path(@proposal))) }
           Ineligible
           - unless @proposal.ineligible_funds.empty?
             = surround '(', ')' do
@@ -26,15 +26,15 @@
           .highlight
       %span &middot;
 
-      %a{ href: all_funds_path }
-        %li.last{ class: ('active' if current_page?(all_funds_path)) }
+      %a{ href: all_proposal_funds_path(@proposal) }
+        %li.last{ class: ('active' if current_page?(all_proposal_funds_path(@proposal))) }
           All
           .highlight
 
       - if params[:tag]
         %span &rsaquo;
         -# TODO: refactor
-        %a{ href: tag_path(@tag.parameterize) }
+        %a{ href: tag_proposal_funds_path(@proposal, @tag.parameterize) }
           %li.last.active
             = @tag
             .highlight

@@ -19,12 +19,12 @@ feature 'DEPRECATED Funder' do
 
   scenario 'cannot visit recipient paths' do
     [
-      recommended_funds_path,
-      eligible_funds_path,
-      ineligible_funds_path,
-      all_funds_path,
-      fund_eligibility_path(@fund),
-      fund_apply_path(@fund),
+      recommended_proposal_funds_path('proposal'),
+      eligible_proposal_funds_path('proposal'),
+      ineligible_proposal_funds_path('proposal'),
+      all_proposal_funds_path('proposal'),
+      eligibility_proposal_fund_path('proposal', @fund),
+      apply_proposal_fund_path('proposal', @fund),
       new_recipient_proposal_path(@funder),
       edit_recipient_proposal_path(@funder),
       recipient_proposals_path(@funder),

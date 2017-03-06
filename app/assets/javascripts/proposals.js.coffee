@@ -166,7 +166,7 @@ ProposalForm = ((w, d) ->
 
   selectAllAges = ->
     checkBoxes = '.proposal_age_groups input'
-    $(checkBoxes).first().change ->
+    $('#proposal_age_group_ids_1').change ->
       if this.checked
         $.each $(checkBoxes), ( i, v ) ->
           $(v).prop('checked', true).closest('label').addClass('checkbox-checked');
@@ -174,16 +174,13 @@ ProposalForm = ((w, d) ->
         $.each $(checkBoxes), ( i, v ) ->
           $(v).prop('checked', false).closest('label').removeClass('checkbox-checked');
 
-    options = []
-    $.each $(checkBoxes).splice(1,$(checkBoxes).length-1), ( i, v ) ->
-      options.push(v.id + ':checked') if i < 7
-    options = options.join(', #')
+    options = '.proposal_age_groups .checkbox-checked :not(#proposal_age_group_ids_1)'
 
-    $(checkBoxes).change ->
-      if $('#' + options).length == 7
-        $(checkBoxes).first().prop('checked', true).closest('label').addClass('checkbox-checked');
+    $(options).change ->
+      if $(options).length == 7
+        $('#proposal_age_group_ids_1').prop('checked', true).closest('label').addClass('checkbox-checked');
       else
-        $(checkBoxes).first().prop('checked', false).closest('label').removeClass('checkbox-checked');
+        $('#proposal_age_group_ids_1').prop('checked', false).closest('label').removeClass('checkbox-checked');
 
 
   showCheckboxErrors = (group, field) ->
@@ -236,7 +233,6 @@ ProposalForm = ((w, d) ->
 
   triggerFunctions = ->
     $('.currency input').currencyFormat()
-    $('#proposal_district_ids').treeMultiselect()
     triggerToggleBeneficiaryGroups()
     highlightChecked('checkbox')
     highlightChecked('radio')
@@ -248,6 +244,8 @@ ProposalForm = ((w, d) ->
     affectGeo()
     multiSelectChecked()
     charCount()
+    if $('#proposal_district_ids').length > 0
+      $('#proposal_district_ids').treeMultiselect()
 
   return {
     triggerFunctions: triggerFunctions

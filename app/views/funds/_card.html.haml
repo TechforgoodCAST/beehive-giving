@@ -23,7 +23,7 @@
           - unless @proposal.show_fund?(fund)
             %tr
               %td.muted{ colspan: 2 }
-                %a{ href: '#why-hidden', class: 'uk-text-bold why-hidden', onclick: "goog_report_conversion('#why-hidden')" } Upgrade to see more
+                = cell(:coming_soon_link).call(:show, 'Upgrade to see more', 'uk-text-bold')
           %tr
             %td Organisation type
             %td= render_recommendation(fund, 'org_type_score', 2)
@@ -48,4 +48,4 @@
           = fund_card_cta_button_copy(fund)
         - unless params[:controller] == 'funds' && params[:action] == 'show'
           .content.center
-            = link_to 'More info', fund_path(fund)
+            = link_to 'More info', proposal_fund_path(@proposal, fund)

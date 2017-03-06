@@ -4,23 +4,23 @@ class Funder < Organisation
   CLOSED_FUNDERS = ['Cripplegate Foundation', 'The Baring Foundation'].freeze
 
   has_many :funds
-  has_many :grants
-  has_many :districts, -> { distinct }, through: :grants
-  has_many :countries, -> { distinct }, through: :grants
-  has_many :countries_by_year, ->(object) { where('grants.approved_on <= ? AND grants.approved_on >= ?', "#{object.current_attribute.year}-12-31", "#{object.current_attribute.year}-01-01") }, through: :grants, source: :countries
-  has_many :districts_by_year, ->(object) { where('grants.approved_on <= ? AND grants.approved_on >= ?', "#{object.current_attribute.year}-12-31", "#{object.current_attribute.year}-01-01") }, through: :grants, source: :districts
+  has_many :grants  # TODO: deprecated
+  has_many :districts, -> { distinct }, through: :grants # TODO: deprecated
+  has_many :countries, -> { distinct }, through: :grants # TODO: deprecated
+  has_many :countries_by_year, ->(object) { where('grants.approved_on <= ? AND grants.approved_on >= ?', "#{object.current_attribute.year}-12-31", "#{object.current_attribute.year}-01-01") }, through: :grants, source: :countries  # TODO: deprecated
+  has_many :districts_by_year, ->(object) { where('grants.approved_on <= ? AND grants.approved_on >= ?', "#{object.current_attribute.year}-12-31", "#{object.current_attribute.year}-01-01") }, through: :grants, source: :districts # TODO: deprecated
 
-  has_many :recipients, through: :grants
-  has_many :recent_recipients, ->(object) { where('grants.approved_on <= ? AND grants.approved_on >= ?', "#{object.current_attribute.year}-12-31", "#{object.current_attribute.year}-01-01") }, through: :grants, source: :recipient
+  has_many :recipients, through: :grants # TODO: deprecated
+  has_many :recent_recipients, ->(object) { where('grants.approved_on <= ? AND grants.approved_on >= ?', "#{object.current_attribute.year}-12-31", "#{object.current_attribute.year}-01-01") }, through: :grants, source: :recipient # TODO: deprecated
 
-  has_many :age_groups, through: :funder_attributes
+  has_many :age_groups, through: :funder_attributes # TODO: deprecated
 
-  has_many :funder_attributes, dependent: :destroy
-  has_many :approval_months, through: :funder_attributes
-  has_many :beneficiaries, through: :funder_attributes
+  has_many :funder_attributes, dependent: :destroy # TODO: deprecated
+  has_many :approval_months, through: :funder_attributes # TODO: deprecated
+  has_many :beneficiaries, through: :funder_attributes # TODO: deprecated
 
-  has_many :recipients, through: :grants
-  has_many :profiles, through: :recipients, dependent: :destroy
+  has_many :recipients, through: :grants # TODO: deprecated
+  has_many :profiles, through: :recipients, dependent: :destroy # TODO: deprecated
 
   has_and_belongs_to_many :funding_streams # TODO: remove once data migrated
   has_many :restrictions, through: :funds

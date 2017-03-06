@@ -7,28 +7,34 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
+  # Legacy support
+  get '/about',   to: redirect('/')
+  get '/tour',    to: redirect('#tell-me-more')
+  get '/welcome', to: redirect('/')
+
   # Sessions
-  root to: 'sessions#check'
-  get '/logout' => 'sessions#destroy'
-  match '/sign-in', to: 'sessions#new', via: :get, as: 'sign_in'
-  match '/sign-in', to: 'sessions#create', via: :post
+  get  '/logout',  to: 'sessions#destroy'
+  get  '/sign-in', to: 'sessions#new', as: 'sign_in'
+  post '/sign-in', to: 'sessions#create'
 
   # Pages
-  match '/tour', to: 'pages#tour', via: :get, as: 'tour'
-  match '/about', to: 'pages#about', via: :get, as: 'about'
-  match '/privacy', to: 'pages#privacy', via: :get, as: 'privacy'
-  match '/terms', to: 'pages#terms', via: :get, as: 'terms'
-  match '/faq', to: 'pages#faq', via: :get, as: 'faq'
+  get '/faq',     to: 'pages#faq',     as: 'faq'
+  get '/privacy', to: 'pages#privacy', as: 'privacy'
+  get '/terms',   to: 'pages#terms',   as: 'terms'
 
   # Sign up
-  match '/welcome', to: 'signup#user', via: :get, as: 'signup_user'
-  match '/welcome', to: 'signup#create_user', via: :post
+  root 'signup#user'
+  post '/', to: 'signup#create_user'
 
-  match '/basics', to: 'signup#organisation', via: :get, as: 'signup_organisation'
-  match '/basics', to: 'signup#create_organisation', via: :post
+  get   '/basics',       to: 'signup#organisation', as: 'signup_organisation'
+  post  '/basics',       to: 'signup#create_organisation'
+  get   '/(:id)/basics', to: 'recipients#edit', as: 'edit_recipient'
+  patch '/(:id)/basics', to: 'recipients#update'
 
-  match '/(:id)/basics', to: 'recipients#edit', via: :get, as: 'edit_recipient'
-  match '/(:id)/basics', to: 'recipients#update', via: :patch
+  get  '/proposal',       to: 'signup_proposals#new', as: 'new_signup_proposal'
+  post '/proposal',       to: 'signup_proposals#create'
+  get  '/proposal/(:id)', to: 'signup_proposals#edit', as: 'edit_signup_proposal'
+  post '/proposal/(:id)', to: 'signup_proposals#update'
 
   # User authorisation for organisational access
   match '/unauthorised', to: 'signup#unauthorised', via: :get, as: 'unauthorised'
@@ -42,14 +48,26 @@ Rails.application.routes.draw do
   # TODO match '/account/(:id)/upgrade', to: 'accounts#upgrade', via: :get, as: 'account_upgrade'
   # TODO match '/account/(:id)/charge', to: 'accounts#charge', via: :post, as: 'account_charge'
 
-  # Funds
-  get '/recommended/funds', to: 'funds#recommended', as: 'recommended_funds'
-  get '/eligible/funds', to: 'funds#eligible', as: 'eligible_funds'
-  get '/ineligible/funds', to: 'funds#ineligible', as: 'ineligible_funds'
-  get '/all/funds', to: 'funds#all', as: 'all_funds'
-  get '/(:tag)/funds', to: 'funds#tagged', as: 'tag'
+  resources :proposals, except: [:show, :destroy] do
+    resources :funds, only: :show do
+      collection do
+        get :recommended
+        get :eligible
+        get :ineligible
+        get :all
+        get '/theme/:tag', to: 'funds#tagged', as: 'tag'
+      end
+      member do
+        get   :eligibility, to: 'eligibilities#new'
+        patch :eligibility, to: 'eligibilities#create'
+        get   :apply,       to: 'enquiries#new'
+        post  :apply,       to: 'enquiries#create'
+      end
+    end
+  end
 
-  # Funders - deprecated
+  # Funders
+  # NOTE: deprecated
   match '/funding/(:id)/overview', to: 'funders#overview', via: :get, as: 'funder_overview'
   match '/funding/(:id)/map', to: 'funders#map', via: :get, as: 'funder_map'
   match '/map-data/(:id)', to: 'funders#map_data', via: :get, as: 'funder_map_data'
@@ -63,14 +81,6 @@ Rails.application.routes.draw do
   match '/(:recipient_id)/proposal/(:id)', to: 'proposals#update', via: :patch
   match '/(:recipient_id)/proposals', to: 'proposals#index', via: :get, as: 'recipient_proposals'
 
-  # Eligibilities
-  match '/funds/(:id)/eligibility', to: 'eligibilities#new', via: :get, as: 'fund_eligibility'
-  match '/funds/(:id)/eligibility', to: 'eligibilities#create', via: :patch
-
-  # Enquiries
-  match '/funds/(:id)/apply', to: 'enquiries#new', via: :get, as: 'fund_apply'
-  match '/funds/(:id)/apply', to: 'enquiries#create', via: :post
-
   resources :feedback, only: [:new, :create, :edit, :update]
   resources :password_resets, only: [:new, :create, :edit, :update]
 
@@ -79,6 +89,4 @@ Rails.application.routes.draw do
       post :approach_funder
     end
   end
-
-  resources :funds, only: :show
 end

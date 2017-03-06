@@ -1,6 +1,5 @@
 class RecipientsController < ApplicationController
   before_action :ensure_logged_in
-  # TODO: before_action :check_organisation_ownership, only: :show
 
   def edit
     @scrape_success = @recipient.scrape_org
@@ -28,13 +27,4 @@ class RecipientsController < ApplicationController
       end
     end
   end
-
-  private
-
-    def recipient_params
-      params.require(:recipient)
-            .permit(:name, :website, :street_address, :country, :charity_number,
-                    :company_number, :operating_for, :multi_national, :income,
-                    :employees, :volunteers, :org_type, organisation_ids: [])
-    end
 end

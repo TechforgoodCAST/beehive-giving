@@ -8,6 +8,7 @@ describe District do
     @app.seed_test_db
         .setup_funds(num: 2)
         .create_recipient
+        .subscribe_recipient
         .create_complete_proposal
         .create_registered_proposal
     @db = @app.instances

@@ -1,6 +1,6 @@
 class FundsController < ApplicationController
-  before_action :ensure_logged_in, :ensure_proposal_present,
-                :refine_recommendations
+  before_action :ensure_logged_in,
+                :refine_recommendations # TODO: refactor
 
   def show
     @fund = Fund.includes(:funder).find_by(slug: params[:id])

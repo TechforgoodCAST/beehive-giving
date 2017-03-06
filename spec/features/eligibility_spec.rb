@@ -14,6 +14,7 @@ feature 'Eligibility' do
         .sign_in
     @db = @app.instances
     @fund = Fund.last
+    @proposal = @db[:registered_proposal]
     visit root_path
   end
 
@@ -25,9 +26,9 @@ feature 'Eligibility' do
     def assert(present: true)
       copy = 'Last time you used Beehive you conducted 1 eligibility check'
       [
-        recommended_funds_path,
-        eligible_funds_path,
-        ineligible_funds_path
+        recommended_proposal_funds_path(@proposal),
+        eligible_proposal_funds_path(@proposal),
+        ineligible_proposal_funds_path(@proposal)
       ].each do |path|
         visit path
         if present
@@ -55,20 +56,18 @@ feature 'Eligibility' do
             proposal, I want to understand why I need to do it,
             so I feel I'm using my time in the best way" do
     helper.visit_first_fund
-    expect(page).to have_text 'Complete your funding proposal to gain access ' \
-                              'to eligibility checking features on Beehive.'
+    expect(page).to have_text 'Complete your funding proposal to access '
   end
 
   scenario "When I'm try to access application details before checking
             eligiblity, I want to be told why I can't access them,
             so I understand what to do next" do
-    visit fund_apply_path(@fund)
-    expect(page).to have_text 'Complete your funding proposal to gain access ' \
-                              'to eligibility checking features on Beehive.'
+    visit apply_proposal_fund_path(@proposal, @fund)
+    expect(page).to have_text 'Complete your funding proposal to access '
 
     helper.complete_proposal.submit_proposal
-    visit fund_apply_path(@fund)
-    expect(current_path).to eq fund_eligibility_path(@fund)
+    visit apply_proposal_fund_path(@proposal, @fund)
+    expect(current_path).to eq eligibility_proposal_fund_path(@proposal, @fund)
   end
 
   context 'complete proposal' do
@@ -142,7 +141,7 @@ feature 'Eligibility' do
     scenario 'When I try check eligibility for a recommended fund,
               I want to see a list of all restrictions,
               so I can check to see if any apply' do
-      expect(current_path).to eq fund_eligibility_path(@fund)
+      expect(current_path).to eq eligibility_proposal_fund_path(@proposal, @fund)
       expect(page).to have_css '.restriction', count: 5
       expect(page).to have_css '.recipient_restriction', count: 2
       expect(page).to have_css '.proposal_restriction', count: 3
@@ -157,11 +156,11 @@ feature 'Eligibility' do
       within '.card' do
         click_link 'Apply'
       end
-      expect(current_path).to eq fund_apply_path(@fund)
+      expect(current_path).to eq apply_proposal_fund_path(@proposal, @fund)
 
-      visit fund_eligibility_path(@fund)
+      visit eligibility_proposal_fund_path(@proposal, @fund)
       click_link 'Apply for funding'
-      expect(current_path).to eq fund_apply_path(@fund)
+      expect(current_path).to eq apply_proposal_fund_path(@proposal, @fund)
     end
 
     scenario "When I run a check and I'm ineligible,
@@ -175,7 +174,7 @@ feature 'Eligibility' do
       expect(page).to have_text 'You did not meet this criteria', count: 3
 
       click_link 'Why ineligible?'
-      expect(current_path).to eq fund_eligibility_path(@fund)
+      expect(current_path).to eq eligibility_proposal_fund_path(@proposal, @fund)
 
       helper.answer_restrictions.update
       expect(page).to have_text 'Apply'
@@ -184,8 +183,8 @@ feature 'Eligibility' do
       # No feedback for unlocked funds
       click_link 'Funding'
       helper.visit_first_fund.check_eligibility(remaining: 2)
-      visit fund_eligibility_path(@fund)
-      expect(current_path).to eq fund_eligibility_path(@fund)
+      visit eligibility_proposal_fund_path(@proposal, @fund)
+      expect(current_path).to eq eligibility_proposal_fund_path(@proposal, @fund)
     end
 
     scenario "When I check a fund with shared restrictions,
@@ -201,7 +200,7 @@ feature 'Eligibility' do
       helper.answer_recipient_restrictions
             .answer_proposal_restrictions(eligible: false)
             .check_eligibility
-      visit fund_eligibility_path(Fund.second)
+      visit eligibility_proposal_fund_path(@proposal, Fund.second)
       helper.check_eligibility(remaining: 2)
       expect(page).to have_text 'please select from the list', count: 2
     end
@@ -212,8 +211,8 @@ feature 'Eligibility' do
       helper.answer_recipient_restrictions
             .answer_proposal_restrictions(eligible: false)
             .check_eligibility
-      visit fund_apply_path(@fund)
-      expect(current_path).to eq fund_eligibility_path(@fund)
+      visit apply_proposal_fund_path(@proposal, @fund)
+      expect(current_path).to eq eligibility_proposal_fund_path(@proposal, @fund)
     end
 
     scenario 'When I try check eligiblity but have reached the max free limit,
@@ -250,8 +249,8 @@ feature 'Eligibility' do
 
       # checked funds shouldn't show 'Coming soon'
       click_link 'Funding'
-      visit fund_eligibility_path(Fund.first)
-      expect(current_path).to eq fund_eligibility_path(Fund.first)
+      visit eligibility_proposal_fund_path(@proposal, Fund.first)
+      expect(current_path).to eq eligibility_proposal_fund_path(@proposal, Fund.first)
 
       # unchecked funds show 'Coming soon'
       click_link 'Funding'
@@ -260,7 +259,7 @@ feature 'Eligibility' do
       expect(page).to have_text 'Coming soon'
       fill_in :feedback_price, with: 50
       click_button 'Save feedback'
-      expect(current_path).to eq recommended_funds_path
+      expect(current_path).to eq recommended_proposal_funds_path(@proposal)
     end
   end
 
@@ -291,7 +290,7 @@ feature 'Eligibility' do
                 so I can compare them" do
         within '.insights', match: :first do
           click_link 'Eligible'
-          expect(current_path).to eq eligible_funds_path
+          expect(current_path).to eq eligible_proposal_funds_path(@proposal)
         end
       end
     end
@@ -326,10 +325,10 @@ feature 'Eligibility' do
       scenario "When I click on an 'Ineligible' tag,
                 I want to see a list of ineligible funds,
                 so I can compare them" do
-        visit ineligible_funds_path
+        visit ineligible_proposal_funds_path(@proposal)
         within '.insights', match: :first do
           click_link 'Ineligible'
-          expect(current_path).to eq ineligible_funds_path
+          expect(current_path).to eq ineligible_proposal_funds_path(@proposal)
         end
       end
     end

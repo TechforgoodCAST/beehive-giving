@@ -4,7 +4,7 @@
 
 :javascript
   mixpanel.track("View Upgrade Page");
-  mixpanel.identify("#{current_user.id}");
+  mixpanel.identify("#{@current_user.id}");
 
 = render partial: 'subnav'
 

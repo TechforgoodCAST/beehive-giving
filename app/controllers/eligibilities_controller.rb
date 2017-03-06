@@ -1,5 +1,5 @@
 class EligibilitiesController < ApplicationController
-  before_action :ensure_logged_in, :ensure_proposal_present
+  before_action :ensure_logged_in
   before_action :load_fund, # TODO: refactor
                 :load_restrictions, :load_eligibilities
 
@@ -9,8 +9,7 @@ class EligibilitiesController < ApplicationController
 
     if @recipient.incomplete_first_proposal?
       session[:return_to] = @fund.slug
-      redirect_to edit_recipient_proposal_path(@recipient,
-                                               @recipient.proposals.last)
+      redirect_to edit_signup_proposal_path(@proposal)
     elsif current_user.feedbacks.count < 1 &&
           (!@proposal.checked_fund?(@fund) && @recipient.funds_checked == 2)
       session[:redirect_to_funder] = @fund.slug

@@ -398,7 +398,7 @@ a.excellent
     // -ms-transition: all 0.25s ease
     // -kthtml-transition: all 0.25s ease
 
-.field_with_errors + .error-message
+.field_with_errors + .error-message, .restriction-error-message
   color: $red-base
   font-size: 12px
   margin: 4px 0
@@ -605,6 +605,22 @@ ul.insights
 
 .chart
   +shadow
+
+// Misc.
+// =============================================================================
+
+#proposal-title
+  display: inline-flex
+  box-sizing: border-box
+  max-width: 270px
+  white-space: nowrap
+  .text
+    font-weight: bold
+    overflow: hidden
+    text-overflow: ellipsis
+
+.proposal-links
+  font-size: .9em
 
 /* Footer
  ========================================================================== */
