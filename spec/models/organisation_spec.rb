@@ -84,7 +84,7 @@ describe Organisation do
     expect(@org.postal_code).to be_nil
     @org.scrape_org
     @org.save!
-    expect(@org.postal_code).to eq 'GL6 0QL'
+    expect(@org.postal_code).to eq 'POSTCODE'
     expect(@org.latitude).to eq 0.0
     expect(@org.longitude).to eq 0.0
   end

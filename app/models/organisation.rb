@@ -137,10 +137,10 @@ class Organisation < ActiveRecord::Base
     when 1
       scrape_charity_data
     when 2
-      scrape_company_data
+      lookup_company_data
     when 3
       scrape_charity_data
-      scrape_company_data
+      lookup_company_data
     else
       self[:registered_on] = nil
     end
@@ -275,7 +275,7 @@ class Organisation < ActiveRecord::Base
 
         if company_no_scrape.present?
           self.org_type = 3
-          scrape_company_data
+          lookup_company_data
         else
           self.company_number = nil
         end
@@ -330,60 +330,7 @@ class Organisation < ActiveRecord::Base
                          end
     end
 
-    def scrape_company_data
-      require 'open-uri'
-
-      self[:charity_number] = nil if org_type == 2
-
-      response = begin
-                   Nokogiri::HTML(open(companies_house_url))
-                 rescue
-                   nil
-                 end
-      if response
-        self.name = response.at_css('#company-name').text.downcase.titleize unless charity_number.present?
-        self.country = 'GB' if response.at_css('#company-name')
-
-        self.postal_code = response.at_css('.js-tabs+ dl .data').text.split(',').last.strip unless postal_code.present?
-        self.company_name = response.at_css('#company-name').text.downcase.titleize
-        self.company_status = response.at_css('#company-status').text
-        self.company_type = response.at_css('#company-type').text
-        self.company_incorporated_date = response.at_css('#company-creation-date').text
-        self.company_last_accounts_date = response.at_css('.column-half:nth-child(1) p+ p strong').text if
-          response.at_css('.column-half:nth-child(1) p+ p strong').present?
-        self.company_next_accounts_date = response.at_css('.column-half:nth-child(1) .heading-medium+ p strong:nth-child(1)').text if
-          response.at_css('.column-half:nth-child(1) .heading-medium+ p strong:nth-child(1)')
-        self.company_accounts_due_date = response.at_css('.column-half:nth-child(1) br+ strong').text if response.at_css('.column-half:nth-child(1) br+ strong')
-        self.company_last_annual_return_date = response.at_css('.column-half+ .column-half p+ p strong').text if
-          response.at_css('.column-half+ .column-half p+ p strong').present?
-        self.company_next_annual_return_date = response.at_css('.column-half+ .column-half .heading-medium+ p strong:nth-child(1)').text if
-          response.at_css('.column-half+ .column-half .heading-medium+ p strong:nth-child(1)')
-        self.company_annual_return_due_date = response.at_css('.column-half+ .column-half br+ strong').text if
-          response.at_css('.column-half+ .column-half br+ strong')
-        sic_array = []
-        10.times do |i|
-          sic_array << response.at_css("#sic#{i}").text.strip if response.at_css("#sic#{i}").present?
-        end
-        self.company_sic = sic_array
-
-        self.registered_on = company_incorporated_date
-
-        set_registered_on_if_scraped if company_incorporated_date
-
-        true
-      else
-        false
-      end
-    end
-
-    def set_registered_on_if_scraped
-      age = ((Time.zone.today - company_incorporated_date).to_f / 365)
-      if age <= 1
-        self.operating_for = 1
-      elsif age > 1 && age <= 3
-        self.operating_for = 2
-      elsif age > 3
-        self.operating_for = 3
-      end
+    def lookup_company_data
+      CompaniesHouse.new(company_number).lookup(self)
     end
 end
