@@ -80,6 +80,18 @@ describe Organisation do
     expect(@org).not_to be_valid
   end
 
+  it 'strips whitespace from charity_number' do
+    @org.charity_number = ' with whitespace '
+    @org.save
+    expect(@org.charity_number).to eq 'with whitespace'
+  end
+
+  it 'strips whitespace from company_number' do
+    @org.company_number = ' with whitespace '
+    @org.save
+    expect(@org.company_number).to eq 'with whitespace'
+  end
+
   it 'geocoded if postal_code' do
     expect(@org.postal_code).to be_nil
     @org.scrape_org
