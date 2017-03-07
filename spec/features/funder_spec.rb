@@ -25,9 +25,9 @@ feature 'DEPRECATED Funder' do
       all_proposal_funds_path('proposal'),
       eligibility_proposal_fund_path('proposal', @fund),
       apply_proposal_fund_path('proposal', @fund),
-      new_recipient_proposal_path(@funder),
-      edit_recipient_proposal_path(@funder),
-      recipient_proposals_path(@funder),
+      new_proposal_path,
+      edit_proposal_path('proposal'),
+      proposals_path,
       new_feedback_path,
       edit_feedback_path(create(:feedback, user: @user))
     ].each do |path|

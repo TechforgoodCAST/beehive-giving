@@ -1,8 +1,8 @@
-= link_to 'Change proposal', recipient_proposals_path(recipient), class: 'proposal-links'
+= link_to 'Change proposal', proposals_path, class: 'proposal-links'
 '  &middot;
 - if model.complete?
   - if recipient.subscribed?
-    = link_to 'New proposal', new_recipient_proposal_path(recipient), class: 'proposal-links'
+    = link_to 'New proposal', new_proposal_path, class: 'proposal-links'
   - else
     = cell(:coming_soon_link).call(:show, 'New proposal', 'proposal-links')
 - else

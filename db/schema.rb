@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170216140649) do
+ActiveRecord::Schema.define(version: 20170306114754) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -631,10 +631,8 @@ ActiveRecord::Schema.define(version: 20170216140649) do
     t.date     "company_incorporated_date"
     t.date     "company_last_accounts_date"
     t.date     "company_next_accounts_date"
-    t.date     "company_accounts_due_date"
-    t.date     "company_next_annual_return_date"
-    t.date     "company_last_annual_return_date"
-    t.date     "company_annual_return_due_date"
+    t.date     "company_next_returns_date"
+    t.date     "company_last_returns_date"
     t.text     "company_sic",                                                                                         array: true
     t.string   "company_recent_accounts_link"
     t.integer  "grants_count",                                default: 0

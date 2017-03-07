@@ -58,7 +58,7 @@ feature 'Match' do
     self
   end
 
-  def expect_company_scrape
+  def expect_company_lookup
     expect(page).to have_selector("input[value='Centre For The Acceleration Of Social Technology']")
     expect(find_field(:recipient_country).value).to eq 'GB'
     expect(find_field(:recipient_operating_for).value).to eq '2'
@@ -70,7 +70,7 @@ feature 'Match' do
             I want to make sure my details are correct,
             so I feel confident my results will be accurate' do
     helper.submit_user_form!
-    expect_company_scrape
+    expect_company_lookup
   end
 
   scenario 'When I sign up as a charity,
@@ -87,7 +87,7 @@ feature 'Match' do
             so I feel confident my results will be accurate' do
     helper.fill_user_form(seeking: 'A registered company')
           .submit_user_form
-    expect_company_scrape
+    expect_company_lookup
   end
 
   scenario 'When I sign up as both a charity and company,
@@ -95,7 +95,7 @@ feature 'Match' do
             so I feel confident my results will be accurate' do
     helper.fill_user_form(seeking: 'A registered charity & company')
           .submit_user_form
-    expect_company_scrape
+    expect_company_lookup
   end
 
   scenario 'When I sign up as another type of organisation,
@@ -126,14 +126,13 @@ feature 'Match' do
   scenario 'When sign up with an existing company number,
             I want to understand why and an admin should be notified,
             so I feel know what to expect and can get help if needed' do
-    company_number = '09544506'
-    @app.create_admin.create_recipient(
-      org_type: 2, charity_number: nil, company_number: company_number
-    ).with_user
+    @app.create_admin
+        .create_recipient(
+          org_type: 2, charity_number: '', company_number: '09544506'
+        ).with_user
     @db = @app.instances
-    helper.fill_user_form(
-      seeking: 'A registered company', company_number: company_number
-    ).submit_user_form
+    helper.fill_user_form(seeking: 'A registered company')
+          .submit_user_form
     expect(current_path).to eq unauthorised_path
     expect(ActionMailer::Base.deliveries.last.subject)
       .to eq "#{User.last.first_name} has requested access to #{@db[:recipient].name}"
@@ -164,7 +163,7 @@ feature 'Match' do
     fill_in :email, with: @db[:user].user_email
     fill_in :password, with: @db[:user].password
     click_button 'Sign in'
-    expect(current_path).to eq signup_organisation_path
+    expect(current_path).to eq new_signup_recipient_path
   end
 
   context 'unauthorised' do
@@ -178,7 +177,7 @@ feature 'Match' do
               I want to see a relevant message,
               so I understand why I was unauthorised" do
       @app.sign_in
-      visit signup_organisation_path
+      visit new_signup_recipient_path
       expect(current_path).to eq unauthorised_path
       visit faq_path
       expect(current_path).to eq faq_path
@@ -206,7 +205,7 @@ feature 'Match' do
             I want to see a shortlist of the most relevant funds,
             so I feel I've found suitable funding opportunities" do
     helper.submit_user_form!
-    expect(current_path).to eq signup_organisation_path
+    expect(current_path).to eq new_signup_recipient_path
 
     {
       org_type: '3',

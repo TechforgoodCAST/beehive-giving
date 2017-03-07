@@ -13,10 +13,19 @@ class MatchHelper
     self
   end
 
-  def stub_companies_house
-    body = File.read(Rails.root.join('spec', 'support', 'companies_house_scrape_stub.html'))
-    stub_request(:get, 'https://beta.companieshouse.gov.uk/company/09544506')
-      .to_return(status: 200, body: body)
+  def stub_companies_house(
+    file: 'companies_house_full_stub.json',
+    number: '09544506',
+    content_type: 'application/json'
+  )
+    body = File.read(Rails.root.join('spec', 'support', file))
+    endpoint = 'http://data.companieshouse.gov.uk/doc/company/'
+    stub_request(:get, endpoint + number + '.json')
+      .to_return(
+        status: 200,
+        body: body,
+        headers: { 'Content-Type' => content_type }
+      )
     self
   end
 

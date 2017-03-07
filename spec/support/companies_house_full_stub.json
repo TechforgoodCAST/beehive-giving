@@ -1,0 +1,33 @@
+{
+   "primaryTopic":{
+      "CompanyName":"CENTRE FOR THE ACCELERATION OF SOCIAL TECHNOLOGY",
+      "CompanyNumber":"09544506",
+      "RegAddress":{
+         "AddressLine1":"ADDRESS LINE 1",
+         "AddressLine2":"ADDRESS LINE 2",
+         "PostTown":"POST TOWN",
+         "County":"COUNTY",
+         "Postcode":"POSTCODE"
+      },
+      "CompanyCategory":"PRI/LBG/NSC (Private, Limited by guarantee, no share capital, use of 'Limited' exemption)",
+      "CompanyStatus":"Active",
+      "CountryOfOrigin":"United Kingdom",
+      "IncorporationDate":"15/04/2015",
+      "Accounts":{
+         "AccountRefDay":"30",
+         "AccountRefMonth":"04",
+         "NextDueDate":"31/01/2018",
+         "LastMadeUpDate":"30/04/2016",
+         "AccountCategory":"TOTAL EXEMPTION FULL"
+      },
+      "Returns":{
+         "NextDueDate":"29/04/2017",
+         "LastMadeUpDate":"15/04/2016"
+      },
+      "SICCodes":{
+         "SicText":[
+            "62090 - Other information technology service activities"
+         ]
+      }
+   }
+}

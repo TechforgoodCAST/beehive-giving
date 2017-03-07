@@ -35,7 +35,7 @@
 
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
 
-    = simple_form_for [@recipient, @proposal], url: new_recipient_proposal_path(@recipient), method: :post do |f|
+    = simple_form_for @proposal do |f|
 
       = cell(:proposal_form, @proposal, f: f).call(:summary)
       = cell(:proposal_form, @proposal, f: f).call(:requirements)

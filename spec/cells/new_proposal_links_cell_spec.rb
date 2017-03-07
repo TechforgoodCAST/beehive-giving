@@ -24,8 +24,7 @@ describe NewProposalLinksCell do
     complete_subscribed = cell(:new_proposal_links, @proposal).call(:show)
     expect_change_proposal(complete_subscribed)
     expect(complete_subscribed)
-      .to have_link 'New proposal',
-                    href: new_recipient_proposal_path(@recipient)
+      .to have_link 'New proposal', href: new_proposal_path
   end
 
   it 'complete and unsubscribed shows why hidden' do
@@ -39,7 +38,6 @@ describe NewProposalLinksCell do
   private
 
     def expect_change_proposal(proposal)
-      expect(proposal).to have_link 'Change proposal',
-                                    href: recipient_proposals_path(@recipient)
+      expect(proposal).to have_link 'Change proposal', href: proposals_path
     end
 end

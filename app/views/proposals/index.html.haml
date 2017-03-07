@@ -12,7 +12,7 @@
 
     - if @proposal.complete?
       - if @recipient.subscribed?
-        %a.uk-button.uk-button-primary{ href: new_recipient_proposal_path(@recipient) }
+        %a.uk-button.uk-button-primary{ href: new_proposal_path }
           %i.uk-icon-plus
           New proposal
       - else
@@ -40,7 +40,7 @@
               %hr
               .content.uk-grid.uk-grid-small{style: 'margin-top: 15px;'}
                 .uk-width-1-2
-                  = link_to 'Update proposal', edit_recipient_proposal_path(@recipient, proposal), class: 'invert uk-button uk-button-primary uk-button-large uk-width-1-1', style: 'font-size: 14px;'
+                  = link_to 'Update proposal', edit_proposal_path(proposal), class: 'invert uk-button uk-button-primary uk-button-large uk-width-1-1', style: 'font-size: 14px;'
                 .uk-width-1-2
                   = link_to 'Matched funds', recommended_proposal_funds_path(proposal), class: 'uk-button uk-button-primary uk-button-large uk-width-1-1', style: 'font-size: 14px;'
 
