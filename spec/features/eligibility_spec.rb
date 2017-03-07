@@ -153,13 +153,15 @@ feature 'Eligibility' do
       helper.answer_restrictions.check_eligibility
       expect(page).to have_text 'Update'
 
-      within '.card' do
-        click_link 'Apply'
-      end
+      within('.card') { click_link 'Apply' }
       expect(current_path).to eq apply_proposal_fund_path(@proposal, @fund)
 
       visit eligibility_proposal_fund_path(@proposal, @fund)
       click_link 'Apply for funding'
+      expect(current_path).to eq apply_proposal_fund_path(@proposal, @fund)
+
+      visit proposal_fund_path(@proposal, @fund)
+      within('.card') { click_link 'Apply' }
       expect(current_path).to eq apply_proposal_fund_path(@proposal, @fund)
     end
 
