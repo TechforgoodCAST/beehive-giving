@@ -104,6 +104,14 @@ class Organisation < ActiveRecord::Base
     self[:name] = s.sub(s.first, s.first.upcase)
   end
 
+  def charity_number=(s)
+    self[:charity_number] = s.try(:strip)
+  end
+
+  def company_number=(s)
+    self[:company_number] = s.try(:strip)
+  end
+
   def search_address
     if postal_code.present?
       [postal_code, country].join(', ')

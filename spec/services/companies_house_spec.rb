@@ -5,14 +5,17 @@ describe CompaniesHouse do
 
   before(:each) do
     helper.stub_companies_house
-          .stub_companies_house(number: 'missing', content_type: 'text/html')
-          .stub_companies_house(
-            file: 'companies_house_partial_stub.json', number: 'partial'
-          )
   end
 
   it 'requires company_number to initialize' do
     expect { CompaniesHouse.new }.to raise_error(ArgumentError)
+  end
+
+  it 'escapes invalid company_number' do
+    helper.stub_companies_house(
+      number: CGI.escape(' "<>#%{}|\^~[]`'), content_type: 'text/html'
+    )
+    expect(CompaniesHouse.new(' "<>#%{}|\^~[]`').lookup({})).to eq false
   end
 
   it '#lookup requires Organisation instance' do
@@ -21,10 +24,14 @@ describe CompaniesHouse do
   end
 
   it '#lookup returns false unless JSON' do
+    helper.stub_companies_house(number: 'missing', content_type: 'text/html')
     expect(CompaniesHouse.new('missing').lookup({})).to eq false
   end
 
   it '#lookup for partial record' do
+    helper.stub_companies_house(
+      file: 'companies_house_partial_stub.json', number: 'partial'
+    )
     org = Recipient.new
     CompaniesHouse.new('partial').lookup(org)
     expect(org.name).to eq 'Partial Response'

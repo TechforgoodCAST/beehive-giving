@@ -1,9 +1,8 @@
 class CompaniesHouse
-  require 'net/http'
-
   def initialize(company_number)
     uri = URI(
-      "http://data.companieshouse.gov.uk/doc/company/#{company_number}.json"
+      'http://data.companieshouse.gov.uk/doc/company/' +
+      CGI.escape(company_number) + '.json'
     )
     Net::HTTP.get_response(uri) do |http|
       return false unless http.response.content_type == 'application/json'
