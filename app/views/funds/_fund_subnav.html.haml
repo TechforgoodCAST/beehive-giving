@@ -22,8 +22,8 @@
           %span &rsaquo;
 
           - if @proposal.eligible?(fund)
-            %a{ href: fund_apply_path(fund) }
-              %li.last{ class: ('active' if current_page?(fund_apply_path(fund))) }
+            %a{ href: apply_proposal_fund_path(@proposal, fund) }
+              %li.last{ class: ('active' if current_page?(apply_proposal_fund_path(@proposal, fund))) }
                 Apply
                 .highlight
           - else
