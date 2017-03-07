@@ -3,8 +3,6 @@ class AccountsController < ApplicationController
 
   def user; end
 
-  def organisation; end
-
   def subscription
     @subscription = @recipient.subscription
     return unless @subscription.active?

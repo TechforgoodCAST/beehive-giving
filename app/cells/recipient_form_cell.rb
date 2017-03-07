@@ -7,6 +7,14 @@ class RecipientFormCell < Cell::ViewModel
     render locals: { f: options[:f] }
   end
 
+  def submit
+    render locals: {
+      f: options[:f],
+      button_text: options[:button_text] || 'Next',
+      disable_with_text: options[:disable_with_text] || "We're off the mark..."
+    }
+  end
+
   private
 
     def scrape_failure # TODO: refactor

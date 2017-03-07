@@ -8,10 +8,9 @@
         .uk-dropdown.uk-dropdown-navbar.uk-dropdown-flip class=funder_dropdown
           ul.uk-nav.uk-nav-navbar
             li
+              a href=account_organisation_path(organisation) Account
+            li
               a href=proposals_path Funding proposals
-            / TODO: add
-            / %li
-            /   %a{href: account_subscription_path(@recipient)} My account
             hr
             li
               a href=logout_path method='destroy' Sign out

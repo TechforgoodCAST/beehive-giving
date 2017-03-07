@@ -39,17 +39,16 @@
 
       .uk-width-medium-1-2
         .uk-panel.uk-panel-box
-          .uk-panel-badge.uk-badge Recommended
           %h3.uk-panel-title
             Pro
             - if @subscription.active?
               %span
                 %small (Current)
-          %h4.uk-text-bold £48 per year
+          %h4.uk-text-bold Coming soon
           %ul
             %li UNLIMITED funding proposals analysed
             %li Check eligibility with UNLIMITED funds
             %li Browse UNLIMITED funds
             %li Browse by funding theme
           - unless @subscription.active?
-            %a.uk-width-1-1.uk-button.uk-button-primary.uk-button-large{href: account_upgrade_path(@recipient)} Upgrade
+            %button.uk-width-1-1.uk-button.uk-button-primary.uk-button-large{ href: '', disabled: '' } Upgrade (Coming soon)

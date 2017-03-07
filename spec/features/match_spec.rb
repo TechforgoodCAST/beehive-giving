@@ -53,13 +53,15 @@ feature 'Match' do
   end
 
   def expect_charity_scrape
-    expect(page).to have_selector("input[value='Centre For The Acceleration Of Social Technology']")
+    expect(page).to have_selector("input[value='Centre For The Acceleration " \
+                                  "Of Social Technology']")
     expect(page).to have_text "can't be blank", count: 4
     self
   end
 
   def expect_company_lookup
-    expect(page).to have_selector("input[value='Centre For The Acceleration Of Social Technology']")
+    expect(page).to have_selector("input[value='Centre For The Acceleration " \
+                                  "Of Social Technology']")
     expect(find_field(:recipient_country).value).to eq 'GB'
     expect(find_field(:recipient_operating_for).value).to eq '2'
     expect(page).to have_text "can't be blank", count: 3
@@ -77,7 +79,10 @@ feature 'Match' do
             I want to make sure my details are correct,
             so I feel confident my results will be accurate' do
     helper.stub_charity_commission('123456')
-          .fill_user_form(seeking: 'A registered charity', charity_number: '123456')
+          .fill_user_form(
+            seeking: 'A registered charity',
+            charity_number: '123456'
+          )
           .submit_user_form
     expect_charity_scrape
   end
@@ -119,7 +124,8 @@ feature 'Match' do
       seeking: 'A registered charity', charity_number: charity_number
     ).submit_user_form
     expect(ActionMailer::Base.deliveries.last.subject)
-      .to eq "#{User.last.first_name} has requested access to #{@db[:recipient].name}"
+      .to eq "#{User.last.first_name} has requested access to " +
+             @db[:recipient].name
     expect(current_path).to eq unauthorised_path
   end
 
@@ -135,7 +141,8 @@ feature 'Match' do
           .submit_user_form
     expect(current_path).to eq unauthorised_path
     expect(ActionMailer::Base.deliveries.last.subject)
-      .to eq "#{User.last.first_name} has requested access to #{@db[:recipient].name}"
+      .to eq "#{User.last.first_name} has requested access to " +
+             @db[:recipient].name
     expect(current_path).to eq unauthorised_path
   end
 
@@ -148,7 +155,8 @@ feature 'Match' do
     @db = @app.instances
     helper.submit_user_form!
     expect(ActionMailer::Base.deliveries.last.subject)
-      .to eq "#{User.last.first_name} has requested access to #{@db[:recipient].name}"
+      .to eq "#{User.last.first_name} has requested access to " +
+             @db[:recipient].name
     expect(current_path).to eq unauthorised_path
   end
 
@@ -173,8 +181,8 @@ feature 'Match' do
       @db[:user].lock_access_to_organisation(@db[:recipient])
     end
 
-    scenario "When I'm waiting for access to an existing account and access an unauthorised area,
-              I want to see a relevant message,
+    scenario "When I'm waiting for access to an existing account and access
+              an unauthorised area, I want to see a relevant message,
               so I understand why I was unauthorised" do
       @app.sign_in
       visit new_signup_recipient_path
@@ -183,11 +191,12 @@ feature 'Match' do
       expect(current_path).to eq faq_path
     end
 
-    scenario 'When I (AdminUser) authorise a User to accesss an exisiting account,
-              I want to see a confirmation page,
+    scenario 'When I (AdminUser) authorise a User to accesss an exisiting
+              account, I want to see a confirmation page,
               so I know authorisation has succeeded' do
       expect(ActionMailer::Base.deliveries.last.subject)
-        .to eq "#{User.last.first_name} has requested access to #{@db[:recipient].name}"
+        .to eq "#{User.last.first_name} has requested access to " +
+               @db[:recipient].name
       visit grant_access_path(@db[:user].unlock_token)
       expect(current_path).to eq granted_access_path(@db[:user].unlock_token)
     end

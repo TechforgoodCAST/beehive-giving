@@ -1,0 +1,21 @@
+= content_for :title, 'Edit Organisation'
+
+= javascript_include_tag 'chosen-jquery'
+= javascript_include_tag 'chosen'
+= stylesheet_link_tag 'chosen'
+= stylesheet_link_tag 'overrides/chosen_overrides'
+
+:javascript
+  mixpanel.track("View Edit Organisation Page");
+  mixpanel.identify("#{@current_user.id}");
+
+= render partial: 'accounts/subnav'
+
+.uk-container.uk-container-center.uk-margin-large
+  %h2 Organisation
+  %h4 Update your organisation or projects details.
+
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+    = simple_form_for @recipient, url: account_organisation_path(@recipient) do |f|
+      = cell(:recipient_form, @recipient, f: f)
+      = cell(:recipient_form, @recipient, f: f, button_text: 'Update', disable_with_text: 'Saving').call(:submit)
