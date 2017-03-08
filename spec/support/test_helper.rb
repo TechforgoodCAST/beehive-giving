@@ -3,6 +3,14 @@ class TestHelper
   include ShowMeTheCookies
   include WebMock::API
 
+  ENV['BEEHIVE_DATA_TOKEN'] = 'token'
+  ENV['BEEHIVE_DATA_FUND_SUMMARY_ENDPOINT'] = 'http://localhost/v1/integrations/fund_summary'
+  ENV['BEEHIVE_INSIGHT_ENDPOINT'] = 'http://localhost/beneficiaries'
+  ENV['BEEHIVE_INSIGHT_AMOUNTS_ENDPOINT'] = 'http://localhost/check_amount'
+  ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'] = 'http://localhost/check_duration'
+  ENV['BEEHIVE_INSIGHT_TOKEN'] = 'username'
+  ENV['BEEHIVE_INSIGHT_SECRET'] = 'password'
+
   def seed_test_db
     @age_groups           = create_list(:age_group, AgeGroup::AGE_GROUPS.count)
     @all_ages             = @age_groups.first
