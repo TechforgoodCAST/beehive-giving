@@ -13,6 +13,22 @@ describe Recipient do
     @proposal = @db[:complete_proposal]
   end
 
+  it 'only updates slug if name present' do
+    expect(@recipient.slug).to eq 'acme-2'
+
+    @recipient.name = ''
+    @recipient.save
+    expect(@recipient.slug).to eq 'acme-2'
+  end
+
+  it 'updates slug if name changed' do
+    expect(@recipient.slug).to eq 'acme-2'
+
+    @recipient.name = 'New Name!'
+    @recipient.save
+    expect(@recipient.slug).to eq 'new-name-'
+  end
+
   it 'has many funds through proposals' do
     expect(@recipient.funds.count).to eq 2
   end

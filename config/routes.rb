@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :password_resets, except: [:show, :index]
+  resources :password_resets, except: [:show, :index, :destroy]
 
   resources :proposals, except: [:show, :destroy] do
     resources :funds, only: :show do
@@ -19,15 +19,15 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :feedback, except: [:show, :destroy]
+  resources :feedback, except: [:show, :index, :destroy]
 
   # Errors
   match '/404', to: 'errors#not_found', via: :all
   match '/500', to: 'errors#internal_server_error', via: :all
 
   # Admin
-  devise_for :admin_users, ActiveAdmin::Devise.config
-  ActiveAdmin.routes(self)
+  # devise_for :admin_users, ActiveAdmin::Devise.config
+  # ActiveAdmin.routes(self)
 
   # Legacy support
   get '/about',   to: redirect('/')
@@ -65,7 +65,8 @@ Rails.application.routes.draw do
 
   # Account
   # match '/account', to: 'accounts#user', via: :get, as: 'account'
-  # match '/account/(:id)', to: 'accounts#organisation', via: :get, as: 'account_organisation'
+  get   '/account/:id', to: 'recipients#edit', as: 'account_organisation'
+  patch '/account/:id', to: 'recipients#update'
   # TODO match '/account/(:id)/subscription', to: 'accounts#subscription', via: :get, as: 'account_subscription'
   # TODO match '/account/(:id)/upgrade', to: 'accounts#upgrade', via: :get, as: 'account_upgrade'
   # TODO match '/account/(:id)/charge', to: 'accounts#charge', via: :post, as: 'account_charge'

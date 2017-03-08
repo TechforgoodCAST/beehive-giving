@@ -20,8 +20,13 @@ describe NavbarCell do
     registered = cell(:navbar, @app.instances[:user]).call(:show)
     expect(registered).to have_css '.logo'
     expect(registered).not_to have_link 'Sign in'
-    ['Funding', 'Funding proposals', 'Sign out'].each do |text|
-      expect(registered).to have_link text
+    expect(registered).to have_link 'Funding', href: root_path
+    {
+      'Account': account_organisation_path(@app.instances[:recipient]),
+      'Funding proposals': proposals_path,
+      'Sign out': logout_path
+    }.each do |k, v|
+      expect(registered).to have_link k, href: v, count: 2
     end
   end
 end

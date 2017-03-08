@@ -15,8 +15,6 @@ feature 'DEPRECATED Funder' do
     visit root_path
   end
 
-  scenario 'can only view district in their context'
-
   scenario 'cannot visit recipient paths' do
     [
       recommended_proposal_funds_path('proposal'),

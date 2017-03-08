@@ -96,7 +96,7 @@ class Organisation < ActiveRecord::Base
             if: proc { |o| o.charity_name.present? || o.company_name.present? },
             unless: :skip_validation
 
-  before_validation :set_slug, unless: :slug
+  before_validation :set_slug, if: :should_set_slug?
   before_validation :clear_registration_numbers_if_unregistered
   after_create :create_subscription
 
@@ -171,6 +171,10 @@ class Organisation < ActiveRecord::Base
   end
 
   private
+
+    def should_set_slug?
+      slug.blank? || (name.present? && name_changed?)
+    end
 
     def street_address_changed?
       street_address.present? ||

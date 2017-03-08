@@ -284,7 +284,7 @@ feature 'Proposal' do
               I want to update my details,
               so I can continue to update my transferred proposal' do
       match.stub_charity_commission.stub_companies_house
-      @recipient = build(:legacy_recipient, charity_number: '1161998')
+      @recipient = build(:legacy_recipient, org_type: 4)
       @recipient.created_at = Date.new(2016, 4, 27)
       @recipient.set_slug
       @recipient.save(validate: false)
@@ -296,6 +296,7 @@ feature 'Proposal' do
       visit recommended_proposal_funds_path(@current_profile)
       expect(current_path).to eq edit_signup_recipient_path(@recipient)
       expect(page).to have_text 'Your details are out of date'
+      fill_in :recipient_street_address, with: 'London Road'
       select 'Less than £10k'
       select 'None', from: :recipient_employees
       select 'None', from: :recipient_volunteers

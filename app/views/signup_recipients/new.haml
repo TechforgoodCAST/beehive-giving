@@ -30,12 +30,9 @@
 
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
     = simple_form_for @recipient, url: new_signup_recipient_path do |f|
-
       = cell(:recipient_form, @recipient, f: f, scrape_success: @scrape_success).call(:lookup)
       = cell(:recipient_form, @recipient, f: f)
-
-      .uk-width-medium-1-1.uk-margin-top.next
-        = f.button :button, 'Next', class: 'uk-button uk-button-primary uk-button-large uk-width-medium-1-2 uk-float-right', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> We're off the mark...</span>"}
+      = cell(:recipient_form, @recipient, f: f).call(:submit)
 
 - unless cookies['_beehiveWelcomeClose'].present?
   #your-organisation.uk-modal.modal-scroll-touch

@@ -23,9 +23,9 @@ describe 'Ensure logged in' do
 
   it 'accounts'
   #   expect_path([
-  #     account_subscription_path(@recipient),
-  #     account_upgrade_path(@recipient)
-  #   ])
+  #                 account_subscription_path(@recipient),
+  #                 account_upgrade_path(@recipient)
+  #               ])
   # end
 
   it 'eligibilities' do
@@ -49,34 +49,46 @@ describe 'Ensure logged in' do
 
   it 'funds' do
     expect_path([
-                  proposal_fund_path(@proposal, @fund),
                   recommended_proposal_funds_path(@proposal),
                   eligible_proposal_funds_path(@proposal),
                   ineligible_proposal_funds_path(@proposal),
                   all_proposal_funds_path(@proposal),
-                  tag_proposal_funds_path(@proposal, 'Tag')
+                  tag_proposal_funds_path(@proposal, 'Tag'),
+                  proposal_fund_path(@proposal, @fund)
                 ])
   end
 
   it 'proposals' do
     expect_path([
+                  proposals_path,
                   new_proposal_path,
-                  edit_proposal_path(@proposal),
-                  proposals_path
+                  edit_proposal_path(@proposal)
                 ])
   end
 
-  it 'recipients'
-  #   expect_path([
-  #                 recipient_path(@recipient),
-  #                 edit_recipient_path(@recipient)
-  #               ])
-  # end
+  it 'recipients' do
+    expect_path([
+                  account_organisation_path(@recipient)
+                ])
+  end
 
   it 'signup' do
     expect_path([
-                  new_signup_recipient_path,
                   unauthorised_path
+                ])
+  end
+
+  it 'signup_proposals' do
+    expect_path([
+                  new_signup_proposal_path,
+                  edit_signup_proposal_path(@proposal)
+                ])
+  end
+
+  it 'signup_recipients' do
+    expect_path([
+                  new_signup_recipient_path,
+                  edit_signup_recipient_path(@recipient)
                 ])
   end
 end
