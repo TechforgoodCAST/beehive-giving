@@ -46,4 +46,5 @@
       = cell(:proposal_form, @proposal, f: f).call(:location)
       = cell(:proposal_form, @proposal, f: f).call(:privacy)
 
-      = cell(:proposal_form, @proposal, f: f).call(:submit)
+      .uk-width-medium-1-1.uk-margin-top
+        = cell(:submit_form, @proposal, f: f, button_text: 'Save and recommend funders', disable_with_text: "That wasn't so bad...")

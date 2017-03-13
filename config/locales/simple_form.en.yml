@@ -6,6 +6,7 @@ en:
         last_name: 'Last name'
         user_email: 'Email'
         password: 'Password'
+        password_confirmation: 'Confirm password'
       profile:
         min_age: 'e.g. 0'
         max_age: 'e.g. 120'

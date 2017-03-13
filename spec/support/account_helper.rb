@@ -21,4 +21,13 @@ class AccountHelper
     click_button 'Change password'
     self
   end
+
+  def update_user
+    fill_in :user_first_name, with: 'updates'
+    fill_in :user_last_name, with: 'user'
+    fill_in :user_user_email, with: 'updates.user@email.com'
+    fill_in :user_password, with: 'newPa55word'
+    fill_in :user_password_confirmation, with: 'newPa55word'
+    click_button 'Update'
+  end
 end

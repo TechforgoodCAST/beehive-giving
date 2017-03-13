@@ -22,7 +22,7 @@ describe NavbarCell do
     expect(registered).not_to have_link 'Sign in'
     expect(registered).to have_link 'Funding', href: root_path
     {
-      'Account': account_organisation_path(@app.instances[:recipient]),
+      'Account': account_path,
       'Funding proposals': proposals_path,
       'Sign out': logout_path
     }.each do |k, v|

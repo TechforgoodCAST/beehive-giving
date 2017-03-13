@@ -64,7 +64,8 @@ Rails.application.routes.draw do
   match '/granted_access/(:unlock_token)', to: 'signup#granted_access', via: :get, as: 'granted_access'
 
   # Account
-  # match '/account', to: 'accounts#user', via: :get, as: 'account'
+  get   '/account', to: 'users#edit', as: 'account'
+  patch '/account', to: 'users#update'
   get   '/account/:id', to: 'recipients#edit', as: 'account_organisation'
   patch '/account/:id', to: 'recipients#update'
   # TODO match '/account/(:id)/subscription', to: 'accounts#subscription', via: :get, as: 'account_subscription'
