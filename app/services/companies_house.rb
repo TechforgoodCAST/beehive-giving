@@ -1,5 +1,6 @@
 class CompaniesHouse
   def initialize(company_number)
+    company_number ||= ''
     uri = URI(
       'http://data.companieshouse.gov.uk/doc/company/' +
       CGI.escape(company_number) + '.json'
