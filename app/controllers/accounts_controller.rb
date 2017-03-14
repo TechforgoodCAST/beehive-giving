@@ -30,7 +30,7 @@ class AccountsController < ApplicationController
       customer = Stripe::Customer.create(
         source: params[:stripeToken],
         plan: 'pro-annual',
-        email: current_user.user_email,
+        email: current_user.email,
         description: "#{current_user.full_name}, #{@recipient.slug}"
       )
       @recipient.update!(

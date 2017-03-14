@@ -99,7 +99,7 @@ class ActionDispatch::IntegrationTest
     end
     @restrictions = Array.new(3) { create(:restriction) }
     @funding_streams = Array.new(num) { |i| create(:funding_stream, restrictions: @restrictions, funders: [@funders[i]]) }
-    create_and_auth_user!(organisation: @recipient, user_email: 'email@email.com')
+    create_and_auth_user!(organisation: @recipient, email: 'email@email.com')
 
     return unless proposal
     @proposal = create(:proposal, recipient: @recipient,

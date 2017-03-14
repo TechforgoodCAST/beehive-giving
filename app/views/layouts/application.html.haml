@@ -39,7 +39,7 @@
       })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
 
     - if logged_in?
-      = intercom_script_tag(email: @current_user.user_email, name: @current_user.full_name)
+      = intercom_script_tag(email: @current_user.email, name: @current_user.full_name)
       :javascript
         ga('set', 'userId', gon.currentUserId);
 

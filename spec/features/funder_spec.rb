@@ -43,7 +43,7 @@ feature 'DEPRECATED Funder' do
   scenario 'signing in redirects to funder overview' do
     @app.sign_out
     visit funder_overview_path(@funder)
-    fill_in :email, with: @user.user_email
+    fill_in :email, with: @user.email
     fill_in :password, with: 'password123'
     click_button('Sign in')
     expect(current_path).to eq funder_overview_path(@funder)

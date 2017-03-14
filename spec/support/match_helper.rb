@@ -30,7 +30,7 @@ class MatchHelper
   end
 
   def fill_user_form(
-    user_email: 'jack@ctu.org', password: '123abc',
+    email: 'jack@ctu.org', password: '123abc',
     seeking: 'A registered charity', charity_number: '1161998',
     company_number: '09544506'
   )
@@ -48,7 +48,7 @@ class MatchHelper
           fill_in :user_charity_number, with: charity_number
           fill_in :user_company_number, with: company_number
         end
-        fill_in :user_user_email, with: user_email
+        fill_in :user_email, with: email
         fill_in :user_password,   with: password
         check   :user_agree_to_terms
       end

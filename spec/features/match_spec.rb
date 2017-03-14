@@ -14,7 +14,7 @@ feature 'Match' do
   scenario 'When I sign up with an invalid email address,
             I want to be told why,
             so I can correct the mistake' do
-    helper.fill_user_form(user_email: 'invalid_email').submit_user_form
+    helper.fill_user_form(email: 'invalid_email').submit_user_form
     expect(page).to have_text 'Please enter a valid email'
   end
 
@@ -29,7 +29,7 @@ feature 'Match' do
             I want to be told to sign in,
             so I can access my account' do
     @app.with_user
-    helper.fill_user_form(user_email: User.last.user_email).submit_user_form
+    helper.fill_user_form(email: User.last.email).submit_user_form
     expect(page).to have_text "Please 'sign in' using the link above"
   end
 
@@ -165,10 +165,10 @@ feature 'Match' do
             so I can see my results' do
     @app.with_user
     @db = @app.instances
-    helper.fill_user_form(user_email: @db[:user].user_email).submit_user_form
+    helper.fill_user_form(email: @db[:user].email).submit_user_form
     expect(page).to have_text "Please 'sign in' using the link above"
     click_link 'Sign in'
-    fill_in :email, with: @db[:user].user_email
+    fill_in :email, with: @db[:user].email
     fill_in :password, with: @db[:user].password
     click_button 'Sign in'
     expect(current_path).to eq new_signup_recipient_path

@@ -4,7 +4,7 @@ en:
       user:
         first_name: 'First name'
         last_name: 'Last name'
-        user_email: 'Email'
+        email: 'Email'
         password: 'Password'
         password_confirmation: 'Confirm password'
       profile:
