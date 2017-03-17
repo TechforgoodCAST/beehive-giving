@@ -74,12 +74,11 @@ feature 'Account' do
       expect(page).to have_text "can't be blank"
     end
 
-    scenario 'can navigate to subscription page'
-    #   visit recommended_funds_path
-    #   click_on 'My account'
-    #   # click_on 'Subscription'
-    #   expect(current_path).to eq account_subscription_path(@db[:recipient])
-    # end
+    scenario 'can navigate to subscription page' do
+      click_on 'Account', match: :first
+      click_on 'Subscription'
+      expect(current_path).to eq account_subscription_path(@db[:recipient])
+    end
   end
 
   context 'forgot password' do

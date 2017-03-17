@@ -14,7 +14,7 @@
       %strong Pro
       plan which expires on
       = succeed '.' do
-        %strong= @expiry
+        %strong= @payment.subscription_expiry
     - else
       free
       %strong Basic
@@ -40,15 +40,15 @@
       .uk-width-medium-1-2
         .uk-panel.uk-panel-box
           %h3.uk-panel-title
-            Pro
+            = @payment.plan_name
             - if @subscription.active?
               %span
                 %small (Current)
-          %h4.uk-text-bold Coming soon
+          %h4.uk-text-bold= number_to_currency(@payment.plan_cost, unit: '£', precision: 0)
           %ul
             %li UNLIMITED funding proposals analysed
             %li Check eligibility with UNLIMITED funds
             %li Browse UNLIMITED funds
             %li Browse by funding theme
           - unless @subscription.active?
-            %button.uk-width-1-1.uk-button.uk-button-primary.uk-button-large{ href: '', disabled: '' } Upgrade (Coming soon)
+            = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'uk-button uk-button-primary uk-button-large uk-width-1-1'
