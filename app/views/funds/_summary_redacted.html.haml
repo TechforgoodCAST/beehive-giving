@@ -20,7 +20,7 @@
       %h3.uk-margin-top
         -# TODO: refactor
         - if @current_user.feedbacks.count.positive?
-          = link_to (@tag.present? ? scramble_name(fund.name) : fund.name), fund_path(fund), class: (@tag.present? ? 'yellow redacted large': 'yellow')
+          = link_to (@tag.present? ? scramble_name(fund.name) : fund.name), proposal_fund_path(@proposal, fund), class: (@tag.present? ? 'yellow redacted large': 'yellow')
         - else
           = cell(:coming_soon_link).call(:show, (@tag.present? ? scramble_name(fund.name) : fund.name), (@tag.present? ? 'yellow redacted large': 'yellow'))
         %span.year.muted
