@@ -13,14 +13,14 @@
           .highlight
       %span &rsaquo;
 
-      %a{href: account_subscription_path(@recipient)}
+      %a{ href: account_subscription_path(@recipient) }
         %li.first{ class: ('active' if current_page?(account_subscription_path(@recipient))) }
           Subscription
           .highlight
 
       - if current_page?(account_upgrade_path(@recipient))
         %span &rsaquo;
-        %a{href: '#'}
+        %a{ href: account_upgrade_path(@recipient) }
           %li.last.active
             Upgrade
             .highlight

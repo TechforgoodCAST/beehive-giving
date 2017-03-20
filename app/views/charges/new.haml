@@ -1,7 +1,6 @@
 = content_for :title, 'Upgrade'
 
 %script{ src: "https://js.stripe.com/v2/", type: "text/javascript" }
-= javascript_include_tag 'charges'
 
 :javascript
   mixpanel.track("View Upgrade Page");
@@ -14,43 +13,86 @@
   %h4
     By completing the form you will be charged
     %strong= number_to_currency(@payment.plan_cost, unit: '£', precision: 0)
-    for one years access to a Beehive Giving
-    %strong= @payment.plan_name
+    for one years access to a
+    %strong Pro
     plan.
 
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
 
-    = form_tag account_upgrade_path(@recipient), id: 'payment-form', class: 'uk-form form' do
-      %noscript
-        .cta.red.tight.uk-margin-bottom
-          %strong You have JavaScript disabled
-          and this page will not work. Please use a device that supports JavaScript.
+    .uk-grid
+      .uk-width-medium-1-2.uk-margin-bottom
+        .uk-panel.uk-panel-box.none
+          %h3 Payment details
 
-      %input#stripeToken{ name: "stripeToken", type: "hidden" }
+          = form_tag account_upgrade_path(@recipient), id: 'payment-form', class: 'uk-form form' do
+            %noscript
+              .cta.red.tight.uk-margin-bottom
+                %strong You have JavaScript disabled
+                and this page will not work. Please use a device that supports JavaScript.
 
-      .payment-errors
-        - if params[:coupon_errors]
-          .cta.red= params[:coupon_errors]
+            %input#stripeToken{ name: "stripeToken", type: "hidden" }
 
-      .form-row
-        %label.label Card number
-        %input.large#card-number{"data-stripe": "number", size: "20", type: "text", placeholder: '4242 4242 4242 4242'}
+            .payment-errors
+              - if params[:card_errors]
+                .cta.red= params[:card_errors]
 
-      .form-row
-        %label.label Expiration
-        %input.large#expiry-month{"data-stripe": "exp_month", size: "2", type: "text", placeholder: 'MM'}
-        %span
-        %input.large#expiry-year{"data-stripe": "exp_year", size: "2", type: "text", placeholder: 'YY'}
+            .uk-width-medium-1-1.uk-margin-top
+              .uk-text-bold Card number
+              .uk-width-1-1
+                %input.large#card-number{ "data-stripe": "number", size: "24", type: "text", placeholder: '4242 4242 4242 4242' }
+                .payment-card
 
-      .form-row
-        %label.label CVC
-        %input.large#cvc{"data-stripe": "cvc", size: "4", type: "text", placeholder: '123'}
+            .uk-width-medium-1-1.uk-margin-top
+              .uk-text-bold Expiration
+              %input.large#expiry-month{ "data-stripe": "exp_month", size: "10", type: "text", placeholder: 'MM' }
+              %span
+              %input.large#expiry-year{ "data-stripe": "exp_year", size: "10", type: "text", placeholder: 'YY' }
 
-      .form-row
-        %label.label Discount coupon
-        %input.large#coupon{ name: "coupon", type: "text", placeholder: 'Optional' }
+            .uk-width-medium-1-1.uk-margin-top
+              .uk-text-bold CVC
+              %input.large#cvc{ "data-stripe": "cvc", size: "10", type: "text", placeholder: '123' }
 
-      %input.uk-button.uk-button-primary.large.submit{type: "submit", value: "Pay securely"}
+            -# .uk-width-medium-1-1.uk-margin-top
+            -#   .uk-text-bold Cardholder Name
+            -#   %input.large#cardholder-name{ "data-stripe": "name", size: "24", type: "text" }
 
-      :javascript
-        Stripe.setPublishableKey("#{Rails.configuration.stripe[:publishable_key]}");
+            -# .uk-width-medium-1-1.uk-margin-top
+            -#   .uk-text-bold Billing Address
+            -#   %input.large#address-line1{ "data-stripe": "address_line1", size: "24", type: "text" }
+
+            -# .uk-width-medium-1-1.uk-margin-top
+            -#   .uk-text-bold Postal Code
+            -#   %input.large#address-zip{ "data-stripe": "address_zip", size: "24", type: "text", placeholder: '123 ABC' }
+
+            .uk-width-medium-1-1.uk-margin-top
+              .uk-text-bold Discount coupon
+              %input.large#coupon{ name: "coupon", size: "24", type: "text", placeholder: 'Optional' }
+
+            .uk-width-medium-1-1.uk-margin-top
+              %button.uk-button.uk-button-primary.uk-button-large.submit{ type: "submit", style:"width: 192px;" } Pay securely
+
+              .uk-margin-small-top= link_to image_tag('powered-by-stripe', width: 120), 'https://stripe.com/', target: '_blank'
+
+            :javascript
+              Stripe.setPublishableKey("#{Rails.configuration.stripe[:publishable_key]}");
+
+      .uk-width-medium-1-2
+        .uk-panel.uk-panel-box.none.card
+          %h3 Order summary
+
+          .uk-width-medium-1-1.uk-margin-top
+            .uk-text-bold Plan
+            Pro
+
+          .uk-width-medium-1-1.uk-margin-top
+            .uk-text-bold Period
+            1 year
+            %small= 1.year.from_now.strftime("(expires %d %B %Y)")
+
+          .uk-width-medium-1-1.uk-margin-top
+            .uk-text-bold Price
+            = number_to_currency(@payment.plan_cost, unit: '£')
+
+          .uk-width-medium-1-1.uk-margin-top
+            .uk-text-bold Features
+            = render 'accounts/features'

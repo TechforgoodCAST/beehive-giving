@@ -18,18 +18,38 @@ feature 'Subscriptions' do
       @db = @app.instances
     end
 
-    scenario 'plan/price set by recipient.income'
-    scenario 'invalid card details'
-    scenario 'valid coupon'
-    scenario 'invalid coupon'
-    scenario 'plan name shown'
-    scenario 'plan cost shown'
-    scenario 'plan expiry shown'
-    scenario 'plan tier explained'
+    scenario 'plan/price set by recipient.income' do
+      (0..3).each do |income|
+        @db[:recipient].update(income: income)
+        payment = Payment.new(@db[:recipient])
+        visit(account_subscription_path(@db[:recipient]))
+        expect(page).to have_text ActiveSupport::NumberHelper
+          .number_to_currency(payment.plan_cost, unit: '£', precision: 0)
+      end
+    end
+
+    scenario 'valid coupon' do
+      visit account_upgrade_path(@db[:recipient])
+      helper.pay_by_card(stripe, coupon: 'test10')
+      @db[:recipient].reload
+      expect(helper.stripe_subscription(@db[:recipient]).discount.coupon.id)
+        .to eq 'test10'
+    end
+
+    scenario 'invalid coupon' do
+      visit account_upgrade_path(@db[:recipient])
+      helper.pay_by_card(stripe, coupon: 'invalid')
+      expect(page).to have_text 'Invalid coupon'
+    end
 
     context 'inactive' do
       scenario 'is inactive' do
         expect(@db[:recipient].subscription.active).to eq false
+      end
+
+      scenario 'plan expiry shown' do
+        visit(account_subscription_path(@db[:recipient]))
+        expect(page).to have_text 'does not expire'
       end
 
       scenario 'can view current subscription' do
@@ -51,6 +71,24 @@ feature 'Subscriptions' do
 
         expect(current_path).to eq account_subscription_path(@db[:recipient])
         expect(@db[:recipient].subscribed?).to eq true
+      end
+
+      scenario 'card error' do
+        {
+          card_declined:    'The card was declined',
+          incorrect_cvc:    "The card's security code is incorrect",
+          expired_card:     'The card has expired',
+          processing_error: 'An error occurred while processing the card',
+          incorrect_number: 'The card number is incorrect'
+        }.each do |state, msg|
+          StripeMock.prepare_card_error(state, :new_customer)
+          visit(account_upgrade_path(@db[:recipient]))
+          helper.pay_by_card(stripe)
+          expect(page).to have_text msg
+          Subscription::PLANS.keys.each do |plan|
+            stripe.delete_plan(plan.to_s.parameterize)
+          end
+        end
       end
 
       scenario 'can only have 1 proposal' do

@@ -10,25 +10,20 @@ class ChargesController < ApplicationController
 
   def create
     return if @recipient.subscribed?
-    if valid_coupon?
-      @payment.create_stripe_customer!(
-        params[:stripeToken], current_user, params[:coupon]
-      )
-      redirect_to account_subscription_path(@recipient)
+    if @payment.process!(params[:stripeToken], current_user, params[:coupon])
+      redirect_to account_subscription_path(@recipient), notice: 'Subscribed!'
     else
-      params[:coupon_errors] = 'Invalid coupon'
+      params[:card_errors] = 'Invalid coupon'
       render :new
     end
+  rescue Stripe::CardError => e
+    params[:card_errors] = e.message
+    render :new
   end
 
   private
 
     def init_payment
       @payment = Payment.new(@recipient)
-    end
-
-    def valid_coupon?
-      return true if params[:coupon].blank?
-      Stripe::Coupon.all.pluck(:id).include?(params[:coupon])
     end
 end

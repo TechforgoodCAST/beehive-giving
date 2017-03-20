@@ -1,13 +1,14 @@
 class SubscriptionsHelper
   include Capybara::DSL
 
-  def pay_by_card(stripe)
+  def pay_by_card(stripe, coupon: nil)
     create_stripe_plans(stripe)
-    create_stripe_coupon(stripe)
+    create_stripe_coupons(stripe)
     fill_in 'card-number', with: '4242 4242 4242 4242'
     fill_in 'expiry-month', with: '01'
     fill_in 'expiry-year', with: Time.zone.today.year + 1
     fill_in 'cvc', with: '123'
+    fill_in 'coupon', with: coupon if coupon
     find('#stripeToken', visible: false).set stripe.generate_card_token
     click_on 'Pay securely'
     self
@@ -36,7 +37,7 @@ class SubscriptionsHelper
       end
     end
 
-    def create_stripe_coupon(stripe)
+    def create_stripe_coupons(stripe)
       {
         test10: 10,
         test20: 20

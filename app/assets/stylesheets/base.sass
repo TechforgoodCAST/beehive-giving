@@ -316,6 +316,12 @@ a.excellent
 
 /* Panel
  ========================================================================== */
+.uk-panel-box
+  &.none
+    background: none
+  &.card
+    border-radius: 3px
+    +shadow
 
 #panel
   background: #fff
@@ -639,3 +645,28 @@ ul.insights
     height: 41px
   p
     margin: 10px auto
+
+// Stripe
+   =============================================================================
+
+.payment-card
+  display: inline-block
+  position: absolute
+  background: image-url('beehive-card-logos.svg') no-repeat
+  background-size: 64px 200px
+  width: 64px
+  height: 40px
+  margin: 0 3px
+  background-position: 0 40px
+  &.unkown
+    background-position: 0 40px
+  &.visa
+    background-position: 0 0
+  &.mastercard
+    background-position: 0 -40px
+  &.american-express
+    background-position: 0 -80px
+  &.diners-club
+    background-position: 0 -120px
+  &.jcb
+    background-position: 0 -160px
