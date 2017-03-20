@@ -4,23 +4,23 @@ class Payment
     @subscription = organisation.subscription
   end
 
-  def subscription_expiry # TODO: store on Subscription and remove
-    return nil unless @subscription.active?
-    expiry_date = Time.zone.at(
-      stripe_customer.subscriptions.first[:current_period_end]
-    ).to_date
-    expiry_date.strftime("#{expiry_date.day.ordinalize} %B %Y")
+  def plan_cost
+    cost = Subscription::PLANS.values[@recipient.income] / 100
+    return cost unless @subscription
+    cost - (cost * (@subscription.percent_off.to_f / 100))
   end
 
-  def plan_cost
-    Subscription::PLANS.values[@recipient.income] / 100
+  def discount
+    return false unless @subscription.percent_off.positive?
+    ActiveSupport::NumberHelper
+      .number_to_percentage(@subscription.percent_off, precision: 0)
   end
 
   def process!(token, user, coupon)
     return false unless valid_coupon?(coupon)
     customer = create_stripe_customer(token, user)
-    create_stripe_subscription(customer.id, coupon)
-    update_subscription(customer.id)
+    create_stripe_subscription(customer, coupon)
+    update_subscription(customer, coupon)
   end
 
   private
@@ -46,15 +46,22 @@ class Payment
                                            @recipient.slug
     end
 
-    def create_stripe_subscription(customer_id, coupon)
-      Stripe::Subscription.create customer: customer_id,
+    def create_stripe_subscription(customer, coupon)
+      Stripe::Subscription.create customer: customer.id,
                                   plan: plan_id,
                                   coupon: coupon.blank? ? nil : coupon
     end
 
-    def update_subscription(customer_id)
-      @subscription.update! stripe_user_id: customer_id, active: true
-      # TODO: store expiry_date
-      # TODO: store discounts applied
+    def percent_off(coupon)
+      Stripe::Coupon.retrieve(coupon).percent_off
+    rescue Stripe::InvalidRequestError
+      0
+    end
+
+    def update_subscription(customer, coupon)
+      @subscription.update! stripe_user_id: customer.id,
+                            active: true,
+                            expiry_date: 1.year.from_now.to_date,
+                            percent_off: percent_off(coupon)
     end
 end

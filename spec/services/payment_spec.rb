@@ -28,18 +28,39 @@ describe Payment do
       helper.send(:create_stripe_coupons, stripe)
     end
 
+    it '#plan_cost with discount' do
+      @payment.process!(stripe.generate_card_token, @user, 'test10')
+      expect(@payment.plan_cost).to eq 90
+    end
+
     it '#process! with empty coupon' do
       expect(@payment.process!(stripe.generate_card_token, @user, ''))
         .to eq true
-      expect(Subscription.last.active?).to eq true
+      expect(@recipient.subscription.active?).to eq true
     end
 
     it '#process! with invalid coupon' do
       expect(@payment.process!('token', @user, 'invalid')).to eq false
-      expect(Subscription.last.active?).to eq false
+      expect(@recipient.subscription.active?).to eq false
     end
 
-    it '#process! updates Subscription.expiry_date'
-    it '#process! updates Subscription.discount'
+    it '#process! updates Subscription.expiry_date' do
+      @payment.process!(stripe.generate_card_token, @user, '')
+      expect(@recipient.subscription.expiry_date).to eq 1.year.from_now.to_date
+    end
+
+    it '#process! updates Subscription.percent_off' do
+      @payment.process!(stripe.generate_card_token, @user, 'test10')
+      expect(@recipient.subscription.percent_off).to eq 10
+    end
+
+    it '#discount returns percentage' do
+      @payment.process!(stripe.generate_card_token, @user, 'test10')
+      expect(@payment.discount).to eq '10%'
+    end
+
+    it '#discount not positive' do
+      expect(@payment.discount).to eq false
+    end
   end
 end

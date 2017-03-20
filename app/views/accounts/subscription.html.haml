@@ -14,8 +14,7 @@
       %strong Pro
       plan which expires on
       = succeed '.' do
-        %strong= @payment.subscription_expiry
-        -# TODO: store date on Subscription
+        %strong= @subscription.expiry_date.strftime("%d %b %Y")
       After which you will be downgraded to a
       %strong Basic
       plan unless you manually re-subscribe.
@@ -57,6 +56,11 @@
           %h4
             %strong= number_to_currency(@payment.plan_cost, unit: '£', precision: 0)
             %small per year
+            - if @payment.discount
+              %div
+                %small
+                  = @payment.discount
+                  discount
           = render 'features'
           - unless @subscription.active?
             = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'uk-button uk-button-primary uk-button-large uk-width-1-1'

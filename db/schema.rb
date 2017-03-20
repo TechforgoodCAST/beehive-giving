@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170313233650) do
+ActiveRecord::Schema.define(version: 20170320172123) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -794,6 +794,8 @@ ActiveRecord::Schema.define(version: 20170313233650) do
     t.datetime "updated_at",                      null: false
     t.string   "stripe_user_id"
     t.boolean  "active",          default: false, null: false
+    t.date     "expiry_date"
+    t.integer  "percent_off",     default: 0,     null: false
     t.index ["organisation_id"], name: "index_subscriptions_on_organisation_id", using: :btree
     t.index ["stripe_user_id"], name: "index_subscriptions_on_stripe_user_id", unique: true, using: :btree
   end

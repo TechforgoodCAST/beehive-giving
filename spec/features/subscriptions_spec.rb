@@ -123,9 +123,7 @@ feature 'Subscriptions' do
 
       scenario 'shows expiry date' do
         expect(page).to have_text 'Pro plan which expires on ' +
-                                  1.year.since.strftime(
-                                    "#{1.year.since.day.ordinalize} %B %Y"
-                                  )
+                                  1.year.since.strftime('%d %b %Y')
       end
 
       scenario 'webhook invoice-payment-succeeded', type: :request do
@@ -146,7 +144,10 @@ feature 'Subscriptions' do
       end
 
       scenario 'webhook customer-subscription-deleted', type: :request do
+        Subscription.last.update(percent_off: 10)
+
         expect(Subscription.last.active).to eq true
+        expect(Subscription.last.percent_off).to eq 10
         expect(helper.stripe_subscription(@db[:recipient]).status)
           .to eq 'active'
 
@@ -160,6 +161,7 @@ feature 'Subscriptions' do
              headers: { 'Content-Type': 'application/json' }
 
         expect(Subscription.last.active).to eq false
+        expect(Subscription.last.percent_off).to eq 0
         expect(event.data.object.status).to eq 'canceled'
       end
 
