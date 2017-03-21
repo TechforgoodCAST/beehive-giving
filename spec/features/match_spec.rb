@@ -233,7 +233,7 @@ feature 'Match' do
 
     helper.submit_proposal_form
     expect(current_path).to eq recommended_proposal_funds_path(Proposal.last)
-    expect(page).to have_css '.funder', count: 3
+    expect(page).to have_css '.card', count: 3
 
     expect(page.first('.yellow').text).to eq 'Awards for All 3'
   end

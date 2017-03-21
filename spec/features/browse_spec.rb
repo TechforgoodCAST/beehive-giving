@@ -78,8 +78,8 @@ feature 'Browse' do
               so I can discover new funding opportunties" do
       click_link 'Arts', match: :first
       expect(current_path).to eq tag_proposal_funds_path(@proposal, 'arts')
-      expect(page).to have_css '.funder', count: 7
-      expect(page).to have_css '.locked-funder', count: 6
+      expect(page).to have_css '.card', count: 7
+      expect(page).to have_css '.locked-fund', count: 6
     end
 
     scenario "When I visit a funding theme which isn't listed,
