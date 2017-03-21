@@ -1,0 +1,48 @@
+= content_for :title, 'Thank you'
+
+:javascript
+  mixpanel.track("View Thank you Page");
+  mixpanel.identify("#{@current_user.id}");
+
+= render partial: 'accounts/subnav'
+
+.uk-container.uk-container-center
+  .uk-grid.uk-margin-large.uk-margin-large-top
+    .uk-width-medium-1-1.uk-animation-fade
+
+      .uk-width-1-2.uk-container-center
+        %h2 Thank you!
+        .cta.green
+          You have successfully subscribed!
+
+        .uk-panel.uk-panel-box.none.card
+          %h3 Order summary
+
+          .uk-width-medium-1-1.uk-margin-top
+            .uk-text-bold Plan
+            Pro
+
+          .uk-width-medium-1-1.uk-margin-top
+            .uk-text-bold Status
+            Active
+
+          .uk-width-medium-1-1.uk-margin-top
+            .uk-text-bold Period
+            1 year
+            %small= 1.year.from_now.strftime("(expires %d %B %Y)")
+
+          .uk-width-medium-1-1.uk-margin-top
+            .uk-text-bold Price
+            = number_to_currency(@payment.plan_cost, unit: '£')
+            - if @payment.discount
+              %small
+                = surround '(', ')' do
+                  = @payment.discount
+                  discount
+
+          .uk-width-medium-1-1.uk-margin-top
+            .uk-text-bold Features
+            = render 'accounts/features'
+
+      .uk-width-1-2.uk-container-center.uk-margin-top
+        = link_to 'Continue', session.delete(:return_to) || account_subscription_path(@recipient), class: 'uk-button uk-button-primary uk-button-large uk-width-1-1'

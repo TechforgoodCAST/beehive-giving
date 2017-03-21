@@ -13,9 +13,23 @@ feature 'Subscriptions' do
       @app.seed_test_db
           .create_recipient
           .with_user
-          .create_registered_proposal
+          .create_complete_proposal
           .sign_in
       @db = @app.instances
+    end
+
+    scenario 'notice not shown from account_subscription_path' do
+      visit account_subscription_path(@db[:recipient])
+      click_link 'Upgrade'
+      expect(page).not_to have_text 'Please upgrade to access this feature.'
+    end
+
+    scenario 'return_to request.referer if available' do
+      visit proposals_path
+      click_link 'New proposal'
+      helper.pay_by_card(stripe)
+      click_link 'Continue'
+      expect(current_path).to eq proposals_path
     end
 
     scenario 'plan/price set by recipient.income' do
@@ -69,7 +83,7 @@ feature 'Subscriptions' do
         helper.pay_by_card(stripe)
         @db[:recipient].reload
 
-        expect(current_path).to eq account_subscription_path(@db[:recipient])
+        expect(current_path).to eq thank_you_path(@db[:recipient])
         expect(@db[:recipient].subscribed?).to eq true
       end
 
@@ -122,6 +136,7 @@ feature 'Subscriptions' do
       end
 
       scenario 'shows expiry date' do
+        click_link 'Continue'
         expect(page).to have_text 'Pro plan which expires on ' +
                                   1.year.since.strftime('%d %b %Y')
       end

@@ -141,7 +141,8 @@ feature 'Eligibility' do
     scenario 'When I try check eligibility for a recommended fund,
               I want to see a list of all restrictions,
               so I can check to see if any apply' do
-      expect(current_path).to eq eligibility_proposal_fund_path(@proposal, @fund)
+      expect(current_path)
+        .to eq eligibility_proposal_fund_path(@proposal, @fund)
       expect(page).to have_css '.restriction', count: 5
       expect(page).to have_css '.recipient_restriction', count: 2
       expect(page).to have_css '.proposal_restriction', count: 3
@@ -176,7 +177,8 @@ feature 'Eligibility' do
       expect(page).to have_text 'You did not meet this criteria', count: 3
 
       click_link 'Why ineligible?'
-      expect(current_path).to eq eligibility_proposal_fund_path(@proposal, @fund)
+      expect(current_path)
+        .to eq eligibility_proposal_fund_path(@proposal, @fund)
 
       helper.answer_restrictions.update
       expect(page).to have_text 'Apply'
@@ -186,7 +188,8 @@ feature 'Eligibility' do
       click_link 'Funding'
       helper.visit_first_fund.check_eligibility(remaining: 2)
       visit eligibility_proposal_fund_path(@proposal, @fund)
-      expect(current_path).to eq eligibility_proposal_fund_path(@proposal, @fund)
+      expect(current_path)
+        .to eq eligibility_proposal_fund_path(@proposal, @fund)
     end
 
     scenario "When I check a fund with shared restrictions,
@@ -214,7 +217,8 @@ feature 'Eligibility' do
             .answer_proposal_restrictions(eligible: false)
             .check_eligibility
       visit apply_proposal_fund_path(@proposal, @fund)
-      expect(current_path).to eq eligibility_proposal_fund_path(@proposal, @fund)
+      expect(current_path)
+        .to eq eligibility_proposal_fund_path(@proposal, @fund)
     end
 
     scenario 'When I try check eligiblity but have reached the max free limit,
@@ -249,19 +253,16 @@ feature 'Eligibility' do
       helper.complete_feedback.submit_feedback
       helper.answer_restrictions.check_eligibility(remaining: 1)
 
-      # checked funds shouldn't show 'Coming soon'
+      # checked funds don't require upgrade
       click_link 'Funding'
       visit eligibility_proposal_fund_path(@proposal, Fund.first)
-      expect(current_path).to eq eligibility_proposal_fund_path(@proposal, Fund.first)
+      expect(current_path)
+        .to eq eligibility_proposal_fund_path(@proposal, Fund.first)
 
-      # unchecked funds show 'Coming soon'
+      # unchecked funds require upgrade
       click_link 'Funding'
       helper.visit_first_fund
-      # # TODO: subscription
-      expect(page).to have_text 'Coming soon'
-      fill_in :feedback_price, with: 50
-      click_button 'Save feedback'
-      expect(current_path).to eq recommended_proposal_funds_path(@proposal)
+      expect(current_path).to eq account_upgrade_path(@db[:recipient])
     end
   end
 

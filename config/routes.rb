@@ -68,9 +68,10 @@ Rails.application.routes.draw do
   patch '/account',                  to: 'users#update'
   get   '/account/:id',              to: 'recipients#edit', as: 'account_organisation'
   patch '/account/:id',              to: 'recipients#update'
-  get   '/account/:id/upgrade',      to: 'charges#new', as: 'account_upgrade'
-  post  '/account/:id/upgrade',      to: 'charges#create'
   get   '/account/:id/subscription', to: 'accounts#subscription', as: 'account_subscription'
+  get   '/account/:id/subscription/upgrade',   to: 'charges#new', as: 'account_upgrade'
+  post  '/account/:id/subscription/upgrade',   to: 'charges#create'
+  get   '/account/:id/subscription/thank-you', to: 'charges#thank_you', as: 'thank_you'
 
   # Webhooks
   post '/webhooks/invoice-payment-succeeded',     to: 'webhooks#invoice_payment_succeeded'

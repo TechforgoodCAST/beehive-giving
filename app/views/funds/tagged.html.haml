@@ -26,12 +26,9 @@
             Go unlimited with Beehive Pro to see more
             = @tag
             funders.
-            = cell(:coming_soon_link).call(:show, 'Upgrade (coming soon)', 'uk-button uk-button-large uk-button-primary invert')
+            = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'uk-button uk-button-large uk-button-primary invert'
 
       - else
         = render partial: 'summary_redacted', locals: { fund: fund }
         - unless i == @funds.count - 1
           %hr.thick
-
-- unless @recipient.subscribed?
-  = render partial: 'why_hidden'

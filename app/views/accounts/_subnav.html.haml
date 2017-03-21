@@ -24,3 +24,10 @@
           %li.last.active
             Upgrade
             .highlight
+
+      - if current_page?(thank_you_path(@recipient))
+        %span &rsaquo;
+        %a{ href: thank_you_path(@recipient) }
+          %li.last.active
+            Confirmation
+            .highlight

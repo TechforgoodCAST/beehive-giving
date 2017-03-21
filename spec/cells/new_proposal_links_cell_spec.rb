@@ -27,12 +27,12 @@ describe NewProposalLinksCell do
       .to have_link 'New proposal', href: new_proposal_path
   end
 
-  it 'complete and unsubscribed shows why hidden' do
+  it 'complete and unsubscribed redirects to upgrade' do
     @proposal.next_step!
     complete_unsubscribed = cell(:new_proposal_links, @proposal).call(:show)
     expect_change_proposal(complete_unsubscribed)
     expect(complete_unsubscribed)
-      .to have_link 'New proposal', href: '#why-hidden'
+      .to have_link 'New proposal', href: account_upgrade_path(@recipient)
   end
 
   private

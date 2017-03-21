@@ -84,15 +84,14 @@ module RecipientsHelper
   end
 
   def render_redacted_tags(fund)
-    link_to('Upgrade to see funding themes (coming soon)',
-            '#why-hidden', class: 'uk-text-bold why-hidden',
-                           onclick: "goog_report_conversion('#why-hidden')") +
+    link_to('Upgrade to see funding themes',
+            account_upgrade_path(@recipient),
+            class: 'uk-text-bold') +
       safe_join(['</br>'.html_safe]) +
       safe_join(fund.tags.sort.map do |t|
         link_to scramble_name(t.parameterize), # TODO: refactor
-                '#why-hidden', class: TAG_CLASSES +
-                                 %w(redacted uk-margin-small-top why-hidden),
-                               onclick: "goog_report_conversion('#why-hidden')"
+                account_upgrade_path(@recipient), class: TAG_CLASSES +
+                                 %w(redacted uk-margin-small-top)
       end, ' ')
   end
 

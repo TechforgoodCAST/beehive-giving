@@ -24,12 +24,12 @@ class FeedbackController < ApplicationController
     end
   end
 
-  def edit
+  def edit # TODO: depreceted
     @feedback = Feedback.find(params[:id])
     session[:return_to] ||= request.referer
   end
 
-  def update
+  def update # TODO: depreceted
     @feedback = Feedback.find(params[:id])
     if @feedback.update_attributes(params.require(:feedback).permit(:price))
       flash[:notice] = 'Thanks for the feedback!'
