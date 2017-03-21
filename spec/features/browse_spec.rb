@@ -16,7 +16,7 @@ feature 'Browse' do
   scenario 'When I sign in,
             I want to see my recommended fund,
             so I can see my results' do
-    fill_in :email, with: @db[:user].user_email
+    fill_in :email, with: @db[:user].email
     fill_in :password, with: @db[:user].password
     click_button 'Sign in'
     expect(current_path).to eq recommended_proposal_funds_path(@proposal)

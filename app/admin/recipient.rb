@@ -69,7 +69,7 @@ ActiveAdmin.register Recipient do
           row :company_number
           row('Users') do |recipient|
             recipient.users.each do |user|
-              li "#{user.user_email} | Authorised: #{user.authorised}"
+              li "#{user.email} | Authorised: #{user.authorised}"
             end
           end
         end

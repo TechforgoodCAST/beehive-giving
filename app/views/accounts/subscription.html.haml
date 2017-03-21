@@ -14,7 +14,11 @@
       %strong Pro
       plan which expires on
       = succeed '.' do
-        %strong= @expiry
+        %strong= @payment.subscription_expiry
+        -# TODO: store date on Subscription
+      After which you will be downgraded to a
+      %strong Basic
+      plan unless you manually re-subscribe.
     - else
       free
       %strong Basic
@@ -25,30 +29,34 @@
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
     .uk-grid
       .uk-width-medium-1-2.uk-margin-bottom
-        .uk-panel.uk-panel-box{style: 'background: white; border: 2px solid #f5f5f5'}
-          %h3.uk-panel-title
+        .uk-panel.uk-panel-box.none
+          %h3
             Basic
             - unless @subscription.active?
-              %span
-                %small (Current)
+              .uk-button.uk-button-small.uk-button-primary.invert Active
           %h4.uk-text-bold FREE
           %ul
-            %li 1 funding proposal analysed
-            %li Check eligibility with 3 funds
-            %li Browse 6 funds
+            %li
+              %strong 1
+              funding proposal analysed
+            %li
+              Conduct
+              %strong 3
+              eligibility checks
+            %li
+              Browse
+              %strong 6
+              funds
 
       .uk-width-medium-1-2
-        .uk-panel.uk-panel-box
-          %h3.uk-panel-title
+        .uk-panel.uk-panel-box.none.card
+          %h3
             Pro
             - if @subscription.active?
-              %span
-                %small (Current)
-          %h4.uk-text-bold Coming soon
-          %ul
-            %li UNLIMITED funding proposals analysed
-            %li Check eligibility with UNLIMITED funds
-            %li Browse UNLIMITED funds
-            %li Browse by funding theme
+              .uk-button.uk-button-small.uk-button-primary.invert Active
+          %h4
+            %strong= number_to_currency(@payment.plan_cost, unit: '£', precision: 0)
+            %small per year
+          = render 'features'
           - unless @subscription.active?
-            %button.uk-width-1-1.uk-button.uk-button-primary.uk-button-large{ href: '', disabled: '' } Upgrade (Coming soon)
+            = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'uk-button uk-button-primary uk-button-large uk-width-1-1'

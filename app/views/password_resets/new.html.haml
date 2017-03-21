@@ -21,7 +21,7 @@
     .form.uk-form.uk-form-stacked.uk-panel.uk-panel-box.shadow
       = form_tag password_resets_path, method: 'post' do
         .uk-form-row{class: ('field_with_errors' if params[:email_missing])}
-          = text_field_tag :user_email, params[:user_email], placeholder: 'Email', type: 'email', class: (params[:email_missing] ? 'large uk-width-1-1 field_with_errors' : 'large uk-width-1-1')
+          = text_field_tag :email, params[:email], placeholder: 'Email', type: 'email', class: (params[:email_missing] ? 'large uk-width-1-1 field_with_errors' : 'large uk-width-1-1')
           - if params[:email_missing]
             .error-message Please enter the email address you used to create your account
         .uk-form-row

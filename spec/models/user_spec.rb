@@ -17,8 +17,8 @@ describe User do
     expect(@user.feedbacks.count).to eq 2
   end
 
-  it 'user_email is unique' do
-    expect(build(:user, user_email: @user.user_email))
+  it 'email is unique' do
+    expect(build(:user, email: @user.email))
   end
 
   it 'a valid user' do
@@ -55,9 +55,9 @@ describe User do
     expect(@user).to be_valid
   end
 
-  it 'user_email is downcased' do
-    @user.user_email = 'UPCASE@email.com'
+  it 'email is downcased' do
+    @user.email = 'UPCASE@email.com'
     @user.save!
-    expect(@user.user_email).to eq 'upcase@email.com'
+    expect(@user.email).to eq 'upcase@email.com'
   end
 end

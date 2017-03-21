@@ -19,17 +19,17 @@ class User < ActiveRecord::Base
             numericality: { only_integer: true, greater_than_or_equal_to: 0 },
             on: :create
 
-  validates :first_name, :last_name, :user_email, :role, :agree_to_terms,
+  validates :first_name, :last_name, :email, :role, :agree_to_terms,
             presence: { message: "Can't be blank" }, on: :create
 
   validates :first_name, :last_name, format: {
     with: /\A(([a-z]+)*(-)*)+\z/i, message: 'Only a-z and -'
   }, on: :create
 
-  validates :user_email,
+  validates :email,
             format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i,
                       message: 'Please enter a valid email' }, on: :create
-  validates :user_email,
+  validates :email,
             uniqueness: { message: "Please 'sign in' using the link above" },
             on: :create
 
@@ -52,8 +52,8 @@ class User < ActiveRecord::Base
     self[:last_name] = s.to_s.strip.capitalize
   end
 
-  def user_email=(s)
-    self[:user_email] = s.downcase
+  def email=(s)
+    self[:email] = s.downcase
   end
 
   def full_name

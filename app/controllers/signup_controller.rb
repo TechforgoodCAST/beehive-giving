@@ -28,7 +28,7 @@ class SignupController < ApplicationController
                           mixpanel.people.set({
                             '$first_name': '#{@user.first_name}',
                             '$last_name': '#{@user.last_name}',
-                            '$email': '#{@user.user_email}',
+                            '$email': '#{@user.email}',
                             '$created': '#{@user.created_at}',
                             '$last_login': '#{@user.last_seen}',
                             'Updated At': '#{@user.updated_at}',

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170306114754) do
+ActiveRecord::Schema.define(version: 20170313233650) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -803,7 +803,7 @@ ActiveRecord::Schema.define(version: 20170306114754) do
     t.string   "first_name",             limit: 255
     t.string   "last_name",              limit: 255
     t.string   "job_role",               limit: 255
-    t.string   "user_email",             limit: 255
+    t.string   "email",                  limit: 255
     t.string   "password_digest",        limit: 255
     t.string   "auth_token",             limit: 255
     t.string   "password_reset_token",   limit: 255

@@ -18,4 +18,5 @@
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
     = simple_form_for @recipient, url: account_organisation_path(@recipient) do |f|
       = cell(:recipient_form, @recipient, f: f)
-      = cell(:recipient_form, @recipient, f: f, button_text: 'Update', disable_with_text: 'Saving').call(:submit)
+      .uk-width-medium-1-1.uk-margin-top
+        = cell(:submit_form, @recipient, f: f, button_text: 'Update', disable_with_text: 'Saving')

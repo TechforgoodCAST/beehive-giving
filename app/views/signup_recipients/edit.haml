@@ -17,6 +17,9 @@
     = render partial: 'proposals/cta'
 
     = simple_form_for @recipient, url: edit_signup_recipient_path(@recipient) do |f|
+
       = cell(:recipient_form, @recipient, f: f, scrape_success: @scrape_success).call(:lookup)
       = cell(:recipient_form, @recipient, f: f)
-      = cell(:recipient_form, @recipient, f: f).call(:submit)
+
+      .uk-width-medium-1-1.uk-margin-top
+        = cell(:submit_form, @recipient, f: f, button_text: 'Next', disable_with_text: "We're off the mark...")

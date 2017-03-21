@@ -2,8 +2,8 @@ class PasswordResetsController < ApplicationController
   before_action :ensure_not_logged_in, if: proc { logged_in? }
 
   def create
-    if params[:user_email].present?
-      user = User.find_by(user_email: params[:user_email])
+    if params[:email].present?
+      user = User.find_by(email: params[:email])
       user&.send_password_reset
       redirect_to sign_in_path,
                   notice: 'Email sent with password reset instructions. ' \

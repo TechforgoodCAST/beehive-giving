@@ -19,10 +19,37 @@ feature 'Account' do
       expect(page).to have_text 'Account'
     end
 
-    scenario 'can navigate to account page and defaults to user page' do
+    scenario 'can navigate to account page and defaults to user profile page' do
       click_on 'Account', match: :first
-      expect(current_path).to eq account_organisation_path(@db[:recipient])
+      expect(current_path).to eq account_path
     end
+
+    scenario 'can navigate to user profile page' do
+      click_on 'Account', match: :first
+      click_on 'Profile'
+      expect(current_path).to eq account_path
+    end
+
+    scenario 'can update user profile' do
+      click_on 'Account', match: :first
+      helper.update_user
+      expect(page).to have_selector("input[value='Updates']")
+      expect(page).to have_selector("input[value='User']")
+    end
+
+    scenario 'after user profile update must use updated details to sign in' do
+      click_on 'Account', match: :first
+      helper.update_user
+      @app.sign_out
+      visit sign_in_path
+      fill_in :email, with: 'updates.user@email.com'
+      fill_in :password, with: 'newPa55word'
+      click_button 'Sign in'
+      expect(current_path)
+        .to eq recommended_proposal_funds_path(@db[:registered_proposal])
+    end
+
+    scenario 'password update optional when updating user profile'
 
     scenario 'can navigate to organisation page' do
       click_on 'Account', match: :first
@@ -32,6 +59,7 @@ feature 'Account' do
 
     scenario 'can update recipient' do
       click_on 'Account', match: :first
+      click_on 'Organisation'
       fill_in :recipient_name, with: 'A new name'
       click_button 'Update'
       expect(page).to have_selector("input[value='A new name']")
@@ -40,17 +68,17 @@ feature 'Account' do
 
     scenario 'cannot submit invalid record' do
       click_on 'Account', match: :first
+      click_on 'Organisation'
       fill_in :recipient_name, with: ''
       click_button 'Update'
       expect(page).to have_text "can't be blank"
     end
 
-    scenario 'can navigate to subscription page'
-    #   visit recommended_funds_path
-    #   click_on 'My account'
-    #   # click_on 'Subscription'
-    #   expect(current_path).to eq account_subscription_path(@db[:recipient])
-    # end
+    scenario 'can navigate to subscription page' do
+      click_on 'Account', match: :first
+      click_on 'Subscription'
+      expect(current_path).to eq account_subscription_path(@db[:recipient])
+    end
   end
 
   context 'forgot password' do

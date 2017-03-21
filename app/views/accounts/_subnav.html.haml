@@ -1,28 +1,26 @@
 .subnav{"data-uk-sticky" => ""}
   .uk-container.uk-container-center
     %ul.nav.recipient
-      -# TODO: add
-      -# %a{ href: account_path }
-      -#   %li.first{ class: ('active' if current_page?(account_path)) }
-      -#     Profile
-      -#     .highlight
-      -# %span &middot;
+      %a{ href: account_path }
+        %li.first{ class: ('active' if current_page?(account_path)) }
+          Profile
+          .highlight
+      %span &middot;
 
       %a{ href: account_organisation_path(@recipient) }
         %li.first{ class: ('active' if current_page?(account_organisation_path(@recipient))) }
           Organisation
           .highlight
-      -# TODO: add
-      -# %span &rsaquo;
-      -#
-      -# %a{href: account_subscription_path(@recipient)}
-      -#   %li.first{ class: ('active' if current_page?(account_subscription_path(@recipient))) }
-      -#     Subscription
-      -#     .highlight
-      -#
-      -# - if current_page?(account_upgrade_path(@recipient))
-      -#   %span &rsaquo;
-      -#   %a{href: '#'}
-      -#     %li.last.active
-      -#       Upgrade
-      -#       .highlight
+      %span &rsaquo;
+
+      %a{ href: account_subscription_path(@recipient) }
+        %li.first{ class: ('active' if current_page?(account_subscription_path(@recipient))) }
+          Subscription
+          .highlight
+
+      - if current_page?(account_upgrade_path(@recipient))
+        %span &rsaquo;
+        %a{ href: account_upgrade_path(@recipient) }
+          %li.last.active
+            Upgrade
+            .highlight

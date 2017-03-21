@@ -64,12 +64,17 @@ Rails.application.routes.draw do
   match '/granted_access/(:unlock_token)', to: 'signup#granted_access', via: :get, as: 'granted_access'
 
   # Account
-  # match '/account', to: 'accounts#user', via: :get, as: 'account'
-  get   '/account/:id', to: 'recipients#edit', as: 'account_organisation'
-  patch '/account/:id', to: 'recipients#update'
-  # TODO match '/account/(:id)/subscription', to: 'accounts#subscription', via: :get, as: 'account_subscription'
-  # TODO match '/account/(:id)/upgrade', to: 'accounts#upgrade', via: :get, as: 'account_upgrade'
-  # TODO match '/account/(:id)/charge', to: 'accounts#charge', via: :post, as: 'account_charge'
+  get   '/account',                  to: 'users#edit', as: 'account'
+  patch '/account',                  to: 'users#update'
+  get   '/account/:id',              to: 'recipients#edit', as: 'account_organisation'
+  patch '/account/:id',              to: 'recipients#update'
+  get   '/account/:id/upgrade',      to: 'charges#new', as: 'account_upgrade'
+  post  '/account/:id/upgrade',      to: 'charges#create'
+  get   '/account/:id/subscription', to: 'accounts#subscription', as: 'account_subscription'
+
+  # Webhooks
+  post '/webhooks/invoice-payment-succeeded',     to: 'webhooks#invoice_payment_succeeded'
+  post '/webhooks/customer-subscription-deleted', to: 'webhooks#customer_subscription_deleted'
 
   # Funders
   # NOTE: deprecated
