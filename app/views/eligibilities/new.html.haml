@@ -15,7 +15,7 @@
       'Eligibility #{@fund.slug}': '#{@proposal.eligibility_as_text(@fund)}'
     });
 
-= render partial: 'funds/subnav', locals: { fund: @fund }
+= render partial: 'funds/fund_subnav', locals: { fund: @fund }
 
 .uk-container.uk-container-center.uk-margin-large.uk-margin-large-top.uk-animation-fade
   .uk-grid

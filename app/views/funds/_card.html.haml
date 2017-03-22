@@ -46,3 +46,9 @@
         - unless params[:controller] == 'funds' && params[:action] == 'show'
           .content.center
             = link_to 'More info', proposal_fund_path(@proposal, fund)
+
+.uk-margin-small-top.uk-text-center
+  %small.muted
+    Analysis powered by open data
+    &middot;
+    = link_to 'Sources', sources_proposal_fund_path(@proposal, fund), target: '_blank'

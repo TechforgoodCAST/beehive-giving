@@ -5,7 +5,7 @@ ActiveAdmin.register Fund do
                 :restrictions_known, :skip_beehive_data, :open_data,
                 :period_start, :period_end, :grant_count,
                 :amount_awarded_distribution, :award_month_distribution,
-                :country_distribution, :geographic_scale,
+                :country_distribution, :geographic_scale, :sources,
                 :geographic_scale_limited, country_ids: [], district_ids: [],
                                            restriction_ids: []
 
@@ -53,6 +53,7 @@ ActiveAdmin.register Fund do
       end
       if fund.open_data
         row :open_data
+        row :sources
         row :period_start
         row :period_end
         row :grant_count
@@ -182,6 +183,7 @@ ActiveAdmin.register Fund do
       inputs 'Open Data' do
         f.input :skip_beehive_data, as: :boolean
         f.input :open_data
+        f.input :sources
         f.input :period_start
         f.input :period_end
 

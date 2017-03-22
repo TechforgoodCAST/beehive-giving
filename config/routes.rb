@@ -15,6 +15,7 @@ Rails.application.routes.draw do
         patch :eligibility, to: 'eligibilities#create'
         get   :apply,       to: 'enquiries#new'
         post  :apply,       to: 'enquiries#create'
+        get   :sources
       end
     end
   end

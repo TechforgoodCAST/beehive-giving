@@ -179,7 +179,15 @@ feature 'Browse' do
         expect(page).to have_css '#country_distribution'
       end
 
-      scenario 'more info links'
+      scenario 'I want to see the sources of open data,
+                so I can further my research' do
+        click_link 'Sources'
+        json = { 'https://creativecommons.org/licenses/by/4.0/':
+                 'http://www.example.com' }.to_json
+        expect(page.body).to eq json
+        expect(page.response_headers['Content-Type'])
+          .to eq 'application/json; charset=utf-8'
+      end
     end
   end
 end

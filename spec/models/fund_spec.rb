@@ -218,7 +218,7 @@ describe Fund do
         duration_awarded_months_distribution award_month_distribution
         org_type_distribution operating_for_distribution income_distribution
         employees_distribution volunteers_distribution gender_distribution
-        age_group_distribution beneficiary_distribution
+        age_group_distribution beneficiary_distribution sources
         geographic_scale_distribution country_distribution district_distribution
       ).each do |attribute|
         @fund[attribute] = nil
@@ -261,6 +261,18 @@ describe Fund do
     it 'period_end is in the past' do
       @fund.period_end = Time.zone.today + 1
       expect(@fund).not_to be_valid
+    end
+
+    it 'sources key is valid URL' do
+      @fund.sources['wrong'] = 'http://www.example.com'
+      expect(@fund).not_to be_valid
+      expect(@fund.errors[:sources]).to eq ['Invalid URL - key: wrong']
+    end
+
+    it 'sources value is valid URL' do
+      @fund.sources['http://www.example.com'] = 'wrong'
+      expect(@fund).not_to be_valid
+      expect(@fund.errors[:sources]).to eq ['Invalid URL - value: wrong']
     end
   end
 end
