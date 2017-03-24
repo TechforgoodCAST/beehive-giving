@@ -34,18 +34,7 @@
             - unless @subscription.active?
               .uk-button.uk-button-small.uk-button-primary.invert Active
           %h4.uk-text-bold FREE
-          %ul
-            %li
-              %strong 1
-              funding proposal analysed
-            %li
-              Conduct
-              %strong 3
-              eligibility checks
-            %li
-              Browse
-              %strong 6
-              funds
+          = render partial: 'accounts/free_features'
 
       .uk-width-medium-1-2
         .uk-panel.uk-panel-box.none.card
@@ -61,6 +50,6 @@
                 %small
                   = @payment.discount
                   discount
-          = render 'features'
+          = render 'premium_features'
           - unless @subscription.active?
             = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'uk-button uk-button-primary uk-button-large uk-width-1-1'

@@ -42,7 +42,7 @@
 
           .uk-width-medium-1-1.uk-margin-top
             .uk-text-bold Features
-            = render 'accounts/features'
+            = render 'accounts/premium_features'
 
       .uk-width-1-2.uk-container-center.uk-margin-top
         = link_to 'Continue', session.delete(:return_to) || account_subscription_path(@recipient), class: 'uk-button uk-button-primary uk-button-large uk-width-1-1'
