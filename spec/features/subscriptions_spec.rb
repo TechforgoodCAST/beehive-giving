@@ -39,7 +39,18 @@ feature 'Subscriptions' do
         visit(account_subscription_path(@db[:recipient]))
         expect(page).to have_text ActiveSupport::NumberHelper
           .number_to_currency(payment.plan_cost, unit: '£', precision: 0)
+        expect(page).not_to have_text 'Contact us for a quote'
+        expect(page).not_to have_link 'Get in touch',
+                                      href: 'mailto:support@beehivegiving.org'
       end
+    end
+
+    scenario 'no plan/price for recipient.income 4' do
+      @db[:recipient].update(income: 4)
+      visit account_subscription_path(@db[:recipient])
+      expect(page).to have_text 'Contact us for a quote'
+      expect(page).to have_link 'Get in touch',
+                                href: 'mailto:support@beehivegiving.org'
     end
 
     scenario 'valid coupon' do

@@ -43,13 +43,19 @@
             - if @subscription.active?
               .uk-button.uk-button-small.uk-button-primary.invert Active
           %h4
-            %strong= number_to_currency(@payment.plan_cost, unit: '£', precision: 0)
-            %small per year
+            - if @recipient.income > 3
+              %strong Contact us for a quote
+            - else
+              %strong= number_to_currency(@payment.plan_cost, unit: '£', precision: 0)
+              %small per year
             - if @payment.discount
               %div
                 %small
                   = @payment.discount
                   discount
           = render 'premium_features'
-          - unless @subscription.active?
-            = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'uk-button uk-button-primary uk-button-large uk-width-1-1 uk-margin-top'
+          - if @recipient.income > 3
+            = mail_to 'support@beehivegiving.org', 'Get in touch', class: 'uk-button uk-button-primary uk-button-large uk-width-1-1 uk-margin-top'
+          - else
+            - unless @subscription.active?
+              = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'uk-button uk-button-primary uk-button-large uk-width-1-1 uk-margin-top'
