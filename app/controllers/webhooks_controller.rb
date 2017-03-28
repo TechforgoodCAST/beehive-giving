@@ -5,10 +5,15 @@ class WebhooksController < ApplicationController
   def invoice_payment_succeeded
     Stripe::Subscription.retrieve(@customer.subscriptions.first.id)
                         .delete(at_period_end: true)
+  rescue NoMethodError
+    nil
   end
 
   def customer_subscription_deleted
-    Subscription.find_by(stripe_user_id: @customer.id).update(active: false)
+    Subscription.find_by(stripe_user_id: @customer.id)
+                .update(active: false, percent_off: 0)
+  rescue NoMethodError
+    nil
   end
 
   def subscription_expired

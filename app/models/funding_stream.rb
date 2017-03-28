@@ -1,3 +1,4 @@
+# TODO: deprecated
 class FundingStream < ActiveRecord::Base
   has_and_belongs_to_many :funders
   has_and_belongs_to_many :restrictions

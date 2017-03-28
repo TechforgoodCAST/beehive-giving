@@ -1,12 +1,9 @@
 .card
-  .thumbnail
-    .funder{ class: fund.funder.slug }
   .details
     .content
-      .muted= fund.name
       %h4.uk-text-bold
-        Your recommendation
-        %small.muted Beta
+        Analysis
+        .beta.muted Beta
       %table.uk-table.uk-table-condensed
         %thead
           %tr
@@ -23,7 +20,7 @@
           - unless @proposal.show_fund?(fund)
             %tr
               %td.muted{ colspan: 2 }
-                = cell(:coming_soon_link).call(:show, 'Upgrade to see more', 'uk-text-bold')
+                = link_to 'Upgrade to see more', account_upgrade_path(@recipient), class: 'uk-text-bold'
           %tr
             %td Organisation type
             %td= render_recommendation(fund, 'org_type_score', 2)
@@ -49,3 +46,9 @@
         - unless params[:controller] == 'funds' && params[:action] == 'show'
           .content.center
             = link_to 'More info', proposal_fund_path(@proposal, fund)
+
+.uk-margin-small-top.uk-text-center
+  %small.muted
+    Analysis powered by open data
+    &middot;
+    = link_to 'Sources', sources_proposal_fund_path(@proposal, fund), target: '_blank'

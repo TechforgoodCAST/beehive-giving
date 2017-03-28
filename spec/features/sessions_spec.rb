@@ -21,12 +21,18 @@ describe 'Ensure logged in' do
     end
   end
 
-  it 'accounts'
-  #   expect_path([
-  #                 account_subscription_path(@recipient),
-  #                 account_upgrade_path(@recipient)
-  #               ])
-  # end
+  it 'accounts' do
+    expect_path([
+                  account_subscription_path(@recipient)
+                ])
+  end
+
+  it 'charges' do
+    expect_path([
+                  account_upgrade_path(@recipient),
+                  thank_you_path(@recipient)
+                ])
+  end
 
   it 'eligibilities' do
     expect_path([
@@ -89,6 +95,12 @@ describe 'Ensure logged in' do
     expect_path([
                   new_signup_recipient_path,
                   edit_signup_recipient_path(@recipient)
+                ])
+  end
+
+  it 'users' do
+    expect_path([
+                  account_path
                 ])
   end
 end

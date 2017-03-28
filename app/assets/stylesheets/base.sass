@@ -1,5 +1,4 @@
 @import variables
-@import funder_logos
 
 /* Typography
  ========================================================================== */
@@ -74,6 +73,9 @@ hr
   color: $yellow-base !important
   &.background
     background: $yellow-base !important
+
+.off-white.bg
+  background: $off-white
 
 .primary
   color: $cta-base !important
@@ -280,15 +282,6 @@ a.excellent
     background-size: 24px 20px
   &:hover
     text-decoration: none !important
-  @media screen and (min-width: 480px)
-    &:after
-      content: 'Beta'
-      color: $white
-      font-size: 10px
-      font-weight: bold
-      position: absolute
-      right: -25px
-      top: 14px
 
 /* Subnav
  ========================================================================== */
@@ -484,44 +477,17 @@ input::-webkit-inner-spin-button
     border-left: 4px solid $green-base
     color: $green-active
 
-/* Card
- ========================================================================== */
-
-.locked-funder
-  position: relative
-  .overlay
-    position: absolute
-    top: -10px
-    right: -10px
-    bottom: -10px
-    left: -10px
-    z-index: 999
-    background: $dark-brown
-    border-radius: 3px
-    opacity: 0
-    transition: all .25s
-    .content
-      padding: 20px
-      h3
-        color: $white !important
-  &:hover
-    .overlay
-      opacity: .9
+// Card
+   =============================================================================
 
 .card
   border-radius: 3px
   border: 1px solid $light-grey
+  background: $off-white
+  +shadow
   a:hover
     text-decoration: none
-  +shadow
-  .thumbnail
-    padding: 10px
-    border-bottom: 1px solid $light-grey
-    text-indent: -9999px
-    .funder
-      margin: 20px auto
   .details
-    background: $off-white
     padding-top: 10px
     hr
       color: $light-grey
@@ -530,6 +496,12 @@ input::-webkit-inner-spin-button
       padding: 0 10px 10px 10px
       &.center
         text-align: center
+      .uk-table, h4
+        margin: 0
+      .beta
+        display: inline
+        font-size: 12px
+        font-weight: normal
 
 .year
   font-weight: normal

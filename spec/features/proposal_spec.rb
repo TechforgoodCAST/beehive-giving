@@ -66,10 +66,11 @@ feature 'Proposal' do
       end
     end
 
-    # TODO: inconsistent
     scenario 'clicking new proposal requires initial proposal to be complete and
-              shows coming soon unless subscribed', js: true do
+              shows coming soon unless subscribed' do
       eligibility_helper = EligibilityHelper.new
+      subscription_helper = SubscriptionsHelper.new
+      stripe = StripeMock.create_test_helper
       visit root_path
 
       click_link 'New proposal'
@@ -79,19 +80,29 @@ feature 'Proposal' do
       expect(page).to have_text 'Please fully complete'
 
       eligibility_helper.complete_proposal
-      click_button 'Update and review recommendations' # TODO: refactor
-      sleep(3) # TODO: proposal update performance
+      click_button 'Update and review recommendations'
       expect(current_path).to eq recommended_proposal_funds_path(@proposal)
 
       # expect upgrade prompt
       click_link 'New proposal'
-      expect(page).to have_selector('#why-hidden', visible: true)
+      expect(current_path).to eq account_upgrade_path(@recipient)
 
-      # expect subscribed
-      find('.uk-modal-close.uk-close').click
-      @recipient.subscribe!
-      click_link 'New proposal'
-      expect(current_path).not_to eq new_proposal_path
+      # subscribe
+      StripeMock.start
+
+      subscription_helper.pay_by_card(stripe)
+      expect(current_path).to eq thank_you_path(@recipient)
+
+      # can create multiple proposals
+      click_link 'Continue'
+      expect(current_path).to eq recommended_proposal_funds_path(@proposal)
+
+      StripeMock.stop
+    end
+
+    scenario 'cannot visit thank_you_path unless subscribed' do
+      visit thank_you_path(@recipient)
+      expect(current_path).to eq account_subscription_path(@recipient)
     end
 
     scenario "When I visit a proposal that doesn't belong to me,
@@ -158,10 +169,10 @@ feature 'Proposal' do
     end
 
     scenario 'usubscribed and complete on proposals#index
-              shows coming soon', js: true do
+              shows coming soon' do
       visit proposals_path
       click_link 'New proposal'
-      expect(page).to have_selector('#why-hidden', visible: true)
+      expect(current_path).to eq account_upgrade_path(@recipient)
     end
 
     scenario 'subscribed and complete on proposals#index

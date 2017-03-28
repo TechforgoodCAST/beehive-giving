@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170313233650) do
+ActiveRecord::Schema.define(version: 20170321215929) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -505,6 +505,7 @@ ActiveRecord::Schema.define(version: 20170313233650) do
     t.jsonb    "district_distribution",                default: {},    null: false
     t.jsonb    "tags",                                 default: [],    null: false
     t.jsonb    "restriction_ids",                      default: [],    null: false
+    t.jsonb    "sources",                              default: {},    null: false
     t.index ["funder_id"], name: "index_funds_on_funder_id", using: :btree
     t.index ["slug"], name: "index_funds_on_slug", using: :btree
     t.index ["tags"], name: "index_funds_on_tags", using: :gin
@@ -794,6 +795,8 @@ ActiveRecord::Schema.define(version: 20170313233650) do
     t.datetime "updated_at",                      null: false
     t.string   "stripe_user_id"
     t.boolean  "active",          default: false, null: false
+    t.date     "expiry_date"
+    t.integer  "percent_off",     default: 0,     null: false
     t.index ["organisation_id"], name: "index_subscriptions_on_organisation_id", using: :btree
     t.index ["stripe_user_id"], name: "index_subscriptions_on_stripe_user_id", unique: true, using: :btree
   end

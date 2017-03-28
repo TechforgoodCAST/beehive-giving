@@ -37,6 +37,10 @@ class FundsController < ApplicationController
     redirect_to root_path, alert: 'Not found' if @funds.empty?
   end
 
+  def sources
+    render json: Fund.find_by(slug: params[:id]).sources
+  end
+
   private
 
     def refine_recommendations # TODO: refactor

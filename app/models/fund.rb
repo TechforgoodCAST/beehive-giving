@@ -74,11 +74,12 @@ class Fund < ActiveRecord::Base
 
   validates :open_data, :period_start, :period_end,
             :amount_awarded_distribution, :award_month_distribution,
-            :country_distribution,
+            :country_distribution, :sources,
             presence: true, if: :open_data?
   validates :grant_count, presence: true,
                           numericality: { greater_than_or_equal_to: 0 },
                           if: :open_data?
+  validate :sources, :validate_sources
 
   # TODO: validations
   # validates :period_start, :period_end, :org_type_distribution,
@@ -152,5 +153,14 @@ class Fund < ActiveRecord::Base
 
     def set_restriction_ids
       self[:restriction_ids] = restrictions.pluck(:id)
+    end
+
+    def validate_sources # TODO: refactor DRY
+      sources.try(:each) do |k, v|
+        errors.add(:sources, "Invalid URL - key: #{k}") if
+          k !~ %r{https?://}
+        errors.add(:sources, "Invalid URL - value: #{v}") if
+          v !~ %r{https?://}
+      end
     end
 end

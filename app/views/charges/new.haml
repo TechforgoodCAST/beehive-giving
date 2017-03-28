@@ -9,6 +9,11 @@
 = render partial: 'accounts/subnav'
 
 .uk-container.uk-container-center.uk-margin-large
+
+  - unless @notice
+    .cta.tight.uk-margin-bottom
+      Please upgrade to access this feature.
+
   %h2 Upgrade
   %h4
     By completing the form you will be charged
@@ -95,4 +100,4 @@
 
           .uk-width-medium-1-1.uk-margin-top
             .uk-text-bold Features
-            = render 'accounts/features'
+            = render 'accounts/premium_features'

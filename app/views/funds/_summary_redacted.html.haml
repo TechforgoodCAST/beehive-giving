@@ -1,20 +1,41 @@
-.locked-funder
+.locked-fund
   .uk-grid
     .uk-width-medium-1-3
       .card
-        -# TODO: refactor
-        - if @current_user.feedbacks.count.positive?
-          .thumbnail
-            .funder{class: (@tag.present? ? 'locked' : fund.funder.slug)}
-        - else
-          %a.why-hidden{ onclick: "goog_report_conversion('#why-hidden')", alt: (@tag.present? ? scramble_name(fund.name) : fund.name) }
-            .thumbnail
-              .funder{class: (@tag.present? ? 'locked' : fund.funder.slug)}
         .details
+          .content
+            %h4.uk-text-bold
+              Analysis
+              .beta.muted Beta
+            %table.uk-table.uk-table-condensed
+              %thead
+                %tr
+                  %th Decision factor
+                  %th Match
+              %tbody
+                %tr
+                  %td Eligibility
+                  %td= scramble_recommendations
+                %tr
+                  %td Organisation type
+                  %td= scramble_recommendations
+                %tr
+                  %td Beneficiaries
+                  %td= scramble_recommendations
+                %tr
+                  %td Location
+                  %td= scramble_recommendations
+
+                - unless @recipient.transferred?
+                  %tr
+                    %td Funding amount
+                    %td= scramble_recommendations
+                  %tr
+                    %td Funding duration
+                    %td= scramble_recommendations
+
           .content.center
-            = cell(:coming_soon_link).call(:show, 'Show fund', 'uk-width-1-1 uk-button uk-button-primary uk-button-large')
-          .content.center
-            = cell(:coming_soon_link).call(:show, 'Why is this hidden?')
+            = link_to 'Show fund', account_upgrade_path(@recipient), class: 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
 
     .uk-width-medium-2-3
       %h3.uk-margin-top
@@ -22,7 +43,7 @@
         - if @current_user.feedbacks.count.positive?
           = link_to (@tag.present? ? scramble_name(fund.name) : fund.name), proposal_fund_path(@proposal, fund), class: (@tag.present? ? 'yellow redacted large': 'yellow')
         - else
-          = cell(:coming_soon_link).call(:show, (@tag.present? ? scramble_name(fund.name) : fund.name), (@tag.present? ? 'yellow redacted large': 'yellow'))
+          = link_to (@tag.present? ? scramble_name(fund.name) : fund.name), account_upgrade_path(@recipient), class: (@tag.present? ? 'yellow redacted large': 'yellow')
         %span.year.muted
           %span.redacted= scramble_name(fund.funder.name)
 

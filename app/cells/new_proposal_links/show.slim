@@ -4,6 +4,6 @@
   - if recipient.subscribed?
     = link_to 'New proposal', new_proposal_path, class: 'proposal-links'
   - else
-    = cell(:coming_soon_link).call(:show, 'New proposal', 'proposal-links')
+    = link_to 'New proposal', account_upgrade_path(recipient), class: 'proposal-links'
 - else
   = link_to 'New proposal', edit_signup_proposal_path(model), class: 'proposal-links'

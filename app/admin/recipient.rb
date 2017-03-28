@@ -8,10 +8,6 @@ ActiveAdmin.register Recipient do
     def find_resource
       Recipient.where(slug: params[:id]).first!
     end
-
-    def scoped_collection
-      Recipient.includes(:users, :profiles, :grants, :features)
-    end
   end
 
   filter :name
@@ -25,31 +21,15 @@ ActiveAdmin.register Recipient do
 
   index do
     selectable_column
-    column 'Organisation', :name do |recipient|
-      link_to recipient.name, [:admin, recipient]
-    end
+    column :name
     column :website
     column :country
-    column('Users') { |f| f.users.count }
     column :org_type
-    column('Proposals') { |f| f.proposals.count }
-    column('Grants') { |f| f.grants.count }
-    column('Requests') { |f| f.features.count }
-    column 'Scrape' do |r|
-      if r.charity_name.present? && r.company_name.present?
-        'Both'
-      elsif r.charity_name.present? && !r.company_name.present?
-        'Charity'
-      elsif !r.charity_name.present? && r.company_name.present?
-        'Company'
-      else
-        'None'
-      end
-    end
     column :street_address
     column :postal_code
     column :latitude
     column :longitude
+    actions
   end
 
   show do

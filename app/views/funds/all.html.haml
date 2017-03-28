@@ -17,8 +17,8 @@
 
       - if i == 5
         .cta.wide
-          Go unlimited with Beehive Pro and see all funders with complete profiles.
-          = cell(:coming_soon_link).call(:show, 'Upgrade (coming soon)', 'uk-button uk-button-large uk-button-primary invert')
+          Go unlimited with Beehive Pro and see all funds with complete profiles.
+          = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'uk-button uk-button-large uk-button-primary invert'
 
       - if i == @funds.count - 1
         .cta.wide
@@ -28,5 +28,3 @@
       - else
         - unless i == 5
           %hr.thick
-
-= render partial: 'why_hidden'

@@ -7,6 +7,8 @@ class EligibilitiesController < ApplicationController
     @org_criteria = find_or_initialize_eligibilities(@recipient, 'Organisation')
     @proposal_criteria = find_or_initialize_eligibilities(@proposal, 'Proposal')
 
+    return if @recipient.subscribed?
+
     if @recipient.incomplete_first_proposal?
       session[:return_to] = @fund.slug
       redirect_to edit_signup_proposal_path(@proposal)
@@ -17,8 +19,7 @@ class EligibilitiesController < ApplicationController
     elsif @recipient.funds_checked < 3 || @proposal.checked_fund?(@fund)
       render :new
     else
-      # TODO: refactor redirect to upgrade path
-      redirect_to edit_feedback_path(current_user.feedbacks.last)
+      redirect_to account_upgrade_path(@recipient)
     end
   end
 

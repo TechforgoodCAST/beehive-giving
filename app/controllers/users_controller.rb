@@ -1,4 +1,6 @@
 class UsersController < ApplicationController
+  before_action :ensure_logged_in
+
   def edit; end
 
   def update
