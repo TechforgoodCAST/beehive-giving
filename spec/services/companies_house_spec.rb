@@ -59,4 +59,12 @@ describe CompaniesHouse do
       ).to eq years_old
     end
   end
+
+  it 'company_number not found' do
+    helper.stub_companies_house(
+      number: 'IP00000R', file: 'companies_house_not_found_stub.json'
+    )
+    org = Recipient.new
+    expect(CompaniesHouse.new('IP00000R').lookup(org)).to eq false
+  end
 end

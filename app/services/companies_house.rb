@@ -7,7 +7,7 @@ class CompaniesHouse
     )
     Net::HTTP.get_response(uri) do |http|
       return false unless http.response.content_type == 'application/json'
-      @res = JSON.parse(http.response.body)
+      valid_json?(http.response.body)
     end
   end
 
@@ -38,6 +38,12 @@ class CompaniesHouse
   end
 
   private
+
+    def valid_json?(json)
+      @res = JSON.parse(json)
+    rescue JSON::ParserError
+      false
+    end
 
     def operating_for_value(date)
       return unless date
