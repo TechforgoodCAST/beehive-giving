@@ -51,6 +51,9 @@ feature 'Subscriptions' do
       expect(page).to have_text 'Contact us for a quote'
       expect(page).to have_link 'Get in touch',
                                 href: 'mailto:support@beehivegiving.org'
+
+      visit account_upgrade_path(@db[:recipient])
+      expect(current_path).to eq account_subscription_path(@db[:recipient])
     end
 
     scenario 'valid coupon' do
