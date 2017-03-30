@@ -2,6 +2,7 @@ class ChargesController < ApplicationController
   before_action :ensure_logged_in, :init_payment
 
   def new
+    redirect_to account_subscription_path(@recipient) if @recipient.income > 3
     session[:return_to] = request.referer
     @notice = true if request.referer == account_subscription_url(@recipient)
     return unless @recipient.subscribed?
