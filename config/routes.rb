@@ -41,9 +41,10 @@ Rails.application.routes.draw do
   post '/sign-in', to: 'sessions#create'
 
   # Pages
-  get '/faq',     to: 'pages#faq',     as: 'faq'
-  get '/privacy', to: 'pages#privacy', as: 'privacy'
-  get '/terms',   to: 'pages#terms',   as: 'terms'
+  get '/faq',          to: 'pages#faq',     as: 'faq'
+  get '/privacy',      to: 'pages#privacy', as: 'privacy'
+  get '/terms',        to: 'pages#terms',   as: 'terms'
+  get '/preview/:tag', to: 'pages#preview', as: 'preview'
 
   # Sign up
   root 'signup#user'
