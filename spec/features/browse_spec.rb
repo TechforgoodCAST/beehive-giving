@@ -27,6 +27,7 @@ feature 'Browse' do
       @unsuitable_fund = Fund.first
       @low_fund = Fund.find_by(name: 'Awards for All 2')
       @top_fund = Fund.last
+      @recipient = @db[:recipient]
       @app.sign_in
       visit root_path
     end
@@ -103,6 +104,53 @@ feature 'Browse' do
       expect(current_path).to eq recommended_proposal_funds_path(@proposal)
     end
 
+    def subscribe_and_visit(path)
+      @recipient.subscribe!
+      visit path
+      expect(current_path).to eq path
+    end
+
+    scenario 'can only view proposal_fund_path for recommended funds ' \
+              'unless subscribed' do
+      visit proposal_fund_path(@proposal, Fund.first)
+      expect(current_path).to eq account_upgrade_path(@recipient)
+
+      subscribe_and_visit proposal_fund_path(@proposal, Fund.first)
+    end
+
+    scenario 'can only view eligibility_proposal_fund_path for ' \
+              'recommended funds unless subscribed' do
+      visit eligibility_proposal_fund_path(@proposal, Fund.first)
+      expect(current_path).to eq account_upgrade_path(@recipient)
+
+      subscribe_and_visit eligibility_proposal_fund_path(@proposal, Fund.first)
+    end
+
+    scenario 'only recommended funds shown unless subscribed' do
+      visit all_proposal_funds_path(@proposal)
+      expect(page).to have_css '.yellow.redacted.large', count: 1
+
+      subscribe_and_visit all_proposal_funds_path(@proposal)
+    end
+
+    scenario 'only recommended funds shown unless subscribed' do
+      data = { Fund.first.slug => { eligible: true, count_failing: 0 } }
+      @proposal.update!(eligibility: data)
+      visit eligible_proposal_funds_path(@proposal)
+      expect(page).to have_css '.yellow.redacted.large', count: 1
+
+      subscribe_and_visit eligible_proposal_funds_path(@proposal)
+    end
+
+    scenario 'only recommended funds shown unless subscribed' do
+      data = { Fund.first.slug => { eligible: false, count_failing: 1 } }
+      @proposal.update!(eligibility: data)
+      visit ineligible_proposal_funds_path(@proposal)
+      expect(page).to have_css '.yellow.redacted.large', count: 1
+
+      subscribe_and_visit ineligible_proposal_funds_path(@proposal)
+    end
+
     context 'all_funds_path' do
       before(:each) do
         click_link 'All'
@@ -111,9 +159,9 @@ feature 'Browse' do
       scenario "When I find a recommended fund I'm interested in,
                 I want to view more details,
                 so I can decide if I want to apply" do
-        click_link @unsuitable_fund.name
+        click_link @top_fund.name
         expect(current_path).to eq proposal_fund_path(
-          @proposal, @unsuitable_fund
+          @proposal, @top_fund
         )
       end
 
@@ -121,12 +169,6 @@ feature 'Browse' do
                 I want to see my all funds on site,
                 so I can see which ones I already and the value of the site" do
         expect(current_path).to eq all_proposal_funds_path(@proposal)
-      end
-
-      scenario "When I'm browsing 'All' funds and can only see tags for
-                recommended funds, I want more information,
-                so I understand why I can't see some information" do
-        expect(page).to have_css '.redacted', count: 6
       end
     end
 

@@ -13,6 +13,17 @@ module RecipientsHelper
     end
   end
 
+  def redacted_fund_card_eligibility_text(fund)
+    case @proposal.eligibility_for(fund)
+    when 0
+      link_to('Ineligible', account_upgrade_path(@recipient), class: 'very-poor')
+    when 1
+      link_to('Eligible', account_upgrade_path(@recipient), class: 'excellent')
+    else
+      link_to('Check', account_upgrade_path(@recipient), class: 'primary')
+    end
+  end
+
   def fund_card_cta_button_copy(fund)
     classes = 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
     case @proposal.eligibility_for(fund)

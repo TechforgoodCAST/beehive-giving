@@ -14,8 +14,11 @@
                   %th Match
               %tbody
                 %tr
-                  %td Eligibility
-                  %td= scramble_recommendations
+                  %td
+                    Eligibility
+                  %td
+                    %strong
+                      = redacted_fund_card_eligibility_text(fund)
                 %tr
                   %td Organisation type
                   %td= scramble_recommendations
@@ -39,18 +42,25 @@
 
     .uk-width-medium-2-3
       %h3.uk-margin-top
-        -# TODO: refactor
-        - if @current_user.feedbacks.count.positive?
-          = link_to (@tag.present? ? scramble_name(fund.name) : fund.name), proposal_fund_path(@proposal, fund), class: (@tag.present? ? 'yellow redacted large': 'yellow')
-        - else
-          = link_to (@tag.present? ? scramble_name(fund.name) : fund.name), account_upgrade_path(@recipient), class: (@tag.present? ? 'yellow redacted large': 'yellow')
+        = link_to scramble_name(fund.name), account_upgrade_path(@recipient), class: 'yellow redacted large'
         %span.year.muted
           %span.redacted= scramble_name(fund.funder.name)
 
       %p.redacted.muted= scramble_name(raw(fund.description))
 
       %ul.insights
-        - 5.times do |i|
+        - unless @proposal.eligibility_for(fund).negative?
+          %li{ class: (@proposal.eligible?(fund) ? 'eligible' : 'ineligible')}
+            - if @proposal.eligible?(fund)
+              %a.badge{ href: eligible_proposal_funds_path(@proposal) } Eligible
+              You are eligible for funding.
+              %a.action{ href: account_upgrade_path(@recipient) } See criteria
+            - else
+              %a.badge{ href: ineligible_proposal_funds_path(@proposal) } Ineligible
+              You are ineligible for funding.
+              %a.action{ href: account_upgrade_path(@recipient) } Find out why
+
+        - (3..5).to_a.sample.times do |i|
           %li
             .action.redacted.muted= redacted_insights
             - if i < 2
