@@ -267,7 +267,8 @@ class Proposal < ActiveRecord::Base
 
   def show_fund?(fund)
     recipient.subscribed? ||
-      recommended_funds.take(Recipient::RECOMMENDATION_LIMIT).include?(fund.id)
+      (recommended_funds - ineligible_fund_ids)
+        .take(Recipient::RECOMMENDATION_LIMIT).include?(fund.id)
   end
 
   def check_eligibility!

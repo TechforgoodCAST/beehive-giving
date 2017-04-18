@@ -13,7 +13,10 @@
 
     - @funds.each_with_index do |fund, i|
 
-      = render partial: 'summary', locals: { fund: fund }
+      - if @proposal.show_fund?(fund)
+        = render partial: 'summary', locals: { fund: fund }
+      - else
+        = render partial: 'summary_redacted', locals: { fund: fund }
 
       - if i == 5
         .cta.wide

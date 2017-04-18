@@ -4,6 +4,9 @@ class EligibilitiesController < ApplicationController
                 :load_restrictions, :load_eligibilities
 
   def new # TODO: refactor
+    return redirect_to account_upgrade_path(@recipient) unless
+      @proposal.checked_fund?(@fund) || @proposal.show_fund?(@fund)
+
     @org_criteria = find_or_initialize_eligibilities(@recipient, 'Organisation')
     @proposal_criteria = find_or_initialize_eligibilities(@proposal, 'Proposal')
 

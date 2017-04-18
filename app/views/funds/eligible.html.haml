@@ -30,6 +30,11 @@
         = link_to 'Find a fund', recommended_proposal_funds_path(@proposal), class: 'uk-button uk-button-large uk-button-primary invert'
 
     - @funds.each_with_index do |fund, i|
-      = render partial: 'summary', locals: { fund: fund }
+
+      - if @proposal.show_fund?(fund)
+        = render partial: 'summary', locals: { fund: fund }
+      - else
+        = render partial: 'summary_redacted', locals: { fund: fund }
+
       - unless i == @funds.count - 1
         %hr.thick
