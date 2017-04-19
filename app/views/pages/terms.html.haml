@@ -50,63 +50,8 @@
         %ol
           %li
             Beehive is free to use with limited usage. For access beyond usage limits you must purchase one of the following 'Pro' subscription plans:
-            %table.uk-table
-              %caption Subscription plans
-              %thead
-                %tr
-                  %th Plan
-                  %th Price
-                  %th Features
-              %tbody
-                %tr.uk-table-middle
-                  %td
-                    Basic
-                    %br
-                      %small Default
-                  %td Free
-                  %td
-                    = render partial: 'accounts/free_features'
-                %tr.uk-table-middle.off-white.bg
-                  %td
-                    Pro - Micro
-                    %br
-                      %small <£10k income
-                  %td
-                    £50
-                    %small per year
-                  %td{ rowspan: 5 }
-                    = render partial: 'accounts/premium_features'
-                %tr.uk-table-middle.off-white.bg
-                  %td
-                    Pro - Small
-                    %br
-                      %small <£100k income
-                  %td
-                    £100
-                    %small per year
-                %tr.uk-table-middle.off-white.bg
-                  %td
-                    Pro - Medium
-                    %br
-                      %small <£1m income
-                  %td
-                    £300
-                    %small per year
-                %tr.uk-table-middle.off-white.bg
-                  %td
-                    Pro - Large
-                    %br
-                      %small <£10m income
-                  %td
-                    £1,200
-                    %small per year
-                %tr.uk-table-middle.off-white.bg
-                  %td
-                    Pro - Major
-                    %br
-                      %small £10m+ income
-                  %td
-                    Get in touch
+
+            = render partial: 'subscription_plans'
 
           %li
             All payments made through Beehive are processed by Stripe. Beehive does not store any of the information you submit while making a purchase. Should you choose to purchase a subscription to Beehive, you understand and acknowledge that the purchase transaction and the collection of your information is governed by the

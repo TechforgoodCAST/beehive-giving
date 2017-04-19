@@ -77,9 +77,19 @@
       %h3
         How much does Beehive cost?
         %span.muted.year About
-      %p Nothing, a ‘basic’ account is free and always will be.
-      %p We intend to introduce a ‘professional’ account type in the future that would be paid for, and extend the features available to you on Beehive. There would be no obligation to upgrade, and your ‘basic’ account privileges will not be affected.
-      %p As Beehive is a tech for good project, all income will be reinvested back into the development and running of the platform.
+      %p
+        Nothing, a
+        %strong Basic
+        account is free to use with limited usage.
+
+      %p
+        For access beyond usage limits you must purchase one of the following
+        %strong Pro
+        subscription plans:
+
+      = render partial: 'subscription_plans'
+
+      %p Beehive is a project of a charity and all income is reinvested back into the development and running of the platform.
 
     %section#what
       %hr.thick
