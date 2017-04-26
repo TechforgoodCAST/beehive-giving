@@ -21,6 +21,8 @@
   mixpanel.track("View Upgrade Page");
   mixpanel.identify("#{@current_user.id}");
 
+  ga("send", "event", "charges#new", "view", "Plan Cost: #{@payment.plan_cost}");
+
 = render partial: 'accounts/subnav'
 
 .uk-container.uk-container-center.uk-margin-large
