@@ -4,6 +4,10 @@
   mixpanel.track("View Subscription Page");
   mixpanel.identify("#{@current_user.id}");
 
+- if @recipient.income < 4
+  :javascript
+    ga("send", "event", "accounts#subscription", "view", "Plan Cost: #{@payment.plan_cost}");
+
 = render partial: 'subnav'
 
 .uk-container.uk-container-center.uk-margin-large
