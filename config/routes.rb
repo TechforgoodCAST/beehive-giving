@@ -45,6 +45,7 @@ Rails.application.routes.draw do
   get '/privacy',      to: 'pages#privacy', as: 'privacy'
   get '/terms',        to: 'pages#terms',   as: 'terms'
   get '/preview/:tag', to: 'pages#preview', as: 'preview'
+  get '/for-funders',  to: 'pages#funders', as: 'funders'
 
   # Sign up
   root 'signup#user'
