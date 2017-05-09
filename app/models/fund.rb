@@ -120,6 +120,8 @@ class Fund < ActiveRecord::Base
     tags.count.positive?
   end
 
+  include JsonSetters
+
   private
 
     def set_slug
