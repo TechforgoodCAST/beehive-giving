@@ -1,4 +1,6 @@
 ActiveAdmin.register Fund do
+  config.per_page = 100
+
   permit_params :funder_id, :type_of_fund, :name, :description, :open_call,
                 :active, :currency, :application_link, :key_criteria,
                 :match_funding_restrictions, :payment_procedure,
@@ -17,15 +19,20 @@ ActiveAdmin.register Fund do
 
   index do
     selectable_column
-    column 'Funder' do |fund|
-      link_to fund.funder.name, [:admin, fund.funder]
+    column :slug
+    column :active
+    column 'org_type' do |fund|
+      check_presence(fund, 'org_type_distribution')
     end
-    column :name
+    column 'income' do |fund|
+      check_presence(fund, 'income_distribution')
+    end
     actions
   end
 
   filter :funder, input_html: { class: 'chosen-select' }
-  filter :name
+  filter :slug
+  filter :active
   filter :updated_at
 
   show do
@@ -70,9 +77,9 @@ ActiveAdmin.register Fund do
         # row :duration_awarded_months_max
         # row :duration_awarded_months_distribution
         row :award_month_distribution
-        # row :org_type_distribution
+        row :org_type_distribution
         # row :operating_for_distribution
-        # row :income_distribution
+        row :income_distribution
         # row :employees_distribution
         # row :volunteers_distribution
         # row :gender_distribution
@@ -206,9 +213,9 @@ ActiveAdmin.register Fund do
         f.input :award_month_distribution
 
         # Recipient
-        # TODO: f.input :org_type_distribution
+        f.input :org_type_distribution
         # TODO: f.input :operating_for_distribution
-        # TODO: f.input :income_distribution
+        f.input :income_distribution
         # TODO: f.input :employees_distribution
         # TODO: f.input :volunteers_distribution
 
