@@ -1,6 +1,10 @@
 module JsonSetters
   extend ActiveSupport::Concern
 
+  def tags=(arr)
+    parse_json :tags, arr.reject { |i| i == '' }
+  end
+
   def sources=(json)
     parse_json :sources, json
   end
