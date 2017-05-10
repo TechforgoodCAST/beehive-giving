@@ -29,7 +29,7 @@ module JsonSetters
 
     def parse_json(field, json)
       self[field] = JSON.parse json
-    rescue JSON::ParserError
-      self[field] = {}
+    rescue TypeError
+      self[field] = JSON.parse json.to_json
     end
 end

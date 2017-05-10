@@ -8,7 +8,7 @@ ActiveAdmin.register Fund do
                 :period_start, :period_end, :grant_count,
                 :amount_awarded_distribution, :award_month_distribution,
                 :country_distribution, :geographic_scale, :sources,
-                :org_type_distribution, :income_distribution,
+                :org_type_distribution, :income_distribution, :slug,
                 :geographic_scale_limited, country_ids: [], district_ids: [],
                                            restriction_ids: []
 
@@ -96,6 +96,7 @@ ActiveAdmin.register Fund do
   form do |f|
     f.inputs do
       inputs 'Basics' do
+        f.input :slug
         f.input :funder, input_html: { class: 'chosen-select' }
         f.input :type_of_fund, input_html: { value: 'Grant' }
         f.input :name
