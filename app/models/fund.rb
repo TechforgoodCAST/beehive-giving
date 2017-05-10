@@ -67,6 +67,7 @@ class Fund < ActiveRecord::Base
   validates :countries, :districts, presence: true,
                                     if: :geographic_scale_limited?
   validates :restrictions, presence: true, if: :restrictions_known?
+  validates :restrictions_known, presence: true, if: :restriction_ids?
   # validates :outcomes, presence: true, if: :outcomes_known?
   # validates :decision_makers, presence: true, if: :decision_makers_known?
 
@@ -119,6 +120,8 @@ class Fund < ActiveRecord::Base
   def tags?
     tags.count.positive?
   end
+
+  include JsonSetters
 
   private
 

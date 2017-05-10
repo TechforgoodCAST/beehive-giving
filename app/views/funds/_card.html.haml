@@ -22,8 +22,12 @@
               %td.muted{ colspan: 2 }
                 = link_to 'Upgrade to see more', account_upgrade_path(@recipient), class: 'uk-text-bold'
           %tr
-            %td Organisation type
+            %td Organisation
             %td= render_recommendation(fund, 'org_type_score', 2)
+          %tr
+            %td.muted{ colspan: 2 }
+              %small= raw org_type_desc(fund)
+              %small= raw income_desc(fund)
           %tr
             %td Beneficiaries
             %td= render_recommendation(fund, 'beneficiary_score', 2)

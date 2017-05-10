@@ -150,7 +150,7 @@ class Proposal < ActiveRecord::Base
 
     recommendations = []
 
-    Fund.all.find_each do |fund|
+    Fund.active.find_each do |fund|
       org_type_score = beneficiary_score = location_score = amount_score =
                                                               duration_score = 0
 
@@ -245,6 +245,7 @@ class Proposal < ActiveRecord::Base
 
     # TODO: refactor
     recommended_funds = funds
+                        .where(active: true)
                         .where('recommendations.total_recommendation >= ?',
                                Recipient::RECOMMENDATION_THRESHOLD)
                         .order('recommendations.total_recommendation DESC',
@@ -276,7 +277,7 @@ class Proposal < ActiveRecord::Base
     answers = Eligibility.where(category_id: [id, recipient.id])
                          .pluck(:restriction_id, :eligible).to_h
 
-    funds.pluck(:slug, :restriction_ids).to_h.each do |slug, restrictions|
+    funds.active.pluck(:slug, :restriction_ids).to_h.each do |slug, restrictions|
       comparison = (answers.keys & restrictions)
       next unless comparison.count == restrictions.count
       result[slug] = {
