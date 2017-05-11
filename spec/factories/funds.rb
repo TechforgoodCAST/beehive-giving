@@ -40,7 +40,7 @@ FactoryGirl.define do
     factory :fund_with_open_data, class: Fund do
       open_data true
       sources do
-        { 'https://creativecommons.org/licenses/by/4.0/': 'http://www.example.com' }
+        { 'https://creativecommons.org/licenses/by/4.0/': 'http://www.example.com' }.to_json
       end
       period_start { 1.year.ago }
       period_end { Time.zone.today }
@@ -59,7 +59,7 @@ FactoryGirl.define do
           { "segment": 0, "start": 0,     "end": 4999,  "count": 3  },
           { "segment": 1, "start": 5000,  "end": 9999,  "count": 87 },
           { "segment": 2, "start": 10_000, "end": 14_999, "count": 10 }
-        ]
+        ].to_json
       end
 
       duration_awarded_months_mean 11.789
@@ -77,7 +77,7 @@ FactoryGirl.define do
           { "month": 1, "count": 24, "percent": 0.40, "amount": 3_732_076 },
           { "month": 2, "count": 24, "percent": 0.40, "amount": 2_297_650 },
           { "month": 3, "count": 11, "percent": 0.20, "amount": 1_059_958 }
-        ]
+        ].to_json
       end
 
       # Recipient
@@ -89,7 +89,7 @@ FactoryGirl.define do
           { "position": 4, "label": 'An unregistered organisation OR project', "percent": 0 },
           { "position": 5, "label": 'A registered company',                    "percent": 0 },
           { "position": 6, "label": 'An individual',                           "percent": 0 }
-        ]
+        ].to_json
       end
       operating_for_distribution do
         [
@@ -108,7 +108,7 @@ FactoryGirl.define do
           { "position": 4, "label": 'Less than £10k', "percent": 0 },
           { "position": 5, "label": '£10m+',          "percent": 0 },
           { "position": 6, "label": 'Unknown+',       "percent": 0 }
-        ]
+        ].to_json
       end
       employees_distribution do
         [
@@ -203,7 +203,7 @@ FactoryGirl.define do
         [
           { "name": 'United Kingdom', "alpha2": 'GB', "count": 90, "percent": 0.9 },
           { "name": 'Kenya',          "alpha2": 'KE', "count": 10, "percent": 0.1 }
-        ]
+        ].to_json
       end
       district_distribution do
         [

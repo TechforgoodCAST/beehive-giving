@@ -57,9 +57,9 @@ module RecipientsHelper
 
   def score_to_match_copy(score, scale = 1)
     {
-      'Not enough data' => 0,   'Very poor' => 0.2,
-      'Poor'            => 0.4, 'Fair'      => 0.6,
-      'Good'            => 0.8, 'Excellent' => 1.0
+      'Unavailable' => 0,   'Very poor' => 0.2,
+      'Poor'        => 0.4, 'Fair'      => 0.6,
+      'Good'        => 0.8, 'Excellent' => 1.0
     }.each do |k, v|
       return content_tag(:strong, k, class: k.downcase.to_s.sub(' ', '-')) if
         score <= (v * scale)

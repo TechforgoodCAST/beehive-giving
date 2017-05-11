@@ -44,6 +44,33 @@ module FundsHelper
          .reduce({}, :merge)
   end
 
+  def org_type_desc(fund)
+    arr = fund.org_type_distribution.select do |hash|
+      hash['label'] == Organisation::ORG_TYPE[@recipient.org_type][0]
+    end
+    return if arr.empty?
+    "
+      <strong>
+        #{number_to_percentage arr[0]['percent'] * 100, precision: 0}
+      </strong>
+      of funded organisations were like you - #{arr[0]['label']}.
+    "
+  end
+
+  def income_desc(fund)
+    arr = fund.income_distribution.select do |hash|
+      hash['label'] == Organisation::INCOME[@recipient.income][0]
+    end
+    return if arr.empty?
+    "
+      And like you
+      <strong>
+        #{number_to_percentage arr[0]['percent'] * 100, precision: 0}
+      </strong>
+      had an income between #{arr[0]['label']}.
+    "
+  end
+
   private
 
     def to_k(amount)
