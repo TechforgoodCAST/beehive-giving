@@ -22,6 +22,10 @@ ActiveAdmin.register Fund do
     selectable_column
     column :slug
     column :active
+    # column :period_start
+    column 'year end' do |o|
+      o&.period_end&.strftime('%Y')
+    end
     column 'org_type' do |fund|
       check_presence(fund, 'org_type_distribution')
     end
