@@ -20,6 +20,10 @@ Prerequisites: [Ruby](https://www.ruby-lang.org), [Bundler](https://bundler.io/)
 
    STRIPE_SECRET_KEY=<secret_key>
    STRIPE_PUBLISHABLE_KEY=<publishable_key>
+
+   # (optional if needed)
+   DATABASE_URL=postgres://username:password@localhost/beehive-data_development
+   DATABASE_URL_TEST=postgres://username:password@localhost/beehive-data_test
    ```
 
 ## Importing data
