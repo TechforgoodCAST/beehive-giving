@@ -70,8 +70,24 @@ fdescribe LocationMatch do
   end
 
   context 'fund seeking work at a local level' do
+    before(:each) do
+      @app.seed_test_db.setup_funds.create_recipient.create_registered_proposal
+      @funds = Fund.active.all
+      @proposal = Proposal.last
+    end
+
+    it 'fund ineligible with notice for local proposal no district match' do
+      @funds.first.district_ids = []
+      @funds.first.save(validate: false)
+
+      result = {
+        @funds.first.slug => { eligible: false, reason: 'location' }
+      }
+
+      expect(LocationMatch.new(@funds, @proposal).match).to eq result
+    end
+
     it 'fund neutral with notice for national proposal'
-    it 'fund ineligible with notice for local proposal no district match'
     it 'fund eligible with notice for local proposal partial/full match'
     it 'fund neutral with notice for local proposal intersect/overlap match'
   end
