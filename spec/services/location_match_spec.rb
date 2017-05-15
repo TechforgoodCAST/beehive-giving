@@ -32,37 +32,29 @@ describe LocationMatch do
   end
 
   context 'fund seeking work in other countries' do
-    it 'fund eligible for proposal does match countries' do
-      @proposal.affect_geo = 3
-      @proposal.countries = Country.where(alpha2: ['ET', 'SO'])
-      @funds.first.affect_geo = 3
-      @funds.first.countries = Country.where(alpha2: ['ET', 'SO', 'ER', 'SS', 'SD'])
-      match = LocationMatch.new(@funds, @proposal)
-      expect { match[0] } to eq 'eligible'
-      # Setup fund: @fund = Fund.new
-      # Setup proposal:
-      # @proposal.affect_geo in 2,3
-      # @fund.affect_geo in 2,3
-      # @proposal.countries in ['ET', 'SO']
-      # @fund.countries in ['ET', 'SO', 'ER', 'SS', 'SD']
-      # perform match
-      # check eligible == true
+    before(:each) do
+      @app.seed_test_db.setup_funds.create_recipient.create_registered_proposal
+      @funds = Fund.active.all
+      @proposal = Proposal.last
     end
-    it 'fund ineligible for proposal does not match countries' do
-      @proposal.affect_geo = 3
-      @proposal.countries = Country.where(alpha2: ['ET', 'SO'])
-      @funds.first.affect_geo = 3
-      @funds.first.countries = Country.where(alpha2: ['ET', 'SO', 'ER', 'SS', 'SD'])
-      match = LocationMatch.new(@funds, @proposal)
-      expect { match[0] } to eq 'ineligible'
-      # Setup fund: @fund = Fund.new
-      # Setup proposal:
-      # @proposal.affect_geo in 2,3
-      # @fund.affect_geo in 2,3
-      # @proposal.countries in ['NG']
-      # @fund.countries in ['ET', 'SO', 'ER', 'SS', 'SD']
-      # perform match
-      # check eligible == false
+
+    it 'Fund eligible for Proposal that matches Fund.countries' do
+      result = {
+        @funds.first.slug => { eligible: true, reason: 'location' }
+      }
+
+      expect(LocationMatch.new(@funds, @proposal).match).to eq result
+    end
+
+    it 'Fund ineligible for Proposal that does not match Fund.countries' do
+      @funds.first.country_ids = [Country.last.id]
+      @funds.first.save!
+
+      result = {
+        @funds.first.slug => { eligible: false, reason: 'location' }
+      }
+
+      expect(LocationMatch.new(@funds, @proposal).match).to eq result
     end
   end
 
