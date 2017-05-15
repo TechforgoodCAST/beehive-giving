@@ -32,7 +32,26 @@ describe LocationMatch do
   end
 
   context 'fund seeking work in other countries' do
-    it 'fund ineligible for proposal does not match countries'
+    it 'fund eligible for proposal does match countries' do
+      # Setup fund: @fund = Fund.new
+      # Setup proposal:
+      # @proposal.affect_geo in 2,3
+      # @fund.affect_geo in 2,3
+      # @proposal.countries in ['ET', 'SO']
+      # @fund.countries in ['ET', 'SO', 'ER', 'SS', 'SD']
+      # perform match
+      # check eligible == true
+    end
+    it 'fund ineligible for proposal does not match countries' do
+      # Setup fund: @fund = Fund.new
+      # Setup proposal:
+      # @proposal.affect_geo in 2,3
+      # @fund.affect_geo in 2,3
+      # @proposal.countries in ['NG']
+      # @fund.countries in ['ET', 'SO', 'ER', 'SS', 'SD']
+      # perform match
+      # check eligible == false
+    end
   end
 
   context 'fund seeking work at national scale' do
