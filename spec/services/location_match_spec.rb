@@ -33,6 +33,12 @@ describe LocationMatch do
 
   context 'fund seeking work in other countries' do
     it 'fund eligible for proposal does match countries' do
+      @proposal.affect_geo = 3
+      @proposal.countries = Country.find_by(alpha2: ['ET', 'SO'])
+      @funds.first.affect_geo = 3
+      @funds.first.countries = Country.find_by(alpha2: ['ET', 'SO', 'ER', 'SS', 'SD'])
+      match = LocationMatch.new(@funds, @proposal)
+      expect { match[0] } to eq 'eligible'
       # Setup fund: @fund = Fund.new
       # Setup proposal:
       # @proposal.affect_geo in 2,3
