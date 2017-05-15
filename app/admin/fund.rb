@@ -38,6 +38,7 @@ ActiveAdmin.register Fund do
   filter :funder, input_html: { class: 'chosen-select' }
   filter :slug
   filter :active
+  filter :open_data
   filter :updated_at
 
   show do
