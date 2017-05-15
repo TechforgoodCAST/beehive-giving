@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe LocationMatch do
+fdescribe LocationMatch do
   context 'init' do
     before(:each) do
       @app.seed_test_db.setup_funds.create_recipient.create_registered_proposal
@@ -38,14 +38,6 @@ describe LocationMatch do
       @proposal = Proposal.last
     end
 
-    it 'Fund eligible for Proposal that matches Fund.countries' do
-      result = {
-        @funds.first.slug => { eligible: true, reason: 'location' }
-      }
-
-      expect(LocationMatch.new(@funds, @proposal).match).to eq result
-    end
-
     it 'Fund ineligible for Proposal that does not match Fund.countries' do
       @funds.first.country_ids = [Country.last.id]
       @funds.first.save!
@@ -59,8 +51,22 @@ describe LocationMatch do
   end
 
   context 'fund seeking work at national scale' do
-    it 'fund eligible for proposal seeking funding at national level'
-    it 'fund ineligible for proposal seeking funding at national level'
+    before(:each) do
+      @app.seed_test_db.setup_funds.create_recipient.create_registered_proposal
+      @funds = Fund.active.all
+      @proposal = Proposal.last
+    end
+
+    it 'fund ineligible for proposal seeking funding at national level' do
+      @proposal.update(affect_geo: 2)
+      @funds.first.update_column(:geographic_scale, 2)
+
+      result = {
+        @funds.first.slug => { eligible: false, reason: 'location' }
+      }
+
+      expect(LocationMatch.new(@funds, @proposal).match).to eq result
+    end
   end
 
   context 'fund seeking work at a local level' do

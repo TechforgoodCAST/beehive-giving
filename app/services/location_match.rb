@@ -6,7 +6,8 @@ class LocationMatch
   end
 
   def match(eligibility = {})
-    check_country(eligibility)
+    eligibility = check_country(eligibility)
+    check_national(eligibility)
   end
 
   private
@@ -20,8 +21,16 @@ class LocationMatch
       ineligible_fund_slugs.each do |slug|
         eligibility[slug] = { eligible: false, reason: 'location' }
       end
+      eligibility
+    end
+
+    def check_national(eligibility)
+      matched_fund_slugs = @funds
+                           .where(geographic_scale: 2, geographic_scale_limited: true)
+                           .pluck(:slug)
+      return eligibility unless @proposal.affect_geo == 2
       matched_fund_slugs.each do |slug|
-        eligibility[slug] = { eligible: true, reason: 'location' }
+        eligibility[slug] = { eligible: false, reason: 'location' }
       end
       eligibility
     end
