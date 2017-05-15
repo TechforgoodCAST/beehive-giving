@@ -7,7 +7,8 @@ class LocationMatch
 
   def match(eligibility = {})
     eligibility = check_country(eligibility)
-    check_national(eligibility)
+    eligibility = check_national(eligibility)
+    check_districts(eligibility)
   end
 
   private
@@ -31,6 +32,19 @@ class LocationMatch
       return eligibility unless @proposal.affect_geo == 2
       matched_fund_slugs.each do |slug|
         eligibility[slug] = { eligible: false, reason: 'location' }
+      end
+      eligibility
+    end
+
+    def check_districts(eligibility)
+      @funds.where(geographic_scale_limited: true)
+            .left_outer_joins(:districts)
+            .select(:id, :slug, 'array_agg(districts.id) AS fund_district_ids')
+            .group(:id, :slug)
+            .each do |fund|
+        if (@proposal.district_ids & fund.fund_district_ids).count.zero?
+          eligibility[fund.slug] = { eligible: false, reason: 'location' }
+        end
       end
       eligibility
     end
