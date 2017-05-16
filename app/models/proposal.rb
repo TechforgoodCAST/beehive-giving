@@ -150,6 +150,8 @@ class Proposal < ActiveRecord::Base
 
     recommendations = []
 
+    update_eligibility! LocationMatch.new(Fund.active, self).match(eligibility)
+
     Fund.active.find_each do |fund|
       org_type_score = beneficiary_score = location_score = amount_score =
                                                               duration_score = 0
@@ -287,6 +289,10 @@ class Proposal < ActiveRecord::Base
     end
 
     update_column(:eligibility, result)
+  end
+
+  def update_eligibility!(new_eligibility)
+    update_column(:eligibility, eligibility.merge(new_eligibility))
   end
 
   def checked_fund?(fund)
