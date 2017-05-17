@@ -64,8 +64,7 @@ class Fund < ActiveRecord::Base
               greater_than_or_equal_to: Proposal::AFFECT_GEO.first[1],
               less_than_or_equal_to: Proposal::AFFECT_GEO.last[1]
             }
-  validates :countries, :districts, presence: true,
-                                    if: :geographic_scale_limited?
+  validates :countries, presence: true
   validates :restrictions, presence: true, if: :restrictions_known?
   validates :restrictions_known, presence: true, if: :restriction_ids?
   # validates :outcomes, presence: true, if: :outcomes_known?
@@ -81,7 +80,7 @@ class Fund < ActiveRecord::Base
                           numericality: { greater_than_or_equal_to: 0 },
                           if: :open_data?
 
-  validate :validate_sources, :validate_local
+  validate :validate_sources, :validate_local, :validate_national
 
   # TODO: validations
   # validates :period_start, :period_end, :org_type_distribution,
@@ -174,10 +173,26 @@ class Fund < ActiveRecord::Base
       return errors.add(:geographic_scale_limited, 'must be true for local fund') if
         geographic_scale_limited == false
 
+      return errors.add(:districts, "can't be blank") if districts.empty?
+
+      errors.add(:districts, 'cannot select all districts for local fund') if
+        all_districts_selected
+    end
+
+    def validate_national
+      return unless geographic_scale == 2
+
+      if geographic_scale_limited
+        errors.add(:districts, 'must select all or none for countries') unless
+          districts.empty? || all_districts_selected
+      else
+        errors.add(:districts, 'must be blank') unless districts.empty?
+      end
+    end
+
+    def all_districts_selected
       all_district_ids = Country.joins(:districts).where(id: country_ids)
                                 .pluck('districts.id').uniq
-
-      return errors.add(:districts, 'cannot select all districts for local fund') if
-        all_district_ids.count == (all_district_ids & district_ids).count
+      all_district_ids.count == (all_district_ids & district_ids).count
     end
 end
