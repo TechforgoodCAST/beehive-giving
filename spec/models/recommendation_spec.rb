@@ -64,7 +64,7 @@ describe Recommendation do
     end
 
     it 'has location_score' do
-      expect(@recommendation.location_score).to eq 2
+      expect(@recommendation.location_score).to eq 1
     end
 
     it 'has grant_amount_recommendation' do

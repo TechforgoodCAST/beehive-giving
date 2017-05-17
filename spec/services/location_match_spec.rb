@@ -57,7 +57,9 @@ describe LocationMatch do
     it 'fund ineligible with notice for local proposal no district match ' \
         'e.g. Blagrave Trust' do
       @funds.first.update!(
-        geographic_scale_limited: true, district_ids: [District.last.id]
+        geographic_scale: 0,
+        geographic_scale_limited: true,
+        district_ids: [District.last.id]
       )
       expect(LocationMatch.new(@funds, @proposal).match).to eq @result
     end
