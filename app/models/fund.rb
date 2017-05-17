@@ -80,7 +80,8 @@ class Fund < ActiveRecord::Base
                           numericality: { greater_than_or_equal_to: 0 },
                           if: :open_data?
 
-  validate :validate_sources, :validate_local, :validate_national
+  validate :validate_sources, :validate_local, :validate_national,
+           :validate_multi_national
 
   # TODO: validations
   # validates :period_start, :period_end, :org_type_distribution,
@@ -185,6 +186,15 @@ class Fund < ActiveRecord::Base
       if geographic_scale_limited
         errors.add(:districts, 'must select all or none for countries') unless
           districts.empty? || all_districts_selected
+      else
+        errors.add(:districts, 'must be blank') unless districts.empty?
+      end
+    end
+
+    def validate_multi_national
+      return unless geographic_scale == 3
+      if geographic_scale_limited
+        errors.add(:districts, "can't be blank") if districts.empty?
       else
         errors.add(:districts, 'must be blank') unless districts.empty?
       end
