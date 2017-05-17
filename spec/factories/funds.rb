@@ -30,7 +30,7 @@ FactoryGirl.define do
     accepts_calls true
     contact_number '0123456789'
 
-    geographic_scale { Proposal::AFFECT_GEO.sample[1] }
+    geographic_scale 2
     geographic_scale_limited false
 
     restrictions_known true
