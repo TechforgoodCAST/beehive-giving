@@ -10,6 +10,67 @@ describe Fund do
       @funder = @db[:funder]
     end
 
+    context 'location' do
+      scenario 'local, must have geographic_scale_limited' do
+        [0, 1].each do |scale|
+          @fund.geographic_scale = scale
+          expect(@fund).not_to be_valid
+          expect(@fund.errors.full_messages[0])
+            .to eq 'Geographic scale limited must be true for local fund'
+        end
+      end
+
+      scenario 'local, geographic_scale_limited, can select SOME districts' do
+        [0, 1].each do |scale|
+          @fund.assign_attributes(
+            geographic_scale: scale,
+            geographic_scale_limited: true,
+            district_ids: [District.first.id]
+          )
+          expect(@fund).to be_valid
+        end
+      end
+
+      scenario 'local, geographic_scale_limited, cannot select ALL districts' do
+        [0, 1].each do |scale|
+          @fund.assign_attributes(
+            geographic_scale: scale,
+            geographic_scale_limited: true,
+            district_ids: District.pluck(:id)
+          )
+          expect(@fund).not_to be_valid
+          expect(@fund.errors.full_messages[0])
+            .to eq 'Districts cannot select all districts for local fund'
+        end
+      end
+
+      scenario 'local, geographic_scale_limited, cannot select NO districts' do
+        [0, 1].each do |scale|
+          @fund.assign_attributes(
+            geographic_scale: scale,
+            geographic_scale_limited: true,
+            district_ids: []
+          )
+          expect(@fund).not_to be_valid
+          expect(@fund.errors.full_messages[0])
+            .to eq "Districts can't be blank"
+        end
+      end
+
+      scenario 'national, geographic_scale_limited, can select ALL districts'
+      scenario 'national, geographic_scale_limited, can select NONE districts'
+      scenario 'national, geographic_scale_limited, cannot select SOME districts'
+      scenario 'national, no geographic scale limit, can select NONE districts'
+      scenario 'national, no geographic scale limit, cannot select SOME/ALL districts'
+
+      scenario 'muli-national, geographic_scale_limited, can select SOME districts'
+      scenario 'muli-national, geographic_scale_limited, can select ALL districts'
+      scenario 'muli-national, geographic_scale_limited, cannot select NONE districts'
+      scenario 'muli-national, no geographic scale limit, can select NONE districts'
+      scenario 'muli-national, no geographic scale limit, cannot select SOME districts'
+      scenario 'muli-national, no geographic scale limit, cannot select ALL districts'
+    end
+
     # TODO: test restriction_ids field
 
     it 'generates summary for last 12 months from most recent grant'

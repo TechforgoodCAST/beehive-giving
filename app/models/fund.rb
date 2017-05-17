@@ -80,7 +80,8 @@ class Fund < ActiveRecord::Base
   validates :grant_count, presence: true,
                           numericality: { greater_than_or_equal_to: 0 },
                           if: :open_data?
-  validate :sources, :validate_sources
+
+  validate :validate_sources, :validate_local
 
   # TODO: validations
   # validates :period_start, :period_end, :org_type_distribution,
@@ -165,5 +166,18 @@ class Fund < ActiveRecord::Base
         errors.add(:sources, "Invalid URL - value: #{v}") if
           v !~ %r{https?://}
       end
+    end
+
+    def validate_local
+      return if geographic_scale > 1
+
+      return errors.add(:geographic_scale_limited, 'must be true for local fund') if
+        geographic_scale_limited == false
+
+      all_district_ids = Country.joins(:districts).where(id: country_ids)
+                                .pluck('districts.id').uniq
+
+      return errors.add(:districts, 'cannot select all districts for local fund') if
+        all_district_ids.count == (all_district_ids & district_ids).count
     end
 end
