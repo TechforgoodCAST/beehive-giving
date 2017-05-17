@@ -11,49 +11,40 @@ describe Fund do
     end
 
     context 'location' do
-      scenario 'local, must have geographic_scale_limited' do
-        [0, 1].each do |scale|
-          @fund.geographic_scale = scale
-          expect(@fund).not_to be_valid
-          expect(@fund.errors.full_messages[0])
-            .to eq 'Geographic scale limited must be true for local fund'
+      context 'local' do
+        scenario 'must have geographic_scale_limited' do
+          [0, 1].each do |scale|
+            @fund.geographic_scale = scale
+            expect(@fund).not_to be_valid
+            expect(@fund.errors.full_messages[0])
+              .to eq 'Geographic scale limited must be true for local fund'
+          end
         end
-      end
 
-      scenario 'local, geographic_scale_limited, can select SOME districts' do
-        [0, 1].each do |scale|
-          @fund.assign_attributes(
-            geographic_scale: scale,
-            geographic_scale_limited: true,
-            district_ids: [District.first.id]
-          )
-          expect(@fund).to be_valid
-        end
-      end
+        context 'geographic_scale_limited' do
+          before(:each) do
+            @fund.assign_attributes(geographic_scale: [0, 1].sample,
+                                    geographic_scale_limited: true)
+          end
 
-      scenario 'local, geographic_scale_limited, cannot select ALL districts' do
-        [0, 1].each do |scale|
-          @fund.assign_attributes(
-            geographic_scale: scale,
-            geographic_scale_limited: true,
-            district_ids: District.pluck(:id)
-          )
-          expect(@fund).not_to be_valid
-          expect(@fund.errors.full_messages[0])
-            .to eq 'Districts cannot select all districts for local fund'
-        end
-      end
+          scenario 'can select SOME districts' do
+            @fund.district_ids = [District.first.id]
+            expect(@fund).to be_valid
+          end
 
-      scenario 'local, geographic_scale_limited, cannot select NO districts' do
-        [0, 1].each do |scale|
-          @fund.assign_attributes(
-            geographic_scale: scale,
-            geographic_scale_limited: true,
-            district_ids: []
-          )
-          expect(@fund).not_to be_valid
-          expect(@fund.errors.full_messages[0])
-            .to eq "Districts can't be blank"
+          scenario 'cannot select ALL districts' do
+            @fund.district_ids = District.pluck(:id)
+            expect(@fund).not_to be_valid
+            expect(@fund.errors.full_messages[0])
+              .to eq 'Districts cannot select all districts for local fund'
+          end
+
+          scenario 'cannot select NO districts' do
+            @fund.district_ids = []
+            expect(@fund).not_to be_valid
+            expect(@fund.errors.full_messages[0])
+              .to eq "Districts can't be blank"
+          end
         end
       end
 
