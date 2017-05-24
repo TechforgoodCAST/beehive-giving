@@ -10,6 +10,40 @@ describe Fund do
       @funder = @db[:funder]
     end
 
+    scenario 'districts empty unless geographic_scale_limited' do
+      @fund.district_ids = [District.first.id]
+      expect(@fund).not_to be_valid
+    end
+
+    scenario 'districts required per country if geographic_scale_limited ' \
+              'unless fund is national' do
+      @fund.geographic_scale_limited = true
+      @fund.district_ids = []
+      errors = [
+        'Districts for United Kingdom not selected',
+        'Districts for Kenya not selected'
+      ]
+      expect(@fund).not_to be_valid
+      expect(@fund.errors.full_messages).to eq errors
+    end
+
+    scenario 'cannot set national unless geographic_scale_limited' do
+      @fund.national = true
+      expect(@fund).not_to be_valid
+      expect(@fund.errors.full_messages[0])
+        .to eq 'National cannot be set unless geographic scale limited'
+    end
+
+    scenario 'districts not allowed if fund is national' do
+      @fund.geographic_scale_limited = true
+      @fund.national = true
+      @fund.district_ids = [District.first.id]
+
+      expect(@fund).not_to be_valid
+      expect(@fund.errors.full_messages[0])
+        .to eq 'Districts must be blank for national funds'
+    end
+
     # TODO: test restriction_ids field
 
     it 'generates summary for last 12 months from most recent grant'

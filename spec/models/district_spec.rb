@@ -6,7 +6,7 @@ describe District do
 
   before(:each) do
     @app.seed_test_db
-        .setup_funds(num: 2)
+        .setup_funds(num: 2, opts: { geographic_scale_limited: true })
         .create_recipient
         .subscribe_recipient
         .create_complete_proposal

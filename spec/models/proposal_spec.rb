@@ -51,6 +51,13 @@ describe Proposal do
         @initial_proposal.save
       end
 
+      it '#refine_recommendations' do
+        @initial_proposal.recommendations.update_all updated_at: 1.day.ago
+        @initial_proposal.refine_recommendations
+        updated = @initial_proposal.recommendations.pluck(:updated_at).uniq[0]
+        expect(updated.day).not_to eq 1.day.ago
+      end
+
       it 'has many recommendations and generates recommendations when saved' do
         expect(@initial_proposal.recommendations.count).to eq 2
       end

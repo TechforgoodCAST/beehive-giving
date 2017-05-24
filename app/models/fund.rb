@@ -1,6 +1,7 @@
 class Fund < ActiveRecord::Base
   scope :active, -> { distinct.where(active: true) }
   scope :inactive_ids, -> { where(active: false).pluck(:id) }
+  scope :newer_than, ->(date) { where('updated_at > ?', date) }
 
   belongs_to :funder
 
@@ -58,14 +59,7 @@ class Fund < ActiveRecord::Base
   # validates :accepts_calls, presence: true, if: :accepts_calls_known?
   # validates :contact_number, presence: true, if: :accepts_calls?
 
-  validates :geographic_scale,
-            numericality: {
-              only_integer: true,
-              greater_than_or_equal_to: Proposal::AFFECT_GEO.first[1],
-              less_than_or_equal_to: Proposal::AFFECT_GEO.last[1]
-            }
-  validates :countries, :districts, presence: true,
-                                    if: :geographic_scale_limited?
+  validates :countries, presence: true
   validates :restrictions, presence: true, if: :restrictions_known?
   validates :restrictions_known, presence: true, if: :restriction_ids?
   # validates :outcomes, presence: true, if: :outcomes_known?
@@ -80,7 +74,8 @@ class Fund < ActiveRecord::Base
   validates :grant_count, presence: true,
                           numericality: { greater_than_or_equal_to: 0 },
                           if: :open_data?
-  validate :sources, :validate_sources
+
+  validate :validate_sources, :validate_districts
 
   # TODO: validations
   # validates :period_start, :period_end, :org_type_distribution,
@@ -164,6 +159,24 @@ class Fund < ActiveRecord::Base
           k !~ %r{https?://}
         errors.add(:sources, "Invalid URL - value: #{v}") if
           v !~ %r{https?://}
+      end
+    end
+
+    def validate_districts
+      return if countries.empty?
+      state = [geographic_scale_limited?, national?]
+      case state
+      when [false, false] # anywhere
+        errors.add(:districts, 'must be blank') unless districts.empty?
+      when [false, true]  # invalid
+        errors.add(:national, 'cannot be set unless geographic scale limited')
+      when [true, true]   # national
+        errors.add(:districts, 'must be blank for national funds') unless districts.empty?
+      when [true, false]  # local
+        countries.each do |country|
+          errors.add(:districts, "for #{country.name} not selected") if
+            (district_ids & country.district_ids).count.zero?
+        end
       end
     end
 end

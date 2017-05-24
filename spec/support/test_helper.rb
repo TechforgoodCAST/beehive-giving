@@ -27,13 +27,13 @@ class TestHelper
     self
   end
 
-  def setup_funds(num: 1, save: true, open_data: false) # TODO: refactor
+  def setup_funds(num: 1, save: true, open_data: false, opts: {}) # TODO: refactor
     FactoryGirl.reload
     @funder = create(:funder)
     @funds = if open_data
-               build_list(:fund_with_open_data, num, funder: @funder)
+               build_list(:fund_with_open_data, num, opts.merge(funder: @funder))
              else
-               build_list(:fund, num, funder: @funder)
+               build_list(:fund, num, opts.merge(funder: @funder))
              end
     @funding_types = create_list(:funding_type, FundingType::FUNDING_TYPE.count)
     recipient_restrictions = create_list(:recipient_restriction, 2)
@@ -48,7 +48,7 @@ class TestHelper
       fund.stages = build_list(:stage, 2, fund: fund)
       fund.funding_types = @funding_types
       fund.countries = @countries
-      fund.districts = @uk_districts + @kenya_districts
+      fund.districts = @uk_districts + @kenya_districts if fund.geographic_scale_limited
       fund.restrictions = (i.even? ? recipient_restrictions + proposal_restrictions.first(3) : recipient_restrictions + proposal_restrictions.last(3))
       fund.outcomes = @outcomes
       fund.decision_makers = @decision_makers

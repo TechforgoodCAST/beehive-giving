@@ -7,7 +7,7 @@ ActiveAdmin.register Fund do
                 :restrictions_known, :skip_beehive_data, :open_data,
                 :period_start, :period_end, :grant_count,
                 :amount_awarded_distribution, :award_month_distribution,
-                :country_distribution, :geographic_scale, :sources,
+                :country_distribution, :sources, :national,
                 :org_type_distribution, :income_distribution, :slug,
                 :geographic_scale_limited, country_ids: [], district_ids: [],
                                            restriction_ids: [], tags: []
@@ -31,6 +31,11 @@ ActiveAdmin.register Fund do
     end
     column 'income' do |fund|
       check_presence(fund, 'income_distribution')
+    end
+    column :geographic_scale_limited
+    column :national
+    column :districts do |fund|
+      fund.districts.count
     end
     actions
   end
@@ -175,11 +180,11 @@ ActiveAdmin.register Fund do
       # end
       #
       inputs 'Geography' do
-        f.input :geographic_scale, as: :select, collection: Proposal::AFFECT_GEO
-        f.input :geographic_scale_limited
         f.input :countries, collection: Country.pluck(:name, :id),
                             input_html: { multiple: true,
                                           class: 'chosen-select' }
+        f.input :geographic_scale_limited
+        f.input :national
         f.input :districts, collection: District.pluck(:name, :id),
                             input_html: { multiple: true,
                                           class: 'chosen-select' }
