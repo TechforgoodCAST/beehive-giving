@@ -29,8 +29,8 @@ class LocationMatch
 
     def check_national
       result = {}
-      return result unless @proposal.affect_geo == 2
-      @funds.where(geographic_scale: 2, geographic_scale_limited: true)
+      return result if @proposal.affect_geo == 2
+      @funds.where(geographic_scale_limited: true, national: true)
             .pluck(:slug)
             .each do |slug|
         mark_ineligible result, slug
@@ -40,7 +40,7 @@ class LocationMatch
 
     def check_districts
       result = {}
-      @funds.where(geographic_scale_limited: true)
+      @funds.where(geographic_scale_limited: true, national: false)
             .left_outer_joins(:districts)
             .select(:id, :slug, 'array_agg(districts.id) AS fund_district_ids')
             .group(:id, :slug).each do |fund|

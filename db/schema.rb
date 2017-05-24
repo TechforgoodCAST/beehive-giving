@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170321215929) do
+ActiveRecord::Schema.define(version: 20170524091535) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -467,7 +467,6 @@ ActiveRecord::Schema.define(version: 20170321215929) do
     t.boolean  "accepts_calls"
     t.string   "contact_number"
     t.string   "contact_email"
-    t.integer  "geographic_scale"
     t.boolean  "geographic_scale_limited"
     t.boolean  "restrictions_known"
     t.boolean  "outcomes_known"
@@ -506,6 +505,7 @@ ActiveRecord::Schema.define(version: 20170321215929) do
     t.jsonb    "tags",                                 default: [],    null: false
     t.jsonb    "restriction_ids",                      default: [],    null: false
     t.jsonb    "sources",                              default: {},    null: false
+    t.boolean  "national",                             default: false, null: false
     t.index ["funder_id"], name: "index_funds_on_funder_id", using: :btree
     t.index ["slug"], name: "index_funds_on_slug", using: :btree
     t.index ["tags"], name: "index_funds_on_tags", using: :gin

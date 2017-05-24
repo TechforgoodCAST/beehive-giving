@@ -48,7 +48,7 @@ class TestHelper
       fund.stages = build_list(:stage, 2, fund: fund)
       fund.funding_types = @funding_types
       fund.countries = @countries
-      fund.districts = [@uk_districts[0], @kenya_districts[0]] if fund.geographic_scale < 2
+      fund.districts = @uk_districts + @kenya_districts if fund.geographic_scale_limited
       fund.restrictions = (i.even? ? recipient_restrictions + proposal_restrictions.first(3) : recipient_restrictions + proposal_restrictions.last(3))
       fund.outcomes = @outcomes
       fund.decision_makers = @decision_makers

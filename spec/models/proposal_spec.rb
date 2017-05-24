@@ -9,18 +9,6 @@ describe Proposal do
 
   it 'eligibility field'
 
-  it '#update_eligibility!' do
-    @app.setup_funds.create_initial_proposal
-    proposal = @app.instances[:initial_proposal]
-    original = { 'k1' => 'v1', 'k2' => 'v2' }
-
-    proposal.update_eligibility! original
-    expect(proposal.eligibility).to eq original
-
-    proposal.update_eligibility! 'k1' => 'new'
-    expect(proposal.eligibility).to eq 'k1' => 'new', 'k2' => 'v2'
-  end
-
   context 'initial' do
     before(:each) do
       @app.build_initial_proposal

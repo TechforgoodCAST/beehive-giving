@@ -69,7 +69,6 @@ namespace :funds do
         'type_of_fund' => 'Grant',
         'currency' => 'GB',
         'restrictions_known' => true,
-        'geographic_scale' => Proposal::AFFECT_GEO.map { |arr| arr[0] }.index(row['geographic_scale']),
         'tags' => row['tags'].split,
         'countries' => Country.where(alpha2: row['countries'].split(', '))
       )
