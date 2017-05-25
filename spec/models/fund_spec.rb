@@ -10,48 +10,6 @@ describe Fund do
       @funder = @db[:funder]
     end
 
-    scenario 'districts empty unless geographic_scale_limited' do
-      @fund.district_ids = [District.first.id]
-      expect(@fund).not_to be_valid
-    end
-
-    scenario 'districts required per country if geographic_scale_limited ' \
-              'unless fund is national' do
-      @fund.geographic_scale_limited = true
-      @fund.district_ids = []
-      errors = [
-        'Districts for United Kingdom not selected',
-        'Districts for Kenya not selected'
-      ]
-      expect(@fund).not_to be_valid
-      expect(@fund.errors.full_messages).to eq errors
-    end
-
-    scenario 'cannot set national unless geographic_scale_limited' do
-      @fund.national = true
-      expect(@fund).not_to be_valid
-      expect(@fund.errors.full_messages[0])
-        .to eq 'National cannot be set unless geographic scale limited'
-    end
-
-    scenario 'districts not allowed if fund is national' do
-      @fund.geographic_scale_limited = true
-      @fund.national = true
-      @fund.district_ids = [District.first.id]
-
-      expect(@fund).not_to be_valid
-      expect(@fund.errors.full_messages[0])
-        .to eq 'Districts must be blank for national funds'
-    end
-
-    # TODO: test restriction_ids field
-
-    it 'generates summary for last 12 months from most recent grant'
-    it 'org_type_distribution has correct format'
-    # TODO: remaining distribution fields
-    # it 'distribution fields have uique positions' # TODO: refactor beehive-data
-    # it 'distribution fields total 100 percent' # TODO: refactor beehive-data
-
     it 'is valid' do
       expect(@fund).to be_valid
     end
@@ -65,89 +23,50 @@ describe Fund do
       expect(@fund).not_to be_valid
     end
 
-    it 'amount_min_limited and amount_max_limited present if amount_known'
-    #   @fund.amount_min_limited = nil
-    #   @fund.amount_max_limited = nil
-    #   @fund.save
-    #   expect(@fund).not_to be_valid
-    # end
+    it 'countries required' do
+      @fund.countries = []
+      @fund.save
+      expect(@fund).not_to be_valid
+    end
 
-    it 'amount_min required if amount_min_limited'
-    #   @fund.amount_min = nil
-    #   @fund.save
-    #   expect(@fund).not_to be_valid
-    # end
+    it 'has many countries' do
+      @fund.save
+      expect(@fund.countries.count).to eq 2
+    end
 
-    it 'amount_max required if amount_max_limited'
-    #   @fund.amount_max = nil
-    #   @fund.save
-    #   expect(@fund).not_to be_valid
-    # end
+    it 'districts empty unless geographic_scale_limited' do
+      @fund.district_ids = [District.first.id]
+      expect(@fund).not_to be_valid
+    end
 
-    it 'duration_months_min_limited and duration_months_min_limited present if duration_months_known'
-    #   @fund.duration_months_min_limited = nil
-    #   @fund.duration_months_max_limited = nil
-    #   @fund.save
-    #   expect(@fund).not_to be_valid
-    # end
+    it 'districts required per country if geographic_scale_limited ' \
+       'unless fund is national' do
+      @fund.geographic_scale_limited = true
+      @fund.district_ids = []
+      errors = [
+        'Districts for United Kingdom not selected',
+        'Districts for Kenya not selected'
+      ]
+      expect(@fund).not_to be_valid
+      expect(@fund.errors.full_messages).to eq errors
+    end
 
-    it 'duration_months_min required if duration_months_min_limited'
-    #   @fund.duration_months_min = nil
-    #   @fund.save
-    #   expect(@fund).not_to be_valid
-    # end
+    it 'cannot set national unless geographic_scale_limited' do
+      @fund.national = true
+      expect(@fund).not_to be_valid
+      expect(@fund.errors.full_messages[0])
+        .to eq 'National cannot be set unless geographic scale limited'
+    end
 
-    it 'duration_months_max required if duration_months_max_limited'
-    #   @fund.duration_months_max = nil
-    #   @fund.save
-    #   expect(@fund).not_to be_valid
-    # end
+    it 'districts not allowed if fund is national' do
+      @fund.geographic_scale_limited = true
+      @fund.national = true
+      @fund.district_ids = [District.first.id]
 
-    it 'accepts_calls present if accepts_calls_known'
-    #   @fund.accepts_calls = nil
-    #   @fund.save
-    #   expect(@fund).not_to be_valid
-    # end
-
-    it 'contact_number present if accepts_calls'
-    #   @fund.contact_number = nil
-    #   @fund.save
-    #   expect(@fund).not_to be_valid
-    # end
-
-    it 'geographic_scale is valid'
-    #   const = Proposal::AFFECT_GEO
-    #
-    #   @fund.geographic_scale = const.first[1] - 1
-    #   @fund.save
-    #   expect(@fund).not_to be_valid
-    #
-    #   @fund.geographic_scale = const.last[1] + 1
-    #   @fund.save
-    #   expect(@fund).not_to be_valid
-    # end
-
-    it 'countries present if geographic_scale_limited'
-    #   @fund.countries = []
-    #   @fund.save
-    #   expect(@fund).not_to be_valid
-    # end
-
-    it 'districts present if geographic_scale_limited'
-    #   @fund.districts = []
-    #   @fund.save
-    #   expect(@fund).not_to be_valid
-    # end
-
-    it 'has many countries'
-    #   @fund.save
-    #   expect(@fund.countries.count).to eq 2
-    # end
-
-    it 'has many districts'
-    #   @fund.save
-    #   expect(@fund.districts.count).to eq 6
-    # end
+      expect(@fund).not_to be_valid
+      expect(@fund.errors.full_messages[0])
+        .to eq 'Districts must be blank for national funds'
+    end
 
     it 'restrictions present if restrictions_known' do
       @fund.restrictions = []
@@ -159,6 +78,16 @@ describe Fund do
       @fund.save
       expect(@fund.restrictions.count).to eq 5
     end
+
+    it 'saves restriction_ids' do
+      @fund.save
+      expect(@fund.restriction_ids).to eq @fund.restrictions.pluck(:id)
+    end
+
+    it 'org_type_distribution has correct format'
+    it 'income_distribution has correct format'
+    # it 'distribution fields have uique positions' # TODO: refactor beehive-data
+    # it 'distribution fields total 100 percent' # TODO: refactor beehive-data
   end
 
   context 'multiple' do
@@ -187,16 +116,9 @@ describe Fund do
 
     it 'requires open data fields' do
       %w(
-        period_start period_end grant_count recipient_count amount_awarded_sum
-        amount_awarded_mean amount_awarded_median amount_awarded_min
-        amount_awarded_max amount_awarded_distribution
-        duration_awarded_months_mean duration_awarded_months_median
-        duration_awarded_months_min duration_awarded_months_max
-        duration_awarded_months_distribution award_month_distribution
-        org_type_distribution operating_for_distribution income_distribution
-        employees_distribution volunteers_distribution gender_distribution
-        age_group_distribution beneficiary_distribution sources
-        geographic_scale_distribution country_distribution district_distribution
+        period_start period_end grant_count amount_awarded_distribution
+        award_month_distribution org_type_distribution income_distribution
+        sources country_distribution
       ).each do |attribute|
         @fund[attribute] = nil
         expect(@fund).not_to be_valid
@@ -204,12 +126,6 @@ describe Fund do
     end
 
     it 'correct attributes greater than or equal to zero' do
-      # TODO: %w[
-      #   grant_count recipient_count amount_awarded_sum amount_awarded_mean
-      #   amount_awarded_median amount_awarded_min amount_awarded_max
-      #   duration_awarded_months_mean duration_awarded_months_median
-      #   duration_awarded_months_min duration_awarded_months_max
-      # ]
       %w(
         grant_count
       ).each do |attribute|
@@ -219,16 +135,6 @@ describe Fund do
         expect(@fund).to be_valid
       end
     end
-
-    it 'maximum values greater than minimum'
-    #   [
-    #     %w[amount_awarded_min amount_awarded_max],
-    #     %w[duration_awarded_months_min duration_awarded_months_max]
-    #   ].each do |attributes|
-    #     @fund[attributes[0]] = @fund[attributes[1]] + 1
-    #     expect(@fund).not_to be_valid
-    #   end
-    # end
 
     it 'period_start is before period_end' do
       @fund.period_start = @fund.period_end + 1

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170525145529) do
+ActiveRecord::Schema.define(version: 20170525151905) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -391,61 +391,23 @@ ActiveRecord::Schema.define(version: 20170525145529) do
     t.text     "key_criteria"
     t.string   "currency"
     t.string   "application_link"
-    t.boolean  "amount_known"
-    t.boolean  "amount_min_limited"
-    t.boolean  "amount_max_limited"
-    t.integer  "amount_min"
-    t.integer  "amount_max"
-    t.text     "amount_notes"
-    t.boolean  "duration_months_known"
-    t.boolean  "duration_months_min_limited"
-    t.boolean  "duration_months_max_limited"
-    t.integer  "duration_months_min"
-    t.integer  "duration_months_max"
-    t.text     "duration_months_notes"
-    t.integer  "decision_in_months"
-    t.text     "match_funding_restrictions"
-    t.text     "payment_procedure"
-    t.boolean  "accepts_calls_known"
-    t.boolean  "accepts_calls"
-    t.string   "contact_number"
-    t.string   "contact_email"
     t.boolean  "geographic_scale_limited"
     t.boolean  "restrictions_known"
-    t.datetime "created_at",                                           null: false
-    t.datetime "updated_at",                                           null: false
-    t.boolean  "open_data",                            default: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.boolean  "open_data",                   default: false
     t.date     "period_start"
     t.date     "period_end"
     t.integer  "grant_count"
-    t.integer  "recipient_count"
-    t.float    "amount_awarded_sum"
-    t.float    "amount_awarded_mean"
-    t.float    "amount_awarded_median"
-    t.float    "amount_awarded_min"
-    t.float    "amount_awarded_max"
-    t.jsonb    "amount_awarded_distribution",          default: {},    null: false
-    t.float    "duration_awarded_months_mean"
-    t.float    "duration_awarded_months_median"
-    t.float    "duration_awarded_months_min"
-    t.float    "duration_awarded_months_max"
-    t.jsonb    "duration_awarded_months_distribution", default: {},    null: false
-    t.jsonb    "award_month_distribution",             default: {},    null: false
-    t.jsonb    "org_type_distribution",                default: {},    null: false
-    t.jsonb    "operating_for_distribution",           default: {},    null: false
-    t.jsonb    "income_distribution",                  default: {},    null: false
-    t.jsonb    "employees_distribution",               default: {},    null: false
-    t.jsonb    "volunteers_distribution",              default: {},    null: false
-    t.jsonb    "gender_distribution",                  default: {},    null: false
-    t.jsonb    "age_group_distribution",               default: {},    null: false
-    t.jsonb    "beneficiary_distribution",             default: {},    null: false
-    t.jsonb    "geographic_scale_distribution",        default: {},    null: false
-    t.jsonb    "country_distribution",                 default: {},    null: false
-    t.jsonb    "district_distribution",                default: {},    null: false
-    t.jsonb    "tags",                                 default: [],    null: false
-    t.jsonb    "restriction_ids",                      default: [],    null: false
-    t.jsonb    "sources",                              default: {},    null: false
-    t.boolean  "national",                             default: false, null: false
+    t.jsonb    "amount_awarded_distribution", default: {},    null: false
+    t.jsonb    "award_month_distribution",    default: {},    null: false
+    t.jsonb    "org_type_distribution",       default: {},    null: false
+    t.jsonb    "income_distribution",         default: {},    null: false
+    t.jsonb    "country_distribution",        default: {},    null: false
+    t.jsonb    "tags",                        default: [],    null: false
+    t.jsonb    "restriction_ids",             default: [],    null: false
+    t.jsonb    "sources",                     default: {},    null: false
+    t.boolean  "national",                    default: false, null: false
     t.index ["funder_id"], name: "index_funds_on_funder_id", using: :btree
     t.index ["slug"], name: "index_funds_on_slug", using: :btree
     t.index ["tags"], name: "index_funds_on_tags", using: :gin
