@@ -170,8 +170,6 @@ ActiveAdmin.register Fund do
       # f.input :restrictions_known # boolean
       #
       # f.input :outcomes_known # boolean
-      #
-      # f.input :documents_known # boolean
 
       inputs 'Open Data' do
         f.input :skip_beehive_data, as: :boolean
