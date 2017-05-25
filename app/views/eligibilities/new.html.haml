@@ -31,10 +31,18 @@
             fund.
             = link_to 'Apply for funding', apply_proposal_fund_path(@proposal, @fund), class: 'uk-button uk-button-large uk-button-success invert'
         - else
+          -# TODO: refactor to cell
           .cta.wide.red
-            You are ineligible, and did not meet
-            %strong= @proposal.count_failing(@fund)
-            of the criteria below.
+            - if @proposal.eligibility[@fund.slug]['location'] == false
+              You are ineligible because of the
+              %strong location
+              of your
+              = succeed '.' do
+                = link_to 'proposal', edit_proposal_path(@proposal)
+            - if @proposal.eligibility[@fund.slug]['quiz'] == false
+              You are ineligible, and do not meet
+              %strong= @proposal.eligibility[@fund.slug]['count_failing']
+              of the criteria below.
 
       %h3.uk-margin-top Eligibility questions
       %p.uk-margin-bottom

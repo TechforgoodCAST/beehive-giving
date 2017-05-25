@@ -18,6 +18,13 @@ feature 'Eligibility' do
     visit root_path
   end
 
+  scenario 'displays location banner'
+  scenario 'displays quiz banner'
+  scenario 'displays both banner'
+  scenario 'displays location card'
+  scenario 'displays quiz card'
+  scenario 'displays both card'
+
   scenario 'invalid recipient restriction affects all proposals'
 
   scenario 'When I have previous eligibility checks,
@@ -172,7 +179,7 @@ feature 'Eligibility' do
       helper.answer_recipient_restrictions
             .answer_proposal_restrictions(eligible: false)
             .check_eligibility
-      expect(page).to have_text 'You are ineligible, and did not meet 3 of ' \
+      expect(page).to have_text 'You are ineligible, and do not meet 3 of ' \
                                 'the criteria below.'
       expect(page).to have_text 'You did not meet this criteria', count: 3
 

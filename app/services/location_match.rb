@@ -1,16 +1,11 @@
-class LocationMatch
-  def initialize(funds, proposal)
-    @funds = funds
-    @proposal = proposal
-    validate_arguments
-  end
-
+class LocationMatch < Recommender
   def match(eligibility = {})
     updates = eligibility.clone
-    updates.delete_if { |_, v| v['reason'] == 'location' }
-           .merge(check_country)
-           .merge(check_national)
-           .merge(check_districts)
+    updates.except_nested_key('location')
+           .delete_if { |_, v| v.empty? }
+           .deep_merge(check_country)
+           .deep_merge(check_national)
+           .deep_merge(check_districts)
   end
 
   private
@@ -52,12 +47,6 @@ class LocationMatch
     end
 
     def mark_ineligible(hash, key)
-      hash[key] = { 'eligible' => false, 'reason' => 'location' }
-    end
-
-    def validate_arguments
-      raise 'Invalid Fund::ActiveRecord_Relation' unless
-        @funds.instance_of? Fund::ActiveRecord_Relation
-      raise 'Invalid Proposal object' unless @proposal.instance_of? Proposal
+      hash[key] = { 'location' => false }
     end
 end
