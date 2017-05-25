@@ -5,9 +5,6 @@ namespace :fund do
     include FactoryGirl::Syntax::Methods
 
     Fund.destroy_all
-    FundingType.where(label: 'Other').destroy_all
-
-    FundingType.create(label: 'Other')
 
     @funder = Funder.find_by(name: ['Lloyds Bank Foundation', 'Lloyds Bank Foundation for England and Wales'])
     @funder.update_column(:name, 'Lloyds Bank Foundation for England and Wales')
@@ -15,7 +12,6 @@ namespace :fund do
     @funds = build_list(:fund_with_open_data, 11, funder: @funder)
 
     @funds.each do |fund|
-      fund.funding_types = [FundingType.last]
       fund.countries = [Country.find_by(alpha2: 'GB')]
       fund.districts = Country.find_by(alpha2: 'GB').districts.take(3)
       fund.restrictions = Restriction.limit(2)

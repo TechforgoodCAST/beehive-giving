@@ -40,10 +40,8 @@ class ActiveSupport::TestCase
     seed_test_db
     @funder = create(:funder)
     @funds = build_list(:fund, num, funder: @funder)
-    @funding_types = create_list(:funding_type, FundingType::FUNDING_TYPE.count)
     @restrictions = create_list(:restriction, 2)
     @funds.each do |fund|
-      fund.funding_types = @funding_types
       fund.countries = @countries
       fund.districts = @uk_districts + @kenya_districts
       fund.restrictions = @restrictions
@@ -74,8 +72,6 @@ class ActionDispatch::IntegrationTest
 
   def setup_funders(num, proposal = false)
     seed_test_db
-    @funding_types = create_list(:funding_type, FundingType::FUNDING_TYPE.count)
-
     @funders = Array.new(num) { create(:funder) }
     @grants = Array.new(num) do |i|
       create(:grants, funder: @funders[i],
@@ -88,8 +84,7 @@ class ActionDispatch::IntegrationTest
                                 beneficiaries: Beneficiary.limit(i + 1),
                                 age_groups: AgeGroup.limit(i + 1),
                                 countries: @countries,
-                                districts: @uk_districts + @kenya_districts,
-                                funding_types: @funding_types)
+                                districts: @uk_districts + @kenya_districts)
     end
     @restrictions = Array.new(3) { create(:restriction) }
     @funding_streams = Array.new(num) { |i| create(:funding_stream, restrictions: @restrictions, funders: [@funders[i]]) }

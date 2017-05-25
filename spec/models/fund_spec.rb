@@ -65,11 +65,6 @@ describe Fund do
       expect(@fund).not_to be_valid
     end
 
-    it 'has many funding types'
-    #   @fund.save
-    #   expect(@fund.funding_types.count).to eq FundingType::FUNDING_TYPE.count
-    # end
-
     it 'amount_min_limited and amount_max_limited present if amount_known'
     #   @fund.amount_min_limited = nil
     #   @fund.amount_max_limited = nil

@@ -11,7 +11,6 @@ class Fund < ActiveRecord::Base
 
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
-  has_and_belongs_to_many :funding_types
   has_and_belongs_to_many :restrictions
   accepts_nested_attributes_for :restrictions
 

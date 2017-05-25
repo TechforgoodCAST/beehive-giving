@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170525143801) do
+ActiveRecord::Schema.define(version: 20170525145529) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -378,20 +378,6 @@ ActiveRecord::Schema.define(version: 20170525143801) do
     t.index ["funding_stream_id", "restriction_id"], name: "index_funding_streams_restrictions", using: :btree
     t.index ["funding_stream_id"], name: "index_funding_streams_restrictions_on_funding_stream_id", using: :btree
     t.index ["restriction_id"], name: "index_funding_streams_restrictions_on_restriction_id", using: :btree
-  end
-
-  create_table "funding_types", force: :cascade do |t|
-    t.string "label"
-    t.index ["label"], name: "index_funding_types_on_label", unique: true, using: :btree
-  end
-
-  create_table "funding_types_funds", force: :cascade do |t|
-    t.integer  "funding_type_id"
-    t.integer  "fund_id"
-    t.datetime "created_at",      null: false
-    t.datetime "updated_at",      null: false
-    t.index ["fund_id"], name: "index_funding_types_funds_on_fund_id", using: :btree
-    t.index ["funding_type_id"], name: "index_funding_types_funds_on_funding_type_id", using: :btree
   end
 
   create_table "funds", force: :cascade do |t|

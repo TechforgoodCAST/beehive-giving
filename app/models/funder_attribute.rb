@@ -5,7 +5,6 @@ class FunderAttribute < ActiveRecord::Base
                     :countries_from_grants,
                     :districts_from_grants,
                     :approval_months_from_grants,
-                    :funding_type_from_grants,
                     :funding_size_and_duration_from_grants,
                     :funded_organisation_age,
                     :funded_organisation_income_and_staff,
@@ -96,19 +95,6 @@ class FunderAttribute < ActiveRecord::Base
       end
     end
     approval_months << array.uniq
-  end
-
-  def funding_type_from_grants
-    return unless funder && funding_types.empty?
-    if funding_stream == 'All'
-      funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").distinct.pluck(:grant_type).each do |t|
-        funding_types << FundingType.find_by(label: t) unless t.blank?
-      end
-    else
-      funder.grants.where('approved_on < ? AND approved_on >= ?', "#{year + 1}-01-01", "#{year}-01-01").where('funding_stream = ?', funding_stream).pluck(:grant_type).distinct.each do |t|
-        funding_types << FundingType.find_by(label: t) unless t.blank?
-      end
-    end
   end
 
   def funding_size_and_duration_from_grants
