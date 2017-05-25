@@ -45,7 +45,6 @@ class ActiveSupport::TestCase
     @outcomes = create_list(:outcome, 2)
     @decision_makers = create_list(:decision_maker, 2)
     @funds.each do |fund|
-      fund.stages = create_list(:stage, 2, fund: fund)
       fund.funding_types = @funding_types
       fund.countries = @countries
       fund.districts = @uk_districts + @kenya_districts

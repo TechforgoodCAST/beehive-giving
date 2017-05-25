@@ -149,19 +149,6 @@ ActiveAdmin.register Fund do
 
       # f.input :decision_in_months
 
-      # inputs 'Stages' do
-      #   f.input :stages_known
-      #   f.input :stages_count
-      #   f.inputs do
-      #     f.has_many :stages, heading: false, allow_destroy: true do |s|
-      #       s.input :name, as: :select, collection: Stage::STAGES
-      #       s.input :position
-      #       s.input :feedback_provided
-      #       s.input :link
-      #     end
-      #   end
-      # end
-
       # inputs 'Contact' do
       #   f.input :accepts_calls_known
       #     f.input :accepts_calls

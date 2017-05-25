@@ -65,17 +65,6 @@ describe Fund do
       expect(@fund).not_to be_valid
     end
 
-    it 'has many stages'
-    #   @fund.save
-    #   expect(@fund.stages.count).to eq 2
-    # end
-
-    it 'stages required if stages_known'
-    #   @fund.stages = []
-    #   @fund.save
-    #   expect(@fund).not_to be_valid
-    # end
-
     it 'has many funding types'
     #   @fund.save
     #   expect(@fund.funding_types.count).to eq FundingType::FUNDING_TYPE.count

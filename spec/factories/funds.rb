@@ -9,8 +9,6 @@ FactoryGirl.define do
     currency 'GBP'
     key_criteria '<p>E.g. Local charitable organisations are viewed more favourably than large national organisations.</p><p>Grants can be used for:</p><ul><li>Projects that meet the needs of communities experiencing high levels of deprivation.</li></ul>'
     application_link 'http://www.example.org/'
-    deadlines_known true
-    stages_known true
 
     amount_known true
     amount_min_limited true

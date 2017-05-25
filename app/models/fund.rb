@@ -9,8 +9,6 @@ class Fund < ActiveRecord::Base
   has_many :proposals, through: :recommendations
 
   has_many :enquiries, dependent: :destroy
-  has_many :stages, dependent: :destroy
-  # TODO: accepts_nested_attributes_for :stages
 
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
@@ -45,11 +43,6 @@ class Fund < ActiveRecord::Base
   #                                 if: :duration_months_min_limited?
   # validates :duration_months_max, presence: true,
   #                                 if: :duration_months_max_limited?
-  #
-  # validates :deadlines_known, :stages_known, inclusion: { in: [true, false] }
-  #
-  # validates :stages, :stages_count, presence: true,
-  #             if: :stages_known?
   #
   # validates :accepts_calls, presence: true, if: :accepts_calls_known?
   # validates :contact_number, presence: true, if: :accepts_calls?

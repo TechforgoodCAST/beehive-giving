@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170525132811) do
+ActiveRecord::Schema.define(version: 20170525140039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -448,11 +448,7 @@ ActiveRecord::Schema.define(version: 20170525132811) do
     t.integer  "duration_months_min"
     t.integer  "duration_months_max"
     t.text     "duration_months_notes"
-    t.boolean  "deadlines_known"
-    t.boolean  "deadlines_limited"
     t.integer  "decision_in_months"
-    t.boolean  "stages_known"
-    t.integer  "stages_count"
     t.text     "match_funding_restrictions"
     t.text     "payment_procedure"
     t.boolean  "accepts_calls_known"
@@ -770,17 +766,6 @@ ActiveRecord::Schema.define(version: 20170525132811) do
     t.string   "condition"
   end
 
-  create_table "stages", force: :cascade do |t|
-    t.integer  "fund_id"
-    t.string   "name"
-    t.integer  "position"
-    t.boolean  "feedback_provided"
-    t.string   "link"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-    t.index ["fund_id"], name: "index_stages_on_fund_id", using: :btree
-  end
-
   create_table "subscriptions", force: :cascade do |t|
     t.integer  "organisation_id"
     t.datetime "created_at",                      null: false
@@ -816,5 +801,4 @@ ActiveRecord::Schema.define(version: 20170525132811) do
 
   add_foreign_key "enquiries", "funds"
   add_foreign_key "enquiries", "proposals"
-  add_foreign_key "stages", "funds"
 end
