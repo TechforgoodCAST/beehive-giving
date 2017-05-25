@@ -31,7 +31,6 @@ FactoryGirl.define do
     geographic_scale_limited false
 
     restrictions_known true
-    outcomes_known true
 
     factory :fund_with_open_data, class: Fund do
       open_data true

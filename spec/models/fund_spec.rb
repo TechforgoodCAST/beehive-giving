@@ -164,17 +164,6 @@ describe Fund do
       @fund.save
       expect(@fund.restrictions.count).to eq 5
     end
-
-    it 'outcomes present if outcomes_known'
-    #   @fund.outcomes = []
-    #   @fund.save
-    #   expect(@fund).not_to be_valid
-    # end
-
-    it 'has many outcomes'
-    #   @fund.save
-    #   expect(@fund.outcomes.count).to eq 2
-    # end
   end
 
   context 'multiple' do

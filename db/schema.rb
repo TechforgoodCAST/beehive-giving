@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170525143225) do
+ActiveRecord::Schema.define(version: 20170525143801) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -426,7 +426,6 @@ ActiveRecord::Schema.define(version: 20170525143225) do
     t.string   "contact_email"
     t.boolean  "geographic_scale_limited"
     t.boolean  "restrictions_known"
-    t.boolean  "outcomes_known"
     t.datetime "created_at",                                           null: false
     t.datetime "updated_at",                                           null: false
     t.boolean  "open_data",                            default: false
@@ -464,15 +463,6 @@ ActiveRecord::Schema.define(version: 20170525143225) do
     t.index ["funder_id"], name: "index_funds_on_funder_id", using: :btree
     t.index ["slug"], name: "index_funds_on_slug", using: :btree
     t.index ["tags"], name: "index_funds_on_tags", using: :gin
-  end
-
-  create_table "funds_outcomes", force: :cascade do |t|
-    t.integer  "fund_id"
-    t.integer  "outcome_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["fund_id"], name: "index_funds_outcomes_on_fund_id", using: :btree
-    t.index ["outcome_id"], name: "index_funds_outcomes_on_outcome_id", using: :btree
   end
 
   create_table "funds_restrictions", force: :cascade do |t|
@@ -600,13 +590,6 @@ ActiveRecord::Schema.define(version: 20170525143225) do
     t.integer  "funds_checked",                               default: 0,                                null: false
     t.index ["id", "type"], name: "index_organisations_on_id_and_type", using: :btree
     t.index ["slug"], name: "index_organisations_on_slug", unique: true, using: :btree
-  end
-
-  create_table "outcomes", force: :cascade do |t|
-    t.string   "outcome"
-    t.string   "link"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "profiles", force: :cascade do |t|

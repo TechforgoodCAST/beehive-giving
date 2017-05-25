@@ -6,7 +6,6 @@ namespace :fund do
 
     Fund.destroy_all
     FundingType.where(label: 'Other').destroy_all
-    Outcome.destroy_all
 
     FundingType.create(label: 'Other')
 
@@ -20,7 +19,6 @@ namespace :fund do
       fund.countries = [Country.find_by(alpha2: 'GB')]
       fund.districts = Country.find_by(alpha2: 'GB').districts.take(3)
       fund.restrictions = Restriction.limit(2)
-      fund.outcomes = create_list(:outcome, 2)
       fund.tags += ['Arts']
 
       fund.save!

@@ -14,7 +14,6 @@ class Fund < ActiveRecord::Base
   has_and_belongs_to_many :funding_types
   has_and_belongs_to_many :restrictions
   accepts_nested_attributes_for :restrictions
-  has_and_belongs_to_many :outcomes
 
   validates :funder, :type_of_fund, :slug, :name, :description, :currency,
             :key_criteria, :application_link,
@@ -48,7 +47,6 @@ class Fund < ActiveRecord::Base
   validates :countries, presence: true
   validates :restrictions, presence: true, if: :restrictions_known?
   validates :restrictions_known, presence: true, if: :restriction_ids?
-  # validates :outcomes, presence: true, if: :outcomes_known?
 
   # with open_data
 
