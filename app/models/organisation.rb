@@ -112,14 +112,6 @@ class Organisation < ActiveRecord::Base
     self[:company_number] = s.try(:strip)
   end
 
-  def search_address
-    if postal_code.present?
-      [postal_code, country].join(', ')
-    elsif street_address.present?
-      [street_address, country].join(', ')
-    end
-  end
-
   def to_param
     slug
   end
@@ -172,6 +164,14 @@ class Organisation < ActiveRecord::Base
 
   private
 
+    def search_address
+      if postal_code.present?
+        [postal_code, country].join(', ')
+      elsif street_address.present?
+        [street_address, country].join(', ')
+      end
+    end
+
     def should_set_slug?
       slug.blank? || (name.present? && name_changed?)
     end
@@ -194,10 +194,6 @@ class Organisation < ActiveRecord::Base
     def charity_commission_url
       'http://beta.charitycommission.gov.uk/charity-details/?regid=' +
         CGI.escape(charity_number) + '&subid=0'
-    end
-
-    def companies_house_url
-      "https://beta.companieshouse.gov.uk/company/#{CGI.escape(company_number)}"
     end
 
     def scrape_charity_data
