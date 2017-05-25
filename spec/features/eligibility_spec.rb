@@ -18,13 +18,6 @@ feature 'Eligibility' do
     visit root_path
   end
 
-  scenario 'displays location banner'
-  scenario 'displays quiz banner'
-  scenario 'displays both banner'
-  scenario 'displays location card'
-  scenario 'displays quiz card'
-  scenario 'displays both card'
-
   scenario 'invalid recipient restriction affects all proposals'
 
   scenario 'When I have previous eligibility checks,

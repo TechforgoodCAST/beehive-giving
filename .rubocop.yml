@@ -54,6 +54,10 @@ Metrics/MethodLength:
     - app/models/funder_attribute.rb # TODO: deprecated
     - test/**/** # TODO: deprecated
 
+Rails/SkipsModelValidations:
+  Exclude:
+    - spec/**/**
+
 AllCops:
   TargetRubyVersion: 2.3
   Exclude:
