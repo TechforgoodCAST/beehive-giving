@@ -1,5 +1,4 @@
 require 'rails_helper'
-require_relative '../support/deprecated_helper'
 
 describe Country do
   let(:deprecated) { DeprecatedHelper.new }
@@ -45,22 +44,5 @@ describe Country do
 
   it 'alpha2 is unique' do
     expect(build(:country, alpha2: @uk.alpha2)).not_to be_valid
-  end
-
-  context 'deprecated' do
-    it 'has many funder attributes' do
-      deprecated.create_funder_attributes
-      expect(@uk.funder_attributes.count).to eq 2
-    end
-
-    it 'has many profiles' do
-      deprecated.create_profiles
-      expect(@uk.profiles.count).to eq 2
-    end
-
-    it 'has many grants' do
-      deprecated.create_grants
-      expect(@uk.grants.count).to eq 2
-    end
   end
 end

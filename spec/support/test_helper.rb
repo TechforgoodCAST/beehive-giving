@@ -57,13 +57,6 @@ class TestHelper
     self
   end
 
-  def deprecated_funders_setup
-    create(:funder_attribute, funder: @funder, countries: [@uk], districts: @uk_districts)
-    create_list(:grant, 3, funder: @funder, countries: [@uk], districts: @uk_districts)
-    @funder.update_current_attribute
-    self
-  end
-
   def stub_beehive_insight(endpoint, data)
     body = {}
     # TODO: match records in seeds

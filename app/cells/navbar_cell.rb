@@ -1,6 +1,5 @@
 class NavbarCell < Cell::ViewModel
   property :organisation
-  property :role
 
   def show
     return if controller?('sessions')
@@ -11,10 +10,6 @@ class NavbarCell < Cell::ViewModel
 
     def logged_in?
       model != nil
-    end
-
-    def funder? # TODO: deprecated
-      role == 'Funder'
     end
 
     def controller?(name)
@@ -28,13 +23,7 @@ class NavbarCell < Cell::ViewModel
     end
 
     def signup?
-      return if funder? # TODO: deprecated
       controller?('signup') || signed_up?
-    end
-
-    def background_color
-      return unless logged_in?
-      funder? ? 'funder-bg' : 'recipient-bg'
     end
 
     def logo

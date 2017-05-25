@@ -45,7 +45,6 @@ class ApplicationController < ActionController::Base
 
     def load_last_proposal
       return unless @recipient
-      return if funder? # NOTE: legacy support
       @proposal = if params[:proposal_id]
                     @recipient.proposals.find_by(id: params[:proposal_id])
                   else
@@ -64,7 +63,7 @@ class ApplicationController < ActionController::Base
 
     def ensure_signed_up
       return unless logged_in?
-      return if params[:controller] =~ /admin|funders|pages|sessions/
+      return if params[:controller] =~ /admin|pages|sessions/
       return redirect_funder if funder? # NOTE: legacy support
       redirect start_path unless signed_up?
     end
@@ -80,8 +79,9 @@ class ApplicationController < ActionController::Base
     end
 
     def redirect_funder # NOTE: legacy support
-      redirect funder_overview_path(current_user.organisation),
-               alert: "Sorry, you don't have access to that"
+      cookies.delete(:auth_token)
+      redirect sign_in_path, alert: 'Your funders account has been suspended ' \
+      'please contact support for more details.'
     end
 
     def start_path

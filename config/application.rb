@@ -23,10 +23,8 @@ module Beehive
       enquiries.js
       errors.js
       feedback.js
-      funders.js
       funds.js
       helpers.js
-      map.js
       organisations.js
       pages.js
       password_resets.js
