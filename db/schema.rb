@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170524091535) do
+ActiveRecord::Schema.define(version: 20170525132811) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -163,14 +163,6 @@ ActiveRecord::Schema.define(version: 20170524091535) do
     t.integer "proposal_id"
     t.index ["country_id"], name: "index_countries_proposals_on_country_id", using: :btree
     t.index ["proposal_id"], name: "index_countries_proposals_on_proposal_id", using: :btree
-  end
-
-  create_table "deadlines", force: :cascade do |t|
-    t.integer  "fund_id"
-    t.datetime "deadline"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["fund_id"], name: "index_deadlines_on_fund_id", using: :btree
   end
 
   create_table "decision_makers", force: :cascade do |t|
@@ -822,7 +814,6 @@ ActiveRecord::Schema.define(version: 20170524091535) do
     t.index ["organisation_id"], name: "index_users_on_organisation_id", using: :btree
   end
 
-  add_foreign_key "deadlines", "funds"
   add_foreign_key "enquiries", "funds"
   add_foreign_key "enquiries", "proposals"
   add_foreign_key "stages", "funds"

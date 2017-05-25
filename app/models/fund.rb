@@ -9,8 +9,6 @@ class Fund < ActiveRecord::Base
   has_many :proposals, through: :recommendations
 
   has_many :enquiries, dependent: :destroy
-  has_many :deadlines, dependent: :destroy
-  # TODO: accepts_nested_attributes_for :deadlines, allow_destroy: true
   has_many :stages, dependent: :destroy
   # TODO: accepts_nested_attributes_for :stages
 
@@ -49,9 +47,6 @@ class Fund < ActiveRecord::Base
   #                                 if: :duration_months_max_limited?
   #
   # validates :deadlines_known, :stages_known, inclusion: { in: [true, false] }
-  #
-  # validates :deadlines, presence: true,
-  #             if: :deadlines_known? && :deadlines_limited?
   #
   # validates :stages, :stages_count, presence: true,
   #             if: :stages_known?

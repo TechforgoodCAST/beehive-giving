@@ -44,7 +44,6 @@ class TestHelper
     @funds.each_with_index do |fund, i|
       stub_fund_summary_endpoint(fund.instance_eval { set_slug })
 
-      fund.deadlines = create_list(:deadline, 2, fund: fund)
       fund.stages = build_list(:stage, 2, fund: fund)
       fund.funding_types = @funding_types
       fund.countries = @countries

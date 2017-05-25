@@ -149,16 +149,6 @@ ActiveAdmin.register Fund do
 
       # f.input :decision_in_months
 
-      # inputs 'Deadlines' do
-      #   f.input :deadlines_known
-      #   f.input :deadlines_limited
-      #   f.inputs do
-      #     f.has_many :deadlines, heading: false, allow_destroy: true do |d|
-      #       d.input :deadline
-      #     end
-      #   end
-      # end
-
       # inputs 'Stages' do
       #   f.input :stages_known
       #   f.input :stages_count

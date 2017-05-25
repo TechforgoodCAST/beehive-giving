@@ -65,25 +65,6 @@ describe Fund do
       expect(@fund).not_to be_valid
     end
 
-    it 'has many deadlines'
-    #   @fund.save
-    #   expect(@fund.deadlines.count).to eq 2
-    # end
-
-    it 'deadlines required if deadlines_known and deadlines_limited'
-    #   @fund.deadlines_limited = true
-    #   @fund.deadlines = []
-    #   @fund.save
-    #   expect(@fund).not_to be_valid
-    # end
-
-    it 'deadlines not required if deadlines not limited' do
-      @fund.deadlines_limited = false
-      @fund.deadlines = []
-      @fund.save
-      expect(@fund).to be_valid
-    end
-
     it 'has many stages'
     #   @fund.save
     #   expect(@fund.stages.count).to eq 2

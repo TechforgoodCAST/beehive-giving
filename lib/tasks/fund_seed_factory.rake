@@ -6,7 +6,6 @@ namespace :fund do
 
     Fund.destroy_all
     FundingType.where(label: 'Other').destroy_all
-    Deadline.destroy_all
     Stage.destroy_all
     Outcome.destroy_all
     DecisionMaker.destroy_all
@@ -19,7 +18,6 @@ namespace :fund do
     @funds = build_list(:fund_with_open_data, 11, funder: @funder)
 
     @funds.each do |fund|
-      fund.deadlines = create_list(:deadline, 2, fund: fund)
       fund.stages = create_list(:stage, 1, fund: fund)
       fund.funding_types = [FundingType.last]
       fund.countries = [Country.find_by(alpha2: 'GB')]

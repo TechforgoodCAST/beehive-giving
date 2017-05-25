@@ -45,7 +45,6 @@ class ActiveSupport::TestCase
     @outcomes = create_list(:outcome, 2)
     @decision_makers = create_list(:decision_maker, 2)
     @funds.each do |fund|
-      fund.deadlines = create_list(:deadline, 2, fund: fund)
       fund.stages = create_list(:stage, 2, fund: fund)
       fund.funding_types = @funding_types
       fund.countries = @countries
