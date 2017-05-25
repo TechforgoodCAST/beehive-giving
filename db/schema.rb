@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170525140039) do
+ActiveRecord::Schema.define(version: 20170525142110) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -163,21 +163,6 @@ ActiveRecord::Schema.define(version: 20170525140039) do
     t.integer "proposal_id"
     t.index ["country_id"], name: "index_countries_proposals_on_country_id", using: :btree
     t.index ["proposal_id"], name: "index_countries_proposals_on_proposal_id", using: :btree
-  end
-
-  create_table "decision_makers", force: :cascade do |t|
-    t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "decision_makers_funds", force: :cascade do |t|
-    t.integer  "decision_maker_id"
-    t.integer  "fund_id"
-    t.datetime "created_at",        null: false
-    t.datetime "updated_at",        null: false
-    t.index ["decision_maker_id"], name: "index_decision_makers_funds_on_decision_maker_id", using: :btree
-    t.index ["fund_id"], name: "index_decision_makers_funds_on_fund_id", using: :btree
   end
 
   create_table "districts", force: :cascade do |t|
@@ -448,6 +433,8 @@ ActiveRecord::Schema.define(version: 20170525140039) do
     t.integer  "duration_months_min"
     t.integer  "duration_months_max"
     t.text     "duration_months_notes"
+    t.boolean  "deadlines_known"
+    t.boolean  "deadlines_limited"
     t.integer  "decision_in_months"
     t.text     "match_funding_restrictions"
     t.text     "payment_procedure"
@@ -459,7 +446,6 @@ ActiveRecord::Schema.define(version: 20170525140039) do
     t.boolean  "restrictions_known"
     t.boolean  "outcomes_known"
     t.boolean  "documents_known"
-    t.boolean  "decision_makers_known"
     t.datetime "created_at",                                           null: false
     t.datetime "updated_at",                                           null: false
     t.boolean  "open_data",                            default: false

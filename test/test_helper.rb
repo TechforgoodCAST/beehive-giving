@@ -43,14 +43,12 @@ class ActiveSupport::TestCase
     @funding_types = create_list(:funding_type, FundingType::FUNDING_TYPE.count)
     @restrictions = create_list(:restriction, 2)
     @outcomes = create_list(:outcome, 2)
-    @decision_makers = create_list(:decision_maker, 2)
     @funds.each do |fund|
       fund.funding_types = @funding_types
       fund.countries = @countries
       fund.districts = @uk_districts + @kenya_districts
       fund.restrictions = @restrictions
       fund.outcomes = @outcomes
-      fund.decision_makers = @decision_makers
     end
     @funds.each(&:save!) if save
   end

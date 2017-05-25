@@ -175,17 +175,6 @@ describe Fund do
     #   @fund.save
     #   expect(@fund.outcomes.count).to eq 2
     # end
-
-    it 'decision_makes present if decision_makers_known'
-    #   @fund.decision_makers = []
-    #   @fund.save
-    #   expect(@fund).not_to be_valid
-    # end
-
-    it 'has many decision_makers'
-    #   @fund.save
-    #   expect(@fund.decision_makers.count).to eq 2
-    # end
   end
 
   context 'multiple' do

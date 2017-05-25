@@ -5,9 +5,8 @@ class Fund < ActiveRecord::Base
 
   belongs_to :funder
 
-  has_many :recommendations, dependent: :destroy
   has_many :proposals, through: :recommendations
-
+  has_many :recommendations, dependent: :destroy
   has_many :enquiries, dependent: :destroy
 
   has_and_belongs_to_many :countries
@@ -16,7 +15,6 @@ class Fund < ActiveRecord::Base
   has_and_belongs_to_many :restrictions
   accepts_nested_attributes_for :restrictions
   has_and_belongs_to_many :outcomes
-  has_and_belongs_to_many :decision_makers
 
   validates :funder, :type_of_fund, :slug, :name, :description, :currency,
             :key_criteria, :application_link,
@@ -51,7 +49,6 @@ class Fund < ActiveRecord::Base
   validates :restrictions, presence: true, if: :restrictions_known?
   validates :restrictions_known, presence: true, if: :restriction_ids?
   # validates :outcomes, presence: true, if: :outcomes_known?
-  # validates :decision_makers, presence: true, if: :decision_makers_known?
 
   # with open_data
 

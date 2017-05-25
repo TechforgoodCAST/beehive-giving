@@ -32,7 +32,6 @@ FactoryGirl.define do
 
     restrictions_known true
     outcomes_known true
-    decision_makers_known true
 
     factory :fund_with_open_data, class: Fund do
       open_data true
