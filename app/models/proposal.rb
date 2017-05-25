@@ -275,29 +275,14 @@ class Proposal < ActiveRecord::Base
         .take(Recipient::RECOMMENDATION_LIMIT).include?(fund.id)
   end
 
-  def check_eligibility!
-    result = {}
-    answers = Eligibility.where(category_id: [id, recipient.id])
-                         .pluck(:restriction_id, :eligible).to_h
-
-    funds.active.pluck(:slug, :restriction_ids).to_h.each do |slug, restrictions|
-      comparison = (answers.keys & restrictions)
-      next unless comparison.count == restrictions.count
-      result[slug] = {
-        eligible: !answers.slice(*comparison).values.include?(false),
-        count_failing: answers.slice(*comparison).values.select { |i| i == false }.count
-      }
-    end
-
-    update_column(:eligibility, result)
-  end
-
   def checked_fund?(fund)
-    eligibility.key?(fund.slug)
+    eligibility[fund.slug]&.key? 'quiz'
   end
 
   def eligible_funds
-    filter_eligibility(true)
+    eligibility.select do |_, eligibilities|
+      eligibilities.except('count_failing').values.all? { |v| v == true }
+    end
   end
 
   def ineligible_funds
@@ -310,15 +295,11 @@ class Proposal < ActiveRecord::Base
 
   def eligibility_for(fund)
     return -1 unless eligibility[fund.slug]
-    eligibility[fund.slug]['eligible'] ? 1 : 0
+    eligibility[fund.slug].values.include?(false) ? 0 : 1
   end
 
   def eligible?(fund)
     eligibility_for(fund).positive?
-  end
-
-  def count_failing(fund)
-    eligibility[fund.slug]['count_failing']
   end
 
   def eligibility_as_text(fund) # TODO: refactor
@@ -332,7 +313,9 @@ class Proposal < ActiveRecord::Base
   private
 
     def filter_eligibility(eligible)
-      eligibility.select { |_, v| v['eligible'] == eligible }
+      eligibility.select do |_, eligibilities|
+        eligibilities.values.include?(eligible)
+      end
     end
 
     def beneficiaries_not_selected(category)

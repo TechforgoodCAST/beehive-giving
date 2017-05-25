@@ -7,35 +7,22 @@ describe LocationMatch do
     @funds = Fund.active.all
     @proposal = Proposal.last
     @result = {
-      @funds.first.slug => { 'eligible' => false, 'reason' => 'location' }
+      @funds.first.slug => { 'location' => false }
     }
   end
 
-  context 'init' do
-    it 'requires funds and proposal to initialize' do
-      expect { LocationMatch.new }.to raise_error(ArgumentError)
-      expect { LocationMatch.new(@funds) }.to raise_error(ArgumentError)
-      expect { LocationMatch.new(@funds, @proposal) }.not_to raise_error
-    end
-
-    it 'invalid funds collection raises errror' do
-      expect { LocationMatch.new({}, @proposal) }
-        .to raise_error('Invalid Fund::ActiveRecord_Relation')
-    end
-
-    it 'invalid proposal object raises error' do
-      expect { LocationMatch.new(@funds, {}) }
-        .to raise_error('Invalid Proposal object')
-    end
-  end
-
-  it '#match only updates eligibility keys with location as reason' do
+  it '#match only updates eligibility location keys' do
     eligibility = {
-      'fund1' => { 'eligibile' => false, 'reason' => 'location' },
-      'fund2' => { 'eligibile' => true }
+      'fund1' => { 'location' => false },
+      'fund2' => { 'quiz' => true, 'location' => false },
+      'fund3' => { 'quiz' => true }
     }
     match = LocationMatch.new(@funds, @proposal).match(eligibility)
-    expect(match).to eq 'fund2' => { 'eligibile' => true }
+    result = {
+      'fund2' => { 'quiz' => true },
+      'fund3' => { 'quiz' => true }
+    }
+    expect(match).to eq result
   end
 
   it 'ineligible for Proposal that does not match Fund.countries' do
@@ -88,14 +75,14 @@ describe LocationMatch do
 
     it 'Proposal#initial_recommendation updates keys with location as reason' do
       eligibility = {
-        @local.slug => { 'eligibile' => false, 'reason' => 'location' },
-        @anywhere.slug => { 'eligibile' => true }
+        @local.slug => { 'location' => false },
+        @anywhere.slug => { 'quiz' => true }
       }
       @proposal.update!(affect_geo: 0, districts: [@db[:uk_districts].first],
                         eligibility: eligibility)
       result = {
-        'esmee' => { 'eligibile' => true },
-        'ellerman' => { 'eligible' => false, 'reason' => 'location' }
+        'esmee' => { 'quiz' => true },
+        'ellerman' => { 'location' => false }
       }
       expect(@proposal.eligibility).to eq result
     end

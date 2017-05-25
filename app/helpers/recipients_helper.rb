@@ -75,9 +75,9 @@ module RecipientsHelper
                 class: 'redacted muted')
   end
 
-  def render_recommendation(fund, score, scale = 1)
-    if @proposal.show_fund?(fund)
-      score_to_match_copy(@proposal.recommendation(fund)[score.to_s], scale)
+  def render_recommendation(fund, score, scale = 1, proposal: @proposal)
+    if proposal.show_fund?(fund)
+      score_to_match_copy(proposal.recommendation(fund)[score.to_s], scale)
     else
       scramble_recommendations
     end

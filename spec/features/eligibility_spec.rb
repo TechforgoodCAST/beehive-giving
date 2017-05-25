@@ -172,7 +172,7 @@ feature 'Eligibility' do
       helper.answer_recipient_restrictions
             .answer_proposal_restrictions(eligible: false)
             .check_eligibility
-      expect(page).to have_text 'You are ineligible, and did not meet 3 of ' \
+      expect(page).to have_text 'You are ineligible, and do not meet 3 of ' \
                                 'the criteria below.'
       expect(page).to have_text 'You did not meet this criteria', count: 3
 

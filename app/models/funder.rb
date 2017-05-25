@@ -131,19 +131,4 @@ class Funder < Organisation
     end
     result = result.sort_by { |k, _| k }.to_h
   end
-
-  def recommended_recipients # TODO: deprecated
-    Recipient.includes(:recommendations, :proposals, :enquiries)
-             .where("recommendations.funder_id = ? AND
-              recommendations.score >= ? AND
-              recommendations.eligibility = ? AND
-              enquiries.funder_id = ?",
-                    id,
-                    Recipient::RECOMMENDATION_THRESHOLD,
-                    'Eligible',
-                    id)
-             .distinct
-             .order('proposals.created_at DESC, recommendations.eligibility ASC, recommendations.score DESC')
-             .order(:name)
-  end
 end

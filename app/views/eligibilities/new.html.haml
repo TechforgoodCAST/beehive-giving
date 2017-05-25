@@ -23,18 +23,7 @@
       = render partial: 'funds/card', locals: { fund: @fund }
 
     .uk-width-medium-2-3
-      - unless @proposal.eligibility_for(@fund).negative?
-        - if @proposal.eligible?(@fund)
-          .cta.wide.green
-            You are eligible for the
-            = @fund.short_name
-            fund.
-            = link_to 'Apply for funding', apply_proposal_fund_path(@proposal, @fund), class: 'uk-button uk-button-large uk-button-success invert'
-        - else
-          .cta.wide.red
-            You are ineligible, and did not meet
-            %strong= @proposal.count_failing(@fund)
-            of the criteria below.
+      = cell(:eligibility_banner, @proposal, fund: @fund)
 
       %h3.uk-margin-top Eligibility questions
       %p.uk-margin-bottom
