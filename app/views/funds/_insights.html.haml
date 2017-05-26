@@ -44,25 +44,9 @@
         %strong= top_award_months(fund)
       %a.action{href: proposal_fund_path(@proposal, fund, anchor: 'when-was-funding-awarded')} More info
 
-  -# TODO:
-  -# - if fund.geographic_scale_distribution.size.positive?
-  -#   %li
-  -#     %strong= number_to_percentage(fund.geographic_scale_distribution.map { |i| [i['percent'], i['label']] }.max[0], precision: 0)
-  -#     of projects funded affected
-  -#     = succeed '.' do
-  -#       %strong= fund.geographic_scale_distribution.map { |i| [i['percent'], i['label']] }.max[1].downcase
-  -#     %a.action{href: fund_path(fund, anchor: 'where-was-funding-awarded')} More info
-
   - if fund.open_data? && fund.country_distribution?
     %li
       Awarded most funding in the
       = succeed '.' do
         %strong= top_countries(fund)
       %a.action{href: proposal_fund_path(@proposal, fund, anchor: 'where-was-funding-awarded')} More info
-
-  -# TODO:
-  -# - if fund.district_distribution
-  -#   %li
-  -#     The most funded regions were
-  -#     = succeed '.' do
-  -#       %strong= raw(funder.current_attribute.regions_by_count)

@@ -1,5 +1,4 @@
 require 'rails_helper'
-require_relative '../support/deprecated_helper'
 
 describe District do
   let(:deprecated) { DeprecatedHelper.new }
@@ -41,22 +40,5 @@ describe District do
 
   it 'is unique for country' do
     expect(build(:district, name: 'Arun', country: @uk)).not_to be_valid
-  end
-
-  context 'deprecated' do
-    it 'has many funder attributes' do
-      deprecated.create_funder_attributes
-      expect(@arun.funder_attributes.count).to eq 2
-    end
-
-    it 'has many profiles' do
-      deprecated.create_profiles
-      expect(@arun.profiles.count).to eq 2
-    end
-
-    it 'has many grants' do
-      deprecated.create_grants
-      expect(@arun.grants.count).to eq 2
-    end
   end
 end

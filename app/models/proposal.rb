@@ -156,9 +156,6 @@ class Proposal < ActiveRecord::Base
       org_type_score = beneficiary_score = location_score = amount_score =
                                                               duration_score = 0
 
-      amount_score = fund_request_scores(fund, beehive_insight_amounts,
-                                         amount_score)
-
       if fund.open_data?
 
         # org type recommendation
@@ -170,30 +167,13 @@ class Proposal < ActiveRecord::Base
         end
 
         if org_type_score.positive?
-          [
-            [Organisation::OPERATING_FOR, 'operating_for'],
-            [Organisation::INCOME, 'income'],
-            [Organisation::EMPLOYEES, 'employees'],
-            [Organisation::EMPLOYEES, 'volunteers']
-          ].each do |i|
-            org_type_score += parse_distribution(
-              fund.send("#{i[1]}_distribution"),
-              i[0][recipient[i[1]]][0]
-            )
-          end
+          org_type_score += parse_distribution(
+            fund.income_distribution,
+            Organisation::INCOME[recipient.income][0]
+          )
         end
 
         # beneficiary recommendation
-        beneficiary_score = if gender? && fund.gender_distribution?
-                              parse_distribution(
-                                fund.gender_distribution,
-                                gender
-                              )
-                            else
-                              0
-                            end
-        # TODO: add age_groups
-
         if beehive_insight.key?(fund.slug)
           beneficiary_score += beehive_insight[fund.slug]
         else
@@ -201,15 +181,12 @@ class Proposal < ActiveRecord::Base
         end
 
         # amount requested recommendation
-        amount_score = 0 if
-          fund.amount_max_limited? && total_costs > fund.amount_max
+        amount_score = fund_request_scores(fund, beehive_insight_amounts,
+                                           amount_score)
 
         # duration requested recommendation
         duration_score = fund_request_scores(fund, beehive_insight_durations,
                                              duration_score)
-        duration_score = 0 if
-          fund.duration_months_max_limited? &&
-          funding_duration > fund.duration_months_max
       end
 
       # location recommendation

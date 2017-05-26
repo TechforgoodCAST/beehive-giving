@@ -90,4 +90,4 @@
     = yield(:sign_in) if content_for?(:sign_in)
     = yield
 
-  = render partial: 'layouts/footer' unless content_for?(:sign_in) || current_page?(controller: 'funders', action: 'map')
+  = render partial: 'layouts/footer' unless content_for?(:sign_in)

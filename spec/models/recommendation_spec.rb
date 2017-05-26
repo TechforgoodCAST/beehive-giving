@@ -42,18 +42,16 @@ describe Recommendation do
       expect(@recommendation.org_type_score).to eq 0
     end
 
-    it 'has org_type_score'
-    #   response =
-    #     @fund.org_type_distribution[1]["percent"] +
-    #     @fund.operating_for_distribution[2]["percent"] +
-    #     @fund.income_distribution[1]["percent"] +
-    #     @fund.employees_distribution[0]["percent"] +
-    #     @fund.volunteers_distribution[0]["percent"]
-    #   expect(@recommendation.org_type_score).to eq response
-    # end
+    it 'has org_type_score' do
+      response =
+        @fund.org_type_distribution[1]['percent'] +
+        @fund.income_distribution[1]['percent']
+      expect(@recommendation.org_type_score).to eq response.round(3)
+      # TODO: refactor inaccurate float
+    end
 
     it 'has beneficiary_score from beehive-insight' do
-      expect(@recommendation.beneficiary_score).to eq 0.168
+      expect(@recommendation.beneficiary_score).to eq 0.1
     end
 
     it 'beneficiary_score zero if beehive-insight fund not found' do
@@ -71,28 +69,8 @@ describe Recommendation do
       expect(@recommendation.grant_amount_recommendation).to eq 0.1
     end
 
-    it 'grant_amount_recommendation is zero if total_costs greater than
-        amount_max if amount_max_limited' do
-      over_max = 10_001.0
-      @app.stub_amounts_endpoint(over_max)
-      @proposal.total_costs = over_max
-      @proposal.save
-      @recommendation.reload
-      expect(@recommendation.grant_amount_recommendation).to eq 0
-    end
-
     it 'has grant_duration_recommendation' do
       expect(@recommendation.grant_duration_recommendation).to eq 0.1
-    end
-
-    it 'grant_duration_recommendation is zero if funding_duration greater
-        than duration_months_max if duration_months_max_limited' do
-      over_max = 13
-      @app.stub_durations_endpoint(over_max)
-      @proposal.funding_duration = over_max
-      @proposal.save
-      @recommendation.reload
-      expect(@recommendation.grant_duration_recommendation).to eq 0
     end
 
     it 'has total_recommendation' do

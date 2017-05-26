@@ -10,7 +10,6 @@ class Recipient < Organisation
   has_many :eligibilities, as: :category, dependent: :destroy
   accepts_nested_attributes_for :eligibilities
 
-  has_many :grants # TODO: deprecated
   has_many :features, dependent: :destroy # TODO: deprecated
   has_many :recipient_funder_accesses # TODO: deprecated
 
@@ -26,14 +25,7 @@ class Recipient < Organisation
     proposals.where(state: 'transferred').count.positive?
   end
 
-  def incomplete_first_proposal? # TODO: remove
+  def incomplete_first_proposal? # TODO: refactor
     proposals.count == 1 && proposals.last.state != 'complete'
-  end
-
-  def recent_grants(year = 2015) # TODO: deprecated
-    grants.where(
-      'approved_on <= ? AND approved_on >= ?',
-      "#{year}-12-31", "#{year}-01-01"
-    )
   end
 end

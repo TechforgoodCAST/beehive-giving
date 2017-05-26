@@ -40,9 +40,5 @@
       .uk-panel
         %h4.uk-text-bold Key criteria
         = raw(@fund.key_criteria)
-        -# TODO:
-        -# - if @fund.match_funding_restrictions?
-        -#   %h4.uk-text-bold Match funding restrictions
-        -#   = raw(@fund.match_funding_restrictions)
 
         = link_to "Apply to #{@fund.name}", apply_proposal_fund_path(@proposal, @fund), method: :post, target: '_blank', 'data-uk-tooltip': "{pos:'top'}", title: 'A new page will be opened with application details', class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right'

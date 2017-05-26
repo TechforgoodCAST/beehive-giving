@@ -35,23 +35,15 @@ class TestHelper
              else
                build_list(:fund, num, opts.merge(funder: @funder))
              end
-    @funding_types = create_list(:funding_type, FundingType::FUNDING_TYPE.count)
     recipient_restrictions = create_list(:recipient_restriction, 2)
     proposal_restrictions = create_list(:restriction, 5)
     @restrictions = recipient_restrictions + proposal_restrictions
-    @outcomes = create_list(:outcome, 2)
-    @decision_makers = create_list(:decision_maker, 2)
     @funds.each_with_index do |fund, i|
       stub_fund_summary_endpoint(fund.instance_eval { set_slug })
 
-      fund.deadlines = create_list(:deadline, 2, fund: fund)
-      fund.stages = build_list(:stage, 2, fund: fund)
-      fund.funding_types = @funding_types
       fund.countries = @countries
       fund.districts = @uk_districts + @kenya_districts if fund.geographic_scale_limited
       fund.restrictions = (i.even? ? recipient_restrictions + proposal_restrictions.first(3) : recipient_restrictions + proposal_restrictions.last(3))
-      fund.outcomes = @outcomes
-      fund.decision_makers = @decision_makers
       fund.save! if save
     end
     self
@@ -62,13 +54,6 @@ class TestHelper
       fund.tags += ['Arts']
       fund.save
     end
-    self
-  end
-
-  def deprecated_funders_setup
-    create(:funder_attribute, funder: @funder, countries: [@uk], districts: @uk_districts)
-    create_list(:grant, 3, funder: @funder, countries: [@uk], districts: @uk_districts)
-    @funder.update_current_attribute
     self
   end
 
