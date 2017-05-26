@@ -1,0 +1,12 @@
+.uk-container.uk-container-center.uk-margin-large
+  p
+    a href=articles_path
+      i> class='uk-icon uk-icon-chevron-left'
+      | Back to articles
+
+  h2= title
+
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+    = cell(:article).call(:cta)
+
+    .markdown= body_html
