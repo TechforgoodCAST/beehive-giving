@@ -18,6 +18,7 @@ module Beehive
 
     # controller assets
     config.assets.precompile += %w(
+      articles.js
       accounts.js
       eligibilities.js
       enquiries.js

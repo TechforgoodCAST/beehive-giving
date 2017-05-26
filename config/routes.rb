@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :articles, only: [:index, :show]
   resources :password_resets, except: [:show, :index, :destroy]
 
   resources :proposals, except: [:show, :destroy] do
