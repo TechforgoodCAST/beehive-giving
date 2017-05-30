@@ -156,7 +156,7 @@ class Proposal < ActiveRecord::Base
       org_type_score = beneficiary_score = location_score = amount_score =
                                                               duration_score = 0
 
-      if fund.open_data?
+      if fund.open_data? && fund.period_end > 3.years.ago
 
         # org type recommendation
         if fund.org_type_distribution?
