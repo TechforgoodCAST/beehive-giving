@@ -1,5 +1,9 @@
 %p= raw(fund.description)
-= period(fund)
+- if fund.period_end.present? && fund.period_end > 3.years.ago
+  = period(fund)
+- else
+  = period(fund)
+  %span.year.muted (recommendation based on older data)
 
 %ul.insights
   - unless params[:controller] == 'recipients' && %w(eligibility update_eligibility apply).include?(params[:action])
