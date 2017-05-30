@@ -46,14 +46,14 @@ module FundsHelper
 
   def org_type_desc(fund)
     arr = fund.org_type_distribution.select do |hash|
-      hash['label'] == Organisation::ORG_TYPE.find{ |o| o[1] == @recipient.org_type }[0]
+      hash['label'] == Organisation::ORG_TYPE[@recipient.org_type + 1][0]
     end
     return if arr.empty?
     "
       <strong>
         #{number_to_percentage arr[0]['percent'] * 100, precision: 0}
       </strong>
-      of funded organisations were like you - #{arr[0]['label']}.
+      of funded organisations were like you - #{arr[0]['label'].downcase}.
     "
   end
 
@@ -62,12 +62,18 @@ module FundsHelper
       hash['label'] == Organisation::INCOME[@recipient.income][0]
     end
     return if arr.empty?
+    return if arr[0]['percent']==0
+    if arr[0]['label'].include? '-'
+      label = "between #{arr[0]['label'].sub('-', 'and')}"
+    else
+      label = "of #{arr[0]['label']}"
+    end
     "
-      And like you
+      Like you,
       <strong>
         #{number_to_percentage arr[0]['percent'] * 100, precision: 0}
       </strong>
-      had an income between #{arr[0]['label']}.
+      had income #{label}.
     "
   end
 
