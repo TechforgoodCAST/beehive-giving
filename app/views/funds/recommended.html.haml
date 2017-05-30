@@ -7,6 +7,9 @@
     'Fund Unlocks': "#{@recipient.funds_checked}",
   });
 
+  ga("send", "event", "Eligibility", "Eligible", "#{@proposal.eligible_funds.count}");
+  ga("send", "event", "Eligibility", "Ineligible", "#{@proposal.ineligible_funds.count}");
+
 / Google Code for View recommended funds
 :javascript
   /* <![CDATA[ */
