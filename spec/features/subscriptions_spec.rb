@@ -194,6 +194,19 @@ feature 'Subscriptions' do
         expect(event.data.object.status).to eq 'canceled'
       end
 
+      scenario 'upgrade call to actions hidden' do
+        @app.setup_funds(num: 7)
+        visit all_proposal_funds_path(@db[:complete_proposal])
+        expect(page).not_to have_link 'Upgrade'
+      end
+
+      scenario 'remaining free checks hidden' do
+        @app.setup_funds
+        @db[:complete_proposal].save!
+        visit eligibility_proposal_fund_path(@db[:complete_proposal], Fund.first)
+        expect(page).not_to have_button 'Check eligibility (3 left)'
+      end
+
       scenario 'can have unlimited proposals'
       scenario 'can check unlimited eligibilty'
       scenario 'can see unlimited funds'
