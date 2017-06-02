@@ -150,7 +150,12 @@ class Proposal < ActiveRecord::Base
 
     recommendations = []
 
-    update_column :eligibility, LocationMatch.new(Fund.active, self).match(eligibility)
+    # Location eligibility and notices
+    location = LocationMatch.new(Fund.active, self)
+    update_columns(
+      eligibility: location.check(eligibility),
+      recommendation: location.match(recommendation)
+    )
 
     Fund.active.find_each do |fund|
       org_type_score = beneficiary_score = location_score = amount_score =
@@ -242,7 +247,7 @@ class Proposal < ActiveRecord::Base
     recommendations.where(fund_id: Fund.inactive_ids).destroy_all
   end
 
-  def recommendation(fund)
+  def deprecated_recommendation(fund)
     Recommendation.find_by(proposal: self, fund: fund)
   end
 
