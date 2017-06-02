@@ -150,13 +150,18 @@ class Proposal < ActiveRecord::Base
 
     recommendations = []
 
-    update_column :eligibility, LocationMatch.new(Fund.active, self).match(eligibility)
+    # Location eligibility and notices
+    location = LocationMatch.new(Fund.active, self)
+    update_columns(
+      eligibility: location.check(eligibility),
+      recommendation: location.match(recommendation)
+    )
 
     Fund.active.find_each do |fund|
       org_type_score = beneficiary_score = location_score = amount_score =
                                                               duration_score = 0
 
-      if fund.open_data?
+      if fund.open_data? && fund.period_end? && fund.period_end > 3.years.ago
 
         # org type recommendation
         if fund.org_type_distribution?
@@ -236,13 +241,12 @@ class Proposal < ActiveRecord::Base
   end
 
   def refine_recommendations # TODO: refactor
-    date = recommendations.pluck(:updated_at).uniq[0]
-    return if Fund.active.newer_than(date).count.zero?
+    return if recommendations.pluck(:updated_at).uniq[0]&.today?
     initial_recommendation
     recommendations.where(fund_id: Fund.inactive_ids).destroy_all
   end
 
-  def recommendation(fund)
+  def deprecated_recommendation(fund)
     Recommendation.find_by(proposal: self, fund: fund)
   end
 

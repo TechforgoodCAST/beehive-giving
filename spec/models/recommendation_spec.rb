@@ -96,6 +96,21 @@ describe Recommendation do
     end
   end
 
+  context 'olderdata' do
+    before(:each) do
+      @app.seed_test_db
+          .setup_funds(num: 2, open_data: true, opts: {:period_start => 8.years.ago, :period_end => 7.years.ago})
+          .create_recipient
+          .create_initial_proposal
+      @fund1_recommendation = Recommendation.first
+      @fund2_recommendation = Recommendation.last
+    end
+
+    it 'fund open data is older than three years' do
+      expect(@fund1_recommendation.score).to eq @fund1_recommendation.location_score
+    end
+  end
+
   it 'only active funds recommended'
   it 'adding fund updates recommendations'
   it 'recommendations ordered by score'
