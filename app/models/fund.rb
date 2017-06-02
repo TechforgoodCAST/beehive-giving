@@ -88,7 +88,19 @@ class Fund < ActiveRecord::Base
       resp = HTTParty.get(
         ENV['BEEHIVE_DATA_FUND_SUMMARY_ENDPOINT'] + slug, options
       )
-      assign_attributes(resp.except('fund_slug')) if slug == resp['fund_slug']
+      # attributes we're looking for in the response
+      resp_attributes = %w(
+        amount_awarded_distribution
+        award_month_distribution
+        org_type_distribution
+        income_distribution
+        country_distribution
+        sources
+        grant_count
+        period_end
+        period_start
+      )
+      assign_attributes(resp.slice(*resp_attributes)) if slug == resp['fund_slug']
     end
 
     def set_restriction_ids
