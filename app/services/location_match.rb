@@ -11,8 +11,8 @@ class LocationMatch < Recommender
   def match(recommendation = {})
     updates = recommendation.clone
     updates.deep_merge(match_anywhere)
-           .deep_merge(match_districts)
            .deep_merge(match_national)
+           .deep_merge(match_districts)
            .deep_merge(match_ineligible)
   end
 
@@ -22,7 +22,7 @@ class LocationMatch < Recommender
       result = {}
       @funds.pluck(:slug, :geographic_scale_limited).each do |slug, local_fund|
         if local_fund
-          result[slug] = { 'location' => { 'score' => 0, 'reason' => 'overlap' } }
+          result[slug] = { 'location' => { 'score' => -1, 'reason' => 'overlap' } }
         else
           result[slug] = { 'location' => { 'score' => 1, 'reason' => 'anywhere' } }
         end
@@ -102,10 +102,8 @@ class LocationMatch < Recommender
     def check_national
       result = {}
       return result if @proposal.affect_geo == 2
-      # TODO: refactor to use pluck
-      @funds.where(geographic_scale_limited: true, national: true)
-            .pluck(:slug)
-            .each do |slug|
+      @funds.pluck(:slug, :geographic_scale_limited, :national)
+            .select { |i| i[1] && i[2] }.pluck(0).each do |slug|
         mark_ineligible result, slug
       end
       result
@@ -114,6 +112,7 @@ class LocationMatch < Recommender
     def check_districts
       result = {}
       fund_district_ids.each do |fund|
+        next if @proposal.affect_geo == 2
         if (@proposal.district_ids & fund.fund_district_ids).count.zero?
           mark_ineligible result, fund.slug
         end

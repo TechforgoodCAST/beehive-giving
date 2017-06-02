@@ -6,7 +6,7 @@ class FundCardCell < Cell::ViewModel
     'exact'     => 'Supports <strong>all</strong> of the areas in your proposal.',
     'intersect' => 'Supports <strong>some</strong> of the areas in your proposal.',
     'partial'   => 'Supports <strong>all</strong> of the areas in your proposal.',
-    'overlap'   => 'Seeking funding for a <strong>larger area</strong> than this fund supports.',
+    'overlap'   => 'Supports projects in a <strong>smaller</strong> area than you are seeking.',
     'national'  => 'Supports <strong>national</strong> proposals.'
   }.freeze
 

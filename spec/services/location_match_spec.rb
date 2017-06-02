@@ -67,7 +67,7 @@ describe LocationMatch do
 
     it 'seeking funds national' do
       @proposal.update!(affect_geo: 2, districts: [])
-      expect(@proposal.eligibility).to have_key @local.slug
+      expect(@proposal.eligibility).not_to have_key @local.slug
       expect(@proposal.eligibility).not_to have_key @national.slug
 
       expect(@proposal.eligibility).not_to have_key @anywhere.slug
@@ -111,7 +111,7 @@ describe LocationMatch do
         end
 
         it '<> fund local' do
-          result = { 'location' => { 'score' => 0, 'reason' => 'overlap' } }
+          result = { 'location' => { 'score' => -1, 'reason' => 'overlap' } }
           expect(@match[@local.slug]).to eq result
           expect(@proposal.recommendation[@local.slug]).to eq result
         end

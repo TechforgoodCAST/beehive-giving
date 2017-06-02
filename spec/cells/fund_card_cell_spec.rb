@@ -68,7 +68,7 @@ describe FundCardCell do
       )
       @proposal.update! districts: @db[:uk_districts]
       card = cell(:fund_card, @proposal, fund: @fund).call(:location)
-      expect(card).to have_content 'Seeking funding for a larger area than this fund supports.'
+      expect(card).to have_content 'Supports projects in a smaller area than you are seeking.'
       expect(card).to have_content 'Poor'
     end
 
