@@ -76,6 +76,32 @@ module FundsHelper
       had income #{label}.
     "
   end
+  
+  def beneficiaries_desc(fund)
+    if fund.beneficiary_distribution.length==0
+      return ""
+    end
+    proposal_bens = @proposal.beneficiaries.map { |b| b[:sort] }
+    matched_bens = fund.beneficiary_distribution.select { |b| (proposal_bens.include? b["sort"]) && (b["count"] > 0) }
+    if matched_bens.length == 1
+      "
+        This fund also funds work with
+        <strong>#{ matched_bens[0]["label"].downcase }</strong>
+        (#{ number_to_percentage(matched_bens[0]["percent"] * 100, precision: 0) } of recent grants).
+      "
+    elsif matched_bens.length > 1
+      matched_bens = matched_bens[0..1]
+      "
+        This fund also funds work with
+        <strong>#{ matched_bens[0]["label"].downcase }</strong>
+        (#{ number_to_percentage(matched_bens[0]["percent"] * 100, precision: 0) } of recent grants) and
+        <strong>#{ matched_bens[1]["label"].downcase }</strong>
+        (#{ number_to_percentage(matched_bens[1]["percent"] * 100, precision: 0) }).
+      "
+    else
+      "<strong>None</strong> of your beneficiaries overlap with this fund."
+    end
+  end
 
   private
 
