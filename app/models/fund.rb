@@ -99,6 +99,7 @@ class Fund < ActiveRecord::Base
         grant_count
         period_end
         period_start
+        beneficiary_distribution
       )
       assign_attributes(resp.slice(*resp_attributes)) if slug == resp['fund_slug']
     end
