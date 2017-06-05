@@ -16,4 +16,10 @@ module EligibilitiesHelper
       @restrictions.pluck(:id, :invert).to_h[e.object.restriction_id]
     )
   end
+
+  def check_eligibility_button_copy
+    copy = 'Check eligibility'
+    return copy if @recipient.subscribed?
+    copy + " (#{(Recipient::MAX_FREE_LIMIT - @recipient.funds_checked)} left)"
+  end
 end

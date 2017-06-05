@@ -108,7 +108,8 @@ class TestHelper
   end
 
   def create_recipient(opts = {})
-    @recipient = create(:recipient, opts)
+    options = opts.merge created_at: Date.new(2000, 1, 1) # Price A/B test
+    @recipient = create(:recipient, options)
     @recipient.reload
     self
   end

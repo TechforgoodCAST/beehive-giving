@@ -11,8 +11,11 @@ describe Payment do
   end
 
   it '#plan_cost' do
+    @app.create_recipient
+    recipient = Recipient.last
     [50, 100, 300, 1200].each_with_index do |price, i|
-      payment = Payment.new(build(:recipient, income: i))
+      recipient.income = i
+      payment = Payment.new(recipient)
       expect(payment.plan_cost).to eq price
     end
   end

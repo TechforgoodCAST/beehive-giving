@@ -4,7 +4,7 @@ ActiveAdmin.register Fund do
   permit_params :funder_id, :type_of_fund, :name, :description, :open_call,
                 :active, :currency, :application_link, :key_criteria,
                 :restrictions_known, :skip_beehive_data, :open_data,
-                :period_start, :period_end, :grant_count,
+                :period_start, :period_end, :grant_count, :amount_awarded_sum,
                 :amount_awarded_distribution, :award_month_distribution,
                 :country_distribution, :sources, :national,
                 :org_type_distribution, :income_distribution, :slug,
@@ -72,6 +72,7 @@ ActiveAdmin.register Fund do
         row :period_start
         row :period_end
         row :grant_count
+        row :amount_awarded_sum
         row :amount_awarded_distribution
         row :award_month_distribution
         row :org_type_distribution
@@ -126,6 +127,7 @@ ActiveAdmin.register Fund do
 
         # Overview
         f.input :grant_count
+        f.input :amount_awarded_sum
         f.input :amount_awarded_distribution
         f.input :award_month_distribution
 
