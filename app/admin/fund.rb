@@ -8,6 +8,7 @@ ActiveAdmin.register Fund do
                 :amount_awarded_distribution, :award_month_distribution,
                 :country_distribution, :sources, :national,
                 :org_type_distribution, :income_distribution, :slug,
+                :beneficiary_distribution,
                 :geographic_scale_limited, country_ids: [], district_ids: [],
                                            restriction_ids: [], tags: []
 
@@ -77,6 +78,7 @@ ActiveAdmin.register Fund do
         row :org_type_distribution
         row :income_distribution
         row :country_distribution
+        row :beneficiary_distribution
       end
     end
   end
@@ -132,6 +134,7 @@ ActiveAdmin.register Fund do
         # Recipient
         f.input :org_type_distribution
         f.input :income_distribution
+        f.input :beneficiary_distribution
 
         # Location
         f.input :country_distribution
