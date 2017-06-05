@@ -35,7 +35,7 @@
           %p
             Awarded
             %span.uk-text-bold= number_with_delimiter(@fund.grant_count)
-            grants.
+            = "grant".pluralize(@fund.grant_count) + '.'
 
           #amount_awarded_distribution.chart{ data: { data: amount_awarded_distribution } }
 

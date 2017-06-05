@@ -1,10 +1,14 @@
 module FundsHelper
-  def period(fund = @fund)
+  def period(fund = @fund, date_format="%b %Y")
     return unless fund.open_data
+    if fund.period_start.strftime(date_format) == fund.period_end.strftime(date_format)
+      period_desc = fund.period_start.strftime(date_format)
+    else
+      period_desc = fund.period_start.strftime(date_format) + ' - ' + fund.period_end.strftime(date_format)
+    end
     content_tag(
       :span,
-      fund.period_start
-          .strftime("%b %y'") + ' - ' + fund.period_end.strftime("%b %y'"),
+      period_desc,
       class: 'year muted'
     )
   end
