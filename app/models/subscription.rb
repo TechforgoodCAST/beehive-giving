@@ -6,5 +6,10 @@ class Subscription < ActiveRecord::Base
     'Pro - Large': 120_000
   }.freeze
 
+  PLANS_B = {
+    'Pro - Micro B': 3_600,
+    'Pro - Small B': 5_000
+  }.freeze
+
   belongs_to :organisation
 end
