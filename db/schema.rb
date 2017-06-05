@@ -258,8 +258,8 @@ ActiveRecord::Schema.define(version: 20170605105325) do
     t.jsonb    "restriction_ids",             default: [],    null: false
     t.jsonb    "sources",                     default: {},    null: false
     t.boolean  "national",                    default: false, null: false
-    t.jsonb    "beneficiary_distribution",    default: {},    null: false
     t.decimal  "amount_awarded_sum"
+    t.jsonb    "beneficiary_distribution",    default: {},    null: false
     t.index ["funder_id"], name: "index_funds_on_funder_id", using: :btree
     t.index ["slug"], name: "index_funds_on_slug", using: :btree
     t.index ["tags"], name: "index_funds_on_tags", using: :gin

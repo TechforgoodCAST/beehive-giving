@@ -18,10 +18,13 @@
       - else
         = render partial: 'summary_redacted', locals: { fund: fund }
 
-      - if i == 5 && !@recipient.subscribed?
-        .cta.wide
-          Go unlimited with Beehive Pro and see all funds with complete profiles.
-          = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'uk-button uk-button-large uk-button-primary invert'
+      - if i == 5
+        - if @recipient.subscribed?
+          %hr.thick
+        - else
+          .cta.wide
+            Go unlimited with Beehive Pro and see all funds with complete profiles.
+            = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'uk-button uk-button-large uk-button-primary invert'
 
       - if i == @funds.count - 1
         .cta.wide
