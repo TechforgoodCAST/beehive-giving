@@ -179,9 +179,9 @@ feature 'Browse' do
 
       scenario 'I want to see which time period the analysis relates to,
                 so I can understand how up to date it is' do
-        expect(page).to have_text 1.year.ago.strftime("%b %y'") +
+        expect(page).to have_text 1.year.ago.strftime("%b %Y") +
                                   ' - ' +
-                                  Time.zone.today.strftime("%b %y'"),
+                                  Time.zone.today.strftime("%b %Y"),
                                   count: 4
       end
 
