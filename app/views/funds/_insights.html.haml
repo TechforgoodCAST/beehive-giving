@@ -57,15 +57,17 @@
 
   - if fund.open_data? && fund.grant_examples?
     %li
-      Recent grants include:
+      - if fund.grant_examples.length > 1
+        Recent grants include:
+      - else
+        Example of a recent grant:
       %ul
         - fund.grant_examples[0..2].each do |g|
           %li
-            = number_to_currency(g["amount"], precision: 0, unit: "£")
+            %strong= number_to_currency(g["amount"], precision: 0, unit: "£")
             to
             %strong
-              %a{href: "http://grantnav.threesixtygiving.org/grant/#{g["id"]}", target: "_blank"}= g["recipient"]
-            for
-            %strong= g["title"]
+              - grant_url = "http://grantnav.threesixtygiving.org/grant/#{g["id"]}"
+              %a{href: grant_url, target: "_blank", onclick: "trackOutboundLink('#{grant_url}'); return false;"}= g["recipient"]
             in
             = g["award_date"].to_date.strftime("%B %Y")
