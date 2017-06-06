@@ -54,3 +54,18 @@
       = succeed '.' do
         %strong= top_countries(fund)
       %a.action{href: proposal_fund_path(@proposal, fund, anchor: 'where-was-funding-awarded')} More info
+
+  - if fund.open_data? && fund.grant_examples?
+    %li
+      Recent grants include:
+      %ul
+        - fund.grant_examples[0..2].each do |g|
+          %li
+            = number_to_currency(g["amount"], precision: 0, unit: "£")
+            to
+            %strong
+              %a{href: "http://grantnav.threesixtygiving.org/grant/#{g["id"]}", target: "_blank"}= g["recipient"]
+            for
+            %strong= g["title"]
+            in
+            = g["award_date"].to_date.strftime("%B %Y")
