@@ -31,9 +31,10 @@
           %tr
             %td Beneficiaries
             %td= render_recommendation(fund, 'beneficiary_score', 2)
-          %tr
-            %td.muted{ colspan: 2 }
-              %small= raw beneficiaries_desc(fund)
+          - if fund.open_data?
+            %tr
+              %td.muted{ colspan: 2 }
+                %small= raw beneficiaries_desc(fund)
 
           = cell(:fund_card, @proposal, fund: fund).call(:location)
 
