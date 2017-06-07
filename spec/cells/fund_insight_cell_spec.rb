@@ -7,8 +7,8 @@ describe FundInsightCell do
     @app.seed_test_db.setup_funds(num: 2, open_data: true)
         .create_recipient.create_registered_proposal
     @db = @app.instances
-    @fund = Fund.last
-    @proposal = Proposal.last
+    @fund = Fund.first
+    @proposal = Proposal.first
   end
 
   context '#grant_examples' do
