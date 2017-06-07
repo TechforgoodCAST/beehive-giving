@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-fdescribe FundInsightCell do
+describe FundInsightCell do
   controller ApplicationController
 
   before(:each) do
@@ -11,7 +11,6 @@ fdescribe FundInsightCell do
   end
 
   it 'more than one grant examples' do
-    byebug
     card = cell(:fund_insight, @fund).call(:grant_examples)
     expect(card).to have_content 'Recent grants include'
   end
