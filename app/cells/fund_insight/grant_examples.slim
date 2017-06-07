@@ -1,0 +1,5 @@
+li
+  = message
+  ul
+    - grant_examples.each do |g|
+      = render view: :grant_example, locals: {g: g}

@@ -54,3 +54,5 @@
       = succeed '.' do
         %strong= top_countries(fund)
       %a.action{href: proposal_fund_path(@proposal, fund, anchor: 'where-was-funding-awarded')} More info
+
+  = cell(:fund_insight, fund).call(:grant_examples)

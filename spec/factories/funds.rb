@@ -64,6 +64,16 @@ FactoryGirl.define do
         ].to_json
       end
 
+      grant_examples do
+        [
+          {"id": "360G-phf-30692", "title": "Core funding for expansion of Xplode's youth-led model", "amount": "60000.0", "currency": "GBP", "recipient": "Xplode Magazine", "award_date": "2016-07-18"},
+          {"id": "360G-phf-30793", "title": "Widening the reach of Kidscapes transformative anti-bullyinh programme in the North West.", "amount": "60000.0", "currency": "GBP", "recipient": "Kidscape Campaign For Children's Safety", "award_date": "2016-07-18"},
+          {"id": "360G-phf-29538", "title": "Funding toward the Co-Director's salary", "amount": "60000.0", "currency": "GBP", "recipient": "URPotential", "award_date": "2015-12-14"},
+          {"id": "360G-phf-30337", "title": "Youth led action for stop and search reform.", "amount": "50000.0", "currency": "GBP", "recipient": "Release", "award_date": "2016-04-19"},
+          {"id": "360G-phf-29797", "title": "Support as Project Oracle transitions to becoming an independent charity and expands the project's reach and impact", "amount": "60000.0", "currency": "GBP", "recipient": "Project Oracle", "award_date": "2016-04-19"}
+        ]
+      end
+
       # Location
       country_distribution do
         [
