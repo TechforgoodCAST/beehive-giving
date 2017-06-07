@@ -33,6 +33,19 @@ ActiveAdmin.register Funder do
       row :charity_number
       row :active_on_beehive
     end
+
+    panel "Funds" do
+      table_for funder.funds do
+        column :slug
+        column :active
+        column 'org_type' do |fund|
+          check_presence(fund, 'org_type_distribution')
+        end
+        column 'income' do |fund|
+          check_presence(fund, 'income_distribution')
+        end
+      end
+    end
   end
 
   form do |f|
