@@ -20,12 +20,12 @@
       ga('require', 'linkid', 'linkid.js');
       ga('send', 'pageview');
 
-      var trackOutboundLink = function(url) {
-         ga('send', 'event', 'outbound', 'click', url, {
-           'transport': 'beacon',
-           'hitCallback': function(){document.location = url;}
-         });
-      }
+      var trackOutboundLink = function (url) {
+        ga('send', 'event', 'outbound', 'click', url, {
+          'transport': 'beacon',
+          'hitCallback': function () { window.open(url); }
+        });
+      };
 
     / Google Tag Manager
     :javascript
