@@ -2,12 +2,12 @@
 %html
   %head
     %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
-      %title= content_for?(:title) ? "#{yield(:title)} | Beehive" : 'Beehive'
-      = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
-      = javascript_include_tag 'application', 'data-turbolinks-track' => true
-      = javascript_include_tag params[:controller]
-      = csrf_meta_tags
-      = Gon::Base.render_data
+    %title= content_for?(:title) ? "#{yield(:title)} | Beehive" : 'Beehive'
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = javascript_include_tag params[:controller]
+    = csrf_meta_tags
+    = Gon::Base.render_data
 
     / Google Analytics
     :javascript
@@ -19,6 +19,13 @@
       ga('create', 'UA-30021098-2', 'auto');
       ga('require', 'linkid', 'linkid.js');
       ga('send', 'pageview');
+
+      var trackOutboundLink = function (url) {
+        ga('send', 'event', 'outbound', 'click', url, {
+          'transport': 'beacon',
+          'hitCallback': function () { window.open(url); }
+        });
+      };
 
     / Google Tag Manager
     :javascript

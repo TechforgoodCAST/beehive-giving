@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170605105325) do
+ActiveRecord::Schema.define(version: 20170606143301) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -258,8 +258,9 @@ ActiveRecord::Schema.define(version: 20170605105325) do
     t.jsonb    "restriction_ids",             default: [],    null: false
     t.jsonb    "sources",                     default: {},    null: false
     t.boolean  "national",                    default: false, null: false
-    t.decimal  "amount_awarded_sum"
     t.jsonb    "beneficiary_distribution",    default: {},    null: false
+    t.decimal  "amount_awarded_sum"
+    t.jsonb    "grant_examples",              default: [],    null: false
     t.index ["funder_id"], name: "index_funds_on_funder_id", using: :btree
     t.index ["slug"], name: "index_funds_on_slug", using: :btree
     t.index ["tags"], name: "index_funds_on_tags", using: :gin
