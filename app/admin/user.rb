@@ -9,6 +9,12 @@ ActiveAdmin.register User do
     end
   end
 
+  member_action :impersonate do
+    user = User.find(params[:id])
+    cookies[:auth_token] = user.auth_token
+    redirect_to root_path, notice: "Impersonating #{user.email}"
+  end
+
   index do
     column :id
     column 'Organisation' do |user|
@@ -25,6 +31,9 @@ ActiveAdmin.register User do
     column :sign_in_count
     column :last_seen
     actions
+    column 'Action' do |user|
+      link_to 'Impersonate', impersonate_admin_user_path(user), target: '_blank'
+    end
   end
 
   filter :id
