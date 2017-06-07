@@ -2,12 +2,12 @@
 %html
   %head
     %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
-      %title= content_for?(:title) ? "#{yield(:title)} | Beehive" : 'Beehive'
-      = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
-      = javascript_include_tag 'application', 'data-turbolinks-track' => true
-      = javascript_include_tag params[:controller]
-      = csrf_meta_tags
-      = Gon::Base.render_data
+    %title= content_for?(:title) ? "#{yield(:title)} | Beehive" : 'Beehive'
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = javascript_include_tag params[:controller]
+    = csrf_meta_tags
+    = Gon::Base.render_data
 
     / Google Analytics
     :javascript
@@ -19,6 +19,13 @@
       ga('create', 'UA-30021098-2', 'auto');
       ga('require', 'linkid', 'linkid.js');
       ga('send', 'pageview');
+
+      var trackOutboundLink = function (url) {
+        ga('send', 'event', 'outbound', 'click', url, {
+          'transport': 'beacon',
+          'hitCallback': function () { window.open(url); }
+        });
+      };
 
     / Google Tag Manager
     :javascript
@@ -55,39 +62,40 @@
     %noscript
       %iframe{:height => "0", :src => "https://www.googletagmanager.com/ns.html?id=GTM-W3BQHWD", :style => "display:none;visibility:hidden", :width => "0"}
 
-    = cell(:navbar, @current_user, proposal: @proposal)
+    %main
+      = cell(:navbar, @current_user, proposal: @proposal)
 
-    .uk-container.uk-container-center
-      - if flash[:notice]
-        :javascript
-          $(document).ready(function() {
-            return $('#notice').ready(function() {
-              return $.UIkit.notify({
-                message: "<i class='uk-icon-check'></i> #{flash[:notice]}",
-                status: 'success',
-                timeout: 3000,
-                pos: 'top-center'
+      .uk-container.uk-container-center
+        - if flash[:notice]
+          :javascript
+            $(document).ready(function() {
+              return $('#notice').ready(function() {
+                return $.UIkit.notify({
+                  message: "<i class='uk-icon-check'></i> #{flash[:notice]}",
+                  status: 'success',
+                  timeout: 3000,
+                  pos: 'top-center'
+                });
               });
             });
-          });
-        #notice
-      - elsif flash[:alert]
-        :javascript
-          $(document).ready(function() {
-            return $('#notice').ready(function() {
-              return $.UIkit.notify({
-                message: "<i class='uk-icon-exclamation-triangle'></i> #{flash[:alert]}",
-                status: 'danger',
-                timeout: 3000,
-                pos: 'top-center'
+          #notice
+        - elsif flash[:alert]
+          :javascript
+            $(document).ready(function() {
+              return $('#notice').ready(function() {
+                return $.UIkit.notify({
+                  message: "<i class='uk-icon-exclamation-triangle'></i> #{flash[:alert]}",
+                  status: 'danger',
+                  timeout: 3000,
+                  pos: 'top-center'
+                });
               });
             });
-          });
-        #notice
+          #notice
 
-    -# TODO: refactor
-    = yield(:public) if content_for?(:public)
-    = yield(:sign_in) if content_for?(:sign_in)
-    = yield
+      -# TODO: refactor
+      = yield(:public) if content_for?(:public)
+      = yield(:sign_in) if content_for?(:sign_in)
+      = yield
 
-  = render partial: 'layouts/footer' unless content_for?(:sign_in) || current_page?(controller: 'funders', action: 'map')
+  = cell(:layout).call(:footer) unless content_for?(:sign_in)

@@ -1,3 +1,4 @@
+# TODO: deprecated
 class RecipientFunderAccess < ActiveRecord::Base
   belongs_to :recipient, counter_cache: true
 

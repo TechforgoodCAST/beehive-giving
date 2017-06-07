@@ -1,0 +1,15 @@
+li
+  - if g[:amount] 
+    strong> = g[:amount]
+  - else
+    ' Grant
+  ' to
+  strong>
+    - if g[:url]
+      a> href=g[:url] target="_blank" onclick="trackOutboundLink('#{g[:url]}'); return false;"
+        = g[:recipient]
+    - else
+      = g[:recipient]
+  - if g[:award_date]
+    ' in
+    = g[:award_date]

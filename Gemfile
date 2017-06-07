@@ -47,6 +47,7 @@ gem 'nokogiri'
 gem 'nprogress-rails'
 gem 'simple_form'
 gem 'stripe'
+gem 'redcarpet'
 gem 'uikit-sass-rails'
 gem 'workflow'
 

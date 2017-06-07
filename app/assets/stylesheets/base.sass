@@ -33,8 +33,16 @@ h3.hero
 h4.hero
   font-size: 18px
 
-/* Layout
- ========================================================================== */
+// Layout
+   =============================================================================
+
+body
+  display: flex
+  min-height: 100vh
+  flex-direction: column
+
+main
+  flex: 1
 
 .full-height
   min-height: 340px
@@ -124,7 +132,8 @@ hr
   color: $mid-grey
 .very-poor
   color: $red-base !important
-a.very-poor
+.very-poor > a
+  color: $red-base !important
   &:hover
     color: $red-hover !important
 .poor
@@ -209,8 +218,6 @@ a.excellent
 .navbar, .subnav
   &.recipient-bg
     background: $yellow-base
-  &.funder-bg
-    background: $blue-base
 
   ul.nav
     list-style: none
@@ -485,6 +492,9 @@ input::-webkit-inner-spin-button
   border-left: 4px solid $cta-base
   color: $cta-active
   +shadow
+  &.links
+    a
+      color: $cta-hover !important
   &.wide
     padding: 12px
     text-align: center
@@ -581,7 +591,7 @@ ul.insights
   list-style: none
   display: block
   margin-top: 0
-  li
+  > li
     padding: 5px 0
     .action, .highlight
       display: inline-block

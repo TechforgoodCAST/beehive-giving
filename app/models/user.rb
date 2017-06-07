@@ -1,4 +1,7 @@
 class User < ActiveRecord::Base
+  scope :user, -> { where role: 'User' }
+  scope :funder, -> { where role: 'Funder' }
+
   belongs_to :organisation
   has_many :feedbacks
 

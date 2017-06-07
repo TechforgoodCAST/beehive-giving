@@ -150,14 +150,18 @@ class Proposal < ActiveRecord::Base
 
     recommendations = []
 
+    # Location eligibility and notices
+    location = LocationMatch.new(Fund.active, self)
+    update_columns(
+      eligibility: location.check(eligibility),
+      recommendation: location.match(recommendation)
+    )
+
     Fund.active.find_each do |fund|
       org_type_score = beneficiary_score = location_score = amount_score =
                                                               duration_score = 0
 
-      amount_score = fund_request_scores(fund, beehive_insight_amounts,
-                                         amount_score)
-
-      if fund.open_data?
+      if fund.open_data? && fund.period_end? && fund.period_end > 3.years.ago
 
         # org type recommendation
         if fund.org_type_distribution?
@@ -168,30 +172,13 @@ class Proposal < ActiveRecord::Base
         end
 
         if org_type_score.positive?
-          [
-            [Organisation::OPERATING_FOR, 'operating_for'],
-            [Organisation::INCOME, 'income'],
-            [Organisation::EMPLOYEES, 'employees'],
-            [Organisation::EMPLOYEES, 'volunteers']
-          ].each do |i|
-            org_type_score += parse_distribution(
-              fund.send("#{i[1]}_distribution"),
-              i[0][recipient[i[1]]][0]
-            )
-          end
+          org_type_score += parse_distribution(
+            fund.income_distribution,
+            Organisation::INCOME[recipient.income][0]
+          )
         end
 
         # beneficiary recommendation
-        beneficiary_score = if gender? && fund.gender_distribution?
-                              parse_distribution(
-                                fund.gender_distribution,
-                                gender
-                              )
-                            else
-                              0
-                            end
-        # TODO: add age_groups
-
         if beehive_insight.key?(fund.slug)
           beneficiary_score += beehive_insight[fund.slug]
         else
@@ -199,15 +186,12 @@ class Proposal < ActiveRecord::Base
         end
 
         # amount requested recommendation
-        amount_score = 0 if
-          fund.amount_max_limited? && total_costs > fund.amount_max
+        amount_score = fund_request_scores(fund, beehive_insight_amounts,
+                                           amount_score)
 
         # duration requested recommendation
         duration_score = fund_request_scores(fund, beehive_insight_durations,
                                              duration_score)
-        duration_score = 0 if
-          fund.duration_months_max_limited? &&
-          funding_duration > fund.duration_months_max
       end
 
       # location recommendation
@@ -256,13 +240,13 @@ class Proposal < ActiveRecord::Base
     )
   end
 
-  def refine_recommendations
-    return if Fund.active.count == funds.count
+  def refine_recommendations # TODO: refactor
+    return if recommendations.pluck(:updated_at).uniq[0]&.today?
     initial_recommendation
     recommendations.where(fund_id: Fund.inactive_ids).destroy_all
   end
 
-  def recommendation(fund)
+  def deprecated_recommendation(fund)
     Recommendation.find_by(proposal: self, fund: fund)
   end
 
@@ -272,29 +256,14 @@ class Proposal < ActiveRecord::Base
         .take(Recipient::RECOMMENDATION_LIMIT).include?(fund.id)
   end
 
-  def check_eligibility!
-    result = {}
-    answers = Eligibility.where(category_id: [id, recipient.id])
-                         .pluck(:restriction_id, :eligible).to_h
-
-    funds.active.pluck(:slug, :restriction_ids).to_h.each do |slug, restrictions|
-      comparison = (answers.keys & restrictions)
-      next unless comparison.count == restrictions.count
-      result[slug] = {
-        eligible: !answers.slice(*comparison).values.include?(false),
-        count_failing: answers.slice(*comparison).values.select { |i| i == false }.count
-      }
-    end
-
-    update_column(:eligibility, result)
-  end
-
   def checked_fund?(fund)
-    eligibility.key?(fund.slug)
+    eligibility[fund.slug]&.key? 'quiz'
   end
 
   def eligible_funds
-    filter_eligibility(true)
+    eligibility.select do |_, eligibilities|
+      eligibilities.except('count_failing').values.all? { |v| v == true }
+    end
   end
 
   def ineligible_funds
@@ -307,15 +276,11 @@ class Proposal < ActiveRecord::Base
 
   def eligibility_for(fund)
     return -1 unless eligibility[fund.slug]
-    eligibility[fund.slug]['eligible'] ? 1 : 0
+    eligibility[fund.slug].values.include?(false) ? 0 : 1
   end
 
   def eligible?(fund)
     eligibility_for(fund).positive?
-  end
-
-  def count_failing(fund)
-    eligibility[fund.slug]['count_failing']
   end
 
   def eligibility_as_text(fund) # TODO: refactor
@@ -329,7 +294,9 @@ class Proposal < ActiveRecord::Base
   private
 
     def filter_eligibility(eligible)
-      eligibility.select { |_, v| v['eligible'] == eligible }
+      eligibility.select do |_, eligibilities|
+        eligibilities.values.include?(eligible)
+      end
     end
 
     def beneficiaries_not_selected(category)

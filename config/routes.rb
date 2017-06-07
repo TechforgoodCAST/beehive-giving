@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :articles, only: [:index, :show]
   resources :password_resets, except: [:show, :index, :destroy]
 
   resources :proposals, except: [:show, :destroy] do
@@ -45,7 +46,7 @@ Rails.application.routes.draw do
   get '/privacy',      to: 'pages#privacy', as: 'privacy'
   get '/terms',        to: 'pages#terms',   as: 'terms'
   get '/preview/:tag', to: 'pages#preview', as: 'preview'
-  get '/for-funders',  to: 'pages#forfunders', as: 'forfunders'
+  get '/for-funders',  to: 'pages#forfunders', as: 'for_funders'
 
   # Sign up
   root 'signup#user'
@@ -79,12 +80,4 @@ Rails.application.routes.draw do
   # Webhooks
   post '/webhooks/invoice-payment-succeeded',     to: 'webhooks#invoice_payment_succeeded'
   post '/webhooks/customer-subscription-deleted', to: 'webhooks#customer_subscription_deleted'
-
-  # Funders
-  # NOTE: deprecated
-  match '/funding/(:id)/overview', to: 'funders#overview', via: :get, as: 'funder_overview'
-  match '/funding/(:id)/map', to: 'funders#map', via: :get, as: 'funder_map'
-  match '/map-data/(:id)', to: 'funders#map_data', via: :get, as: 'funder_map_data'
-  match '/map-data/all', to: 'funders#map_data', via: :get, as: 'funders_map_all'
-  match '/funding/(:id)/(:district)', to: 'funders#district', via: :get, as: 'funder_district'
 end

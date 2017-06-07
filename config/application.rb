@@ -12,19 +12,20 @@ module Beehive
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    config.autoload_paths += Dir[Rails.root.join('lib', 'core_ext', '*.rb')].each { |l| require l }
+
     config.exceptions_app = routes
 
     # controller assets
     config.assets.precompile += %w(
+      articles.js
       accounts.js
       eligibilities.js
       enquiries.js
       errors.js
       feedback.js
-      funders.js
       funds.js
       helpers.js
-      map.js
       organisations.js
       pages.js
       password_resets.js

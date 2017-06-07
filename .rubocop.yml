@@ -14,8 +14,6 @@ Metrics/AbcSize:
   Exclude:
     - lib/tasks/**
     - spec/**/**
-    - app/models/funder.rb # TODO: deprecated
-    - app/models/funder_attribute.rb # TODO: deprecated
     - test/**/** # TODO: deprecated
 
 Metrics/BlockLength:
@@ -31,8 +29,6 @@ Metrics/ClassLength:
   Exclude:
     - spec/**/**
     - app/models/beneficiary.rb
-    - app/models/funder.rb # TODO: deprecated
-    - app/models/funder_attribute.rb # TODO: deprecated
 
 Metrics/LineLength:
   Exclude:
@@ -40,9 +36,7 @@ Metrics/LineLength:
     - bin/spring
     - config/**/**
     - lib/tasks/**
-    # - spec/**/**
-    - app/models/funder.rb # TODO: deprecated
-    - app/models/funder_attribute.rb # TODO: deprecated
+    - app/admin/**
     - app/models/profile.rb # TODO: deprecated
     - test/**/** # TODO: deprecated
 
@@ -50,9 +44,11 @@ Metrics/MethodLength:
   Exclude:
     - spec/**/**
     - lib/tasks/**
-    - app/models/funder.rb # TODO: deprecated
-    - app/models/funder_attribute.rb # TODO: deprecated
     - test/**/** # TODO: deprecated
+
+Rails/SkipsModelValidations:
+  Exclude:
+    - spec/**/**
 
 AllCops:
   TargetRubyVersion: 2.3

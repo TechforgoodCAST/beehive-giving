@@ -5,7 +5,7 @@ class Payment
   end
 
   def plan_cost
-    cost = Subscription::PLANS.values[@recipient.income] / 100
+    cost = plans_a_b(plans).values[@recipient.income] / 100
     return cost unless @subscription
     cost - (cost * (@subscription.percent_off.to_f / 100))
   end
@@ -25,13 +25,22 @@ class Payment
 
   private
 
+    def plans_a_b(str)
+      "Subscription::#{str}".constantize
+    end
+
+    def plans
+      return 'PLANS' if @recipient.income > 1 || @recipient.created_at.day.odd?
+      'PLANS_B'
+    end
+
     def valid_coupon?(coupon)
       return true if coupon.blank?
       Stripe::Coupon.all.pluck(:id).include?(coupon)
     end
 
     def plan_id
-      Subscription::PLANS.keys[@recipient.income].to_s.parameterize
+      plans_a_b(plans).keys[@recipient.income].to_s.parameterize
     end
 
     def stripe_customer

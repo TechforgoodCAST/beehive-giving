@@ -5,9 +5,8 @@ ActiveAdmin.register Funder do
                 :region, :postal_code, :country, :charity_number,
                 :company_number, :founded_on, :registered_on, :mission, :status,
                 :registered, :active_on_beehive, :slug, :org_type,
-                :operating_for, :multi_national, :income, :employees, :volunteers,
-                :skip_validation,
-                organisation_ids: []
+                :operating_for, :multi_national, :income, :employees,
+                :volunteers, :skip_validation, organisation_ids: []
 
   controller do
     def find_resource
@@ -57,7 +56,7 @@ ActiveAdmin.register Funder do
         f.input :website
         f.input :charity_number
         f.input :active_on_beehive, as: :boolean
-        f.input :skip_validation, as: :boolean, :input_html => { :checked => 'checked' }
+        f.input :skip_validation, as: :boolean, input_html: { checked: 'checked' }
       end
     end
     f.actions
