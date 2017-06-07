@@ -4,9 +4,7 @@
     = render partial: 'card', locals: { fund: fund }
 
   .uk-width-medium-2-3
-    %h3.uk-margin-top
-      = link_to fund.name, proposal_fund_path(@proposal, fund), class: 'yellow'
-      %span.year.muted= fund.funder.name
+    = cell(:fund_insight, fund, proposal: @proposal).call(:title)
 
     -# TODO: performance & cache
     = render partial: 'insights', locals: { fund: fund }

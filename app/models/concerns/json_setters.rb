@@ -29,6 +29,10 @@ module JsonSetters
     parse_json :country_distribution, json
   end
 
+  def beneficiary_distribution=(json)
+    parse_json :beneficiary_distribution, json
+  end
+
   private
 
     def parse_json(field, json)
