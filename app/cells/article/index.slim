@@ -1,3 +1,5 @@
 h2
   a= link_to title, article_path(model)
 .markdown= body_html.truncate_words(50, omission: "... #{link_to '<strong>more</strong>', article_path(model)}")
+
+hr.thick
