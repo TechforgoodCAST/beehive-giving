@@ -1,4 +1,6 @@
 ActiveAdmin.register User do
+  config.per_page = 10
+
   permit_params :first_name, :last_name, :org_type, :agree_to_terms,
                 :email, :password, :password_confirmation, :role,
                 :organisation_id
@@ -26,7 +28,6 @@ ActiveAdmin.register User do
     column :first_name
     column :last_name
     column :email
-    column :job_role
     column :role
     column :sign_in_count
     column :last_seen
@@ -41,7 +42,6 @@ ActiveAdmin.register User do
   filter :role
   filter :first_name
   filter :last_name
-  filter :job_role
   filter :email
   filter :last_seen
   filter :sign_in_count
