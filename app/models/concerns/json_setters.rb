@@ -33,6 +33,10 @@ module JsonSetters
     parse_json :beneficiary_distribution, json
   end
 
+  def grant_examples=(json)
+    parse_json :grant_examples, json
+  end
+
   private
 
     def parse_json(field, json)
