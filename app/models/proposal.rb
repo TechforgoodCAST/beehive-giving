@@ -139,10 +139,6 @@ class Proposal < ActiveRecord::Base
       ENV['BEEHIVE_INSIGHT_ENDPOINT'],
       beneficiaries_request
     )
-    beehive_insight_amounts = call_beehive_insight(
-      ENV['BEEHIVE_INSIGHT_AMOUNTS_ENDPOINT'],
-      amount: total_costs
-    )
     beehive_insight_durations = call_beehive_insight(
       ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'],
       duration: funding_duration
@@ -156,6 +152,9 @@ class Proposal < ActiveRecord::Base
       eligibility: location.check(eligibility),
       recommendation: location.match(recommendation)
     )
+
+    # Amount match
+    amount_match = AmountMatch.new(Fund.active, self).match
 
     Fund.active.find_each do |fund|
       org_type_score = beneficiary_score = location_score = amount_score =
@@ -186,8 +185,7 @@ class Proposal < ActiveRecord::Base
         end
 
         # amount requested recommendation
-        amount_score = fund_request_scores(fund, beehive_insight_amounts,
-                                           amount_score)
+        amount_score = amount_match[fund.slug]
 
         # duration requested recommendation
         duration_score = fund_request_scores(fund, beehive_insight_durations,

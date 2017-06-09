@@ -2,9 +2,9 @@ class AmountMatch < Recommender
   def match
     result = {}
     @funds.each do |fund|
-      result[fund.slug] = fund.amount_awarded_distribution.find do |ar|
-        @proposal.total_costs <= ar['end']
-      end['percent']
+      find = fund.amount_awarded_distribution
+                 .find { |ar| @proposal.total_costs <= ar['end'] }
+      result[fund.slug] = find ? find['percent'] : 0
     end
     result
   end

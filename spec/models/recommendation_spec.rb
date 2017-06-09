@@ -66,7 +66,7 @@ describe Recommendation do
     end
 
     it 'has grant_amount_recommendation' do
-      expect(@recommendation.grant_amount_recommendation).to eq 0.1
+      expect(@recommendation.grant_amount_recommendation).to eq 0.2
     end
 
     it 'has grant_duration_recommendation' do
