@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-fdescribe AmountMatch do
+describe AmountMatch do
   before(:each) do
-    @app.seed_test_db.setup_funds
+    @app.seed_test_db.setup_funds(open_data: true)
         .create_recipient.create_registered_proposal
     @funds = Fund.active.all
     @proposal = Proposal.last
@@ -14,7 +14,7 @@ fdescribe AmountMatch do
   end
 
   it 'if amount requested is in a zero bucket give zero' do
-    @proposal.income = 1_000
+    @proposal.total_costs = 1_000
     amount = AmountMatch.new(@funds, @proposal)
     expect(amount.match).to eq @funds.first.slug => 0
   end
