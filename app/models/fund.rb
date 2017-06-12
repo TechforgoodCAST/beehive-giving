@@ -39,6 +39,8 @@ class Fund < ActiveRecord::Base
 
   validates :min_amount_awarded, presence: true, if: :min_amount_awarded_limited
   validates :max_amount_awarded, presence: true, if: :max_amount_awarded_limited
+  validates :min_duration_awarded, presence: true, if: :min_duration_awarded_limited
+  validates :max_duration_awarded, presence: true, if: :max_duration_awarded_limited
 
   validate :validate_sources, :validate_districts
 
