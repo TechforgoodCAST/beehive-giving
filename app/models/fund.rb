@@ -3,6 +3,8 @@ class Fund < ActiveRecord::Base
   scope :inactive_ids, -> { where(active: false).pluck(:id) }
   scope :newer_than, ->(date) { where('updated_at > ?', date) }
 
+  PERMITTED_COSTS = %w(capital revenue).freeze
+
   belongs_to :funder
 
   has_many :proposals, through: :recommendations
@@ -15,7 +17,7 @@ class Fund < ActiveRecord::Base
   accepts_nested_attributes_for :restrictions
 
   validates :funder, :type_of_fund, :slug, :name, :description, :currency,
-            :key_criteria, :application_link,
+            :key_criteria, :application_link, :permitted_costs,
             presence: true
 
   validates :open_call, :active, :restrictions_known,
@@ -34,6 +36,9 @@ class Fund < ActiveRecord::Base
   validates :grant_count, presence: true,
                           numericality: { greater_than_or_equal_to: 0 },
                           if: :open_data?
+
+  validates :min_amount_awarded, presence: true, if: :min_amount_awarded_limited
+  validates :max_amount_awarded, presence: true, if: :max_amount_awarded_limited
 
   validate :validate_sources, :validate_districts
 

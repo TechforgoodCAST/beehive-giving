@@ -84,10 +84,23 @@ describe Fund do
       expect(@fund.restriction_ids).to eq @fund.restrictions.pluck(:id)
     end
 
-    it 'org_type_distribution has correct format'
-    it 'income_distribution has correct format'
-    # it 'distribution fields have uique positions' # TODO: refactor beehive-data
-    # it 'distribution fields total 100 percent' # TODO: refactor beehive-data
+    it 'min_amount_awarded required if min_amount_awarded_limited' do
+      @fund.min_amount_awarded_limited = true
+      expect(@fund).not_to be_valid
+      @fund.min_amount_awarded = 300
+      expect(@fund).to be_valid
+    end
+
+    it 'max_amount_awarded required if max_amount_awarded_limited' do
+      @fund.max_amount_awarded_limited = true
+      expect(@fund).not_to be_valid
+      @fund.max_amount_awarded = 10_000
+      expect(@fund).to be_valid
+    end
+
+    it 'permitted_costs is either capital or revenue' do
+      expect(%w(capital revenue)).to include @fund.permitted_costs
+    end
   end
 
   context 'multiple' do
