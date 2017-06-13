@@ -15,7 +15,7 @@ class Fund < ActiveRecord::Base
   accepts_nested_attributes_for :restrictions
 
   validates :funder, :type_of_fund, :slug, :name, :description, :currency,
-            :key_criteria, :application_link,
+            :key_criteria, :application_link, :permitted_org_types,
             presence: true
 
   validates :open_call, :active, :restrictions_known,
@@ -35,7 +35,7 @@ class Fund < ActiveRecord::Base
                           numericality: { greater_than_or_equal_to: 0 },
                           if: :open_data?
 
-  validate :validate_sources, :validate_districts
+  validate :validate_sources, :validate_districts, :validate_permitted_org_types
 
   validate :period_start_before_period_end, :period_end_in_past, if: :open_data?
 
@@ -135,5 +135,10 @@ class Fund < ActiveRecord::Base
             (district_ids & country.district_ids).count.zero?
         end
       end
+    end
+
+    def validate_permitted_org_types
+      errors.add(:permitted_org_types, 'not included in list') unless
+        (permitted_org_types & Organisation::ORG_TYPE.pluck(1)).length == permitted_org_types.length
     end
 end

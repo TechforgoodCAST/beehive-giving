@@ -84,10 +84,13 @@ describe Fund do
       expect(@fund.restriction_ids).to eq @fund.restrictions.pluck(:id)
     end
 
-    fit 'permitted_org_types has valid values' do
-      @fund.save
-      expect(@fund.permitted_org_types.count).to be > 0
-      expect(@fund.permitted_org_types).to include(*Organisation::ORG_TYPE.pluck(1))
+    it 'permitted_org_types has valid values' do
+      @fund.permitted_org_types = []
+      expect(@fund).not_to be_valid
+      @fund.permitted_org_types = [1, -100]
+      expect(@fund).not_to be_valid
+      @fund.permitted_org_types = [1, 2]
+      expect(@fund).to be_valid
     end
   end
 
