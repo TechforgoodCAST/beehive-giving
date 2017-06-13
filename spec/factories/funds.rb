@@ -14,6 +14,8 @@ FactoryGirl.define do
 
     restrictions_known true
 
+    permitted_org_types Organisation::ORG_TYPE.slice(1,3).pluck(1)
+
     factory :fund_with_open_data, class: Fund do
       open_data true
       sources do

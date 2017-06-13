@@ -243,34 +243,25 @@ ActiveRecord::Schema.define(version: 20170613131444) do
     t.string   "application_link"
     t.boolean  "geographic_scale_limited"
     t.boolean  "restrictions_known"
-    t.datetime "created_at",                                   null: false
-    t.datetime "updated_at",                                   null: false
-    t.boolean  "open_data",                    default: false
+    t.datetime "created_at",                                  null: false
+    t.datetime "updated_at",                                  null: false
+    t.boolean  "open_data",                   default: false
     t.date     "period_start"
     t.date     "period_end"
     t.integer  "grant_count"
-    t.jsonb    "amount_awarded_distribution",  default: {},    null: false
-    t.jsonb    "award_month_distribution",     default: {},    null: false
-    t.jsonb    "org_type_distribution",        default: {},    null: false
-    t.jsonb    "income_distribution",          default: {},    null: false
-    t.jsonb    "country_distribution",         default: {},    null: false
-    t.jsonb    "tags",                         default: [],    null: false
-    t.jsonb    "restriction_ids",              default: [],    null: false
-    t.jsonb    "sources",                      default: {},    null: false
-    t.boolean  "national",                     default: false, null: false
-    t.jsonb    "beneficiary_distribution",     default: {},    null: false
+    t.jsonb    "amount_awarded_distribution", default: {},    null: false
+    t.jsonb    "award_month_distribution",    default: {},    null: false
+    t.jsonb    "org_type_distribution",       default: {},    null: false
+    t.jsonb    "income_distribution",         default: {},    null: false
+    t.jsonb    "country_distribution",        default: {},    null: false
+    t.jsonb    "tags",                        default: [],    null: false
+    t.jsonb    "restriction_ids",             default: [],    null: false
+    t.jsonb    "sources",                     default: {},    null: false
+    t.boolean  "national",                    default: false, null: false
+    t.jsonb    "beneficiary_distribution",    default: {},    null: false
     t.decimal  "amount_awarded_sum"
-    t.jsonb    "grant_examples",               default: [],    null: false
-    t.boolean  "min_amount_awarded_limited",   default: false
-    t.integer  "min_amount_awarded"
-    t.boolean  "max_amount_awarded_limited",   default: false
-    t.integer  "max_amount_awarded"
-    t.boolean  "min_duration_awarded_limited", default: false
-    t.integer  "min_duration_awarded"
-    t.boolean  "max_duration_awarded_limited", default: false
-    t.integer  "max_duration_awarded"
-    t.string   "permitted_costs"
-    t.jsonb    "permitted_org_types",          default: [],    null: false
+    t.jsonb    "grant_examples",              default: [],    null: false
+    t.jsonb    "permitted_org_types",         default: [],    null: false
     t.index ["funder_id"], name: "index_funds_on_funder_id", using: :btree
     t.index ["slug"], name: "index_funds_on_slug", using: :btree
     t.index ["tags"], name: "index_funds_on_tags", using: :gin
