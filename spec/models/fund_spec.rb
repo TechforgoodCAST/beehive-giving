@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-fdescribe Fund do
+describe Fund do
   context 'single' do
     before(:each) do
       @app.seed_test_db
