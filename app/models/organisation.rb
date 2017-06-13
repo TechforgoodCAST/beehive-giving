@@ -5,7 +5,8 @@ class Organisation < ActiveRecord::Base
     ['A registered charity', 1],
     ['A registered company', 2],
     ['A registered charity & company', 3],
-    ['Another type of organisation', 4]
+    ['Another type of organisation', 4],
+    ['Community Interest Company', 5]
   ].freeze
   OPERATING_FOR = [
     ['Yet to start', 0],

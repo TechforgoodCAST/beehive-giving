@@ -84,10 +84,11 @@ describe Fund do
       expect(@fund.restriction_ids).to eq @fund.restrictions.pluck(:id)
     end
 
-    it 'org_type_distribution has correct format'
-    it 'income_distribution has correct format'
-    # it 'distribution fields have uique positions' # TODO: refactor beehive-data
-    # it 'distribution fields total 100 percent' # TODO: refactor beehive-data
+    fit 'permitted_org_types has valid values' do
+      @fund.save
+      expect(@fund.permitted_org_types.count).to be > 0
+      expect(@fund.permitted_org_types).to include(*Organisation::ORG_TYPE.pluck(1))
+    end
   end
 
   context 'multiple' do

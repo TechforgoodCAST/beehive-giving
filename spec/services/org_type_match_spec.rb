@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-fdescribe OrgTypeMatch do
+describe OrgTypeMatch do
   before(:each) do
     @app.seed_test_db.setup_funds(num: 4)
         .create_recipient.create_registered_proposal
