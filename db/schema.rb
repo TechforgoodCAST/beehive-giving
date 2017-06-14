@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170612132830) do
+ActiveRecord::Schema.define(version: 20170613152340) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -448,13 +448,13 @@ ActiveRecord::Schema.define(version: 20170612132830) do
     t.boolean  "affect_other"
     t.integer  "affect_geo"
     t.boolean  "total_costs_estimated",          default: false
-    t.string   "funding_type"
     t.boolean  "private"
     t.boolean  "implementations_other_required"
     t.string   "implementations_other"
     t.jsonb    "recommended_funds",              default: []
     t.jsonb    "eligibility",                    default: {},        null: false
     t.jsonb    "recommendation",                 default: {},        null: false
+    t.integer  "funding_type"
     t.index ["recipient_id"], name: "index_proposals_on_recipient_id", using: :btree
     t.index ["state"], name: "index_proposals_on_state", using: :btree
   end

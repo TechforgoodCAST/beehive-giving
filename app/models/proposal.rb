@@ -22,9 +22,10 @@ class Proposal < ActiveRecord::Base
                      'Mostly non-financial', 'Only non-financial'].freeze
   GENDERS = ['All genders', 'Female', 'Male', 'Transgender', 'Other'].freeze
   FUNDING_TYPE = [
-    'Revenue funding - running costs, salaries and activity costs',
-    'Capital funding - purchase and refurbishment of equipment, and buildings',
-    'Other', "Don't know"
+    ["Don't know", 0],
+    ['Capital funding - purchase and refurbishment of equipment, and buildings', 1],
+    ['Revenue funding - running costs, salaries and activity costs', 2],
+    ['Other', 3]
   ].freeze
   AFFECT_GEO = [
     ['One or more local areas', 0],
@@ -55,7 +56,7 @@ class Proposal < ActiveRecord::Base
   validates :recipient, :funding_duration, presence: true
   validates :type_of_support, inclusion: { in: TYPE_OF_SUPPORT,
                                            message: 'please select an option' }
-  validates :funding_type, inclusion: { in: FUNDING_TYPE,
+  validates :funding_type, inclusion: { in: FUNDING_TYPE.pluck(1),
                                         message: 'please select an option' }
   validates :funding_duration,
             numericality: { only_integer: true, greater_than_or_equal_to: 1 }
