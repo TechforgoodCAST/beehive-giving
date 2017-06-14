@@ -160,6 +160,10 @@ class Proposal < ActiveRecord::Base
       org_type_score = beneficiary_score = location_score = amount_score =
                                                               duration_score = 0
 
+      # check org_type eligibility
+      eligibility[fund.slug] = {} unless eligibility.has_key? fund.slug
+      eligibility[fund.slug]["org_type"] = OrgTypeMatch.new(fund, self).check
+
       if fund.open_data? && fund.period_end? && fund.period_end > 3.years.ago
 
         # org type recommendation
