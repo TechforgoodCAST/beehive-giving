@@ -9,8 +9,9 @@ ActiveAdmin.register Fund do
                 :country_distribution, :sources, :national,
                 :org_type_distribution, :income_distribution, :slug,
                 :beneficiary_distribution, :grant_examples,
-                :geographic_scale_limited, country_ids: [], district_ids: [],
-                                           restriction_ids: [], tags: []
+                :geographic_scale_limited,
+                country_ids: [], district_ids: [], restriction_ids: [],
+                tags: [], permitted_costs: [], permitted_org_types: []
 
   controller do
     def find_resource
@@ -99,6 +100,10 @@ ActiveAdmin.register Fund do
         f.input :key_criteria
         f.input :tags, as: :select, collection: Fund.pluck(:tags).flatten.uniq,
                        input_html: { multiple: true, class: 'chosen-select' }
+        f.input :permitted_costs, as: :select, collection: FUNDING_TYPES,
+                                  input_html: { multiple: true, class: 'chosen-select' }
+        f.input :permitted_org_types, as: :select, collection: ORG_TYPES,
+                                      input_html: { multiple: true, class: 'chosen-select' }
       end
 
       inputs 'Restrictions' do

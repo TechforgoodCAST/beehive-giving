@@ -31,7 +31,6 @@ describe RequestCheck do
   it 'Fund.permitted_costs match Proposal.funding_type'
 
   it 'Fund.permitted_costs do not match Proposal.funding_type' do
-    @fund.update! permitted_costs: 'capital'
     check = RequestCheck.new(@fund, @proposal).check
     expect(check).to eq 'request' => { 'eligible' => false }
   end

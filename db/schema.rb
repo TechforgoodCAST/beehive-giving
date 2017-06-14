@@ -269,8 +269,8 @@ ActiveRecord::Schema.define(version: 20170613152340) do
     t.integer  "min_duration_awarded"
     t.boolean  "max_duration_awarded_limited", default: false
     t.integer  "max_duration_awarded"
-    t.string   "permitted_costs"
-    t.jsonb    "permitted_org_types",         default: [],    null: false
+    t.jsonb    "permitted_costs",              default: [],    null: false
+    t.jsonb    "permitted_org_types",          default: [],    null: false
     t.index ["funder_id"], name: "index_funds_on_funder_id", using: :btree
     t.index ["slug"], name: "index_funds_on_slug", using: :btree
     t.index ["tags"], name: "index_funds_on_tags", using: :gin

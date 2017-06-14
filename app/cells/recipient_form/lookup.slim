@@ -3,7 +3,7 @@
     .uk-grid
       .uk-width-large-1-2
         .label.uk-form-label Seeking funds for...
-        = f.input :org_type, as: :select, collection: Organisation::ORG_TYPE, input_html: { class: 'large uk-width-1-1' }
+        = f.input :org_type, as: :select, collection: ORG_TYPES, input_html: { class: 'large uk-width-1-1' }
         = f.error :org_type, class: 'error-message'
 
   .uk-width-medium-1-1.uk-margin-bottom

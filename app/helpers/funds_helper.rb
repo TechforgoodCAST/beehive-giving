@@ -55,7 +55,7 @@ module FundsHelper
 
   def org_type_desc(fund)
     arr = fund.org_type_distribution.select do |hash|
-      hash['label'] == Organisation::ORG_TYPE[@recipient.org_type + 1][0]
+      hash['label'] == ORG_TYPES[@recipient.org_type + 1][0]
     end
     return if arr.empty?
     "

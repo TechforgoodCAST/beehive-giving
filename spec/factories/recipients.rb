@@ -3,7 +3,7 @@ FactoryGirl.define do
     transient do
       n { rand(9999) }
     end
-    org_type        Organisation::ORG_TYPE[4][1]
+    org_type        ORG_TYPES[4][1]
     charity_number  { "1AB1C#{n}" }
     company_number  { "1AB1C#{n}" }
     name            'ACME'

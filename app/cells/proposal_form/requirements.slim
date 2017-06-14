@@ -14,7 +14,7 @@
 
   .uk-width-medium-1-2.uk-margin-top
     .label What type of funding are you seeking?
-    = f.input :funding_type, collection: Proposal::FUNDING_TYPE, input_html: { class: 'large uk-width-medium-1-1' }
+    = f.input :funding_type, collection: FUNDING_TYPES, input_html: { class: 'large uk-width-medium-1-1' }
     = f.error :funding_type, class: 'error-message'
 
   .uk-width-medium-1-1.uk-margin-top

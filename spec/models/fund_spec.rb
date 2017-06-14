@@ -25,7 +25,6 @@ describe Fund do
 
     it 'countries required' do
       @fund.countries = []
-      @fund.save
       expect(@fund).not_to be_valid
     end
 
@@ -70,7 +69,6 @@ describe Fund do
 
     it 'restrictions present if restrictions_known' do
       @fund.restrictions = []
-      @fund.save
       expect(@fund).not_to be_valid
     end
 
@@ -112,17 +110,17 @@ describe Fund do
       expect(@fund).to be_valid
     end
 
-    it 'permitted_costs is either capital or revenue' do
-      expect(%w(capital revenue)).to include @fund.permitted_costs
-    end
-
-    it 'permitted_org_types has valid values' do
-      @fund.permitted_org_types = []
-      expect(@fund).not_to be_valid
-      @fund.permitted_org_types = [1, -100]
-      expect(@fund).not_to be_valid
-      @fund.permitted_org_types = [1, 2]
-      expect(@fund).to be_valid
+    it 'array fields valid' do
+      [:permitted_org_types, :permitted_costs].each do |attribute|
+        @fund[attribute] = nil
+        expect(@fund).not_to be_valid
+        @fund[attribute] = []
+        expect(@fund).not_to be_valid
+        @fund[attribute] = [1, -100]
+        expect(@fund).not_to be_valid
+        @fund[attribute] = [1, 2]
+        expect(@fund).to be_valid
+      end
     end
   end
 

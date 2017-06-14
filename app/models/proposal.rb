@@ -1,3 +1,4 @@
+
 class Proposal < ActiveRecord::Base
   before_validation :clear_districts_if_country_wide
   after_validation :trigger_clear_beneficiary_ids
@@ -21,12 +22,6 @@ class Proposal < ActiveRecord::Base
                      'Equal financial and non-financial',
                      'Mostly non-financial', 'Only non-financial'].freeze
   GENDERS = ['All genders', 'Female', 'Male', 'Transgender', 'Other'].freeze
-  FUNDING_TYPE = [
-    ["Don't know", 0],
-    ['Capital funding - purchase and refurbishment of equipment, and buildings', 1],
-    ['Revenue funding - running costs, salaries and activity costs', 2],
-    ['Other', 3]
-  ].freeze
   AFFECT_GEO = [
     ['One or more local areas', 0],
     ['One or more regions', 1],
@@ -56,7 +51,7 @@ class Proposal < ActiveRecord::Base
   validates :recipient, :funding_duration, presence: true
   validates :type_of_support, inclusion: { in: TYPE_OF_SUPPORT,
                                            message: 'please select an option' }
-  validates :funding_type, inclusion: { in: FUNDING_TYPE.pluck(1),
+  validates :funding_type, inclusion: { in: FUNDING_TYPES.pluck(1),
                                         message: 'please select an option' }
   validates :funding_duration,
             numericality: { only_integer: true, greater_than_or_equal_to: 1 }
@@ -167,7 +162,7 @@ class Proposal < ActiveRecord::Base
         if fund.org_type_distribution?
           org_type_score = parse_distribution(
             fund.org_type_distribution,
-            Organisation::ORG_TYPE[recipient.org_type + 1][0]
+            ORG_TYPES[recipient.org_type + 1][0]
           )
         end
 

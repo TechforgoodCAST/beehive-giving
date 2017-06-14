@@ -6,7 +6,7 @@ describe OrgTypeMatch do
         .create_recipient.create_registered_proposal
     @fund = Fund.last
     @proposal = Proposal.last
-    @org_types = Organisation::ORG_TYPE
+    @org_types = ORG_TYPES
   end
 
   context 'init' do

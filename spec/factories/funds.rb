@@ -9,13 +9,13 @@ FactoryGirl.define do
     currency 'GBP'
     key_criteria '<p>E.g. Local charitable organisations are viewed more favourably than large national organisations.</p><p>Grants can be used for:</p><ul><li>Projects that meet the needs of communities experiencing high levels of deprivation.</li></ul>'
     application_link 'http://www.example.org/'
-    permitted_costs Fund::PERMITTED_COSTS.sample
 
     geographic_scale_limited false
 
     restrictions_known true
 
-    permitted_org_types Organisation::ORG_TYPE.slice(1,3).pluck(1)
+    permitted_org_types ORG_TYPES.slice(1,3).pluck(1)
+    permitted_costs FUNDING_TYPES.slice(1,3).pluck(1)
 
     factory :fund_with_open_data, class: Fund do
       open_data true

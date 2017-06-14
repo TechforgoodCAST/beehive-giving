@@ -51,7 +51,7 @@ ActiveAdmin.register User do
       f.input :organisation, required: true,
                              input_html: { class: 'chosen-select' }
       f.input :role
-      f.input :org_type, as: :select, collection: Organisation::ORG_TYPE
+      f.input :org_type, as: :select, collection: ORG_TYPES
       f.input :first_name
       f.input :last_name
       f.input :email
