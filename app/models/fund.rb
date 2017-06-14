@@ -18,7 +18,7 @@ class Fund < ActiveRecord::Base
 
   validates :funder, :type_of_fund, :slug, :name, :description, :currency,
             :key_criteria, :application_link, :permitted_costs,
-            presence: true
+            :permitted_org_types, presence: true
 
   validates :open_call, :active, :restrictions_known,
             inclusion: { in: [true, false] }
@@ -42,7 +42,7 @@ class Fund < ActiveRecord::Base
   validates :min_duration_awarded, presence: true, if: :min_duration_awarded_limited
   validates :max_duration_awarded, presence: true, if: :max_duration_awarded_limited
 
-  validate :validate_sources, :validate_districts
+  validate :validate_sources, :validate_districts, :validate_permitted_org_types
 
   validate :period_start_before_period_end, :period_end_in_past, if: :open_data?
 
@@ -142,5 +142,10 @@ class Fund < ActiveRecord::Base
             (district_ids & country.district_ids).count.zero?
         end
       end
+    end
+
+    def validate_permitted_org_types
+      errors.add(:permitted_org_types, 'not included in list') unless
+        (permitted_org_types & Organisation::ORG_TYPE.pluck(1)).length == permitted_org_types.length
     end
 end
