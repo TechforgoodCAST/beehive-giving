@@ -1,8 +1,4 @@
 class Recipient < Organisation
-  RECOMMENDATION_THRESHOLD = 1
-  MAX_FREE_LIMIT = 3
-  RECOMMENDATION_LIMIT = 6
-
   has_many :proposals
   has_many :funds, -> { distinct }, through: :proposals
   has_many :countries, -> { distinct }, through: :proposals

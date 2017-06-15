@@ -14,8 +14,8 @@ FactoryGirl.define do
 
     restrictions_known true
 
-    permitted_org_types ORG_TYPES.slice(1,3).pluck(1)
-    permitted_costs FUNDING_TYPES.slice(1,3).pluck(1)
+    permitted_org_types [2, 3] # A registered charity, A registered company
+    permitted_costs [1, 2] # Capital funding, Revenue funding
 
     factory :fund_with_open_data, class: Fund do
       open_data true

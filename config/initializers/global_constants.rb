@@ -1,3 +1,7 @@
+RECOMMENDATION_THRESHOLD = 1
+MAX_FREE_LIMIT = 3
+RECOMMENDATION_LIMIT = 6
+
 ORG_TYPES = [
   ['Myself OR another individual', -1],
   ['An unregistered organisation OR project', 0],

@@ -156,6 +156,10 @@ class Proposal < ActiveRecord::Base
       org_type_score = beneficiary_score = location_score = amount_score =
                                                               duration_score = 0
 
+      # check org_type eligibility
+      eligibility[fund.slug] = {} unless eligibility.key? fund.slug
+      eligibility[fund.slug]['org_type'] = OrgTypeMatch.new(fund, self).check
+
       if fund.open_data? && fund.period_end? && fund.period_end > 3.years.ago
 
         # org type recommendation
@@ -225,7 +229,7 @@ class Proposal < ActiveRecord::Base
     recommended_funds = funds
                         .where(active: true)
                         .where('recommendations.total_recommendation >= ?',
-                               Recipient::RECOMMENDATION_THRESHOLD)
+                               RECOMMENDATION_THRESHOLD)
                         .order('recommendations.total_recommendation DESC',
                                'name')
     update_column(
@@ -247,17 +251,15 @@ class Proposal < ActiveRecord::Base
   def show_fund?(fund)
     recipient.subscribed? ||
       (recommended_funds - ineligible_fund_ids)
-        .take(Recipient::RECOMMENDATION_LIMIT).include?(fund.id)
+        .take(RECOMMENDATION_LIMIT).include?(fund.id)
   end
 
   def checked_fund?(fund)
-    eligibility[fund.slug]&.key? 'quiz'
+    eligibility[fund.slug]&.all_values_for('quiz').present?
   end
 
   def eligible_funds
-    eligibility.select do |_, eligibilities|
-      eligibilities.except('count_failing').values.all? { |v| v == true }
-    end
+    eligibility.root_all_values_for('quiz').select { |_, v| v[0] }
   end
 
   def ineligible_funds
