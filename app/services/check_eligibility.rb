@@ -1,6 +1,6 @@
 class CheckEligibility
-  def initialize(checks = {})
-    raise 'Invalid hash of checks' unless checks.is_a? Hash
+  def initialize(checks)
+    raise 'Invalid hash of checks' unless checks.is_a?(Hash) && !checks.empty?
     @checks = checks
   end
 
