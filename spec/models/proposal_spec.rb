@@ -290,4 +290,67 @@ describe Proposal do
       expect(@proposal2).to be_valid
     end
   end
+
+  context 'methods' do
+    before(:each) do
+      eligibility = {
+        'fund1' => { 'quiz' => { 'eligible' => false } },
+        'fund2' => { 'quiz' => { 'eligible' => true }, 'other' => { 'eligible' => true } },
+        'fund3' => { 'quiz' => { 'eligible' => true }, 'other' => { 'eligible' => false } },
+        'fund4' => { 'other' => { 'eligible' => false } }
+      }
+      @proposal = Proposal.new(eligibility: eligibility)
+    end
+
+    it '#show_fund?'
+
+    it '#checked_fund?'
+
+    it '#eligible_funds' do
+      expect(@proposal.eligible_funds).to eq 'fund2' => [{ 'eligible' => true }]
+    end
+
+    it '#ineligible_funds' do
+      expect(@proposal.ineligible_funds).to eq 'fund1' => [false], 'fund3' => [true, false], 'fund4' => [false]
+    end
+
+    it '#eligible? unchecked' do
+      expect(@proposal.eligible?('fund4')).to eq nil
+    end
+
+    it '#eligible? eligible' do
+      expect(@proposal.eligible?('fund2')).to eq true
+    end
+
+    it '#eligible? ineligible' do
+      expect(@proposal.eligible?('fund1')).to eq false
+      expect(@proposal.eligible?('fund3')).to eq false
+    end
+
+    it '#eligible_status unchecked' do
+      expect(@proposal.eligible_status('fund4')).to eq(-1)
+    end
+
+    it '#eligible_status eligible' do
+      expect(@proposal.eligible_status('fund2')).to eq 1
+    end
+
+    it '#eligible_status ineligible' do
+      expect(@proposal.eligible_status('fund1')).to eq 0
+      expect(@proposal.eligible_status('fund3')).to eq 0
+    end
+
+    it '#eligibility_as_text check' do
+      expect(@proposal.eligibility_as_text('fund4')).to eq 'Check'
+    end
+
+    it '#eligibility_as_text eligible' do
+      expect(@proposal.eligibility_as_text('fund2')).to eq 'Eligible'
+    end
+
+    it '#eligibility_as_text ineligible' do
+      expect(@proposal.eligibility_as_text('fund1')).to eq 'Ineligible'
+      expect(@proposal.eligibility_as_text('fund3')).to eq 'Ineligible'
+    end
+  end
 end

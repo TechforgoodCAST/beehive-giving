@@ -128,6 +128,6 @@ class LocationMatch < Recommender
     end
 
     def mark_ineligible(hash, key)
-      hash[key] = { 'location' => false }
+      hash[key] = { 'location' => { 'eligible' => false } }
     end
 end

@@ -156,10 +156,6 @@ class Proposal < ActiveRecord::Base
       org_type_score = beneficiary_score = location_score = amount_score =
                                                               duration_score = 0
 
-      # check org_type eligibility
-      eligibility[fund.slug] = {} unless eligibility.key? fund.slug
-      eligibility[fund.slug]['org_type'] = OrgTypeMatch.new(fund, self).check
-
       if fund.open_data? && fund.period_end? && fund.period_end > 3.years.ago
 
         # org type recommendation
@@ -259,41 +255,40 @@ class Proposal < ActiveRecord::Base
   end
 
   def eligible_funds
-    eligibility.root_all_values_for('quiz').select { |_, v| v[0] }
+    eligibility.root_all_values_for('quiz').keep_if do |k, _|
+      eligibility[k].all_values_for('eligible').exclude?(false) &&
+        eligibility[k].dig('quiz', 'eligible')
+    end
   end
 
   def ineligible_funds
-    filter_eligibility(false)
+    eligibility.root_all_values_for('eligible').keep_if do |_, v|
+      v.include? false
+    end
+  end
+
+  def eligible?(fund_slug)
+    return nil unless eligibility[fund_slug]
+    eligibility[fund_slug].dig('quiz', 'eligible') &&
+      eligibility[fund_slug].all_values_for('eligible').exclude?(false)
+  end
+
+  def eligible_status(fund_slug)
+    return -1 unless eligibility[fund_slug]&.key?('quiz') # check
+    eligible?(fund_slug) ? 1 : 0 # eligible : ineligible
+  end
+
+  def eligibility_as_text(fund_slug)
+    {
+      -1 => 'Check', 0 => 'Ineligible', 1 => 'Eligible'
+    }[eligible_status(fund_slug)]
   end
 
   def ineligible_fund_ids # TODO: refactor
-    Fund.where(slug: filter_eligibility(false).keys).pluck(:id)
-  end
-
-  def eligibility_for(fund)
-    return -1 unless eligibility[fund.slug]
-    eligibility[fund.slug].values.include?(false) ? 0 : 1
-  end
-
-  def eligible?(fund)
-    eligibility_for(fund).positive?
-  end
-
-  def eligibility_as_text(fund) # TODO: refactor
-    {
-      "-1": 'Check',
-      "0": 'Ineligible',
-      "1": 'Eligible'
-    }[eligibility_for(fund).to_s.to_sym]
+    Fund.where(slug: ineligible_funds.keys).pluck(:id)
   end
 
   private
-
-    def filter_eligibility(eligible)
-      eligibility.select do |_, eligibilities|
-        eligibilities.values.include?(eligible)
-      end
-    end
 
     def beneficiaries_not_selected(category)
       (beneficiary_ids & Beneficiary.where(category: category)

@@ -1,5 +1,5 @@
-class RequestCheck
-  def initialize(fund, proposal) # TODO: refactor
+class RequestCheck  # TODO: refactor
+  def initialize(fund, proposal)
     @fund = fund
     @proposal = proposal
     validate_arguments
@@ -13,9 +13,9 @@ class RequestCheck
 
   private
 
-    def validate_arguments # TODO: refactor
-      raise 'Invalid Fund object' unless @fund.instance_of? Fund
-      raise 'Invalid Proposal object' unless @proposal.instance_of? Proposal
+    def validate_arguments
+      raise 'Invalid Fund object' unless @fund.is_a? Fund
+      raise 'Invalid Proposal object' unless @proposal.is_a? Proposal
     end
 
     def check_min_amount_awarded

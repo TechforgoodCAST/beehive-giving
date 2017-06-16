@@ -11,8 +11,8 @@
   :javascript
     mixpanel.people.set({
       'Last Unlocked Fund': '#{@fund.name}',
-      'Last Fund Eligibility': '#{@proposal.eligibility_as_text(@fund)}',
-      'Eligibility #{@fund.slug}': '#{@proposal.eligibility_as_text(@fund)}'
+      'Last Fund Eligibility': '#{@proposal.eligibility_as_text(@fund.slug)}',
+      'Eligibility #{@fund.slug}': '#{@proposal.eligibility_as_text(@fund.slug)}'
     });
 
 = render partial: 'funds/fund_subnav', locals: { fund: @fund }

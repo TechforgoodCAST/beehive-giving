@@ -1,4 +1,4 @@
-- if model.eligible?(fund)
+- if model.eligible?(fund.slug)
   .cta.wide.green
     | You are eligible for the
     =<> fund.short_name
@@ -16,5 +16,5 @@
 
     - if ineligible_because('quiz')
       | You are ineligible, and do not meet
-      strong=<> model.eligibility[fund.slug]['count_failing']
+      strong=<> model.eligibility[fund.slug]['quiz']['count_failing']
       | of the criteria below.

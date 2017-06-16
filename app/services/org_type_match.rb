@@ -1,20 +1,13 @@
-class OrgTypeMatch
-  def initialize(fund, proposal)
-    @fund = fund
+class OrgTypeMatch # TODO: refactor rename
+  def initialize(proposal) # TODO: refactor
+    raise 'Invalid Proposal object' unless proposal.is_a? Proposal
     @proposal = proposal
-    validate_arguments
   end
 
-  def check
+  def check(fund)
     {
-      "eligible" => @fund.permitted_org_types.include?(@proposal.recipient.org_type)
+      'eligible' => fund.permitted_org_types
+                        .include?(@proposal.recipient.org_type)
     }
   end
-
-  private
-
-    def validate_arguments
-      raise 'Invalid Fund object' unless @fund.instance_of? Fund
-      raise 'Invalid Proposal object' unless @proposal.instance_of? Proposal
-    end
 end

@@ -1,8 +1,7 @@
 class ArrayValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
     return record.errors.add attribute, "can't be blank" if value.blank?
-    return record.errors.add attribute, 'not an array' unless
-      value.instance_of? Array
+    return record.errors.add attribute, 'not an array' unless value.is_a? Array
     validate_inclusion record, attribute, clean_values(value)
   end
 
@@ -13,7 +12,7 @@ class ArrayValidator < ActiveModel::EachValidator
     end
 
     def raise_arg_error
-      return if @options.key?(:in) && @options[:in].instance_of?(Array)
+      return if @options.key?(:in) && @options[:in].is_a?(Array)
       raise ArgumentError, 'A configuration hash with option :in must be ' \
                            'supplied, e.g. { in: [0, 1, 2] }'
     end

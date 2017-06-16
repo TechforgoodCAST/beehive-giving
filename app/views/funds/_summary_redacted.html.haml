@@ -49,9 +49,9 @@
       %p.redacted.muted= scramble_name(raw(fund.description))
 
       %ul.insights
-        - unless @proposal.eligibility_for(fund).negative?
-          %li{ class: (@proposal.eligible?(fund) ? 'eligible' : 'ineligible')}
-            - if @proposal.eligible?(fund)
+        - unless @proposal.eligible_status(fund.slug).negative?
+          %li{ class: (@proposal.eligible?(fund.slug) ? 'eligible' : 'ineligible')}
+            - if @proposal.eligible?(fund.slug)
               %a.badge{ href: eligible_proposal_funds_path(@proposal) } Eligible
               You are eligible for funding.
               %a.action{ href: account_upgrade_path(@recipient) } See criteria

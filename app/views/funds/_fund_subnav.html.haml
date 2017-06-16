@@ -20,7 +20,7 @@
               .highlight
           %span &rsaquo;
 
-          - if @proposal.eligible?(fund)
+          - if @proposal.eligible?(fund.slug)
             %a{ href: apply_proposal_fund_path(@proposal, fund) }
               %li.last{ class: ('active' if current_page?(apply_proposal_fund_path(@proposal, fund))) }
                 Apply

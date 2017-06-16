@@ -7,7 +7,7 @@ describe LocationMatch do
     @funds = Fund.active.all
     @proposal = Proposal.last
     @result = {
-      @funds.first.slug => { 'location' => false }
+      @funds.first.slug => { 'location' => { 'eligible' => false } }
     }
   end
 
@@ -75,14 +75,14 @@ describe LocationMatch do
 
     it 'Proposal#initial_recommendation updates keys with location as reason' do
       eligibility = {
-        @local.slug => { 'location' => false },
-        @anywhere.slug => { 'quiz' => true }
+        @local.slug => { 'location' => { 'eligible' => false } },
+        @anywhere.slug => { 'quiz' => { 'eligible' => true } }
       }
       @proposal.update!(affect_geo: 0, districts: [@db[:uk_districts].first],
                         eligibility: eligibility)
       result = {
-        'esmee' => { 'quiz' => true },
-        'ellerman' => { 'location' => false }
+        'esmee' => { 'quiz' => { 'eligible' => true } },
+        'ellerman' => { 'location' => { 'eligible' => false } }
       }
       expect(@proposal.eligibility).to eq result
     end

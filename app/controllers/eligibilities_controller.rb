@@ -31,7 +31,6 @@ class EligibilitiesController < ApplicationController
       params[:mixpanel_eligibility_tracking] = true
       @recipient.increment!(:funds_checked) unless
         @proposal.checked_fund?(@fund)
-      EligibilityCheck.new(Fund.active, @proposal).check!(@proposal.eligibility)
     end
     render :new
   end

@@ -7,9 +7,9 @@
 
 %ul.insights
   - unless params[:controller] == 'recipients' && %w(eligibility update_eligibility apply).include?(params[:action])
-    - unless @proposal.eligibility_for(fund).negative?
-      %li{ class: (@proposal.eligible?(fund) ? 'eligible' : 'ineligible')}
-        - if @proposal.eligible?(fund)
+    - unless @proposal.eligible_status(fund.slug).negative?
+      %li{ class: (@proposal.eligible?(fund.slug) ? 'eligible' : 'ineligible')}
+        - if @proposal.eligible?(fund.slug)
           %a.badge{ href: eligible_proposal_funds_path(@proposal) } Eligible
           You are eligible for funding.
           %a.action{href: eligibility_proposal_fund_path(@proposal, fund)} See criteria
