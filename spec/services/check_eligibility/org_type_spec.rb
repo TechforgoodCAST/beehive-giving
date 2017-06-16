@@ -7,18 +7,12 @@ describe CheckEligibility::OrgType do
     @proposal = Proposal.last
   end
 
-  subject { CheckEligibility::OrgType.new(@proposal) }
-
-  it '#call invalid' do
-    expect { subject.call }.to raise_error ArgumentError
-  end
-
   it '#call eligible' do
-    expect(subject.call(@fund)).to eq 'eligible' => true
+    expect(subject.call(@proposal, @fund)).to eq 'eligible' => true
   end
 
   it '#call ineligible' do
     @fund.permitted_org_types = []
-    expect(subject.call(@fund)).to eq 'eligible' => false
+    expect(subject.call(@proposal, @fund)).to eq 'eligible' => false
   end
 end

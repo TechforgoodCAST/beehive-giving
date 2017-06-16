@@ -1,9 +1,10 @@
 class CheckEligibility
-  class OrgType < Setup
-    def call(fund)
+  class OrgType < CheckEligibility
+    def call(proposal, fund)
+      super
       {
         'eligible' => fund.permitted_org_types
-                          .include?(@proposal.recipient.org_type)
+                          .include?(proposal.recipient.org_type)
       }
     end
   end

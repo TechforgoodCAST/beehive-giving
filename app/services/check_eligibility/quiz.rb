@@ -1,8 +1,9 @@
 class CheckEligibility
-  class Quiz < Setup
-    def call(fund) # TODO: refactor Assignment Branch Condition size
+  class Quiz < CheckEligibility
+    def call(proposal, fund) # TODO: refactor Assignment Branch Condition size
+      super
       restrictions = fund.restriction_ids
-      answers = lookup_answers
+      answers = lookup_answers(proposal)
       comparison = (answers.keys & restrictions)
       return unless comparison.count == restrictions.count
       {
@@ -14,8 +15,8 @@ class CheckEligibility
 
     private
 
-      def lookup_answers # TODO: refactor avoid db call
-        Eligibility.where(category_id: [@proposal.id, @proposal.recipient.id])
+      def lookup_answers(proposal) # TODO: refactor avoid db callq
+        Eligibility.where(category_id: [proposal.id, proposal.recipient.id])
                    .pluck(:restriction_id, :eligible).to_h
       end
   end
