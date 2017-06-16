@@ -1,11 +1,6 @@
 class CheckEligibility
-  class Quiz
-    def initialize(proposal) # TODO: refactor parent class
-      @proposal = proposal
-      raise 'Invalid Proposal object' unless @proposal.instance_of? Proposal
-    end
-
-    def check(fund) # TODO: rename & refactor Assignment Branch Condition size
+  class Quiz < Setup
+    def call(fund) # TODO: refactor Assignment Branch Condition size
       restrictions = fund.restriction_ids
       answers = lookup_answers
       comparison = (answers.keys & restrictions)

@@ -11,15 +11,19 @@ describe CheckEligibility::Quiz do
     end
   end
 
-  it '#check eligible' do
-    match = CheckEligibility::Quiz.new(@proposal).check(@fund)
-    expect(match).to eq 'eligible' => true, 'count_failing' => 0
+  subject { CheckEligibility::Quiz.new(@proposal) }
+
+  it '#call invalid' do
+    expect { subject.call }.to raise_error ArgumentError
   end
 
-  it '#check ineligible' do
+  it '#call eligible' do
+    expect(subject.call(@fund)).to eq 'eligible' => true, 'count_failing' => 0
+  end
+
+  it '#call ineligible' do
     Eligibility.update_all eligible: false
-    match = CheckEligibility::Quiz.new(@proposal).check(@fund)
-    expect(match).to eq 'eligible' => false, 'count_failing' => 5
+    expect(subject.call(@fund)).to eq 'eligible' => false, 'count_failing' => 5
   end
 
   it '#check only updates eligibility quiz keys' do
