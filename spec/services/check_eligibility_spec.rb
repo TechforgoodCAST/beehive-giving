@@ -48,6 +48,10 @@ describe CheckEligibility do
     expect(subject.call_each(@proposal, @funds)).not_to have_key 'rouge-fund'
   end
 
+  it '#call_each only returns checks that are passed in' do
+    raise StandardError, 'todo'
+  end
+
   it '#call_each only updates eligibility quiz keys' do
     raise StandardError, 'todo'
   end
