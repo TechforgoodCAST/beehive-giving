@@ -196,7 +196,7 @@ feature 'Eligibility' do
               I want associated funds to be checked, so
               I don't waste time checking funds with the same restrictions" do
       helper.answer_restrictions.check_eligibility
-      expect(@db[:registered_proposal].reload.eligibility.count).to eq 4
+      expect(Proposal.last.eligibility.all_values_for('quiz').length).to eq 4
     end
 
     scenario "When I've answered some eligibility questions in another fund,
