@@ -5,7 +5,7 @@
     | fund.
     = link_to 'Apply for funding', apply_proposal_fund_path(model, fund), class: 'uk-button uk-button-large uk-button-success invert'
 
-- else
+- elsif ineligible_because('location') || ineligible_because('quiz')
   .cta.wide.red
     - if ineligible_because('location')
       | You are ineligible because of the

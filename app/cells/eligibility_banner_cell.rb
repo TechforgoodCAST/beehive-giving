@@ -1,6 +1,6 @@
 class EligibilityBannerCell < Cell::ViewModel
   def show
-    return if model.eligible_status(options[:fund]&.slug).negative?
+    return unless model.eligibility.key?(options[:fund]&.slug)
     render locals: { fund: options[:fund] }
   end
 
