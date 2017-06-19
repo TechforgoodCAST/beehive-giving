@@ -42,4 +42,25 @@ describe CheckEligibility do
 
     expect(subject.call_each(@proposal, @funds)).to eq response
   end
+
+  it '#call_each only returns funds that are passed in' do
+    @proposal.eligibility['rouge-fund'] = 'invalid'
+    expect(subject.call_each(@proposal, @funds)).not_to have_key 'rouge-fund'
+  end
+
+  it '#call_each only updates eligibility quiz keys' do
+    raise StandardError, 'todo'
+  end
+
+  it 'Proposal#initial_recommendation updates keys with location as reason' do
+    raise StandardError, 'todo'
+  end
+
+  it '#check only updates eligibility location keys' do
+    raise StandardError, 'todo'
+  end
+
+  it '#call_each! updates Proposal.eligibility' do
+    raise StandardError, 'todo'
+  end
 end

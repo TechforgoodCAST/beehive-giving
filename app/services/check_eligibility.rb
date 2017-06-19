@@ -4,7 +4,8 @@ class CheckEligibility
   def call_each(proposal, funds)
     validate_call_each(proposal, funds)
     updates = proposal.eligibility.clone
-    preload(funds).each do |fund|
+    remove_funds_not_passed_in!(funds, updates)
+    preload_associations(funds).each do |fund|
       CHECKS.each do |check|
         updates[fund.slug] = {} unless updates.key? fund.slug
         updates[fund.slug][key_name(check)] = check.call(proposal, fund)
@@ -22,7 +23,13 @@ class CheckEligibility
         funds.is_a? Fund::ActiveRecord_Relation
     end
 
-    def preload(funds)
+    def remove_funds_not_passed_in!(funds, updates)
+      (updates.keys - funds.pluck('slug')).each do |inactive|
+        updates.delete inactive
+      end
+    end
+
+    def preload_associations(funds)
       funds.includes(:districts, :countries, :restrictions)
     end
 

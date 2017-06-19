@@ -21,12 +21,4 @@ describe CheckEligibility::Quiz do
     expect(subject.call(@proposal, @fund))
       .to eq 'eligible' => false, 'count_failing' => 5
   end
-
-  it '#check only updates eligibility quiz keys' do
-    raise StandardError, 'move to parent class'
-  end
-
-  it '#check! updates Proposal.eligibility' do
-    raise StandardError, 'move to parent class'
-  end
 end

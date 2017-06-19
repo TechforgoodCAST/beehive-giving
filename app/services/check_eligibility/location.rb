@@ -2,7 +2,7 @@ class CheckEligibility
   class Location < CheckEligibility
     def call(proposal, fund)
       super
-      return eligible false if counties_ineligible?(proposal, fund)
+      return eligible false if countries_ineligible?(proposal, fund)
       return eligible true  if proposal.affect_geo == 2
       return eligible false if national_ineligible?(proposal, fund)
       return eligible false if districts_ineligible?(proposal, fund)
@@ -11,7 +11,7 @@ class CheckEligibility
 
     private
 
-      def counties_ineligible?(proposal, fund)
+      def countries_ineligible?(proposal, fund)
         (proposal.country_ids & fund.country_ids).length.zero?
       end
 

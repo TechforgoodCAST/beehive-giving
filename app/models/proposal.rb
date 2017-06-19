@@ -1,4 +1,3 @@
-
 class Proposal < ActiveRecord::Base
   before_validation :clear_districts_if_country_wide
   after_validation :trigger_clear_beneficiary_ids
@@ -145,7 +144,7 @@ class Proposal < ActiveRecord::Base
     # Location eligibility and notices
     location = LocationMatch.new(Fund.active, self)
     update_columns(
-      eligibility: location.check(eligibility),
+      eligibility: CheckEligibility.new.call_each(self, Fund.active),
       recommendation: location.match(recommendation)
     )
 
@@ -181,7 +180,7 @@ class Proposal < ActiveRecord::Base
         end
 
         # amount requested recommendation
-        amount_score = amount_match[fund.slug]
+        amount_score = amount_match[fund.slug] || 0
 
         # duration requested recommendation
         duration_score = fund_request_scores(fund, beehive_insight_durations,
