@@ -49,21 +49,9 @@ describe CheckEligibility do
   end
 
   it '#call_each only returns checks that are passed in' do
-    result = subject.call_each(@proposal, @funds)
-    expect(result).to have_key 'acme-awards-for-all-1'
-    expect(result['acme-awards-for-all-1']).not_to have_key 'non_existent_check'
-  end
-
-  it '#call_each only updates eligibility quiz keys' do
-    raise StandardError, 'todo'
-  end
-
-  it '#check only updates eligibility location keys' do
-    raise StandardError, 'todo'
-  end
-
-  it 'Proposal#initial_recommendation updates keys with location as reason' do
-    raise StandardError, 'todo'
+    @proposal.eligibility = { @funds[0].slug => { 'rouge-check' => 'invalid' } }
+    expect(subject.call_each(@proposal, @funds)[@funds[0].slug])
+      .not_to have_key 'rouge-check'
   end
 
   it '#call_each! updates Proposal.eligibility' do

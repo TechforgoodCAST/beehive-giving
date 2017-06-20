@@ -3,7 +3,7 @@ class CheckEligibility
 
   def call_each(proposal, funds)
     validate_call_each(proposal, funds)
-    updates = proposal.eligibility.clone
+    updates = {}
     remove_funds_not_passed_in!(funds, updates)
     preload_associations(funds).each do |fund|
       CHECKS.each do |check|
