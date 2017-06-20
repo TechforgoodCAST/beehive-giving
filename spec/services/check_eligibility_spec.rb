@@ -49,14 +49,12 @@ describe CheckEligibility do
   end
 
   it '#call_each only returns checks that are passed in' do
-    raise StandardError, 'todo'
+    result = subject.call_each(@proposal, @funds)
+    expect(result).to have_key 'acme-awards-for-all-1'
+    expect(result['acme-awards-for-all-1']).not_to have_key 'non_existent_check'
   end
 
   it '#call_each only updates eligibility quiz keys' do
-    raise StandardError, 'todo'
-  end
-
-  it 'Proposal#initial_recommendation updates keys with location as reason' do
     raise StandardError, 'todo'
   end
 
@@ -64,7 +62,29 @@ describe CheckEligibility do
     raise StandardError, 'todo'
   end
 
-  it '#call_each! updates Proposal.eligibility' do
+  it 'Proposal#initial_recommendation updates keys with location as reason' do
     raise StandardError, 'todo'
+  end
+
+  it '#call_each! updates Proposal.eligibility' do
+    Fund.first.restrictions.each do |r|
+      category = r.category == 'Proposal' ? @proposal : @proposal.recipient
+      create(:proposal_eligibility, category: category, restriction: r,
+                                    eligible: false)
+    end
+    subject.call_each!(@proposal, @funds)
+
+    response = {
+      'acme-awards-for-all-1' => {
+        'location' => { 'eligible' => true },
+        'org_type' => { 'eligible' => true },
+        'quiz' => { 'eligible' => false, 'count_failing' => 5 }
+      },
+      'acme-awards-for-all-2' => {
+        'location' => { 'eligible' => true },
+        'org_type' => { 'eligible' => true }
+      }
+    }
+    expect(@proposal.eligibility).to eq response
   end
 end
