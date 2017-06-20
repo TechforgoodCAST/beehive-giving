@@ -234,7 +234,8 @@ class Proposal < ActiveRecord::Base
   end
 
   def refine_recommendations # TODO: refactor
-    return if recommendations.pluck(:updated_at).uniq[0]&.today?
+    return if updated_at > (Fund.order(:updated_at).last&.updated_at || Date.today)
+    touch
     initial_recommendation
     recommendations.where(fund_id: Fund.inactive_ids).destroy_all
   end
