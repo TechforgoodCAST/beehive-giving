@@ -199,11 +199,12 @@ feature 'Eligibility' do
     scenario "When I've answered some eligibility questions in another fund,
               I want previously answered questions to be prefilled,
               so I don't waste my time answering the same question twice" do
+      Fund.limit(5).destroy_all # leave two funds remaining
       helper.answer_recipient_restrictions
             .answer_proposal_restrictions(eligible: false)
             .check_eligibility
-      visit eligibility_proposal_fund_path(@proposal, Fund.second)
-      helper.check_eligibility(remaining: 2)
+      click_link 'Funding'
+      helper.visit_first_fund.check_eligibility(remaining: 2)
       expect(page).to have_text 'please select from the list', count: 2
     end
 

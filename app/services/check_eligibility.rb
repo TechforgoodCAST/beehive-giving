@@ -16,7 +16,7 @@ class CheckEligibility
   end
 
   def call_each!(proposal, funds)
-    proposal.eligibility.merge!( call_each(proposal, funds) )
+    proposal.eligibility.merge! call_each(proposal, funds)
   end
 
   private
