@@ -15,6 +15,10 @@ class CheckEligibility
     updates
   end
 
+  def call_each!(proposal, funds)
+    proposal.eligibility.merge!( call_each(proposal, funds) )
+  end
+
   private
 
     def validate_call_each(proposal, funds)
