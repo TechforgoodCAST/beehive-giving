@@ -185,12 +185,6 @@ feature 'Eligibility' do
       expect(page).to have_text 'Apply for funding'
 
       # TODO: No feedback for unlocked funds
-
-      # Must upgrade to see checked funds over MAX_FREE_LIMIT
-      click_link 'Funding'
-      helper.visit_first_fund
-      expect(current_path).to eq account_upgrade_path(@proposal.recipient)
-
       # TODO: eligibilities_controller does not prevent navigation
       # e.g. visit eligibility_proposal_fund_path(@proposal, @fund)
     end
@@ -227,34 +221,8 @@ feature 'Eligibility' do
     scenario 'When I try check eligiblity but have reached the max free limit,
               I want to be able to upgrade,
               so I can continue to check eligibilities' do
-      # TODO: refactor
-      Fund.second.restrictions << create(:restriction)
-      Fund.second.instance_eval { set_restriction_ids }
-      Fund.second.save
-      @fund.restrictions << create(:restriction)
-      @fund.instance_eval { set_restriction_ids }
-      @fund.save
-
-      # check 1
+      # check all (7) funds, 4 quiz eligible
       helper.answer_restrictions.check_eligibility
-
-      # check 2
-      click_link 'Funding'
-      # puts page.body
-      helper.visit_first_fund
-            .answer_recipient_restrictions
-            .answer_proposal_restrictions(n: 4)
-            .check_eligibility(remaining: 2)
-
-      expect(@db[:recipient].reload.funds_checked).to eq 2
-      # expect(@db[:registered_proposal].reload.eligibility).to eq 2
-
-      # check 3
-      click_link 'Funding'
-      helper.visit_first_fund
-      expect(current_path).to eq new_feedback_path
-      helper.complete_feedback.submit_feedback
-      helper.answer_restrictions.check_eligibility(remaining: 1)
 
       # checked funds don't require upgrade
       click_link 'Funding'
@@ -262,7 +230,7 @@ feature 'Eligibility' do
       expect(current_path)
         .to eq eligibility_proposal_fund_path(@proposal, Fund.first)
 
-      # unchecked funds require upgrade
+      # funds over MAX_FREE_LIMIT require upgrade
       click_link 'Funding'
       helper.visit_first_fund
       expect(current_path).to eq account_upgrade_path(@db[:recipient])
