@@ -184,12 +184,15 @@ feature 'Eligibility' do
       expect(page).to have_text 'Apply'
       expect(page).to have_text 'Apply for funding'
 
-      # No feedback for unlocked funds
+      # TODO: No feedback for unlocked funds
+
+      # Must upgrade to see checked funds over MAX_FREE_LIMIT
       click_link 'Funding'
-      helper.visit_first_fund.check_eligibility(remaining: 2)
-      visit eligibility_proposal_fund_path(@proposal, @fund)
-      expect(current_path)
-        .to eq eligibility_proposal_fund_path(@proposal, @fund)
+      helper.visit_first_fund
+      expect(current_path).to eq account_upgrade_path(@proposal.recipient)
+
+      # TODO: eligibilities_controller does not prevent navigation
+      # e.g. visit eligibility_proposal_fund_path(@proposal, @fund)
     end
 
     scenario "When I check a fund with shared restrictions,
