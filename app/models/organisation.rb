@@ -1,12 +1,4 @@
 class Organisation < ActiveRecord::Base
-  ORG_TYPE = [
-    ['Myself OR another individual', -1],
-    ['An unregistered organisation OR project', 0],
-    ['A registered charity', 1],
-    ['A registered company', 2],
-    ['A registered charity & company', 3],
-    ['Another type of organisation', 4]
-  ].freeze
   OPERATING_FOR = [
     ['Yet to start', 0],
     ['Less than 12 months', 1],

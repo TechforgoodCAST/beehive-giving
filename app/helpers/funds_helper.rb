@@ -14,9 +14,14 @@ module FundsHelper
   end
 
   def amount_awarded_distribution
-    @fund.amount_awarded_distribution
-         .each { |s| s['segment'] = "#{to_k(s['start'])} - #{to_k(s['end'])}" }
-         .to_json
+    @fund.amount_awarded_distribution.each_with_index do |s, i|
+      if i == @fund.amount_awarded_distribution.length - 1
+        s['segment'] = 'More than ' + number_with_delimiter(s['start'])
+      else
+        s['segment'] = number_with_delimiter(s['start']) + ' - ' +
+                       number_with_delimiter(s['end'] + 1)
+      end
+    end.to_json
   end
 
   def top_award_months(fund = @fund)
@@ -50,7 +55,7 @@ module FundsHelper
 
   def org_type_desc(fund)
     arr = fund.org_type_distribution.select do |hash|
-      hash['label'] == Organisation::ORG_TYPE[@recipient.org_type + 1][0]
+      hash['label'] == ORG_TYPES[@recipient.org_type + 1][0]
     end
     return if arr.empty?
     "
@@ -80,7 +85,7 @@ module FundsHelper
       had income #{label}.
     "
   end
-  
+
   def beneficiaries_desc(fund)
     if fund.beneficiary_distribution.length==0
       return ""
@@ -106,10 +111,4 @@ module FundsHelper
       "<strong>None</strong> of your beneficiaries overlap with this fund."
     end
   end
-
-  private
-
-    def to_k(amount)
-      amount.positive? ? "#{amount / 1000}k" : '0'
-    end
 end

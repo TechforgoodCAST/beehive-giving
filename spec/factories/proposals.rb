@@ -3,7 +3,7 @@ FactoryGirl.define do
     recipient
     type_of_support       Proposal::TYPE_OF_SUPPORT.sample
     funding_duration      12
-    funding_type          Proposal::FUNDING_TYPE.sample
+    funding_type          0 # Don't know
     total_costs           10_000
     total_costs_estimated false
     all_funding_required  true
@@ -11,7 +11,7 @@ FactoryGirl.define do
     affect_other          false
     gender                Proposal::GENDERS[1]
     beneficiaries_other_required false
-    affect_geo            1
+    affect_geo            1 # One or more regions
     private               false
     after(:create, &:initial_recommendation)
 

@@ -10,18 +10,18 @@ describe Recommender do
 
   context 'init' do
     it 'requires funds and proposal to initialize' do
-      expect { LocationMatch.new }.to raise_error(ArgumentError)
-      expect { LocationMatch.new(@funds) }.to raise_error(ArgumentError)
-      expect { LocationMatch.new(@funds, @proposal) }.not_to raise_error
+      expect { Recommender.new }.to raise_error(ArgumentError)
+      expect { Recommender.new(@funds) }.to raise_error(ArgumentError)
+      expect { Recommender.new(@funds, @proposal) }.not_to raise_error
     end
 
     it 'invalid funds collection raises errror' do
-      expect { LocationMatch.new({}, @proposal) }
+      expect { Recommender.new({}, @proposal) }
         .to raise_error('Invalid Fund::ActiveRecord_Relation')
     end
 
     it 'invalid proposal object raises error' do
-      expect { LocationMatch.new(@funds, {}) }
+      expect { Recommender.new(@funds, {}) }
         .to raise_error('Invalid Proposal object')
     end
   end

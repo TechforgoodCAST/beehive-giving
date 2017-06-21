@@ -7,6 +7,8 @@ class EligibilityBannerCell < Cell::ViewModel
   private
 
     def ineligible_because(key)
-      model.eligibility[options[:fund]&.slug][key] == false
+      eligibility = model.eligibility[options[:fund]&.slug].all_values_for(key)
+      return unless eligibility[0]
+      eligibility[0]['eligible'] == false
     end
 end

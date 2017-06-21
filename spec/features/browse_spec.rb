@@ -134,8 +134,10 @@ feature 'Browse' do
     end
 
     scenario 'only recommended funds shown unless subscribed' do
-      data = { Fund.first.slug => { eligible: true, count_failing: 0 } }
-      @proposal.update!(eligibility: data)
+      @proposal.update_column(
+        :eligibility,
+        Fund.first.slug => { 'quiz' => { eligible: true, count_failing: 0 } }
+      )
       visit eligible_proposal_funds_path(@proposal)
       expect(page).to have_css '.yellow.redacted.large', count: 1
 
@@ -143,8 +145,10 @@ feature 'Browse' do
     end
 
     scenario 'only recommended funds shown unless subscribed' do
-      data = { Fund.first.slug => { eligible: false, count_failing: 1 } }
-      @proposal.update!(eligibility: data)
+      @proposal.update_column(
+        :eligibility,
+        Fund.first.slug => { 'quiz' => { eligible: false, count_failing: 1 } }
+      )
       visit ineligible_proposal_funds_path(@proposal)
       expect(page).to have_css '.yellow.redacted.large', count: 1
 

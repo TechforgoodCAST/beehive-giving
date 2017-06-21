@@ -6,29 +6,6 @@ describe LocationMatch do
         .create_recipient.create_registered_proposal
     @funds = Fund.active.all
     @proposal = Proposal.last
-    @result = {
-      @funds.first.slug => { 'location' => false }
-    }
-  end
-
-  it '#check only updates eligibility location keys' do
-    eligibility = {
-      'fund1' => { 'location' => false },
-      'fund2' => { 'quiz' => true, 'location' => false },
-      'fund3' => { 'quiz' => true }
-    }
-    check = LocationMatch.new(@funds, @proposal).check(eligibility)
-    result = {
-      'fund2' => { 'quiz' => true },
-      'fund3' => { 'quiz' => true }
-    }
-    expect(check).to eq result
-  end
-
-  it 'ineligible for Proposal that does not match Fund.countries' do
-    @funds.first.country_ids = [Country.last.id]
-    @funds.first.save!
-    expect(LocationMatch.new(@funds, @proposal).check).to eq @result
   end
 
   context 'integration' do
@@ -57,36 +34,6 @@ describe LocationMatch do
       )
     end
 
-    it 'seeking funds local' do
-      @proposal.update!(affect_geo: 0, districts: [@db[:uk_districts].first])
-      expect(@proposal.eligibility).not_to have_key @local.slug
-      expect(@proposal.eligibility).to have_key @national.slug
-
-      expect(@proposal.eligibility).not_to have_key @anywhere.slug
-    end
-
-    it 'seeking funds national' do
-      @proposal.update!(affect_geo: 2, districts: [])
-      expect(@proposal.eligibility).not_to have_key @local.slug
-      expect(@proposal.eligibility).not_to have_key @national.slug
-
-      expect(@proposal.eligibility).not_to have_key @anywhere.slug
-    end
-
-    it 'Proposal#initial_recommendation updates keys with location as reason' do
-      eligibility = {
-        @local.slug => { 'location' => false },
-        @anywhere.slug => { 'quiz' => true }
-      }
-      @proposal.update!(affect_geo: 0, districts: [@db[:uk_districts].first],
-                        eligibility: eligibility)
-      result = {
-        'esmee' => { 'quiz' => true },
-        'ellerman' => { 'location' => false }
-      }
-      expect(@proposal.eligibility).to eq result
-    end
-
     context '#match' do
       it 'ineligble set to -1' do
         @proposal.eligibility = {
@@ -101,7 +48,7 @@ describe LocationMatch do
       context 'proposal national' do
         before(:each) do
           @proposal.update! affect_geo: 2, district_ids: []
-          # @proposal.update_column :eligibility, {}
+          @proposal.update_column :eligibility, {}
           @match = LocationMatch.new(@funds, @proposal).match
         end
 

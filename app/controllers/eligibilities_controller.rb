@@ -29,9 +29,7 @@ class EligibilitiesController < ApplicationController
   def create
     if update_eligibility_params
       params[:mixpanel_eligibility_tracking] = true
-      @recipient.increment!(:funds_checked) unless
-        @proposal.checked_fund?(@fund)
-      EligibilityCheck.new(Fund.active, @proposal).check!(@proposal.eligibility)
+      @recipient.update_funds_checked!(@proposal.eligibility)
     end
     render :new
   end
@@ -100,6 +98,7 @@ class EligibilitiesController < ApplicationController
         [update_recipient, update_proposal].include?(false) ? false : true
       when [true, false]
         @recipient.update_attributes(eligibility_params(:recipient))
+        @proposal.save # TODO: refactor
       when [false, true]
         @proposal.update_attributes(eligibility_params(:proposal))
       end

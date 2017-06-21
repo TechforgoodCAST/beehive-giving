@@ -25,7 +25,6 @@ describe Fund do
 
     it 'countries required' do
       @fund.countries = []
-      @fund.save
       expect(@fund).not_to be_valid
     end
 
@@ -70,7 +69,6 @@ describe Fund do
 
     it 'restrictions present if restrictions_known' do
       @fund.restrictions = []
-      @fund.save
       expect(@fund).not_to be_valid
     end
 
@@ -84,10 +82,46 @@ describe Fund do
       expect(@fund.restriction_ids).to eq @fund.restrictions.pluck(:id)
     end
 
-    it 'org_type_distribution has correct format'
-    it 'income_distribution has correct format'
-    # it 'distribution fields have uique positions' # TODO: refactor beehive-data
-    # it 'distribution fields total 100 percent' # TODO: refactor beehive-data
+    it 'min_amount_awarded required if min_amount_awarded_limited' do
+      @fund.min_amount_awarded_limited = true
+      expect(@fund).not_to be_valid
+      @fund.min_amount_awarded = 300
+      expect(@fund).to be_valid
+    end
+
+    it 'max_amount_awarded required if max_amount_awarded_limited' do
+      @fund.max_amount_awarded_limited = true
+      expect(@fund).not_to be_valid
+      @fund.max_amount_awarded = 10_000
+      expect(@fund).to be_valid
+    end
+
+    it 'min_duration_awarded required if min_duration_awarded_limited' do
+      @fund.min_duration_awarded_limited = true
+      expect(@fund).not_to be_valid
+      @fund.min_duration_awarded = 300
+      expect(@fund).to be_valid
+    end
+
+    it 'max_duration_awarded required if max_duration_awarded_limited' do
+      @fund.max_duration_awarded_limited = true
+      expect(@fund).not_to be_valid
+      @fund.max_duration_awarded = 10_000
+      expect(@fund).to be_valid
+    end
+
+    it 'array fields valid' do
+      [:permitted_org_types, :permitted_costs].each do |attribute|
+        @fund[attribute] = nil
+        expect(@fund).not_to be_valid
+        @fund[attribute] = []
+        expect(@fund).not_to be_valid
+        @fund[attribute] = [1, -100]
+        expect(@fund).not_to be_valid
+        @fund[attribute] = [1, 2]
+        expect(@fund).to be_valid
+      end
+    end
   end
 
   context 'multiple' do

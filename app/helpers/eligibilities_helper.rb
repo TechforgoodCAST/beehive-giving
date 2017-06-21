@@ -20,6 +20,6 @@ module EligibilitiesHelper
   def check_eligibility_button_copy
     copy = 'Check eligibility'
     return copy if @recipient.subscribed?
-    copy + " (#{(Recipient::MAX_FREE_LIMIT - @recipient.funds_checked)} left)"
+    copy + " (#{(MAX_FREE_LIMIT - @recipient.funds_checked)} left)"
   end
 end

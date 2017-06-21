@@ -3,7 +3,7 @@ class EnquiriesController < ApplicationController
   before_action :load_fund # TODO: refactor
 
   def new
-    if @proposal && @proposal.eligible?(@fund)
+    if @proposal && @proposal.eligible?(@fund.slug)
       render :new
     elsif !@proposal
       redirect_to new_recipient_proposal_path(@recipient, return_to: @fund),

@@ -10,6 +10,14 @@ describe FundCardCell do
     @proposal = Proposal.last
   end
 
+  def proposal(score, reason)
+    @proposal.recommendation = {
+      @fund.slug => {
+        'location' => { 'score' => score, 'reason' => reason }
+      }
+    }
+  end
+
   context '#location' do
     it 'ineligible message' do
       @proposal.update_column :eligibility, @fund.slug => { 'location' => false }
@@ -19,62 +27,63 @@ describe FundCardCell do
     end
 
     it 'anywhere message' do
+      proposal(1, 'anywhere')
       card = cell(:fund_card, @proposal, fund: @fund).call(:location)
       expect(card).to have_content 'Accepts proposals from anywhere in the country.'
       expect(card).to have_content 'Good'
     end
 
     it 'exact message' do
+      proposal(1, 'exact')
       @fund.update!(
         geographic_scale_limited: true,
         countries: @proposal.countries,
         districts: @proposal.districts
       )
-      @proposal.save!
       card = cell(:fund_card, @proposal, fund: @fund).call(:location)
       expect(card).to have_content 'Supports all of the areas in your proposal.'
       expect(card).to have_content 'Good'
     end
 
     it 'intersect message' do
+      proposal(0, 'intersect')
       @fund.update!(
         geographic_scale_limited: true,
         countries: @proposal.countries,
         districts: @db[:uk_districts].take(2)
       )
-      @proposal.update! districts: @db[:uk_districts].slice(1, 2)
       card = cell(:fund_card, @proposal, fund: @fund).call(:location)
       expect(card).to have_content 'Supports some of the areas in your proposal.'
       expect(card).to have_content 'Neutral'
     end
 
     it 'partial message' do
+      proposal(1, 'partial')
       @fund.update!(
         geographic_scale_limited: true,
         countries: @proposal.countries,
         districts: @db[:uk_districts].take(2)
       )
-      @proposal.update! districts: [@db[:uk_districts].first]
       card = cell(:fund_card, @proposal, fund: @fund).call(:location)
       expect(card).to have_content 'Supports all of the areas in your proposal.'
       expect(card).to have_content 'Good'
     end
 
     it 'overlap message' do
+      proposal(-1, 'overlap')
       @fund.update!(
         geographic_scale_limited: true,
         countries: @proposal.countries,
         districts: [@db[:uk_districts].first]
       )
-      @proposal.update! districts: @db[:uk_districts]
       card = cell(:fund_card, @proposal, fund: @fund).call(:location)
       expect(card).to have_content 'Supports projects in a smaller area than you are seeking.'
       expect(card).to have_content 'Poor'
     end
 
     it 'national message' do
+      proposal(1, 'national')
       @fund.update! geographic_scale_limited: true, national: true
-      @proposal.update! affect_geo: 2, district_ids: []
       card = cell(:fund_card, @proposal, fund: @fund).call(:location)
       expect(card).to have_content 'Supports national proposals.'
       expect(card).to have_content 'Good'

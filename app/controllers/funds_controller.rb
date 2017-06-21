@@ -12,7 +12,7 @@ class FundsController < ApplicationController
   def recommended
     @funds = Fund.includes(:funder).find(
       (@proposal.recommended_funds - @proposal.ineligible_fund_ids)
-      .take(Recipient::RECOMMENDATION_LIMIT) # TODO: move constant
+      .take(RECOMMENDATION_LIMIT)
     )
   end
 

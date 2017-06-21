@@ -15,8 +15,7 @@ class Fund < ActiveRecord::Base
   accepts_nested_attributes_for :restrictions
 
   validates :funder, :type_of_fund, :slug, :name, :description, :currency,
-            :key_criteria, :application_link,
-            presence: true
+            :key_criteria, :application_link, presence: true
 
   validates :open_call, :active, :restrictions_known,
             inclusion: { in: [true, false] }
@@ -35,7 +34,15 @@ class Fund < ActiveRecord::Base
                           numericality: { greater_than_or_equal_to: 0 },
                           if: :open_data?
 
+  validates :min_amount_awarded, presence: true, if: :min_amount_awarded_limited
+  validates :max_amount_awarded, presence: true, if: :max_amount_awarded_limited
+  validates :min_duration_awarded, presence: true, if: :min_duration_awarded_limited
+  validates :max_duration_awarded, presence: true, if: :max_duration_awarded_limited
+
   validate :validate_sources, :validate_districts
+
+  validates :permitted_org_types, array: { in: ORG_TYPES.pluck(1) }
+  validates :permitted_costs, array: { in: FUNDING_TYPES.pluck(1) }
 
   validate :period_start_before_period_end, :period_end_in_past, if: :open_data?
 
@@ -58,12 +65,17 @@ class Fund < ActiveRecord::Base
     tags.count.positive?
   end
 
-  include JsonSetters
+  include FundJsonSetters
+  include FundArraySetters
 
   private
 
     def set_slug
-      self.slug = "#{funder.slug}-#{name.parameterize}" if funder
+      self[:slug] = "#{funder.slug}-#{name.parameterize}" if funder
+    end
+
+    def set_restriction_ids
+      self[:restriction_ids] = restrictions.pluck(:id)
     end
 
     def period_end_in_past
@@ -78,7 +90,7 @@ class Fund < ActiveRecord::Base
         period_start > period_end
     end
 
-    def check_beehive_data
+    def check_beehive_data # TODO: refactor as service
       return unless open_data && slug
       options = {
         headers: {
@@ -104,10 +116,6 @@ class Fund < ActiveRecord::Base
         amount_awarded_sum
       )
       assign_attributes(resp.slice(*resp_attributes)) if slug == resp['fund_slug']
-    end
-
-    def set_restriction_ids
-      self[:restriction_ids] = restrictions.pluck(:id)
     end
 
     def validate_sources # TODO: refactor DRY

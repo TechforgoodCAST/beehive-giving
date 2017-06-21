@@ -1,4 +1,4 @@
-class Recommender
+class Recommender # TODO: refactor
   def initialize(funds, proposal)
     @funds = funds
     @proposal = proposal
@@ -9,7 +9,7 @@ class Recommender
 
     def validate_arguments
       raise 'Invalid Fund::ActiveRecord_Relation' unless
-        @funds.instance_of? Fund::ActiveRecord_Relation
-      raise 'Invalid Proposal object' unless @proposal.instance_of? Proposal
+        @funds.is_a? Fund::ActiveRecord_Relation
+      raise 'Invalid Proposal object' unless @proposal.is_a? Proposal
     end
 end

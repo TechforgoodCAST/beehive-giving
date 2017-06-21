@@ -14,6 +14,9 @@ FactoryGirl.define do
 
     restrictions_known true
 
+    permitted_org_types [2, 3] # A registered charity, A registered company
+    permitted_costs [1, 2] # Capital funding, Revenue funding
+
     factory :fund_with_open_data, class: Fund do
       open_data true
       sources do
@@ -27,9 +30,21 @@ FactoryGirl.define do
 
       amount_awarded_distribution do
         [
-          { "segment": 0, "start": 0,     "end": 4999,  "count": 3  },
-          { "segment": 1, "start": 5000,  "end": 9999,  "count": 87 },
-          { "segment": 2, "start": 10_000, "end": 14_999, "count": 10 }
+          { "start" => 0, "end" => 49, "segment" => 0, "percent" => 0, "count" => 0 },
+          { "start" => 50, "end" => 299, "segment" => 1, "percent" => 0, "count" => 0 },
+          { "start" => 300, "end" => 749, "segment" => 2, "percent" => 0, "count" => 0 },
+          { "start" => 750, "end" => 1_499, "segment" => 3, "percent" => 0, "count" => 0 },
+          { "start" => 1_500, "end" => 3_499, "segment" => 4, "percent" => 0, "count" => 0 },
+          { "start" => 3_500, "end" => 7_499, "segment" => 5, "percent" => 0.1, "count" => 5 },
+          { "start" => 7_500, "end" => 12_499, "segment" => 6, "percent" => 0.2, "count" => 10 },
+          { "start" => 12_500, "end" => 17_499, "segment" => 7, "percent" => 0.3, "count" => 15 },
+          { "start" => 17_500, "end" => 27_499, "segment" => 8, "percent" => 0.34, "count" => 17 },
+          { "start" => 27_500, "end" => 34_999, "segment" => 9, "percent" => 0, "count" => 0 },
+          { "start" => 35_000, "end" => 44_999, "segment" => 10, "percent" => 0.06, "count" => 3 },
+          { "start" => 45_000, "end" => 74_999, "segment" => 11, "percent" => 0, "count" => 0 },
+          { "start" => 75_000, "end" => 299_999, "segment" => 12, "percent" => 0, "count" => 0 },
+          { "start" => 300_000, "end" => 5_249_999, "segment" => 13, "percent" => 0, "count" => 0 },
+          { "start" => 5_250_000, "end" => 9_007_199_254_740_991, "segment" => 14, "percent" => 0, "count" => 0 }
         ].to_json
       end
 

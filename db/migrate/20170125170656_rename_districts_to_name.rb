@@ -1,5 +1,0 @@
-class RenameDistrictsToName < ActiveRecord::Migration[5.0]
-  def change
-    rename_column :districts, :district, :name
-  end
-end
