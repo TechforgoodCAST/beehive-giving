@@ -27,7 +27,7 @@ SignupHelpers = ((w, d) ->
     if state == '1'
       company_number.addClass 'fade-out'
       charity_number.removeClass('fade-out').addClass 'fade-in'
-    else if state == '2'
+    else if (state == '2' || state == '5')
       charity_number.addClass 'fade-out'
       company_number.removeClass('fade-out').addClass 'fade-in'
     else if state == '3'
@@ -83,6 +83,11 @@ SignupHelpers = ((w, d) ->
         charity_number.addClass 'fade-out'
         company_number.addClass 'fade-out'
         street_address.removeClass('fade-out').addClass 'fade-in'
+      else if parseInt(state) == 5
+        registerd_on.removeClass('fade-out').addClass 'fade-in'
+        company_number.removeClass('fade-out').addClass 'fade-in'
+        charity_number.addClass 'fade-out'
+        street_address.addClass 'fade-out'
       else if parseInt(state) > 0
         registerd_on.removeClass('fade-out').addClass 'fade-in'
         charity_number.removeClass('fade-out').addClass 'fade-in'

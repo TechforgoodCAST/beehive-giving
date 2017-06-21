@@ -8,14 +8,14 @@ class User < ActiveRecord::Base
   attr_accessor :org_type, :charity_number, :company_number
 
   validates :org_type, inclusion: {
-    in: %w(0 1 2 3 4), message: 'Please select a valid option'
+    in: (Organisation::ORG_TYPES.pluck(1) - [-1]), message: 'Please select a valid option'
   }, on: :create
   validates :charity_number,
             presence: { message: "Can't be blank" },
-            if: proc { |o| o.org_type == '1' || o.org_type == '3' }
+            if: proc { |o| [1,3].include? o.org_type }
   validates :company_number,
             presence: { message: "Can't be blank" },
-            if: proc { |o| o.org_type == '2' || o.org_type == '3' }
+            if: proc { |o| [2,3,5].include? o.org_type }
 
   validates :org_type,
             presence: { message: "Can't be blank" },
