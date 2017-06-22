@@ -31,6 +31,10 @@ class CompaniesHouse
       org.registered_on = data['IncorporationDate']
       org.operating_for = operating_for_value(data['IncorporationDate'])
 
+      if data['CompanyCategory']=="Community Interest Company"
+        org.org_type = 5
+      end
+
       true
     else
       false

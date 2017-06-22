@@ -39,21 +39,21 @@ class Organisation < ActiveRecord::Base
             presence: true, numericality: { greater_than_or_equal_to: 0 },
             unless: :skip_validation
 
-  validates :income, inclusion: { in: 0..4 },
+  validates :income, inclusion: { in: INCOME.pluck(1) },
                      unless: :skip_validation
 
-  validates :employees, :volunteers, inclusion: { in: 0..7 },
+  validates :employees, :volunteers, inclusion: { in: EMPLOYEES.pluck(1) },
                                      unless: :skip_validation
 
   validates :org_type, :name, :status, :country, :operating_for,
             presence: true, unless: :skip_validation
 
   validates :org_type,
-            inclusion: { in: 0..4, message: 'please select a valid option' },
+            inclusion: { in: (ORG_TYPES.pluck(1) - [-1]), message: 'please select a valid option' },
             unless: :skip_validation
 
   validates :operating_for,
-            inclusion: { in: 0..3, message: 'please select a valid option' },
+            inclusion: { in: OPERATING_FOR.pluck(1), message: 'please select a valid option' },
             unless: :skip_validation
 
   validates :street_address,
@@ -62,11 +62,11 @@ class Organisation < ActiveRecord::Base
             unless: :skip_validation
   validates :charity_number,
             presence: true,
-            if: proc { |o| o.org_type == 1 || o.org_type == 3 },
+            if: proc { |o| [1,3].include? o.org_type },
             unless: :skip_validation
   validates :company_number,
             presence: true,
-            if: proc { |o| o.org_type == 2 || o.org_type == 3 },
+            if: proc { |o| [2,3,5].include? o.org_type },
             unless: :skip_validation
 
   validates :charity_number,
@@ -132,6 +132,8 @@ class Organisation < ActiveRecord::Base
       lookup_company_data
     when 3
       scrape_charity_data
+      lookup_company_data
+    when 5
       lookup_company_data
     else
       self[:registered_on] = nil
