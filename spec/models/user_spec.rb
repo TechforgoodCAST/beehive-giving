@@ -48,6 +48,9 @@ describe User do
       expect(@user).not_to be_valid
       @user.charity_number = '123'
       @user.company_number = '123'
+    when 5
+      expect(@user).not_to be_valid
+      @user.company_number = '123'
     else
       expect(@user.charity_number).to be_nil
       expect(@user.company_number).to be_nil
@@ -59,5 +62,11 @@ describe User do
     @user.email = 'UPCASE@email.com'
     @user.save!
     expect(@user.email).to eq 'upcase@email.com'
+  end
+
+  it 'org_type converted to integer' do
+    @user.org_type = '0'
+    @user.save!
+    expect(@user.org_type).to eq 0
   end
 end
