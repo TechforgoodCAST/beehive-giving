@@ -8,14 +8,14 @@ class User < ActiveRecord::Base
   attr_accessor :org_type, :charity_number, :company_number
 
   validates :org_type, inclusion: {
-    in: (Organisation::ORG_TYPES.pluck(1) - [-1]), message: 'Please select a valid option'
+    in: (ORG_TYPES.pluck(1) - [-1]), message: 'Please select a valid option'
   }, on: :create
   validates :charity_number,
             presence: { message: "Can't be blank" },
-            if: proc { |o| [1,3].include? o.org_type }
+            if: proc { |o| [1, 3].include? o.org_type }
   validates :company_number,
             presence: { message: "Can't be blank" },
-            if: proc { |o| [2,3,5].include? o.org_type }
+            if: proc { |o| [2, 3, 5].include? o.org_type }
 
   validates :org_type,
             presence: { message: "Can't be blank" },
@@ -46,6 +46,10 @@ class User < ActiveRecord::Base
   before_create { generate_token(:auth_token) }
 
   has_secure_password
+
+  def org_type=(str)
+    @org_type = str.to_i
+  end
 
   def first_name=(s)
     self[:first_name] = s.to_s.strip.capitalize
