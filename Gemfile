@@ -7,7 +7,7 @@ gem 'rails', '~> 5.0.0', '>= 5.0.0.1'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
-gem 'puma', '~> 3.0'
+gem 'puma', '~> 3.7'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -45,9 +45,9 @@ gem 'httparty'
 gem 'jquery-turbolinks'
 gem 'nokogiri'
 gem 'nprogress-rails'
+gem 'redcarpet'
 gem 'simple_form'
 gem 'stripe'
-gem 'redcarpet'
 gem 'uikit-sass-rails'
 gem 'workflow'
 
@@ -68,13 +68,14 @@ end
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platform: :mri
+  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'capybara'
   gem 'dotenv-rails'
   gem 'factory_girl_rails'
   gem 'guard-rspec', require: false
   gem 'rspec-cells'
   gem 'rspec-rails'
+  gem 'selenium-webdriver'
   gem 'show_me_the_cookies'
   gem 'stripe-ruby-mock', require: 'stripe_mock'
   gem 'thor', '0.19.1' # TODO: guard dependency
@@ -96,11 +97,10 @@ group :development do
   gem 'rubocop', require: false
 end
 
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
-
 group :test do
   gem 'database_cleaner'
   gem 'poltergeist'
-  gem 'selenium-webdriver'
 end
+
+# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
+gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
