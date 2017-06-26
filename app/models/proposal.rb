@@ -299,7 +299,7 @@ class Proposal < ActiveRecord::Base
       data
         .sort_by { |i| i['position'] }
         .select { |i| i['label'] == comparison unless i['label'] == 'Unknown' }
-        .first['percent']
+        .first.to_h.fetch('percent', 0)
     end
 
     def beneficiaries_request

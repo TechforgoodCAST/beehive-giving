@@ -42,6 +42,14 @@ describe Recommendation do
       expect(@recommendation.org_type_score).to eq 0
     end
 
+    it 'org_type missing returns 0 overall' do
+      @fund.org_type_distribution = []
+      @fund.update_column(:org_type_distribution, @fund.org_type_distribution)
+      @proposal.save
+      @recommendation.reload
+      expect(@recommendation.org_type_score).to eq 0
+    end
+
     it 'has org_type_score' do
       response =
         @fund.org_type_distribution[1]['percent'] +
