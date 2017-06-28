@@ -17,6 +17,10 @@ FactoryGirl.define do
     permitted_org_types [2, 3] # A registered charity, A registered company
     permitted_costs [1, 2] # Capital funding, Revenue funding
 
+    max_amount_awarded_limited false
+    min_amount_awarded_limited true
+    min_amount_awarded 5_000
+
     factory :fund_with_open_data, class: Fund do
       open_data true
       sources do
