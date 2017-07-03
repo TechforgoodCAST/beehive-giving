@@ -1,5 +1,5 @@
 class CheckEligibility
-  CHECKS = [Location, OrgType, Quiz].map(&:new)
+  CHECKS = [Location, OrgType, Quiz, Amount].map(&:new)
 
   def call_each(proposal, funds)
     validate_call_each(proposal, funds)

@@ -84,6 +84,7 @@ describe Fund do
 
     it 'min_amount_awarded required if min_amount_awarded_limited' do
       @fund.min_amount_awarded_limited = true
+      @fund.min_amount_awarded = nil
       expect(@fund).not_to be_valid
       @fund.min_amount_awarded = 300
       expect(@fund).to be_valid
@@ -91,6 +92,7 @@ describe Fund do
 
     it 'max_amount_awarded required if max_amount_awarded_limited' do
       @fund.max_amount_awarded_limited = true
+      @fund.max_amount_awarded = nil
       expect(@fund).not_to be_valid
       @fund.max_amount_awarded = 10_000
       expect(@fund).to be_valid
