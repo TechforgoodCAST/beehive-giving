@@ -32,11 +32,13 @@ describe CheckEligibility do
       'acme-awards-for-all-1' => {
         'location' => { 'eligible' => true },
         'org_type' => { 'eligible' => true },
-        'quiz' => { 'eligible' => false, 'count_failing' => 5 }
+        'quiz' => { 'eligible' => false, 'count_failing' => 5 },
+        'amount' => { 'eligible' => true },
       },
       'acme-awards-for-all-2' => {
         'location' => { 'eligible' => true },
-        'org_type' => { 'eligible' => true }
+        'org_type' => { 'eligible' => true },
+        'amount' => { 'eligible' => true },
       }
     }
 
@@ -66,11 +68,13 @@ describe CheckEligibility do
       'acme-awards-for-all-1' => {
         'location' => { 'eligible' => true },
         'org_type' => { 'eligible' => true },
-        'quiz' => { 'eligible' => false, 'count_failing' => 5 }
+        'quiz' => { 'eligible' => false, 'count_failing' => 5 },
+        'amount' => { 'eligible' => true },
       },
       'acme-awards-for-all-2' => {
         'location' => { 'eligible' => true },
-        'org_type' => { 'eligible' => true }
+        'org_type' => { 'eligible' => true },
+        'amount' => { 'eligible' => true },
       }
     }
     expect(@proposal.eligibility).to eq response
