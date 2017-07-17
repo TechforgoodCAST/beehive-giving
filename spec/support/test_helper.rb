@@ -63,8 +63,10 @@ class TestHelper
     7.times { |i| body["acme-awards-for-all-#{i + 1}"] = (i + 1).to_f / 10 }
     stub_request(:post, endpoint).with(
       body: { data: data }.to_json,
-      basic_auth: [ENV['BEEHIVE_INSIGHT_TOKEN'], ENV['BEEHIVE_INSIGHT_SECRET']],
-      headers: { 'Content-Type' => 'application/json' }
+      headers: {
+        'Content-Type' => 'application/json',
+        'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN']
+      }
     ).to_return(
       status: 200,
       body: body.to_json
