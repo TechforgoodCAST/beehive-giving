@@ -1,4 +1,4 @@
-class Country < ActiveRecord::Base
+class Country < ApplicationRecord
   has_many :districts
 
   has_and_belongs_to_many :proposals

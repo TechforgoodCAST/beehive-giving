@@ -1,4 +1,4 @@
-class Recommendation < ActiveRecord::Base
+class Recommendation < ApplicationRecord
   RECOMMENDATION_QUALITY = ['Good suggestion', 'Neutral suggestion',
                             'Poor suggestion'].freeze
 

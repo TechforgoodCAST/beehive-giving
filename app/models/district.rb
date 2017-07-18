@@ -1,4 +1,4 @@
-class District < ActiveRecord::Base
+class District < ApplicationRecord
   belongs_to :country
 
   has_and_belongs_to_many :proposals

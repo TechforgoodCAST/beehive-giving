@@ -1,4 +1,4 @@
-class AgeGroup < ActiveRecord::Base
+class AgeGroup < ApplicationRecord
   AGE_GROUPS = [
     { label: 'All ages',                    age_from: 0,  age_to: 150 },
     { label: 'Infants (0-3 years)',         age_from: 0,  age_to: 3   },

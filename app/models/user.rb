@@ -1,8 +1,8 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   scope :user, -> { where role: 'User' }
   scope :funder, -> { where role: 'Funder' }
 
-  belongs_to :organisation
+  belongs_to :organisation, optional: true
   has_many :feedbacks
 
   attr_accessor :org_type, :charity_number, :company_number

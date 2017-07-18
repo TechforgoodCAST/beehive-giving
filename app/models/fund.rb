@@ -1,4 +1,4 @@
-class Fund < ActiveRecord::Base
+class Fund < ApplicationRecord
   scope :active, -> { distinct.where(active: true) }
   scope :inactive_ids, -> { where(active: false).pluck(:id) }
   scope :newer_than, ->(date) { where('updated_at > ?', date) }

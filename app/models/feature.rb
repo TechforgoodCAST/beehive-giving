@@ -1,5 +1,5 @@
 # TODO: deprecated
-class Feature < ActiveRecord::Base
+class Feature < ApplicationRecord
   belongs_to :funder
   belongs_to :recipient
 end

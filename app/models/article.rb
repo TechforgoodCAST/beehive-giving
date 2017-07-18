@@ -1,4 +1,4 @@
-class Article < ActiveRecord::Base
+class Article < ApplicationRecord
   validates :title, :slug, :body, presence: true
   validates :slug, uniqueness: true
 

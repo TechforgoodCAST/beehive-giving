@@ -1,4 +1,4 @@
-class Restriction < ActiveRecord::Base
+class Restriction < ApplicationRecord
   has_and_belongs_to_many :funds # TODO: refactor
   has_many :funders, -> { distinct }, through: :funds
   has_many :eligibilities
