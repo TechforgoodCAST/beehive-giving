@@ -318,9 +318,10 @@ class Proposal < ActiveRecord::Base
     def call_beehive_insight(endpoint, data)
       options = {
         body: { data: data }.to_json,
-        basic_auth: { username: ENV['BEEHIVE_INSIGHT_TOKEN'],
-                      password: ENV['BEEHIVE_INSIGHT_SECRET'] },
-        headers: { 'Content-Type' => 'application/json' }
+        headers: {
+          'Content-Type' => 'application/json',
+          'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN']
+        }
       }
       resp = HTTParty.post(endpoint, options)
       JSON.parse(resp.body).to_h
