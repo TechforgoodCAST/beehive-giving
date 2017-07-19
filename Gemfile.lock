@@ -437,6 +437,10 @@ GEM
       addressable (>= 2.3.6)
       crack (>= 0.3.2)
       hashdiff
+    webpacker (2.0)
+      activesupport (>= 4.2)
+      multi_json (~> 1.2)
+      railties (>= 4.2)
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
@@ -506,6 +510,7 @@ DEPENDENCIES
   uikit-sass-rails
   web-console (>= 3.3.0)
   webmock
+  webpacker
   workflow
 
 RUBY VERSION
