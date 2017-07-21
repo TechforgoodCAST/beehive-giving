@@ -1,6 +1,14 @@
 {
   "name": "beehive",
   "private": true,
+  "scripts": {
+    "test": "jest"
+  },
+  "jest": {
+    "roots": [
+      "app/javascript/"
+    ]
+  },
   "dependencies": {
     "autoprefixer": "^7.1.2",
     "babel-core": "^6.25.0",
@@ -31,6 +39,8 @@
     "webpack-merge": "^4.1.0"
   },
   "devDependencies": {
+    "jest": "^20.0.4",
+    "standard": "^10.0.2",
     "webpack-dev-server": "^2.5.1"
   }
 }

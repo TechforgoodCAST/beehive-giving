@@ -9,22 +9,30 @@ class FundsController < ApplicationController
       @proposal.show_fund?(@fund)
   end
 
-  def recommended
+  def index
+    @funds = Fund.includes(:funder)
+                 .active
+                 .order_by(@proposal, params[:sort])
+                 .eligibility(@proposal, params[:eligibility])
+                 .page(params[:page])
+  end
+
+  def recommended # TODO: remove
     @funds = Fund.includes(:funder).find(
       (@proposal.recommended_funds - @proposal.ineligible_fund_ids)
       .take(RECOMMENDATION_LIMIT)
     )
   end
 
-  def eligible
+  def eligible # TODO: remove
     @funds = Fund.where(slug: @proposal.eligible_funds.keys)
   end
 
-  def ineligible
+  def ineligible # TODO: remove
     @funds = Fund.where(slug: @proposal.ineligible_funds.keys)
   end
 
-  def all
+  def all # TODO: remove
     @funds = @recipient.proposals.last
                        .funds
                        .includes(:funder)

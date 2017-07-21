@@ -203,7 +203,7 @@ feature 'Eligibility' do
       helper.answer_recipient_restrictions
             .answer_proposal_restrictions(eligible: false)
             .check_eligibility
-      click_link 'Funding'
+      click_link 'Funds'
       helper.visit_first_fund.check_eligibility(remaining: 2)
       expect(page).to have_text 'please select from the list', count: 2
     end
@@ -226,13 +226,13 @@ feature 'Eligibility' do
       helper.answer_restrictions.check_eligibility
 
       # checked funds don't require upgrade
-      click_link 'Funding'
+      click_link 'Funds'
       visit eligibility_proposal_fund_path(@proposal, Fund.first)
       expect(current_path)
         .to eq eligibility_proposal_fund_path(@proposal, Fund.first)
 
       # funds over MAX_FREE_LIMIT require upgrade
-      click_link 'Funding'
+      click_link 'Funds'
       helper.visit_first_fund
       expect(current_path).to eq account_upgrade_path(@db[:recipient])
     end

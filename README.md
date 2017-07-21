@@ -25,9 +25,12 @@ Prerequisites: [Ruby](https://www.ruby-lang.org), [Bundler](https://bundler.io/)
    DATABASE_URL=postgres://username:password@localhost/beehive-data_development
    DATABASE_URL_TEST=postgres://username:password@localhost/beehive-data_test
    ```
+4. `rails s` and `bin/webpack-dev-server` to start local development servers
 
 ## Importing data
 `pg_restore -c -O -d beehive_development <path_to_local_dump_file>`
 
 ## Running tests
 Use `rspec` to run tests or use [Guard](https://github.com/guard/guard) to run tests automatically whilst developing with `bundle exec guard`.
+
+Use `yarn test` to run Javascript unit tests.

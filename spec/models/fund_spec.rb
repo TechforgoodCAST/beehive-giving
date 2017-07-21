@@ -4,10 +4,56 @@ describe Fund do
   context 'single' do
     before(:each) do
       @app.seed_test_db
-          .setup_funds(save: false)
+          .setup_funds(num: 3)
       @db = @app.instances
       @fund = @db[:funds].first
       @funder = @db[:funder]
+    end
+
+    it 'self.active' do
+      Fund.last.update active: false
+      expect(Fund.active.count).to eq 2
+    end
+
+    context 'self.order_by' do
+      before(:each) do
+        @proposal = build :proposal,
+                          recommended_funds: [Fund.second.id, Fund.first.id]
+      end
+
+      it 'default best' do
+        expect(Fund.pluck(:id))
+          .to eq [Fund.first.id, Fund.second.id, Fund.third.id]
+        expect(Fund.order_by(@proposal, 'DROP TABLE "FUNDS";').pluck(:id))
+          .to eq [Fund.second.id, Fund.first.id, Fund.third.id]
+      end
+
+      it 'name' do
+        Fund.first.update name: 'z'
+        expect(Fund.order_by(@proposal, 'name').pluck(:name))
+          .to eq ['Awards for All 2', 'Awards for All 3', 'z']
+      end
+    end
+
+    context 'self.eligibility' do
+      before(:each) do
+        @eligibility = Fund.all.each_with_index.map do |fund, i|
+          [fund.slug, { 'quiz' => { 'eligible' => i.even? } }]
+        end.to_h
+        @proposal = build(:proposal, eligibility: @eligibility)
+      end
+
+      it 'default all' do
+        expect(Fund.eligibility(@proposal, 'DROP TABLE "FUNDS";').size).to eq 3
+      end
+
+      it 'eligible' do
+        expect(Fund.eligibility(@proposal, 'eligible').size).to eq 2
+      end
+
+      it 'ineligible' do
+        expect(Fund.eligibility(@proposal, 'ineligible').size).to eq 1
+      end
     end
 
     it 'is valid' do
@@ -113,7 +159,7 @@ describe Fund do
     end
 
     it 'array fields valid' do
-      [:permitted_org_types, :permitted_costs].each do |attribute|
+      %i[permitted_org_types permitted_costs].each do |attribute|
         @fund[attribute] = nil
         expect(@fund).not_to be_valid
         @fund[attribute] = []
@@ -151,20 +197,20 @@ describe Fund do
     end
 
     it 'requires open data fields' do
-      %w(
+      %w[
         period_start period_end grant_count amount_awarded_distribution
         award_month_distribution org_type_distribution income_distribution
         sources country_distribution
-      ).each do |attribute|
+      ].each do |attribute|
         @fund[attribute] = nil
         expect(@fund).not_to be_valid
       end
     end
 
     it 'correct attributes greater than or equal to zero' do
-      %w(
+      %w[
         grant_count
-      ).each do |attribute|
+      ].each do |attribute|
         @fund[attribute] = -1
         expect(@fund).not_to be_valid
         @fund[attribute] = 0

@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :password_resets, except: [:show, :index, :destroy]
 
   resources :proposals, except: [:show, :destroy] do
-    resources :funds, only: :show do
+    resources :funds, only: [:show, :index] do
       collection do
         get :recommended
         get :eligible
