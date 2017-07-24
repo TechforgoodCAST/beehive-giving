@@ -1,4 +1,4 @@
-%p= raw(fund.description)
+%p= raw(fund.description_html)
 - if fund.period_end.present? && fund.period_end > 3.years.ago
   = period(fund)
 - else
