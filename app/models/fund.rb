@@ -60,9 +60,9 @@ class Fund < ApplicationRecord
     else
       recommended_funds = ((
         proposal.recommended_funds - proposal.ineligible_fund_ids
-      ) + pluck(:id)).uniq
+      ) + active.pluck(:id)).uniq
 
-      order("position(id::text in '#{recommended_funds.join(',')}')")
+      order("idx(array[#{recommended_funds.join(',')}], id)")
     end
   end
 
