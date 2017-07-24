@@ -241,7 +241,6 @@ GEM
     multi_xml (0.6.0)
     nenv (0.3.0)
     netrc (0.11.0)
-    newrelic_rpm (4.2.0.334)
     nio4r (2.1.0)
     nokogiri (1.8.0)
       mini_portile2 (~> 2.2.0)
@@ -480,7 +479,6 @@ DEPENDENCIES
   kaminari
   listen (>= 3.0.5, < 3.2)
   meta_request
-  newrelic_rpm
   nokogiri
   pg (~> 0.18)
   poltergeist

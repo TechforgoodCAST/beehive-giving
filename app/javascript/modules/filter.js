@@ -9,7 +9,11 @@ export default class Filter {
     const self = this
     $form.addEventListener('change', function (e) {
       e.preventDefault()
-      window.location = self._parseInputs(this)
+      if (window.Turbolinks) {
+        window.Turbolinks.visit(self._parseInputs(this))
+      } else {
+        window.location = self._parseInputs(this)
+      }
     })
   }
 

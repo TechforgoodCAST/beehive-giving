@@ -57,7 +57,6 @@ gem 'inherited_resources', git: 'https://github.com/activeadmin/inherited_resour
 
 # Monitoring & metrics
 gem 'intercom-rails'
-gem 'newrelic_rpm'
 gem 'rollbar'
 group :production do
   gem 'rails_12factor'
