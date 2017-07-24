@@ -476,6 +476,7 @@ DEPENDENCIES
   inherited_resources!
   intercom-rails
   jbuilder (~> 2.5)
+  jquery-rails
   kaminari
   listen (>= 3.0.5, < 3.2)
   meta_request
@@ -516,4 +517,4 @@ RUBY VERSION
    ruby 2.3.3p222
 
 BUNDLED WITH
-   1.15.2
+   1.15.3
