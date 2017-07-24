@@ -19,7 +19,7 @@ class SignupProposalsController < ApplicationController
     end
     if @proposal.save
       @proposal.next_step!
-      redirect_to recommended_proposal_funds_path(@proposal)
+      redirect_to proposal_funds_path(@proposal)
     else
       render :new
     end
@@ -43,7 +43,7 @@ class SignupProposalsController < ApplicationController
       if session[:return_to]
         eligibility_proposal_fund_path(@proposal, session.delete(:return_to))
       else
-        recommended_proposal_funds_path(@proposal)
+        proposal_funds_path(@proposal)
       end
     end
 

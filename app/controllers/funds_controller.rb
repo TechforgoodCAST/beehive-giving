@@ -17,31 +17,8 @@ class FundsController < ApplicationController
                  .page(params[:page])
   end
 
-  def recommended # TODO: remove
-    @funds = Fund.includes(:funder).find(
-      (@proposal.recommended_funds - @proposal.ineligible_fund_ids)
-      .take(RECOMMENDATION_LIMIT)
-    )
-  end
-
-  def eligible # TODO: remove
-    @funds = Fund.where(slug: @proposal.eligible_funds.keys)
-  end
-
-  def ineligible # TODO: remove
-    @funds = Fund.where(slug: @proposal.ineligible_funds.keys)
-  end
-
-  def all # TODO: remove
-    @funds = @recipient.proposals.last
-                       .funds
-                       .includes(:funder)
-                       .order('recommendations.total_recommendation DESC',
-                              'funds.name')
-  end
-
   def tagged
-    @tag = params[:tag].tr('-', ' ').capitalize unless params[:tag].blank?
+    @tag = params[:tag].tr('-', ' ').capitalize if params[:tag].present?
     @funds = Fund.includes(:funder).where('tags ?| array[:tags]', tags: @tag)
     redirect_to root_path, alert: 'Not found' if @funds.empty?
   end

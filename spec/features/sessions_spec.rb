@@ -55,10 +55,9 @@ describe 'Ensure logged in' do
 
   it 'funds' do
     expect_path([
-                  recommended_proposal_funds_path(@proposal),
+                  proposal_funds_path(@proposal),
                   eligible_proposal_funds_path(@proposal),
                   ineligible_proposal_funds_path(@proposal),
-                  all_proposal_funds_path(@proposal),
                   tag_proposal_funds_path(@proposal, 'Tag'),
                   proposal_fund_path(@proposal, @fund)
                 ])

@@ -82,10 +82,10 @@ class ApplicationController < ActionController::Base
       return edit_signup_recipient_path(@recipient) unless @recipient.valid? # NOTE: legacy
       return new_signup_proposal_path unless @proposal
       return new_signup_proposal_path if @proposal.initial? # NOTE: legacy
-      recommended_proposal_funds_path(@proposal)
+      proposal_funds_path(@proposal)
     end
 
     def ensure_not_signed_up
-      redirect_to recommended_proposal_funds_path(@proposal) if signed_up?
+      redirect_to proposal_funds_path(@proposal) if signed_up?
     end
 end

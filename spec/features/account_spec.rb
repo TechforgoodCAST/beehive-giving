@@ -46,7 +46,7 @@ feature 'Account' do
       fill_in :password, with: 'newPa55word'
       click_button 'Sign in'
       expect(current_path)
-        .to eq recommended_proposal_funds_path(@db[:registered_proposal])
+        .to eq proposal_funds_path(@db[:registered_proposal])
     end
 
     scenario 'password update optional when updating user profile'
