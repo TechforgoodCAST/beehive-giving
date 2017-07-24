@@ -31,7 +31,7 @@
   %h2 Basics
   %h4 Which type of organisation or project you are seeking funding for?
 
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top
     = simple_form_for @recipient, url: new_signup_recipient_path do |f|
 
       = cell(:recipient_form, @recipient, f: f, scrape_success: @scrape_success).call(:lookup)

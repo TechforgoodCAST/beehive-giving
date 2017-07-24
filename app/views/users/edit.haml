@@ -10,7 +10,7 @@
   %h2 Profile
   %h4 Update your personal account details.
 
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top
     = simple_form_for @current_user, url: account_path do |f|
 
       = cell(:user_form, @current_user, f: f)
