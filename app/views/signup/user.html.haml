@@ -109,6 +109,6 @@
         %strong= link_to 'Check out our FAQ', faq_path
 
 :javascript
-  $(document).ready(function() {
+  document.addEventListener('turbolinks:load', function () {
     $('.chosen-default').find('span').css('color', '#e4f3f8');
-  });
+  })
