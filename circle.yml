@@ -1,4 +1,6 @@
 machine:
+  ruby:
+    version: 2.3.3
   node:
     version: 7.5.0
   environment:
@@ -14,4 +16,5 @@ dependencies:
 
 test:
   override:
+    - rspec
     - yarn test
