@@ -1,5 +1,5 @@
 $(document).on('turbolinks:load', function () {
-  let $amountAwarded = $('#amount_awarded_distribution')
+  var $amountAwarded = $('#amount_awarded_distribution')
   if ($amountAwarded.length && $amountAwarded.empty()) {
     window.Morris.Bar({
       element: 'amount_awarded_distribution',
@@ -13,7 +13,7 @@ $(document).on('turbolinks:load', function () {
     })
   }
 
-  let $awardMonth = $('#award_month_distribution')
+  var $awardMonth = $('#award_month_distribution')
   if ($awardMonth.length && $awardMonth.empty()) {
     window.Morris.Bar({
       element: 'award_month_distribution',
