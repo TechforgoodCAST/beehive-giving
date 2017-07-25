@@ -62,7 +62,7 @@ class Fund < ApplicationRecord
         proposal.recommended_funds - proposal.ineligible_fund_ids
       ) + active.pluck(:id)).uniq
 
-      order("idx(array[#{recommended_funds.join(',')}], id)")
+      order("idx(array[#{recommended_funds.join(',')}]::integer[], id)")
     end
   end
 

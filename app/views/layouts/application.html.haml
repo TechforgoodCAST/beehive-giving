@@ -13,9 +13,9 @@
     -# TODO: refactor
     - if params[:controller] == 'funds' && params[:action] == 'show'
       = stylesheet_link_tag 'overrides/morris_overrides'
-      = javascript_include_tag 'raphael'
-      = javascript_include_tag 'morris'
-      = javascript_include_tag '//www.google.com/jsapi', 'chartkick'
+      = javascript_include_tag 'raphael', 'data-turbolinks-track' => 'reload'
+      = javascript_include_tag 'morris', 'data-turbolinks-track' => 'reload'
+      = javascript_include_tag '//www.google.com/jsapi', 'chartkick', 'data-turbolinks-track' => 'reload'
 
     / Google Analytics
     :javascript
