@@ -5,6 +5,8 @@ machine:
     PATH: "${PATH}:${HOME}/${CIRCLE_PROJECT_REPONAME}/node_modules/.bin"
 
 dependencies:
+  pre:
+    - bundle install
   override:
     - yarn
   cache_directories:
@@ -13,6 +15,3 @@ dependencies:
 test:
   override:
     - yarn test
-
-pre:
-  - bundle install
