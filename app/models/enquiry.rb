@@ -1,4 +1,4 @@
-class Enquiry < ActiveRecord::Base
+class Enquiry < ApplicationRecord
   belongs_to :proposal
   belongs_to :fund
 

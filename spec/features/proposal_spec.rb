@@ -19,12 +19,11 @@ feature 'Proposal' do
             I want to be told why I am redirected,
             so I know what to do next' do
     [
-      recommended_proposal_funds_path('missing'),
+      proposal_funds_path('missing'),
       eligible_proposal_funds_path('missing'),
       ineligible_proposal_funds_path('missing'),
-      all_proposal_funds_path('missing'),
-      # TODO: account_subscription_path(@recipient),
-      # TODO: account_upgrade_path(@recipient),
+      account_subscription_path(@recipient),
+      account_upgrade_path(@recipient),
       edit_proposal_path('missing'),
       eligibility_proposal_fund_path('missing', @fund),
       apply_proposal_fund_path('missing', @fund),
@@ -43,7 +42,7 @@ feature 'Proposal' do
             so I can see my results' do
     expect(current_path).to eq new_signup_proposal_path
     match.submit_proposal_form
-    expect(current_path).to eq recommended_proposal_funds_path(Proposal.last)
+    expect(current_path).to eq proposal_funds_path(Proposal.last)
   end
 
   context 'registered' do
@@ -55,7 +54,7 @@ feature 'Proposal' do
     scenario 'When I create my first proposal,
               I want to see options to change it or create a new one' do
       [
-        recommended_proposal_funds_path(@proposal),
+        proposal_funds_path(@proposal),
         eligible_proposal_funds_path(@proposal),
         ineligible_proposal_funds_path(@proposal)
       ].each do |path|
@@ -81,7 +80,7 @@ feature 'Proposal' do
 
       eligibility_helper.complete_proposal
       click_button 'Update and review recommendations'
-      expect(current_path).to eq recommended_proposal_funds_path(@proposal)
+      expect(current_path).to eq proposal_funds_path(@proposal)
 
       # expect upgrade prompt
       click_link 'New proposal'
@@ -95,7 +94,7 @@ feature 'Proposal' do
 
       # can create multiple proposals
       click_link 'Continue'
-      expect(current_path).to eq recommended_proposal_funds_path(@proposal)
+      expect(current_path).to eq proposal_funds_path(@proposal)
 
       StripeMock.stop
     end
@@ -113,8 +112,8 @@ feature 'Proposal' do
       unauthorised_proposal = @app.instances[:complete_proposal]
       unauthorised_proposal.update(recipient: create(:recipient))
 
-      visit recommended_proposal_funds_path(unauthorised_proposal)
-      expect(current_path).to eq recommended_proposal_funds_path(@proposal)
+      visit proposal_funds_path(unauthorised_proposal)
+      expect(current_path).to eq proposal_funds_path(@proposal)
     end
 
     scenario 'When I try to create a new proposal from the proposals index,
@@ -136,7 +135,7 @@ feature 'Proposal' do
               so I make any neccessary changes' do
       @app.create_registered_proposal
       @proposal = Proposal.last
-      visit recommended_proposal_funds_path(@proposal)
+      visit proposal_funds_path(@proposal)
       within '.uk-dropdown' do
         click_link 'Funding proposals'
       end
@@ -158,7 +157,7 @@ feature 'Proposal' do
       end
       eligibility.complete_proposal
       click_button 'Update and review recommendations'
-      expect(current_path).to eq recommended_proposal_funds_path(@proposal)
+      expect(current_path).to eq proposal_funds_path(@proposal)
     end
   end
 
@@ -205,7 +204,7 @@ feature 'Proposal' do
       @eligibility_helper.complete_proposal
       click_button 'Save and recommend funders'
 
-      expect(current_path).to eq recommended_proposal_funds_path(Proposal.last)
+      expect(current_path).to eq proposal_funds_path(Proposal.last)
 
       click_link 'Change proposal'
       expect(page).to have_css '.card', count: 2
@@ -217,13 +216,13 @@ feature 'Proposal' do
       proposal1 = @app.instances[:complete_proposal]
       visit proposals_path
       click_link 'Matched funds', match: :first
-      expect(current_path).to eq recommended_proposal_funds_path(proposal1)
+      expect(current_path).to eq proposal_funds_path(proposal1)
 
       @app.create_registered_proposal
       proposal2 = @app.instances[:registered_proposal]
       visit proposals_path
       click_link 'Matched funds', match: :first
-      expect(current_path).to eq recommended_proposal_funds_path(proposal2)
+      expect(current_path).to eq proposal_funds_path(proposal2)
     end
   end
 
@@ -248,7 +247,7 @@ feature 'Proposal' do
               I want to be redirected to the edit proposal page,
               so I can update my proposal" do
       @current_profile.save!
-      visit recommended_proposal_funds_path(@current_profile)
+      visit proposal_funds_path(@current_profile)
       expect(current_path).to eq new_signup_proposal_path
       expect(page).to have_text 'Your details are out of date'
     end
@@ -257,7 +256,7 @@ feature 'Proposal' do
               I want to be redirected to the edit proposal page,
               so I can update my proposal" do
       @legacy_profile.save(validate: false)
-      visit recommended_proposal_funds_path(@legacy_profile)
+      visit proposal_funds_path(@legacy_profile)
       expect(current_path).to eq new_signup_proposal_path
       expect(page).to have_text 'Your details are out of date'
     end
@@ -273,7 +272,7 @@ feature 'Proposal' do
                 so my previous work is retained" do
         @current_profile.gender = 'Other'
         @current_profile.save!
-        visit recommended_proposal_funds_path(@current_profile)
+        visit proposal_funds_path(@current_profile)
         expect(current_path).to eq new_signup_proposal_path
         expect(find('#proposal_gender').value).to eq 'Other'
         # TODO: check other fields
@@ -284,7 +283,7 @@ feature 'Proposal' do
                 so my previous work is retained" do
         @legacy_profile.gender = 'Other'
         @legacy_profile.save(validate: false)
-        visit recommended_proposal_funds_path(@legacy_profile)
+        visit proposal_funds_path(@legacy_profile)
         expect(current_path).to eq new_signup_proposal_path
         expect(find('#proposal_gender').value).to eq 'Other'
         # TODO: check other fields
@@ -304,7 +303,7 @@ feature 'Proposal' do
       @db[:user].organisation = @recipient
       @db[:user].save
       @app.sign_in
-      visit recommended_proposal_funds_path(@current_profile)
+      visit proposal_funds_path(@current_profile)
       expect(current_path).to eq edit_signup_recipient_path(@recipient)
       expect(page).to have_text 'Your details are out of date'
       fill_in :recipient_street_address, with: 'London Road'

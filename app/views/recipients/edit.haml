@@ -15,7 +15,7 @@
   %h2 Organisation
   %h4 Update your organisation or project's details.
 
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top
     = simple_form_for @recipient, url: account_organisation_path(@recipient) do |f|
       = cell(:recipient_form, @recipient, f: f)
       .uk-width-medium-1-1.uk-margin-top

@@ -12,7 +12,7 @@ ChosenHelpers = ((w, d) ->
   }
 )(window, document)
 
-$(document).ready ->
+document.addEventListener 'turbolinks:load', ->
   ChosenHelpers.loadChosen()
 
 $(document).ajaxComplete ->

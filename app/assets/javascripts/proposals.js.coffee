@@ -252,7 +252,7 @@ ProposalForm = ((w, d) ->
   }
 )(window, document)
 
-$(document).ready ->
+document.addEventListener 'turbolinks:load', ->
   ProposalForm.triggerFunctions()
 
 $(document).ajaxComplete ->

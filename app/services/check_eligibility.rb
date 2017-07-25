@@ -24,7 +24,7 @@ class CheckEligibility
     def validate_call_each(proposal, funds)
       raise 'Invalid Proposal' unless proposal.is_a? Proposal
       raise 'Invalid Fund::ActiveRecord_Relation' unless
-        funds.is_a? Fund::ActiveRecord_Relation
+        funds.class.to_s == 'Fund::ActiveRecord_Relation'
     end
 
     def remove_funds_not_passed_in!(funds, updates)

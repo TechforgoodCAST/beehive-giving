@@ -143,7 +143,7 @@ SignupHelpers = ((w, d) ->
   }
 )(window, document)
 
-$(document).ready ->
+document.addEventListener 'turbolinks:load', ->
   SignupHelpers.toggleNoOrg()
   SignupHelpers.bindSignUpOrgNumbers()
   SignupHelpers.hideWelcomeMessage()

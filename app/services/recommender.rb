@@ -9,7 +9,7 @@ class Recommender # TODO: refactor
 
     def validate_arguments
       raise 'Invalid Fund::ActiveRecord_Relation' unless
-        @funds.is_a? Fund::ActiveRecord_Relation
+        @funds.class.to_s == 'Fund::ActiveRecord_Relation'
       raise 'Invalid Proposal object' unless @proposal.is_a? Proposal
     end
 end

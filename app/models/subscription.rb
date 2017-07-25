@@ -1,4 +1,4 @@
-class Subscription < ActiveRecord::Base
+class Subscription < ApplicationRecord
   PLANS = {
     'Pro - Micro':   5_000,
     'Pro - Small':  10_000,

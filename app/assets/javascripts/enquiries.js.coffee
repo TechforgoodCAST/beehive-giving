@@ -1,4 +1,4 @@
-$(document).ready ->
+document.addEventListener 'turbolinks:load', ->
   districts = $('#enquiry_district_ids').html()
 
   country = $('#enquiry_country_ids :selected')

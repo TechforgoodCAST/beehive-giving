@@ -1,5 +1,5 @@
 # TODO: deprecated
-class Profile < ActiveRecord::Base
+class Profile < ApplicationRecord
   before_save :clear_other_options, :save_all_age_groups_if_all_ages
   before_validation :set_year_to_current_year
 
