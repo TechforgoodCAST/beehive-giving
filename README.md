@@ -13,11 +13,9 @@ Prerequisites: [Ruby](https://www.ruby-lang.org), [Bundler](https://bundler.io/)
    BEEHIVE_DATA_TOKEN=<token>
    BEEHIVE_DATA_FUND_SUMMARY_ENDPOINT=<beehive_data_server>/v1/integrations/fund_summary
 
-   BEEHIVE_INSIGHT_TOKEN=<token> # 'username' in development
-   BEEHIVE_INSIGHT_SECRET=<secret> # 'password' in development
-   BEEHIVE_INSIGHT_ENDPOINT=<beehive_insight_server>/beneficiaries
-   BEEHIVE_INSIGHT_AMOUNTS_ENDPOINT=<beehive_insight_server>/check_amount
-   BEEHIVE_INSIGHT_DURATIONS_ENDPOINT=<beehive_insight_server>/check_duration
+   BEEHIVE_INSIGHT_ENDPOINT=<beehive_data_server>/insight/beneficiaries
+   BEEHIVE_INSIGHT_AMOUNTS_ENDPOINT=<beehive_data_server>/insight/amounts
+   BEEHIVE_INSIGHT_DURATIONS_ENDPOINT=<beehive_data_server>/insight/durations
 
    STRIPE_SECRET_KEY=<secret_key>
    STRIPE_PUBLISHABLE_KEY=<publishable_key>
