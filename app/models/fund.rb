@@ -65,10 +65,31 @@ class Fund < ActiveRecord::Base
     tags.count.positive?
   end
 
+  def key_criteria_html
+    markdown(key_criteria)
+  end
+
+  def description_html
+    markdown(description)
+  end
+
   include FundJsonSetters
   include FundArraySetters
 
   private
+
+    def markdown(str)
+      options = { hard_wrap: true,
+                  space_after_headers: true, fenced_code_blocks: true,
+                  link_attributes: { target: '_blank' } }
+
+      extensions = { autolink: true, disable_indented_code_blocks: true }
+
+      renderer = Redcarpet::Render::HTML.new(options)
+      markdown = Redcarpet::Markdown.new(renderer, extensions)
+
+      markdown.render(str)
+    end
 
     def set_slug
       self[:slug] = "#{funder.slug}-#{name.parameterize}" if funder
