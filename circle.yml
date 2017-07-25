@@ -13,3 +13,6 @@ dependencies:
 test:
   override:
     - yarn test
+
+pre:
+  - bundle install
