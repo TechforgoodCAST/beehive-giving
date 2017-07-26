@@ -72,13 +72,11 @@ group :development, :test do
   gem 'capybara', '2.12.1'
   gem 'dotenv-rails'
   gem 'factory_girl_rails'
-  gem 'guard-rspec', require: false
   gem 'rspec-cells'
   gem 'rspec-rails', '3.5.2'
   gem 'selenium-webdriver'
   gem 'show_me_the_cookies'
   gem 'stripe-ruby-mock', require: 'stripe_mock'
-  gem 'thor', '0.19.1' # TODO: guard dependency
   gem 'webmock'
 end
 

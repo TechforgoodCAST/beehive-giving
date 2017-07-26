@@ -30,6 +30,5 @@ Prerequisites: [Ruby](https://www.ruby-lang.org), [Bundler](https://bundler.io/)
 `pg_restore -c -O -d beehive_development <path_to_local_dump_file>`
 
 ## Running tests
-Use `rspec` to run tests or use [Guard](https://github.com/guard/guard) to run tests automatically whilst developing with `bundle exec guard`.
-
-Use `yarn test` to run Javascript unit tests.
+- `rspec` to run Ruby unit and feature tests.
+- `yarn test` to run JavaScript unit tests.
