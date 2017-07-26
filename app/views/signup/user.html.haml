@@ -10,7 +10,7 @@
 
 - content_for :public do
   .background
-    .uk-width-large-9-10.uk-container.uk-container-center.uk-animation-fade
+    .uk-width-large-9-10.uk-container.uk-container-center
       .uk-grid.uk-margin-large.uk-margin-large-top
         .uk-width-large-3-5.uk-width-medium-1-2.uk-margin-large
           %h1.hero.uk-margin-large-top Get connected to the right funders
@@ -109,6 +109,6 @@
         %strong= link_to 'Check out our FAQ', faq_path
 
 :javascript
-  $(document).ready(function() {
+  document.addEventListener('turbolinks:load', function () {
     $('.chosen-default').find('span').css('color', '#e4f3f8');
-  });
+  })

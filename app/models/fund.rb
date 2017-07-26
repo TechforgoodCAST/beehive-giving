@@ -1,5 +1,5 @@
-class Fund < ActiveRecord::Base
-  scope :active, -> { distinct.where(active: true) }
+class Fund < ApplicationRecord
+  scope :active, -> { where(active: true) }
   scope :inactive_ids, -> { where(active: false).pluck(:id) }
   scope :newer_than, ->(date) { where('updated_at > ?', date) }
 
@@ -53,6 +53,30 @@ class Fund < ActiveRecord::Base
                     if: proc { |o| o.skip_beehive_data.to_i.zero? }
   before_save :set_restriction_ids, if: :restrictions_known?
 
+  def self.order_by(proposal, col)
+    case col
+    when 'name'
+      order col
+    else
+      recommended_funds = ((
+        proposal.recommended_funds - proposal.ineligible_fund_ids
+      ) + active.pluck(:id)).uniq
+
+      order("idx(array[#{recommended_funds.join(',')}]::integer[], id)")
+    end
+  end
+
+  def self.eligibility(proposal, state)
+    case state
+    when 'eligible'
+      where slug: proposal.eligible_funds.keys
+    when 'ineligible'
+      where slug: proposal.ineligible_funds.keys
+    else
+      all
+    end
+  end
+
   def to_param
     slug
   end
@@ -65,10 +89,31 @@ class Fund < ActiveRecord::Base
     tags.count.positive?
   end
 
+  def key_criteria_html
+    markdown(key_criteria)
+  end
+
+  def description_html
+    markdown(description)
+  end
+
   include FundJsonSetters
   include FundArraySetters
 
   private
+
+    def markdown(str)
+      options = { hard_wrap: true,
+                  space_after_headers: true, fenced_code_blocks: true,
+                  link_attributes: { target: '_blank' } }
+
+      extensions = { autolink: true, disable_indented_code_blocks: true }
+
+      renderer = Redcarpet::Render::HTML.new(options)
+      markdown = Redcarpet::Markdown.new(renderer, extensions)
+
+      markdown.render(str)
+    end
 
     def set_slug
       self[:slug] = "#{funder.slug}-#{name.parameterize}" if funder

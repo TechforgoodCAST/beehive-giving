@@ -15,7 +15,7 @@
   %div{ style: "display:inline;" }
     %img{ alt: "", height: "1", src: "//www.googleadservices.com/pagead/conversion/937505505/?label=JjT_CMfMg3AQ4eWEvwM&guid=ON&script=0", style: "border-style:none;", width: "1" }
 
-%script{ src: "https://js.stripe.com/v2/", type: "text/javascript" }
+= javascript_include_tag 'https://js.stripe.com/v2/', 'data-no-turbolink' => true
 
 :javascript
   mixpanel.track("View Upgrade Page");
@@ -39,7 +39,7 @@
     %strong Pro
     plan.
 
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top
 
     .uk-grid
       .uk-width-medium-1-2.uk-margin-bottom
@@ -93,7 +93,7 @@
             .uk-width-medium-1-1.uk-margin-top
               %button.uk-button.uk-button-primary.uk-button-large.submit{ type: "submit", style:"width: 192px;" } Pay securely
 
-              .uk-margin-small-top= link_to image_tag('powered-by-stripe', width: 120), 'https://stripe.com/', target: '_blank'
+              .uk-margin-small-top= link_to image_tag('powered-by-stripe.svg', width: 120), 'https://stripe.com/', target: '_blank'
 
             :javascript
               Stripe.setPublishableKey("#{Rails.configuration.stripe[:publishable_key]}");

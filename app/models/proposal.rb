@@ -1,4 +1,4 @@
-class Proposal < ActiveRecord::Base
+class Proposal < ApplicationRecord
   before_validation :clear_districts_if_country_wide
   after_validation :trigger_clear_beneficiary_ids
   before_save :save_all_age_groups_if_all_ages

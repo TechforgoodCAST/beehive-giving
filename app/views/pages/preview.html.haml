@@ -4,7 +4,7 @@
 
 - content_for :public do
   .background
-    .uk-width-large-9-10.uk-container.uk-container-center.uk-animation-fade
+    .uk-width-large-9-10.uk-container.uk-container-center
       .uk-grid.uk-margin-large.uk-margin-large-top
         .uk-width-large-3-5.uk-width-medium-1-2.uk-margin
           %h1.hero.uk-margin-top
@@ -20,7 +20,7 @@
                 %span.year.muted
                   %span.redacted Sample funder
 
-            %p= truncate(raw(@fund.description), length: 250, separator: ' ', escape: false)
+            %p= truncate(raw(@fund.description_html), length: 250, separator: ' ', escape: false)
 
             - if @fund.open_data
               = period(@fund)

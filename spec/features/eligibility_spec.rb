@@ -26,7 +26,7 @@ feature 'Eligibility' do
     def assert(present: true)
       copy = 'Last time you used Beehive you conducted 1 eligibility check'
       [
-        recommended_proposal_funds_path(@proposal),
+        proposal_funds_path(@proposal),
         eligible_proposal_funds_path(@proposal),
         ineligible_proposal_funds_path(@proposal)
       ].each do |path|
@@ -203,7 +203,7 @@ feature 'Eligibility' do
       helper.answer_recipient_restrictions
             .answer_proposal_restrictions(eligible: false)
             .check_eligibility
-      click_link 'Funding'
+      click_link 'Funds'
       helper.visit_first_fund.check_eligibility(remaining: 2)
       expect(page).to have_text 'please select from the list', count: 2
     end
@@ -226,26 +226,19 @@ feature 'Eligibility' do
       helper.answer_restrictions.check_eligibility
 
       # checked funds don't require upgrade
-      click_link 'Funding'
+      click_link 'Funds'
       visit eligibility_proposal_fund_path(@proposal, Fund.first)
       expect(current_path)
         .to eq eligibility_proposal_fund_path(@proposal, Fund.first)
 
       # funds over MAX_FREE_LIMIT require upgrade
-      click_link 'Funding'
+      click_link 'Funds'
       helper.visit_first_fund
       expect(current_path).to eq account_upgrade_path(@db[:recipient])
     end
   end
 
   context 'eligible_funds_path' do
-    scenario 'When I navigate to my eligible funds,
-              I want to see a list of eligible funds,
-              so I can apply for to them' do
-      click_link 'Eligible'
-      expect(page).to have_text "You don't have any eligible funds"
-    end
-
     context 'eligible fund' do
       before(:each) do
         helper
@@ -254,31 +247,19 @@ feature 'Eligibility' do
         visit root_path
       end
 
-      scenario "When I'm browsing funds,
-                I want to see how many eligible funds I have,
-                so I can decide to view them" do
-        expect(page).to have_text 'Eligible (4)'
-      end
-
       scenario "When I click on an 'Eligible' tag,
                 I want to see a list of eligible funds,
                 so I can compare them" do
         within '.insights', match: :first do
           click_link 'Eligible'
-          expect(current_path).to eq eligible_proposal_funds_path(@proposal)
+          expect(page)
+            .to have_current_path eligible_proposal_funds_path(@proposal)
         end
       end
     end
   end
 
   context 'ineligible_funds_path' do
-    scenario 'When I navigate to my ineligible funds,
-              I want to see a list of ineligible funds,
-              so I can apply for to them' do
-      click_link 'Ineligible'
-      expect(page).to have_text "Awesome, you're not ineligible for any funds!"
-    end
-
     context 'ineligible fund' do
       before(:each) do
         helper.visit_first_fund
@@ -291,19 +272,14 @@ feature 'Eligibility' do
         visit root_path
       end
 
-      scenario "When I'm browsing funds,
-                I want to see how many ineligible funds I have,
-                so I can decide to view them" do
-        expect(page).to have_text 'Ineligible (4)'
-      end
-
       scenario "When I click on an 'Ineligible' tag,
                 I want to see a list of ineligible funds,
                 so I can compare them" do
         visit ineligible_proposal_funds_path(@proposal)
         within '.insights', match: :first do
           click_link 'Ineligible'
-          expect(current_path).to eq ineligible_proposal_funds_path(@proposal)
+          expect(page)
+            .to have_current_path ineligible_proposal_funds_path(@proposal)
         end
       end
     end

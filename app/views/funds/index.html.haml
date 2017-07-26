@@ -1,7 +1,7 @@
-= content_for :title, 'Recommended funds'
+= content_for :title, 'Funds'
 
 :javascript
-  mixpanel.track('View Recommended Funds Page');
+  mixpanel.track('View Funds Page');
   mixpanel.identify("#{@current_user.id}");
   mixpanel.people.set({
     'Fund Unlocks': "#{@recipient.funds_checked}",
@@ -25,14 +25,10 @@
   %div{ style: "display:inline;" }
     %img{ alt: "", height: "1", src: "//www.googleadservices.com/pagead/conversion/937505505/?label=LPzOCKWprGMQ4eWEvwM&amp;guid=ON&amp;script=0", style: "border-style:none;", width: "1" }
 
-= render partial: 'subnav'
-
 .uk-container.uk-container-center.uk-margin-large
-  %h2
-    Recommended funds
-    %span.uk-text-small.muted Beta
+  %h2 Funds
   %h4
-    You are seeing funds that Beehive thinks would be suitable for
+    You are seeing analysis of funds for
     - if @proposal.complete?
       #proposal-title
         = succeed '.' do
@@ -43,17 +39,24 @@
         = succeed '.' do
           .text current proposal
 
-    = cell(:new_proposal_links, @proposal)
+    = cell :new_proposal_links, @proposal
 
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top
 
     = render partial: 'eligibilities/legacy_notice'
 
+    .uk-margin-large-bottom.muted
+      = cell :filter, params
+
     - @funds.each_with_index do |fund, i|
-      = render partial: 'summary', locals: { fund: fund }
-      - if i == @funds.count - 1
-        .cta.wide
-          Want to see more?
-          %a.uk-button.uk-button-large.uk-button-primary.invert{ href: all_proposal_funds_path(@proposal) } All funds
+
+      - if @proposal.show_fund?(fund)
+        = render partial: 'summary', locals: { fund: fund }
       - else
+        = render partial: 'summary_redacted', locals: { fund: fund }
+
+      - unless i == @funds.count - 1
         %hr.thick
+
+    .uk-margin-large-top
+      = paginate @funds

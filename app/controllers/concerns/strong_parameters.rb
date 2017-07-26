@@ -21,7 +21,8 @@ module StrongParameters
       :total_costs_estimated, :all_funding_required, :affect_people,
       :affect_other, :gender, :beneficiaries_other,
       :beneficiaries_other_required, :affect_geo, :title, :tagline, :private,
-      :outcome1, :implementations_other_required, :implementations_other,
+      :outcome1, :outcome2, :outcome3, :outcome4, :outcome5,
+      :implementations_other_required, :implementations_other,
       age_group_ids: [], beneficiary_ids: [], country_ids: [],
       district_ids: [], implementation_ids: []
     )

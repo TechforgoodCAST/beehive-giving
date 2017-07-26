@@ -3,12 +3,8 @@ Rails.application.routes.draw do
   resources :password_resets, except: [:show, :index, :destroy]
 
   resources :proposals, except: [:show, :destroy] do
-    resources :funds, only: :show do
+    resources :funds, only: [:show, :index] do
       collection do
-        get :recommended
-        get :eligible
-        get :ineligible
-        get :all
         get '/theme/:tag', to: 'funds#tagged', as: 'tag'
       end
       member do
@@ -20,6 +16,9 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  get '/proposals/:id/funds?eligibility=eligible', to: 'funds#index', as: 'eligible_proposal_funds'
+  get '/proposals/:id/funds?eligibility=ineligible', to: 'funds#index', as: 'ineligible_proposal_funds'
 
   resources :feedback, except: [:show, :index, :destroy]
 

@@ -22,7 +22,7 @@
         %i.uk-icon-plus
         New proposal
 
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top
     .uk-grid
       - @proposals.each do |proposal|
         .uk-width-medium-1-2
@@ -42,4 +42,4 @@
                 .uk-width-1-2
                   = link_to 'Update proposal', edit_proposal_path(proposal), class: 'invert uk-button uk-button-primary uk-button-large uk-width-1-1', style: 'font-size: 14px;'
                 .uk-width-1-2
-                  = link_to 'Matched funds', recommended_proposal_funds_path(proposal), class: 'uk-button uk-button-primary uk-button-large uk-width-1-1', style: 'font-size: 14px;'
+                  = link_to 'Matched funds', proposal_funds_path(proposal), class: 'uk-button uk-button-primary uk-button-large uk-width-1-1', style: 'font-size: 14px;'

@@ -1,5 +1,5 @@
 # TODO: deprecated
-class RecipientFunderAccess < ActiveRecord::Base
+class RecipientFunderAccess < ApplicationRecord
   belongs_to :recipient, counter_cache: true
 
   validates :funder_id, :recipient_id, presence: true

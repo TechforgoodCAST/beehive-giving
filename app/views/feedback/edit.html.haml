@@ -2,7 +2,7 @@
 
 .uk-container.uk-container-center
   .uk-grid.uk-margin-large.uk-margin-large-top
-    .uk-width-medium-1-1.uk-animation-fade
+    .uk-width-medium-1-1
       .uk-width-large-1-2.uk-container-center
         %h2 Coming soon
         %p
@@ -21,7 +21,7 @@
         %hr.thick
 
       .uk-width-large-1-2.uk-container-center
-        .uk-animation-fade.cta.tight
+        .cta.tight
           %h4.uk-text-bold Give us some feedback
           = simple_form_for @feedback, url: feedback_path, method: :patch do |f|
             .uk-form.uk-form-stacked.form

@@ -11,5 +11,5 @@ InputHelpers = ((w, d) ->
   }
 )(window, document)
 
-$(document).ready ->
+document.addEventListener 'turbolinks:load', ->
   InputHelpers.radioSelected()

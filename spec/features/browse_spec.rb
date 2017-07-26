@@ -19,7 +19,7 @@ feature 'Browse' do
     fill_in :email, with: @db[:user].email
     fill_in :password, with: @db[:user].password
     click_button 'Sign in'
-    expect(current_path).to eq recommended_proposal_funds_path(@proposal)
+    expect(current_path).to eq proposal_funds_path(@proposal)
   end
 
   context 'signed in' do
@@ -53,7 +53,7 @@ feature 'Browse' do
                I want to be redirected to where I came from and see a message,
                so I avoid an error and understand what happened" do
       visit proposal_fund_path(@proposal, 'missing-fund')
-      expect(current_path).to eq recommended_proposal_funds_path(@proposal)
+      expect(current_path).to eq proposal_funds_path(@proposal)
     end
 
     scenario 'When I click for more details on funding distribution,
@@ -89,20 +89,20 @@ feature 'Browse' do
       visit tag_proposal_funds_path(@proposal, '')
       expect(page.all('body script', visible: false)[0].native.text)
         .to have_text 'Fund not found'
-      expect(current_path).to eq recommended_proposal_funds_path(@proposal)
+      expect(current_path).to eq proposal_funds_path(@proposal)
 
       visit tag_proposal_funds_path(@proposal, 'missing')
       expect(page.all('body script', visible: false)[0].native.text)
         .to have_text 'Not found'
-      expect(current_path).to eq recommended_proposal_funds_path(@proposal)
+      expect(current_path).to eq proposal_funds_path(@proposal)
     end
 
-    scenario "When I navigate to 'Recommended' funds,
-              I want to see my recommended funds,
-              so I compare them" do
-      click_link 'Recommended'
-      expect(current_path).to eq recommended_proposal_funds_path(@proposal)
-    end
+    # scenario "When I navigate to 'Recommended' funds,
+    #           I want to see my recommended funds,
+    #           so I compare them" do
+    #   click_link 'Recommended'
+    #   expect(current_path).to eq proposal_funds_path(@proposal)
+    # end
 
     def subscribe_and_visit(path)
       @recipient.subscribe!
@@ -127,54 +127,54 @@ feature 'Browse' do
     end
 
     scenario 'only recommended funds shown unless subscribed' do
-      visit all_proposal_funds_path(@proposal)
-      expect(page).to have_css '.yellow.redacted.large', count: 1
-
-      subscribe_and_visit all_proposal_funds_path(@proposal)
+      # visit all_proposal_funds_path(@proposal)
+      # expect(page).to have_css '.yellow.redacted.large', count: 1
+      #
+      # subscribe_and_visit all_proposal_funds_path(@proposal)
     end
 
-    scenario 'only recommended funds shown unless subscribed' do
-      @proposal.update_column(
-        :eligibility,
-        Fund.first.slug => { 'quiz' => { eligible: true, count_failing: 0 } }
-      )
-      visit eligible_proposal_funds_path(@proposal)
-      expect(page).to have_css '.yellow.redacted.large', count: 1
+    # scenario 'only recommended funds shown unless subscribed' do
+    #   @proposal.update_column(
+    #     :eligibility,
+    #     Fund.first.slug => { 'quiz' => { eligible: true, count_failing: 0 } }
+    #   )
+    #   visit eligible_proposal_funds_path(@proposal)
+    #   expect(page).to have_css '.yellow.redacted.large', count: 1
+    #
+    #   subscribe_and_visit eligible_proposal_funds_path(@proposal)
+    # end
 
-      subscribe_and_visit eligible_proposal_funds_path(@proposal)
-    end
+    # scenario 'only recommended funds shown unless subscribed' do
+    #   @proposal.update_column(
+    #     :eligibility,
+    #     Fund.first.slug => { 'quiz' => { eligible: false, count_failing: 1 } }
+    #   )
+    #   visit ineligible_proposal_funds_path(@proposal)
+    #   expect(page).to have_css '.yellow.redacted.large', count: 1
+    #
+    #   subscribe_and_visit ineligible_proposal_funds_path(@proposal)
+    # end
 
-    scenario 'only recommended funds shown unless subscribed' do
-      @proposal.update_column(
-        :eligibility,
-        Fund.first.slug => { 'quiz' => { eligible: false, count_failing: 1 } }
-      )
-      visit ineligible_proposal_funds_path(@proposal)
-      expect(page).to have_css '.yellow.redacted.large', count: 1
-
-      subscribe_and_visit ineligible_proposal_funds_path(@proposal)
-    end
-
-    context 'all_funds_path' do
-      before(:each) do
-        click_link 'All'
-      end
-
-      scenario "When I find a recommended fund I'm interested in,
-                I want to view more details,
-                so I can decide if I want to apply" do
-        click_link @top_fund.name
-        expect(current_path).to eq proposal_fund_path(
-          @proposal, @top_fund
-        )
-      end
-
-      scenario "When navigate to 'All' funds,
-                I want to see my all funds on site,
-                so I can see which ones I already and the value of the site" do
-        expect(current_path).to eq all_proposal_funds_path(@proposal)
-      end
-    end
+    # context 'all_funds_path' do
+    #   before(:each) do
+    #     click_link 'All'
+    #   end
+    #
+    #   scenario "When I find a recommended fund I'm interested in,
+    #             I want to view more details,
+    #             so I can decide if I want to apply" do
+    #     click_link @top_fund.name
+    #     expect(current_path).to eq proposal_fund_path(
+    #       @proposal, @top_fund
+    #     )
+    #   end
+    #
+    #   scenario "When navigate to 'All' funds,
+    #             I want to see my all funds on site,
+    #             so I can see which ones I already and the value of the site" do
+    #     expect(current_path).to eq all_proposal_funds_path(@proposal)
+    #   end
+    # end
 
     context 'When I view fund a with open data' do
       before(:each) do

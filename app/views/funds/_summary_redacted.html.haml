@@ -46,7 +46,7 @@
         %span.year.muted
           %span.redacted= scramble_name(fund.funder.name)
 
-      %p.redacted.muted= scramble_name(raw(fund.description))
+      %p.redacted.muted= scramble_name(raw(fund.description_html))
 
       %ul.insights
         - unless @proposal.eligible_status(fund.slug).negative?

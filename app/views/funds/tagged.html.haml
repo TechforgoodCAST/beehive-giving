@@ -3,8 +3,6 @@
 :javascript
   mixpanel.track("View #{@tag} Funds Page");
 
-= render partial: 'subnav'
-
 .uk-container.uk-container-center.uk-margin-large
   %h2
     = @tag
@@ -15,7 +13,7 @@
     = @tag.downcase
     funds.
 
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top.uk-animation-fade
+  .uk-width-large-4-5.uk-container-center.uk-margin-large-top
 
     - @funds.each_with_index do |fund, i|
 

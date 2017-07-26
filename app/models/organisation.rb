@@ -1,4 +1,4 @@
-class Organisation < ActiveRecord::Base
+class Organisation < ApplicationRecord
   OPERATING_FOR = [
     ['Yet to start', 0],
     ['Less than 12 months', 1],

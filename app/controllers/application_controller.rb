@@ -1,8 +1,4 @@
 class ApplicationController < ActionController::Base
-  force_ssl if: :ssl_configured?
-
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
   helper_method :logged_in?
@@ -19,10 +15,6 @@ class ApplicationController < ActionController::Base
   private
 
     include StrongParameters
-
-    def ssl_configured?
-      ENV['RACK_ENV'] == 'production'
-    end
 
     def error?
       params[:controller] == 'errors'
@@ -90,10 +82,10 @@ class ApplicationController < ActionController::Base
       return edit_signup_recipient_path(@recipient) unless @recipient.valid? # NOTE: legacy
       return new_signup_proposal_path unless @proposal
       return new_signup_proposal_path if @proposal.initial? # NOTE: legacy
-      recommended_proposal_funds_path(@proposal)
+      proposal_funds_path(@proposal)
     end
 
     def ensure_not_signed_up
-      redirect_to recommended_proposal_funds_path(@proposal) if signed_up?
+      redirect_to proposal_funds_path(@proposal) if signed_up?
     end
 end

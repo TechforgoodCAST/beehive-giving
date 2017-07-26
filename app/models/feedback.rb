@@ -1,4 +1,4 @@
-class Feedback < ActiveRecord::Base
+class Feedback < ApplicationRecord
   SUITABLE = ['- Very unsuitable'] +
              Array.new(9, '') +
              ['- Very suitable'].freeze

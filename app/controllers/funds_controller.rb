@@ -9,31 +9,16 @@ class FundsController < ApplicationController
       @proposal.show_fund?(@fund)
   end
 
-  def recommended
-    @funds = Fund.includes(:funder).find(
-      (@proposal.recommended_funds - @proposal.ineligible_fund_ids)
-      .take(RECOMMENDATION_LIMIT)
-    )
-  end
-
-  def eligible
-    @funds = Fund.where(slug: @proposal.eligible_funds.keys)
-  end
-
-  def ineligible
-    @funds = Fund.where(slug: @proposal.ineligible_funds.keys)
-  end
-
-  def all
-    @funds = @recipient.proposals.last
-                       .funds
-                       .includes(:funder)
-                       .order('recommendations.total_recommendation DESC',
-                              'funds.name')
+  def index
+    @funds = Fund.includes(:funder)
+                 .active
+                 .order_by(@proposal, params[:sort])
+                 .eligibility(@proposal, params[:eligibility])
+                 .page(params[:page])
   end
 
   def tagged
-    @tag = params[:tag].tr('-', ' ').capitalize unless params[:tag].blank?
+    @tag = params[:tag].tr('-', ' ').capitalize if params[:tag].present?
     @funds = Fund.includes(:funder).where('tags ?| array[:tags]', tags: @tag)
     redirect_to root_path, alert: 'Not found' if @funds.empty?
   end

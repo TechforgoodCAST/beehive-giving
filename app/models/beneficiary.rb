@@ -1,4 +1,4 @@
-class Beneficiary < ActiveRecord::Base
+class Beneficiary < ApplicationRecord
   scope :people, -> { where(category: 'People') }
   scope :other,  -> { where(category: 'Other') }
 

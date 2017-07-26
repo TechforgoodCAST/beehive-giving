@@ -1,4 +1,4 @@
-class Eligibility < ActiveRecord::Base
+class Eligibility < ApplicationRecord
   belongs_to :category, polymorphic: true
   belongs_to :restriction
 

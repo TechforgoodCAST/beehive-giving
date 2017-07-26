@@ -1,4 +1,4 @@
-class Implementation < ActiveRecord::Base
+class Implementation < ApplicationRecord
   IMPLEMENTATIONS = [
     { label: 'Buildings/facilities' },
     { label: 'Campaigns' },
