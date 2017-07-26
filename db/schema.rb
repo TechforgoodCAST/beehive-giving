@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170724205622) do
+ActiveRecord::Schema.define(version: 20170725164415) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -511,6 +511,13 @@ ActiveRecord::Schema.define(version: 20170724205622) do
     t.integer "percent_off", default: 0, null: false
     t.index ["organisation_id"], name: "index_subscriptions_on_organisation_id"
     t.index ["stripe_user_id"], name: "index_subscriptions_on_stripe_user_id", unique: true
+  end
+
+  create_table "themes", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "parent_id"
+    t.index ["name"], name: "index_themes_on_name", unique: true
+    t.index ["parent_id"], name: "index_themes_on_parent_id"
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
