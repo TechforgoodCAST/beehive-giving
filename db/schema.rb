@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170725164415) do
+ActiveRecord::Schema.define(version: 20170726093944) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -229,6 +229,15 @@ ActiveRecord::Schema.define(version: 20170725164415) do
     t.string "most_useful"
     t.integer "suitable"
     t.index ["user_id"], name: "index_feedbacks_on_user_id"
+  end
+
+  create_table "fund_themes", force: :cascade do |t|
+    t.bigint "fund_id"
+    t.bigint "theme_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fund_id"], name: "index_fund_themes_on_fund_id"
+    t.index ["theme_id"], name: "index_fund_themes_on_theme_id"
   end
 
   create_table "funds", id: :serial, force: :cascade do |t|
@@ -516,6 +525,9 @@ ActiveRecord::Schema.define(version: 20170725164415) do
   create_table "themes", force: :cascade do |t|
     t.string "name", null: false
     t.integer "parent_id"
+    t.jsonb "related", default: {}, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["name"], name: "index_themes_on_name", unique: true
     t.index ["parent_id"], name: "index_themes_on_parent_id"
   end
@@ -543,4 +555,6 @@ ActiveRecord::Schema.define(version: 20170725164415) do
 
   add_foreign_key "enquiries", "funds"
   add_foreign_key "enquiries", "proposals"
+  add_foreign_key "fund_themes", "funds"
+  add_foreign_key "fund_themes", "themes"
 end

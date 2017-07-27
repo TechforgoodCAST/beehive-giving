@@ -64,6 +64,19 @@ describe Fund do
       expect(@fund.funder.name).to eq @funder.name
     end
 
+    it 'has many fund_themes' do
+      expect(@fund.fund_themes.count).to eq 3
+    end
+
+    it 'has many themes' do
+      expect(@fund.themes.count).to eq 3
+    end
+
+    it 'has at least one theme' do
+      @fund.themes = []
+      expect(@fund).not_to be_valid
+    end
+
     it 'without funder is invalid' do
       @fund.funder = nil
       expect(@fund).not_to be_valid

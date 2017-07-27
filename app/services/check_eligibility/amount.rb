@@ -12,6 +12,5 @@ class CheckEligibility
       def eligible(bool)
         { 'eligible' => bool }
       end
-      
   end
 end
