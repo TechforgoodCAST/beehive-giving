@@ -26,16 +26,20 @@ ActiveAdmin.register Fund do
     column 'year end' do |o|
       o&.period_end&.strftime('%Y')
     end
-    column 'org_type' do |fund|
+    column 'Org Type' do |fund|
       check_presence(fund, 'org_type_distribution')
     end
-    column 'income' do |fund|
+    column 'Income' do |fund|
       check_presence(fund, 'income_distribution')
     end
-    column :geographic_scale_limited
-    column :national
+    column :open_data
+    column "Ltd geo", :geographic_scale_limited
     column :districts do |fund|
       fund.districts.count
+    end
+    column "Grants", :grant_count
+    column :last_updated do |fund|
+      fund.updated_at.strftime("%F")
     end
     actions
   end
@@ -45,6 +49,7 @@ ActiveAdmin.register Fund do
   filter :active
   filter :open_data
   filter :updated_at
+  config.sort_order = 'updated_at_desc'
 
   show do
     attributes_table do

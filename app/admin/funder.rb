@@ -15,6 +15,7 @@ ActiveAdmin.register Funder do
   end
 
   filter :name
+  config.sort_order = 'name_asc'
 
   index do
     selectable_column
@@ -22,6 +23,13 @@ ActiveAdmin.register Funder do
       link_to funder.name, [:admin, funder]
     end
     column :active_on_beehive
+    column :has_funds do |funder|
+      funder.funds.count > 0
+    end
+    column :funds do |funder|
+      funder.funds.count
+    end
+    column :created_at
     actions
   end
 
@@ -43,6 +51,10 @@ ActiveAdmin.register Funder do
         end
         column 'income' do |fund|
           check_presence(fund, 'income_distribution')
+        end
+        column :actions do |fund|
+          link_to 'View', [:admin, fund]
+          link_to 'Edit', [:edit_admin, fund]
         end
       end
     end
