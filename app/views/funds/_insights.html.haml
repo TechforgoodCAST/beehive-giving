@@ -5,6 +5,9 @@
   = period(fund)
   %span.year.muted (recommendation based on older data)
 
+- unless fund.open_call?
+  %div.cta Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
+
 %ul.insights
   - unless params[:controller] == 'recipients' && %w(eligibility update_eligibility apply).include?(params[:action])
     - unless @proposal.eligible_status(fund.slug).negative?
