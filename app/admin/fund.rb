@@ -11,7 +11,8 @@ ActiveAdmin.register Fund do
                 :beneficiary_distribution, :grant_examples,
                 :geographic_scale_limited,
                 country_ids: [], district_ids: [], restriction_ids: [],
-                tags: [], permitted_costs: [], permitted_org_types: []
+                tags: [], permitted_costs: [], permitted_org_types: [],
+                theme_ids: []
 
   controller do
     def find_resource
@@ -69,6 +70,9 @@ ActiveAdmin.register Fund do
       row :key_criteria do fund.key_criteria.html_safe end
       row :tags do
         fund.tags.each.map{|r| "<span class=\"status_tag\">#{r}</span>"}.join(" ").html_safe
+      end
+      row :themes do
+        fund.themes.each.map{|t| "<span class=\"status_tag\">#{t.name}</span>"}.join(" ").html_safe
       end
     end
 
@@ -145,6 +149,8 @@ ActiveAdmin.register Fund do
       f.input :key_criteria
       f.input :tags, as: :select, collection: Fund.pluck(:tags).flatten.uniq,
                      input_html: { multiple: true, class: 'chosen-select' }
+      f.input :themes, collection: Theme.pluck(:name, :id),
+                       input_html: { multiple: true, class: 'chosen-select' }
     end
 
     tabs do
