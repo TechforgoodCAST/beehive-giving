@@ -36,8 +36,8 @@ describe Article do
   end
 
   it '#body_html returns html' do
-    html = '<h2><a href="http://www.beehivegiving.org" target="_blank">' \
-           "www.beehivegiving.org</a></h2>\n"
+    html = '<h2><strong><a href="http://www.beehivegiving.org" ' \
+           "target=\"_blank\">www.beehivegiving.org</a></strong></h2>\n"
     expect(@article.body_html).to eq html
   end
 end
