@@ -53,7 +53,7 @@ gem 'uikit-sass-rails'
 gem 'workflow'
 
 # Admin
-gem 'activeadmin', git: 'https://github.com/activeadmin/activeadmin'
+gem 'activeadmin'
 gem 'devise'
 gem 'inherited_resources', git: 'https://github.com/activeadmin/inherited_resources'
 
