@@ -75,7 +75,7 @@ Rails.application.configure do
     enable_starttls_auto: true
   }
   ActionMailer::Base.delivery_method = :smtp
-  config.action_mailer.default_url_options = { host: 'beehivegiving.org' }
+  config.action_mailer.default_url_options = { host: 'www.beehivegiving.org' }
   config.action_mailer.asset_host = 'http://www.beehivegiving.org'
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
