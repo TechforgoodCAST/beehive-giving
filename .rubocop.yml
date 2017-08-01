@@ -22,7 +22,6 @@ Metrics/BlockLength:
     - config/**/**
     - lib/tasks/**
     - spec/**/**
-    - Guardfile
     - test/**/** # TODO: deprecated
 
 Metrics/ClassLength:

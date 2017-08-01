@@ -3,7 +3,7 @@
 [![CircleCI](https://circleci.com/gh/TechforgoodCAST/beehive-giving.svg?style=svg&circle-token=9943df0487898ea0014071a42ee8da8b0d4b1d7e)](https://circleci.com/gh/TechforgoodCAST/beehive-giving)
 
 ## Setup
-Prerequisites: [Ruby](https://www.ruby-lang.org), [Bundler](https://bundler.io/), [PostgreSQL](https://www.postgresql.org/).
+Prerequisites: [Ruby](https://www.ruby-lang.org), [Bundler](https://bundler.io/), [PostgreSQL](https://www.postgresql.org/), [NodeJS](https://nodejs.org/), [Yarn](https://yarnpkg.com/)
 
 1. `bundle install`
 2. `yarn`
@@ -30,6 +30,5 @@ Prerequisites: [Ruby](https://www.ruby-lang.org), [Bundler](https://bundler.io/)
 `pg_restore -c -O -d beehive_development <path_to_local_dump_file>`
 
 ## Running tests
-Use `rspec` to run tests or use [Guard](https://github.com/guard/guard) to run tests automatically whilst developing with `bundle exec guard`.
-
-Use `yarn test` to run Javascript unit tests.
+- `rspec` to run Ruby unit and feature tests.
+- `yarn test` to run JavaScript unit tests.

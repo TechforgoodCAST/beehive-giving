@@ -39,26 +39,26 @@ class Profile < ApplicationRecord
 
   ## beneficiaries state validations
 
-  validates :affect_people, presence: { message: 'you must affect either people or other groups' }, if: 'self.beneficiaries? || self.complete?', unless: 'self.affect_other?'
+  validates :affect_people, presence: { message: 'you must affect either people or other groups' }, if: proc { beneficiaries? || complete? }, unless: proc { affect_other? }
 
-  validates :affect_other, presence: { message: 'you must affect either people or other groups' }, if: 'self.beneficiaries? || self.complete?', unless: 'self.affect_people?'
+  validates :affect_other, presence: { message: 'you must affect either people or other groups' }, if: proc { beneficiaries? || complete? }, unless: proc { affect_people? }
 
-  validates :affect_people, :affect_other, inclusion: { in: [true, false], message: 'please select an option' }, if: 'self.beneficiaries? || self.complete?'
+  validates :affect_people, :affect_other, inclusion: { in: [true, false], message: 'please select an option' }, if: proc { beneficiaries? || complete? }
 
   validates :organisation, :year,
-            presence: true, if: 'self.beneficiaries? || self.complete?'
+            presence: true, if: proc { beneficiaries? || complete? }
 
   validates :year, uniqueness: { scope: :organisation_id,
-                                 message: 'only one is allowed per year', if: 'self.beneficiaries? || self.complete?' }
+                                 message: 'only one is allowed per year', if: proc { beneficiaries? || complete? } }
 
-  validates :year, inclusion: { in: VALID_YEARS }, if: 'self.beneficiaries? || self.complete?'
+  validates :year, inclusion: { in: VALID_YEARS }, if: proc { beneficiaries? || complete? }
 
   validates :gender, :age_groups,
-            presence: { message: 'Please select an option' }, if: 'self.affect_people? && self.beneficiaries? || self.complete?', unless: '!self.affect_people? && self.affect_other?'
+            presence: { message: 'Please select an option' }, if: proc { affect_people? && beneficiaries? || complete? }, unless: proc { !affect_people? && affect_other? }
 
-  validates :gender, inclusion: { in: GENDERS, message: 'please select an option' }, if: 'self.affect_people? && self.beneficiaries? || self.complete?', unless: '!self.affect_people? && self.affect_other?'
+  validates :gender, inclusion: { in: GENDERS, message: 'please select an option' }, if: proc { affect_people? && beneficiaries? || complete? }, unless: proc { !affect_people? && affect_other? }
 
-  validate :beneficiaries_people, :beneficiaries_other_categories, if: 'self.beneficiaries? || self.complete?'
+  validate :beneficiaries_people, :beneficiaries_other_categories, if: proc { beneficiaries? || complete? }
 
   def beneficiaries_people
     return unless (beneficiary_ids & Beneficiary.where(category: 'People').pluck(:id)).count < 1
@@ -74,34 +74,34 @@ class Profile < ApplicationRecord
 
   ## location state validations
 
-  validates :countries, :districts, presence: true, if: 'self.location? || self.complete?'
+  validates :countries, :districts, presence: true, if: proc { location? || complete? }
 
   ## team state validations
 
   validates :staff_count, :volunteer_count, :trustee_count,
-            presence: true, if: 'self.team? || self.complete?'
+            presence: true, if: proc { team? || complete? }
 
-  validates :implementors, presence: true, if: 'self.team? || self.complete?', unless: 'self.implementors_other.present?'
+  validates :implementors, presence: true, if: proc { team? || complete? }, unless: proc { implementors_other.present? }
 
   validates :implementors_other, presence: { message: "must uncheck 'Other' or specify details" }, if: :implementors_other_required
 
   validates :staff_count, :volunteer_count, :trustee_count,
             numericality: { only_integer: true, greater_than_or_equal_to: 0,
-                            if: 'self.team? || self.complete?' }
+                            if: proc { team? || complete? } }
 
   ## work state validations
 
-  validates :implementations, presence: true, if: 'self.work? || self.complete?', unless: 'self.implementations_other.present?'
+  validates :implementations, presence: true, if: proc { work? || complete? }, unless: proc { implementations_other.present? }
 
   validates :implementations_other, presence: { message: "must uncheck 'Other' or specify details" }, if: :implementations_other_required
 
-  validates :does_sell, inclusion: { message: 'please select an option', in: [true, false] }, if: 'self.work? || self.complete?'
+  validates :does_sell, inclusion: { message: 'please select an option', in: [true, false] }, if: proc { work? || complete? }
 
-  validates :income, :expenditure, presence: true, if: 'self.finance? || self.complete?'
+  validates :income, :expenditure, presence: true, if: proc { finance? || complete? }
 
   validates :income, :expenditure,
             numericality: { only_integer: true, greater_than_or_equal_to: 0,
-                            if: 'self.finance? || self.complete?' }
+                            if: proc { finance? || complete? } }
 
   def clear_other_options
     self.beneficiaries_other = nil unless beneficiaries_other_required?
@@ -110,7 +110,7 @@ class Profile < ApplicationRecord
   end
 
   def set_year_to_current_year
-    self.year = Time.zone.today.year unless year.present?
+    self.year = Time.zone.today.year if year.blank?
   end
 
   def save_all_age_groups_if_all_ages

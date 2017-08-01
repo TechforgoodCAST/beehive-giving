@@ -28,6 +28,10 @@ class FundInsightCell < Cell::ViewModel
     render locals: { proposal: options[:proposal] }
   end
 
+  def title_raw
+    title_name[0]
+  end
+
   private
 
     def title_name

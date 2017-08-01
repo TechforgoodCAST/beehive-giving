@@ -66,18 +66,18 @@ class Proposal < ApplicationRecord
   # Beneficiaries
   validates :affect_people, presence: {
     message: 'you must affect either people or other groups'
-  }, unless: 'self.affect_other?'
+  }, unless: proc { affect_other? }
   validates :affect_other, presence: {
     message: 'you must affect either people or other groups'
-  }, unless: 'self.affect_people?'
+  }, unless: proc { affect_people? }
   validates :affect_people, :affect_other,
             inclusion: { in: [true, false], message: 'please select an option' }
   validates :gender, :age_groups,
             presence: { message: 'Please select an option' },
-            unless: '!self.affect_people? && self.affect_other?'
+            unless: proc { !affect_people? && affect_other? }
   validates :gender, inclusion: { in: GENDERS,
                                   message: 'please select an option' },
-                     unless: '!self.affect_people? && self.affect_other?'
+                     unless: proc { !affect_people? && affect_other? }
   validate :beneficiaries_people, :beneficiaries_other_group
   validates :beneficiaries_other,
             presence: { message: "please uncheck 'Other' or specify details" },
@@ -100,8 +100,7 @@ class Proposal < ApplicationRecord
   validates :countries, presence: true
   validates :districts,
             presence: true,
-            if: proc { |o| o.affect_geo.present? && o.affect_geo < 2 }
-  # TODO: test
+            if: proc { affect_geo.present? && affect_geo < 2 }
 
   # Privacy
   validates :private, inclusion: { in: [true, false],
@@ -111,13 +110,13 @@ class Proposal < ApplicationRecord
   validates :title, uniqueness: {
     scope: :recipient_id,
     message: 'each proposal must have a unique title'
-  }, if: 'self.registered? || self.complete?'
+  }, if: proc { registered? || complete? }
   validates :title, :tagline, :outcome1, presence: true, length: {
     maximum: 280, message: 'please use 280 characters or less'
-  }, if: 'self.registered? || self.complete?'
+  }, if: proc { registered? || complete? }
   validates :implementations, presence: true,
                               unless: :implementations_other_required,
-                              if: 'self.registered? || self.complete?'
+                              if: proc { registered? || complete? }
   validates :implementations_other,
             presence: { message: "please uncheck 'Other' or specify details" },
             if: :implementations_other_required
