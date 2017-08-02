@@ -5,6 +5,9 @@ class Fund < ApplicationRecord
 
   belongs_to :funder
 
+  has_many :fund_themes, dependent: :destroy
+  has_many :themes, through: :fund_themes
+
   has_many :proposals, through: :recommendations
   has_many :recommendations, dependent: :destroy
   has_many :enquiries, dependent: :destroy
@@ -15,14 +18,14 @@ class Fund < ApplicationRecord
   accepts_nested_attributes_for :restrictions
 
   validates :funder, :type_of_fund, :slug, :name, :description, :currency,
-            :key_criteria, :application_link, presence: true
+            :key_criteria, :application_link, :countries, :themes,
+            presence: true
 
   validates :open_call, :active, :restrictions_known,
             inclusion: { in: [true, false] }
 
   validates :name, uniqueness: { scope: :funder }
 
-  validates :countries, presence: true
   validates :restrictions, presence: true, if: :restrictions_known?
   validates :restrictions_known, presence: true, if: :restriction_ids?
 
@@ -36,14 +39,15 @@ class Fund < ApplicationRecord
 
   validates :min_amount_awarded, presence: true, if: :min_amount_awarded_limited
   validates :max_amount_awarded, presence: true, if: :max_amount_awarded_limited
-  validates :min_duration_awarded, presence: true, if: :min_duration_awarded_limited
-  validates :max_duration_awarded, presence: true, if: :max_duration_awarded_limited
-
-  validate :validate_sources, :validate_districts
+  validates :min_duration_awarded, presence: true,
+                                   if: :min_duration_awarded_limited
+  validates :max_duration_awarded, presence: true,
+                                   if: :max_duration_awarded_limited
 
   validates :permitted_org_types, array: { in: ORG_TYPES.pluck(1) }
   validates :permitted_costs, array: { in: FUNDING_TYPES.pluck(1) }
 
+  validate :validate_sources, :validate_districts
   validate :period_start_before_period_end, :period_end_in_past, if: :open_data?
 
   attr_accessor :skip_beehive_data
@@ -101,19 +105,6 @@ class Fund < ApplicationRecord
   include FundArraySetters
 
   private
-
-    def markdown(str)
-      options = { hard_wrap: true,
-                  space_after_headers: true, fenced_code_blocks: true,
-                  link_attributes: { target: '_blank' } }
-
-      extensions = { autolink: true, disable_indented_code_blocks: true }
-
-      renderer = Redcarpet::Render::HTML.new(options)
-      markdown = Redcarpet::Markdown.new(renderer, extensions)
-
-      markdown.render(str)
-    end
 
     def set_slug
       self[:slug] = "#{funder.slug}-#{name.parameterize}" if funder

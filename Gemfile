@@ -53,7 +53,7 @@ gem 'uikit-sass-rails'
 gem 'workflow'
 
 # Admin
-gem 'activeadmin', git: 'https://github.com/activeadmin/activeadmin'
+gem 'activeadmin'
 gem 'devise'
 gem 'inherited_resources', git: 'https://github.com/activeadmin/inherited_resources'
 
@@ -72,13 +72,11 @@ group :development, :test do
   gem 'capybara', '2.12.1'
   gem 'dotenv-rails'
   gem 'factory_girl_rails'
-  gem 'guard-rspec', require: false
   gem 'rspec-cells'
   gem 'rspec-rails', '3.5.2'
   gem 'selenium-webdriver'
   gem 'show_me_the_cookies'
   gem 'stripe-ruby-mock', require: 'stripe_mock'
-  gem 'thor', '0.19.1' # TODO: guard dependency
   gem 'webmock'
 end
 

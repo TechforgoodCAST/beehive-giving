@@ -24,6 +24,7 @@ class TestHelper
     @kenya_districts      = create_list(:kenya_district, 3, country: @kenya)
     @districts            = @uk_districts + @kenya_districts
     @implementations      = create_list(:implementation, Implementation::IMPLEMENTATIONS.count)
+    @themes               = create_list(:theme, 3)
     self
   end
 
@@ -41,12 +42,24 @@ class TestHelper
     @funds.each_with_index do |fund, i|
       stub_fund_summary_endpoint(fund.instance_eval { set_slug })
 
+      fund.themes = @themes
       fund.countries = @countries
       fund.districts = @uk_districts + @kenya_districts if fund.geographic_scale_limited
       fund.restrictions = (i.even? ? recipient_restrictions + proposal_restrictions.first(3) : recipient_restrictions + proposal_restrictions.last(3))
       fund.save! if save
     end
     self
+  end
+
+  def create_simple_fund(num: 1)
+    opts = {
+      themes: create_list(:theme, 3),
+      countries: create_list(:country, 2),
+      restrictions: create_list(:recipient_restriction, 2) +
+                    create_list(:restriction, 5)
+    }
+
+    create_list :fund, num, opts
   end
 
   def tag_funds
