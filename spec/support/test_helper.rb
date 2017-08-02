@@ -151,8 +151,11 @@ class TestHelper
 
   def build_initial_proposal
     @initial_proposal = build(:initial_proposal, recipient: @recipient,
-                                                 countries: [@uk], districts: @uk_districts,
-                                                 age_groups: @age_groups, beneficiaries: @beneficiaries)
+                                                 countries: [@uk],
+                                                 districts: @uk_districts,
+                                                 age_groups: @age_groups,
+                                                 beneficiaries: @beneficiaries,
+                                                 themes: @themes)
     self
   end
 
@@ -164,9 +167,12 @@ class TestHelper
 
   def build_registered_proposal
     @registered_proposal = build(:registered_proposal, recipient: @recipient,
-                                                       countries: [@uk], districts: @uk_districts,
-                                                       age_groups: @age_groups, beneficiaries: @beneficiaries,
-                                                       implementations: @implementations)
+                                                       countries: [@uk],
+                                                       districts: @uk_districts,
+                                                       age_groups: @age_groups,
+                                                       beneficiaries: @beneficiaries,
+                                                       implementations: @implementations,
+                                                       themes: @themes)
     self
   end
 
@@ -178,9 +184,12 @@ class TestHelper
 
   def build_complete_proposal
     @complete_proposal = build(:proposal, recipient: @recipient,
-                                          countries: [@uk], districts: @uk_districts,
-                                          age_groups: @age_groups, beneficiaries: @beneficiaries,
-                                          implementations: @implementations)
+                                          countries: [@uk],
+                                          districts: @uk_districts,
+                                          age_groups: @age_groups,
+                                          beneficiaries: @beneficiaries,
+                                          implementations: @implementations,
+                                          themes: @themes)
     self
   end
 

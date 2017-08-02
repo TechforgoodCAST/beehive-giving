@@ -25,6 +25,19 @@ describe Proposal do
         @initial_proposal.save
       end
 
+      it 'has many proposal_themes' do
+        expect(@initial_proposal.proposal_themes.count).to eq 3
+      end
+
+      it 'has many themes' do
+        expect(@initial_proposal.themes.count).to eq 3
+      end
+
+      it 'has at least one theme' do
+        @initial_proposal.themes = []
+        expect(@initial_proposal).not_to be_valid
+      end
+
       it 'has many age_groups' do
         expect(@initial_proposal.age_groups.count).to eq 8
       end

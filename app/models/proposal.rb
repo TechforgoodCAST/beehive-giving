@@ -17,6 +17,9 @@ class Proposal < ApplicationRecord
   has_and_belongs_to_many :districts
   has_and_belongs_to_many :implementations
 
+  has_many :proposal_themes, dependent: :destroy
+  has_many :themes, through: :proposal_themes
+
   TYPE_OF_SUPPORT = ['Only financial', 'Mostly financial',
                      'Equal financial and non-financial',
                      'Mostly non-financial', 'Only non-financial'].freeze
@@ -47,7 +50,7 @@ class Proposal < ApplicationRecord
            if: 'self.initial?', on: :create
 
   # Requirements
-  validates :recipient, :funding_duration, presence: true
+  validates :recipient, :funding_duration, :themes, presence: true
   validates :type_of_support, inclusion: { in: TYPE_OF_SUPPORT,
                                            message: 'please select an option' }
   validates :funding_type, inclusion: { in: FUNDING_TYPES.pluck(1),

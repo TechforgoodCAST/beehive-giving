@@ -37,7 +37,7 @@ feature 'Proposal' do
     end
   end
 
-  scenario 'When I sign into an incomplete proposal,
+  fscenario 'When I sign into an incomplete proposal,
             I want to complete the proposal quickly,
             so I can see my results' do
     expect(current_path).to eq new_signup_proposal_path
@@ -193,7 +193,7 @@ feature 'Proposal' do
       visit root_path
     end
 
-    scenario 'When I am subscribed,
+    fscenario 'When I am subscribed,
                I want to be able to create multiple proposals,
                so I can search for alternative funds' do
       click_link 'Change proposal'
