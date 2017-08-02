@@ -23,7 +23,7 @@ namespace :funds do
     end
   end
 
-  # usage: rake funds:fund_themes FUND_THEMES=/path/to/file.json SAVE=true
+  # usage: rake funds:fund_themes! FUND_THEMES=/path/to/file.json SAVE=true
   desc 'Add themes to funds'
   task fund_themes!: :environment do
     open(ENV['FUND_THEMES']) do |f|
