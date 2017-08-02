@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.3.3'
+ruby '2.4.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.2'
@@ -55,7 +55,6 @@ gem 'workflow'
 # Admin
 gem 'activeadmin'
 gem 'devise'
-gem 'inherited_resources', git: 'https://github.com/activeadmin/inherited_resources'
 
 # Monitoring & metrics
 gem 'intercom-rails'
