@@ -24,7 +24,7 @@ module StrongParameters
       :outcome1, :outcome2, :outcome3, :outcome4, :outcome5,
       :implementations_other_required, :implementations_other,
       age_group_ids: [], beneficiary_ids: [], country_ids: [],
-      district_ids: [], implementation_ids: []
+      district_ids: [], implementation_ids: [], theme_ids: []
     )
   end
 

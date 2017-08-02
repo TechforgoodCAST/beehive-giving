@@ -2,9 +2,8 @@
 
   h3 Beneficiaries
 
-  .label Who or what will your proposed work affect?
   .uk-width-1-1.uk-margin-top
-    .label People
+    .label Will your proposed work affect people?
     = f.input :affect_people, as: :radio_buttons, input_html: { class: 'large uk-width-1-1' }
     = f.error :affect_people, class: 'error-message error-margin', id: 'people-error'
 
@@ -20,27 +19,5 @@
       .label.question-padding Which age groups?
       #age_groups
         = f.association :age_groups, as: :check_boxes, label_method: :label, value_method: :id
-
-      hr
-
-      .label.question-padding Which types of people?
-      small.question-padding Select as many as applicable.
-      #people= f.association :beneficiaries, as: :check_boxes, collection: filter_beneficiaries('People'), label_method: :label, value_method: :id
-
-  .uk-width-1-1.uk-margin-top
-    .label Other (not people)
-    .question-padding
-      = f.input :affect_other, as: :radio_buttons, input_html: { class: 'large uk-width-1-1' }
-      = f.error :affect_other, class: 'error-message error-margin', id: 'other-error'
-
-    #other-options class=hidden(affect_other)
-      small.question-padding Select as many as applicable.
-      #other= f.association :beneficiaries, as: :check_boxes, collection: filter_beneficiaries('Other'), label_method: :label, value_method: :id
-      .uk-width-medium-1-2
-        .checkbox.wide
-          = f.input :beneficiaries_other_required, as: :boolean, inline_label: 'Other', input_html: { class: 'toggle-other' }
-        .other.uk-hidden
-          = f.input :beneficiaries_other, input_html: { class: 'large other uk-width-medium-1-1' }
-          = f.error :beneficiaries_other, class: 'error-message other'
 
 hr.thick

@@ -210,7 +210,7 @@ feature 'Match' do
     end
   end
 
-  fscenario "When I complete my first funding proposal,
+  scenario "When I complete my first funding proposal,
             I want to see a shortlist of the most relevant funds,
             so I feel I've found suitable funding opportunities" do
     helper.submit_user_form!

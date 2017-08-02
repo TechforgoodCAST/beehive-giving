@@ -1,6 +1,5 @@
 class Proposal < ApplicationRecord
   before_validation :clear_districts_if_country_wide
-  after_validation :trigger_clear_beneficiary_ids
   before_save :save_all_age_groups_if_all_ages
   after_save :initial_recommendation
 
@@ -67,35 +66,15 @@ class Proposal < ApplicationRecord
             inclusion: { message: 'please select an option', in: [true, false] }
 
   # Beneficiaries
-  validates :affect_people, presence: {
-    message: 'you must affect either people or other groups'
-  }, unless: proc { affect_other? }
-  validates :affect_other, presence: {
-    message: 'you must affect either people or other groups'
-  }, unless: proc { affect_people? }
-  validates :affect_people, :affect_other,
+  validates :affect_people,
             inclusion: { in: [true, false], message: 'please select an option' }
   validates :gender, :age_groups,
             presence: { message: 'Please select an option' },
-            unless: proc { !affect_people? && affect_other? }
-  validates :gender, inclusion: { in: GENDERS,
-                                  message: 'please select an option' },
-                     unless: proc { !affect_people? && affect_other? }
-  validate :beneficiaries_people, :beneficiaries_other_group
-  validates :beneficiaries_other,
-            presence: { message: "please uncheck 'Other' or specify details" },
-            if: :beneficiaries_other_required
-
-  def beneficiaries_people
-    return unless beneficiaries_not_selected('People')
-    errors.add(:beneficiaries, 'Please select an option') if affect_people?
-  end
-
-  def beneficiaries_other_group
-    return unless beneficiaries_not_selected('Other') &&
-                  beneficiaries_other_required?
-    errors.add(:beneficiaries, 'Please select an option') if affect_other?
-  end
+            if: :affect_people?
+  validates :gender,
+            inclusion: { in: GENDERS, message: 'please select an option' },
+            if: :affect_people?
+  # TODO: ensure fields cleared unless :affect_people?
 
   # Location
   validates :affect_geo, inclusion: { in: 0..3,
@@ -292,11 +271,6 @@ class Proposal < ApplicationRecord
 
   private
 
-    def beneficiaries_not_selected(category)
-      (beneficiary_ids & Beneficiary.where(category: category)
-      .pluck(:id)).count < 1
-    end
-
     def parse_distribution(data, comparison)
       data
         .sort_by { |i| i['position'] }
@@ -304,7 +278,7 @@ class Proposal < ApplicationRecord
         .first.to_h.fetch('percent', 0)
     end
 
-    def beneficiaries_request
+    def beneficiaries_request # TODO: refactor to use Theme
       request = {}
       Beneficiary::BENEFICIARIES.map do |hash|
         request[hash[:sort]] = if beneficiaries.pluck(:sort)
@@ -358,17 +332,6 @@ class Proposal < ApplicationRecord
     def save_all_age_groups_if_all_ages
       return unless age_group_ids.include?(AgeGroup.first.id)
       self.age_group_ids = AgeGroup.pluck(:id)
-    end
-
-    def clear_beneficiary_ids(category)
-      self.beneficiary_ids = beneficiary_ids -
-                             Beneficiary.where(category: category).pluck(:id)
-    end
-
-    def trigger_clear_beneficiary_ids
-      clear_beneficiary_ids('People') unless affect_people?
-      clear_beneficiary_ids('Other') unless affect_other?
-      self.beneficiaries_other_required = false unless affect_other?
     end
 
     def prevent_second_proposal_until_first_is_complete

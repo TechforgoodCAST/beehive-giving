@@ -41,6 +41,10 @@ class ProposalFormCell < Cell::ViewModel
     render locals: { f: options[:f] }
   end
 
+  def themes
+    render locals: { f: options[:f] }
+  end
+
   private
 
     def load_beneficiaries
