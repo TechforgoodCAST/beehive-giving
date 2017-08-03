@@ -12,16 +12,17 @@ class TestHelper
   ENV['BEEHIVE_INSIGHT_SECRET'] = 'password'
 
   def seed_test_db
-    @age_groups           = create_list(:age_group, AgeGroup::AGE_GROUPS.count)
-    @all_ages             = @age_groups.first
-    @countries            = create_list(:country, 2)
-    @uk                   = @countries.first
-    @kenya                = @countries.last
-    @uk_districts         = create_list(:district, 3, country: @uk)
-    @kenya_districts      = create_list(:kenya_district, 3, country: @kenya)
-    @districts            = @uk_districts + @kenya_districts
-    @implementations      = create_list(:implementation, Implementation::IMPLEMENTATIONS.count)
-    @themes               = create_list(:theme, 3)
+    @age_groups      = create_list(:age_group, AgeGroup::AGE_GROUPS.count)
+    @beneficiaries   = create_list(:beneficiary, Beneficiary::BENEFICIARIES.count)
+    @all_ages        = @age_groups.first
+    @countries       = create_list(:country, 2)
+    @uk              = @countries.first
+    @kenya           = @countries.last
+    @uk_districts    = create_list(:district, 3, country: @uk)
+    @kenya_districts = create_list(:kenya_district, 3, country: @kenya)
+    @districts       = @uk_districts + @kenya_districts
+    @implementations = create_list(:implementation, Implementation::IMPLEMENTATIONS.count)
+    @themes          = create_list(:theme, 3)
     self
   end
 
