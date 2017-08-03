@@ -151,7 +151,7 @@ describe Proposal do
     end
 
     it 'clears beneficiaries from category "People" unless affect_people' do
-      @app.stub_beneficiaries_endpoint(['Other'])
+      @app.stub_beneficiaries_endpoint
       expect(@initial_proposal.beneficiaries).to eq @db[:beneficiaries]
       @initial_proposal.affect_people = false
       @initial_proposal.affect_other = true
@@ -166,7 +166,7 @@ describe Proposal do
     end
 
     it 'does not clear beneficiaries if both affect_people and affect_other' do
-      @app.stub_beneficiaries_endpoint(%w(People Other))
+      @app.stub_beneficiaries_endpoint
       @initial_proposal.affect_other = true
       @initial_proposal.save
       expect(@initial_proposal.beneficiaries).to eq @db[:beneficiaries]

@@ -19,12 +19,11 @@ module StrongParameters
     params.require(:proposal).permit(
       :type_of_support, :funding_duration, :funding_type, :total_costs,
       :total_costs_estimated, :all_funding_required, :affect_people,
-      :affect_other, :gender, :beneficiaries_other,
-      :beneficiaries_other_required, :affect_geo, :title, :tagline, :private,
+      :affect_other, :gender, :affect_geo, :title, :tagline, :private,
       :outcome1, :outcome2, :outcome3, :outcome4, :outcome5,
       :implementations_other_required, :implementations_other,
-      age_group_ids: [], beneficiary_ids: [], country_ids: [],
-      district_ids: [], implementation_ids: [], theme_ids: []
+      age_group_ids: [], country_ids: [], district_ids: [],
+      implementation_ids: [], theme_ids: []
     )
   end
 

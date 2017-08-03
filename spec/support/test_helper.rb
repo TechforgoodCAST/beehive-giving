@@ -14,9 +14,6 @@ class TestHelper
   def seed_test_db
     @age_groups           = create_list(:age_group, AgeGroup::AGE_GROUPS.count)
     @all_ages             = @age_groups.first
-    @beneficiaries        = create_list(:beneficiary, Beneficiary::BENEFICIARIES.count)
-    @beneficiaries_people = Beneficiary.people
-    @beneficiaries_other  = Beneficiary.other
     @countries            = create_list(:country, 2)
     @uk                   = @countries.first
     @kenya                = @countries.last
@@ -87,9 +84,8 @@ class TestHelper
     self
   end
 
-  def stub_beneficiaries_endpoint(categories = ['People'])
-    data = Beneficiary::BENEFICIARIES
-           .map { |i| [i[:sort], categories.include?(i[:category]) ? 1 : 0] }.to_h
+  def stub_beneficiaries_endpoint
+    data = Beneficiary::BENEFICIARIES.map { |i| [i[:sort], 0] }.to_h
     stub_beehive_insight(ENV['BEEHIVE_INSIGHT_ENDPOINT'], data)
     self
   end
@@ -154,7 +150,6 @@ class TestHelper
                                                  countries: [@uk],
                                                  districts: @uk_districts,
                                                  age_groups: @age_groups,
-                                                 beneficiaries: @beneficiaries,
                                                  themes: @themes)
     self
   end
@@ -170,7 +165,6 @@ class TestHelper
                                                        countries: [@uk],
                                                        districts: @uk_districts,
                                                        age_groups: @age_groups,
-                                                       beneficiaries: @beneficiaries,
                                                        implementations: @implementations,
                                                        themes: @themes)
     self
@@ -187,7 +181,6 @@ class TestHelper
                                           countries: [@uk],
                                           districts: @uk_districts,
                                           age_groups: @age_groups,
-                                          beneficiaries: @beneficiaries,
                                           implementations: @implementations,
                                           themes: @themes)
     self
@@ -208,9 +201,6 @@ class TestHelper
     instances = {
       age_groups: @age_groups,
       all_ages: @all_ages,
-      beneficiaries: @beneficiaries,
-      beneficiaries_people: @beneficiaries_people,
-      beneficiaries_other: @beneficiaries_other,
       countries: @countries,
       uk: @uk,
       kenya: @kenya,
