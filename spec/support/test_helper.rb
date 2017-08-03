@@ -201,6 +201,7 @@ class TestHelper
   def instances
     instances = {
       age_groups: @age_groups,
+      beneficiaries: @beneficiaries,
       all_ages: @all_ages,
       countries: @countries,
       uk: @uk,
