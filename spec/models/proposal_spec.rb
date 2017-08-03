@@ -42,10 +42,6 @@ describe Proposal do
         expect(@initial_proposal.age_groups.count).to eq 8
       end
 
-      it 'has many beneficiaries' do
-        expect(@initial_proposal.beneficiaries.count).to eq 20
-      end
-
       it 'has many countries' do
         @initial_proposal.countries = @db[:countries]
         @initial_proposal.districts = @db[:districts]
@@ -101,17 +97,15 @@ describe Proposal do
       expect(@initial_proposal.state).to eq 'registered'
     end
 
-    it 'beneficiaries_other present if beneficiaries_other_required' do
-      @initial_proposal.beneficiaries_other_required = true
-      expect(@initial_proposal).not_to be_valid
-    end
+    it 'clears age_groups and gender unless affect_people' do
+      expect(@initial_proposal.age_groups.size).to eq 8
+      expect(@initial_proposal.gender).to eq 'Female'
 
-    it 'must affect_people or affect_other' do
       @initial_proposal.affect_people = false
-      expect(@initial_proposal).not_to be_valid
-      @initial_proposal.affect_other = true
-      @initial_proposal.beneficiaries = @db[:beneficiaries_other]
-      expect(@initial_proposal).to be_valid
+      @initial_proposal.save!
+
+      expect(@initial_proposal.age_groups.size).to eq 0
+      expect(@initial_proposal.gender).to eq nil
     end
 
     it 'requires gender if affect_people' do
@@ -124,11 +118,6 @@ describe Proposal do
       expect(@initial_proposal).to_not be_valid
     end
 
-    it 'requires beneficiaries if affect_people' do
-      @initial_proposal.beneficiaries = []
-      expect(@initial_proposal).to_not be_valid
-    end
-
     it 'does not require gender and age_groups if affect_other' do
       @initial_proposal.affect_people = false
       @initial_proposal.affect_other = true
@@ -137,39 +126,10 @@ describe Proposal do
       expect(@initial_proposal).to be_valid
     end
 
-    it 'required beneficiaries from category "Other" if affect_other' do
-      @initial_proposal.affect_people = false
-      @initial_proposal.affect_other = true
-      expect(@initial_proposal).to be_valid
-      expect(@initial_proposal.beneficiaries).to eq @db[:beneficiaries_other]
-    end
-
     it 'selects all ages groups is "All ages" selected' do
       @initial_proposal.age_groups = [@db[:all_ages]]
       @initial_proposal.save
       expect(@initial_proposal.age_groups).to eq @db[:age_groups]
-    end
-
-    it 'clears beneficiaries from category "People" unless affect_people' do
-      @app.stub_beneficiaries_endpoint
-      expect(@initial_proposal.beneficiaries).to eq @db[:beneficiaries]
-      @initial_proposal.affect_people = false
-      @initial_proposal.affect_other = true
-      @initial_proposal.save
-      expect(@initial_proposal.beneficiaries).to eq @db[:beneficiaries_other]
-    end
-
-    it 'clears beneficiaries from category "Other" unless affect_other' do
-      expect(@initial_proposal.beneficiaries).to eq @db[:beneficiaries]
-      @initial_proposal.save
-      expect(@initial_proposal.beneficiaries).to eq @db[:beneficiaries_people]
-    end
-
-    it 'does not clear beneficiaries if both affect_people and affect_other' do
-      @app.stub_beneficiaries_endpoint
-      @initial_proposal.affect_other = true
-      @initial_proposal.save
-      expect(@initial_proposal.beneficiaries).to eq @db[:beneficiaries]
     end
 
     it 'does not require districts if affect_geo at country level' do

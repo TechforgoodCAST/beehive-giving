@@ -1,6 +1,7 @@
 class Proposal < ApplicationRecord
   before_validation :clear_districts_if_country_wide
-  before_save :save_all_age_groups_if_all_ages
+  before_save :save_all_age_groups_if_all_ages,
+              :clear_age_groups_and_gender_unless_affect_people
   after_save :initial_recommendation
 
   has_many :recommendations, dependent: :destroy
@@ -46,7 +47,7 @@ class Proposal < ApplicationRecord
   end
 
   validate :prevent_second_proposal_until_first_is_complete,
-           if: 'self.initial?', on: :create
+           if: :initial?, on: :create
 
   # Requirements
   validates :recipient, :funding_duration, :themes, presence: true
@@ -346,5 +347,11 @@ class Proposal < ApplicationRecord
     def clear_districts_if_country_wide
       return if affect_geo.nil?
       self.districts = [] if affect_geo > 1
+    end
+
+    def clear_age_groups_and_gender_unless_affect_people
+      return if affect_people?
+      self.age_groups = []
+      self.gender = nil
     end
 end
