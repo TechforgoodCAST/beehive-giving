@@ -12,19 +12,17 @@ class TestHelper
   ENV['BEEHIVE_INSIGHT_SECRET'] = 'password'
 
   def seed_test_db
-    @age_groups           = create_list(:age_group, AgeGroup::AGE_GROUPS.count)
-    @all_ages             = @age_groups.first
-    @beneficiaries        = create_list(:beneficiary, Beneficiary::BENEFICIARIES.count)
-    @beneficiaries_people = Beneficiary.people
-    @beneficiaries_other  = Beneficiary.other
-    @countries            = create_list(:country, 2)
-    @uk                   = @countries.first
-    @kenya                = @countries.last
-    @uk_districts         = create_list(:district, 3, country: @uk)
-    @kenya_districts      = create_list(:kenya_district, 3, country: @kenya)
-    @districts            = @uk_districts + @kenya_districts
-    @implementations      = create_list(:implementation, Implementation::IMPLEMENTATIONS.count)
-    @themes               = create_list(:theme, 3)
+    @age_groups      = create_list(:age_group, AgeGroup::AGE_GROUPS.count)
+    @beneficiaries   = create_list(:beneficiary, Beneficiary::BENEFICIARIES.count)
+    @all_ages        = @age_groups.first
+    @countries       = create_list(:country, 2)
+    @uk              = @countries.first
+    @kenya           = @countries.last
+    @uk_districts    = create_list(:district, 3, country: @uk)
+    @kenya_districts = create_list(:kenya_district, 3, country: @kenya)
+    @districts       = @uk_districts + @kenya_districts
+    @implementations = create_list(:implementation, Implementation::IMPLEMENTATIONS.count)
+    @themes          = create_list(:theme, 3)
     self
   end
 
@@ -87,9 +85,8 @@ class TestHelper
     self
   end
 
-  def stub_beneficiaries_endpoint(categories = ['People'])
-    data = Beneficiary::BENEFICIARIES
-           .map { |i| [i[:sort], categories.include?(i[:category]) ? 1 : 0] }.to_h
+  def stub_beneficiaries_endpoint
+    data = Beneficiary::BENEFICIARIES.map { |i| [i[:sort], 0] }.to_h
     stub_beehive_insight(ENV['BEEHIVE_INSIGHT_ENDPOINT'], data)
     self
   end
@@ -151,8 +148,10 @@ class TestHelper
 
   def build_initial_proposal
     @initial_proposal = build(:initial_proposal, recipient: @recipient,
-                                                 countries: [@uk], districts: @uk_districts,
-                                                 age_groups: @age_groups, beneficiaries: @beneficiaries)
+                                                 countries: [@uk],
+                                                 districts: @uk_districts,
+                                                 age_groups: @age_groups,
+                                                 themes: @themes)
     self
   end
 
@@ -164,9 +163,11 @@ class TestHelper
 
   def build_registered_proposal
     @registered_proposal = build(:registered_proposal, recipient: @recipient,
-                                                       countries: [@uk], districts: @uk_districts,
-                                                       age_groups: @age_groups, beneficiaries: @beneficiaries,
-                                                       implementations: @implementations)
+                                                       countries: [@uk],
+                                                       districts: @uk_districts,
+                                                       age_groups: @age_groups,
+                                                       implementations: @implementations,
+                                                       themes: @themes)
     self
   end
 
@@ -178,9 +179,11 @@ class TestHelper
 
   def build_complete_proposal
     @complete_proposal = build(:proposal, recipient: @recipient,
-                                          countries: [@uk], districts: @uk_districts,
-                                          age_groups: @age_groups, beneficiaries: @beneficiaries,
-                                          implementations: @implementations)
+                                          countries: [@uk],
+                                          districts: @uk_districts,
+                                          age_groups: @age_groups,
+                                          implementations: @implementations,
+                                          themes: @themes)
     self
   end
 
@@ -198,10 +201,8 @@ class TestHelper
   def instances
     instances = {
       age_groups: @age_groups,
-      all_ages: @all_ages,
       beneficiaries: @beneficiaries,
-      beneficiaries_people: @beneficiaries_people,
-      beneficiaries_other: @beneficiaries_other,
+      all_ages: @all_ages,
       countries: @countries,
       uk: @uk,
       kenya: @kenya,

@@ -17,7 +17,6 @@ class ProposalFormCell < Cell::ViewModel
   end
 
   def beneficiaries
-    load_beneficiaries
     render locals: { f: options[:f] }
   end
 
@@ -41,15 +40,11 @@ class ProposalFormCell < Cell::ViewModel
     render locals: { f: options[:f] }
   end
 
+  def themes
+    render locals: { f: options[:f] }
+  end
+
   private
-
-    def load_beneficiaries
-      @beneficiaries ||= Beneficiary.all
-    end
-
-    def filter_beneficiaries(category)
-      @beneficiaries.select { |b| b[:category] == category }
-    end
 
     def hidden(property)
       'uk-hidden' unless property

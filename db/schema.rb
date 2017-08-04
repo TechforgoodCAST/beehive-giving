@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170726093944) do
+ActiveRecord::Schema.define(version: 20170804094155) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -425,6 +425,15 @@ ActiveRecord::Schema.define(version: 20170726093944) do
     t.index ["state"], name: "index_profiles_on_state"
   end
 
+  create_table "proposal_themes", force: :cascade do |t|
+    t.bigint "proposal_id"
+    t.bigint "theme_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["proposal_id"], name: "index_proposal_themes_on_proposal_id"
+    t.index ["theme_id"], name: "index_proposal_themes_on_theme_id"
+  end
+
   create_table "proposals", id: :serial, force: :cascade do |t|
     t.integer "recipient_id"
     t.string "title"
@@ -557,4 +566,6 @@ ActiveRecord::Schema.define(version: 20170726093944) do
   add_foreign_key "enquiries", "proposals"
   add_foreign_key "fund_themes", "funds"
   add_foreign_key "fund_themes", "themes"
+  add_foreign_key "proposal_themes", "proposals"
+  add_foreign_key "proposal_themes", "themes"
 end

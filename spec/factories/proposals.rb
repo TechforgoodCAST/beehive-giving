@@ -8,9 +8,7 @@ FactoryGirl.define do
     total_costs_estimated false
     all_funding_required  true
     affect_people         true
-    affect_other          false
     gender                Proposal::GENDERS[1]
-    beneficiaries_other_required false
     affect_geo            1 # One or more regions
     private               false
     after(:create, &:initial_recommendation)

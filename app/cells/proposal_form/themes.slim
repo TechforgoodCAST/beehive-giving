@@ -1,0 +1,12 @@
+.uk-form.uk-form-stacked.form
+
+  h3 Themes
+
+  .uk-width-medium-1-1.uk-margin-top
+    .label Which themes best relate to your proposed work?
+    small Select as many as applicable
+
+    = f.association :themes, as: :check_boxes, label_method: :name, value_method: :id
+    = f.error :themes, class: 'error-message error-margin'
+
+hr.thick
