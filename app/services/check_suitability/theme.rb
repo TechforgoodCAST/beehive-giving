@@ -24,7 +24,8 @@ class CheckSuitability
 
       def match_themes(proposal_themes, fund_themes)
         # return the themes from the proposal that match those from the fund
-        proposal_themes.filter { |theme, score| fund_themes.pluck(:name).include? theme }
+        fund_theme_names = fund_themes.pluck(:name)
+        proposal_themes.select { |theme, score| fund_theme_names.include? theme }
       end
   end
 end
