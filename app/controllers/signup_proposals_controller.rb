@@ -7,7 +7,10 @@ class SignupProposalsController < ApplicationController
     if @proposal # NOTE: if invalid legacy proposal
       @proposal.state = 'transferred'
     else
-      @proposal = SignupProposal.new(@recipient).build_or_transfer
+      @proposal = @recipient.proposals.new(
+        # TODO: avoid db call
+        countries: [Country.find_by(alpha2: @recipient.country)]
+      )
     end
   end
 
