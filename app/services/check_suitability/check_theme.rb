@@ -1,9 +1,9 @@
 class CheckSuitability
-  class Theme < CheckSuitability
+  class CheckTheme < CheckSuitability
     def call(proposal, fund)
       super
       proposal_themes = get_proposal_themes(proposal)
-      match_score = match_themes(proposal_themes, fund_themes).values.reduce(:+)
+      match_score = match_themes(proposal_themes, fund.themes).values.reduce(:+)
       proposal_score = proposal_themes.values.reduce(:+)
       match_score.to_f / proposal_score.to_f
     end

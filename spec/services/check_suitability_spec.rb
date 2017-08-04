@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe CheckSuitability do
+fdescribe CheckSuitability do
   before(:each) do
     @app.seed_test_db.setup_funds(num: 2)
         .create_recipient.create_registered_proposal
