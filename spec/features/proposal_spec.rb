@@ -226,93 +226,38 @@ feature 'Proposal' do
     end
   end
 
-  context 'legacy' do
-    before(:each) do
-      @recipient.update(created_at: Date.new(2016, 4, 27))
-      @current_profile = build(
-        :current_profile, organisation: @recipient, countries: @db[:countries],
-                          districts: @db[:districts],
-                          age_groups: @db[:age_groups],
-                          beneficiaries: @db[:beneficiaries]
-      )
-      @legacy_profile = build(
-        :legacy_profile, organisation: @recipient, countries: @db[:countries],
-                         districts: @db[:districts],
-                         age_groups: @db[:age_groups],
-                         beneficiaries: @db[:beneficiaries]
-      )
-    end
+  scenario 'When I have an initial proposal,
+            I want to be redirected and notified,
+            so I can update my proposal' do
+    @app.create_initial_proposal
+    proposal = Proposal.last
+    visit proposal_funds_path(proposal)
+    expect(current_path).to eq new_signup_proposal_path
+    expect(page).to have_text 'Your details are out of date'
+  end
 
-    scenario "When I have a 'current profile',
-              I want to be redirected to the edit proposal page,
-              so I can update my proposal" do
-      @current_profile.save!
-      visit proposal_funds_path(@current_profile)
-      expect(current_path).to eq new_signup_proposal_path
-      expect(page).to have_text 'Your details are out of date'
-    end
-
-    scenario "When I have a 'legacy profile',
-              I want to be redirected to the edit proposal page,
-              so I can update my proposal" do
-      @legacy_profile.save(validate: false)
-      visit proposal_funds_path(@legacy_profile)
-      expect(current_path).to eq new_signup_proposal_path
-      expect(page).to have_text 'Your details are out of date'
-    end
-
-    context 'no proposal' do
-      before(:each) do
-        @recipient.proposals.destroy_all
-        @recipient.update(created_at: Date.new(2016, 4, 27))
-      end
-
-      scenario "When I have a 'transferred proposal',
-                I want it to populate from my 'current profile',
-                so my previous work is retained" do
-        @current_profile.gender = 'Other'
-        @current_profile.save!
-        visit proposal_funds_path(@current_profile)
-        expect(current_path).to eq new_signup_proposal_path
-        expect(find('#proposal_gender').value).to eq 'Other'
-        # TODO: check other fields
-      end
-
-      scenario "When I have a 'transferred proposal',
-                I want it to populate from my 'legacy profile',
-                so my previous work is retained" do
-        @legacy_profile.gender = 'Other'
-        @legacy_profile.save(validate: false)
-        visit proposal_funds_path(@legacy_profile)
-        expect(current_path).to eq new_signup_proposal_path
-        expect(find('#proposal_gender').value).to eq 'Other'
-        # TODO: check other fields
-      end
-    end
-
-    scenario 'When I have an invalid organisation,
-              I want to update my details,
-              so I can continue to update my transferred proposal' do
-      match.stub_charity_commission.stub_companies_house
-      @recipient = build(:legacy_recipient, org_type: 4)
-      @recipient.created_at = Date.new(2016, 4, 27)
-      @recipient.set_slug
-      @recipient.save(validate: false)
-      @current_profile.organisation = @recipient
-      @current_profile.save!
-      @db[:user].organisation = @recipient
-      @db[:user].save
-      @app.sign_in
-      visit proposal_funds_path(@current_profile)
-      expect(current_path).to eq edit_signup_recipient_path(@recipient)
-      expect(page).to have_text 'Your details are out of date'
-      fill_in :recipient_street_address, with: 'London Road'
-      select 'Less than £10k'
-      select 'None', from: :recipient_employees
-      select 'None', from: :recipient_volunteers
-      click_button 'Next'
-      expect(current_path).to eq new_signup_proposal_path
-      expect(page).to have_text 'Your details are out of date'
-    end
+  scenario 'When I have an invalid organisation,
+            I want to update my details,
+            so I can continue to update my transferred proposal' do
+    match.stub_charity_commission.stub_companies_house
+    @app.create_initial_proposal
+    recipient = build(:legacy_recipient, org_type: 4)
+    recipient.set_slug
+    recipient.save(validate: false)
+    proposal = Proposal.last
+    proposal.update_column(:recipient_id, recipient.id)
+    @db[:user].organisation = recipient
+    @db[:user].save
+    @app.sign_in
+    visit proposal_funds_path(proposal)
+    expect(current_path).to eq edit_signup_recipient_path(recipient)
+    expect(page).to have_text 'Your details are out of date'
+    fill_in :recipient_street_address, with: 'London Road'
+    select 'Less than £10k'
+    select 'None', from: :recipient_employees
+    select 'None', from: :recipient_volunteers
+    click_button 'Next'
+    expect(current_path).to eq new_signup_proposal_path
+    expect(page).to have_text 'Your details are out of date'
   end
 end
