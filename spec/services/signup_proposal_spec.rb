@@ -52,10 +52,18 @@ describe SignupProposal do
     end
 
     it '#transfer_data!' do
+      Beneficiary.find_by(label: 'Other organisations').destroy
+      Beneficiary.find_by(label: 'This organisation')
+                 .update(label: 'Organisations')
+      Theme.destroy_all
+      SignupProposal::MAPPING.values.each do |theme|
+        create :theme, name: theme
+      end
+
       proposal = SignupProposal.new(@legacy_recipient)
-      proposal.send(:transfer_data!, @legacy_profile)
+      proposal.send(:transfer_data!, @legacy_profile.reload)
       transfered_proposal = proposal.instance_variable_get(:@proposal)
-      expect(transfered_proposal.beneficiaries.size).to eq 25
+      expect(transfered_proposal.themes.size).to eq 24
       # TODO: cover all transferred fields
     end
 

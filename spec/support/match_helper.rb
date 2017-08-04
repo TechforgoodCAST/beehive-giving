@@ -93,20 +93,21 @@ class MatchHelper
     fill_in :proposal_funding_duration, with: 12
     select 'Revenue funding - running costs, salaries and activity costs'
     fill_in :proposal_total_costs, with: 10_000.0
+    choose :proposal_all_funding_required_true
 
     # Beneficiaries
-    choose :proposal_all_funding_required_true
+    choose :proposal_affect_people_true
     select 'All genders'
     check "proposal_age_group_ids_#{AgeGroup.first.id}"
-    choose :proposal_affect_people_true
-    Beneficiary.where(category: 'People').each do |b|
-      check "proposal_beneficiary_ids_#{b.id}"
-    end
-    choose :proposal_affect_other_false
 
     # Location
     choose 'An entire country'
     select Country.first.name # TODO: js testing
+
+    # Themes
+    Theme.limit(3).each do |t|
+      check "proposal_theme_ids_#{t.id}"
+    end
 
     # Privacy
     choose :proposal_private_false
