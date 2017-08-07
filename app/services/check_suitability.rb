@@ -10,4 +10,8 @@ class CheckSuitability < CheckBase
     def preload_associations(funds)
       funds.includes(:themes, :districts)
     end
+
+    def key_name(obj)
+      obj.class.name.demodulize.underscore.gsub!("_suitability", "")
+    end
 end
