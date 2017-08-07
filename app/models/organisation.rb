@@ -26,8 +26,6 @@ class Organisation < ApplicationRecord
   has_one :subscription, dependent: :destroy
   has_many :users, dependent: :destroy
 
-  has_many :profiles, dependent: :destroy # TODO: deprecated
-
   geocoded_by :search_address
   after_validation :geocode,
                    if: :street_address_changed?,

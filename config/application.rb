@@ -32,7 +32,6 @@ module Beehive
       organisations.js
       pages.js
       password_resets.js
-      profiles.js
       proposals.js
       recipients.js
       signup.js
