@@ -8,6 +8,6 @@ class CheckSuitability < CheckBase
   private
 
     def preload_associations(funds)
-      funds.includes(:themes)
+      funds.includes(:themes, :districts)
     end
 end
