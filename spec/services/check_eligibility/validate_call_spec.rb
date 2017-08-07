@@ -29,3 +29,19 @@ end
 describe CheckEligibility::Quiz do
   it_behaves_like 'CheckEligibility::Child#call'
 end
+
+describe CheckEligibility::Amount do
+  it_behaves_like 'CheckEligibility::Child#call'
+end
+
+describe CheckSuitability::AmountSuitability do
+  it_behaves_like 'CheckEligibility::Child#call'
+end
+
+describe CheckSuitability::LocationSuitability do
+  it_behaves_like 'CheckEligibility::Child#call'
+end
+
+describe CheckSuitability::ThemeSuitability do
+  it_behaves_like 'CheckEligibility::Child#call'
+end
