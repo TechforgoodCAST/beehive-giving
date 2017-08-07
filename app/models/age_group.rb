@@ -11,7 +11,6 @@ class AgeGroup < ApplicationRecord
   ].freeze
 
   has_and_belongs_to_many :proposals
-  has_and_belongs_to_many :profiles # TODO: deprecated
 
   validates :label, :age_from, :age_to, presence: true
   validates :label, uniqueness: true

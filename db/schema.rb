@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170804094155) do
+ActiveRecord::Schema.define(version: 20170804165623) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,12 +55,6 @@ ActiveRecord::Schema.define(version: 20170804094155) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "age_groups_profiles", id: :serial, force: :cascade do |t|
-    t.integer "age_group_id"
-    t.integer "profile_id"
-    t.index ["age_group_id", "profile_id"], name: "index_age_groups_profiles_on_age_group_id_and_profile_id"
-  end
-
   create_table "age_groups_proposals", id: :serial, force: :cascade do |t|
     t.integer "age_group_id"
     t.integer "proposal_id"
@@ -84,14 +78,6 @@ ActiveRecord::Schema.define(version: 20170804094155) do
     t.string "sort"
   end
 
-  create_table "beneficiaries_profiles", id: :serial, force: :cascade do |t|
-    t.integer "beneficiary_id"
-    t.integer "profile_id"
-    t.index ["beneficiary_id", "profile_id"], name: "index_beneficiaries_profiles_on_beneficiary_id_and_profile_id"
-    t.index ["beneficiary_id"], name: "index_beneficiaries_profiles_on_beneficiary_id"
-    t.index ["profile_id"], name: "index_beneficiaries_profiles_on_profile_id"
-  end
-
   create_table "beneficiaries_proposals", id: :serial, force: :cascade do |t|
     t.integer "beneficiary_id"
     t.integer "proposal_id"
@@ -113,14 +99,6 @@ ActiveRecord::Schema.define(version: 20170804094155) do
     t.datetime "updated_at", null: false
     t.index ["country_id"], name: "index_countries_funds_on_country_id"
     t.index ["fund_id"], name: "index_countries_funds_on_fund_id"
-  end
-
-  create_table "countries_profiles", id: :serial, force: :cascade do |t|
-    t.integer "country_id"
-    t.integer "profile_id"
-    t.index ["country_id", "profile_id"], name: "index_countries_profiles_on_country_id_and_profile_id"
-    t.index ["country_id"], name: "index_countries_profiles_on_country_id"
-    t.index ["profile_id"], name: "index_countries_profiles_on_profile_id"
   end
 
   create_table "countries_proposals", id: :serial, force: :cascade do |t|
@@ -147,14 +125,6 @@ ActiveRecord::Schema.define(version: 20170804094155) do
     t.datetime "updated_at", null: false
     t.index ["district_id"], name: "index_districts_funds_on_district_id"
     t.index ["fund_id"], name: "index_districts_funds_on_fund_id"
-  end
-
-  create_table "districts_profiles", id: :serial, force: :cascade do |t|
-    t.integer "district_id"
-    t.integer "profile_id"
-    t.index ["district_id", "profile_id"], name: "index_districts_profiles_on_district_id_and_profile_id"
-    t.index ["district_id"], name: "index_districts_profiles_on_district_id"
-    t.index ["profile_id"], name: "index_districts_profiles_on_profile_id"
   end
 
   create_table "districts_proposals", id: :serial, force: :cascade do |t|
@@ -301,32 +271,10 @@ ActiveRecord::Schema.define(version: 20170804094155) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "implementations_profiles", id: :serial, force: :cascade do |t|
-    t.integer "implementation_id"
-    t.integer "profile_id"
-    t.index ["implementation_id", "profile_id"], name: "index_implementations_profiles"
-    t.index ["implementation_id"], name: "index_implementations_profiles_on_implementation_id"
-    t.index ["profile_id"], name: "index_implementations_profiles_on_profile_id"
-  end
-
   create_table "implementations_proposals", id: :serial, force: :cascade do |t|
     t.integer "implementation_id"
     t.integer "proposal_id"
     t.index ["implementation_id", "proposal_id"], name: "index_implementations_proposals"
-  end
-
-  create_table "implementors", id: :serial, force: :cascade do |t|
-    t.string "label", limit: 255
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "implementors_profiles", id: :serial, force: :cascade do |t|
-    t.integer "implementor_id"
-    t.integer "profile_id"
-    t.index ["implementor_id", "profile_id"], name: "index_implementors_profiles_on_implementor_id_and_profile_id"
-    t.index ["implementor_id"], name: "index_implementors_profiles_on_implementor_id"
-    t.index ["profile_id"], name: "index_implementors_profiles_on_profile_id"
   end
 
   create_table "organisations", id: :serial, force: :cascade do |t|
@@ -385,44 +333,6 @@ ActiveRecord::Schema.define(version: 20170804094155) do
     t.integer "funds_checked", default: 0, null: false
     t.index ["id", "type"], name: "index_organisations_on_id_and_type"
     t.index ["slug"], name: "index_organisations_on_slug", unique: true
-  end
-
-  create_table "profiles", id: :serial, force: :cascade do |t|
-    t.integer "organisation_id"
-    t.string "gender", limit: 255
-    t.string "currency", limit: 255
-    t.integer "year"
-    t.integer "min_age"
-    t.integer "max_age"
-    t.integer "income"
-    t.integer "expenditure"
-    t.integer "volunteer_count"
-    t.integer "staff_count"
-    t.integer "job_role_count"
-    t.integer "department_count"
-    t.integer "goods_count"
-    t.integer "units_count"
-    t.integer "services_count"
-    t.integer "beneficiaries_count"
-    t.boolean "income_actual"
-    t.boolean "expenditure_actual"
-    t.boolean "beneficiaries_count_actual"
-    t.boolean "units_count_actual"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "does_sell"
-    t.integer "trustee_count"
-    t.string "state"
-    t.boolean "beneficiaries_other_required"
-    t.string "beneficiaries_other"
-    t.boolean "implementors_other_required"
-    t.string "implementors_other"
-    t.boolean "implementations_other_required"
-    t.string "implementations_other"
-    t.boolean "affect_people"
-    t.boolean "affect_other"
-    t.index ["organisation_id"], name: "index_profiles_on_organisation_id"
-    t.index ["state"], name: "index_profiles_on_state"
   end
 
   create_table "proposal_themes", force: :cascade do |t|

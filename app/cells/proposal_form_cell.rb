@@ -63,8 +63,7 @@ class ProposalFormCell < Cell::ViewModel
     end
 
     def load_districts # TODO: refactor
-      @recipient_country = Country.find_by(alpha2: recipient.country) ||
-                           recipient.profiles.first.countries.first
+      @recipient_country = Country.find_by alpha2: recipient.country
       @district_ids = @recipient_country
                       .districts.order(:region, :name).map do |d|
                         [
