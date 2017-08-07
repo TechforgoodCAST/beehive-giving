@@ -64,11 +64,8 @@ class CheckSuitability
       end
 
       def match_ineligible(fund, proposal, result = {})
-        proposal.eligibility.reject { |_, v| v.value?(true) }
-                            .keys.each do |slug|
-          if slug == fund.slug
-            result = { 'score' => -1, 'reason' => 'ineligible' }
-          end
+        unless proposal.eligibility.fetch(fund.slug, {}).fetch("location", {}).fetch("eligible", true)
+          result = { 'score' => -1, 'reason' => 'ineligible' }
         end
         result
       end

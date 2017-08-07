@@ -28,15 +28,18 @@ describe CheckSuitability do
     @funds[0].themes = [@t1]
     @funds[1].themes = [@t1, @t2]
     @proposal.themes = [@t1, @t2]
+    @proposal.eligibility[@funds[1].slug]['location']['eligible'] = false
 
     response = {
-      'acme-awards-for-all-1' => {
-        'theme_suitability' => {'score' => 0.5},
-        'amount_suitability' => {'score' => 0.2},
+      @funds[0].slug => {
+        'theme' => {'score' => 0.5},
+        'amount' => {'score' => 0.2},
+        'location' => {'score' => 1},
       },
-      'acme-awards-for-all-2' => {
-        'theme_suitability' => {'score' => 1},
-        'amount_suitability' => {'score' => 0.2},
+      @funds[1].slug => {
+        'theme' => {'score' => 1},
+        'amount' => {'score' => 0.2},
+        'location' => {"score"=>-1, "reason"=>"ineligible"},
       }
     }
 
@@ -58,19 +61,22 @@ describe CheckSuitability do
     @funds[0].themes = [@t1]
     @funds[1].themes = [@t1, @t2]
     @proposal.themes = [@t1, @t2]
-
-    subject.call_each!(@proposal, @funds)
+    @proposal.eligibility[@funds[1].slug]['location']['eligible'] = false
 
     response = {
-      'acme-awards-for-all-1' => {
-        'theme_suitability' => {'score' => 0.5},
-        'amount_suitability' => {'score' => 0.2}
+      @funds[0].slug => {
+        'theme' => {'score' => 0.5},
+        'amount' => {'score' => 0.2},
+        'location' => {'score' => 1},
       },
-      'acme-awards-for-all-2' => {
-        'theme_suitability' => {'score' => 1.0},
-        'amount_suitability' => {'score' => 0.2},
+      @funds[1].slug => {
+        'theme' => {'score' => 1},
+        'amount' => {'score' => 0.2},
+        'location' => {"score"=>-1, "reason"=>"ineligible"},
       }
     }
+
+    subject.call_each!(@proposal, @funds)
     expect(@proposal.suitability).to eq response
   end
 end
