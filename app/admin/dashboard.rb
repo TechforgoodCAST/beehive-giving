@@ -18,8 +18,8 @@ ActiveAdmin.register_page 'Dashboard' do
           h3 'Non-profits'
           h5 'Recipients'
           h1 number_with_delimiter Recipient.joins(:users).all.count
-          h5 'Profiles'
-          h1 number_with_delimiter Profile.joins(:organisation).all.count
+          h5 'Proposals'
+          h1 number_with_delimiter Proposal.all.count
         end
 
         span class: 'blank_slate' do
@@ -52,8 +52,6 @@ ActiveAdmin.register_page 'Dashboard' do
           h3 'Funders'
           h5 'funds_checked'
           h1 number_with_delimiter Recipient.sum(:funds_checked)
-          h5 'Proposals'
-          h1 number_with_delimiter Proposal.all.count
         end
 
         span class: 'blank_slate' do
@@ -86,12 +84,6 @@ ActiveAdmin.register_page 'Dashboard' do
 
     def recipient_count_by_month
       Recipient.joins(:users).group_by_month('users.created_at', last: 8).count
-    end
-
-    def profile_count
-      Profile.where(state: 'complete')
-             .select(:organisation_id)
-             .group_by_week(:created_at, week_start: :mon, last: 8).count
     end
 
     def unlock_count(count)
@@ -205,12 +197,6 @@ ActiveAdmin.register_page 'Dashboard' do
           tr do
             td 'Feedback'
             feedback_count.each_with_index do |count, i|
-              td count[1].positive? ? percentage(count, i) : '-'
-            end
-          end
-          tr do
-            td 'Profiles'
-            profile_count.each_with_index do |count, i|
               td count[1].positive? ? percentage(count, i) : '-'
             end
           end

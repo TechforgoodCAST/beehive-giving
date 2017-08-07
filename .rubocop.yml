@@ -36,7 +36,6 @@ Metrics/LineLength:
     - config/**/**
     - lib/tasks/**
     - app/admin/**
-    - app/models/profile.rb # TODO: deprecated
     - test/**/** # TODO: deprecated
 
 Metrics/MethodLength:
