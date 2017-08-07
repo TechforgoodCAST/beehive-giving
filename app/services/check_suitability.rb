@@ -1,5 +1,5 @@
 class CheckSuitability < CheckBase
-  CHECKS = [CheckTheme].map(&:new)
+  CHECKS = [ThemeSuitability].map(&:new)
 
   def call_each!(proposal, funds)
     proposal.suitability.merge! call_each(proposal, funds)
