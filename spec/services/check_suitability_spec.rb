@@ -34,7 +34,7 @@ describe CheckSuitability do
       @funds[0].slug => {
         'theme' => {'score' => 0.5},
         'amount' => {'score' => 0.2},
-        'location' => {'score' => 1},
+        'location' => {'score' => 1, "reason"=>"anywhere"},
       },
       @funds[1].slug => {
         'theme' => {'score' => 1},
@@ -67,7 +67,7 @@ describe CheckSuitability do
       @funds[0].slug => {
         'theme' => {'score' => 0.5},
         'amount' => {'score' => 0.2},
-        'location' => {'score' => 1},
+        'location' => {'score' => 1, "reason"=>"anywhere"},
       },
       @funds[1].slug => {
         'theme' => {'score' => 1},

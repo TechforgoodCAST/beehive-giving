@@ -33,7 +33,7 @@ describe CheckSuitability::LocationSuitability do
 
   it 'ineligble set to -1' do
     @proposal.eligibility = {
-      @anywhere.slug => { 'location' => false }
+      @anywhere.slug => { 'location' => {'eligible' => false} }
     }
     result = { 'score' => -1, 'reason' => 'ineligible' }
     expect(subject.call(@proposal, @anywhere)).to eq result
