@@ -6,7 +6,7 @@ class CheckBase
     updates = {}
     remove_funds_not_passed_in!(funds, updates)
     preload_associations(funds).each do |fund|
-      CHECKS.each do |check|
+      self.class::CHECKS.each do |check|
         updates[fund.slug] = {} unless updates.key? fund.slug
         updates[fund.slug][key_name(check)] = check.call(proposal, fund)
         updates[fund.slug].compact!
