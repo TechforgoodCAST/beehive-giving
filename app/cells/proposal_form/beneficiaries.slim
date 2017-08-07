@@ -11,7 +11,7 @@
 
       .label.question-padding Which genders?
       .question-padding
-        = f.input :gender, collection: Profile::GENDERS, input_html: { class: 'large uk-width-1-1' }
+        = f.input :gender, collection: Proposal::GENDERS, input_html: { class: 'large uk-width-1-1' }
         = f.error :gender, class: 'error-message'
 
       hr

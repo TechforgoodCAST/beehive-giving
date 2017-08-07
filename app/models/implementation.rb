@@ -11,7 +11,6 @@ class Implementation < ApplicationRecord
   ].freeze
 
   has_and_belongs_to_many :proposals
-  has_and_belongs_to_many :profiles # TODO: deprecated
 
   validates :label, presence: true
 end
