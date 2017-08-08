@@ -129,11 +129,7 @@ class Proposal < ApplicationRecord
     initial_recommendation
   end
 
-  def deprecated_recommendation(fund)
-    Recommendation.find_by(proposal: self, fund: fund)
-  end
-
-  def show_fund?(fund)
+  def show_fund?(fund) # TODO: refactor
     recipient.subscribed? ||
       (recommended_funds - ineligible_fund_ids)
         .take(RECOMMENDATION_LIMIT).include?(fund.id)

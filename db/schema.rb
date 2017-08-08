@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170807151855) do
+ActiveRecord::Schema.define(version: 20170808152439) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -393,29 +393,6 @@ ActiveRecord::Schema.define(version: 20170807151855) do
     t.integer "funder_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-  end
-
-  create_table "recommendations", id: :serial, force: :cascade do |t|
-    t.integer "funder_id"
-    t.integer "recipient_id"
-    t.float "score", default: 0.0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "recommendation_quality"
-    t.string "eligibility"
-    t.float "grant_amount_recommendation", default: 0.0
-    t.float "grant_duration_recommendation", default: 0.0
-    t.float "total_recommendation", default: 0.0
-    t.float "org_type_score"
-    t.float "beneficiary_score"
-    t.float "location_score"
-    t.integer "proposal_id"
-    t.integer "fund_id"
-    t.string "fund_slug"
-    t.index ["funder_id"], name: "index_recommendations_on_funder_id"
-    t.index ["proposal_id", "fund_id"], name: "index_recommendations_on_proposal_id_and_fund_id", unique: true
-    t.index ["proposal_id", "fund_slug"], name: "index_recommendations_on_proposal_id_and_fund_slug", unique: true
-    t.index ["recipient_id"], name: "index_recommendations_on_recipient_id"
   end
 
   create_table "restrictions", id: :serial, force: :cascade do |t|

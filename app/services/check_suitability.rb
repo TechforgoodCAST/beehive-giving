@@ -5,14 +5,14 @@ class CheckSuitability < CheckBase
   ].map(&:new)
 
   def call_each!(proposal, funds)
-    proposal.suitability.merge! add_total(call_each(proposal, funds))
+    proposal.suitability = add_total(call_each(proposal, funds))
   end
 
   private
 
     def add_total(updates)
       updates.each do |k, v|
-        updates[k]['total'] = v.all_values_for('score').reduce(&:+)
+        updates[k]['total'] = v.all_values_for('score').reduce(0, &:+)
       end
     end
 
