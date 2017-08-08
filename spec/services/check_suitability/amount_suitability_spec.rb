@@ -16,4 +16,6 @@ describe CheckSuitability::AmountSuitability do
     @proposal.total_costs = 1_000
     expect(subject.call(@proposal, @fund)).to eq 'score' => 0
   end
+
+  it '#call missing fund'
 end

@@ -3,12 +3,12 @@ class CheckSuitability
     def call(proposal, fund)
       super
 
-      beehive_insight_durations = call_beehive_insight(
+      response = call_beehive_insight(
         ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'],
         duration: proposal.funding_duration
       )
 
-      { 'score' => beehive_insight_durations[fund.slug] }
+      { 'score' => response.key?(fund.slug) ? response[fund.slug] : 0 }
     end
 
     private
