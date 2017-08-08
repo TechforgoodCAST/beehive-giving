@@ -111,34 +111,23 @@ class Proposal < ApplicationRecord
     errors.add(:title, 'Upgrade subscription to create multiple proposals')
   end
 
+  def beehive_insight_durations
+    options = {
+      body: { data: { duration: funding_duration } }.to_json,
+      headers: {
+        'Content-Type' => 'application/json',
+        'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN']
+      }
+    }
+    resp = HTTParty.post(ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'], options)
+    @beehive_insight_durations ||= JSON.parse(resp.body).to_h
+  end
+
   def initial_recommendation
     update_columns(
-      eligibility: CheckEligibility.new.call_each(self, Fund.active),
-      suitability: CheckSuitability.new.call_each(self, Fund.active)
+      eligibility: CheckEligibility.new.call_each!(self, Fund.active),
+      suitability: CheckSuitability.new.call_each!(self, Fund.active)
     )
-
-    # TODO: refactor
-    Fund.active.find_each do |fund|
-      org_type_score = duration_score = 0
-
-      if fund.open_data? && fund.period_end? && fund.period_end > 3.years.ago
-
-        # org type recommendation
-        if fund.org_type_distribution?
-          org_type_score = parse_distribution(
-            fund.org_type_distribution,
-            ORG_TYPES[recipient.org_type + 1][0]
-          )
-        end
-
-        if org_type_score.positive?
-          org_type_score += parse_distribution(
-            fund.income_distribution,
-            Organisation::INCOME[recipient.income][0]
-          )
-        end
-      end
-    end
   end
 
   def refine_recommendations # TODO: refactor
@@ -197,13 +186,6 @@ class Proposal < ApplicationRecord
   end
 
   private
-
-    def parse_distribution(data, comparison)
-      data
-        .sort_by { |i| i['position'] }
-        .select { |i| i['label'] == comparison unless i['label'] == 'Unknown' }
-        .first.to_h.fetch('percent', 0)
-    end
 
     def save_all_age_groups_if_all_ages
       return unless age_group_ids.include?(AgeGroup.first.id)

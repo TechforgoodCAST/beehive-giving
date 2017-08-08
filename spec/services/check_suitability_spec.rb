@@ -9,6 +9,23 @@ describe CheckSuitability do
     @t1 = Theme.first
     @t2 = Theme.second
     @t3 = Theme.third
+
+    @response = {
+      @funds[0].slug => {
+        'amount' => { 'score' => 0.2 },
+        'duration' => { 'score' => 0.1 },
+        'location' => { 'score' => 1, 'reason' => 'anywhere' },
+        'org_type' => { 'score' => 0.41500000000000004 },
+        'theme' => { 'score' => 0.5 }
+      },
+      @funds[1].slug => {
+        'amount' => { 'score' => 0.2 },
+        'duration' => { 'score' => 0.2 },
+        'location' => { 'score' => -1, 'reason' => 'ineligible' },
+        'org_type' => { 'score' => 0.41500000000000004 },
+        'theme' => { 'score' => 1.0 }
+      }
+    }
   end
 
   it '#call_each invalid' do
@@ -30,29 +47,16 @@ describe CheckSuitability do
     @proposal.themes = [@t1, @t2]
     @proposal.eligibility[@funds[1].slug]['location']['eligible'] = false
 
-    response = {
-      @funds[0].slug => {
-        'theme' => {'score' => 0.5},
-        'amount' => {'score' => 0.2},
-        'location' => {'score' => 1, "reason"=>"anywhere"},
-      },
-      @funds[1].slug => {
-        'theme' => {'score' => 1},
-        'amount' => {'score' => 0.2},
-        'location' => {"score"=>-1, "reason"=>"ineligible"},
-      }
-    }
-
-    expect(subject.call_each(@proposal, @funds)).to eq response
+    expect(subject.call_each(@proposal, @funds)).to eq @response
   end
 
   it '#call_each only returns funds that are passed in' do
-    @proposal.suitability['rouge-fund'] = { 'theme' => {'score' => 0.5} }
+    @proposal.suitability['rouge-fund'] = { 'theme' => { 'score' => 0.5 } }
     expect(subject.call_each(@proposal, @funds)).not_to have_key 'rouge-fund'
   end
 
   it '#call_each only returns checks that are passed in' do
-    @proposal.suitability = { @funds[0].slug => { 'rouge-check' => {'score' => 0.5} } }
+    @proposal.suitability = { @funds[0].slug => { 'rouge-check' => { 'score' => 0.5 } } }
     expect(subject.call_each(@proposal, @funds)[@funds[0].slug])
       .not_to have_key 'rouge-check'
   end
@@ -63,20 +67,7 @@ describe CheckSuitability do
     @proposal.themes = [@t1, @t2]
     @proposal.eligibility[@funds[1].slug]['location']['eligible'] = false
 
-    response = {
-      @funds[0].slug => {
-        'theme' => {'score' => 0.5},
-        'amount' => {'score' => 0.2},
-        'location' => {'score' => 1, "reason"=>"anywhere"},
-      },
-      @funds[1].slug => {
-        'theme' => {'score' => 1},
-        'amount' => {'score' => 0.2},
-        'location' => {"score"=>-1, "reason"=>"ineligible"},
-      }
-    }
-
     subject.call_each!(@proposal, @funds)
-    expect(@proposal.suitability).to eq response
+    expect(@proposal.suitability).to eq @response
   end
 end

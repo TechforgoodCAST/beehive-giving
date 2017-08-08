@@ -1,7 +1,7 @@
 class CheckSuitability < CheckBase
   CHECKS = [
-    ThemeSuitability, AmountSuitability, LocationSuitability,
-    DurationSuitability
+    AmountSuitability, DurationSuitability, LocationSuitability,
+    OrgTypeSuitability, ThemeSuitability
   ].map(&:new)
 
   def call_each!(proposal, funds)
