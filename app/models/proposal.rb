@@ -4,8 +4,6 @@ class Proposal < ApplicationRecord
               :clear_age_groups_and_gender_unless_affect_people
   after_save :initial_recommendation
 
-  has_many :recommendations, dependent: :destroy
-  has_many :funds, through: :recommendations
   has_many :eligibilities, as: :category, dependent: :destroy
   accepts_nested_attributes_for :eligibilities
 
@@ -129,7 +127,6 @@ class Proposal < ApplicationRecord
     return if updated_at > (Fund.order(:updated_at).last&.updated_at || Date.today)
     touch
     initial_recommendation
-    recommendations.where(fund_id: Fund.inactive_ids).destroy_all
   end
 
   def deprecated_recommendation(fund)
