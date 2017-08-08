@@ -59,10 +59,7 @@ class Fund < ApplicationRecord
     when 'name'
       order col
     else
-      suitable_funds = proposal.suitability
-                               .sort_by { |fund| fund[1]['total'] }
-                               .reverse
-                               .pluck(0)
+      suitable_funds = proposal.suitable_funds.pluck(0)
 
       all.sort_by do |fund|
         suitable_funds.index(fund.slug) || suitable_funds.size + 1

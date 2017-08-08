@@ -129,10 +129,13 @@ class Proposal < ApplicationRecord
     initial_recommendation
   end
 
-  def show_fund?(fund) # TODO: refactor
+  def suitable_funds
+    suitability.sort_by { |fund| fund[1]['total'] }.reverse
+  end
+
+  def show_fund?(fund)
     recipient.subscribed? ||
-      (recommended_funds - ineligible_fund_ids)
-        .take(RECOMMENDATION_LIMIT).include?(fund.id)
+      suitable_funds.pluck(0).take(RECOMMENDATION_LIMIT).include?(fund.slug)
   end
 
   def checked_fund?(fund)
