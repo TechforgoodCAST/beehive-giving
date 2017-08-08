@@ -112,29 +112,14 @@ class Proposal < ApplicationRecord
   end
 
   def initial_recommendation
-    beehive_insight = call_beehive_insight(
-      ENV['BEEHIVE_INSIGHT_ENDPOINT'],
-      beneficiaries_request
-    )
-    beehive_insight_durations = call_beehive_insight(
-      ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'],
-      duration: funding_duration
-    )
-
-    recommendations = []
-
-    # Eligibility and suitability
     update_columns(
       eligibility: CheckEligibility.new.call_each(self, Fund.active),
       suitability: CheckSuitability.new.call_each(self, Fund.active)
     )
 
-    # Amount match
-    amount_match = AmountMatch.new(Fund.active, self).match
-
+    # TODO: refactor
     Fund.active.find_each do |fund|
-      org_type_score = beneficiary_score = location_score = amount_score =
-                                                              duration_score = 0
+      org_type_score = duration_score = 0
 
       if fund.open_data? && fund.period_end? && fund.period_end > 3.years.ago
 
@@ -152,66 +137,8 @@ class Proposal < ApplicationRecord
             Organisation::INCOME[recipient.income][0]
           )
         end
-
-        # beneficiary recommendation
-        if beehive_insight.key?(fund.slug)
-          beneficiary_score += beehive_insight[fund.slug]
-        else
-          beneficiary_score = 0
-        end
-
-        # amount requested recommendation
-        amount_score = amount_match[fund.slug] || 0
-
-        # duration requested recommendation
-        duration_score = fund_request_scores(fund, beehive_insight_durations,
-                                             duration_score)
       end
-
-      # location recommendation
-      location_score += compare_arrays('countries', fund) # TODO: refactor
-      location_score += compare_arrays('districts', fund) # TODO: refactor
-
-      score = org_type_score +
-              beneficiary_score +
-              location_score +
-              amount_score +
-              duration_score
-
-      scores = {
-        org_type_score: org_type_score,
-        beneficiary_score: beneficiary_score,
-        location_score: location_score,
-        grant_amount_recommendation: amount_score,
-        grant_duration_recommendation: duration_score,
-        score: score
-      }
-      recommendations << build_recommendation(fund, scores)
     end
-
-    # TODO: refactor
-    Recommendation.import recommendations, on_duplicate_key_update: {
-      conflict_target: [:id], columns: [:eligibility,
-                                        :grant_amount_recommendation,
-                                        :grant_duration_recommendation,
-                                        :total_recommendation,
-                                        :org_type_score,
-                                        :beneficiary_score,
-                                        :location_score,
-                                        :score]
-    }
-
-    # TODO: refactor
-    recommended_funds = funds
-                        .where(active: true)
-                        .where('recommendations.total_recommendation >= ?',
-                               RECOMMENDATION_THRESHOLD)
-                        .order('recommendations.total_recommendation DESC',
-                               'name')
-    update_column(
-      :recommended_funds,
-      recommended_funds.pluck(:id)
-    )
   end
 
   def refine_recommendations # TODO: refactor
@@ -276,57 +203,6 @@ class Proposal < ApplicationRecord
         .sort_by { |i| i['position'] }
         .select { |i| i['label'] == comparison unless i['label'] == 'Unknown' }
         .first.to_h.fetch('percent', 0)
-    end
-
-    def beneficiaries_request # TODO: refactor to use Theme
-      request = {}
-      Beneficiary::BENEFICIARIES.map do |hash|
-        request[hash[:sort]] = if beneficiaries.pluck(:sort)
-                                               .include?(hash[:sort])
-                                 1
-                               else
-                                 0
-                               end
-      end
-      request
-    end
-
-    def call_beehive_insight(endpoint, data)
-      options = {
-        body: { data: data }.to_json,
-        headers: {
-          'Content-Type' => 'application/json',
-          'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN']
-        }
-      }
-      resp = HTTParty.post(endpoint, options)
-      JSON.parse(resp.body).to_h
-    end
-
-    def fund_request_scores(fund, data, score)
-      score = 0
-      data.each do |k, v|
-        score += v if fund.slug == k
-      end
-      score
-    end
-
-    def build_recommendation(fund, scores)
-      r = Recommendation.where(proposal: self, fund: fund).first_or_initialize
-      r.assign_attributes(scores)
-      r.run_callbacks(:validation) { false }
-      r.run_callbacks(:save) { false }
-      r
-    end
-
-    def compare_arrays(array, fund) # TODO: refactor
-      comparison = (send(array).pluck(:id) & fund.send(array).pluck(:id).uniq)
-                   .count.to_f
-      if comparison.positive? && fund.send(array).count.positive?
-        comparison / send(array).count.to_f
-      else
-        0
-      end
     end
 
     def save_all_age_groups_if_all_ages
