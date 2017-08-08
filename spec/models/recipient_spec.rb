@@ -29,10 +29,6 @@ describe Recipient do
     expect(@recipient.slug).to eq 'new-name-'
   end
 
-  it 'has many funds through proposals' do
-    expect(@recipient.funds.count).to eq 2
-  end
-
   it 'has many countries through proposals' do
     @proposal.countries = @db[:countries]
     @proposal.save
