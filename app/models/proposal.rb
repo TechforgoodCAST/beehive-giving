@@ -112,15 +112,10 @@ class Proposal < ApplicationRecord
   end
 
   def beehive_insight_durations
-    options = {
-      body: { data: { duration: funding_duration } }.to_json,
-      headers: {
-        'Content-Type' => 'application/json',
-        'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN']
-      }
-    }
-    resp = HTTParty.post(ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'], options)
-    @beehive_insight_durations ||= JSON.parse(resp.body).to_h
+    @beehive_insight_durations ||= call_beehive_insight(
+      ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'],
+      duration: funding_duration
+    )
   end
 
   def initial_recommendation
@@ -210,5 +205,17 @@ class Proposal < ApplicationRecord
       return if affect_people?
       self.age_groups = []
       self.gender = nil
+    end
+
+    def call_beehive_insight(endpoint, data)
+      options = {
+        body: { data: data }.to_json,
+        headers: {
+          'Content-Type' => 'application/json',
+          'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN']
+        }
+      }
+      resp = HTTParty.post(endpoint, options)
+      JSON.parse(resp.body).to_h
     end
 end

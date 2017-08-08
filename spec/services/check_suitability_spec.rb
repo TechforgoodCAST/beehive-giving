@@ -16,14 +16,16 @@ describe CheckSuitability do
         'duration' => { 'score' => 0.1 },
         'location' => { 'score' => 1, 'reason' => 'anywhere' },
         'org_type' => { 'score' => 0.41500000000000004 },
-        'theme' => { 'score' => 0.5 }
+        'theme' => { 'score' => 0.5 },
+        'total' => 2.215
       },
       @funds[1].slug => {
         'amount' => { 'score' => 0.2 },
         'duration' => { 'score' => 0.2 },
         'location' => { 'score' => -1, 'reason' => 'ineligible' },
         'org_type' => { 'score' => 0.41500000000000004 },
-        'theme' => { 'score' => 1.0 }
+        'theme' => { 'score' => 1.0 },
+        'total' => 0.8150000000000001
       }
     }
   end
@@ -46,6 +48,7 @@ describe CheckSuitability do
     @funds[1].themes = [@t1, @t2]
     @proposal.themes = [@t1, @t2]
     @proposal.eligibility[@funds[1].slug]['location']['eligible'] = false
+    @response.each { |_, v| v.delete 'total' }
 
     expect(subject.call_each(@proposal, @funds)).to eq @response
   end
@@ -56,7 +59,9 @@ describe CheckSuitability do
   end
 
   it '#call_each only returns checks that are passed in' do
-    @proposal.suitability = { @funds[0].slug => { 'rouge-check' => { 'score' => 0.5 } } }
+    @proposal.suitability = {
+      @funds[0].slug => { 'rouge-check' => { 'score' => 0.5 } }
+    }
     expect(subject.call_each(@proposal, @funds)[@funds[0].slug])
       .not_to have_key 'rouge-check'
   end

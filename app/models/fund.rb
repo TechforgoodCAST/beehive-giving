@@ -62,11 +62,10 @@ class Fund < ApplicationRecord
     when 'name'
       order col
     else
-      # TODO: refactor
       suitable_funds = proposal.suitability
-                               .sort_by { |fund| fund[1]['theme']['score'] }
+                               .sort_by { |fund| fund[1]['total'] }
                                .reverse
-                               .map { |fund| fund[0] }
+                               .pluck(0)
 
       all.sort_by { |fund| suitable_funds.index(fund.slug) }
     end
