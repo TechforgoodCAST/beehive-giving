@@ -10,11 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170804165623) do
+ActiveRecord::Schema.define(version: 20170807151855) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "intarray"
 
   create_table "active_admin_comments", id: :serial, force: :cascade do |t|
     t.string "namespace", limit: 255
@@ -383,7 +382,7 @@ ActiveRecord::Schema.define(version: 20170804165623) do
     t.string "implementations_other"
     t.jsonb "recommended_funds", default: []
     t.jsonb "eligibility", default: {}, null: false
-    t.jsonb "recommendation", default: {}, null: false
+    t.jsonb "suitability", default: {}, null: false
     t.integer "funding_type"
     t.index ["recipient_id"], name: "index_proposals_on_recipient_id"
     t.index ["state"], name: "index_proposals_on_state"

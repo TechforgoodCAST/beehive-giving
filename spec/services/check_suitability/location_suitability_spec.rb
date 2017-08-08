@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 describe CheckSuitability::LocationSuitability do
-
   before(:each) do
     @app.seed_test_db.setup_funds(num: 4)
         .create_recipient.create_registered_proposal
@@ -150,5 +149,4 @@ describe CheckSuitability::LocationSuitability do
       expect(subject.call(@proposal, @national)).to eq result
     end
   end
-
 end

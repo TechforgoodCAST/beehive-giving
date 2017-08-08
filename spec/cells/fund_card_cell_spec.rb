@@ -11,7 +11,7 @@ describe FundCardCell do
   end
 
   def proposal(score, reason)
-    @proposal.recommendation = {
+    @proposal.suitability = {
       @fund.slug => {
         'location' => { 'score' => score, 'reason' => reason }
       }

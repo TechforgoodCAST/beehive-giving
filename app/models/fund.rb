@@ -62,11 +62,13 @@ class Fund < ApplicationRecord
     when 'name'
       order col
     else
-      recommended_funds = ((
-        proposal.recommended_funds - proposal.ineligible_fund_ids
-      ) + active.pluck(:id)).uniq
+      # TODO: refactor
+      suitable_funds = proposal.suitability
+                               .sort_by { |fund| fund[1]['theme']['score'] }
+                               .reverse
+                               .map { |fund| fund[0] }
 
-      order("idx(array[#{recommended_funds.join(',')}]::integer[], id)")
+      all.sort_by { |fund| suitable_funds.index(fund.slug) }
     end
   end
 

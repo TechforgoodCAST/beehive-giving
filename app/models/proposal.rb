@@ -123,11 +123,10 @@ class Proposal < ApplicationRecord
 
     recommendations = []
 
-    # Location eligibility and notices
-    location = LocationMatch.new(Fund.active, self)
+    # Eligibility and suitability
     update_columns(
       eligibility: CheckEligibility.new.call_each(self, Fund.active),
-      recommendation: location.match(recommendation)
+      suitability: CheckSuitability.new.call_each(self, Fund.active)
     )
 
     # Amount match

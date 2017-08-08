@@ -35,14 +35,22 @@ describe LocationMatch do
     end
 
     context '#match' do
+      before(:each) do
+        @result = {
+          'amount' => { 'score' => 0 },
+          'location' => { 'score' => 0, 'reason' => 'reason' },
+          'theme' => { 'score' => 1 }
+        }
+      end
+
       it 'ineligble set to -1' do
         @proposal.eligibility = {
           @local.slug => { 'quiz' => true },
           @anywhere.slug => { 'location' => false }
         }
         match = LocationMatch.new(@funds, @proposal).match
-        result = { 'location' => { 'score' => -1, 'reason' => 'ineligible' } }
-        expect(match[@anywhere.slug]).to eq result
+        @result['location'] = { 'score' => -1, 'reason' => 'ineligible' }
+        expect(match[@anywhere.slug]).to eq @result
       end
 
       context 'proposal national' do
@@ -53,19 +61,19 @@ describe LocationMatch do
         end
 
         it '<> fund anywhere' do
-          result = { 'location' => { 'score' => 1, 'reason' => 'anywhere' } }
-          expect(@proposal.recommendation[@anywhere.slug]).to eq result
+          @result['location'] = { 'score' => 1, 'reason' => 'anywhere' }
+          expect(@proposal.suitability[@anywhere.slug]).to eq @result
         end
 
         it '<> fund local' do
-          result = { 'location' => { 'score' => -1, 'reason' => 'overlap' } }
-          expect(@match[@local.slug]).to eq result
-          expect(@proposal.recommendation[@local.slug]).to eq result
+          @result['location'] = { 'score' => -1, 'reason' => 'overlap' }
+          expect(@match[@local.slug]).to eq @result
+          expect(@proposal.suitability[@local.slug]).to eq @result
         end
 
         it '<> fund national' do
-          result = { 'location' => { 'score' => 1, 'reason' => 'national' } }
-          expect(@proposal.recommendation[@national.slug]).to eq result
+          @result['location'] = { 'score' => 1, 'reason' => 'national' }
+          expect(@proposal.suitability[@national.slug]).to eq @result
         end
       end
 
@@ -75,18 +83,18 @@ describe LocationMatch do
         end
 
         it '<> fund anywhere' do
-          result = { 'location' => { 'score' => 1, 'reason' => 'anywhere' } }
-          expect(@proposal.recommendation[@anywhere.slug]).to eq result
+          @result['location'] = { 'score' => 1, 'reason' => 'anywhere' }
+          expect(@proposal.suitability[@anywhere.slug]).to eq @result
         end
 
         it '<> fund local' do
-          result = { 'location' => { 'score' => 1, 'reason' => 'exact' } }
-          expect(@proposal.recommendation[@local.slug]).to eq result
+          @result['location'] = { 'score' => 1, 'reason' => 'exact' }
+          expect(@proposal.suitability[@local.slug]).to eq @result
         end
 
         it '<> fund national' do
-          result = { 'location' => { 'score' => -1, 'reason' => 'ineligible' } }
-          expect(@proposal.recommendation[@national.slug]).to eq result
+          @result['location'] = { 'score' => -1, 'reason' => 'ineligible' }
+          expect(@proposal.suitability[@national.slug]).to eq @result
         end
       end
 
@@ -97,18 +105,18 @@ describe LocationMatch do
         end
 
         it '<> fund anywhere' do
-          result = { 'location' => { 'score' => 1, 'reason' => 'anywhere' } }
-          expect(@proposal.recommendation[@anywhere.slug]).to eq result
+          @result['location'] = { 'score' => 1, 'reason' => 'anywhere' }
+          expect(@proposal.suitability[@anywhere.slug]).to eq @result
         end
 
         it '<> fund local' do
-          result = { 'location' => { 'score' => 0, 'reason' => 'intersect' } }
-          expect(@proposal.recommendation[@local.slug]).to eq result
+          @result['location'] = { 'score' => 0, 'reason' => 'intersect' }
+          expect(@proposal.suitability[@local.slug]).to eq @result
         end
 
         it '<> fund national' do
-          result = { 'location' => { 'score' => -1, 'reason' => 'ineligible' } }
-          expect(@proposal.recommendation[@national.slug]).to eq result
+          @result['location'] = { 'score' => -1, 'reason' => 'ineligible' }
+          expect(@proposal.suitability[@national.slug]).to eq @result
         end
       end
 
@@ -119,18 +127,18 @@ describe LocationMatch do
         end
 
         it '<> fund anywhere' do
-          result = { 'location' => { 'score' => 1, 'reason' => 'anywhere' } }
-          expect(@proposal.recommendation[@anywhere.slug]).to eq result
+          @result['location'] = { 'score' => 1, 'reason' => 'anywhere' }
+          expect(@proposal.suitability[@anywhere.slug]).to eq @result
         end
 
         it '<> fund local' do
-          result = { 'location' => { 'score' => 1, 'reason' => 'partial' } }
-          expect(@proposal.recommendation[@local.slug]).to eq result
+          @result['location'] = { 'score' => 1, 'reason' => 'partial' }
+          expect(@proposal.suitability[@local.slug]).to eq @result
         end
 
         it '<> fund national' do
-          result = { 'location' => { 'score' => -1, 'reason' => 'ineligible' } }
-          expect(@proposal.recommendation[@national.slug]).to eq result
+          @result['location'] = { 'score' => -1, 'reason' => 'ineligible' }
+          expect(@proposal.suitability[@national.slug]).to eq @result
         end
       end
 
@@ -140,18 +148,18 @@ describe LocationMatch do
         end
 
         it '<> fund anywhere' do
-          result = { 'location' => { 'score' => 1, 'reason' => 'anywhere' } }
-          expect(@proposal.recommendation[@anywhere.slug]).to eq result
+          @result['location'] = { 'score' => 1, 'reason' => 'anywhere' }
+          expect(@proposal.suitability[@anywhere.slug]).to eq @result
         end
 
         it '<> fund local' do
-          result = { 'location' => { 'score' => -1, 'reason' => 'overlap' } }
-          expect(@proposal.recommendation[@local.slug]).to eq result
+          @result['location'] = { 'score' => -1, 'reason' => 'overlap' }
+          expect(@proposal.suitability[@local.slug]).to eq @result
         end
 
         it '<> fund national' do
-          result = { 'location' => { 'score' => -1, 'reason' => 'ineligible' } }
-          expect(@proposal.recommendation[@national.slug]).to eq result
+          @result['location'] = { 'score' => -1, 'reason' => 'ineligible' }
+          expect(@proposal.suitability[@national.slug]).to eq @result
         end
       end
     end
