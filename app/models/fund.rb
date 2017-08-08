@@ -67,7 +67,9 @@ class Fund < ApplicationRecord
                                .reverse
                                .pluck(0)
 
-      all.sort_by { |fund| suitable_funds.index(fund.slug) }
+      all.sort_by do |fund|
+        suitable_funds.index(fund.slug) || suitable_funds.size + 1
+      end
     end
   end
 
