@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative '../support/match_helper'
 
 describe CompaniesHouse do
   let(:helper) { MatchHelper.new }

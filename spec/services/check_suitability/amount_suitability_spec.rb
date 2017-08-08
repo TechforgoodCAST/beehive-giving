@@ -6,9 +6,6 @@ describe CheckSuitability::AmountSuitability do
         .create_recipient.create_registered_proposal
     @fund = Fund.last
     @proposal = Proposal.last
-    @t1 = Theme.first
-    @t2 = Theme.second
-    @t3 = Theme.third
   end
 
   it '#call suitable' do

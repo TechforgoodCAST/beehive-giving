@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative '../support/subscriptions_helper'
 
 describe Payment do
   let(:helper) { SubscriptionsHelper.new }

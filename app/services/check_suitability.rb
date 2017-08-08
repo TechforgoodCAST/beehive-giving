@@ -12,6 +12,6 @@ class CheckSuitability < CheckBase
     end
 
     def key_name(obj)
-      obj.class.name.demodulize.underscore.gsub!("_suitability", "")
+      obj.class.name.demodulize.underscore.gsub!('_suitability', '')
     end
 end
