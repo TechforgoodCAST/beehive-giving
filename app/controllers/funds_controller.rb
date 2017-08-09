@@ -1,6 +1,5 @@
 class FundsController < ApplicationController
-  before_action :ensure_logged_in,
-                :refine_recommendations # TODO: refactor
+  before_action :ensure_logged_in, :update_legacy_suitability
 
   def show
     @fund = Fund.includes(:funder).find_by(slug: params[:id])
@@ -30,7 +29,7 @@ class FundsController < ApplicationController
 
   private
 
-    def refine_recommendations # TODO: refactor
-      @proposal.refine_recommendations
+    def update_legacy_suitability
+      @proposal.update_legacy_suitability
     end
 end

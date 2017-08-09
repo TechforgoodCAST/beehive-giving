@@ -56,14 +56,29 @@ describe Proposal do
 
     context 'with funds' do
       before(:each) do
-        @app.setup_funds(num: 2, open_data: true)
+        @app.setup_funds(open_data: true)
         @initial_proposal.save
       end
 
-      it '#refine_recommendations' do
-        @initial_proposal.updated_at = 1.day.ago
-        @initial_proposal.refine_recommendations
-        expect(@initial_proposal.updated_at.day).not_to eq 1.day.ago
+      it '#update_legacy_suitability' do
+        result = {
+          'acme-2-awards-for-all-1' => {
+            'amount' => { 'score' => 0.2 },
+            'duration' => { 'score' => 0.0 },
+            'location' => { 'score' => 1, 'reason' => 'anywhere' },
+            'org_type' => { 'score' => 0.41500000000000004 },
+            'theme' => { 'score' => 1.0 },
+            'total' => 2.615
+          }
+        }
+
+        @initial_proposal.suitability = {}
+        @initial_proposal.update_legacy_suitability
+        expect(@initial_proposal.suitability).to eq result
+
+        @initial_proposal.suitability = { 'key' => 'value' }
+        @initial_proposal.update_legacy_suitability
+        expect(@initial_proposal.suitability).to eq result
       end
     end
 

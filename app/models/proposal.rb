@@ -123,10 +123,8 @@ class Proposal < ApplicationRecord
     )
   end
 
-  def refine_recommendations # TODO: refactor
-    return if updated_at > (Fund.order(:updated_at).last&.updated_at || Date.today)
-    touch
-    initial_recommendation
+  def update_legacy_suitability
+    initial_recommendation if suitability.all_values_for('total').empty?
   end
 
   def suitable_funds
