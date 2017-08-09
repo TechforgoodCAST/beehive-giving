@@ -3,5 +3,4 @@ class Funder < Organisation
 
   has_many :funds
   has_many :restrictions, through: :funds
-  has_many :recommendations
 end

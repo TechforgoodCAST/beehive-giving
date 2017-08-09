@@ -23,14 +23,14 @@
                 = link_to 'Upgrade to see more', account_upgrade_path(@recipient), class: 'uk-text-bold'
           %tr
             %td Organisation
-            %td= render_recommendation(fund, 'org_type_score', 2)
+            %td= render_recommendation(fund, 'org_type')
           %tr
             %td.muted{ colspan: 2 }
               %small= raw org_type_desc(fund)
               %small= raw income_desc(fund)
           %tr
-            %td Beneficiaries
-            %td= render_recommendation(fund, 'beneficiary_score', 2)
+            %td Theme
+            %td= render_recommendation(fund, 'theme')
           - if fund.open_data?
             %tr
               %td.muted{ colspan: 2 }
@@ -41,10 +41,10 @@
           - unless @recipient.transferred?
             %tr
               %td Funding amount
-              %td= render_recommendation(fund, 'grant_amount_recommendation')
+              %td= render_recommendation(fund, 'amount')
             %tr
               %td Funding duration
-              %td= render_recommendation(fund, 'grant_duration_recommendation')
+              %td= render_recommendation(fund, 'duration')
 
     - unless %w[eligibility update_eligibility apply].include?(params[:action])
       .card-cta

@@ -32,7 +32,7 @@ namespace :funds do
         next unless fund
         fund.assign_attributes themes: Theme.where(name: v)
         print fund.valid? ? '.' : '*'
-        fund.save! if ENV['SAVE']
+        fund.save! if ENV['SAVE'] and fund.valid?
       end
       puts "\n"
     end

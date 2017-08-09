@@ -10,6 +10,10 @@ ActiveAdmin.register Fund do
                 :org_type_distribution, :income_distribution, :slug,
                 :beneficiary_distribution, :grant_examples,
                 :geographic_scale_limited,
+                :min_amount_awarded_limited, :min_amount_awarded,
+                :max_amount_awarded_limited, :max_amount_awarded,
+                :min_duration_awarded_limited, :min_duration_awarded,
+                :max_duration_awarded_limited, :max_duration_awarded,
                 country_ids: [], district_ids: [], restriction_ids: [],
                 tags: [], permitted_costs: [], permitted_org_types: [],
                 theme_ids: []
