@@ -1,16 +1,13 @@
 class Fund < ApplicationRecord
   scope :active, -> { where(active: true) }
-  scope :inactive_ids, -> { where(active: false).pluck(:id) }
   scope :newer_than, ->(date) { where('updated_at > ?', date) }
 
   belongs_to :funder
 
+  has_many :enquiries, dependent: :destroy
+
   has_many :fund_themes, dependent: :destroy
   has_many :themes, through: :fund_themes
-
-  has_many :proposals, through: :recommendations
-  has_many :recommendations, dependent: :destroy
-  has_many :enquiries, dependent: :destroy
 
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
@@ -62,11 +59,11 @@ class Fund < ApplicationRecord
     when 'name'
       order col
     else
-      recommended_funds = ((
-        proposal.recommended_funds - proposal.ineligible_fund_ids
-      ) + active.pluck(:id)).uniq
+      suitable_funds = proposal.suitable_funds.pluck(0)
 
-      order("idx(array[#{recommended_funds.join(',')}]::integer[], id)")
+      all.sort_by do |fund|
+        suitable_funds.index(fund.slug) || suitable_funds.size + 1
+      end
     end
   end
 

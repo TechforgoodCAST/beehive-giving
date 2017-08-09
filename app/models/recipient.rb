@@ -1,6 +1,5 @@
 class Recipient < Organisation
   has_many :proposals
-  has_many :funds, -> { distinct }, through: :proposals
   has_many :countries, -> { distinct }, through: :proposals
   has_many :districts, -> { distinct }, through: :proposals
   has_many :eligibilities, as: :category, dependent: :destroy

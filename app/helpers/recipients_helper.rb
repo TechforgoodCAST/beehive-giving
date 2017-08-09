@@ -1,6 +1,6 @@
 module RecipientsHelper
-  TAG_CLASSES = %w(uk-button uk-button-small uk-button-primary invert
-                   uk-margin-small-bottom).freeze
+  TAG_CLASSES = %w[uk-button uk-button-small uk-button-primary invert
+                   uk-margin-small-bottom].freeze
 
   def fund_card_eligibility_text(fund)
     case @proposal.eligible_status(fund.slug)
@@ -56,6 +56,7 @@ module RecipientsHelper
   end
 
   def score_to_match_copy(score, scale = 1)
+    scale = score > 1 ? score.ceil : 1
     {
       'Unavailable' => 0,   'Very poor' => 0.2,
       'Poor'        => 0.4, 'Fair'      => 0.6,
@@ -71,13 +72,15 @@ module RecipientsHelper
   end
 
   def scramble_recommendations
-    content_tag(:strong, scramble_name(%w(Poor Excellent).sample),
+    content_tag(:strong, scramble_name(%w[Poor Excellent].sample),
                 class: 'redacted muted')
   end
 
   def render_recommendation(fund, score, scale = 1, proposal: @proposal)
     if proposal.show_fund?(fund)
-      score_to_match_copy(proposal.deprecated_recommendation(fund)[score.to_s], scale)
+      score_to_match_copy(
+        proposal.suitability[fund.slug][score]['score'], scale
+      )
     else
       scramble_recommendations
     end
@@ -102,7 +105,7 @@ module RecipientsHelper
       safe_join(fund.tags.sort.map do |t|
         link_to scramble_name(t.parameterize), # TODO: refactor
                 account_upgrade_path(@recipient), class: TAG_CLASSES +
-                                 %w(redacted uk-margin-small-top)
+                                 %w[redacted uk-margin-small-top]
       end, ' ')
   end
 

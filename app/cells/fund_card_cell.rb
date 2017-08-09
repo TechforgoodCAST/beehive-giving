@@ -13,7 +13,7 @@ class FundCardCell < Cell::ViewModel
   SCORES = { 1 => 'Good', 0 => 'Neutral', -1 => 'Poor' }.freeze
 
   def location
-    return unless model.recommendation.key? options[:fund]&.slug
+    return unless model.suitability.key? options[:fund]&.slug
     if location_ineligible?
       render locals: check
     else
@@ -37,7 +37,7 @@ class FundCardCell < Cell::ViewModel
     end
 
     def match
-      location = model.recommendation[options[:fund]&.slug]['location']
+      location = model.suitability[options[:fund]&.slug]['location']
       {
         rating: SCORES[location['score']],
         message: MESSAGES[location['reason']],

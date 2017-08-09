@@ -17,8 +17,10 @@ describe Fund do
 
     context 'self.order_by' do
       before(:each) do
-        @proposal = build :proposal,
-                          recommended_funds: [Fund.second.id, Fund.first.id]
+        @proposal = build :proposal, suitability: {
+          Fund.second.slug => { 'total' => 1.0 },
+          Fund.first.slug => { 'total' => 0.5 }
+        }
       end
 
       it 'default best' do

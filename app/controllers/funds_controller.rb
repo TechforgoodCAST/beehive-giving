@@ -10,11 +10,12 @@ class FundsController < ApplicationController
   end
 
   def index
-    @funds = Fund.includes(:funder)
-                 .active
-                 .order_by(@proposal, params[:sort])
-                 .eligibility(@proposal, params[:eligibility])
-                 .page(params[:page])
+    query = Fund.includes(:funder)
+                .active
+                .eligibility(@proposal, params[:eligibility])
+                .order_by(@proposal, params[:sort])
+
+    @funds = Kaminari.paginate_array(query).page(params[:page])
   end
 
   def tagged
