@@ -56,6 +56,7 @@ module RecipientsHelper
   end
 
   def score_to_match_copy(score, scale = 1)
+    scale = score > 1 ? score.ceil : 1
     {
       'Unavailable' => 0,   'Very poor' => 0.2,
       'Poor'        => 0.4, 'Fair'      => 0.6,
