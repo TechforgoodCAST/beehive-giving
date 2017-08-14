@@ -5,11 +5,7 @@
 
 // =========================================================================
 
-@each $var, $val in $colors
-  .#{$var}
-    color: $val
-    &:visited
-      color: $val
-
-.muted
-  opacity: .5
+.rounded
+  border-radius: $base-radius
+  -moz-border-radius: $base-radius
+  -webkit-border-radius: $base-radius
