@@ -1,0 +1,63 @@
+// Config
+// =========================================================================
+
+@import base
+@import url('https://fonts.googleapis.com/css?family=Lato:300,400|Noto+Sans:400,700')
+
+$heading-family: 'Lato', Helvetica, sans-serif !default
+$body-family: 'Noto Sans', Helvetica, sans-serif !default
+
+$light-weight:   300
+$regular-weight: 400
+$bold-weight:    700
+
+// =========================================================================
+
+body,
+button,
+input,
+select,
+textarea
+  font-family: $body-family
+
+// Type scale
+// =========================================================================
+
+h1
+  font-size: map-get($scales, 35)
+h2
+  font-size: map-get($scales, 30)
+h3
+  font-size: map-get($scales, 25)
+h4
+  font-size: map-get($scales, 20)
+h5
+  font-size: map-get($scales, 18)
+h6
+  font-size: map-get($scales, 16)
+
+@each $var, $val in $scales
+  .fs#{$var}
+    font-size: $val
+
+// Font
+// =========================================================================
+
+.lato
+  font-family: $heading-family
+.noto
+  font-family: $body-family
+
+// Emphasis
+// =========================================================================
+
+.light
+  font-weight: $light-weight
+.regular
+  font-weight: $regular-weight
+.bold
+  font-weight: $bold-weight
+.italic
+  font-style: italic
+.caps
+  text-transform: uppercase

@@ -1,10 +1,10 @@
 !!!
 %html
   %head
-    %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
+    %meta{ :content => "width=device-width, initial-scale=1", :name => "viewport" }
     %title= content_for?(:title) ? "#{yield(:title)} | Beehive" : 'Beehive'
     = csrf_meta_tags
-    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => 'reload'
+    = stylesheet_link_tag v2_stylesheet? + 'application', media: 'all', 'data-turbolinks-track' => 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track' => 'reload'
     = javascript_include_tag params[:controller], 'data-turbolinks-track' => 'reload'
     = javascript_pack_tag 'application'
@@ -70,40 +70,42 @@
     %noscript
       %iframe{:height => "0", :src => "https://www.googletagmanager.com/ns.html?id=GTM-W3BQHWD", :style => "display:none;visibility:hidden", :width => "0"}
 
-    %main
-      = cell(:navbar, @current_user, proposal: @proposal)
+    = yield
 
-      .uk-container.uk-container-center
-        - if flash[:notice]
-          :javascript
-            $(document).ready(function() {
-              return $('#notice').ready(function() {
-                return $.UIkit.notify({
-                  message: "<i class='uk-icon-check'></i> #{flash[:notice]}",
-                  status: 'success',
-                  timeout: 3000,
-                  pos: 'top-center'
-                });
-              });
-            });
-          #notice
-        - elsif flash[:alert]
-          :javascript
-            $(document).ready(function() {
-              return $('#notice').ready(function() {
-                return $.UIkit.notify({
-                  message: "<i class='uk-icon-exclamation-triangle'></i> #{flash[:alert]}",
-                  status: 'danger',
-                  timeout: 3000,
-                  pos: 'top-center'
-                });
-              });
-            });
-          #notice
-
-      -# TODO: refactor
-      = yield(:public) if content_for?(:public)
-      = yield(:sign_in) if content_for?(:sign_in)
-      = yield
-
-  = cell(:layout).call(:footer) unless content_for?(:sign_in)
+  -#   %main
+  -#     = cell(:navbar, @current_user, proposal: @proposal)
+  -#
+  -#     .uk-container.uk-container-center
+  -#       - if flash[:notice]
+  -#         :javascript
+  -#           $(document).ready(function() {
+  -#             return $('#notice').ready(function() {
+  -#               return $.UIkit.notify({
+  -#                 message: "<i class='uk-icon-check'></i> #{flash[:notice]}",
+  -#                 status: 'success',
+  -#                 timeout: 3000,
+  -#                 pos: 'top-center'
+  -#               });
+  -#             });
+  -#           });
+  -#         #notice
+  -#       - elsif flash[:alert]
+  -#         :javascript
+  -#           $(document).ready(function() {
+  -#             return $('#notice').ready(function() {
+  -#               return $.UIkit.notify({
+  -#                 message: "<i class='uk-icon-exclamation-triangle'></i> #{flash[:alert]}",
+  -#                 status: 'danger',
+  -#                 timeout: 3000,
+  -#                 pos: 'top-center'
+  -#               });
+  -#             });
+  -#           });
+  -#         #notice
+  -#
+  -#     -# TODO: refactor
+  -#     = yield(:public) if content_for?(:public)
+  -#     = yield(:sign_in) if content_for?(:sign_in)
+  -#     = yield
+  -#
+  -# = cell(:layout).call(:footer) unless content_for?(:sign_in)
