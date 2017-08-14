@@ -68,7 +68,7 @@ module FundsHelper
 
   def income_desc(fund)
     arr = fund.income_distribution.select do |hash|
-      hash['label'] == Organisation::INCOME[@recipient.income][0]
+      hash['label'] == Organisation::INCOME_BANDS[@recipient.income_band][0]
     end
     return if arr.empty?
     return if arr[0]['percent']==0

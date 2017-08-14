@@ -5,7 +5,7 @@ class Organisation < ApplicationRecord
     ['Less than 3 years', 2],
     ['4 years or more', 3]
   ].freeze
-  INCOME = [
+  INCOME_BANDS = [
     ['Less than £10k', 0],
     ['£10k - £100k', 1],
     ['£100k - £1m', 2],
@@ -33,11 +33,11 @@ class Organisation < ApplicationRecord
 
   attr_accessor :skip_validation
 
-  validates :income, :employees, :volunteers,
+  validates :income_band, :employees, :volunteers,
             presence: true, numericality: { greater_than_or_equal_to: 0 },
             unless: :skip_validation
 
-  validates :income, inclusion: { in: INCOME.pluck(1) },
+  validates :income_band, inclusion: { in: INCOME_BANDS.pluck(1) },
                      unless: :skip_validation
 
   validates :employees, :volunteers, inclusion: { in: EMPLOYEES.pluck(1) },
@@ -296,17 +296,17 @@ class Organisation < ApplicationRecord
     end
 
     def income_select(income)
-      self.income = if income < 10_000
-                      0
-                    elsif income >= 10_000 && income < 100_000
-                      1
-                    elsif income >= 100_000 && income < 1_000_000
-                      2
-                    elsif income >= 1_000_000 && income < 10_000_000
-                      3
-                    elsif income >= 10_000_000
-                      4
-                    end
+      self.income_band = if income < 10_000
+                           0
+                         elsif income >= 10_000 && income < 100_000
+                           1
+                         elsif income >= 100_000 && income < 1_000_000
+                           2
+                         elsif income >= 1_000_000 && income < 10_000_000
+                           3
+                         elsif income >= 10_000_000
+                           4
+                         end
     end
 
     def staff_select(field_name, count)

@@ -19,8 +19,8 @@
 
   .uk-width-medium-1-1.uk-margin-top.name
     .label What is the annual income of your organisation or project?
-    = f.input :income, as: :select, collection: Organisation::INCOME, input_html: { class: 'large uk-width-1-1' }
-    = f.error :income, class: 'error-message'
+    = f.input :income_band, as: :select, collection: Organisation::INCOME_BANDS, input_html: { class: 'large uk-width-1-1' }
+    = f.error :income_band, class: 'error-message'
 
   .uk-width-medium-1-1.uk-margin-top.name
     .label How many employees does your organisation or project have?

@@ -36,6 +36,8 @@ class Fund < ApplicationRecord
 
   validates :min_amount_awarded, presence: true, if: :min_amount_awarded_limited
   validates :max_amount_awarded, presence: true, if: :max_amount_awarded_limited
+  validates :min_org_income, presence: true, if: :min_org_income_limited
+  validates :max_org_income, presence: true, if: :max_org_income_limited
   validates :min_duration_awarded, presence: true,
                                    if: :min_duration_awarded_limited
   validates :max_duration_awarded, presence: true,

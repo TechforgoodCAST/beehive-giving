@@ -32,9 +32,9 @@ feature 'Subscriptions' do
       expect(current_path).to eq proposals_path
     end
 
-    scenario 'plan/price set by recipient.income' do
-      (0..3).each do |income|
-        @db[:recipient].update(income: income)
+    scenario 'plan/price set by recipient.income_band' do
+      (0..3).each do |income_band|
+        @db[:recipient].update(income_band: income_band)
         payment = Payment.new(@db[:recipient])
         visit(account_subscription_path(@db[:recipient]))
         expect(page).to have_text ActiveSupport::NumberHelper
@@ -45,8 +45,8 @@ feature 'Subscriptions' do
       end
     end
 
-    scenario 'no plan/price for recipient.income 4' do
-      @db[:recipient].update(income: 4)
+    scenario 'no plan/price for recipient.income_band 4' do
+      @db[:recipient].update(income_band: 4)
       visit account_subscription_path(@db[:recipient])
       expect(page).to have_text 'Contact us for a quote'
       expect(page).to have_link 'Get in touch',

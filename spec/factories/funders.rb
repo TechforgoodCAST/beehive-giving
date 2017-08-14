@@ -9,7 +9,7 @@ FactoryGirl.define do
     name 'ACME'
     country 'GB'
     operating_for Organisation::OPERATING_FOR.sample[1]
-    income Organisation::INCOME.sample[1]
+    income_band Organisation::INCOME_BANDS.sample[1]
     employees Organisation::EMPLOYEES.sample[1]
     volunteers Organisation::EMPLOYEES.sample[1]
     website 'http://www.acme.com'
