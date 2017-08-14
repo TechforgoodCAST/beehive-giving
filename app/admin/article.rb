@@ -3,7 +3,7 @@ ActiveAdmin.register Article do
 
   controller do
     def find_resource
-      Article.find_by(slug: params[:id])
+      scoped_collection.find_by(slug: params[:id])
     end
   end
 
