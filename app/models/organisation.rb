@@ -6,21 +6,21 @@ class Organisation < ApplicationRecord
     ['4 years or more', 3]
   ].freeze
   INCOME_BANDS = [
-    ['Less than £10k', 0],
-    ['£10k - £100k', 1],
-    ['£100k - £1m', 2],
-    ['£1m - £10m', 3],
-    ['£10m+', 4]
+    ['Less than £10k', 0, 0, 10_000],
+    ['£10k - £100k', 1, 10_000, 100_000],
+    ['£100k - £1m', 2, 100_000, 1_000_000],
+    ['£1m - £10m', 3, 1_000_000, 10_000_000],
+    ['£10m+', 4, 10_000_000, Float::INFINITY]
   ].freeze
   EMPLOYEES = [
-    ['None', 0],
-    ['1 - 5', 1],
-    ['6 - 25', 2],
-    ['26 - 50', 3],
-    ['51 - 100', 4],
-    ['101 - 250', 5],
-    ['251 - 500', 6],
-    ['500+', 7]
+    ['None', 0, 0, 0],
+    ['1 - 5', 1, 1, 5],
+    ['6 - 25', 2, 6, 25],
+    ['26 - 50', 3, 26, 50],
+    ['51 - 100', 4, 51, 100],
+    ['101 - 250', 5, 101, 250],
+    ['251 - 500', 6, 251, 500],
+    ['500+', 7, 501, Float::INFINITY]
   ].freeze
 
   has_one :subscription, dependent: :destroy
@@ -152,6 +152,16 @@ class Organisation < ApplicationRecord
 
   def create_subscription
     Subscription.create(organisation_id: id) if subscription.nil?
+  end
+
+  def max_income
+    return income if income
+    INCOME_BANDS[income_band][3]
+  end
+
+  def min_income
+    return income if income
+    INCOME_BANDS[income_band][2]
   end
 
   private
@@ -296,38 +306,13 @@ class Organisation < ApplicationRecord
     end
 
     def income_select(income)
-      self.income_band = if income < 10_000
-                           0
-                         elsif income >= 10_000 && income < 100_000
-                           1
-                         elsif income >= 100_000 && income < 1_000_000
-                           2
-                         elsif income >= 1_000_000 && income < 10_000_000
-                           3
-                         elsif income >= 10_000_000
-                           4
-                         end
+      self.income = income
+      self.income_band = INCOME_BANDS.find {|band| income >= band[2] && income < band[3]}
     end
 
     def staff_select(field_name, count)
       count = count.to_i
-      self[field_name] = if count.zero?
-                           0
-                         elsif count >= 1 && count <= 5
-                           1
-                         elsif count >= 6 && count <= 25
-                           2
-                         elsif count >= 26 && count <= 50
-                           3
-                         elsif count >= 51 && count <= 100
-                           4
-                         elsif count >= 101 && count <= 250
-                           5
-                         elsif count >= 251 && count <= 500
-                           6
-                         elsif count > 500
-                           7
-                         end
+      self[field_name] = EMPLOYEES.find {|band| count >= band[2] && count <= band[3]}
     end
 
     def lookup_company_data

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170808152439) do
+ActiveRecord::Schema.define(version: 20170814155139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -237,9 +237,10 @@ ActiveRecord::Schema.define(version: 20170808152439) do
     t.jsonb "restriction_ids", default: [], null: false
     t.jsonb "sources", default: {}, null: false
     t.boolean "national", default: false, null: false
-    t.decimal "amount_awarded_sum"
     t.jsonb "beneficiary_distribution", default: {}, null: false
+    t.decimal "amount_awarded_sum"
     t.jsonb "grant_examples", default: [], null: false
+    t.jsonb "permitted_org_types", default: [], null: false
     t.boolean "min_amount_awarded_limited", default: false
     t.integer "min_amount_awarded"
     t.boolean "max_amount_awarded_limited", default: false
@@ -249,7 +250,10 @@ ActiveRecord::Schema.define(version: 20170808152439) do
     t.boolean "max_duration_awarded_limited", default: false
     t.integer "max_duration_awarded"
     t.jsonb "permitted_costs", default: [], null: false
-    t.jsonb "permitted_org_types", default: [], null: false
+    t.boolean "min_org_income_limited", default: false
+    t.integer "min_org_income"
+    t.boolean "max_org_income_limited", default: false
+    t.integer "max_org_income"
     t.index ["funder_id"], name: "index_funds_on_funder_id"
     t.index ["slug"], name: "index_funds_on_slug"
     t.index ["tags"], name: "index_funds_on_tags", using: :gin
@@ -326,10 +330,11 @@ ActiveRecord::Schema.define(version: 20170808152439) do
     t.integer "grants_count", default: 0
     t.integer "operating_for"
     t.boolean "multi_national"
-    t.integer "income"
+    t.integer "income_band"
     t.integer "employees"
     t.integer "volunteers"
     t.integer "funds_checked", default: 0, null: false
+    t.integer "income"
     t.index ["id", "type"], name: "index_organisations_on_id_and_type"
     t.index ["slug"], name: "index_organisations_on_slug", unique: true
   end
