@@ -1,30 +1,15 @@
 // Config
 // =========================================================================
 
-$width-1000: 62.5rem
-$width-750: 46.875rem
-$width-500: 31.25rem
-$width-250: 15.625rem
+$widths: (250: 15.625rem, 500: 31.25rem, 750: 46.875rem, 1000: 62.5rem)
 
 // =========================================================================
 
 .fit
   max-width: 100%
 
-.maxw1000
-  max-width: $width-1000
-.maxw750
-  max-width: $width-750
-.maxw500
-  max-width: $width-500
-.maxw250
-  max-width: $width-250
-
-.minw1000
-  min-width: $width-1000
-.minw750
-  min-width: $width-750
-.minw500
-  min-width: $width-500
-.minw250
-  min-width: $width-250
+@each $var, $val in $widths
+  .maxw#{$var}
+    max-width: $val
+  .minw#{$var}
+    min-width: $val
