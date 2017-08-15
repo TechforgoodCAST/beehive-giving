@@ -80,6 +80,34 @@ class Fund < ApplicationRecord
     end
   end
 
+  def self.min_duration(proposal, state)
+    case state
+      # all up-to-12m 1y-2y 2y-3y 3y+
+    when 'up-to-12m'
+      where "min_duration_awarded <= 12"
+    when '1y-2y'
+      where "min_duration_awarded <= 24"
+    when '2y-3y'
+      where "min_duration_awarded <= 36"
+    else
+      all
+    end
+  end
+
+  def self.max_duration(proposal, state)
+    case state
+      # all up-to-12m 1y-2y 2y-3y 3y+
+    when '1y-2y'
+      where "max_duration_awarded >= 12"
+    when '2y-3y'
+      where "max_duration_awarded >= 24"
+    when '3y+'
+      where "max_duration_awarded >= 36"
+    else
+      all
+    end
+  end
+
   def to_param
     slug
   end

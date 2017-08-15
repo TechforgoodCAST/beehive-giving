@@ -6,7 +6,7 @@ describe FilterCell do
   end
 
   it 'has correct options' do
-    %w[Best Name All Eligible Ineligible].each do |option|
+    %w[Best Name All Eligible Ineligible Up-to-12m 2y-3y].each do |option|
       expect(@filter).to have_text option
     end
   end
