@@ -25,7 +25,7 @@
         .f2.minw250.mr40
           .fs14.white.mb40
             LIVE Over £10m in grant funding available across 75+ funds
-          %h1.lato.light.fs40.white.mb20
+          %h1.light.fs40.white.mb20
             Get connected to the right funders
           %p.fs18.white.mb20
             Funder recommendations and eligibility checking for your non-profit organisation or project
@@ -41,39 +41,31 @@
             = render partial: 'users/form'
 
   %section
-    .mx40
-      .maxw1000.mx-auto
-        #tell-me-more
-        .uk-width-large-9-10.uk-container.uk-container-center.uk-margin-large.uk-margin-large-top
-          %h2.hero Beehive is...
-          .uk-width-large-4-5.uk-container-center
-            #smart.uk-margin-large-top{"data-uk-scrollspy" => "{cls:'uk-animation-slide-right'}"}
-              .uk-width-medium-1-3.uk-float-right
-                .feature.smart
-              .uk-width-medium-2-3.uk-vertical-align.uk-float-left{style: 'height: 224px;'}
-                .uk-vertical-align-middle
-                  %h3 Smart
-                  %h4.hero Beehive analyses thousands of grants to identify suitable funds for your organisation or project.
-            #personal{"data-uk-scrollspy" => "{cls:'uk-animation-slide-left'}"}
-              .uk-width-medium-1-3.uk-float-left
-                .feature.personal
-              .uk-width-medium-2-3.uk-vertical-align.uk-float-right{style: 'height: 224px;'}
-                .uk-vertical-align-middle
-                  %h3 Personal
-                  %h4.hero Beehive gets to know your organisation or project, and provides tailored insights based on how you fit with a funder.
-            #quick{"data-uk-scrollspy" => "{cls:'uk-animation-slide-right'}"}
-              .uk-width-medium-1-3.uk-float-right
-                .feature.quick
-              .uk-width-medium-2-3.uk-vertical-align.uk-float-right{style: 'height: 224px;'}
-                .uk-vertical-align-middle
-                  %h3 Quick
-                  %h4.hero Beehive lets you easily check a funders critera, preventing you from making an application to the wrong funder.
-            #free
-              .uk-width-1-1
-                %h3{style: 'font-weight: normal;'}
-                  and
-                  = succeed '.' do
-                    %strong Free
+    .maxw1000.mx-auto
+
+      .m40
+        %h2.regular Beehive is...
+
+      .flex.flex-wrap.items-center
+        .f1.m40
+          .feature.smart
+        .f2.minw250.m40
+          %h3 Smart
+          .fs18 Beehive analyses thousands of grants to identify suitable funds for your organisation or project.
+
+      .flex.flex-wrap.items-center
+        .f1.m40
+          .feature.personal
+        .f2.minw250.m40
+          %h3 Personal
+          .fs18 Beehive gets to know your organisation or project, and provides tailored insights based on how you fit with a funder.
+
+      .flex.flex-wrap.items-center
+        .f1.m40
+          .feature.quick
+        .f2.minw250.m40
+          %h3 Quick
+          .fs18 Beehive lets you easily check a funders critera, preventing you from making an application to the wrong funder.
 
   .banner
     .maxw1000.mx-auto
