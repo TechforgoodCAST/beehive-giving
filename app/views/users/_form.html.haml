@@ -7,34 +7,33 @@
 
   .flex.mb10
     .f1.mr5
-      = f.input :first_name, input_html: { class: 'input' }
+      = f.input :first_name
     .f1
-      = f.input :last_name, input_html: { class: 'input' }
+      = f.input :last_name
 
   .fs15.mb5
     %label Are you seeking funds for...
 
   .mb10
-    = f.input :org_type, as: :select, collection: ORG_TYPES, input_html: { class: 'input' }
+    = f.input :org_type, as: :select, collection: ORG_TYPES
 
-  .fs14.p10.my15.white.bg-red.rounded
+  .individual_notice.fs14.p10.my15.white.bg-red.rounded
     %strong Important.
     None of the funders on Beehive provide grants for individuals. See our
     = link_to 'FAQ', faq_path(anchor: 'individual'), class: 'bold white'
     for more details.
 
-  .mb10#charity-number{ class: ('fade-out' unless charity_hidden?(@user.org_type)) }
-    = f.input :charity_number, input_html: { class: 'input' }
+  .mb10
+    = f.input :charity_number
 
-  .mb10#company-number{ class: ('fade-out' unless company_hidden?(@user.org_type)) }
-    = f.input :company_number, input_html: { class: 'input' }
+  .mb10
+    = f.input :company_number
 
-  .seeking-individual
-    .mb10
-      = f.input :email, as: :email, input_html: { class: 'input' }
+  .mb10
+    = f.input :email, as: :email
 
-    .mb10
-      = f.input :password, as: :password, input_html: { class: 'input' }
+  .mb10
+    = f.input :password, as: :password
 
   .mb10.fs12.center.slate
     Accept
@@ -44,4 +43,4 @@
       = link_to 'privacy policy', '#privacy', class: 'blue', onclick: "window.open('#{privacy_path}','Privacy Policy','width=600,height=400')"
     = f.input_field :agree_to_terms, checked: true
 
-  = f.button :button, 'Create account (for free!)', class: 'button-wide white bg-olive caps truncate', data: { disable_with: 'Welcome aboard...' }, id: 'submit_user'
+  = f.button :button, 'Create account (for free!)', class: 'button-wide white bg-olive caps truncate', data: { disable_with: 'Welcome aboard...' }
