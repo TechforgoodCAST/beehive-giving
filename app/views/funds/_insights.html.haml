@@ -23,34 +23,34 @@
 
   - if @proposal && !@recipient.transferred?
     - if @proposal.suitability[fund.slug]['amount']['score'].positive?
-      %li
+      %li<
         %strong= number_to_percentage((@proposal.suitability[fund.slug]['amount']['score'] * 100), precision: 0)
         of funding was similar to the
         %strong amount
         you're seeking.
     - if @proposal.suitability[fund.slug]['duration']['score'].positive?
-      %li
+      %li<
         %strong= number_to_percentage((@proposal.suitability[fund.slug]['duration']['score'] * 100), precision: 0)
         of funding was similar to the
         %strong duration
         you're seeking.
 
   - if fund.open_data && fund.grant_count
-    %li
+    %li<
       Awarded
       .highlight= number_with_delimiter(fund.grant_count)
       = "grant".pluralize(fund.grant_count) + '.'
       %a.action{href: proposal_fund_path(@proposal, fund, anchor: 'how-was-funding-distributed')} More info
 
   - if fund.open_data? && fund.award_month_distribution?
-    %li
+    %li<
       Awarded the most funding in
       = succeed '.' do
         %strong= top_award_months(fund)
       %a.action{href: proposal_fund_path(@proposal, fund, anchor: 'when-was-funding-awarded')} More info
 
   - if fund.open_data? && fund.country_distribution?
-    %li
+    %li<
       Awarded most funding in the
       = succeed '.' do
         %strong= top_countries(fund)
