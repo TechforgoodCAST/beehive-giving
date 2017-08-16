@@ -45,6 +45,10 @@
 
     = render partial: 'eligibilities/legacy_notice'
 
+    .uk-margin-small-bottom
+      = pluralize(@fund_count, 'fund')
+      found
+
     .uk-margin-large-bottom.muted
       = cell :filter, params
 
