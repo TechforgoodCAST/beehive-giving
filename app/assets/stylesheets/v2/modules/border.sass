@@ -5,7 +5,14 @@
 
 // =========================================================================
 
+.circle
+  border-radius: 50%
 .rounded
   border-radius: $base-radius
   -moz-border-radius: $base-radius
   -webkit-border-radius: $base-radius
+
+@each $side in border, border-top, border-right, border-bottom, border-left
+  .#{$side}
+    #{$side}-width: $base-border-width
+    #{$side}-style: solid

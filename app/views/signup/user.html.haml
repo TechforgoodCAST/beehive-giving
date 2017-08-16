@@ -12,7 +12,7 @@
       .maxw1000.mx-auto.mt25.mb120
         %nav.flex.justify-end.items-center
           = link_to 'Beehive', root_path, id: 'navbar-logo', alt: 'Beehive logo'
-          %a.white.ml35{ href: '#' } About
+          = link_to 'About', faq_path, class: 'white ml35'
           %a.white.ml35{ href: '#' } Funds
           = link_to 'Sign in', sign_in_path, class: 'white ml35'
 
