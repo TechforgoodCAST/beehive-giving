@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe FilterCell do
   before(:each) do
-    @filter = cell(:filter, sort: 'name').call(:show)
+    @filter = cell(:filter, sort: 'name', funding_duration: 12).call(:show)
   end
 
   it 'has correct options' do

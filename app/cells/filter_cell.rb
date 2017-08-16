@@ -8,7 +8,7 @@ class FilterCell < Cell::ViewModel
   private
 
     def selected?(id, value)
-      model[id] == value
+      model[id.to_sym] == value
     end
 
     def select(id, options)
