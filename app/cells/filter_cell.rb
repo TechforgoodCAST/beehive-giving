@@ -1,3 +1,5 @@
+include ERB::Util
+
 class FilterCell < Cell::ViewModel
   def show
     render
@@ -12,7 +14,14 @@ class FilterCell < Cell::ViewModel
     def select(id, options)
       tag.select id: id do
         options.map do |opt|
-          tag.option(opt.capitalize, value: opt, selected: selected?(opt))
+          if opt.kind_of?(Array)
+            v = opt[0]
+            k = opt[1]
+          else
+            v = opt
+            k = opt.capitalize
+          end
+          tag.option(k, value: url_encode(v), selected: selected?(v))
         end.reduce(:+)
       end
     end
