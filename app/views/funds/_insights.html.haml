@@ -21,6 +21,8 @@
           You are ineligible for funding.
           %a.action{href: eligibility_proposal_fund_path(@proposal, fund)} Find out why
 
+  = cell(:fund_insight, fund).call(:amount)
+
   - if @proposal && !@recipient.transferred?
     - if @proposal.suitability[fund.slug]['amount']['score'].positive?
       %li<
@@ -28,6 +30,10 @@
         of funding was similar to the
         %strong amount
         you're seeking.
+
+  = cell(:fund_insight, fund).call(:duration)
+  
+  - if @proposal && !@recipient.transferred?
     - if @proposal.suitability[fund.slug]['duration']['score'].positive?
       %li<
         %strong= number_to_percentage((@proposal.suitability[fund.slug]['duration']['score'] * 100), precision: 0)
