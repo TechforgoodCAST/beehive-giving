@@ -50,7 +50,7 @@
       found
 
     .uk-margin-large-bottom.muted
-      = cell :filter, params
+      = cell :filter, params, funding_duration: @proposal.funding_duration
 
     - @funds.each_with_index do |fund, i|
 

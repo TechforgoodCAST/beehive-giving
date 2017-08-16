@@ -91,6 +91,8 @@ class Fund < ApplicationRecord
       where "min_duration_awarded <= 24 OR (max_duration_awarded IS NOT NULL AND min_duration_awarded IS NULL)"
     when '2y-3y'
       where "min_duration_awarded <= 36 OR (max_duration_awarded IS NOT NULL AND min_duration_awarded IS NULL)"
+    when 'proposal'
+      where "min_duration_awarded <= ? OR (max_duration_awarded IS NOT NULL AND min_duration_awarded IS NULL)", proposal.funding_duration
     else
       all
     end
@@ -107,6 +109,8 @@ class Fund < ApplicationRecord
       where "max_duration_awarded >= 36" # OR (max_duration_awarded IS NULL AND min_duration_awarded IS NULL)"
     when '2y+'
       where "max_duration_awarded > 24" # OR (max_duration_awarded IS NULL AND min_duration_awarded IS NULL)"
+    when 'proposal'
+      where "max_duration_awarded >= ?", proposal.funding_duration
     else
       all
     end

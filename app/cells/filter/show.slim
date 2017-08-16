@@ -7,4 +7,4 @@ form#filter
   = select 'eligibility', %w[all eligible ineligible]
   
   | Grant duration:
-  = select 'duration', [["all", "All"], ["up-to-2y", "Up to 2 years"], ["2y+", "More than 2 years"]]
+  = select 'duration', [["proposal", "Your proposal (#{@options[:funding_duration]} months)"], ["all", "Any duration"], ["up-to-2y", "Up to 2 years"], ["2y+", "More than 2 years"]]

@@ -7,8 +7,8 @@ class FilterCell < Cell::ViewModel
 
   private
 
-    def selected?(value)
-      model.value? value
+    def selected?(id, value)
+      model[id] == value
     end
 
     def select(id, options)
@@ -17,7 +17,7 @@ class FilterCell < Cell::ViewModel
           unless opt.kind_of?(Array)
             opt = [opt, opt.capitalize]
           end
-          tag.option(opt[1], value: url_encode(opt[0]), selected: selected?(opt[0]))
+          tag.option(opt[1], value: url_encode(opt[0]), selected: selected?(id, opt[0]))
         end.reduce(:+)
       end
     end
