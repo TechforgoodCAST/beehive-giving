@@ -6,5 +6,5 @@ form#filter
   | Eligibility:
   = select 'eligibility', %w[all eligible ineligible]
   
-  | Duration:
-  = select 'duration', [["all", "All"], ["up-to-12m", "Up to 12 months"], ["1y-2y", "1 year - 2 years"], ["2y-3y", "2 years - 3 years"], ["3y+", "More than 3 years"]]
+  | Grant duration:
+  = select 'duration', [["all", "All"], ["up-to-2y", "Up to 2 years"], ["2y+", "More than 2 years"]]

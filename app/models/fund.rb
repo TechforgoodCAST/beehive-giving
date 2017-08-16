@@ -84,11 +84,13 @@ class Fund < ApplicationRecord
     case state
       # all up-to-12m 1y-2y 2y-3y 3y+
     when 'up-to-12m'
-      where "min_duration_awarded <= 12"
+      where "min_duration_awarded <= 12 OR (max_duration_awarded IS NOT NULL AND min_duration_awarded IS NULL)"
+    when 'up-to-2y'
+      where "min_duration_awarded <= 24 OR (max_duration_awarded IS NOT NULL AND min_duration_awarded IS NULL)"
     when '1y-2y'
-      where "min_duration_awarded <= 24"
+      where "min_duration_awarded <= 24 OR (max_duration_awarded IS NOT NULL AND min_duration_awarded IS NULL)"
     when '2y-3y'
-      where "min_duration_awarded <= 36"
+      where "min_duration_awarded <= 36 OR (max_duration_awarded IS NOT NULL AND min_duration_awarded IS NULL)"
     else
       all
     end
@@ -98,11 +100,13 @@ class Fund < ApplicationRecord
     case state
       # all up-to-12m 1y-2y 2y-3y 3y+
     when '1y-2y'
-      where "max_duration_awarded >= 12"
+      where "max_duration_awarded >= 12" # OR (max_duration_awarded IS NULL AND min_duration_awarded IS NULL)"
     when '2y-3y'
-      where "max_duration_awarded >= 24"
+      where "max_duration_awarded >= 24" # OR (max_duration_awarded IS NULL AND min_duration_awarded IS NULL)"
     when '3y+'
-      where "max_duration_awarded >= 36"
+      where "max_duration_awarded >= 36" # OR (max_duration_awarded IS NULL AND min_duration_awarded IS NULL)"
+    when '2y+'
+      where "max_duration_awarded > 24" # OR (max_duration_awarded IS NULL AND min_duration_awarded IS NULL)"
     else
       all
     end
