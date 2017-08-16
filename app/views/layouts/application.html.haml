@@ -4,7 +4,7 @@
     %meta{ :content => "width=device-width, initial-scale=1", :name => "viewport" }
     %title= content_for?(:title) ? "#{yield(:title)} | Beehive" : 'Beehive'
     = csrf_meta_tags
-    = stylesheet_link_tag v2_stylesheet? + 'application', media: 'all', 'data-turbolinks-track' => 'reload'
+    = stylesheet_link_tag v2_stylesheet + 'application', media: 'all', 'data-turbolinks-track' => 'reload'
     = javascript_include_tag 'application', 'data-turbolinks-track' => 'reload'
     = javascript_include_tag params[:controller], 'data-turbolinks-track' => 'reload'
     = javascript_pack_tag 'application'
@@ -70,96 +70,99 @@
     %noscript
       %iframe{:height => "0", :src => "https://www.googletagmanager.com/ns.html?id=GTM-W3BQHWD", :style => "display:none;visibility:hidden", :width => "0"}
 
-    = yield
+    - if v2_layout?
 
-    %footer.bg-silver.border-top.border-lightest-gray
+      = yield
 
-      .maxw1080.mx-auto
-        .flex.flex-wrap.items-center.slate
-          .f1.minw250.mx40.py40
-            .flex.items-center
-              %a{ href: root_path, alt: 'Beehive logo' }
-                #logo-hex
-              .fs12.ml5 Intelligently connecting non-profits with funders
-          .f1.minw250.mx40.py40
-            .flex.fs14
-              .f1
-                .bold.mb14 BEEHIVE
-                %ul
-                  %li.mb10
-                    = link_to 'About', faq_path, class: 'slate'
-                  %li.mb10 Pricing
-                  %li.mb10
-                    = link_to 'Research', articles_path, class: 'slate'
-                  %li.mb10
-                    = link_to 'FAQ', faq_path, class: 'slate'
-                  %li.mb10
-                    = link_to 'Beehive for Funders', for_funders_path, class: 'slate'
+      %footer.bg-silver.border-top.border-lightest-gray
 
-              .f1
-                .bold.mb14 FUNDING
-                %ul
-                  %li.mb10 Arts
-                  %li.mb10 Youth
-                  %li.mb10 Community
-                  %li.mb10 Sport
-                  %li.mb10 and more...
+        .maxw1080.mx-auto
+          .flex.flex-wrap.items-center.slate
+            .f1.minw250.mx40.py40
+              .flex.items-center
+                %a{ href: root_path, alt: 'Beehive logo' }
+                  #logo-hex
+                .fs12.ml5 Intelligently connecting non-profits with funders
+            .f1.minw250.mx40.py40
+              .flex.fs14
+                .f1
+                  .bold.mb14 BEEHIVE
+                  %ul
+                    %li.mb10
+                      = link_to 'About', faq_path, class: 'slate'
+                    -# %li.mb10 Pricing
+                    %li.mb10
+                      = link_to 'Research', articles_path, class: 'slate'
+                    -# %li.mb10
+                    -#   = link_to 'FAQ', faq_path, class: 'slate'
+                    %li.mb10
+                      = link_to 'Beehive for Funders', for_funders_path, class: 'slate'
 
-              .f1
-                .bold.mb14 RESOURCES
-                %ul
-                  %li.mb10
-                    = link_to 'Privacy', privacy_path, class: 'slate'
-                  %li.mb10
-                    = link_to 'Terms', terms_path, class: 'slate'
-                  %li.mb10 Developers
-                  %li.mb10
-                    = mail_to 'support@beehivegiving.org', 'Contact', class: 'slate'
+                -# .f1
+                -#   .bold.mb14 FUNDING
+                -#   %ul
+                -#     %li.mb10 Arts
+                -#     %li.mb10 Youth
+                -#     %li.mb10 Community
+                -#     %li.mb10 Sport
+                -#     %li.mb10 and more...
 
-        .mx40.mb40.fs12.mid-gray
-          &copy;
-          = Time.zone.today.year
-          = succeed ';' do
-            = link_to 'BeehiveGiving.org', root_path, class: 'mid-gray'
-          Incubated by
-          = succeed ',' do
-            = link_to 'CAST', 'http://wearecast.org.uk/', target: '_blank', class: 'mid-gray'
-          Registered Charity No: 1161998, Company No: 09544506
+                .f1
+                  .bold.mb14 RESOURCES
+                  %ul
+                    %li.mb10
+                      = link_to 'Privacy', privacy_path, class: 'slate'
+                    %li.mb10
+                      = link_to 'Terms', terms_path, class: 'slate'
+                    -# %li.mb10 Developers
+                    %li.mb10
+                      = mail_to 'support@beehivegiving.org', 'Contact', class: 'slate'
 
-  -#   %main
-  -#     = cell(:navbar, @current_user, proposal: @proposal)
-  -#
-  -#     .uk-container.uk-container-center
-  -#       - if flash[:notice]
-  -#         :javascript
-  -#           $(document).ready(function() {
-  -#             return $('#notice').ready(function() {
-  -#               return $.UIkit.notify({
-  -#                 message: "<i class='uk-icon-check'></i> #{flash[:notice]}",
-  -#                 status: 'success',
-  -#                 timeout: 3000,
-  -#                 pos: 'top-center'
-  -#               });
-  -#             });
-  -#           });
-  -#         #notice
-  -#       - elsif flash[:alert]
-  -#         :javascript
-  -#           $(document).ready(function() {
-  -#             return $('#notice').ready(function() {
-  -#               return $.UIkit.notify({
-  -#                 message: "<i class='uk-icon-exclamation-triangle'></i> #{flash[:alert]}",
-  -#                 status: 'danger',
-  -#                 timeout: 3000,
-  -#                 pos: 'top-center'
-  -#               });
-  -#             });
-  -#           });
-  -#         #notice
-  -#
-  -#     -# TODO: refactor
-  -#     = yield(:public) if content_for?(:public)
-  -#     = yield(:sign_in) if content_for?(:sign_in)
-  -#     = yield
-  -#
-  -# = cell(:layout).call(:footer) unless content_for?(:sign_in)
+          .mx40.mb40.fs12.mid-gray
+            &copy;
+            = Time.zone.today.year
+            = succeed ';' do
+              = link_to 'BeehiveGiving.org', root_path, class: 'mid-gray'
+            Incubated by
+            = succeed ',' do
+              = link_to 'CAST', 'http://wearecast.org.uk/', target: '_blank', class: 'mid-gray'
+            Registered Charity No: 1161998, Company No: 09544506
+
+    - else
+      %main
+        = cell(:navbar, @current_user, proposal: @proposal)
+
+        .uk-container.uk-container-center
+          - if flash[:notice]
+            :javascript
+              $(document).ready(function() {
+                return $('#notice').ready(function() {
+                  return $.UIkit.notify({
+                    message: "<i class='uk-icon-check'></i> #{flash[:notice]}",
+                    status: 'success',
+                    timeout: 3000,
+                    pos: 'top-center'
+                  });
+                });
+              });
+            #notice
+          - elsif flash[:alert]
+            :javascript
+              $(document).ready(function() {
+                return $('#notice').ready(function() {
+                  return $.UIkit.notify({
+                    message: "<i class='uk-icon-exclamation-triangle'></i> #{flash[:alert]}",
+                    status: 'danger',
+                    timeout: 3000,
+                    pos: 'top-center'
+                  });
+                });
+              });
+            #notice
+
+        -# TODO: refactor
+        = yield(:public) if content_for?(:public)
+        = yield(:sign_in) if content_for?(:sign_in)
+        = yield
+
+        = cell(:layout).call(:footer) unless content_for?(:sign_in)

@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <svg version="1.1" id="hex-bg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 2438 838" style="enable-background:new 0 0 2438 838;" xml:space="preserve">
-  <style type="text/css">
-    .st0 { fill: #5AA0FF; }
-    .st1 { fill: #488AE5; }
-  </style>
-  <polygon id="left-hex" class="st0" points="1236,0 1182,440.5 551.2,703 0.2,296 37,0 " />
-  <polygon id="right-hex" class="st1" points="1181,440.5 1235,0 2438,0 2366,587 1734,837 " />
+  <radialGradient id="left-rad" gradientUnits="userSpaceOnUse" cx="50%" cy="50%" r="120%">
+    <stop stop-color="#5AA0FF" offset="0.1"/>
+    <stop stop-color="#2E5943" offset="1"/>
+  </radialGradient>
+  <radialGradient id="right-rad" gradientUnits="userSpaceOnUse" cx="50%" cy="50%" r="110%">
+    <stop stop-color="#589DFA" offset="0"/>
+    <stop stop-color="#2B4D7A" offset="1"/>
+  </radialGradient>
+  <polygon id="left-hex" fill="url(#left-rad)" points="1236,0 1182,440.5 551.2,703 0.2,296 37,0 " />
+  <polygon id="right-hex" fill="url(#right-rad)" points="1181,440.5 1235,0 2438,0 2366,587 1734,837 " />
 </svg>

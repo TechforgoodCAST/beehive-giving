@@ -48,7 +48,7 @@ class User < ApplicationRecord
   has_secure_password
 
   def org_type=(str)
-    @org_type = str.to_i
+    @org_type = str.present? ? str.to_i : ''
   end
 
   def first_name=(s)

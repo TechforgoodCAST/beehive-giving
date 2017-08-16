@@ -4,7 +4,6 @@
 
   .label Where will your proposed work affect?
   = f.input :affect_geo, as: :radio_buttons, collection: Proposal::AFFECT_GEO
-  = f.error :affect_geo, class: 'error-message'
 
   .uk-width-1-1.uk-margin-top.districts class=hidden(within_country)
     .label Please select all of the areas your proposed work will affect
@@ -34,6 +33,5 @@
     .label Please select the countries your proposed work will affect
     / TODO: refactor
     = f.association :countries, collection: Country.order('priority DESC'), input_html: { class: 'country_field chosen-select large' }
-    = f.error :countries, class: 'error-message'
 
 hr.thick

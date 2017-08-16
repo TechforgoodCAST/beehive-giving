@@ -4,25 +4,20 @@
     .uk-width-medium-1-2
       .label First name
       = f.input :first_name, type: 'text', input_html: { class: 'large uk-width-1-1' }
-      = f.error :first_name, class: 'error-message'
 
     .uk-width-medium-1-2
       .label Last name
       = f.input :last_name, type: 'text', input_html: { class: 'large uk-width-1-1' }
-      = f.error :last_name, class: 'error-message'
 
     .uk-width-1-1.uk-margin-top
       .label Email
       = f.input :email, type: 'text', input_html: { class: 'large uk-width-1-1' }
-      = f.error :email, class: 'error-message'
 
   .uk-grid.uk-grid-small.uk-width-1-1.uk-margin-top
     .uk-width-medium-1-2
       .label Password
       = f.input :password, type: 'password', input_html: { class: 'large uk-width-1-1', "data-uk-tooltip" => "{pos:'top', animation:true}", title: 'At least 6 characters with 1 number.' }
-      = f.error :password, class: 'error-message'
 
     .uk-width-medium-1-2
       .label Confirm password
       = f.input :password_confirmation, type: 'password', input_html: { class: 'large uk-width-1-1' }
-      = f.error :password_confirmation, class: 'error-message'
