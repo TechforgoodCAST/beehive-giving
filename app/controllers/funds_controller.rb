@@ -16,6 +16,7 @@ class FundsController < ApplicationController
                 .min_duration(@proposal, params[:duration])
                 .order_by(@proposal, params[:sort])
 
+    @fund_count = query.count
     @funds = Kaminari.paginate_array(query).page(params[:page])
   end
 
