@@ -1,3 +1,21 @@
+// TODO: deprecated
+#banner
+  background: #005d7f
+
+// TODO: deprecated
+.feature
+  background: image-url('features-sprite.png') no-repeat
+  width: 244px
+  height: 224px
+  margin: 0 auto
+  &.personal
+    background-position: center -224px
+  &.quick
+    background-position: center -448px
+
+#header-offset
+  min-height: 43.75rem
+
 #hex
   width: 100%
   height: 838px
@@ -7,6 +25,11 @@
   position: absolute
   top: 0
   z-index: -1
+
+#logo-hex
+  background: image-url('footer-hex.svg') no-repeat
+  width: 32px
+  height: 30px
 
 #navbar-logo
   width: 106px
@@ -24,23 +47,3 @@
     height: 20px
     background: image-url('logo-hex.svg') no-repeat
     background-size: 24px 20px
-
-// TODO: deprecated
-.feature
-  background: image-url('features-sprite.png') no-repeat
-  width: 244px
-  height: 224px
-  margin: 0 auto
-  &.personal
-    background-position: center -224px
-  &.quick
-    background-position: center -448px
-
-// TODO: deprecated
-#banner
-  background: #005d7f
-
-#logo-hex
-  background: image-url('footer-hex.svg') no-repeat
-  width: 32px
-  height: 30px
