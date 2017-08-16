@@ -14,14 +14,10 @@ class FilterCell < Cell::ViewModel
     def select(id, options)
       tag.select id: id do
         options.map do |opt|
-          if opt.kind_of?(Array)
-            v = opt[0]
-            k = opt[1]
-          else
-            v = opt
-            k = opt.capitalize
+          unless opt.kind_of?(Array)
+            opt = [opt, opt.capitalize]
           end
-          tag.option(k, value: url_encode(v), selected: selected?(v))
+          tag.option(opt[1], value: url_encode(opt[0]), selected: selected?(opt[0]))
         end.reduce(:+)
       end
     end
