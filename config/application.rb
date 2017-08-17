@@ -44,6 +44,7 @@ module Beehive
 
     # vendor assets
     config.assets.precompile += %w(
+      v2/application.css
       chosen.css
       overrides/chosen_overrides.css
       overrides/morris_overrides.css

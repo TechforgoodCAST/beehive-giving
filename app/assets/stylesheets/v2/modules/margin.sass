@@ -1,0 +1,23 @@
+@import base
+
+@each $var, $val in $scales
+  .m#{$var}
+    +responsive(margin, $val, .6, .8)
+  .mt#{$var}
+    +responsive(margin-top, $val, .6, .8)
+  .mr#{$var}
+    +responsive(margin-right, $val, .6, .8)
+  .mb#{$var}
+    +responsive(margin-bottom, $val, .6, .8)
+  .ml#{$var}
+    +responsive(margin-left, $val, .6, .8)
+  .mx#{$var}
+    +responsive(margin-left, $val, .6, .8)
+    +responsive(margin-right, $val, .6, .8)
+  .my#{$var}
+    +responsive(margin-top, $val, .6, .8)
+    +responsive(margin-bottom, $val, .6, .8)
+
+.mx-auto
+  margin-left: auto
+  margin-right: auto

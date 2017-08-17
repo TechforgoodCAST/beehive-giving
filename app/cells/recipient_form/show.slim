@@ -2,39 +2,31 @@
   .uk-width-medium-1-1.name
     .label Organisation or project name
     = f.input :name, type: 'text', input_html: { class: 'large uk-width-1-1' }
-    = f.error :name, class: 'error-message'
 
   .uk-width-medium-1-1.uk-margin-top.recipient-country
     .label Where is your organisation or project based?
     .street-address.uk-margin-bottom
       = f.input :street_address, type: 'text', input_html: { class: 'large uk-width-1-1' }
-      = f.error :street_address, class: 'error-message'
-    = f.input :country, error: false, type: 'text', input_html: { class: 'large uk-width-1-1 chosen-select' }, include_blank: true, priority: ['United Kingdom']
-    = f.error :country, class: 'error-message'
+    = f.input :country, type: 'text', input_html: { class: 'large uk-width-1-1 chosen-select' }, include_blank: true, priority: ['United Kingdom']
 
   .uk-width-medium-1-1.uk-margin-top.name
     .label How long has your organisation or project been operating for?
     = f.input :operating_for, as: :select, collection: Organisation::OPERATING_FOR, input_html: { class: 'large uk-width-1-1' }
-    = f.error :operating_for, class: 'error-message'
 
   .uk-width-medium-1-1.uk-margin-top.name
     .label What is the annual income of your organisation or project?
     = f.input :income_band, as: :select, collection: Organisation::INCOME_BANDS, input_html: { class: 'large uk-width-1-1' }
-    = f.error :income_band, class: 'error-message'
 
   .uk-width-medium-1-1.uk-margin-top.name
     .label How many employees does your organisation or project have?
     = f.input :employees, as: :select, collection: Organisation::EMPLOYEES, input_html: { class: 'large uk-width-1-1' }
-    = f.error :employees, class: 'error-message'
 
   .uk-width-medium-1-1.uk-margin-top.name
     .label How many volunteers does your organisation or project have?
     = f.input :volunteers, as: :select, collection: Organisation::EMPLOYEES, input_html: { class: 'large uk-width-1-1' }
-    = f.error :volunteers, class: 'error-message'
 
   .uk-width-medium-1-1
     .uk-grid
       .uk-width-medium-1-2.uk-margin-top.website
         .label Your organisation or project's website
         = f.input :website, as: :url, input_html: { class: 'large uk-width-1-1' }
-        = f.error :website, class: 'error-message'

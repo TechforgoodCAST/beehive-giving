@@ -5,14 +5,12 @@
   .uk-width-1-1.uk-margin-top
     .label Will your proposed work affect people?
     = f.input :affect_people, as: :radio_buttons, input_html: { class: 'large uk-width-1-1' }
-    = f.error :affect_people, class: 'error-message error-margin', id: 'people-error'
 
     #people-options class=hidden(affect_people)
 
       .label.question-padding Which genders?
       .question-padding
         = f.input :gender, collection: Proposal::GENDERS, input_html: { class: 'large uk-width-1-1' }
-        = f.error :gender, class: 'error-message'
 
       hr
 
