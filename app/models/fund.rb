@@ -80,37 +80,21 @@ class Fund < ApplicationRecord
     end
   end
 
-  def self.min_duration(proposal, state)
+  def self.duration(proposal, state)
     case state
-      # all up-to-12m 1y-2y 2y-3y 3y+
-    when 'up-to-12m'
-      where "min_duration_awarded <= 12 OR (max_duration_awarded IS NOT NULL AND min_duration_awarded IS NULL)"
     when 'up-to-2y'
-      where "min_duration_awarded <= 24 OR (max_duration_awarded IS NOT NULL AND min_duration_awarded IS NULL)"
-    when '1y-2y'
-      where "min_duration_awarded <= 24 OR (max_duration_awarded IS NOT NULL AND min_duration_awarded IS NULL)"
-    when '2y-3y'
-      where "min_duration_awarded <= 36 OR (max_duration_awarded IS NOT NULL AND min_duration_awarded IS NULL)"
+      where '
+        min_duration_awarded <= 24 OR
+        (max_duration_awarded IS NOT NULL AND min_duration_awarded IS NULL)
+      '
+    when '2y-plus'
+      where 'max_duration_awarded > 24'
     when 'proposal'
-      where "min_duration_awarded <= ? OR (max_duration_awarded IS NOT NULL AND min_duration_awarded IS NULL)", proposal.funding_duration
-    else
-      all
-    end
-  end
-
-  def self.max_duration(proposal, state)
-    case state
-      # all up-to-12m 1y-2y 2y-3y 3y+
-    when '1y-2y'
-      where "max_duration_awarded >= 12" # OR (max_duration_awarded IS NULL AND min_duration_awarded IS NULL)"
-    when '2y-3y'
-      where "max_duration_awarded >= 24" # OR (max_duration_awarded IS NULL AND min_duration_awarded IS NULL)"
-    when '3y+'
-      where "max_duration_awarded >= 36" # OR (max_duration_awarded IS NULL AND min_duration_awarded IS NULL)"
-    when '2y+'
-      where "max_duration_awarded > 24" # OR (max_duration_awarded IS NULL AND min_duration_awarded IS NULL)"
-    when 'proposal'
-      where "max_duration_awarded >= ?", proposal.funding_duration
+      where '
+        (min_duration_awarded iS NOT NULL OR max_duration_awarded IS NOT NULL) AND
+        (min_duration_awarded <= :proposal OR min_duration_awarded IS NULL) AND
+        (max_duration_awarded >= :proposal OR max_duration_awarded IS NULL)
+      ', proposal: proposal.funding_duration
     else
       all
     end

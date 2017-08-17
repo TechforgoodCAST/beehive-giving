@@ -15,11 +15,12 @@ test('_parseInputs', () => {
         <option value="eligible">Eligible</option>
       </select>
       <select id="duration">
-        <option value="2y-3y">2y-3y</option>
+        <option value="up-to-2y">Up to 2 years</option>
       </select>
     </form>
   `
   const $form = document.getElementById('sort-filter')
 
-  expect(filter._parseInputs($form)).toEqual('?sort=name&eligibility=eligible&duration=2y-3y')
+  expect(filter._parseInputs($form))
+    .toEqual('?sort=name&eligibility=eligible&duration=up-to-2y')
 })

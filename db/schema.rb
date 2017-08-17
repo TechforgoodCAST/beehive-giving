@@ -237,10 +237,9 @@ ActiveRecord::Schema.define(version: 20170814155139) do
     t.jsonb "restriction_ids", default: [], null: false
     t.jsonb "sources", default: {}, null: false
     t.boolean "national", default: false, null: false
-    t.jsonb "beneficiary_distribution", default: {}, null: false
     t.decimal "amount_awarded_sum"
+    t.jsonb "beneficiary_distribution", default: {}, null: false
     t.jsonb "grant_examples", default: [], null: false
-    t.jsonb "permitted_org_types", default: [], null: false
     t.boolean "min_amount_awarded_limited", default: false
     t.integer "min_amount_awarded"
     t.boolean "max_amount_awarded_limited", default: false
@@ -250,6 +249,7 @@ ActiveRecord::Schema.define(version: 20170814155139) do
     t.boolean "max_duration_awarded_limited", default: false
     t.integer "max_duration_awarded"
     t.jsonb "permitted_costs", default: [], null: false
+    t.jsonb "permitted_org_types", default: [], null: false
     t.boolean "min_org_income_limited", default: false
     t.integer "min_org_income"
     t.boolean "max_org_income_limited", default: false
