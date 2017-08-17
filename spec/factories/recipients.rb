@@ -12,7 +12,7 @@ FactoryGirl.define do
     website         'http://www.acme.com'
 
     factory :recipient do
-      income        Organisation::INCOME[1][1] # 10k - 100k
+      income_band   Organisation::INCOME_BANDS[1][1] # 10k - 100k
       employees     Organisation::EMPLOYEES[1][1] # 1 - 5
       volunteers    Organisation::EMPLOYEES[1][1] # 1 - 5
     end

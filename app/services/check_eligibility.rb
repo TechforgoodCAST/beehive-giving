@@ -1,5 +1,5 @@
 class CheckEligibility < CheckBase
-  CHECKS = [Location, OrgType, Quiz, Amount].map(&:new)
+  CHECKS = [Location, OrgType, Quiz, Amount, OrgIncome].map(&:new)
 
   def call_each!(proposal, funds)
     proposal.eligibility.merge! call_each(proposal, funds)

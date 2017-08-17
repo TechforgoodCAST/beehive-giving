@@ -5,7 +5,7 @@ ActiveAdmin.register Funder do
                 :region, :postal_code, :country, :charity_number,
                 :company_number, :founded_on, :registered_on, :mission, :status,
                 :registered, :active_on_beehive, :slug, :org_type,
-                :operating_for, :multi_national, :income, :employees,
+                :operating_for, :multi_national, :income_band, :employees,
                 :volunteers, :skip_validation, organisation_ids: []
 
   controller do
