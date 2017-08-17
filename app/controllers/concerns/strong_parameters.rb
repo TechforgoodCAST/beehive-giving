@@ -11,7 +11,7 @@ module StrongParameters
   def recipient_params
     params.require(:recipient)
           .permit(:name, :website, :street_address, :country, :charity_number,
-                  :company_number, :operating_for, :multi_national, :income,
+                  :company_number, :operating_for, :multi_national, :income_band,
                   :employees, :volunteers, :org_type, organisation_ids: [])
   end
 

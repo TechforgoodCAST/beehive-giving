@@ -12,8 +12,10 @@ class FundsController < ApplicationController
     query = Fund.includes(:funder)
                 .active
                 .eligibility(@proposal, params[:eligibility])
+                .duration(@proposal, params[:duration])
                 .order_by(@proposal, params[:sort])
 
+    @fund_count = query.size
     @funds = Kaminari.paginate_array(query).page(params[:page])
   end
 

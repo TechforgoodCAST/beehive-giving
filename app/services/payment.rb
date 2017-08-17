@@ -5,7 +5,7 @@ class Payment
   end
 
   def plan_cost
-    cost = plans_a_b(plans).values[@recipient.income] / 100
+    cost = plans_a_b(plans).values[@recipient.income_band] / 100
     return cost unless @subscription
     cost - (cost * (@subscription.percent_off.to_f / 100))
   end
@@ -30,7 +30,7 @@ class Payment
     end
 
     def plans
-      return 'PLANS' if @recipient.income > 1 || @recipient.created_at.day.odd?
+      return 'PLANS' if @recipient.income_band > 1 || @recipient.created_at.day.odd?
       'PLANS_B'
     end
 
@@ -40,7 +40,7 @@ class Payment
     end
 
     def plan_id
-      plans_a_b(plans).keys[@recipient.income].to_s.parameterize
+      plans_a_b(plans).keys[@recipient.income_band].to_s.parameterize
     end
 
     def stripe_customer

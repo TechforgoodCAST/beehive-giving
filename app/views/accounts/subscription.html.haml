@@ -4,7 +4,7 @@
   mixpanel.track("View Subscription Page");
   mixpanel.identify("#{@current_user.id}");
 
-- if @recipient.income < 4
+- if @recipient.income_band < 4
   :javascript
     ga("send", "event", "accounts#subscription", "view", "Plan Cost: #{@payment.plan_cost}");
 
@@ -47,7 +47,7 @@
             - if @subscription.active?
               .uk-button.uk-button-small.uk-button-primary.invert Active
           %h4
-            - if @recipient.income > 3
+            - if @recipient.income_band > 3
               %strong Contact us for a quote
             - else
               %strong= number_to_currency(@payment.plan_cost, unit: '£', precision: 0)
@@ -58,7 +58,7 @@
                   = @payment.discount
                   discount
           = render 'premium_features'
-          - if @recipient.income > 3
+          - if @recipient.income_band > 3
             = mail_to 'support@beehivegiving.org', 'Get in touch', class: 'uk-button uk-button-primary uk-button-large uk-width-1-1 uk-margin-top'
           - else
             - unless @subscription.active?
