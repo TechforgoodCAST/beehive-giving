@@ -7,13 +7,8 @@
   %header#header-offset
     #hex
 
-    -# TODO: Navbar cell
-    .maxw1080.mx-auto.mt25.mb120
-      %nav.mx40.flex.justify-end.items-center
-        = link_to 'Beehive', root_path, id: 'navbar-logo', alt: 'Beehive logo'
-        = link_to 'About', faq_path, class: 'white ml35'
-        -# %a.white.ml35{ href: '#' } Funds
-        = link_to 'Sign in', sign_in_path, class: 'white ml35'
+    .pb15.mb80
+      = cell(:v2_navbar, @current_user, type: 'white')
 
     .maxw1080.mx-auto.my40.flex.flex-wrap
       .f2.minw250.mx40

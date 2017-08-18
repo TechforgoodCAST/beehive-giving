@@ -31,8 +31,8 @@ Rails.application.routes.draw do
   ActiveAdmin.routes(self)
 
   # Legacy support
-  get '/about',   to: redirect('/')
-  get '/tour',    to: redirect('#tell-me-more')
+  get '/about',   to: 'pages#about', as: 'about'
+  get '/tour',    to: redirect('/')
   get '/welcome', to: redirect('/')
 
   # Sessions

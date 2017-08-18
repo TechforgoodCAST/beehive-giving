@@ -8,6 +8,7 @@ export default class Select {
 
   _hideOpts (select, opts) {
     const $select = document.getElementById(select)
+    if (!$select) return
 
     const selectedClasses = opts[$select.value] || []
 
