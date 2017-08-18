@@ -57,7 +57,7 @@ class MatchHelper
   end
 
   def submit_user_form
-    click_button 'Create account (for free!)'
+    click_button 'Create account'
     self
   end
 
