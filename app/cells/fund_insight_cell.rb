@@ -32,6 +32,10 @@ class FundInsightCell < Cell::ViewModel
     title_name[0]
   end
 
+  def themes
+    render locals: {proposal: options[:proposal], themes: model.themes.order(:name)}
+  end
+
   def duration
     return unless model.min_duration_awarded_limited || model.max_duration_awarded_limited
     if !model.min_duration_awarded_limited || model.min_duration_awarded == 0

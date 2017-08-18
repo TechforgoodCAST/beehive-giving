@@ -7,7 +7,6 @@ feature 'Eligibility' do
   before(:each) do
     @app.seed_test_db
         .setup_funds(num: 7, open_data: true)
-        .tag_funds
         .create_recipient
         .with_user
         .create_registered_proposal

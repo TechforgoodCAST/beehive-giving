@@ -12,6 +12,7 @@ feature 'Proposal' do
     @db = @app.instances
     @recipient = @db[:recipient]
     @fund = @db[:funds].first
+    @theme = @db[:themes].first
     visit root_path
   end
 
@@ -28,7 +29,7 @@ feature 'Proposal' do
       eligibility_proposal_fund_path('missing', @fund),
       apply_proposal_fund_path('missing', @fund),
       proposal_fund_path('missing', @fund),
-      tag_proposal_funds_path('missing', 'Tag'),
+      theme_proposal_funds_path('missing', @theme.slug),
       new_feedback_path,
       edit_feedback_path(1)
     ].each do |path|

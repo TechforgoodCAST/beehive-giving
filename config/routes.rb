@@ -5,7 +5,7 @@ Rails.application.routes.draw do
   resources :proposals, except: [:show, :destroy] do
     resources :funds, only: [:show, :index] do
       collection do
-        get '/theme/:tag', to: 'funds#tagged', as: 'tag'
+        get '/theme/:theme', to: 'funds#themed', as: 'theme'
       end
       member do
         get   :eligibility, to: 'eligibilities#new'

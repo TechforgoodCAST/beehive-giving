@@ -17,7 +17,7 @@
 
         = render partial: 'insights', locals: { fund: @fund }
 
-        = render_tag_list(@fund)
+        = cell(:fund_insight, @fund, proposal: @proposal).call(:themes)
 
         %hr.thick
 
