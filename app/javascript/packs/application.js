@@ -18,7 +18,8 @@ const selectOpts = {
   '-1': ['individual_notice'],
   '1': ['user_charity_number'],
   '2': ['user_company_number'],
-  '3': ['user_charity_number', 'user_company_number']
+  '3': ['user_charity_number', 'user_company_number'],
+  '5': ['user_company_number'],
 }
 
 document.addEventListener('turbolinks:load', () => {
