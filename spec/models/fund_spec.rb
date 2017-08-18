@@ -24,8 +24,6 @@ describe Fund do
       end
 
       it 'default best' do
-        expect(Fund.pluck(:id))
-          .to eq [Fund.first.id, Fund.second.id, Fund.third.id]
         expect(Fund.order_by(@proposal, 'DROP TABLE "FUNDS";').pluck(:id))
           .to eq [Fund.second.id, Fund.first.id, Fund.third.id]
       end
