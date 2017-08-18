@@ -160,7 +160,7 @@ class Proposal < ApplicationRecord
   end
 
   def eligible_status(fund_slug)
-    return 0 unless eligible?(fund_slug)
+    return 0 unless eligibility[fund_slug].all_values_for('eligible').exclude?(false)
     return -1 unless eligibility[fund_slug]&.key?('quiz') # check
     eligible?(fund_slug) ? 1 : 0 # eligible : ineligible
   end
@@ -172,7 +172,7 @@ class Proposal < ApplicationRecord
   end
 
   def ineligible_reasons(fund_slug)
-    return nil if eligible?(fund_slug)
+    return [] if eligible?(fund_slug)
     return eligibility[fund_slug].select{ |r, e| e['eligible'] == false }.keys
   end
 
