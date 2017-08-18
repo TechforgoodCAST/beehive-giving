@@ -54,9 +54,7 @@
                       .answer
                         = e.hidden_field :restriction_id
                         = e.input :eligible, as: :radio_buttons, collection: render_restriction_radio_buttons(e)
-                        - if e.object.errors.any?
-                          = e.error :eligible, class: 'error-message'
-                        - elsif e.object.eligible == false && @recipient.valid? && @proposal.checked_fund?(@fund)
+                        - if e.object.eligible == false && @recipient.valid? && @proposal.checked_fund?(@fund)
                           .restriction-error-message You did not meet this criteria
                       %hr
 
@@ -74,9 +72,7 @@
                       .answer
                         = e.hidden_field :restriction_id
                         = e.input :eligible, as: :radio_buttons, collection: render_restriction_radio_buttons(e)
-                        - if e.object.errors.any?
-                          = e.error :eligible, class: 'error-message'
-                        - elsif e.object.eligible == false && @recipient.valid? && @proposal.checked_fund?(@fund)
+                        - if e.object.eligible == false && @recipient.valid? && @proposal.checked_fund?(@fund)
                           .restriction-error-message You did not meet this criteria
                       %hr
 

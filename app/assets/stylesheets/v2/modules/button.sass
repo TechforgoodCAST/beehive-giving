@@ -1,0 +1,32 @@
+// Config
+// =========================================================================
+
+@import base
+
+// =========================================================================
+
+.button, .button-wide
+  font-size: map-get($scales, 16)
+  text-decoration: none
+  cursor: pointer
+  display: inline-block
+  line-height: map-get($scales, 16)
+  padding: map-get($scales, 10) map-get($scales, 40)
+  margin: 0
+  height: auto
+  border: 2px solid transparent
+  vertical-align: middle
+  text-align: center
+  -webkit-appearance: none
+  color: inherit
+  background-color: transparent
+  border-radius: $base-radius
+
+  &:hover
+    text-decoration: none
+
+  &:focus
+    outline: none
+
+.button-wide
+  width: 100%

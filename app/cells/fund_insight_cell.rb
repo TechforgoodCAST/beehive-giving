@@ -32,9 +32,44 @@ class FundInsightCell < Cell::ViewModel
     title_name[0]
   end
 
+  def duration
+    return unless model.min_duration_awarded_limited || model.max_duration_awarded_limited
+    if !model.min_duration_awarded_limited || model.min_duration_awarded == 0
+      render locals: {message: "up to #{months_to_str(model.max_duration_awarded)}"}
+    elsif !model.max_duration_awarded_limited
+      render locals: {message: "more than #{months_to_str(model.min_duration_awarded)}"}
+    else
+      render locals: {message: "between #{months_to_str(model.min_duration_awarded)} and #{months_to_str(model.max_duration_awarded)}"}
+    end
+  end
+
+  def amount
+    return unless model.min_amount_awarded_limited || model.max_amount_awarded_limited
+    opts = {precision: 0, unit: "£"}
+    if !model.min_amount_awarded_limited || model.min_amount_awarded == 0
+      render locals: {message: "up to #{number_to_currency(model.max_amount_awarded, opts)}"}
+    elsif !model.max_amount_awarded_limited
+      render locals: {message: "more than #{number_to_currency(model.min_amount_awarded, opts)}"}
+    else
+      render locals: {message: "between #{number_to_currency(model.min_amount_awarded, opts)} and #{number_to_currency(model.max_amount_awarded, opts)}"}
+    end
+  end
+
   private
 
     def title_name
       funder.funds.size > 1 ? [name, funder.name] : [funder.name, name]
+    end
+
+    def months_to_str(months)
+      if months == 12
+        return "1 year"
+      elsif months < 24
+        return "#{months} months"
+      elsif months % 12 == 0
+        return "#{months / 12} years"
+      else
+        return "#{months_to_str(months - (months % 12))} and #{months % 12} months"
+      end
     end
 end

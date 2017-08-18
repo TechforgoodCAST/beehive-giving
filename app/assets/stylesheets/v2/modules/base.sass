@@ -1,0 +1,39 @@
+// Config
+// =========================================================================
+
+$base-color: #FFF !default
+$base-size: 16px !default
+$base-radius: 3px !default
+$base-border-width: 1px !default
+
+$scales: (0: 0, 3: .1875rem, 5: .3125rem, 10: .625rem, 12: .75rem, 14: .875rem, 15: .9375rem, 16: 1rem, 18: 1.125rem, 20: 1.25rem, 22: 1.375rem, 25: 1.563rem, 30: 1.875rem, 35: 2.188rem, 40: 2.5rem, 80: 5rem, 120: 7.5rem) !default
+
+$colors: (black: #2C3134, slate: #7F8799, mid-gray: #9FA9BF, gray: #ACB2BF, lightest-gray: #EDEFF2, silver: #F6F9FC, white: #FFFFFF, red: #FF7269, green: #2AD18B, blue: #5AA0FF, yellow: #FFCC1C, olive: #00B57C)
+
+// Mixins
+// =========================================================================
+
+=responsive($prop, $val, $sm-perc-change: 1, $md-perc-change: 1)
+  #{$prop}: $val
+  @media all and (max-width: 46.875em)
+    #{$prop}: $val * $md-perc-change
+  @media all and (max-width: 25rem)
+    #{$prop}: $val * $sm-perc-change
+
+// =========================================================================
+
+html
+  background-color: $base-color
+  +responsive(font-size, $base-size, .95)
+  -moz-osx-font-smoothing: grayscale
+  -webkit-font-smoothing: antialiased
+  min-width: 300px
+  overflow-x: hidden
+  overflow-y: scroll
+  text-rendering: optimizeLegibility
+
+a
+  text-decoration: none
+  transition: opacity .2s
+  &:hover
+    opacity: .6

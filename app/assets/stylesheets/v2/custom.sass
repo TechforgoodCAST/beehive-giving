@@ -1,0 +1,49 @@
+// TODO: deprecated
+#banner
+  background: #005d7f
+
+// TODO: deprecated
+.feature
+  background: image-url('features-sprite.png') no-repeat
+  width: 244px
+  height: 224px
+  margin: 0 auto
+  &.personal
+    background-position: center -224px
+  &.quick
+    background-position: center -448px
+
+#header-offset
+  min-height: 43.75rem
+
+#hex
+  width: 100%
+  height: 838px
+  background: image-url('hex-bg.svg') no-repeat
+  background-size: 2438px 838px
+  background-position: calc(50% + 240px)
+  position: absolute
+  top: 0
+  z-index: -1
+
+#logo-hex
+  background: image-url('footer-hex.svg') no-repeat
+  width: 32px
+  height: 30px
+
+#navbar-logo
+  width: 106px
+  height: 20px
+  background: image-url('logo.svg') no-repeat
+  background-size: 106px 20px
+  margin-right: auto
+  text-indent: 100%
+  white-space: nowrap
+  overflow: hidden
+  &:hover
+    opacity: .6
+  @media screen and (max-width: 25rem)
+    width: 24px
+    height: 20px
+    background: image-url('logo-hex.svg') no-repeat
+    background-size: 24px 20px

@@ -8,7 +8,7 @@ feature 'Article' do
   end
 
   scenario 'index' do
-    click_link 'Articles'
+    click_link 'Research'
     @articles.each do |article|
       expect(page).to have_content article.title
     end
@@ -17,7 +17,7 @@ feature 'Article' do
   end
 
   scenario 'show' do
-    click_link 'Articles'
+    click_link 'Research'
     click_link @article.title
     expect(page).to have_link 'Back to articles'
     expect(page).to have_link 'Sign up free today'

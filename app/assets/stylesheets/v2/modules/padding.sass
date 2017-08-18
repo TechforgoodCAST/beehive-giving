@@ -1,0 +1,23 @@
+@import base
+
+@each $var, $val in $scales
+  .p#{$var}
+    +responsive(padding, $val, .6, .8)
+  .pt#{$var}
+    +responsive(padding-top, $val, .6, .8)
+  .pr#{$var}
+    +responsive(padding-right, $val, .6, .8)
+  .pb#{$var}
+    +responsive(padding-bottom, $val, .6, .8)
+  .pl#{$var}
+    +responsive(padding-left, $val, .6, .8)
+  .px#{$var}
+    +responsive(padding-left, $val, .6, .8)
+    +responsive(padding-right, $val, .6, .8)
+  .py#{$var}
+    +responsive(padding-top, $val, .6, .8)
+    +responsive(padding-bottom, $val, .6, .8)
+
+.px-auto
+  padding-left: auto
+  padding-right: auto

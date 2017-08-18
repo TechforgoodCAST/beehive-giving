@@ -1,0 +1,12 @@
+// Config
+// =========================================================================
+
+@import base
+
+// =========================================================================
+
+@each $var, $val in $colors
+  .bg-#{$var}
+    background-color: $val !important
+  .bg-darken-#{$var}
+    background-color: darken($val, 5%) !important
