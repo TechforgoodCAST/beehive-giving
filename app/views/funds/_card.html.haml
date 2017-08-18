@@ -17,6 +17,14 @@
               %strong
                 = fund_card_eligibility_text(fund)
 
+          -# if @recipient.subscribed?
+          %tr
+            %td.muted{ colspan: 2 }
+              - @proposal.ineligible_reasons(fund.slug).each do |r|
+                %small= cell(:eligibility_banner, @proposal, fund: fund).call(r.to_sym)
+                %br/
+
+
           - unless @proposal.show_fund?(fund)
             %tr
               %td.muted{ colspan: 2 }
