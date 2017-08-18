@@ -15,7 +15,7 @@ export default class Select {
                       .filter(i => selectedClasses.indexOf(i) === -1)
 
     classes.forEach((cls) => {
-      for (const el of document.getElementsByClassName(cls)) {
+      for (const el of Array.from(document.getElementsByClassName(cls))) {
         el.classList.add('hide')
       }
     })
