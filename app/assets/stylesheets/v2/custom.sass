@@ -82,3 +82,20 @@
     background-position: center -1065px
   &.datakind-uk
     background-position: center -1215px
+
+=scale($w, $h, $scale: 1)
+  background-size: ($w * $scale) ($h * $scale)
+  min-width: ($w * $scale) / 2
+  height: ($h * $scale)
+
+#team
+  background: image-url('team-sprites.png') no-repeat
+  background-size: 320px 142px
+  min-width: 160px
+  height: 142px
+  @media screen and (max-width: 46.875rem)
+    +scale(320px, 142px, $scale: .6)
+  &.david
+    background-position: left top
+  &.suraj
+    background-position: right top
