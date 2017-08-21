@@ -66,5 +66,5 @@
             - if i < 2
               .action.redacted.yellow= redacted_actions
 
-      - if fund.tags?
-        .uk-margin-top= render_redacted_tags(fund)
+      - if fund.themes
+        .uk-margin-top= render_redacted_themes(fund)

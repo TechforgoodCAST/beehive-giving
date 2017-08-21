@@ -14,6 +14,8 @@ ActiveAdmin.register Fund do
                 :max_amount_awarded_limited, :max_amount_awarded,
                 :min_duration_awarded_limited, :min_duration_awarded,
                 :max_duration_awarded_limited, :max_duration_awarded,
+                :min_org_income_limited, :min_org_income,
+                :max_org_income_limited, :max_org_income,
                 country_ids: [], district_ids: [], restriction_ids: [],
                 tags: [], permitted_costs: [], permitted_org_types: [],
                 theme_ids: []
@@ -101,6 +103,10 @@ ActiveAdmin.register Fund do
           row :min_duration_awarded
           row :max_duration_awarded_limited
           row :max_duration_awarded
+          row :min_org_income_limited
+          row :min_org_income
+          row :max_org_income_limited
+          row :max_org_income
         end
       end
 
@@ -176,6 +182,10 @@ ActiveAdmin.register Fund do
           f.input :min_duration_awarded
           f.input :max_duration_awarded_limited
           f.input :max_duration_awarded
+          f.input :min_org_income_limited
+          f.input :min_org_income
+          f.input :max_org_income_limited
+          f.input :max_org_income
         end
 
         inputs 'Geography' do

@@ -12,6 +12,7 @@ describe 'Ensure logged in' do
     @recipient = @db[:recipient]
     @proposal = @db[:registered_proposal]
     @fund = @db[:funds].first
+    @theme = @db[:themes].first
   end
 
   def expect_path(array)
@@ -58,7 +59,7 @@ describe 'Ensure logged in' do
                   proposal_funds_path(@proposal),
                   eligible_proposal_funds_path(@proposal),
                   ineligible_proposal_funds_path(@proposal),
-                  tag_proposal_funds_path(@proposal, 'Tag'),
+                  theme_proposal_funds_path(@proposal, @theme.slug),
                   proposal_fund_path(@proposal, @fund)
                 ])
   end

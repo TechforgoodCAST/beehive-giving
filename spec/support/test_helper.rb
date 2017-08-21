@@ -60,14 +60,6 @@ class TestHelper
     create_list :fund, num, opts
   end
 
-  def tag_funds
-    Fund.all.each do |fund|
-      fund.tags += ['Arts']
-      fund.save
-    end
-    self
-  end
-
   def stub_beehive_insight(endpoint, data)
     body = {}
     # TODO: match records in seeds
@@ -214,7 +206,8 @@ class TestHelper
       user: @user,
       initial_proposal: @initial_proposal,
       registered_proposal: @registered_proposal,
-      complete_proposal: @complete_proposal
+      complete_proposal: @complete_proposal,
+      themes: @themes
     }
     if @funds
       instances[:funds] = @funds
