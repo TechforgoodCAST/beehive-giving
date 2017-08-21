@@ -5,26 +5,23 @@ class EligibilityBannerCell < Cell::ViewModel
   end
 
   def location
+    return unless model.eligibility.dig(options[:fund]&.slug, 'location')
     render locals: {}
   end
 
   def amount
+    return unless model.eligibility.dig(options[:fund]&.slug, 'amount')
     render locals: {}
   end
 
   def org_type
+    return unless model.eligibility.dig(options[:fund]&.slug, 'org_type')
     render locals: { org_type: ORG_TYPES[model.recipient.org_type + 1][2] }
   end
 
   def quiz
+    return unless model.eligibility.dig(options[:fund]&.slug, 'quiz')
     render locals: { count_failing: model.eligibility[options[:fund]&.slug]['quiz']['count_failing'] }
   end
 
-  private
-
-    def ineligible_because(key)
-      eligibility = model.eligibility[options[:fund]&.slug].all_values_for(key)
-      return unless eligibility[0]
-      eligibility[0]['eligible'] == false
-    end
 end
