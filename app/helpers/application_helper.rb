@@ -5,6 +5,6 @@ module ApplicationHelper
 
   def v2_layout? # TODO: remove @ v2
     %w[pages signup].include?(params[:controller]) &&
-      %w[about user create_user].include?(params[:action])
+      %w[about faq user create_user].include?(params[:action])
   end
 end
