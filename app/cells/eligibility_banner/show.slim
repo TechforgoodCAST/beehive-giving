@@ -5,16 +5,7 @@
     | fund.
     = link_to 'Apply for funding', apply_proposal_fund_path(model, fund), class: 'uk-button uk-button-large uk-button-success invert'
 
-- elsif ineligible_because('location') || ineligible_because('quiz')
-  .cta.wide.red
-    - if ineligible_because('location')
-      | You are ineligible because of the
-      strong<> location
-      | of your
-      =< link_to 'proposal', edit_proposal_path(model)
-      | . 
-
-    - if ineligible_because('quiz')
-      | You are ineligible, and do not meet
-      strong=<> model.eligibility[fund.slug]['quiz']['count_failing']
-      | of the criteria below.
+- else
+  - model.ineligible_reasons(fund.slug).each do |r|
+    .cta.wide.red
+      = cell(:eligibility_banner, model, fund: fund).call(r.to_sym)

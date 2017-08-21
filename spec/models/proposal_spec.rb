@@ -276,7 +276,8 @@ describe Proposal do
         'fund1' => { 'quiz' => { 'eligible' => false } },
         'fund2' => { 'quiz' => { 'eligible' => true }, 'other' => { 'eligible' => true } },
         'fund3' => { 'quiz' => { 'eligible' => true }, 'other' => { 'eligible' => false } },
-        'fund4' => { 'other' => { 'eligible' => false } }
+        'fund4' => { 'other' => { 'eligible' => false } },
+        'fund5' => { 'other' => { 'eligible' => true } }
       }
       @proposal = Proposal.new(eligibility: eligibility)
     end
@@ -307,7 +308,7 @@ describe Proposal do
     end
 
     it '#eligible_status unchecked' do
-      expect(@proposal.eligible_status('fund4')).to eq(-1)
+      expect(@proposal.eligible_status('fund5')).to eq(-1)
     end
 
     it '#eligible_status eligible' do
@@ -317,10 +318,11 @@ describe Proposal do
     it '#eligible_status ineligible' do
       expect(@proposal.eligible_status('fund1')).to eq 0
       expect(@proposal.eligible_status('fund3')).to eq 0
+      expect(@proposal.eligible_status('fund4')).to eq 0
     end
 
     it '#eligibility_as_text check' do
-      expect(@proposal.eligibility_as_text('fund4')).to eq 'Check'
+      expect(@proposal.eligibility_as_text('fund5')).to eq 'Check'
     end
 
     it '#eligibility_as_text eligible' do
@@ -330,6 +332,7 @@ describe Proposal do
     it '#eligibility_as_text ineligible' do
       expect(@proposal.eligibility_as_text('fund1')).to eq 'Ineligible'
       expect(@proposal.eligibility_as_text('fund3')).to eq 'Ineligible'
+      expect(@proposal.eligibility_as_text('fund4')).to eq 'Ineligible'
     end
   end
 end

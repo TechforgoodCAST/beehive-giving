@@ -3,13 +3,14 @@ MAX_FREE_LIMIT = 3
 RECOMMENDATION_LIMIT = 6
 
 ORG_TYPES = [
-  ['Myself OR another individual', -1],
-  ['An unregistered organisation OR project', 0],
-  ['A registered charity', 1],
-  ['A registered company', 2],
-  ['A registered charity & company', 3],
-  ['Another type of organisation', 4],
-  ['Community Interest Company', 5]
+  # Name for user, id, plural description
+  ['Myself OR another individual', -1, 'individuals'],
+  ['An unregistered organisation OR project', 0, 'unregistered organisations'],
+  ['A registered charity', 1, 'registered charities'],
+  ['A registered company', 2, 'registered companies'],
+  ['A registered charity & company', 3, 'charities registered as companies'],
+  ['Another type of organisation', 4, 'other types of organisation'],
+  ['Community Interest Company', 5, 'Community Interest Companies']
 ].freeze
 
 FUNDING_TYPES = [
