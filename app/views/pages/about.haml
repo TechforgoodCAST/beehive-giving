@@ -97,10 +97,12 @@
           #supporter.datakind-uk
         .minw200.flex.flex-column.justify-center.fs14.night and many more...
 
-  %section.maxw1080.mx-auto
-    .flex.flex-wrap.justify-center
-      .mx40
-        %h2.light Ready to get started?
-      .mx40
-        = link_to 'Create an account', root_path, class: 'button white bg-blue shadow caps'
-        = link_to 'Read our FAQ', faq_path, class: 'button blue bg-white shadow caps'
+  %section
+    #hex-footer
+    .maxw1080.mx-auto.pt120.pb15.mb30
+      .flex.flex-wrap.justify-center.pt80
+        .mx40.mb20
+          %h2.light Ready to get started?
+        .mx40.center
+          = link_to 'Create an account', root_path, class: 'button white bg-blue shadow caps'
+          = link_to 'Read our FAQ', faq_path, class: 'button blue bg-white shadow caps'
