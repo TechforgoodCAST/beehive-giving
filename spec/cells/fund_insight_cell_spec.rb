@@ -67,5 +67,12 @@ describe FundInsightCell do
       expect(insight).to have_content 'Awards for All 1'
     end
   end
-  
+
+  context '#themes' do
+    it 'Theme shown correctly' do
+      insight = cell(:fund_insight, @fund, proposal: @proposal).call(:themes)
+      expect(insight).to have_link 'Theme1'
+    end
+  end
+
 end

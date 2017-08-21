@@ -19,9 +19,9 @@ class FundsController < ApplicationController
     @funds = Kaminari.paginate_array(query).page(params[:page])
   end
 
-  def tagged
-    @tag = params[:tag].tr('-', ' ').capitalize if params[:tag].present?
-    @funds = Fund.includes(:funder).where('tags ?| array[:tags]', tags: @tag)
+  def themed
+    @theme = Theme.find_by(slug: params[:theme]) if params[:theme].present?
+    @funds = Fund.includes(:themes, :funder).where(:themes => {:id => @theme})
     redirect_to root_path, alert: 'Not found' if @funds.empty?
   end
 

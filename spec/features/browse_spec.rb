@@ -4,12 +4,12 @@ feature 'Browse' do
   before(:each) do
     @app.seed_test_db
         .setup_funds(num: 7, open_data: true)
-        .tag_funds
         .create_recipient
         .with_user
         .create_registered_proposal
     @db = @app.instances
     @proposal = @db[:registered_proposal]
+    @theme = @db[:themes].first
     visit sign_in_path
   end
 
@@ -77,8 +77,8 @@ feature 'Browse' do
     scenario "When I find a funding theme I'm interested in,
               I want to see similar funds,
               so I can discover new funding opportunties" do
-      click_link 'Arts', match: :first
-      expect(current_path).to eq tag_proposal_funds_path(@proposal, 'arts')
+      click_link @theme.name, match: :first
+      expect(current_path).to eq theme_proposal_funds_path(@proposal, @theme.slug)
       expect(page).to have_css '.card', count: 7
       expect(page).to have_css '.locked-fund', count: 6
     end
@@ -86,12 +86,12 @@ feature 'Browse' do
     scenario "When I visit a funding theme which isn't listed,
               I want to see a message and be directed to safety,
               so I can continue my search" do
-      visit tag_proposal_funds_path(@proposal, '')
+      visit theme_proposal_funds_path(@proposal, '')
       expect(page.all('body script', visible: false)[0].native.text)
         .to have_text 'Fund not found'
       expect(current_path).to eq proposal_funds_path(@proposal)
 
-      visit tag_proposal_funds_path(@proposal, 'missing')
+      visit theme_proposal_funds_path(@proposal, 'missing')
       expect(page.all('body script', visible: false)[0].native.text)
         .to have_text 'Not found'
       expect(current_path).to eq proposal_funds_path(@proposal)

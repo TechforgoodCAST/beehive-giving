@@ -90,33 +90,15 @@ module RecipientsHelper
     "#{((percent.to_d / total.to_d).round(3) * 100)}%"
   end
 
-  def render_tags(fund)
-    safe_join fund.tags.sort.map { |t|
-      link_to t, tag_proposal_funds_path(@proposal, t.parameterize),
-              class: TAG_CLASSES # TODO: refactor
-    }, ' '
-  end
-
-  def render_redacted_tags(fund)
+  def render_redacted_themes(fund)
     link_to('Upgrade to see funding themes',
             account_upgrade_path(@recipient),
             class: 'uk-text-bold') +
       safe_join(['</br>'.html_safe]) +
-      safe_join(fund.tags.sort.map do |t|
-        link_to scramble_name(t.parameterize), # TODO: refactor
+      safe_join(fund.themes.sort.map do |t|
+        link_to scramble_name(t.name.parameterize), # TODO: refactor
                 account_upgrade_path(@recipient), class: TAG_CLASSES +
                                  %w[redacted uk-margin-small-top]
       end, ' ')
-  end
-
-  def render_tag_list(fund)
-    return unless fund.tags?
-    content_tag :div, class: 'uk-margin-top' do
-      if @proposal.show_fund?(fund)
-        render_tags(fund)
-      else
-        render_redacted_tags(fund)
-      end
-    end
   end
 end

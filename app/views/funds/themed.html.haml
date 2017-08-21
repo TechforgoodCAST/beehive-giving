@@ -1,17 +1,17 @@
-= content_for :title, "#{@tag} funds"
+= content_for :title, "#{@theme.name} funds"
 
 :javascript
-  mixpanel.track("View #{@tag} Funds Page");
+  mixpanel.track("View #{@theme.name} Funds Page");
 
 .uk-container.uk-container-center.uk-margin-large
   %h2
-    = @tag
+    = @theme.name
     = surround '(', ')' do
       = @funds.count
   %h4
-    You are seeing
-    = @tag.downcase
-    funds.
+    You are seeing funds in the
+    = @theme.name.downcase
+    theme.
 
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top
 
@@ -22,7 +22,7 @@
         - unless @recipient.subscribed?
           .cta.wide
             Go unlimited with Beehive Pro to see more
-            = @tag
+            = @theme.name
             funds.
             = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'uk-button uk-button-large uk-button-primary invert'
 
