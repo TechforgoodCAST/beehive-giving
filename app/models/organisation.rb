@@ -145,11 +145,6 @@ class Organisation < ApplicationRecord
     )
   end
 
-  # TODO: refactor
-  # def show_postal_code?
-  #   scrape_charity_data && postal_code.blank?
-  # end
-
   def create_subscription
     Subscription.create(organisation_id: id) if subscription.nil?
   end
@@ -307,12 +302,16 @@ class Organisation < ApplicationRecord
 
     def income_select(income)
       self.income = income
-      self.income_band = INCOME_BANDS.find {|band| income >= band[2] && income < band[3]}
+      self.income_band = INCOME_BANDS.find do |band|
+        income >= band[2] && income < band[3]
+      end[1]
     end
 
     def staff_select(field_name, count)
       count = count.to_i
-      self[field_name] = EMPLOYEES.find {|band| count >= band[2] && count <= band[3]}
+      self[field_name] = EMPLOYEES.find do |band|
+        count >= band[2] && count <= band[3]
+      end[1]
     end
 
     def lookup_company_data
