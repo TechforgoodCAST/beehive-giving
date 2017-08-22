@@ -83,11 +83,12 @@
 
       %p.mb20.night
         Beehive is a tech for good project being incubated by
-        %a{ href: 'http://www.wearecast.org.uk/', target: '_blank' } CAST
-        ; a registered charity (
-        %a{ href: 'http://beta.charitycommission.gov.uk/charity-details/?regid=1161998&subid=0', target: '_blank' }<>
-          1161998
-        ) that works to accelerate the use of technology for social good by working with funders, ventures, and the tech for good sector at large.
+        = succeed ';' do
+          %a.blue{ href: 'http://www.wearecast.org.uk/', target: '_blank' } CAST
+        a registered charity
+        = surround '(', ')' do
+          %a.blue{ href: 'http://beta.charitycommission.gov.uk/charity-details/?regid=1161998&subid=0', target: '_blank' } 1161998
+        that works to accelerate the use of technology for social good by working with funders, ventures, and the tech for good sector at large.
 
       %p.mb40.night Since inception in June 2014, we’ve been kindly supported by or worked with the following great organisations...
 
