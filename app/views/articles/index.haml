@@ -1,0 +1,21 @@
+= content_for :title, 'Articles'
+
+%main
+  %header
+    .mb30
+      = cell(:v2_navbar, @current_user)
+
+  %section.maxw1080.mx-auto
+    .mb40.mx40
+      %h1.light.center Research
+
+    .flex.mx40.mb40
+      %a.mx-auto.fs14.white.bg-darken-blue.circle.shadow.inline-block.py5.pr14.pl5.truncate{ href: 'mailto:support@beehivegiving.org' }
+        .fs12.bg-green.caps.bold.circle.inline-block.py3.px5 WANT ANSWERS?
+        Get in touch if you’d like us to analyse your funding data
+
+  .maxw790.mx-auto
+
+    = cell(:article, collection: @articles).call(:index)
+
+  = render partial: 'layouts/sign_up_cta'

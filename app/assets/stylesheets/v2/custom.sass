@@ -1,3 +1,5 @@
+@import modules/base
+
 // TODO: deprecated
 #banner
   background: #005d7f
@@ -110,3 +112,14 @@
     background-position: left top
   &.suraj
     background-position: right top
+
+// Markdown
+// =========================================================================
+
+.markdown
+  h1, h2, h3, h4, h5, h6, p
+    margin-bottom: 20px
+  h1, h2, h3, h4
+    font-weight: 300
+  a
+    color: map-get($colors, blue) !important

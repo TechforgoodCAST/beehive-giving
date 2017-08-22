@@ -4,7 +4,14 @@ module ApplicationHelper
   end
 
   def v2_layout? # TODO: remove @ v2
-    %w[pages signup].include?(params[:controller]) &&
-      %w[about faq user create_user].include?(params[:action])
+    permitted = {
+      articles: %i[index],
+      pages: %i[about faq],
+      signup: %i[user create_user]
+    }
+    controller = params[:controller].to_sym
+    action = params[:action].to_sym
+
+    permitted.key?(controller) && permitted[controller].include?(action)
   end
 end

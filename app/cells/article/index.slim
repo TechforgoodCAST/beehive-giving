@@ -1,5 +1,7 @@
-h2
-  a= link_to title, article_path(model)
-.markdown= body_html.truncate_words(50, omission: "... #{link_to '<strong>more</strong>', article_path(model)}")
+hr.maxw1000.mx40
 
-hr.thick
+section.p40
+  .mb20
+    h3.lato.light
+      a= link_to title, article_path(model), class: 'blue'
+  .markdown= body_html.truncate_words(50, omission: "... #{link_to 'more', article_path(model), class: 'blue bold'}")
