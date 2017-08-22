@@ -5,7 +5,7 @@ module ApplicationHelper
 
   def v2_layout? # TODO: remove @ v2
     permitted = {
-      articles: %i[index],
+      articles: %i[index show],
       pages: %i[about faq],
       signup: %i[user create_user]
     }
