@@ -1,0 +1,13 @@
+.restrictions
+  .restriction
+    label.capitalize
+      = r.details.capitalize
+      | ?
+
+  .answer
+    = f.input "restriction-#{r.id}", as: :radio_buttons, collection: Restriction.radio_buttons(r.invert), value: e[:eligible]
+    - if e[:eligible] == false
+      .restriction-error-message You did not meet this criteria
+    / - if e.object.eligible == false && @recipient.valid? && @proposal.checked_fund?(@fund)
+    /   .restriction-error-message You did not meet this criteria
+  hr
