@@ -1,0 +1,9 @@
+- unless @restrictions[:Organisation].empty?
+  h4.uk-text-bold Is your organisation?
+  - @restrictions[:Organisation].each do |r|
+    = render view: :restriction, locals: {r: r, f: f, e: r.eligibility(@proposal)}
+
+- unless @restrictions[:Proposal].empty?
+  h4.uk-text-bold Is your funding proposal for?
+  - @restrictions[:Proposal].each do |r|
+    = render view: :restriction, locals: {r: r, f: f, e: r.eligibility(@proposal)}
