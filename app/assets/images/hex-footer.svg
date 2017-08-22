@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" id="hex-footer" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 2438 375" style="enable-background:new 0 0 2438 375;" xml:space="preserve">
+  <linearGradient id="gradient" gradientUnits="userSpaceOnUse" x1="36.5" y1="187.5" x2="2401.5" y2="187.5">
+    <stop offset="0" style="stop-color:#FFFFFF" />
+    <stop offset="0.1" style="stop-color:#F6F9FC" />
+    <stop offset="0.9" style="stop-color:#F6F9FC" />
+    <stop offset="1" style="stop-color:#FFFFFF" />
+  </linearGradient>
+  <polyline class="st0" fill="url(#gradient)" points="2438,374.2 306.5,374.2 0,374.2 0,95.4 306.5,0.8 856,148.8 1483,53.8 2037,199.8 2438,141 " />
+</svg>

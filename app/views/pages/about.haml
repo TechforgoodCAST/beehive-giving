@@ -1,0 +1,124 @@
+= content_for :title, 'About'
+
+%main
+  %header
+    .mb30
+      = cell(:v2_navbar, @current_user)
+
+  %section.maxw1080.mx-auto
+    .mb20.mx40
+      %h1.light.center About Beehive Giving
+    .maxw790.mx-auto
+      .mx40.mb40
+        .fs18.lh25.slate.center Our mission is to give every non-profit the best chance of finding the right funder, and every funder the tools to create the most impact with their funding.
+
+    .flex.mx40.mb40
+      .mx-auto.fs14.white.bg-darken-blue.circle.shadow.inline-block.py5.pr14.pl5.truncate
+        .fs12.bg-green.caps.bold.circle.inline-block.py3.px5 DID YOU KNOW?
+        We’re a tech for good project incubated by a charity
+
+    %h2.light.center.mb20 The problem
+
+    .flex.flex-wrap.center
+      .f1.minw250.px40.mb40
+        %h3.light.yellow.mb20 For fundraisers
+        .maxw340.mx-auto.night Finding and making sense of funding opportunities is time consuming and confusing - it’s difficult to know if you’re eligible or a good fit, let alone how best to tailor your request.
+      .f1.minw250.px40.mb40.divider
+        %h3.light.blue.mb20 For funders
+        .maxw340.mx-auto.night Funders recieve many more applications than they can support, most of which are ineligible or a poor fit - wasting valuable resources for both the funder and applicant.
+
+  %section.bg-silver
+    .maxw1080.mx-auto.pt40
+      %h2.light.center.mb40 Our solution
+
+      .flex.flex-wrap.night
+        .f1.minw250.px40.mb40
+          .mb25
+            %p.fs20.lato.light Beehive is a web based tool that checks and matches your funding proposals with eligible and appropriate funders.
+          .mb25
+            %strong Check
+            %p We prevent wasted effort by semi-automatically checking eligibility criteria are met before you apply.
+          .mb25
+            %strong Match
+            %p We compare thousands of grants to make it easy to be quickly matched to the right funder.
+          %strong Inform
+          %p We surface useful insights based on a funder's giving behaviour to inform your funding proposals.
+
+        .f1.minw340.px40.mb40.center
+          .feature-card
+            .image
+            .copy.bg-mint.px12.pb14.shadow.white.italic We use open data and smart technology to bring together valuable information and insights to guide your fundraising in minures not hours.
+
+  %section.maxw1080.mx-auto.pt40
+    %h2.light.center.mx40.mb20 The difference we want to make
+
+    .flex.flex-wrap.center
+      .f1.minw250.px40.mb40
+        %h3.light.yellow.mb20 For fundraisers
+        .maxw340.mx-auto.night Fundraisers no longer submit ineligible or unsuitable applications and have a better understanding of the funders they approach.
+      .f1.minw250.px40.mb40.divider
+        %h3.light.blue.mb20 For funders
+        .maxw340.mx-auto.night Funders spend less time dealing with unsuitable applications, and have tools to make the most of their funding data.
+
+  %section.bg-silver
+    .maxw1080.mx-auto.pt40
+      %h2.light.center.mb40 Team
+      .flex.flex-wrap.justify-center.night
+        .px40.mb40.flex.items-center
+          #team.david.mr20
+          .maxw200
+            .fs20.lato.light.mb10 David Kane
+            -# TODO: add description
+            -# %p.fs14.lh18 Lorem ipsum dolor sit amet, consectetur adipisicing.
+        .px40.mb40.flex.items-center
+          #team.suraj.mr20
+          .maxw200
+            .fs20.lato.light.mb10 Suraj Vadgama
+            -# TODO: add description
+            -# %p.fs14.lh18 Lorem ipsum dolor sit amet, consectetur ad
+
+  %section.maxw1080.mx-auto.pt40
+    .mx40
+      %h2.light.center.mb40 Supporters
+
+      %p.mb20.night
+        Beehive is a tech for good project being incubated by
+        = succeed ';' do
+          %a.blue{ href: 'http://www.wearecast.org.uk/', target: '_blank' } CAST
+        a registered charity
+        = surround '(', ')' do
+          %a.blue{ href: 'http://beta.charitycommission.gov.uk/charity-details/?regid=1161998&subid=0', target: '_blank' } 1161998
+        that works to accelerate the use of technology for social good by working with funders, ventures, and the tech for good sector at large.
+
+      %p.mb40.night Since inception in June 2014, we’ve been kindly supported by or worked with the following great organisations...
+
+      .flex.flex-wrap.center.content-center
+        %a.mx-auto{ href: 'https://www.biglotteryfund.org.uk/', target: '_blank', alt: 'Big Lottery Fund logo' }
+          #supporter.big-lottery-fund
+        %a.mx-auto{ href: 'http://www.threesixtygiving.org/', target: '_blank', alt: '360Giving logo' }
+          #supporter.three-sixty-giving
+        %a.mx-auto{ href: 'https://outlandish.com/', target: '_blank', alt: 'Outlandish logo' }
+          #supporter.outlandish
+        %a.mx-auto{ href: 'https://indigotrust.org.uk/', target: '_blank', alt: 'Indigo Trust logo' }
+          #supporter.indigo-trust
+        %a.mx-auto{ href: 'http://www.forwardfoundation.org.uk/', target: '_blank', alt: 'Forward Foundation logo' }
+          #supporter.forward-foundation
+        %a.mx-auto{ href: 'https://neon.com/', target: '_blank', alt: 'NEON logo' }
+          #supporter.neon
+        %a.mx-auto{ href: 'https://forwardpartners.com/', target: '_blank', alt: 'Forward Partners' }
+          #supporter.forward-partners
+        %a.mx-auto{ href: 'http://www.forward3d.com/', target: '_blank', alt: 'Forward3D' }
+          #supporter.forward3d
+        %a.mx-auto{ href: 'http://www.datakind.org/chapters/datakind-uk/', target: '_blank', alt: 'DataKind UK' }
+          #supporter.datakind-uk
+        .minw200.flex.flex-column.justify-center.fs14.night and many more...
+
+  %section
+    #hex-footer
+    .maxw1080.mx-auto.pt120.pb15.mb30
+      .flex.flex-wrap.justify-center.pt80
+        .mx40.mb20
+          %h2.light Ready to get started?
+        .mx40.center
+          = link_to 'Create an account', root_path, class: 'button white bg-blue shadow caps mb10'
+          = link_to 'Read our FAQ', faq_path, class: 'button blue bg-white shadow caps mb10'

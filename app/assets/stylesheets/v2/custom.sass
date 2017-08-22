@@ -13,6 +13,15 @@
   &.quick
     background-position: center -448px
 
+.feature-card
+  display: inline-block
+  width: 270px
+  .image
+    background: image-url('feature-card.png') no-repeat
+    height: 200px
+  .copy
+    text-align: left
+
 #header-offset
   min-height: 43.75rem
 
@@ -24,6 +33,15 @@
   background-position: calc(50% + 240px)
   position: absolute
   top: 0
+  z-index: -1
+
+#hex-footer
+  width: 100%
+  height: 375px
+  background: image-url('hex-footer.svg') no-repeat
+  background-size: 2438px 375px
+  background-position: center
+  position: absolute
   z-index: -1
 
 #logo-hex
@@ -42,8 +60,51 @@
   overflow: hidden
   &:hover
     opacity: .6
+  &.blue
+    background: image-url('blue-logo.svg') no-repeat
   @media screen and (max-width: 25rem)
     width: 24px
     height: 20px
     background: image-url('logo-hex.svg') no-repeat
     background-size: 24px 20px
+
+#supporter
+  background: image-url('supporters-logos-sprites.png') no-repeat
+  background-size: 200px 1350px
+  width: 200px
+  height: 120px
+  &.big-lottery-fund
+    background-position: center -15px
+  &.three-sixty-giving
+    background-position: center -165px
+  &.outlandish
+    background-position: center -315px
+  &.indigo-trust
+    background-position: center -465px
+  &.forward-foundation
+    background-position: center -615px
+  &.neon
+    background-position: center -765px
+  &.forward-partners
+    background-position: center -915px
+  &.forward3d
+    background-position: center -1065px
+  &.datakind-uk
+    background-position: center -1215px
+
+=scale($w, $h, $scale: 1)
+  background-size: ($w * $scale) ($h * $scale)
+  min-width: ($w * $scale) / 2
+  height: ($h * $scale)
+
+#team
+  background: image-url('team-sprites.png') no-repeat
+  background-size: 320px 142px
+  min-width: 160px
+  height: 142px
+  @media screen and (max-width: 46.875rem)
+    +scale(320px, 142px, $scale: .6)
+  &.david
+    background-position: left top
+  &.suraj
+    background-position: right top
