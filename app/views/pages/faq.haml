@@ -1,0 +1,377 @@
+= content_for :title, 'FAQ'
+
+%main
+  %header
+    .mb30
+      = cell(:v2_navbar, @current_user)
+
+  %section.maxw1080.mx-auto
+    .mb40.mx40
+      %h1.light.center Frequently Asked Questions (FAQ)
+
+  %section.bg-silver
+    .maxw1080.mx-auto.pt40
+
+      .flex.flex-wrap
+        .f1.minw340.px40.mb40
+          %h2.light.mb20 Beehive
+
+          %ul
+            %li.mb10
+              %a.blue{ href: '#background' } Who’s behind Beehive?
+            %li.mb10
+              %a.blue{ href: '#name' } What’s with the name?
+            %li.mb10
+              %a.blue{ href: '#cost' } How much does Beehive cost?
+            %li.mb10
+              %a.blue{ href: '#what' } What does Beehive do?
+            %li.mb10
+              %a.blue{ href: '#data-source' } Where does Beehive get its information about funders?
+
+        .f1.minw340.px40.mb40
+          %h2.light.mb20 Getting started
+
+          %ul.uk-list.padded
+            %li.mb10
+              %a.blue{ href: '#sign-in' } How do I sign in?
+            %li.mb10
+              %a.blue{ href: '#reset-password' } How do I reset my password?
+            %li.mb10
+              %a.blue{ href: '#no-org' } I don’t have an organisation or project I’m seeking funding for. Can I still use Beehive?
+            %li.mb10
+              %a.blue{ href: '#already-registered' } Beehive is telli.mb10ng me my organisation or project is already registered
+            %li.mb10
+              %a.blue{ href: '#not-charity' } My organisation or project isn’t a registered charity can I still use Beehive?
+            %li.mb10
+              %a.blue{ href: '#individual' } I’m looking for funding to support an individual beneficiary. Can Beehive help me find this kind of funding?
+            %li.mb10
+              %a.blue{ href: '#individual-fundraiser' } I'm fundraising on behalf of a charity through an event, expedition or other activity. Can Beehive help me?
+
+  .maxw1080.mx-auto
+
+    %section.p40#background
+      .mb20
+        %h3.lato.light
+          Who’s behind Beehive?
+          %span.fs16.noto.mid-gray Beehive
+      %p.mb20
+        Beehive is a tech for good project being incubated by
+        = link_to 'The Centre for the Acceleration of Social Technology', 'http://wearecast.org.uk/', target: '_blank', class: 'blue'
+        (CAST for short). CAST is a registered charity (1161998) that works to accelerate the use of technology for social good by working with funders, ventures, and the tech for good sector at large.
+      %p
+        Beehive has been kindly supported by, Forward Foundation,
+        = succeed ',' do
+          = link_to 'The Indigo Trust', 'http://indigotrust.org.uk/', target: '_blank', class: 'blue'
+        and
+        = succeed ';' do
+          = link_to '360Giving', 'http://www.threesixtygiving.org/', target: '_blank', class: 'blue'
+        with volunteers from
+        = succeed ',' do
+          = link_to 'NEON', 'http://neonadventures.com/', target: '_blank', class: 'blue'
+        = succeed ',' do
+          = link_to 'DataKind UK', 'http://www.datakind.org/chapters/datakind-uk/', target: '_blank', class: 'blue'
+        = succeed ',' do
+          = link_to 'Forward Partners', 'http://www.forwardpartners.com/', target: '_blank', class: 'blue'
+        = succeed ',' do
+          = link_to 'Forward3D', 'http://www.forward3d.com/', target: '_blank', class: 'blue'
+        and more.
+
+    %hr.maxw1000.mx40
+
+    %section.p40#name
+      .mb20
+        %h3.lato.light
+          What’s with the name?
+          %span.fs16.noto.mid-gray Beehive
+      %p Much like the humble honeybee we believe that social sector organisations are essential to healthy and productive communities, and that without them countless communities would be worse off. That’s why we’re committed to developing technology that helps them find the right funders for their essential work.
+
+    %hr.maxw1000.mx40
+
+    %section.p40#cost
+      .mb20
+        %h3.lato.light
+          How much does Beehive cost?
+          %span.fs16.noto.mid-gray Beehive
+      %p.mb20
+        Nothing, a
+        %strong Basic
+        account is free to use with limited usage.
+
+      %p.mb20
+        For access beyond usage limits you must purchase one of the following
+        %strong Pro
+        subscription plans:
+
+      -# TODO: refactor
+      %table.mb20
+        %caption.fs14.left-align.italic Subscription plans
+        %thead
+          %tr
+            %th.p10 Plan
+            %th.p10 Price
+            %th.p10 Features
+        %tbody
+          %tr
+            %td.p10
+              Basic
+              %br
+                %small Default
+            %td.p10 Free
+            %td.p10
+              = render partial: 'accounts/free_features'
+          %tr.bg-silver
+            %td.p10
+              Pro - Micro
+              %br
+                %small <£10k income
+            %td.p10
+              £50
+              %small per year
+            %td.p10{ rowspan: 5 }
+              = render partial: 'accounts/premium_features'
+          %tr.bg-silver
+            %td.p10
+              Pro - Small
+              %br
+                %small <£100k income
+            %td.p10
+              £100
+              %small per year
+          %tr.bg-silver
+            %td.p10
+              Pro - Medium
+              %br
+                %small <£1m income
+            %td.p10
+              £300
+              %small per year
+          %tr.bg-silver
+            %td.p10
+              Pro - Large
+              %br
+                %small <£10m income
+            %td.p10
+              £1,200
+              %small per year
+          %tr.bg-silver
+            %td.p10
+              Pro - Major
+              %br
+                %small £10m+ income
+            %td.p10
+              Get in touch
+
+      %p Beehive is a project of a charity and all income is reinvested back into the development and running of the platform.
+
+    %hr.maxw1000.mx40
+
+    %section.p40#what
+      .mb20
+        %h3.lato.light
+          What does Beehive do?
+          %span.fs16.noto.mid-gray Beehive
+      %p.mb20 Beehive is a website that does three things:
+      %ol.pl40
+        %li Uses information about your organisation or project to identify suitable funds for you.
+        %li Provides personalised information about suitable funds to help plan your fundraising.
+        %li Lets you check if you meet a given funder's eligibility criteria before you apply.
+
+    %hr.maxw1000.mx40
+
+    %section.p40#data-source
+      .mb20
+        %h3.lato.light
+          Where does Beehive get its information about funders?
+          %span.fs16.noto.mid-gray Beehive
+      %p.mb20
+        We work closely with
+        = succeed ',' do
+          = link_to '360Giving', 'http://www.threesixtygiving.org/', target: '_blank', class: 'blue'
+        which supports funders to publish their information in a way that can be used to create tools like Beehive. In addition to the information published through 360Giving, we work directly with funders to source their information.
+
+    %hr.maxw1000.mx40
+
+    %section.p40#sign-in
+      .mb20
+        %h3.lato.light
+          How do I sign in?
+          %span.fs16.noto.mid-gray Getting started
+      %p.mb20
+        To sign in visit the
+        = link_to 'sign in page', sign_in_path, class: 'blue'
+        and enter the email address and password you set when creating your account. You can visit the sign in page in two ways:
+      %ol.pl40.mb20
+        %li
+          Visit
+          = succeed '.' do
+            = link_to 'www.beehivegiving.org/sign-in', sign_in_path, class: 'blue'
+        %li
+          Click the ‘Sign in’ button at the top right of the
+          = link_to 'homepage', root_path, class: 'blue'
+      %p
+        Should you need them details of how to reset your password can be found
+        = succeed '.' do
+          = link_to 'here', new_password_reset_path, class: 'blue'
+
+    %hr.maxw1000.mx40
+
+    %section.p40#reset-password
+      .mb20
+        %h3.lato.light
+          How do I reset my password?
+          %span.fs16.noto.mid-gray Getting started
+      %p.mb20
+        %strong Important:
+        In order to reset your password you must first have an account on Beehive.
+      %p.mb20 Resetting a password consists of two steps; firstly requesting a password reset email, then setting a new password.
+      %ol.pl40
+        %li
+          %strong Requesting a password reset email:
+          %ol.pl40.my10
+            %li
+              Visit the
+              %strong= link_to 'sign in page', sign_in_path, class: 'blue'
+              %small
+                = surround '(', ')' do
+                  = link_to 'How do I sign in?', faq_path(anchor: 'sign-in'), class: 'blue'
+            %li
+              Click the
+              %strong Forgot password
+              link.
+            %li
+              Enter the email you created your account with into the
+              %strong ‘Email’
+              field.
+            %li
+              Click the
+              %strong Reset password
+              button.
+            %li
+              Proceed to step
+              = succeed '.' do
+                %strong 2. Setting a new password
+        %li
+          %strong Setting a new password:
+          %ol.pl40.my10
+            %li
+              Check you email inbox for an email with the subject
+              = succeed '.' do
+                %strong Reset your password – Beehive
+              %br
+                %small Please note the email can sometimes take a few minutes to arrive, and be sure to check your email ‘spam’ or ‘junk’ folders.
+            %li
+              Click the
+              %strong Click to reset password
+              link in the email.
+              %br
+                %small The link in the password reset email is only valid for 60 minutes for security reasons. If the link has expired please request a new password reset email (see. 1. Requesting a password rest email for more details).
+            %li
+              Check you email inbox for an email with the subject
+              = succeed '.' do
+                %strong Reset your password – Beehive
+              %br
+                %small Please note the email can sometimes take a few minutes to arrive, and be sure to check your email ‘spam’ or ‘junk’ folders.
+            %li
+              On the
+              %strong Set a new password
+              page type a new password into the
+              %strong New password
+              field.
+              %br
+                %small Passwords should be at lease 6 characters long with 1 number.
+            %li
+              Type the new password into the
+              %strong Confirm new password
+              field.
+            %li
+              Click the
+              %strong Change password
+              button.
+            %li
+              If the password is successfully changed you will be taken to the
+              = succeed ',' do
+                %strong Sign in page
+              where you can use your email address and new password to sign in.
+              %small
+                = surround '(', ')' do
+                  = link_to 'How do I sign in?', faq_path(anchor: 'sign-in'), class: 'blue'
+
+    %hr.maxw1000.mx40
+
+    %section.p40#no-org
+      .mb20
+        %h3.lato.light
+          I don’t have an organisation or project I’m seeking funding for. Can I still use Beehive?
+          %span.fs16.noto.mid-gray Getting started
+      %p.mb20 None of the funders currently on Beehive provide funding directly to individuals instead they support organisations or projects delivered by groups. We strongly advise you to only sign up if you are associated with an organisation or project seeking charitable funding.
+      %p.mb20
+        If you are a funder please contact
+        = link_to 'support@beehivegiving.org', 'mailto:support@beehivegiving.org', class: 'blue'
+        for details on how to get started.
+      %p
+        See also
+        = link_to "I’m looking for funding to support an individual beneficiary. Can Beehive help me find this kind of funding?", faq_path(anchor: 'individual'), class: 'blue'
+
+    %hr.maxw1000.mx40
+
+    %section.p40#already-registered
+      .mb20
+        %h3.lato.light
+          Beehive is telling me my organisation or project is already registered
+          %span.fs16.noto.mid-gray Getting started
+      %p.mb20
+        This means that either, we have your details on our records, or another person has signed up for your organisation or project. If this is the case then please get in touch with
+        = link_to 'support@beehivegiving.org', 'mailto:support@beehivegiving.org', class: 'blue'
+        requesting access to your organisation or project's account.
+      %p.mb20 Please include the following in your message:
+      %ul.list.pl40
+        %li Name of your organisation or project
+        %li Your role in the organisation or the project
+        %li Charity number (if known)
+        %li Company number (if known)
+
+    %hr.maxw1000.mx40
+
+    %section.p40#not-charity
+      .mb20
+        %h3.lato.light
+          My organisation or project isn’t a registered charity can I still use Beehive?
+          %span.fs16.noto.mid-gray Getting started
+      %p.mb20
+        = succeed '.' do
+          %strong Yes
+        On Beehive there are funders that support a range of different types of organisations and projects. Simply use Beehives eligibility checker to quickly understand if your organisation or project meets the minimum requirements for a given funder.
+      %p
+        Also see
+        = link_to "I don’t have an organisation or project I’m seeking funding for. Can I still use Beehive?", faq_path(anchor: 'no-org'), class: 'blue'
+
+    %hr.maxw1000.mx40
+
+    %section.p40#individual
+      .mb20
+        %h3.lato.light
+          I’m looking for funding to support an individual beneficiary. Can Beehive help me find this kind of funding?
+          %span.fs16.noto.mid-gray Getting started
+      %p.mb20
+        Unfortunately, none of the funders on Beehive provide funding for individual beneficiaries. However there are other online tools available that may help you to find funding for an individual beneficiary, such as
+        = succeed ',' do
+          = link_to 'SENDirect', 'http://www.sendirect.org.uk', target: '_blank', class: 'blue'
+        = succeed ',' do
+          = link_to 'The Prince’s Trust', 'https://www.princes-trust.org.uk/need_help/next_steps/your_next_steps_in_the_uk/alternative_sources_of_funding/funding_for_individuals.aspx', target: '_blank', class: 'blue'
+        and
+        = succeed '.' do
+          = link_to 'Turn2us', 'https://www.turn2us.org.uk/', target: '_blank', class: 'blue'
+      %p
+        Also see
+        = link_to "I'm fundraising on behalf of a charity through an event, expedition or other activity. Can Beehive help me?", faq_path(anchor: 'individual-fundraiser'), class: 'blue'
+
+    %hr.maxw1000.mx40
+
+    %section.p40#individual-fundraiser
+      .mb20
+        %h3.lato.light
+          I'm fundraising on behalf of a charity through an event, expedition or other activity. Can Beehive help me?
+      %p.mb20
+        Unfortunately not, the funders on Beehive only provide support to charitable organisations or projects directly. Meaning, that they are unable to support individuals who are fundraising on behalf of an organisation or project.
+      %p
+        This is because organisations and projects are often required to have a written governing document, and separate bank account to ensure the appropriate use of charitable funding.

@@ -1,3 +1,5 @@
+@import modules/base
+
 // TODO: deprecated
 #banner
   background: #005d7f
@@ -62,6 +64,8 @@
     opacity: .6
   &.blue
     background: image-url('blue-logo.svg') no-repeat
+    @media screen and (max-width: 25rem)
+      background: image-url('blue-logo-hex.svg') no-repeat
   @media screen and (max-width: 25rem)
     width: 24px
     height: 20px
@@ -102,9 +106,23 @@
   background-size: 320px 142px
   min-width: 160px
   height: 142px
-  @media screen and (max-width: 46.875rem)
+  @media screen and (max-width: 25rem)
     +scale(320px, 142px, $scale: .6)
   &.david
     background-position: left top
   &.suraj
     background-position: right top
+
+// Markdown
+// =========================================================================
+
+.markdown
+  h1, h2, h3, h4, h5, h6, p, ul
+    margin-bottom: 20px
+  h1, h2, h3, h4
+    font-weight: 300
+  a
+    color: map-get($colors, blue)
+  ul
+    list-style: disc
+    padding-left: 20px
