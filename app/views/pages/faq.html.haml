@@ -102,7 +102,64 @@
         %strong Pro
         subscription plans:
 
-      = render partial: 'subscription_plans'
+      -# TODO: refactor
+      %table.mb20
+        %caption.fs14.left-align.italic Subscription plans
+        %thead
+          %tr
+            %th.p10 Plan
+            %th.p10 Price
+            %th.p10 Features
+        %tbody
+          %tr
+            %td.p10
+              Basic
+              %br
+                %small Default
+            %td.p10 Free
+            %td.p10
+              = render partial: 'accounts/free_features'
+          %tr.bg-silver
+            %td.p10
+              Pro - Micro
+              %br
+                %small <£10k income
+            %td.p10
+              £50
+              %small per year
+            %td.p10{ rowspan: 5 }
+              = render partial: 'accounts/premium_features'
+          %tr.bg-silver
+            %td.p10
+              Pro - Small
+              %br
+                %small <£100k income
+            %td.p10
+              £100
+              %small per year
+          %tr.bg-silver
+            %td.p10
+              Pro - Medium
+              %br
+                %small <£1m income
+            %td.p10
+              £300
+              %small per year
+          %tr.bg-silver
+            %td.p10
+              Pro - Large
+              %br
+                %small <£10m income
+            %td.p10
+              £1,200
+              %small per year
+          %tr.bg-silver
+            %td.p10
+              Pro - Major
+              %br
+                %small £10m+ income
+            %td.p10
+              Get in touch
 
       %p Beehive is a project of a charity and all income is reinvested back into the development and running of the platform.
 
@@ -141,7 +198,7 @@
           %span.fs16.noto.mid-gray Getting started
       %p.mb20
         To sign in visit the
-        = link_to 'sign in page', sign_in_path, class: 'primary'
+        = link_to 'sign in page', sign_in_path, class: 'blue'
         and enter the email address and password you set when creating your account. You can visit the sign in page in two ways:
       %ol.pl40.mb20
         %li
