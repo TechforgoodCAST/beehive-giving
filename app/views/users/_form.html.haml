@@ -37,10 +37,10 @@
 
   .mb10.fs12.center.slate
     Accept
-    = link_to 'terms of service', '#terms', class: 'blue', onclick: "window.open('#{terms_path}','Terms of Service','width=600,height=400')"
+    = link_to 'terms of service', '', class: 'blue', onclick: "window.open('#{terms_path}','Terms of Service','width=600,height=400')"
     and
     = succeed '?' do
-      = link_to 'privacy policy', '#privacy', class: 'blue', onclick: "window.open('#{privacy_path}','Privacy Policy','width=600,height=400')"
+      = link_to 'privacy policy', '', class: 'blue', onclick: "window.open('#{privacy_path}','Privacy Policy','width=600,height=400')"
     = f.input_field :agree_to_terms, checked: true
 
   = f.button :button, 'Create account', class: 'button-wide white bg-olive caps truncate', data: { disable_with: 'Welcome aboard...' }
