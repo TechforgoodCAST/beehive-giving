@@ -6,7 +6,7 @@ module ApplicationHelper
   def v2_layout? # TODO: remove @ v2
     permitted = {
       articles: %i[index show],
-      pages: %i[about faq],
+      pages: %i[about faq privacy],
       signup: %i[user create_user]
     }
     controller = params[:controller].to_sym
