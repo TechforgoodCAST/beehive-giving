@@ -13,14 +13,14 @@ feature 'Article' do
       expect(page).to have_content article.title
     end
     expect(page).to have_css '.markdown', count: 3
-    expect(page).to have_link 'Sign up free today'
+    expect(page).to have_text 'Ready to get started?'
   end
 
   scenario 'show' do
     click_link 'Research'
     click_link @article.title
-    expect(page).to have_link 'Back to articles'
-    expect(page).to have_link 'Sign up free today'
+    expect(page).to have_link 'Back to Research'
+    expect(page).to have_text 'Ready to get started?'
     expect(page).to have_content @article.title
     expect(page).to have_css '.markdown', count: 1
   end

@@ -1,0 +1,10 @@
+= content_for :title, @article.title
+
+%main
+  %header
+    .mb30
+      = cell(:v2_navbar, @current_user)
+
+  = cell(:article, @article).call(:show)
+
+  = render partial: 'layouts/sign_up_cta'

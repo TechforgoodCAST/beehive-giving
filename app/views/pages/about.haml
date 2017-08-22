@@ -20,19 +20,19 @@
     %h2.light.center.mb20 The problem
 
     .flex.flex-wrap.center
-      .f1.minw250.px40.mb40
+      .perc50.md.px40.mb40
         %h3.light.yellow.mb20 For fundraisers
-        .maxw340.mx-auto.night Finding and making sense of funding opportunities is time consuming and confusing - it’s difficult to know if you’re eligible or a good fit, let alone how best to tailor your request.
-      .f1.minw250.px40.mb40.divider
+        .night Finding and making sense of funding opportunities is time consuming and confusing - it’s difficult to know if you’re eligible or a good fit, let alone how best to tailor your request.
+      .perc50.md.px40.mb40.divider
         %h3.light.blue.mb20 For funders
-        .maxw340.mx-auto.night Funders recieve many more applications than they can support, most of which are ineligible or a poor fit - wasting valuable resources for both the funder and applicant.
+        .night Funders recieve many more applications than they can support, most of which are ineligible or a poor fit - wasting valuable resources for both the funder and applicant.
 
   %section.bg-silver
     .maxw1080.mx-auto.pt40
       %h2.light.center.mb40 Our solution
 
       .flex.flex-wrap.night
-        .f1.minw250.px40.mb40
+        .perc50.md.px40.mb40
           .mb25
             %p.fs20.lato.light Beehive is a web based tool that checks and matches your funding proposals with eligible and appropriate funders.
           .mb25
@@ -44,7 +44,7 @@
           %strong Inform
           %p We surface useful insights based on a funder's giving behaviour to inform your funding proposals.
 
-        .f1.minw340.px40.mb40.center
+        .perc50.md.px40.mb40.center
           .feature-card
             .image
             .copy.bg-mint.px12.pb14.shadow.white.italic We use open data and smart technology to bring together valuable information and insights to guide your fundraising in minures not hours.
@@ -53,24 +53,24 @@
     %h2.light.center.mx40.mb20 The difference we want to make
 
     .flex.flex-wrap.center
-      .f1.minw250.px40.mb40
+      .perc50.md.px40.mb40
         %h3.light.yellow.mb20 For fundraisers
-        .maxw340.mx-auto.night Fundraisers no longer submit ineligible or unsuitable applications and have a better understanding of the funders they approach.
-      .f1.minw250.px40.mb40.divider
+        .night Fundraisers no longer submit ineligible or unsuitable applications and have a better understanding of the funders they approach.
+      .perc50.md.px40.mb40.divider
         %h3.light.blue.mb20 For funders
-        .maxw340.mx-auto.night Funders spend less time dealing with unsuitable applications, and have tools to make the most of their funding data.
+        .night Funders spend less time dealing with unsuitable applications, and have tools to make the most of their funding data.
 
   %section.bg-silver
     .maxw1080.mx-auto.pt40
       %h2.light.center.mb40 Team
-      .flex.flex-wrap.justify-center.night
-        .px40.mb40.flex.items-center
+      .flex.flex-wrap.night
+        .perc50.md.px40.mb40.flex.items-center.justify-center
           #team.david.mr20
           .maxw200
             .fs20.lato.light.mb10 David Kane
             -# TODO: add description
             -# %p.fs14.lh18 Lorem ipsum dolor sit amet, consectetur adipisicing.
-        .px40.mb40.flex.items-center
+        .perc50.md.px40.mb40.flex.items-center.justify-center
           #team.suraj.mr20
           .maxw200
             .fs20.lato.light.mb10 Suraj Vadgama
@@ -113,12 +113,4 @@
           #supporter.datakind-uk
         .minw200.flex.flex-column.justify-center.fs14.night and many more...
 
-  %section
-    #hex-footer
-    .maxw1080.mx-auto.pt120.pb15.mb30
-      .flex.flex-wrap.justify-center.pt80
-        .mx40.mb20
-          %h2.light Ready to get started?
-        .mx40.center
-          = link_to 'Create an account', root_path, class: 'button white bg-blue shadow caps mb10'
-          = link_to 'Read our FAQ', faq_path, class: 'button blue bg-white shadow caps mb10'
+  = render partial: 'layouts/sign_up_cta'
