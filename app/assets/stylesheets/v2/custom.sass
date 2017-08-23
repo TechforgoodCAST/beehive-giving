@@ -9,6 +9,40 @@
   vertical-align: middle
 .bread
   max-width: 120px
+@media screen and (max-width: 46.875rem)
+  .bread, .crumb
+    display: none
+  .bread:nth-last-child(7)
+    visibility: hidden
+    position: relative
+    width: 10px
+    &:after
+      visibility: visible
+      position: absolute
+      top: 2px
+      content: '...'
+  .bread:nth-last-child(-n+5),
+  .crumb:nth-last-child(-n+5),
+  .bread:nth-last-child(7),
+  .crumb:nth-last-child(6)
+    display: inline-block
+@media screen and (max-width: 25rem)
+  .bread, .crumb
+    display: none !important
+  .bread:nth-last-child(5)
+    visibility: hidden
+    position: relative
+    width: 10px
+    &:after
+      visibility: visible
+      position: absolute
+      top: 2px
+      content: '...'
+  .bread:nth-last-child(-n+3),
+  .crumb:nth-last-child(-n+3),
+  .bread:nth-last-child(5),
+  .crumb:nth-last-child(4)
+    display: inline-block !important
 
 // TODO: deprecated
 .feature

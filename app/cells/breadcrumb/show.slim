@@ -1,6 +1,6 @@
 .maxw1080.mx-auto.px40.pb25.fs14
-  a.bread.blue href= root_path Home
+  a.lh18.bread.blue href= root_path Home
   - model.each_with_index do |(k, v), i|
     .crumb.slate<> &rsaquo;
     a.bread.blue class=[disabled(v), bold(i)] href= v title=k
-      .truncate= k
+      .lh18.truncate= k
