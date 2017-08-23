@@ -39,4 +39,5 @@
       %h3.uk-text-bold Are you seeking funding for?
       .uk-form.uk-form-stacked
         = simple_form_for :check, url: eligibility_proposal_fund_path(@proposal, @fund), method: :patch do |f|
+          = f.hidden_input :return_to, :value => "eligibility"
           = cell(:eligibility_quiz, @fund, proposal: @proposal, f: f).call(:show)
