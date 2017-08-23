@@ -8,4 +8,4 @@
 
 - else
 
-  = f.button :button, "Check eligibility (#{(MAX_FREE_LIMIT - @recipient.funds_checked)} left)", class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right', data: {disable_with: "<i class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i> Checking..."}, "data-uk-tooltip" => "{pos:'top'}", :title => "This will use one of your free eligibility checks."
+  = f.button :button, "Check eligibility (#{(MAX_FREE_LIMIT - @proposal.recipient.funds_checked)} left)", class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right', data: {disable_with: "<i class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i> Checking..."}, "data-uk-tooltip" => "{pos:'top'}", :title => "This will use one of your free eligibility checks."
