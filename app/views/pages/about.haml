@@ -3,7 +3,8 @@
 %main
   %header
     .mb30
-      = cell(:v2_navbar, @current_user)
+      = cell :v2_navbar, @current_user
+      = cell :breadcrumb, 'About' => about_path
 
   %section.maxw1080.mx-auto
     .mb20.mx40
@@ -92,24 +93,26 @@
 
       %p.mb40.night Since inception in June 2014, we’ve been kindly supported by or worked with the following great organisations...
 
-      .flex.flex-wrap.center.content-center
-        %a.mx-auto{ href: 'https://www.biglotteryfund.org.uk/', target: '_blank', alt: 'Big Lottery Fund logo' }
+      .flex.flex-wrap.center.content-center.justify-center
+        %a{ href: 'http://www.wearecast.org.uk/', target: '_blank', alt: 'CAST' }
+          #supporter.cast
+        %a{ href: 'https://www.biglotteryfund.org.uk/', target: '_blank', alt: 'Big Lottery Fund logo' }
           #supporter.big-lottery-fund
-        %a.mx-auto{ href: 'http://www.threesixtygiving.org/', target: '_blank', alt: '360Giving logo' }
+        %a{ href: 'http://www.threesixtygiving.org/', target: '_blank', alt: '360Giving logo' }
           #supporter.three-sixty-giving
-        %a.mx-auto{ href: 'https://outlandish.com/', target: '_blank', alt: 'Outlandish logo' }
+        %a{ href: 'https://outlandish.com/', target: '_blank', alt: 'Outlandish logo' }
           #supporter.outlandish
-        %a.mx-auto{ href: 'https://indigotrust.org.uk/', target: '_blank', alt: 'Indigo Trust logo' }
+        %a{ href: 'https://indigotrust.org.uk/', target: '_blank', alt: 'Indigo Trust logo' }
           #supporter.indigo-trust
-        %a.mx-auto{ href: 'http://www.forwardfoundation.org.uk/', target: '_blank', alt: 'Forward Foundation logo' }
+        %a{ href: 'http://www.forwardfoundation.org.uk/', target: '_blank', alt: 'Forward Foundation logo' }
           #supporter.forward-foundation
-        %a.mx-auto{ href: 'https://neon.com/', target: '_blank', alt: 'NEON logo' }
+        %a{ href: 'https://neon.com/', target: '_blank', alt: 'NEON logo' }
           #supporter.neon
-        %a.mx-auto{ href: 'https://forwardpartners.com/', target: '_blank', alt: 'Forward Partners' }
+        %a{ href: 'https://forwardpartners.com/', target: '_blank', alt: 'Forward Partners' }
           #supporter.forward-partners
-        %a.mx-auto{ href: 'http://www.forward3d.com/', target: '_blank', alt: 'Forward3D' }
+        %a{ href: 'http://www.forward3d.com/', target: '_blank', alt: 'Forward3D' }
           #supporter.forward3d
-        %a.mx-auto{ href: 'http://www.datakind.org/chapters/datakind-uk/', target: '_blank', alt: 'DataKind UK' }
+        %a{ href: 'http://www.datakind.org/chapters/datakind-uk/', target: '_blank', alt: 'DataKind UK' }
           #supporter.datakind-uk
         .minw200.flex.flex-column.justify-center.fs14.night and many more...
 

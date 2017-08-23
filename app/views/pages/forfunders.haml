@@ -6,7 +6,8 @@
 %main
   %header
     .mb30
-      = cell(:v2_navbar, @current_user)
+      = cell :v2_navbar, @current_user
+      = cell :breadcrumb, 'Beehive for Funders' => for_funders_path
 
   %section.maxw790.mx-auto
     .mx40

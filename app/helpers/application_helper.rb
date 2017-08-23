@@ -7,6 +7,7 @@ module ApplicationHelper
     permitted = {
       articles: %i[index show],
       pages: %i[about faq forfunders privacy terms],
+      password_resets: %i[new create edit update],
       signup: %i[user create_user]
     }
     controller = params[:controller].to_sym

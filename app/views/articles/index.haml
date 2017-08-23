@@ -3,7 +3,8 @@
 %main
   %header
     .mb30
-      = cell(:v2_navbar, @current_user)
+      = cell :v2_navbar, @current_user
+      = cell :breadcrumb, 'Research' => articles_path
 
   %section.maxw1080.mx-auto
     .mb40.mx40
