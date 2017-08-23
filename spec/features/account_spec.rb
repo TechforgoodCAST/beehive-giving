@@ -106,7 +106,7 @@ feature 'Account' do
               so I understand what to do next' do
       helper.request_reset
       @user.update_attribute(:password_reset_sent_at, 2.hours.ago)
-      helper.set_new_password
+      visit edit_password_reset_path(@user)
       expect(current_path).to eq new_password_reset_path
     end
 
@@ -127,14 +127,16 @@ feature 'Account' do
 
     scenario 'reset password page has has link to correct faq' do
       visit new_password_reset_path
-      expect(find('.faq-link')[:href]).to eq faq_path(anchor: 'reset-password')
+      expect(find('a', text: 'here')[:href])
+        .to eq faq_path(anchor: 'reset-password')
     end
 
     scenario 'set new password page has link to correct faq' do
       helper.request_reset
       expect(current_path).to eq sign_in_path
       visit edit_password_reset_path(User.last.password_reset_token)
-      expect(find('.faq-link')[:href]).to eq faq_path(anchor: 'set-password')
+      expect(find('a', text: 'here')[:href])
+        .to eq faq_path(anchor: 'set-password')
     end
   end
 end
