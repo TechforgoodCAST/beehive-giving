@@ -1,57 +1,59 @@
-%table.uk-table
-  %caption Subscription plans
+%table.mb20
+  %caption.fs14.left-align.italic Subscription plans
   %thead
     %tr
-      %th Plan
-      %th Price
-      %th Features
+      %th.p10 Plan
+      %th.p10 Price
+      %th.p10 Features
   %tbody
-    %tr.uk-table-middle
-      %td
+    %tr
+      %td.p10
         Basic
         %br
           %small Default
-      %td Free
-      %td
+      %td.p10 Free
+      %td.p10
         = render partial: 'accounts/free_features'
-    %tr.uk-table-middle.off-white.bg
-      %td
+    %tr.bg-silver
+      %td.p10
         Pro - Micro
         %br
           %small <£10k income
-      %td
+      %td.p10
         £50
         %small per year
-      %td{ rowspan: 5 }
+      %td.p10{ rowspan: 5 }
         = render partial: 'accounts/premium_features'
-    %tr.uk-table-middle.off-white.bg
-      %td
+    %tr.bg-silver
+      %td.p10
         Pro - Small
         %br
           %small <£100k income
-      %td
+      %td.p10
         £100
         %small per year
-    %tr.uk-table-middle.off-white.bg
-      %td
+    %tr.bg-silver
+      %td.p10
         Pro - Medium
         %br
           %small <£1m income
-      %td
+      %td.p10
         £300
         %small per year
-    %tr.uk-table-middle.off-white.bg
-      %td
+    %tr.bg-silver
+      %td.p10
         Pro - Large
         %br
           %small <£10m income
-      %td
+      %td.p10
         £1,200
         %small per year
-    %tr.uk-table-middle.off-white.bg
-      %td
+    %tr.bg-silver
+      %td.p10
         Pro - Major
         %br
           %small £10m+ income
-      %td
+      %td.p10
         Get in touch
+
+%p Beehive is a project of a charity and all income is reinvested back into the development and running of the platform.

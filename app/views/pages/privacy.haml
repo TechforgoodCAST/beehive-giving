@@ -6,7 +6,8 @@
 %main
   %header
     .mb30
-      = cell(:v2_navbar, @current_user)
+      = cell :v2_navbar, @current_user
+      = cell :breadcrumb, 'Privacy' => privacy_path
 
   %section.maxw790.mx-auto
     .mx40
