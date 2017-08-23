@@ -10,4 +10,5 @@
   - @restrictions[:Proposal].each do |r|
     = render view: :restriction, locals: {r: r, f: f, e: r.eligibility(@proposal)}
 
-= render view: :button, locals: {f: f}
+- if @proposal
+  = render view: :button, locals: {f: f}
