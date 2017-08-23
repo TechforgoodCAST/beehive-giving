@@ -1,7 +1,7 @@
 require 'rails_helper'
 require_relative '../support/eligibility_helper'
 
-feature 'Eligibility' do
+ffeature 'Eligibility' do
   let(:helper) { EligibilityHelper.new }
 
   before(:each) do
@@ -83,7 +83,7 @@ feature 'Eligibility' do
              '_true]' do
         expect(page).to have_text 'Yes'
       end
-      helper.answer_restrictions.check_eligibility
+      helper.answer_restrictions(@fund).check_eligibility
       expect(page).to have_text 'You are eligible'
     end
 
@@ -142,7 +142,7 @@ feature 'Eligibility' do
     scenario "When I run a check and I'm eligible,
               I want to see a link to apply for funding,
               so I can see further details about applying" do
-      helper.answer_restrictions.check_eligibility
+      helper.answer_restrictions(@fund).check_eligibility
       expect(page).to have_text 'Update'
 
       within('.card') { click_link 'Apply' }
@@ -160,8 +160,8 @@ feature 'Eligibility' do
     scenario "When I run a check and I'm ineligible,
               I want to see which options did not meet the criteria,
               so I can correct them if neccesary" do
-      helper.answer_recipient_restrictions
-            .answer_proposal_restrictions(eligible: false)
+      helper.answer_recipient_restrictions(@fund)
+            .answer_proposal_restrictions(@fund, eligible: false)
             .check_eligibility
       expect(page).to have_text 'You are ineligible, and do not meet 3 of ' \
                                 'the criteria below.'
@@ -171,7 +171,7 @@ feature 'Eligibility' do
       expect(current_path)
         .to eq eligibility_proposal_fund_path(@proposal, @fund)
 
-      helper.answer_restrictions.update
+      helper.answer_restrictions(@fund).update
       expect(page).to have_text 'Apply'
       expect(page).to have_text 'Apply for funding'
 
@@ -183,7 +183,7 @@ feature 'Eligibility' do
     scenario "When I check a fund with shared restrictions,
               I want associated funds to be checked, so
               I don't waste time checking funds with the same restrictions" do
-      helper.answer_restrictions.check_eligibility
+      helper.answer_restrictions(@fund).check_eligibility
       expect(Proposal.last.eligibility.all_values_for('quiz').length).to eq 4
     end
 
@@ -191,8 +191,8 @@ feature 'Eligibility' do
               I want previously answered questions to be prefilled,
               so I don't waste my time answering the same question twice" do
       Fund.limit(5).destroy_all # leave two funds remaining
-      helper.answer_recipient_restrictions
-            .answer_proposal_restrictions(eligible: false)
+      helper.answer_recipient_restrictions(@fund)
+            .answer_proposal_restrictions(@fund, eligible: false)
             .check_eligibility
       click_link 'Funds'
       helper.visit_first_fund.check_eligibility(remaining: 2)
@@ -202,8 +202,8 @@ feature 'Eligibility' do
     scenario "When I'm ineligible and try to access application details,
               I want to be told why I can't access them,
               so I understand what to do next" do
-      helper.answer_recipient_restrictions
-            .answer_proposal_restrictions(eligible: false)
+      helper.answer_recipient_restrictions(@fund)
+            .answer_proposal_restrictions(@fund, eligible: false)
             .check_eligibility
       visit apply_proposal_fund_path(@proposal, @fund)
       expect(current_path)
@@ -214,7 +214,7 @@ feature 'Eligibility' do
               I want to be able to upgrade,
               so I can continue to check eligibilities' do
       # check all (7) funds, 4 quiz eligible
-      helper.answer_restrictions.check_eligibility
+      helper.answer_restrictions(@fund).check_eligibility
 
       # checked funds don't require upgrade
       click_link 'Funds'
@@ -234,7 +234,7 @@ feature 'Eligibility' do
       before(:each) do
         helper
           .visit_first_fund.complete_proposal.submit_proposal
-          .visit_first_fund.answer_restrictions.check_eligibility
+          .visit_first_fund.answer_restrictions(@fund).check_eligibility
         visit root_path
       end
 
@@ -257,8 +257,8 @@ feature 'Eligibility' do
               .complete_proposal
               .submit_proposal
               .visit_first_fund
-              .answer_recipient_restrictions
-              .answer_proposal_restrictions(eligible: false)
+              .answer_recipient_restrictions(@fund)
+              .answer_proposal_restrictions(@fund, eligible: false)
               .check_eligibility
         visit root_path
       end

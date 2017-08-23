@@ -20,19 +20,19 @@ class EligibilityHelper
     self
   end
 
-  def answer_recipient_restrictions(eligible: true)
-    answer(eligible: eligible, category: 'recipient', n: 2)
+  def answer_recipient_restrictions(fund, eligible: true)
+    answer(fund, eligible: eligible, category: 'recipient', n: 2)
     self
   end
 
-  def answer_proposal_restrictions(eligible: true, n: 3)
-    answer(eligible: eligible, n: n)
+  def answer_proposal_restrictions(fund, eligible: true, n: 3)
+    answer(fund, eligible: eligible, n: n)
     self
   end
 
-  def answer_restrictions
-    answer_recipient_restrictions
-    answer_proposal_restrictions
+  def answer_restrictions(fund)
+    answer_recipient_restrictions(fund)
+    answer_proposal_restrictions(fund)
     self
   end
 
@@ -72,10 +72,9 @@ class EligibilityHelper
 
   private
 
-    def answer(category: 'proposal', eligible: true, n: 3)
-      n.times do |i|
-        choose "check_#{category}_eligibilities_attributes_" \
-               "#{i}_eligible_#{eligible}"
+    def answer(fund, category: 'proposal', eligible: true, n: 3)
+      fund.restrictions.where(category: category).limit(n).pluck(:id).each do |i|
+        choose "check_restriction_#{i}_eligible_#{eligible}"
       end
     end
 end
