@@ -7,9 +7,6 @@ class EligibilitiesController < ApplicationController
     return redirect_to account_upgrade_path(@recipient) unless
       @proposal.checked_fund?(@fund) || @proposal.show_fund?(@fund)
 
-    @org_criteria = find_or_initialize_eligibilities(@recipient, 'Organisation')
-    @proposal_criteria = find_or_initialize_eligibilities(@proposal, 'Proposal')
-
     return if @recipient.subscribed?
 
     if @recipient.incomplete_first_proposal?
@@ -31,7 +28,7 @@ class EligibilitiesController < ApplicationController
       params[:mixpanel_eligibility_tracking] = true
       @recipient.update_funds_checked!(@proposal.eligibility)
     end
-    render :new
+    redirect_to proposal_fund_path(@proposal, @fund)
   end
 
   private
@@ -51,28 +48,14 @@ class EligibilitiesController < ApplicationController
       ).to_a
     end
 
-    def select_by_category(array, category_type, key = 'category_type')
-      array.select { |i| i[key] == category_type }
-    end
-
-    def find_or_initialize_eligibilities(category, category_type)
-      eligibilities = select_by_category(@eligibilities, category_type)
-      restrictions = select_by_category(@restrictions,
-                                        category_type, 'category')
-
-      (restrictions.pluck(:id) - eligibilities.pluck(:restriction_id))
-        .each do |restriction_id|
-        eligibilities << Eligibility.new(
-          category_id: category.id, restriction_id: restriction_id
-        )
+    def get_restriction_param(r_id)
+      p = params.dig(:check, "restriction_#{r_id}_eligible")
+      return nil unless p
+      if p == "true"
+        return true
+      elsif p == "false"
+        return false
       end
-      eligibilities.sort_by { |i| i[:restriction_id] }
-    end
-
-    def eligibility_params(parent)
-      params.require(:check).require(parent)
-            .permit(eligibilities_attributes:
-                      [:id, :eligible, :restriction_id, :category_id])
     end
 
     def migrate_legacy_eligibilities
@@ -85,22 +68,14 @@ class EligibilitiesController < ApplicationController
     def update_eligibility_params
       migrate_legacy_eligibilities
 
-      # TODO: refactor performance
-      categories = @restrictions.pluck(:category).uniq
-      check = [categories.include?('Organisation'),
-               categories.include?('Proposal')]
-      case check
-      when [true, true]
-        update_recipient = @recipient
-                           .update_attributes(eligibility_params(:recipient))
-        update_proposal = @proposal
-                          .update_attributes(eligibility_params(:proposal))
-        [update_recipient, update_proposal].include?(false) ? false : true
-      when [true, false]
-        @recipient.update_attributes(eligibility_params(:recipient))
-        @proposal.save # TODO: refactor
-      when [false, true]
-        @proposal.update_attributes(eligibility_params(:proposal))
+      @restrictions.each do |r|
+        e = Eligibility.find_or_initialize_by(
+          restriction_id: r.id,
+          category_id: (@recipient.id if r.category=="Organisation") || @proposal.id,
+          category_type: r.category
+        )
+        e.eligible = get_restriction_param(r.id)
+        e.save
       end
     end
 end
