@@ -28,7 +28,12 @@ class EligibilitiesController < ApplicationController
       params[:mixpanel_eligibility_tracking] = true
       @recipient.update_funds_checked!(@proposal.eligibility)
     end
-    redirect_to proposal_fund_path(@proposal, @fund)
+    case params.fetch(:return_to, "fund")
+    when "eligibility"
+      redirect_to eligibility_proposal_fund_path(@proposal, @fund)
+    else
+      redirect_to proposal_fund_path(@proposal, @fund)
+    end
   end
 
   private
