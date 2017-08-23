@@ -54,11 +54,6 @@
           = simple_form_for :check, url: proposal_fund_path(@proposal, @fund), method: :patch do |f|
             = cell(:eligibility_quiz, @fund, proposal: @proposal, f: f).call(:show)
 
-            - if @proposal.checked_fund?(@fund)
-              = f.button :button, 'Update', class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right', data: {disable_with: "<i class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i> Updating..."}
-            - else
-              = f.button :button, check_eligibility_button_copy, class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right', data: {disable_with: "<i class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i> Checking..."}, "data-uk-tooltip" => "{pos:'top'}", :title => "This will use one of your free eligibility checks."
-
         %hr.thick
 
       %section#how-was-funding-distributed.offset
