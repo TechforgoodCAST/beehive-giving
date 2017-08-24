@@ -1,11 +1,10 @@
 = content_for :title, 'FAQ'
 
-%main
-  %header
-    .mb30
-      = cell :v2_navbar, @current_user
-      = cell :breadcrumb, 'FAQ' => faq_path
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'FAQ' => faq_path
 
+%main
   %section.maxw1080.mx-auto
     .mb40.mx40
       %h1.light.center Frequently Asked Questions (FAQ)

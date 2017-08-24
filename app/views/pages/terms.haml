@@ -3,13 +3,11 @@
 :javascript
   mixpanel.track("View Terms Page");
 
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'Terms' => terms_path
 
 %main
-  %header
-    .mb30
-      = cell :v2_navbar, @current_user
-      = cell :breadcrumb, 'Terms' => terms_path
-
   %section.maxw790.mx-auto
     .mx40
       %h1.light.center.mb40 Terms of Service

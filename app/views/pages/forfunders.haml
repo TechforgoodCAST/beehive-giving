@@ -3,12 +3,11 @@
 :javascript
   mixpanel.track("View Beehive for Funders Page");
 
-%main
-  %header
-    .mb30
-      = cell :v2_navbar, @current_user
-      = cell :breadcrumb, 'Beehive for Funders' => for_funders_path
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'Beehive for Funders' => for_funders_path
 
+%main
   %section.maxw790.mx-auto
     .mx40
       %h1.light.center.mb20 Beehive for Funders

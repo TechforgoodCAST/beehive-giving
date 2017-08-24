@@ -3,39 +3,39 @@
 :javascript
   mixpanel.track("View Welcome Page");
 
+%header#header-offset
+  #hex
+
+  .pb30.mb80
+    = cell(:v2_navbar, @current_user, type: 'white')
+
+  .maxw1080.mx-auto
+    .m40.flex.flex-wrap
+      .perc66.md
+        .fs14.white.mb40
+          .bg-darken-blue.circle.shadow.inline-block.py5.pr14.pl5.truncate
+            .fs12.bg-green.caps.bold.circle.inline-block.py3.px5 LIVE
+            Over 100+ charitable funds offering grants
+        %h1.light.fs40.white.mb30.pt20
+          Get connected to the right funders
+        %p.fs18.white.mb30
+          Funder recommendations and eligibility checking for your non-profit organisation or project
+
+        %blockquote.fs15.white.col-three-quarters.mb30
+          .italic
+            "I have been fundraising for 20 years and even though it is still in development this tool is long over-due and is brilliant!"
+          Catherine,
+          = link_to 'Bright Ideas Trust', 'http://www.brightideastrust.com/', target: '_blank', class: 'yellow'
+
+        .mb40
+          = link_to 'http://www.thirdsectorexcellenceawards.com/finalists/beehive/', target: '_blank' do
+            = image_tag 'third-sector-awards-finalist-logo.svg', width: 150, class: 'bg-silver rounded shadow mb40'
+
+      .perc33.md
+        .bg-white.p15.rounded.shadow
+          = render partial: 'users/form'
+
 %main
-  %header#header-offset
-    #hex
-
-    .pb30.mb80
-      = cell(:v2_navbar, @current_user, type: 'white')
-
-    .maxw1080.mx-auto
-      .m40.flex.flex-wrap
-        .perc66.md
-          .fs14.white.mb40
-            .bg-darken-blue.circle.shadow.inline-block.py5.pr14.pl5.truncate
-              .fs12.bg-green.caps.bold.circle.inline-block.py3.px5 LIVE
-              Over 100+ charitable funds offering grants
-          %h1.light.fs40.white.mb30.pt20
-            Get connected to the right funders
-          %p.fs18.white.mb30
-            Funder recommendations and eligibility checking for your non-profit organisation or project
-
-          %blockquote.fs15.white.col-three-quarters.mb30
-            .italic
-              "I have been fundraising for 20 years and even though it is still in development this tool is long over-due and is brilliant!"
-            Catherine,
-            = link_to 'Bright Ideas Trust', 'http://www.brightideastrust.com/', target: '_blank', class: 'yellow'
-
-          .mb40
-            = link_to 'http://www.thirdsectorexcellenceawards.com/finalists/beehive/', target: '_blank' do
-              = image_tag 'third-sector-awards-finalist-logo.svg', width: 150, class: 'bg-silver rounded shadow mb40'
-
-        .perc33.md
-          .bg-white.p15.rounded.shadow
-            = render partial: 'users/form'
-
   %section.mb40
     .maxw1000.mx-auto
 

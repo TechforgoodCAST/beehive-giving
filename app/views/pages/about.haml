@@ -1,11 +1,10 @@
 = content_for :title, 'About'
 
-%main
-  %header
-    .mb30
-      = cell :v2_navbar, @current_user
-      = cell :breadcrumb, 'About' => about_path
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'About' => about_path
 
+%main
   %section.maxw1080.mx-auto
     .mb20.mx40
       %h1.light.center About Beehive Giving

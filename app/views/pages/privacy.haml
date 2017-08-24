@@ -3,12 +3,11 @@
 :javascript
   mixpanel.track("View Privacy Page");
 
-%main
-  %header
-    .mb30
-      = cell :v2_navbar, @current_user
-      = cell :breadcrumb, 'Privacy' => privacy_path
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'Privacy' => privacy_path
 
+%main
   %section.maxw790.mx-auto
     .mx40
       %h1.light.center.mb20 Privacy
