@@ -1,6 +1,5 @@
 class SignupController < ApplicationController
   before_action :ensure_logged_in, :ensure_not_signed_up, only: :unauthorised
-  before_action :load_districts, only: [:user, :create_user]
 
   def user
     if logged_in?
@@ -62,11 +61,4 @@ class SignupController < ApplicationController
 
   # def unauthorised # TODO: refactor into UnauthorisedController
   # end
-
-  private
-
-    def load_districts
-      @districts = Fund.active.joins(:countries).group('countries.name')
-                       .count.to_a
-    end
 end
