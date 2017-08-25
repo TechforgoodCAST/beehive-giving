@@ -8,7 +8,11 @@
   display: inline-block
   vertical-align: middle
 .bread
-  max-width: 120px
+  max-width: 140px
+  @media screen and (max-width: 46.875rem)
+    max-width: 125px
+  @media screen and (max-width: 25rem)
+    max-width: 120px
 @media screen and (max-width: 46.875rem)
   .bread, .crumb
     display: none
