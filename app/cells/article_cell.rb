@@ -5,8 +5,4 @@ class ArticleCell < Cell::ViewModel
   def index
     render
   end
-
-  def cta
-    render
-  end
 end

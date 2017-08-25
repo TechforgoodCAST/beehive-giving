@@ -39,3 +39,10 @@ a
   transition: opacity .2s
   &:hover
     opacity: .6
+  &.disabled
+    pointer-events: none
+    cursor: default
+    color: map-get($colors, slate) !important
+
+hr
+  border: solid 1px map-get($colors, lightest-gray)

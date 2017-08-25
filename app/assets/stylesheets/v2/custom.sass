@@ -1,6 +1,48 @@
+@import modules/base
+
 // TODO: deprecated
 #banner
   background: #005d7f
+
+.bread, .crumb
+  display: inline-block
+  vertical-align: middle
+.bread
+  max-width: 120px
+@media screen and (max-width: 46.875rem)
+  .bread, .crumb
+    display: none
+  .bread:nth-last-child(7)
+    visibility: hidden
+    position: relative
+    width: 10px
+    &:after
+      visibility: visible
+      position: absolute
+      top: 2px
+      content: '...'
+  .bread:nth-last-child(-n+5),
+  .crumb:nth-last-child(-n+5),
+  .bread:nth-last-child(7),
+  .crumb:nth-last-child(6)
+    display: inline-block
+@media screen and (max-width: 25rem)
+  .bread, .crumb
+    display: none !important
+  .bread:nth-last-child(5)
+    visibility: hidden
+    position: relative
+    width: 10px
+    &:after
+      visibility: visible
+      position: absolute
+      top: 2px
+      content: '...'
+  .bread:nth-last-child(-n+3),
+  .crumb:nth-last-child(-n+3),
+  .bread:nth-last-child(5),
+  .crumb:nth-last-child(4)
+    display: inline-block !important
 
 // TODO: deprecated
 .feature
@@ -62,6 +104,8 @@
     opacity: .6
   &.blue
     background: image-url('blue-logo.svg') no-repeat
+    @media screen and (max-width: 25rem)
+      background: image-url('blue-logo-hex.svg') no-repeat
   @media screen and (max-width: 25rem)
     width: 24px
     height: 20px
@@ -70,27 +114,29 @@
 
 #supporter
   background: image-url('supporters-logos-sprites.png') no-repeat
-  background-size: 200px 1350px
+  background-size: 200px 1500px
   width: 200px
   height: 120px
-  &.big-lottery-fund
+  &.cast
     background-position: center -15px
-  &.three-sixty-giving
+  &.big-lottery-fund
     background-position: center -165px
-  &.outlandish
+  &.three-sixty-giving
     background-position: center -315px
-  &.indigo-trust
+  &.outlandish
     background-position: center -465px
-  &.forward-foundation
+  &.indigo-trust
     background-position: center -615px
-  &.neon
+  &.forward-foundation
     background-position: center -765px
-  &.forward-partners
+  &.neon
     background-position: center -915px
-  &.forward3d
+  &.forward-partners
     background-position: center -1065px
-  &.datakind-uk
+  &.forward3d
     background-position: center -1215px
+  &.datakind-uk
+    background-position: center -1365px
 
 =scale($w, $h, $scale: 1)
   background-size: ($w * $scale) ($h * $scale)
@@ -102,9 +148,23 @@
   background-size: 320px 142px
   min-width: 160px
   height: 142px
-  @media screen and (max-width: 46.875rem)
+  @media screen and (max-width: 25rem)
     +scale(320px, 142px, $scale: .6)
   &.david
     background-position: left top
   &.suraj
     background-position: right top
+
+// Markdown
+// =========================================================================
+
+.markdown
+  h1, h2, h3, h4, h5, h6, p, ul
+    margin-bottom: 20px
+  h1, h2, h3, h4
+    font-weight: 300
+  a
+    color: map-get($colors, blue)
+  ul
+    list-style: disc
+    padding-left: 20px
