@@ -8,7 +8,11 @@
   display: inline-block
   vertical-align: middle
 .bread
-  max-width: 120px
+  max-width: 140px
+  @media screen and (max-width: 46.875rem)
+    max-width: 125px
+  @media screen and (max-width: 25rem)
+    max-width: 120px
 @media screen and (max-width: 46.875rem)
   .bread, .crumb
     display: none
@@ -111,6 +115,15 @@
     height: 20px
     background: image-url('logo-hex.svg') no-repeat
     background-size: 24px 20px
+
+.pagination a
+  color: map-get($colors, blue)
+
+@font-face
+  font-family: 'Redacted'
+  src: font-url('redacted-script-bold.eot') format('eot'), font-url('redacted-script-bold.woff2') format('woff2'), font-url('redacted-script-bold.woff') format('woff'), font-url('redacted-script-bold.otf') format('opentype'), font-url('redacted-script-bold.svg#filename') format('svg')
+.redacted
+  font-family: 'Redacted' !important
 
 #supporter
   background: image-url('supporters-logos-sprites.png') no-repeat
