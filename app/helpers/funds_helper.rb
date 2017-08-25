@@ -6,11 +6,7 @@ module FundsHelper
     else
       period_desc = fund.period_start.strftime(date_format) + ' - ' + fund.period_end.strftime(date_format)
     end
-    content_tag(
-      :span,
-      period_desc,
-      class: 'year muted'
-    )
+    content_tag :span, period_desc
   end
 
   def amount_awarded_distribution
