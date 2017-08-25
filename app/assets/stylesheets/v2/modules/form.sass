@@ -21,8 +21,11 @@
     border-color: map-get($colors, blue)
 
 .input + .error
+  display: inline-block
   color: map-get($colors, red)
   +responsive(font-size, map-get($scales, 12))
+  &:first-letter
+    text-transform: capitalize
 
 .field_with_errors > input
   border-color: map-get($colors, red)

@@ -3,12 +3,11 @@
 :javascript
   mixpanel.track("View Terms Page");
 
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'Terms' => terms_path
 
 %main
-  %header
-    .mb30
-      = cell(:v2_navbar, @current_user)
-
   %section.maxw790.mx-auto
     .mx40
       %h1.light.center.mb40 Terms of Service
@@ -60,7 +59,7 @@
       %ol.pl20
         %li.mb5
           Beehive is free to use with limited usage. For access beyond usage limits you must purchase one of the following 'Pro' subscription plans:
-          = render partial: 'subscription_plans'
+          .mt20= render partial: 'subscription_plans'
         %li.mb5
           All payments made through Beehive are processed by Stripe. Beehive does not store any of the information you submit while making a purchase. Should you choose to purchase a subscription to Beehive, you understand and acknowledge that the purchase transaction and the collection of your information is governed by the
           = link_to 'Stripe Terms of Service', 'https://stripe.com/gb/legal', target: '_blank', class: 'blue'
