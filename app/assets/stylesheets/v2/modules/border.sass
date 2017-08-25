@@ -11,6 +11,10 @@
   border-radius: $base-radius
   -moz-border-radius: $base-radius
   -webkit-border-radius: $base-radius
+.rounded-top
+  border-radius: $base-radius $base-radius 0 0
+  -moz-border-radius: $base-radius $base-radius 0 0
+  -webkit-border-radius: $base-radius $base-radius 0 0
 
 @each $side in border, border-top, border-right, border-bottom, border-left
   .#{$side}

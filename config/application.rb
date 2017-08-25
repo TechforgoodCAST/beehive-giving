@@ -33,6 +33,7 @@ module Beehive
       pages.js
       password_resets.js
       proposals.js
+      public_funds.js
       recipients.js
       signup.js
       sessions.js
