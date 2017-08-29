@@ -28,7 +28,7 @@ class EligibilitiesController < ApplicationController
       params[:mixpanel_eligibility_tracking] = true
       @recipient.update_funds_checked!(@proposal.eligibility)
     end
-    case params.fetch(:return_to, "fund")
+    case params.dig(:check, :return_to)
     when "eligibility"
       redirect_to eligibility_proposal_fund_path(@proposal, @fund)
     else
@@ -82,5 +82,6 @@ class EligibilitiesController < ApplicationController
         e.eligible = get_restriction_param(r.id)
         e.save
       end
+      @proposal.save
     end
 end

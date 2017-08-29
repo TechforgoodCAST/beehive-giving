@@ -20,7 +20,7 @@ class EligibilityHelper
   end
 
   def answer_recipient_restrictions(fund, eligible: true)
-    answer(fund, eligible: eligible, category: 'recipient', n: 2)
+    answer(fund, eligible: eligible, category: 'Organisation', n: 2)
     self
   end
 
@@ -71,7 +71,7 @@ class EligibilityHelper
 
   private
 
-    def answer(fund, category: 'proposal', eligible: true, n: 3)
+    def answer(fund, category: 'Proposal', eligible: true, n: 3)
       fund.restrictions.where(category: category).limit(n).pluck(:id).each do |i|
         choose "check_restriction_#{i}_eligible_#{eligible}"
       end

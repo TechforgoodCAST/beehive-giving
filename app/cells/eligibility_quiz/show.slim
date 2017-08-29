@@ -1,11 +1,11 @@
 = javascript_include_tag 'eligibilities'
 
-- unless @restrictions[:Organisation].empty?
+- if @restrictions[:Organisation].present?
   h4.uk-text-bold Is your organisation?
   - @restrictions[:Organisation].each do |r|
     = render view: :restriction, locals: {r: r, f: f, e: r.eligibility(@proposal)}
 
-- unless @restrictions[:Proposal].empty?
+- if @restrictions[:Proposal].present?
   h4.uk-text-bold Is your funding proposal for?
   - @restrictions[:Proposal].each do |r|
     = render view: :restriction, locals: {r: r, f: f, e: r.eligibility(@proposal)}
