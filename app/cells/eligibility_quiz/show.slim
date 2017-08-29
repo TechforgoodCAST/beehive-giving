@@ -1,14 +1,38 @@
 = javascript_include_tag 'eligibilities'
 
+p.uk-margin-bottom
+  | The following questions have been set by
+  =<> model.funder.name
+  | complete them to see if you are eligible for their
+  =<> link_to model.short_name, proposal_fund_path(@proposal, model)
+  | fund.
+
+- if counts[:completed] == counts[:restrictions]
+  - if @proposal.ineligible_reasons(model.slug).include? 'quiz'
+    .cta.red
+      = cell(:eligibility_banner, @proposal, fund: model).call(:quiz)
+  - else
+    .cta.green
+      | All criteria completed. You are eligible.
+- else
+  .cta.yellow
+    | You have completed
+    =<> counts[:completed]
+    | of
+    =<> counts[:restrictions]
+    | criteria.
+
 - if @restrictions[:Organisation].present?
   h4.uk-text-bold Is your organisation?
   - @restrictions[:Organisation].each do |r|
-    = render view: :restriction, locals: {r: r, f: f, e: r.eligibility(@proposal)}
+    .recipient_restriction
+      = render view: :restriction, locals: {r: r, f: f, e: r.eligibility(@proposal)}
 
 - if @restrictions[:Proposal].present?
   h4.uk-text-bold Is your funding proposal for?
   - @restrictions[:Proposal].each do |r|
-    = render view: :restriction, locals: {r: r, f: f, e: r.eligibility(@proposal)}
+    .proposal_restriction
+      = render view: :restriction, locals: {r: r, f: f, e: r.eligibility(@proposal)}
 
 - if @proposal
   = render view: :button, locals: {f: f}

@@ -14,13 +14,6 @@
 
 %h4.uk-margin-top.uk-text-bold
   Eligibility criteria
-%p.uk-margin-bottom
-  The following questions have been set by
-  = succeed ',' do
-    = @fund.funder.name
-  complete them to see if you are eligible for their
-  = link_to @fund.short_name, proposal_fund_path(@proposal, @fund)
-  fund.
 
 .uk-form.uk-form-stacked.uk-clearfix
   = simple_form_for :check, url: eligibility_proposal_fund_path(@proposal, @fund), method: :patch do |f|
