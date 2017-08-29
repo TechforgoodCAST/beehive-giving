@@ -1,14 +1,14 @@
-- content_for :public do
-  .uk-container.uk-container-center
-    .uk-margin-large.uk-margin-large-top
-      .uk-vertical-align.uk-text-center{:style => "height: 460px;"}
-        .uk-width-large-3-4.uk-vertical-align-middle
-          .uk-panel.uk-panel-box#panel
-            %i.uk-icon.uk-icon-question-circle.uk-icon-large
-            %h1 The page you were looking for doesn't exist.
-            %h3 You may have mistyped the address or the page may have moved.
-            %p
-              = link_to 'Go back to the last page', :back
-              or get
-              = succeed '.' do
-                = mail_to 'support@beehivegiving.org', 'support@beehivegiving.org', :subject => 'Help with Beehive (422)'
+= content_for :title, '404'
+
+%header
+  = cell :v2_navbar, @current_user
+
+%main
+  %section.maxw790.mx-auto.my80
+    .mx40.center
+      %h1.light.mb20 Not found
+
+      .fs18.lh25.slate.mb40 The page you were looking for doesn't exist, you may have mistyped the address or the page may have moved.
+
+      = link_to 'Go back to the last page', :back, class: 'button white bg-blue shadow caps mb10'
+      = mail_to 'support@beehivegiving.org', 'Contact support', :subject => 'Help with Beehive (404)', class: 'button blue bg-white border-blue caps mb10'

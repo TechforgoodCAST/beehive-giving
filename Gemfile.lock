@@ -342,6 +342,8 @@ GEM
     simple_form (3.5.0)
       actionpack (> 4, < 5.2)
       activemodel (> 4, < 5.2)
+    sitemap_generator (5.3.1)
+      builder (~> 3.0)
     sixarm_ruby_unaccent (1.1.2)
     slim (3.0.8)
       temple (>= 0.7.6, < 0.9)
@@ -458,6 +460,7 @@ DEPENDENCIES
   selenium-webdriver
   show_me_the_cookies
   simple_form
+  sitemap_generator
   spring
   spring-watcher-listen (~> 2.0.0)
   stripe

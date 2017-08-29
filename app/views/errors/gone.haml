@@ -1,0 +1,14 @@
+= content_for :title, '410'
+
+%header
+  = cell :v2_navbar, @current_user
+
+%main
+  %section.maxw790.mx-auto.my80
+    .mx40.center
+      %h1.light.mb20 Gone
+
+      .fs18.lh25.slate.mb40 The resource you are looking for has been removed or no longer exists.
+
+      = link_to 'Go back to the last page', :back, class: 'button white bg-blue shadow caps mb10'
+      = mail_to 'support@beehivegiving.org', 'Contact support', :subject => 'Help with Beehive (410)', class: 'button blue bg-white border-blue caps mb10'

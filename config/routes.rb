@@ -29,6 +29,7 @@ Rails.application.routes.draw do
 
   # Errors
   match '/404', to: 'errors#not_found', via: :all
+  match '/410', to: 'errors#gone', via: :all
   match '/500', to: 'errors#internal_server_error', via: :all
 
   # Admin
@@ -39,6 +40,7 @@ Rails.application.routes.draw do
   get '/about',   to: 'pages#about', as: 'about'
   get '/tour',    to: redirect('/')
   get '/welcome', to: redirect('/')
+  get '/files/Data&ResearchLead.pdf', to: redirect('410')
 
   # Sessions
   get  '/logout',  to: 'sessions#destroy'
