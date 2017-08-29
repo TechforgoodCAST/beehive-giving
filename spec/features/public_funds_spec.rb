@@ -3,8 +3,8 @@ require 'rails_helper'
 feature 'PublicFunds' do
   before(:each) do
     @app.seed_test_db.setup_funds(num: 7, open_data: true)
-    @public_fund = Fund.first
-    @private_fund = Fund.last
+    @public_fund = Fund.last
+    @private_fund = Fund.first
   end
 
   context 'public_funds#index' do

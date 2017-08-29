@@ -2,7 +2,7 @@ class PublicFundsController < ApplicationController
   before_action :ensure_logged_out
 
   def index
-    @funds = Fund.includes(:funder).order(:name).page(params[:page])
+    @funds = Fund.active.recent.includes(:funder).page(params[:page])
   end
 
   def show
@@ -19,6 +19,6 @@ class PublicFundsController < ApplicationController
     end
 
     def public_fund?(slug)
-      Fund.order(:name).limit(3).pluck(:slug).include?(slug)
+      Fund.active.recent.limit(3).pluck(:slug).include?(slug)
     end
 end

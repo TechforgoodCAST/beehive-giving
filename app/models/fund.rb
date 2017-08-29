@@ -1,6 +1,7 @@
 class Fund < ApplicationRecord
   scope :active, -> { where(active: true) }
   scope :newer_than, ->(date) { where('updated_at > ?', date) }
+  scope :recent, -> { order updated_at: :desc }
 
   belongs_to :funder
 
