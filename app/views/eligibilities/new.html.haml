@@ -23,21 +23,7 @@
       = render partial: 'funds/card', locals: { fund: @fund }
 
     .uk-width-medium-2-3
-      = cell(:eligibility_banner, @proposal, fund: @fund)
 
-      %h3.uk-margin-top Eligibility questions
-      %p.uk-margin-bottom
-        The following questions have been set by
-        = succeed ',' do
-          = @fund.funder.name
-        complete them to see if you are eligible for their
-        = link_to @fund.short_name, proposal_fund_path(@proposal, @fund)
-        fund.
+      %h3.uk-margin-top Eligibility
 
-      %hr.thick
-
-      %h3.uk-text-bold Are you seeking funding for?
-      .uk-form.uk-form-stacked
-        = simple_form_for :check, url: eligibility_proposal_fund_path(@proposal, @fund), method: :patch do |f|
-          = f.hidden_field :return_to, :value => "eligibility"
-          = cell(:eligibility_quiz, @fund, proposal: @proposal, f: f).call(:show)
+      = render partial: 'funds/eligibility', locals: { return_to: "eligibility" }

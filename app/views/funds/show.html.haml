@@ -25,33 +25,8 @@
         %h3.uk-margin-top
           Eligibility
 
-        - {'Location': 'location', 'Grant amount': 'amount', 'Organistion type': 'org_type'}.each do |k, v|
-          %h4.uk-margin-top.uk-text-bold
-            = k
+        = render partial: 'eligibility', locals: { return_to: "fund" }
 
-          - if @proposal
-            - if @proposal.ineligible_reasons(@fund.slug).include? v
-              .cta.red
-                = cell(:eligibility_banner, @proposal, fund: @fund).call(v.to_sym)
-            - else
-              .cta.green
-                Eligible
-
-        %h4.uk-margin-top.uk-text-bold
-          Eligibility criteria
-        %p.uk-margin-bottom
-          The following questions have been set by
-          = succeed ',' do
-            = @fund.funder.name
-          complete them to see if you are eligible for their
-          = link_to @fund.short_name, proposal_fund_path(@proposal, @fund)
-          fund.
-
-        .uk-form.uk-form-stacked.uk-clearfix
-          = simple_form_for :check, url: eligibility_proposal_fund_path(@proposal, @fund), method: :patch do |f|
-            = cell(:eligibility_quiz, @fund, proposal: @proposal, f: f).call(:show)
-
-        %hr.thick
 
       %section#how-was-funding-distributed.offset
         %h3.uk-margin-top

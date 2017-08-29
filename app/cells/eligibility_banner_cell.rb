@@ -24,4 +24,9 @@ class EligibilityBannerCell < Cell::ViewModel
     render locals: { count_failing: model.eligibility[options[:fund]&.slug]['quiz']['count_failing'] }
   end
 
+  def eligible
+    return unless model.eligible?(options[:fund]&.slug)
+    render locals: {fund: options[:fund]}
+  end
+
 end
