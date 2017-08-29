@@ -2,6 +2,11 @@ Rails.application.routes.draw do
   resources :articles, only: [:index, :show]
   resources :password_resets, except: [:show, :index, :destroy]
 
+  get '/funds', to: 'public_funds#index', as: 'public_funds'
+  get '/funds/:slug', to: 'public_funds#show', as: 'public_fund'
+
+  get '/funds/:id/sources', to: 'funds#sources', as: 'fund_sources' # TODO: refactor
+
   resources :proposals, except: [:show, :destroy] do
     resources :funds, only: [:show, :index] do
       collection do
