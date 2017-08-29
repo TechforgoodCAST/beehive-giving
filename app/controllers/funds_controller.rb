@@ -1,5 +1,5 @@
 class FundsController < ApplicationController
-  before_action :ensure_logged_in, :update_legacy_suitability
+  before_action :ensure_logged_in, :update_legacy_suitability, except: :sources
 
   def show
     @fund = Fund.includes(:funder).find_by(slug: params[:id])
