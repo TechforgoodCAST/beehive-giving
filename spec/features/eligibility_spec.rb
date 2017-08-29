@@ -78,7 +78,7 @@ feature 'Eligibility' do
               I want it to be recorded as eligible,
               so I recieve an accurate check' do
       @fund.restrictions.first.update(invert: true)
-      helper.visit_first_fund
+      click_link 'Eligiblity'
       within 'label[for=check_recipient_eligibilities_attributes_0_eligible' \
              '_true]' do
         expect(page).to have_text 'Yes'
@@ -90,10 +90,8 @@ feature 'Eligibility' do
     scenario "When I only answer recipient restrictions,
               I want them to be saved,
               so that I don't have to resubmit them" do
-      helper.visit_first_fund
-            .answer_recipient_restrictions
-            .check_eligibility
-            .visit_first_fund
+      helper.answer_recipient_restrictions.check_eligibility
+      click_link 'Eligiblity'
       expect(page).to have_css '.radio_buttons[checked=checked]', count: 2
     end
 
@@ -101,9 +99,8 @@ feature 'Eligibility' do
               I want to only see proposal restrictions,
               so I avoid answering unnecessary questions' do
       helper.remove_restrictions(@fund, 'Organisation')
-            .visit_first_fund
-            .answer_proposal_restrictions
-            .check_eligibility
+      click_link 'Eligiblity'
+      helper.answer_proposal_restrictions.check_eligibility
       expect(page).not_to have_css '.recipient_restriction'
       expect(page).to have_text 'You are eligible'
     end
@@ -111,18 +108,14 @@ feature 'Eligibility' do
     scenario 'When I only submit answers to proposal restrictions,
               I want the check to be invalid,
               so I avoid accidently checking a fund' do
-      helper.visit_first_fund
-            .answer_proposal_restrictions
-            .check_eligibility
+      helper.answer_proposal_restrictions.check_eligibility
       expect(page).to have_css '.field_with_errors', count: 2
     end
 
     scenario 'When I only submit answers to recipient restrictions,
               I want the check to be invalid,
               so I avoid accidently checking a fund' do
-      helper.visit_first_fund
-            .answer_recipient_restrictions
-            .check_eligibility
+      helper.answer_recipient_restrictions.check_eligibility
       expect(page).to have_css '.field_with_errors', count: 3
     end
 
@@ -130,9 +123,8 @@ feature 'Eligibility' do
               I want to only see recipient restrictions,
               so I avoid answering unnecessary questions' do
       helper.remove_restrictions(@fund, 'Proposal')
-            .visit_first_fund
-            .answer_recipient_restrictions
-            .check_eligibility
+      click_link 'Eligiblity'
+      helper.answer_recipient_restrictions.check_eligibility
       expect(page).not_to have_css '.proposal_restriction'
       expect(page).to have_text 'You are eligible'
     end

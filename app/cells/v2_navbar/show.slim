@@ -1,6 +1,12 @@
 .maxw1080.mx-auto.px40.pt25.pb10
   nav.flex.items-center
     = link_to 'Beehive', root_path, id: 'navbar-logo', alt: 'Beehive logo', class: type
-    = link_to 'About', about_path, class: "#{type} ml35"
-    = link_to 'Funds', public_funds_path, class: "#{type} ml35"
-    = link_to 'Sign in', sign_in_path, class: "#{type} ml35"
+
+    - if model.present?
+      = link_to 'Account', account_path, class: "#{type} ml35"
+      = link_to 'Proposals', proposals_path, class: "#{type} ml35"
+      = link_to 'Sign out', logout_path, class: "#{type} ml35"
+    - else
+      = link_to 'About', about_path, class: "#{type} ml35"
+      = link_to 'Funds', public_funds_path, class: "#{type} ml35"
+      = link_to 'Sign in', sign_in_path, class: "#{type} ml35"

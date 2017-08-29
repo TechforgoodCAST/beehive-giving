@@ -40,38 +40,11 @@ feature 'Browse' do
       expect(current_path).to eq proposal_fund_path(@proposal, @low_fund)
     end
 
-    scenario 'When I click for more details on a fund card,
-              I want to see more details about the fund,
-              so I can decide if I want to apply' do
-      within '.card-cta', match: :first do
-        click_link 'More info'
-      end
-      expect(current_path).to eq proposal_fund_path(@proposal, @top_fund)
-    end
-
     scenario "When I visit a fund that doesn't exist,
                I want to be redirected to where I came from and see a message,
                so I avoid an error and understand what happened" do
       visit proposal_fund_path(@proposal, 'missing-fund')
       expect(current_path).to eq proposal_funds_path(@proposal)
-    end
-
-    scenario 'When I click for more details on funding distribution,
-              I want to see a column chart of funding distribution,
-              so I can decide if I want to apply' do
-      click_link 'More info', href: proposal_fund_path(
-        @proposal, @top_fund, anchor: 'how-was-funding-distributed'
-      )
-      expect(current_path).to eq proposal_fund_path(@proposal, @top_fund)
-    end
-
-    scenario 'When I click for more details on geographic scale,
-              I want to see a geo chart of geographic scale,
-              so I can decide if I want to apply' do
-      click_link 'More info', href: proposal_fund_path(
-        @proposal, @top_fund, anchor: 'where-was-funding-awarded'
-      )
-      expect(current_path).to eq proposal_fund_path(@proposal, @top_fund)
     end
 
     scenario "When I find a funding theme I'm interested in,
@@ -97,13 +70,6 @@ feature 'Browse' do
       expect(current_path).to eq proposal_funds_path(@proposal)
     end
 
-    # scenario "When I navigate to 'Recommended' funds,
-    #           I want to see my recommended funds,
-    #           so I compare them" do
-    #   click_link 'Recommended'
-    #   expect(current_path).to eq proposal_funds_path(@proposal)
-    # end
-
     def subscribe_and_visit(path)
       @recipient.subscribe!
       visit path
@@ -125,56 +91,6 @@ feature 'Browse' do
 
       subscribe_and_visit eligibility_proposal_fund_path(@proposal, Fund.first)
     end
-
-    scenario 'only recommended funds shown unless subscribed' do
-      # visit all_proposal_funds_path(@proposal)
-      # expect(page).to have_css '.yellow.redacted.large', count: 1
-      #
-      # subscribe_and_visit all_proposal_funds_path(@proposal)
-    end
-
-    # scenario 'only recommended funds shown unless subscribed' do
-    #   @proposal.update_column(
-    #     :eligibility,
-    #     Fund.first.slug => { 'quiz' => { eligible: true, count_failing: 0 } }
-    #   )
-    #   visit eligible_proposal_funds_path(@proposal)
-    #   expect(page).to have_css '.yellow.redacted.large', count: 1
-    #
-    #   subscribe_and_visit eligible_proposal_funds_path(@proposal)
-    # end
-
-    # scenario 'only recommended funds shown unless subscribed' do
-    #   @proposal.update_column(
-    #     :eligibility,
-    #     Fund.first.slug => { 'quiz' => { eligible: false, count_failing: 1 } }
-    #   )
-    #   visit ineligible_proposal_funds_path(@proposal)
-    #   expect(page).to have_css '.yellow.redacted.large', count: 1
-    #
-    #   subscribe_and_visit ineligible_proposal_funds_path(@proposal)
-    # end
-
-    # context 'all_funds_path' do
-    #   before(:each) do
-    #     click_link 'All'
-    #   end
-    #
-    #   scenario "When I find a recommended fund I'm interested in,
-    #             I want to view more details,
-    #             so I can decide if I want to apply" do
-    #     click_link @top_fund.name
-    #     expect(current_path).to eq proposal_fund_path(
-    #       @proposal, @top_fund
-    #     )
-    #   end
-    #
-    #   scenario "When navigate to 'All' funds,
-    #             I want to see my all funds on site,
-    #             so I can see which ones I already and the value of the site" do
-    #     expect(current_path).to eq all_proposal_funds_path(@proposal)
-    #   end
-    # end
 
     context 'When I view fund a with open data' do
       before(:each) do
