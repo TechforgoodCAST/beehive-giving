@@ -1,7 +1,7 @@
 require 'rails_helper'
 require_relative '../support/eligibility_helper'
 
-ffeature 'Eligibility' do
+feature 'Eligibility' do
   let(:helper) { EligibilityHelper.new }
 
   before(:each) do
@@ -108,15 +108,19 @@ ffeature 'Eligibility' do
     scenario 'When I only submit answers to proposal restrictions,
               I want the check to be invalid,
               so I avoid accidently checking a fund' do
-      helper.answer_proposal_restrictions.check_eligibility
-      expect(page).to have_css '.field_with_errors', count: 2
+      helper.visit_first_fund
+            .answer_proposal_restrictions(@fund)
+            .check_eligibility
+      expect(page).to have_text "You have completed 3 of 5 criteria."
     end
 
     scenario 'When I only submit answers to recipient restrictions,
               I want the check to be invalid,
               so I avoid accidently checking a fund' do
-      helper.answer_recipient_restrictions.check_eligibility
-      expect(page).to have_css '.field_with_errors', count: 3
+      helper.visit_first_fund
+            .answer_recipient_restrictions(@fund)
+            .check_eligibility
+      expect(page).to have_text "You have completed 2 of 5 criteria."
     end
 
     scenario 'When I visit a fund without proposal restrictions,
@@ -196,7 +200,9 @@ ffeature 'Eligibility' do
             .check_eligibility
       click_link 'Funds'
       helper.visit_first_fund.check_eligibility(remaining: 2)
-      expect(page).to have_text 'please select from the list', count: 2
+      # 3 questions previously answered should be checked
+      expect(page).to have_text "You have completed 3 of 5 criteria."
+      expect(page).to have_css '.radio_buttons[checked=checked]', count: 3
     end
 
     scenario "When I'm ineligible and try to access application details,
