@@ -6,6 +6,7 @@ module ApplicationHelper
   def v2_layout? # TODO: remove @ v2
     permitted = {
       articles: %i[index show],
+      errors: %i[internal_server_error not_found],
       pages: %i[about faq forfunders privacy terms],
       password_resets: %i[new create edit update],
       public_funds: %i[index show],
