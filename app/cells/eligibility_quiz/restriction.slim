@@ -6,7 +6,9 @@
 
   - if @proposal
     .answer
-      = f.collection_radio_buttons( "restriction_#{r.id}_eligible", Restriction.radio_buttons(r.invert), :last, :first, checked: e&.read_attribute(:eligible), collection_wrapper_tag: 'div', collection_wrapper_class: 'input_wrapper radio_buttons optional', item_wrapper_class: 'radio', html_options: {class: 'radio_button'}) do |b| b.radio_button + b.text end
+      = f.collection_radio_buttons( "restriction_#{r.id}_eligible", Restriction.radio_buttons(r.invert), :last, :first, checked: e&.read_attribute(:eligible), collection_wrapper_tag: 'div', collection_wrapper_class: 'input_wrapper radio_buttons optional', item_wrapper_class: 'radio') do |b| \
+        b.radio_button(class: "radio_buttons") + b.text \
+      end
       - if e&.read_attribute(:eligible) == false
         .restriction-error-message You did not meet this criteria
   hr
