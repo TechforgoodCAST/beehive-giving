@@ -108,19 +108,15 @@ feature 'Eligibility' do
     scenario 'When I only submit answers to proposal restrictions,
               I want the check to be invalid,
               so I avoid accidently checking a fund' do
-      helper.visit_first_fund
-            .answer_proposal_restrictions(@fund)
-            .check_eligibility
-      expect(page).to have_text "You have completed 3 of 5 criteria."
+      helper.answer_proposal_restrictions.check_eligibility
+      expect(page).to have_css '.field_with_errors', count: 2
     end
 
     scenario 'When I only submit answers to recipient restrictions,
               I want the check to be invalid,
               so I avoid accidently checking a fund' do
-      helper.visit_first_fund
-            .answer_recipient_restrictions(@fund)
-            .check_eligibility
-      expect(page).to have_text "You have completed 2 of 5 criteria."
+      helper.answer_recipient_restrictions.check_eligibility
+      expect(page).to have_css '.field_with_errors', count: 3
     end
 
     scenario 'When I visit a fund without proposal restrictions,
