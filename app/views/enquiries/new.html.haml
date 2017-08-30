@@ -1,4 +1,4 @@
-= content_for :title, "Apply to #{@fund.name}, #{@fund.funder.name}"
+= content_for :title, "Apply to #{@fund.title}, #{@fund.subtitle}"
 
 :javascript
   mixpanel.track("View Apply Page", {"Fund": "#{@fund.name}"});
@@ -43,7 +43,7 @@
 
 
         - if @fund.open_call?
-          = link_to "Apply to #{@fund.name}", apply_proposal_fund_path(@proposal, @fund), method: :post, target: '_blank', 'data-uk-tooltip': "{pos:'top'}", title: 'A new page will be opened with application details', class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right'
+          = link_to "Apply to #{@fund.title}", apply_proposal_fund_path(@proposal, @fund), method: :post, target: '_blank', 'data-uk-tooltip': "{pos:'top'}", title: 'A new page will be opened with application details', class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right'
         - else
           %div.cta Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
           = link_to "More information on #{@fund.title.strip}", apply_proposal_fund_path(@proposal, @fund), method: :post, target: '_blank', 'data-uk-tooltip': "{pos:'top'}", title: 'A new page will be opened with guidance', class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right'

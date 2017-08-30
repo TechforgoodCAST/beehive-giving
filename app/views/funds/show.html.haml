@@ -1,4 +1,4 @@
-= content_for :title, "More info for #{@fund.name}"
+= content_for :title, "More info for #{@fund.title}"
 
 :javascript
   mixpanel.track("View Fund Page", { "Fund": "#{@fund.name}" });
