@@ -24,6 +24,13 @@ class EligibilitiesController < ApplicationController
   end
 
   def create
+    if @recipient.incomplete_first_proposal?
+      session[:return_to] = @fund.slug
+      redirect_to edit_signup_proposal_path(@proposal)
+    elsif !can_check_eligibility?
+      return redirect_to account_upgrade_path(@recipient)
+    end
+
     if update_eligibility_params
       params[:mixpanel_eligibility_tracking] = true
       @recipient.update_funds_checked!(@proposal.eligibility)
@@ -51,6 +58,11 @@ class EligibilitiesController < ApplicationController
         restriction: @restrictions.pluck(:id),
         category: [@recipient.id, @proposal.id]
       ).to_a
+    end
+
+    def can_check_eligibility?
+      return true if @recipient.subscribed?
+      return (@recipient.funds_checked < 3 || @proposal.checked_fund?(@fund))
     end
 
     def get_restriction_param(r_id)
