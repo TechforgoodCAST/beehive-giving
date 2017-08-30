@@ -227,12 +227,8 @@ feature 'Browse' do
 
       scenario 'I want to see the sources of open data,
                 so I can further my research' do
-        click_link 'Sources'
-        json = { 'https://creativecommons.org/licenses/by/4.0/':
-                 'http://www.example.com' }.to_json
-        expect(page.body).to eq json
-        expect(page.response_headers['Content-Type'])
-          .to eq 'application/json; charset=utf-8'
+        expect(page).to have_link("License", :href=>'https://creativecommons.org/licenses/by/4.0/')
+        expect(page).to have_link("Source", :href=>'http://www.example.com')
       end
     end
   end
