@@ -70,4 +70,7 @@
         %p.mb5.fs15.lh20
           = strip_tags fund.description_html.truncate_words(25)
 
+        %p.fs14.lh18
+          = cell(:fund_insight, fund, proposal: @proposal).call(:themes)
+
     = paginate @funds

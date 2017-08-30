@@ -60,13 +60,15 @@ feature 'Browse' do
               I want to see a message and be directed to safety,
               so I can continue my search" do
       visit theme_proposal_funds_path(@proposal, '')
-      expect(page.all('body script', visible: false)[0].native.text)
-        .to have_text 'Fund not found'
+      # TODO: v2 flash notices #391
+      # expect(page.all('body script', visible: false)[0].native.text)
+      #   .to have_text 'Fund not found'
       expect(current_path).to eq proposal_funds_path(@proposal)
 
       visit theme_proposal_funds_path(@proposal, 'missing')
-      expect(page.all('body script', visible: false)[0].native.text)
-        .to have_text 'Not found'
+      # TODO: v2 flash notices #391
+      # expect(page.all('body script', visible: false)[0].native.text)
+      #   .to have_text 'Not found'
       expect(current_path).to eq proposal_funds_path(@proposal)
     end
 

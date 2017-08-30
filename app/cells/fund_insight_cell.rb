@@ -1,6 +1,9 @@
 class FundInsightCell < Cell::ViewModel
   include ActionView::Helpers::NumberHelper
 
+  property :name
+  property :funder
+
   def grant_examples
     return unless model.open_data? && model.grant_examples?
     grants = []
@@ -21,9 +24,6 @@ class FundInsightCell < Cell::ViewModel
     end
   end
 
-  property :name
-  property :funder
-
   def title
     render locals: { proposal: options[:proposal] }
   end
@@ -33,7 +33,13 @@ class FundInsightCell < Cell::ViewModel
   end
 
   def themes
-    render locals: {proposal: options[:proposal], themes: model.themes.order(:name)}
+    model.themes.map do |theme|
+      link_to(
+        theme.name,
+        theme_proposal_funds_path(options[:proposal], theme),
+        class: 'blue'
+      )
+    end.join('<span class="mid-gray"> &middot; </span>')
   end
 
   def duration
@@ -67,13 +73,13 @@ class FundInsightCell < Cell::ViewModel
 
     def months_to_str(months)
       if months == 12
-        return "1 year"
+        '1 year'
       elsif months < 24
-        return "#{months} months"
-      elsif months % 12 == 0
-        return "#{months / 12} years"
+        "#{months} months"
+      elsif (months % 12).zero?
+        "#{months / 12} years"
       else
-        return "#{months_to_str(months - (months % 12))} and #{months % 12} months"
+        "#{months_to_str(months - (months % 12))} and #{months % 12} months"
       end
     end
 end
