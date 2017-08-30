@@ -1,0 +1,23 @@
+= cell(:eligibility_banner, @proposal, fund: @fund).call(:eligible)
+
+- {'Location': 'location', 'Grant amount': 'amount', 'Organistion type': 'org_type'}.each do |k, v|
+  %h4.uk-margin-top.uk-text-bold
+    = k
+
+  - if @proposal
+    - if @proposal.ineligible_reasons(@fund.slug).include? v
+      .cta.red
+        = cell(:eligibility_banner, @proposal, fund: @fund).call(v.to_sym)
+    - else
+      .cta.green
+        Eligible
+
+%h4.uk-margin-top.uk-text-bold
+  Eligibility criteria
+
+.uk-form.uk-form-stacked.uk-clearfix
+  = simple_form_for :check, url: eligibility_proposal_fund_path(@proposal, @fund), method: :patch do |f|
+    = f.hidden_field :return_to, :value => return_to
+    = cell(:eligibility_quiz, @fund, proposal: @proposal, f: f).call(:show)
+
+%hr.thick
