@@ -49,6 +49,26 @@ describe EligibilityBannerCell do
     expect(banner).to have_text 'location'
   end
 
+  it 'shows amount ineligible' do
+    @proposal.update_column(
+      :eligibility,
+      @funds[0].slug => { 'amount' => { 'eligible' => false } }
+    )
+    banner = cell(:eligibility_banner, @proposal, fund: @funds[0]).call(:show)
+    expect(banner).not_to have_text 'do not meet 1'
+    expect(banner).to have_text 'amount'
+  end
+
+  it 'shows org_type ineligible' do
+    @proposal.update_column(
+      :eligibility,
+      @funds[0].slug => { 'org_type' => { 'eligible' => false } }
+    )
+    banner = cell(:eligibility_banner, @proposal, fund: @funds[0]).call(:show)
+    expect(banner).not_to have_text 'do not meet 1'
+    expect(banner).to have_text ORG_TYPES[4][2]
+  end
+
   it 'shows both ineligible' do
     @proposal.update_column(
       :eligibility,
