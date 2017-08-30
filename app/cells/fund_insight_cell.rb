@@ -28,10 +28,6 @@ class FundInsightCell < Cell::ViewModel
     render locals: { proposal: options[:proposal] }
   end
 
-  def title_raw
-    title_name[0]
-  end
-
   def themes
     render locals: {proposal: options[:proposal], themes: model.themes.order(:name)}
   end

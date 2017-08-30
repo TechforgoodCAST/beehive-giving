@@ -18,9 +18,9 @@
 
         - if i < 3 && params[:page].to_i < 2
           .mb5
-            = link_to fund.name, public_fund_path(fund), class: 'blue fs22 lh30'
+            = link_to fund.title, public_fund_path(fund), class: 'blue fs22 lh30'
           .mb5.fs15.lh20.mid-gray
-            = fund.funder.name
+            = fund.subtitle
 
         - else
           .muted

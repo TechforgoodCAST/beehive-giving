@@ -121,6 +121,14 @@ class Fund < ApplicationRecord
     markdown(description)
   end
 
+  def title
+    funder.funds.size > 1 ? name : funder.name
+  end
+
+  def subtitle
+    funder.funds.size > 1 ? funder.name : name
+  end
+
   include FundJsonSetters
   include FundArraySetters
 
