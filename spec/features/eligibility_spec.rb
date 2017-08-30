@@ -79,8 +79,8 @@ feature 'Eligibility' do
               so I recieve an accurate check' do
       @fund.restrictions.first.update(invert: true)
       click_link 'Eligiblity'
-      within 'label[for=check_recipient_eligibilities_attributes_0_eligible' \
-             '_true]' do
+      within "label[for=check_restriction_#{@fund.restrictions.first.id}" \
+             '_eligible_true]' do
         expect(page).to have_text 'Yes'
       end
       helper.answer_restrictions(@fund).check_eligibility
@@ -90,7 +90,7 @@ feature 'Eligibility' do
     scenario "When I only answer recipient restrictions,
               I want them to be saved,
               so that I don't have to resubmit them" do
-      helper.answer_recipient_restrictions.check_eligibility
+      helper.answer_recipient_restrictions(@fund).check_eligibility
       click_link 'Eligiblity'
       expect(page).to have_css '.radio_buttons[checked=checked]', count: 2
     end
@@ -100,7 +100,7 @@ feature 'Eligibility' do
               so I avoid answering unnecessary questions' do
       helper.remove_restrictions(@fund, 'Organisation')
       click_link 'Eligiblity'
-      helper.answer_proposal_restrictions.check_eligibility
+      helper.answer_proposal_restrictions(@fund).check_eligibility
       expect(page).not_to have_css '.recipient_restriction'
       expect(page).to have_text 'You are eligible'
     end
@@ -108,15 +108,15 @@ feature 'Eligibility' do
     scenario 'When I only submit answers to proposal restrictions,
               I want the check to be invalid,
               so I avoid accidently checking a fund' do
-      helper.answer_proposal_restrictions.check_eligibility
-      expect(page).to have_css '.field_with_errors', count: 2
+      helper.answer_proposal_restrictions(@fund).check_eligibility
+      expect(page).to have_text 'You have completed 3 of 5 criteria.'
     end
 
     scenario 'When I only submit answers to recipient restrictions,
               I want the check to be invalid,
               so I avoid accidently checking a fund' do
-      helper.answer_recipient_restrictions.check_eligibility
-      expect(page).to have_css '.field_with_errors', count: 3
+      helper.answer_recipient_restrictions(@fund).check_eligibility
+      expect(page).to have_text 'You have completed 2 of 5 criteria.'
     end
 
     scenario 'When I visit a fund without proposal restrictions,
@@ -124,7 +124,7 @@ feature 'Eligibility' do
               so I avoid answering unnecessary questions' do
       helper.remove_restrictions(@fund, 'Proposal')
       click_link 'Eligiblity'
-      helper.answer_recipient_restrictions.check_eligibility
+      helper.answer_recipient_restrictions(@fund).check_eligibility
       expect(page).not_to have_css '.proposal_restriction'
       expect(page).to have_text 'You are eligible'
     end
@@ -194,8 +194,9 @@ feature 'Eligibility' do
       helper.answer_recipient_restrictions(@fund)
             .answer_proposal_restrictions(@fund, eligible: false)
             .check_eligibility
-      click_link 'Funds'
-      helper.visit_first_fund.check_eligibility(remaining: 2)
+      visit proposal_fund_path(@proposal, 'acme-awards-for-all-6')
+
+      helper.check_eligibility(remaining: 2)
       # 3 questions previously answered should be checked
       expect(page).to have_text "You have completed 3 of 5 criteria."
       expect(page).to have_css '.radio_buttons[checked=checked]', count: 3
@@ -225,56 +226,8 @@ feature 'Eligibility' do
         .to eq eligibility_proposal_fund_path(@proposal, Fund.first)
 
       # funds over MAX_FREE_LIMIT require upgrade
-      click_link 'Funds'
-      helper.visit_first_fund
+      visit proposal_fund_path(@proposal, Fund.first)
       expect(current_path).to eq account_upgrade_path(@db[:recipient])
-    end
-  end
-
-  context 'eligible_funds_path' do
-    context 'eligible fund' do
-      before(:each) do
-        helper
-          .visit_first_fund.complete_proposal.submit_proposal
-          .visit_first_fund.answer_restrictions(@fund).check_eligibility
-        visit root_path
-      end
-
-      scenario "When I click on an 'Eligible' tag,
-                I want to see a list of eligible funds,
-                so I can compare them" do
-        within '.insights', match: :first do
-          click_link 'Eligible'
-          expect(page)
-            .to have_current_path eligible_proposal_funds_path(@proposal)
-        end
-      end
-    end
-  end
-
-  context 'ineligible_funds_path' do
-    context 'ineligible fund' do
-      before(:each) do
-        helper.visit_first_fund
-              .complete_proposal
-              .submit_proposal
-              .visit_first_fund
-              .answer_recipient_restrictions(@fund)
-              .answer_proposal_restrictions(@fund, eligible: false)
-              .check_eligibility
-        visit root_path
-      end
-
-      scenario "When I click on an 'Ineligible' tag,
-                I want to see a list of ineligible funds,
-                so I can compare them" do
-        visit ineligible_proposal_funds_path(@proposal)
-        within '.insights', match: :first do
-          click_link 'Ineligible'
-          expect(page)
-            .to have_current_path ineligible_proposal_funds_path(@proposal)
-        end
-      end
     end
   end
 end
