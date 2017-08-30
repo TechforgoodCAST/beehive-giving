@@ -3,6 +3,10 @@ class ErrorsController < ApplicationController
     render_template(404)
   end
 
+  def gone
+    render_template(410)
+  end
+
   def internal_server_error
     render_template(500)
   end

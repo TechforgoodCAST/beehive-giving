@@ -160,6 +160,7 @@ class Proposal < ApplicationRecord
   end
 
   def eligible_status(fund_slug)
+    return 0 unless eligibility[fund_slug].all_values_for('eligible').exclude?(false)
     return -1 unless eligibility[fund_slug]&.key?('quiz') # check
     eligible?(fund_slug) ? 1 : 0 # eligible : ineligible
   end
@@ -168,6 +169,11 @@ class Proposal < ApplicationRecord
     {
       -1 => 'Check', 0 => 'Ineligible', 1 => 'Eligible'
     }[eligible_status(fund_slug)]
+  end
+
+  def ineligible_reasons(fund_slug)
+    return [] if eligible?(fund_slug)
+    return eligibility[fund_slug].select{ |r, e| e['eligible'] == false }.keys
   end
 
   def ineligible_fund_ids # TODO: refactor
