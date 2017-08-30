@@ -56,6 +56,4 @@
 
 .uk-margin-small-top.uk-text-center
   %small.muted
-    Analysis powered by open data
-    &middot;
-    = link_to 'Sources', sources_proposal_fund_path(@proposal, fund), target: '_blank'
+    = cell(:fund_insight, fund, proposal: @proposal).call(:data_source)

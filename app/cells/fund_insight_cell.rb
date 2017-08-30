@@ -59,6 +59,11 @@ class FundInsightCell < Cell::ViewModel
     end
   end
 
+  def data_source
+    return unless model.sources.present?
+    render locals: { proposal: options[:proposal] }
+  end
+
   private
 
     def title_name
