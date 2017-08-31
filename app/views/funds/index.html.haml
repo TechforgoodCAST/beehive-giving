@@ -56,6 +56,8 @@
     - @funds.each_with_index do |fund, i|
       %article.mb40
 
+        = cell(:fund_indicators, fund, proposal: @proposal)
+
         - if @proposal.show_fund?(fund)
           .mb5
             = link_to fund.name, proposal_fund_path(@proposal, fund), class: 'blue fs22 lh30'

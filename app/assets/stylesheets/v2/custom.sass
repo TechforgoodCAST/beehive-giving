@@ -48,6 +48,20 @@
   .crumb:nth-last-child(4)
     display: inline-block !important
 
+.dot
+  height: 16px
+  line-height: 16px
+  max-width: 16px
+  padding: 0 5px
+  display: inline-block
+  border-radius: 9999px
+  text-indent: 16px
+  overflow: hidden
+  transition: all .24s ease-in-out
+  &:hover
+    max-width: 150px
+    opacity: 1
+
 // TODO: deprecated
 .feature
   background: image-url('features-sprite.png') no-repeat
