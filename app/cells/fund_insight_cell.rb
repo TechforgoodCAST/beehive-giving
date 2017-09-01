@@ -28,10 +28,6 @@ class FundInsightCell < Cell::ViewModel
     render locals: { proposal: options[:proposal] }
   end
 
-  def title_raw
-    title_name[0]
-  end
-
   def themes
     render locals: {proposal: options[:proposal], themes: model.themes.order(:name)}
   end
@@ -57,6 +53,11 @@ class FundInsightCell < Cell::ViewModel
     else
       render locals: {message: "between #{number_to_currency(model.min_amount_awarded, opts)} and #{number_to_currency(model.max_amount_awarded, opts)}"}
     end
+  end
+
+  def data_source
+    return unless model.sources.present?
+    render locals: { proposal: options[:proposal] }
   end
 
   private

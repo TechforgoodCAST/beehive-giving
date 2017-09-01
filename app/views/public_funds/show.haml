@@ -1,4 +1,4 @@
-= content_for :title, "Preview #{@fund.name}"
+= content_for :title, "Preview #{@fund.title}"
 
 %header
   = cell :v2_navbar, @current_user
@@ -14,8 +14,8 @@
     %section.perc75.md.px20.mb40
 
       %section
-        %h1.light= @fund.name
-        .fs15.lh20.mid-gray= @fund.funder.name
+        %h1.light= @fund.title
+        .fs15.lh20.mid-gray= @fund.subtitle
 
       %hr.my40
 
@@ -28,9 +28,7 @@
 
         - if @fund.period_end.present? && @fund.period_end > 3.years.ago
           %small.slate
-            Powered by open data
-            &middot;
-            = link_to 'Sources', fund_sources_path(@fund), target: '_blank', class: 'blue'
+            = cell(:fund_insight, @fund).call(:data_source)
           .slate.fs15.my10
             = period(@fund)
 
