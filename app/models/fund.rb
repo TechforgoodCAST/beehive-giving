@@ -109,6 +109,14 @@ class Fund < ApplicationRecord
     name.sub(' Fund', '')
   end
 
+  def title
+    funder.funds.size > 1 ? name : funder.name
+  end
+
+  def subtitle
+    funder.funds.size > 1 ? funder.name : name
+  end
+
   def tags?
     tags.count.positive?
   end
@@ -121,12 +129,14 @@ class Fund < ApplicationRecord
     markdown(description)
   end
 
-  def title
-    funder.funds.size > 1 ? name : funder.name
-  end
-
-  def subtitle
-    funder.funds.size > 1 ? funder.name : name
+  def description_redacted
+    tokens = name.downcase.split + funder.name.downcase.split
+    stop_words = %w[and the fund trust foundation grants charitable]
+    final_tokens = tokens - stop_words
+    reg = Regexp.new(final_tokens.join('\b|\b'), options: 'i')
+    scramble = Array.new(rand(5..10)) { [*'a'..'z'].sample }.join
+    desc = ActionView::Base.full_sanitizer.sanitize(description)
+    desc.gsub(reg, "<span class='mid-gray redacted'>#{scramble}</span>")
   end
 
   include FundJsonSetters

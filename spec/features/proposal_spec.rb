@@ -60,9 +60,9 @@ feature 'Proposal' do
         ineligible_proposal_funds_path(@proposal)
       ].each do |path|
         visit path
-        expect(page).to have_text 'current proposal'
-        expect(page).to have_text 'Change proposal'
-        expect(page).to have_text 'New proposal'
+        expect(page).to have_link 'current proposal'
+        expect(page).to have_link 'Change'
+        expect(page).to have_link 'New'
       end
     end
 
@@ -73,7 +73,7 @@ feature 'Proposal' do
       stripe = StripeMock.create_test_helper
       visit root_path
 
-      click_link 'New proposal'
+      click_link 'New'
 
       # expect first to be completed
       expect(current_path).to eq edit_signup_proposal_path(@proposal)
@@ -84,7 +84,7 @@ feature 'Proposal' do
       expect(current_path).to eq proposal_funds_path(@proposal)
 
       # expect upgrade prompt
-      click_link 'New proposal'
+      click_link 'New'
       expect(current_path).to eq account_upgrade_path(@recipient)
 
       # subscribe
@@ -122,12 +122,11 @@ feature 'Proposal' do
               so I can continue using the site' do
       visit root_path
 
-      click_link 'Change proposal'
+      click_link 'Change'
       expect(current_path).to eq proposals_path
 
-      click_link 'New proposal'
-      expect(current_path)
-        .to eq edit_signup_proposal_path(@proposal)
+      click_link 'New'
+      expect(current_path).to eq edit_signup_proposal_path(@proposal)
       expect(page).to have_text 'Please fully complete'
     end
 
@@ -137,13 +136,13 @@ feature 'Proposal' do
       @app.create_registered_proposal
       @proposal = Proposal.last
       visit proposal_funds_path(@proposal)
-      within '.uk-dropdown' do
-        click_link 'Funding proposals'
-      end
+
+      click_link 'Proposals'
       expect(current_path).to eq proposals_path
+
       click_link 'Update proposal'
-      expect(current_path)
-        .to eq edit_proposal_path(@proposal)
+      expect(current_path).to eq edit_proposal_path(@proposal)
+
       [
         'Funding proposal',
         'Summary',
@@ -156,6 +155,7 @@ feature 'Proposal' do
       ].each do |text|
         expect(page).to have_text text
       end
+
       eligibility.complete_proposal
       click_button 'Update and review recommendations'
       expect(current_path).to eq proposal_funds_path(@proposal)
@@ -197,17 +197,17 @@ feature 'Proposal' do
     scenario 'When I am subscribed,
                I want to be able to create multiple proposals,
                so I can search for alternative funds' do
-      click_link 'Change proposal'
+      click_link 'Change'
       expect(page).to have_css '.card', count: 1
 
-      click_link 'New proposal'
+      click_link 'New'
       @match_helper.fill_proposal_form
       @eligibility_helper.complete_proposal
       click_button 'Save and recommend funders'
 
       expect(current_path).to eq proposal_funds_path(Proposal.last)
 
-      click_link 'Change proposal'
+      click_link 'Change'
       expect(page).to have_css '.card', count: 2
     end
 

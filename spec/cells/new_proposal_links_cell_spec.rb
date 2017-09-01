@@ -14,8 +14,7 @@ describe NewProposalLinksCell do
     incomplete = cell(:new_proposal_links, @proposal).call(:show)
     expect_change_proposal(incomplete)
     expect(incomplete)
-      .to have_link 'New proposal',
-                    href: edit_signup_proposal_path(@proposal)
+      .to have_link 'New', href: edit_signup_proposal_path(@proposal)
   end
 
   it 'complete and subscribed shows new link' do
@@ -23,8 +22,7 @@ describe NewProposalLinksCell do
     @recipient.subscribe!
     complete_subscribed = cell(:new_proposal_links, @proposal).call(:show)
     expect_change_proposal(complete_subscribed)
-    expect(complete_subscribed)
-      .to have_link 'New proposal', href: new_proposal_path
+    expect(complete_subscribed).to have_link 'New', href: new_proposal_path
   end
 
   it 'complete and unsubscribed redirects to upgrade' do
@@ -32,12 +30,12 @@ describe NewProposalLinksCell do
     complete_unsubscribed = cell(:new_proposal_links, @proposal).call(:show)
     expect_change_proposal(complete_unsubscribed)
     expect(complete_unsubscribed)
-      .to have_link 'New proposal', href: account_upgrade_path(@recipient)
+      .to have_link 'New', href: account_upgrade_path(@recipient)
   end
 
   private
 
     def expect_change_proposal(proposal)
-      expect(proposal).to have_link 'Change proposal', href: proposals_path
+      expect(proposal).to have_link 'Change', href: proposals_path
     end
 end

@@ -10,6 +10,10 @@ class Theme < ApplicationRecord
 
   before_validation :set_slug
 
+  def to_param
+    slug
+  end
+
   private
 
     def set_slug

@@ -31,7 +31,6 @@ class EligibilityBannerCell < Cell::ViewModel
 
   def eligible
     return unless model.eligible?(options[:fund]&.slug)
-    render locals: {fund: options[:fund]}
+    render locals: { fund: options[:fund] }
   end
-
 end

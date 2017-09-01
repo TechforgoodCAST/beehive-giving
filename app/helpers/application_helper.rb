@@ -7,6 +7,7 @@ module ApplicationHelper
     permitted = {
       articles: %i[index show],
       errors: %i[not_found gone internal_server_error],
+      funds: %i[index],
       pages: %i[about faq forfunders privacy terms],
       password_resets: %i[new create edit update],
       public_funds: %i[index show],
