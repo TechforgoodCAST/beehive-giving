@@ -117,8 +117,17 @@ class Proposal < ApplicationRecord
   end
 
   def initial_recommendation
+    check_eligibility = Check::Each.new(
+      [
+        Check::Eligibility::Amount.new,
+        Check::Eligibility::Location.new,
+        Check::Eligibility::OrgIncome.new,
+        Check::Eligibility::OrgType.new,
+        Check::Eligibility::Quiz.new(self, Fund.active)
+      ]
+    )
     update_columns(
-      eligibility: CheckEligibility.new.call_each!(self, Fund.active),
+      eligibility: check_eligibility.call_each(self, Fund.active),
       suitability: CheckSuitability.new.call_each!(self, Fund.active)
     )
   end

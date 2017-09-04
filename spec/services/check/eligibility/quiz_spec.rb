@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe CheckEligibility::Quiz do
+describe Check::Eligibility::Quiz do
   before(:each) do
     @app.seed_test_db.setup_funds.create_recipient.create_registered_proposal
     @proposal = Proposal.last
@@ -9,6 +9,11 @@ describe CheckEligibility::Quiz do
       category = r.category == 'Proposal' ? @proposal : @proposal.recipient
       create(:proposal_eligibility, category: category, restriction: r)
     end
+    @fund.save
+  end
+
+  subject do
+    Check::Eligibility::Quiz.new(@proposal, Fund.active)
   end
 
   it '#call eligible' do
