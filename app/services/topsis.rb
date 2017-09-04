@@ -19,7 +19,7 @@ class Topsis
     best = distance_from(solution(:max))
     worst = distance_from(solution(:min))
     @decision_matrix.map do |slug, _|
-      [slug, worst[slug] / (best[slug] + worst[slug])]
+      [slug, worst[slug] / catch_zero((best[slug] + worst[slug]))]
     end.to_h
   end
 

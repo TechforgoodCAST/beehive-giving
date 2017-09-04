@@ -17,15 +17,15 @@ describe CheckSuitability do
         'location' => { 'score' => 1, 'reason' => 'anywhere' },
         'org_type' => { 'score' => 0.41500000000000004 },
         'theme' => { 'score' => 0.5 },
-        'total' => 2.215
+        'total' => 0.6636824700403825
       },
       @funds[1].slug => {
         'amount' => { 'score' => 0.2 },
         'duration' => { 'score' => 0.2 },
-        'location' => { 'score' => -1, 'reason' => 'ineligible' },
+        'location' => { 'score' => 0, 'reason' => 'ineligible' },
         'org_type' => { 'score' => 0.41500000000000004 },
         'theme' => { 'score' => 1.0 },
-        'total' => 0.8150000000000001
+        'total' => 0.3363175299596174
       }
     }
   end
