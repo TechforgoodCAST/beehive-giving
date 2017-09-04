@@ -14,7 +14,7 @@ class CheckSuitability
 
       def match_anywhere(fund, proposal, result = {})
         if fund.geographic_scale_limited
-          result = { 'score' => -1, 'reason' => 'overlap' }
+          result = { 'score' => 0, 'reason' => 'overlap' }
         else
           result = { 'score' => 1, 'reason' => 'anywhere' }
         end
@@ -33,7 +33,7 @@ class CheckSuitability
         return [1, 'exact'] if exact_match(f, p)
         return [0, 'intersect'] if intersect_match(f, p)
         return [1, 'partial'] if partial_match(f, p)
-        return [-1, 'overlap'] if overlap_match(f, p)
+        return [0, 'overlap'] if overlap_match(f, p)
       end
 
       def exact_match(f, p)
@@ -57,7 +57,7 @@ class CheckSuitability
           if proposal.affect_geo == 2
             result = { 'score' => 1, 'reason' => 'national' }
           else
-            result = { 'score' => -1, 'reason' => 'ineligible' }
+            result = { 'score' => 0, 'reason' => 'ineligible' }
           end
         end
         result
@@ -65,7 +65,7 @@ class CheckSuitability
 
       def match_ineligible(fund, proposal, result = {})
         unless proposal.eligibility.fetch(fund.slug, {}).fetch("location", {}).fetch("eligible", true)
-          result = { 'score' => -1, 'reason' => 'ineligible' }
+          result = { 'score' => 0, 'reason' => 'ineligible' }
         end
         result
       end

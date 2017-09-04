@@ -11,8 +11,10 @@ class CheckSuitability < CheckBase
   private
 
     def add_total(updates)
-      updates.each do |k, v|
-        updates[k]['total'] = v.all_values_for('score').reduce(0, &:+)
+      topsis = Topsis.new(updates).rank
+
+      updates.each do |k, _|
+        updates[k]['total'] = topsis[k]
       end
     end
 

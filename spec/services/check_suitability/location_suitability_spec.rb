@@ -30,11 +30,11 @@ describe CheckSuitability::LocationSuitability do
     )
   end
 
-  it 'ineligble set to -1' do
+  it 'ineligble set to 0' do
     @proposal.eligibility = {
       @anywhere.slug => { 'location' => { 'eligible' => false } }
     }
-    result = { 'score' => -1, 'reason' => 'ineligible' }
+    result = { 'score' => 0, 'reason' => 'ineligible' }
     expect(subject.call(@proposal, @anywhere)).to eq result
   end
 
@@ -50,7 +50,7 @@ describe CheckSuitability::LocationSuitability do
     end
 
     it '<> fund local' do
-      result = { 'score' => -1, 'reason' => 'overlap' }
+      result = { 'score' => 0, 'reason' => 'overlap' }
       expect(subject.call(@proposal, @local)).to eq result
     end
 
@@ -77,7 +77,7 @@ describe CheckSuitability::LocationSuitability do
     end
 
     it '<> fund national' do
-      result = { 'score' => -1, 'reason' => 'ineligible' }
+      result = { 'score' => 0, 'reason' => 'ineligible' }
       expect(subject.call(@proposal, @national)).to eq result
     end
   end
@@ -100,7 +100,7 @@ describe CheckSuitability::LocationSuitability do
     end
 
     it '<> fund national' do
-      result = { 'score' => -1, 'reason' => 'ineligible' }
+      result = { 'score' => 0, 'reason' => 'ineligible' }
       expect(subject.call(@proposal, @national)).to eq result
     end
   end
@@ -123,7 +123,7 @@ describe CheckSuitability::LocationSuitability do
     end
 
     it '<> fund national' do
-      result = { 'score' => -1, 'reason' => 'ineligible' }
+      result = { 'score' => 0, 'reason' => 'ineligible' }
       expect(subject.call(@proposal, @national)).to eq result
     end
   end
@@ -140,12 +140,12 @@ describe CheckSuitability::LocationSuitability do
     end
 
     it '<> fund local' do
-      result = { 'score' => -1, 'reason' => 'overlap' }
+      result = { 'score' => 0, 'reason' => 'overlap' }
       expect(subject.call(@proposal, @local)).to eq result
     end
 
     it '<> fund national' do
-      result = { 'score' => -1, 'reason' => 'ineligible' }
+      result = { 'score' => 0, 'reason' => 'ineligible' }
       expect(subject.call(@proposal, @national)).to eq result
     end
   end
