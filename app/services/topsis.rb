@@ -11,6 +11,7 @@ class Topsis
 
   def initialize(hash)
     raise "#{self.class} not initialized with Hash" unless hash.is_a? Hash
+    raise 'Empty Hash supplied' if hash.empty?
     @decision_matrix = decision_matrix(hash, standardisation(hash))
   end
 

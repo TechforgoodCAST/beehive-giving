@@ -11,6 +11,7 @@ class CheckSuitability < CheckBase
   private
 
     def add_total(updates)
+      return {} if updates.empty?
       topsis = Topsis.new(updates).rank
 
       updates.each do |k, _|
