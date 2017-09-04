@@ -24,4 +24,9 @@ feature 'Article' do
     expect(page).to have_content @article.title
     expect(page).to have_css '.markdown', count: 1
   end
+
+  scenario 'missing article' do
+    visit article_path('missing')
+    expect(current_path).to eq articles_path
+  end
 end
