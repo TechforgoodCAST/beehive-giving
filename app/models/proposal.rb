@@ -141,16 +141,15 @@ class Proposal < ApplicationRecord
   end
 
   def eligible_funds
-    eligibility.root_all_values_for('quiz').keep_if do |k, _|
-      eligibility[k].all_values_for('eligible').exclude?(false) &&
-        eligibility[k].dig('quiz', 'eligible')
-    end
+    eligibility.keys.select{|f| eligible_status(f) == 1}
   end
 
   def ineligible_funds
-    eligibility.root_all_values_for('eligible').keep_if do |_, v|
-      v.include? false
-    end
+    eligibility.keys.select{|f| eligible_status(f) == 0}
+  end
+
+  def to_check_funds
+    eligibility.keys.select{|f| eligible_status(f) == -1}
   end
 
   def eligible?(fund_slug)
