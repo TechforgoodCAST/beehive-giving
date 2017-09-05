@@ -1,5 +1,9 @@
 = content_for :title, 'Funds'
 
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, @proposal.id => nil,'Funds' => proposal_funds_path(@proposal)
+
 :javascript
   mixpanel.track('View Funds Page');
   mixpanel.identify("#{@current_user.id}");
@@ -25,42 +29,50 @@
   %div{ style: "display:inline;" }
     %img{ alt: "", height: "1", src: "//www.googleadservices.com/pagead/conversion/937505505/?label=LPzOCKWprGMQ4eWEvwM&amp;guid=ON&amp;script=0", style: "border-style:none;", width: "1" }
 
-.uk-container.uk-container-center.uk-margin-large
-  %h2 Funds
-  %h4
-    You are seeing analysis of funds for
-    - if @proposal.complete?
-      #proposal-title
-        = succeed '.' do
-          .text= @proposal.title
-    - else
-      your
-      #proposal-title
-        = succeed '.' do
-          .text current proposal
 
-    = cell :new_proposal_links, @proposal
+%main.maxw1080.mx-auto.px20.flex.flex-wrap
+  %aside.perc25.md.px20.mb40
+    .border.border-blue.px10.py15.rounded
+      You are seeing funds for
+      - if @proposal.complete?
+        = link_to @proposal.title.truncate_words(3), edit_proposal_path(@proposal), class: 'blue'
+      - else
+        your
+        = link_to 'current proposal', edit_proposal_path(@proposal), class: 'blue'
+      %hr.my15
+        = cell :new_proposal_links, @proposal
 
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top
+  %section.perc75.md.mb80.px20
+    %h1.light.mb20 Funds
 
     = render partial: 'eligibilities/legacy_notice'
 
-    .uk-margin-small-bottom
-      = pluralize(@fund_count, 'fund')
-      found
-
-    .uk-margin-large-bottom.muted
+    .mb30
       = cell :filter, params, funding_duration: @proposal.funding_duration
+      %small.slate
+        = pluralize(@fund_count, 'fund')
+        found
 
     - @funds.each_with_index do |fund, i|
+      %article.mb40
 
-      - if @proposal.show_fund?(fund)
-        = render partial: 'summary', locals: { fund: fund }
-      - else
-        = render partial: 'summary_redacted', locals: { fund: fund }
+        = cell(:fund_indicators, fund, proposal: @proposal)
 
-      - unless i == @funds.count - 1
-        %hr.thick
+        - if @proposal.show_fund?(fund)
+          .mb5
+            = link_to fund.name, proposal_fund_path(@proposal, fund), class: 'blue fs22 lh30'
+          .mb5.fs15.lh20.mid-gray
+            = fund.funder.name
+          %p.mb5.fs15.lh20
+            = strip_tags fund.description_html.truncate_words(30)
 
-    .uk-margin-large-top
-      = paginate @funds
+        - else
+          .muted
+            .mb5.blue.fs22.lh30.redacted= scramble_name fund.name
+            .mb5.fs15.lh20.mid-gray.redacted= scramble_name fund.funder.name
+            %p.mb5.fs15.lh20= raw fund.description_redacted.truncate_words(30)
+
+        %p.fs14.lh18
+          = cell(:fund_insight, fund, proposal: @proposal).call(:themes)
+
+    = paginate @funds

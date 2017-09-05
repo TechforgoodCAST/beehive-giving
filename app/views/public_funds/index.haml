@@ -18,18 +18,17 @@
 
         - if i < 3 && params[:page].to_i < 2
           .mb5
-            = link_to fund.name, public_fund_path(fund), class: 'blue fs22 lh30'
+            = link_to fund.title, public_fund_path(fund), class: 'blue fs22 lh30'
           .mb5.fs15.lh20.mid-gray
-            = fund.funder.name
+            = fund.subtitle
+          %p.mb5.fs15.lh20
+            = strip_tags fund.description_html.truncate_words(30)
 
         - else
           .muted
             .mb5.blue.fs22.lh30.redacted= scramble_name fund.name
             .mb5.fs15.lh20.mid-gray.redacted= scramble_name fund.funder.name
-
-        .mb5.fs15.lh20
-          %p
-            = raw fund.description_html.truncate_words(24)
+            %p.mb5.fs15.lh20= raw fund.description_redacted.truncate_words(30)
 
       - if i == 2 && params[:page].to_i < 2
         .flex.mb40

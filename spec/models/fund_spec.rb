@@ -100,6 +100,12 @@ describe Fund do
       end
     end
 
+    it '#description_redacted' do
+      @fund.description += @fund.name + ' ' + @fund.funder.name
+      expect(@fund.description_redacted).not_to include @fund.name
+      expect(@fund.description_redacted).not_to include @fund.funder.name
+    end
+
     it 'is valid' do
       expect(@fund).to be_valid
     end

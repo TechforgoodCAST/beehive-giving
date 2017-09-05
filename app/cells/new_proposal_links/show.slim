@@ -1,9 +1,10 @@
-= link_to 'Change proposal', proposals_path, class: 'proposal-links'
-'  &middot;
-- if model.complete?
-  - if recipient.subscribed?
-    = link_to 'New proposal', new_proposal_path, class: 'proposal-links'
+.fs14.center
+  = link_to 'Change', proposals_path, class: 'blue'
+  span.slate>  &middot;
+  - if model.complete?
+    - if recipient.subscribed?
+      = link_to 'New', new_proposal_path, class: 'blue'
+    - else
+      = link_to 'New', account_upgrade_path(recipient), class: 'blue'
   - else
-    = link_to 'New proposal', account_upgrade_path(recipient), class: 'proposal-links'
-- else
-  = link_to 'New proposal', edit_signup_proposal_path(model), class: 'proposal-links'
+    = link_to 'New', edit_signup_proposal_path(model), class: 'blue'

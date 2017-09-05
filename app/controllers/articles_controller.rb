@@ -5,5 +5,6 @@ class ArticlesController < ApplicationController
 
   def show
     @article = Article.find_by slug: params[:id]
+    redirect_to articles_path unless @article
   end
 end

@@ -9,7 +9,7 @@ class FundsController < ApplicationController
   end
 
   def index
-    query = Fund.includes(:funder)
+    query = Fund.includes(:funder, :themes)
                 .active
                 .eligibility(@proposal, params[:eligibility])
                 .duration(@proposal, params[:duration])
@@ -21,12 +21,8 @@ class FundsController < ApplicationController
 
   def themed
     @theme = Theme.find_by(slug: params[:theme]) if params[:theme].present?
-    @funds = Fund.includes(:themes, :funder).where(:themes => {:id => @theme})
+    @funds = Fund.includes(:funder, :themes).where(themes: { id: @theme })
     redirect_to root_path, alert: 'Not found' if @funds.empty?
-  end
-
-  def sources
-    render json: Fund.find_by(slug: params[:id]).sources
   end
 
   private

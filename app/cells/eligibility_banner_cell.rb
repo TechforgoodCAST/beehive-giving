@@ -19,6 +19,11 @@ class EligibilityBannerCell < Cell::ViewModel
     render locals: { org_type: ORG_TYPES[model.recipient.org_type + 1][2] }
   end
 
+  def org_income
+    return unless model.eligibility.dig(options[:fund]&.slug, 'org_income')
+    render locals: {}
+  end
+
   def quiz
     return unless model.eligibility.dig(options[:fund]&.slug, 'quiz')
     render locals: { count_failing: model.eligibility[options[:fund]&.slug]['quiz']['count_failing'] }
@@ -26,7 +31,6 @@ class EligibilityBannerCell < Cell::ViewModel
 
   def eligible
     return unless model.eligible?(options[:fund]&.slug)
-    render locals: {fund: options[:fund]}
+    render locals: { fund: options[:fund] }
   end
-
 end
