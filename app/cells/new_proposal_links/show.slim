@@ -1,4 +1,6 @@
 .fs14.center
+  = link_to 'Edit', edit_proposal_path(model), class: 'blue'
+  span.slate>  &middot;
   = link_to 'Change', proposals_path, class: 'blue'
   span.slate>  &middot;
   - if model.complete?
