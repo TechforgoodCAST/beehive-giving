@@ -141,15 +141,15 @@ class Proposal < ApplicationRecord
   end
 
   def eligible_funds
-    eligibility.keys.select{|f| eligible_status(f) == 1}
+    eligibility.select{|f, _| eligible_status(f) == 1}
   end
 
   def ineligible_funds
-    eligibility.keys.select{|f| eligible_status(f) == 0}
+    eligibility.select{|f, _| eligible_status(f) == 0}
   end
 
   def to_check_funds
-    eligibility.keys.select{|f| eligible_status(f) == -1}
+    eligibility.select{|f, _| eligible_status(f) == -1}
   end
 
   def eligible?(fund_slug)
