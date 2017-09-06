@@ -2,7 +2,7 @@
 
 %header
   = cell :v2_navbar, @current_user
-  = cell :breadcrumb, @proposal.id => nil,'Funds' => proposal_funds_path(@proposal)
+  = cell :breadcrumb, (@proposal.title? ? @proposal.title : 'Current proposal').truncate_words(5).upcase_first => nil,'Funds' => proposal_funds_path(@proposal)
 
 :javascript
   mixpanel.track('View Funds Page');
