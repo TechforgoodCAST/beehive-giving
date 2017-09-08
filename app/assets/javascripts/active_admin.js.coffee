@@ -1,6 +1,10 @@
 #= require active_admin/base
 #= require chosen-jquery
 
+#= require Chart.bundle
+#= require chartkick
+
+
 $(document).ready ->
   return $('.chosen-select').chosen
     allow_single_deselect: true
