@@ -55,7 +55,7 @@ ActiveAdmin.register_page 'Proposal Dashboard' do
 
       column do
         panel "Funding type" do
-          render partial: "pie_chart", locals: {data: get_proposals.group(:funding_type).count.sort_by { |key, val| key }.map{ |k, v| [FUNDING_TYPES[k][0].truncate_words(2), v]}}
+          render partial: "pie_chart", locals: {data: get_proposals.group(:funding_type).count.map{ |k, v| [(k.nil? ?  "Unknown" : FUNDING_TYPES[k][0].truncate_words(2)), v]}}
         end
       end
 
