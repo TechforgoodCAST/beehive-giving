@@ -68,7 +68,7 @@ describe Proposal do
             'location' => { 'score' => 1, 'reason' => 'anywhere' },
             'org_type' => { 'score' => 0.41500000000000004 },
             'theme' => { 'score' => 1.0 },
-            'total' => 2.615
+            'total' => 0.0
           }
         }
 
