@@ -28,9 +28,8 @@ class CompaniesHouse
       org.company_last_returns_date  = data['Returns'].try(:[], 'NextDueDate')
       org.company_sic                = data['SICCodes'].try(:[], 'SicText')
 
-      org.registered_on = data['IncorporationDate']
-      org.operating_for = operating_for_value(data['IncorporationDate']) if
-        data['IncorporationDate']
+      org.registered_on = data['IncorporationDate'] || data['RegistrationDate']
+      org.operating_for = operating_for_value(org.registered_on)
 
       if data['CompanyCategory'] == 'Community Interest Company'
         org.org_type = 5
