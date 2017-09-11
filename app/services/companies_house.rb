@@ -29,7 +29,8 @@ class CompaniesHouse
       org.company_sic                = data['SICCodes'].try(:[], 'SicText')
 
       org.registered_on = data['IncorporationDate']
-      org.operating_for = operating_for_value(data['IncorporationDate'])
+      org.operating_for = operating_for_value(data['IncorporationDate']) if
+        data['IncorporationDate']
 
       if data['CompanyCategory'] == 'Community Interest Company'
         org.org_type = 5
@@ -50,7 +51,7 @@ class CompaniesHouse
     end
 
     def operating_for_value(date)
-      return false unless date
+      return unless date
       years_old = ((Time.zone.today - date.to_date).to_f / 365)
       if years_old <= 1
         1
