@@ -60,7 +60,7 @@ feature 'Proposal' do
         ineligible_proposal_funds_path(@proposal)
       ].each do |path|
         visit path
-        expect(page).to have_link 'current proposal'
+        expect(page).to have_link(nil, href: edit_proposal_path(@proposal))
         expect(page).to have_link 'Change'
         expect(page).to have_link 'New'
       end

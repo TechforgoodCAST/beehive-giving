@@ -2,7 +2,7 @@
 
 %header
   = cell :v2_navbar, @current_user
-  = cell :breadcrumb, @proposal.id => nil,'Funds' => proposal_funds_path(@proposal)
+  = cell :breadcrumb, (@proposal.title? ? @proposal.title : 'Current proposal').truncate_words(5).upcase_first => nil,'Funds' => proposal_funds_path(@proposal)
 
 :javascript
   mixpanel.track('View Funds Page');
@@ -32,15 +32,7 @@
 
 %main.maxw1080.mx-auto.px20.flex.flex-wrap
   %aside.perc25.md.px20.mb40
-    .border.border-blue.px10.py15.rounded
-      You are seeing funds for
-      - if @proposal.complete?
-        = link_to @proposal.title.truncate_words(3), edit_proposal_path(@proposal), class: 'blue'
-      - else
-        your
-        = link_to 'current proposal', edit_proposal_path(@proposal), class: 'blue'
-      %hr.my15
-        = cell :new_proposal_links, @proposal
+    = render partial: 'proposals/card'
 
   %section.perc75.md.mb80.px20
     %h1.light.mb20 Funds
@@ -60,11 +52,11 @@
 
         - if @proposal.show_fund?(fund)
           .mb5
-            = link_to fund.name, proposal_fund_path(@proposal, fund), class: 'blue fs22 lh30'
+            = link_to fund.title, proposal_fund_path(@proposal, fund), class: 'blue fs22 lh30'
           .mb5.fs15.lh20.mid-gray
-            = fund.funder.name
+            = fund.subtitle
           %p.mb5.fs15.lh20
-            = strip_tags fund.description_html.truncate_words(30)
+            = raw strip_tags fund.description_html.truncate_words(30)
 
         - else
           .muted
