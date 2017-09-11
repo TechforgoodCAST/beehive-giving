@@ -1,0 +1,28 @@
+.border.border-blue.rounded
+  .bg-blue.px10.py10
+    .fs15.lh20.caps.white.bold
+      Current Proposal
+  .px10.py15
+    .mb20.caps
+      %span.fs35
+        = cell(:proposal_indicators, @proposal).call(:percent_complete)
+      %span
+        complete
+    - if @proposal.complete?
+      .fs20.mb10
+        = @proposal.title.truncate_words(3)
+    .fs15.mb20
+      = number_to_currency(@proposal.total_costs, unit: "£", precision: 0)
+      &middot;
+      - if @proposal.funding_type == 1
+        Revenue
+      - elsif @proposal.funding_type == 2
+        Capital
+    .flex
+      .col-one-third.fs12
+        Eligibility
+      .col-two-thirds.fs12
+        = cell(:proposal_indicators, @proposal).call(:eligibility_progress_bar)
+
+    %hr.my15
+      = cell :new_proposal_links, @proposal

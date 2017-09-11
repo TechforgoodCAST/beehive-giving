@@ -287,11 +287,12 @@ describe Proposal do
     it '#checked_fund?'
 
     it '#eligible_funds' do
-      expect(@proposal.eligible_funds).to eq 'fund2' => [{ 'eligible' => true }]
+
+      expect(@proposal.eligible_funds).to eq 'fund2' => { 'quiz' => { 'eligible' => true }, 'other' => { 'eligible' => true } }
     end
 
     it '#ineligible_funds' do
-      expect(@proposal.ineligible_funds).to eq 'fund1' => [false], 'fund3' => [true, false], 'fund4' => [false]
+      expect(@proposal.ineligible_funds).to eq 'fund1' => {"quiz"=>{"eligible"=>false}}, 'fund3' => {"quiz"=>{"eligible"=>true}, "other"=>{"eligible"=>false}}, 'fund4' => {"other"=>{"eligible"=>false}}
     end
 
     it '#eligible? unchecked' do
