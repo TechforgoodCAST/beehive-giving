@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170911110926) do
+ActiveRecord::Schema.define(version: 20170911144036) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -254,6 +254,7 @@ ActiveRecord::Schema.define(version: 20170911110926) do
     t.integer "min_org_income"
     t.boolean "max_org_income_limited", default: false
     t.integer "max_org_income"
+    t.jsonb "priority_ids"
     t.index ["funder_id"], name: "index_funds_on_funder_id"
     t.index ["slug"], name: "index_funds_on_slug"
     t.index ["tags"], name: "index_funds_on_tags", using: :gin
