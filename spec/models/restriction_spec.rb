@@ -50,26 +50,26 @@ describe 'Restriction' do
             .create_registered_proposal
             .create_complete_proposal
         Proposal.all.each do |proposal|
-          create(:eligibility, restriction: @r2,
-                               category: proposal)
+          create(:answer, question: @r2,
+                          category: proposal)
         end
       end
 
       it 'has many eligibilities' do
-        expect(@r2.eligibilities.count).to eq 2
+        expect(@r2.answers.count).to eq 2
       end
     end
 
     context 'for Recipient' do
       before(:each) do
         [@db[:recipient], create(:recipient)].each do |recipient|
-          create(:eligibility, restriction: @r1,
-                               category: recipient)
+          create(:answer, question: @r1,
+                          category: recipient)
         end
       end
 
       it 'has many eligibilities' do
-        expect(@r1.eligibilities.count).to eq 2
+        expect(@r1.answers.count).to eq 2
       end
     end
   end

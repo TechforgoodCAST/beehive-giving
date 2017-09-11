@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170911144036) do
+ActiveRecord::Schema.define(version: 20170911150909) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -255,18 +255,19 @@ ActiveRecord::Schema.define(version: 20170911144036) do
     t.boolean "max_org_income_limited", default: false
     t.integer "max_org_income"
     t.jsonb "priority_ids"
+    t.boolean "priorities_known"
     t.index ["funder_id"], name: "index_funds_on_funder_id"
     t.index ["slug"], name: "index_funds_on_slug"
     t.index ["tags"], name: "index_funds_on_tags", using: :gin
   end
 
-  create_table "funds_restrictions", id: :serial, force: :cascade do |t|
+  create_table "funds_questions", id: :serial, force: :cascade do |t|
     t.integer "fund_id"
-    t.integer "restriction_id"
+    t.integer "question_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["fund_id"], name: "index_funds_restrictions_on_fund_id"
-    t.index ["restriction_id"], name: "index_funds_restrictions_on_restriction_id"
+    t.index ["fund_id"], name: "index_funds_questions_on_fund_id"
+    t.index ["question_id"], name: "index_funds_questions_on_question_id"
   end
 
   create_table "implementations", id: :serial, force: :cascade do |t|
@@ -431,7 +432,6 @@ ActiveRecord::Schema.define(version: 20170911144036) do
     t.string "slug"
     t.index ["name"], name: "index_themes_on_name", unique: true
     t.index ["parent_id"], name: "index_themes_on_parent_id"
-    t.index ["slug"], name: "index_themes_on_slug", unique: true
   end
 
   create_table "users", id: :serial, force: :cascade do |t|

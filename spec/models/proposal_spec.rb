@@ -222,13 +222,13 @@ describe Proposal do
       2.times do
         create(:proposal_eligibility,
                category: @proposal,
-               restriction: create(:restriction))
+               question: create(:restriction))
       end
     end
 
     it 'has many eligibilities' do
-      expect(@proposal.eligibilities.count).to eq 2
-      expect(@proposal.eligibilities.last.category_type)
+      expect(@proposal.answers.count).to eq 2
+      expect(@proposal.answers.last.category_type)
         .to eq 'Proposal'
     end
 

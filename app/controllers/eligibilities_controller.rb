@@ -77,7 +77,7 @@ class EligibilitiesController < ApplicationController
     end
 
     def migrate_legacy_eligibilities
-      eligbilities = Eligibility.where(
+      eligbilities = Answer.where(
         category_id: @recipient.id, category_type: 'Proposal'
       )
       eligbilities&.update_all(category_id: @proposal.id)

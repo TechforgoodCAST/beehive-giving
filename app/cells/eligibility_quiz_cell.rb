@@ -16,7 +16,7 @@ class EligibilityQuizCell < Cell::ViewModel
   private
 
     def load_restrictions
-      @restrictions = model.restrictions.includes(:eligibilities).to_a.group_by { |r| r[:category].to_sym }
+      @restrictions = model.restrictions.includes(:answers).to_a.group_by { |r| r[:category].to_sym }
       @proposal = options[:proposal]
     end
 

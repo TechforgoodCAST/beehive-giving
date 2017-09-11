@@ -12,9 +12,9 @@ class Fund < ApplicationRecord
 
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
-  has_and_belongs_to_many :restrictions
+  has_and_belongs_to_many :restrictions, association_foreign_key: 'question_id', join_table: 'funds_questions'
   accepts_nested_attributes_for :restrictions
-  has_and_belongs_to_many :priorities
+  has_and_belongs_to_many :priorities, association_foreign_key: 'question_id', join_table: 'funds_questions'
   accepts_nested_attributes_for :priorities
 
   validates :funder, :type_of_fund, :slug, :name, :description, :currency,
