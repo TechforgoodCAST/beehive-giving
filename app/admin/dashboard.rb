@@ -67,50 +67,50 @@ ActiveAdmin.register_page 'Dashboard' do
     def user_count
       User.user.group_by_week(:created_at,
                               week_start: :mon,
-                              last: 8,
+                              last: 12,
                               format: 'w/o %d %b').count
     end
 
     def user_count_by_month
-      User.user.group_by_month(:created_at, last: 8, format: '%b %Y').count
+      User.user.group_by_month(:created_at, last: 12, format: '%b %Y').count
     end
 
     def recipient_count
       Recipient.joins(:users)
                .group_by_week('users.created_at',
                               week_start: :mon,
-                              last: 8).count
+                              last: 12).count
     end
 
     def recipient_count_by_month
-      Recipient.joins(:users).group_by_month('users.created_at', last: 8).count
+      Recipient.joins(:users).group_by_month('users.created_at', last: 12).count
     end
 
     def unlock_count(count)
       Recipient.where(funds_checked: count)
-               .group_by_week(:created_at, week_start: :mon, last: 8).count
+               .group_by_week(:created_at, week_start: :mon, last: 12).count
     end
 
     def unlock_by_month
-      Recipient.all.group_by_month(:created_at, last: 8).sum(:funds_checked)
+      Recipient.all.where('funds_checked > ?', 0).group_by_month(:created_at, last: 12).count
     end
 
     def proposal_count(state)
       Proposal.where(state: state)
-              .group_by_week(:created_at, week_start: :mon, last: 8).count
+              .group_by_week(:created_at, week_start: :mon, last: 12).count
     end
 
     def proposal_count_by_month
       Proposal.where(state: %w(registered complete))
-              .group_by_month(:created_at, last: 8, format: '%b %Y').count
+              .group_by_month(:created_at, last: 12, format: '%b %Y').count
     end
 
     def feedback_count
-      Feedback.group_by_week(:created_at, week_start: :mon, last: 8).count
+      Feedback.group_by_week(:created_at, week_start: :mon, last: 12).count
     end
 
     def feedback_count_by_month
-      Feedback.group_by_month(:created_at, last: 8).count
+      Feedback.group_by_month(:created_at, last: 12).count
     end
 
     def percentage(count, i)

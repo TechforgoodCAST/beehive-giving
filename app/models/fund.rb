@@ -55,7 +55,7 @@ class Fund < ApplicationRecord
   before_validation :set_slug, unless: :slug
   before_validation :check_beehive_data,
                     if: proc { |o| o.skip_beehive_data.to_i.zero? }
-  before_save :set_restriction_ids, if: :restrictions_known?
+  after_save :set_restriction_ids, if: :restrictions_known?
 
   def self.order_by(proposal, col)
     case col
@@ -149,7 +149,7 @@ class Fund < ApplicationRecord
     end
 
     def set_restriction_ids
-      self[:restriction_ids] = restrictions.pluck(:id)
+      update_column :restriction_ids, restrictions.pluck(:id)
     end
 
     def period_end_in_past
