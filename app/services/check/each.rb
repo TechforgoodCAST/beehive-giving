@@ -19,6 +19,16 @@ module Check
       updates
     end
 
+    def call_each_with_total(proposal, funds) # TODO: refactor
+      updates = call_each(proposal, funds)
+      return {} if updates.empty?
+      topsis = Topsis.new(updates).rank
+
+      updates.each do |k, _|
+        updates[k]['total'] = topsis[k]
+      end
+    end
+
     private
 
       def validate_call_each(proposal, funds)
@@ -33,8 +43,8 @@ module Check
         end
       end
 
-      def preload_associations(funds)
-        funds.includes(:districts, :countries)
+      def preload_associations(funds) # TODO: refactor
+        funds.includes(:countries, :districts, :themes)
       end
 
       def key_name(obj)

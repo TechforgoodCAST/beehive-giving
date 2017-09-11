@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe CheckSuitability::DurationSuitability do
+describe Check::Suitability::Duration do
   before(:each) do
     @app.seed_test_db.setup_funds(open_data: true)
         .create_recipient.create_registered_proposal

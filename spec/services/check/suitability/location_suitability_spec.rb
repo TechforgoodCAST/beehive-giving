@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe CheckSuitability::LocationSuitability do
+describe Check::Suitability::Location do
   before(:each) do
     @app.seed_test_db.setup_funds(num: 4)
         .create_recipient.create_registered_proposal

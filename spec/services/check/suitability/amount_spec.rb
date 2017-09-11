@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe CheckSuitability::AmountSuitability do
+describe Check::Suitability::Amount do
   before(:each) do
     @app.seed_test_db.setup_funds(open_data: true)
         .create_recipient.create_registered_proposal
@@ -16,6 +16,4 @@ describe CheckSuitability::AmountSuitability do
     @proposal.total_costs = 1_000
     expect(subject.call(@proposal, @fund)).to eq 'score' => 0
   end
-
-  it '#call missing fund'
 end

@@ -126,9 +126,18 @@ class Proposal < ApplicationRecord
         Check::Eligibility::Quiz.new(self, Fund.active)
       ]
     )
+    check_suitability = Check::Each.new(
+      [
+        Check::Suitability::Amount.new,
+        Check::Suitability::Duration.new,
+        Check::Suitability::Location.new,
+        Check::Suitability::OrgType.new,
+        Check::Suitability::Theme.new
+      ]
+    )
     update_columns(
       eligibility: check_eligibility.call_each(self, Fund.active),
-      suitability: CheckSuitability.new.call_each!(self, Fund.active)
+      suitability: check_suitability.call_each_with_total(self, Fund.active)
     )
   end
 

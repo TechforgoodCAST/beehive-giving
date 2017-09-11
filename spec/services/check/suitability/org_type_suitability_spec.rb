@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe CheckSuitability::OrgTypeSuitability do
+describe Check::Suitability::OrgType do
   before(:each) do
     @app.seed_test_db.setup_funds(open_data: true)
         .create_recipient.create_registered_proposal
