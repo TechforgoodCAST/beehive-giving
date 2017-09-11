@@ -4,8 +4,8 @@ class Proposal < ApplicationRecord
               :clear_age_groups_and_gender_unless_affect_people
   after_save :initial_recommendation
 
-  has_many :eligibilities, as: :category, dependent: :destroy
-  accepts_nested_attributes_for :eligibilities
+  has_many :answers, as: :category, dependent: :destroy
+  accepts_nested_attributes_for :answers
 
   belongs_to :recipient
   has_many :enquiries, dependent: :destroy

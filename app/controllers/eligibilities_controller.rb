@@ -55,8 +55,8 @@ class EligibilitiesController < ApplicationController
     end
 
     def load_eligibilities
-      @eligibilities = Eligibility.where(
-        restriction: @restrictions.pluck(:id),
+      @eligibilities = Answer.where(
+        question: @restrictions.pluck(:id),
         category: [@recipient.id, @proposal.id]
       ).to_a
     end
@@ -87,8 +87,8 @@ class EligibilitiesController < ApplicationController
       migrate_legacy_eligibilities
 
       @restrictions.each do |r|
-        e = Eligibility.find_or_initialize_by(
-          restriction_id: r.id,
+        e = Answer.find_or_initialize_by(
+          question_id: r.id,
           category_id: (@recipient.id if r.category=="Organisation") || @proposal.id,
           category_type: r.category
         )

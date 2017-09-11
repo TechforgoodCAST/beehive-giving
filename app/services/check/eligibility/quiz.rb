@@ -19,8 +19,8 @@ module Check
       private
 
         def lookup_answers(proposal)
-          ::Eligibility.where(category_id: [proposal.id, proposal.recipient.id])
-                       .pluck(:restriction_id, :eligible).to_h
+          ::Answer.where(category_id: [proposal.id, proposal.recipient.id])
+                  .pluck(:question_id, :eligible).to_h
         end
 
         def eligible?(comparison)

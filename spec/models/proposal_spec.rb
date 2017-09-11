@@ -233,9 +233,9 @@ describe Proposal do
     end
 
     it 'destroys eligibilities' do
-      expect(Eligibility.count).to eq 2
+      expect(Answer.count).to eq 2
       @proposal.destroy
-      expect(Eligibility.count).to eq 0
+      expect(Answer.count).to eq 0
     end
   end
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170911094546) do
+ActiveRecord::Schema.define(version: 20170911110926) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,18 @@ ActiveRecord::Schema.define(version: 20170911094546) do
     t.integer "age_group_id"
     t.integer "proposal_id"
     t.index ["age_group_id", "proposal_id"], name: "index_age_groups_proposals_on_age_group_id_and_proposal_id"
+  end
+
+  create_table "answers", id: :serial, force: :cascade do |t|
+    t.integer "category_id", null: false
+    t.integer "question_id", null: false
+    t.boolean "eligible", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "category_type", default: "Proposal", null: false
+    t.index ["category_id"], name: "index_answers_on_category_id"
+    t.index ["category_type"], name: "index_answers_on_category_type"
+    t.index ["question_id"], name: "index_answers_on_question_id"
   end
 
   create_table "articles", id: :serial, force: :cascade do |t|
@@ -131,18 +143,6 @@ ActiveRecord::Schema.define(version: 20170911094546) do
     t.integer "proposal_id"
     t.index ["district_id"], name: "index_districts_proposals_on_district_id"
     t.index ["proposal_id"], name: "index_districts_proposals_on_proposal_id"
-  end
-
-  create_table "eligibilities", id: :serial, force: :cascade do |t|
-    t.integer "category_id", null: false
-    t.integer "restriction_id", null: false
-    t.boolean "eligible", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "category_type", default: "Proposal", null: false
-    t.index ["category_id"], name: "index_eligibilities_on_category_id"
-    t.index ["category_type"], name: "index_eligibilities_on_category_type"
-    t.index ["restriction_id"], name: "index_eligibilities_on_restriction_id"
   end
 
   create_table "enquiries", id: :serial, force: :cascade do |t|

@@ -2,8 +2,8 @@ class Recipient < Organisation
   has_many :proposals
   has_many :countries, -> { distinct }, through: :proposals
   has_many :districts, -> { distinct }, through: :proposals
-  has_many :eligibilities, as: :category, dependent: :destroy
-  accepts_nested_attributes_for :eligibilities
+  has_many :answers, as: :category, dependent: :destroy
+  accepts_nested_attributes_for :answers
 
   has_many :features, dependent: :destroy # TODO: deprecated
   has_many :recipient_funder_accesses # TODO: deprecated
