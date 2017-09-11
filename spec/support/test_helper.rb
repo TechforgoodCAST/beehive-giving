@@ -37,6 +37,9 @@ class TestHelper
     recipient_restrictions = create_list(:recipient_restriction, 2)
     proposal_restrictions = create_list(:restriction, 5)
     @restrictions = recipient_restrictions + proposal_restrictions
+    recipient_priorities = create_list(:recipient_priority, 2)
+    proposal_priorities = create_list(:priority, 5)
+    @priorities = recipient_priorities + proposal_priorities
     @funds.each_with_index do |fund, i|
       stub_fund_summary_endpoint(fund.instance_eval { set_slug })
 
@@ -44,6 +47,7 @@ class TestHelper
       fund.countries = @countries
       fund.districts = @uk_districts + @kenya_districts if fund.geographic_scale_limited
       fund.restrictions = (i.even? ? recipient_restrictions + proposal_restrictions.first(3) : recipient_restrictions + proposal_restrictions.last(3))
+      fund.priorities = (i.even? ? recipient_priorities + proposal_priorities.first(3) : recipient_priorities + proposal_priorities.last(3))
       fund.save! if save
     end
     self
