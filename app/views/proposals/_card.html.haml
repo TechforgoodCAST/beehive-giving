@@ -1,17 +1,17 @@
 .border.border-blue.rounded
   .bg-blue.px10.py10
-    .caps.white.bold
+    .fs15.lh20.caps.white.bold
       Current Proposal
   .px10.py15
-    .my20.caps
+    .mb20.caps
       %span.fs35
         = cell(:proposal_indicators, @proposal).call(:percent_complete)
       %span
         complete
     - if @proposal.complete?
-      .fs20.my40
+      .fs20.mb10
         = @proposal.title.truncate_words(3)
-    .fs15.my20
+    .fs15.mb20
       = number_to_currency(@proposal.total_costs, unit: "£", precision: 0)
       &middot;
       - if @proposal.funding_type == 1
