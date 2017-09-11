@@ -1,0 +1,3 @@
+= pie_chart data.select{|k, v| k != "Unknown"}, height: local_assigns.fetch(:height, nil)
+- if data.select {|k, v| k == "Unknown"}.present?
+  = "Plus #{number_with_delimiter data.find{|k, v| k == "Unknown"}[1]} unknown"
