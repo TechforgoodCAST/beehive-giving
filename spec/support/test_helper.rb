@@ -58,7 +58,9 @@ class TestHelper
       themes: create_list(:theme, 3),
       countries: create_list(:country, 2),
       restrictions: create_list(:recipient_restriction, 2) +
-                    create_list(:restriction, 5)
+                    create_list(:restriction, 5),
+      priorities: create_list(:recipient_priority, 2) +
+                  create_list(:priority, 5)
     }
 
     create_list :fund, num, opts
