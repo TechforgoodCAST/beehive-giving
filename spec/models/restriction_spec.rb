@@ -18,19 +18,6 @@ describe 'Restriction' do
     expect(@r1).not_to be_valid
   end
 
-  it 'has_condition required' do
-    @r1.has_condition = nil
-    expect(@r1).not_to be_valid
-  end
-
-  it 'condition required if has_condition' do
-    @r1.has_condition = true
-    expect(@r1).not_to be_valid
-
-    @r1.condition = 'some condition'
-    expect(@r1).to be_valid
-  end
-
   it 'details required' do
     @r1.details = ''
     expect(@r1).not_to be_valid

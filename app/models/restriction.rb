@@ -5,8 +5,6 @@ class Restriction < ApplicationRecord
 
   validates :details, presence: true, uniqueness: true
   validates :category, inclusion: { in: %w(Proposal Organisation) }
-  validates :has_condition, inclusion: { in: [true, false] }
-  validates :condition, presence: true, if: ->(o) { o.has_condition? }
 
   def self.radio_buttons(invert)
     invert ? [['Yes', true], ['No', false]] : [['Yes', false], ['No', true]]
