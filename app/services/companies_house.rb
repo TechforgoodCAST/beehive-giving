@@ -31,7 +31,7 @@ class CompaniesHouse
       org.registered_on = data['IncorporationDate']
       org.operating_for = operating_for_value(data['IncorporationDate'])
 
-      if data['CompanyCategory']=="Community Interest Company"
+      if data['CompanyCategory'] == 'Community Interest Company'
         org.org_type = 5
       end
 
@@ -50,7 +50,7 @@ class CompaniesHouse
     end
 
     def operating_for_value(date)
-      return unless date
+      return false unless date
       years_old = ((Time.zone.today - date.to_date).to_f / 365)
       if years_old <= 1
         1
