@@ -26,7 +26,7 @@ class SubscriptionsHelper
   private
 
     def create_stripe_plans(stripe)
-      Subscription::PLANS.each do |plan, amount|
+      Subscription.plans.each do |plan, amount|
         stripe.create_plan(
           id: plan.to_s.parameterize,
           name: plan.to_s,

@@ -19,6 +19,7 @@ Prerequisites: [Ruby](https://www.ruby-lang.org), [Bundler](https://bundler.io/)
 
    STRIPE_SECRET_KEY=<secret_key>
    STRIPE_PUBLISHABLE_KEY=<publishable_key>
+   STRIPE_PLANS=<name>:<amount>,<name>:<amount>
 
    # (optional if needed)
    DATABASE_URL=postgres://username:password@localhost/beehive-data_development
