@@ -113,7 +113,7 @@ feature 'Subscriptions' do
           visit(account_upgrade_path(@db[:recipient]))
           helper.pay_by_card(stripe)
           expect(page).to have_text msg
-          Subscription::PLANS.keys.each do |plan|
+          Subscription.plans.keys.each do |plan|
             stripe.delete_plan(plan.to_s.parameterize)
           end
         end
