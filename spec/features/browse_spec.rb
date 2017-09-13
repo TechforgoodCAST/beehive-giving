@@ -23,7 +23,7 @@ feature 'Browse' do
     expect(current_path).to eq proposal_funds_path(@proposal)
   end
 
-  fscenario 'When I browse the site,
+  scenario 'When I browse the site,
             there is a list of fund themes in the footer' do
     Fund.first.update themes: [@themes.first, @themes.second]
     Fund.second.update themes: [@themes.first]
