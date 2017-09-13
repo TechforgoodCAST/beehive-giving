@@ -14,7 +14,7 @@ describe Payment do
   it '#plan_cost' do
     @app.create_recipient
     recipient = Recipient.last
-    [50, 100, 300, 1200].each_with_index do |price, i|
+    [24, 48, 96, 192, 384].each_with_index do |price, i|
       recipient.income_band = i
       payment = Payment.new(recipient)
       expect(payment.plan_cost).to eq price
@@ -34,7 +34,7 @@ describe Payment do
 
     it '#plan_cost with discount' do
       @payment.process!(stripe.generate_card_token, @user, 'test10')
-      expect(@payment.plan_cost).to eq 90
+      expect(@payment.plan_cost).to eq 43.2
     end
 
     it '#process! with empty coupon' do

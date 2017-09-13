@@ -89,6 +89,7 @@ GEM
       coffee-rails (>= 3.2)
       railties (>= 3.0)
       sass-rails (>= 3.2)
+    climate_control (0.2.0)
     cliver (0.3.2)
     coderay (1.1.1)
     coffee-rails (4.2.2)
@@ -425,6 +426,7 @@ DEPENDENCIES
   cells-slim
   chartkick
   chosen-rails
+  climate_control
   coffee-rails (~> 4.2)
   country_select
   database_cleaner
