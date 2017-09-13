@@ -1,0 +1,9 @@
+ul
+  - themes.each do |t|
+    li.mb10
+      - if proposal.present?
+        = link_to t.name, theme_proposal_funds_path(proposal, t), class: 'slate'
+      - else
+        = t.name
+  / li.mb10 and more...
+  /   = link_to 'Privacy', privacy_path, class: 'slate'
