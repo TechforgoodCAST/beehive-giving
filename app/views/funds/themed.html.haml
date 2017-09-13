@@ -42,4 +42,12 @@
           %p.fs14.lh18
             = cell(:fund_insight, fund, proposal: @proposal).call(:themes)
 
+          - if i < 1
+            %a{ href: account_upgrade_path(@recipient) }
+              .mt40.fs14.white.bg-darken-blue.circle.shadow.inline-block.py5.pr14.pl5.truncate
+                .fs12.bg-green.caps.bold.circle.inline-block.py3.px5 Upgrade
+                Go unlimited with Beehive Pro to see more
+                = @theme.name
+                funds
+
       = paginate @funds
