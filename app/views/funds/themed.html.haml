@@ -1,32 +1,5 @@
 = content_for :title, "#{@theme.name} funds"
 
-:javascript
-  mixpanel.track("View #{@theme.name} Funds Page");
-
-.uk-container.uk-container-center.uk-margin-large
-  %h2
-    = @theme.name
-    = surround '(', ')' do
-      = @funds.count
-  %h4
-    You are seeing funds in the
-    = @theme.name.downcase
-    theme.
-
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top
-
-    - @funds.each_with_index do |fund, i|
-
-      - if @recipient.subscribed? || i < 1
-        = render partial: 'summary', locals: { fund: fund }
-        - unless @recipient.subscribed?
-          .cta.wide
-            Go unlimited with Beehive Pro to see more
-            = @theme.name
-            funds.
-            = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'uk-button uk-button-large uk-button-primary invert'
-
-      - else
-        = render partial: 'summary_redacted', locals: { fund: fund }
-        - unless i == @funds.count - 1
-          %hr.thick
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'Funds' => proposal_funds_path(@proposal), @theme.name => theme_proposal_funds_path(@proposal, @theme)
