@@ -24,6 +24,7 @@ class FundsController < ApplicationController
     @funds = Fund.active
                  .includes(:funder, :themes)
                  .where(themes: { id: @theme })
+                 .page(params[:page])
     redirect_to root_path, alert: 'Not found' if @funds.empty?
   end
 
