@@ -26,9 +26,12 @@
               .mb5.fs15.lh20.mid-gray.redacted= scramble_name fund.funder.name
               %p.mb5.fs15.lh20= raw fund.description_redacted.truncate_words(30)
 
+          %p.fs14.lh18
+            = cell(:fund_insight, fund).call(:themes)
+
         - if i == funds_to_show - 1 && params[:page].to_i < 2
-          .flex.mb40
-            %a.fs14.white.bg-darken-blue.circle.shadow.inline-block.py5.pr14.pl5.truncate{ href: root_path }
+          %a{ href: root_path }
+            .mb40.fs14.white.bg-darken-blue.circle.shadow.inline-block.py5.pr14.pl5.truncate
               .fs12.bg-green.caps.bold.circle.inline-block.py3.px5 Preview
               Sign in or create a free account to see more
 

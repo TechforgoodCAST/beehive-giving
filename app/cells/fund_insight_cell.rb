@@ -32,7 +32,7 @@ class FundInsightCell < Cell::ViewModel
     model.themes.map do |theme|
       link_to(
         theme.name,
-        theme_proposal_funds_path(options[:proposal], theme),
+        theme_path(theme),
         class: 'blue'
       )
     end.join('<span class="mid-gray"> &middot; </span>')
@@ -81,6 +81,14 @@ class FundInsightCell < Cell::ViewModel
         "#{months / 12} years"
       else
         "#{months_to_str(months - (months % 12))} and #{months % 12} months"
+      end
+    end
+
+    def theme_path(theme)
+      if options[:proposal]
+        theme_proposal_funds_path(options[:proposal], theme)
+      else
+        public_funds_theme_path(theme)
       end
     end
 end
