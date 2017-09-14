@@ -4,7 +4,6 @@
   = cell :v2_navbar, @current_user
   = cell :breadcrumb, 'Funds' => proposal_funds_path(@proposal), @theme.name => theme_proposal_funds_path(@proposal, @theme)
 
-
 %main
   .maxw1080.mx-auto.px20.flex.flex-wrap
     %aside.perc25.md.px20.mb40
@@ -24,7 +23,7 @@
 
           = cell(:fund_indicators, fund, proposal: @proposal)
 
-          - if @recipient.subscribed? || i < 1
+          - if @recipient.subscribed? || (i < 1 && params[:page].to_i < 2)
             .mb5
               = link_to fund.title, proposal_fund_path(@proposal, fund), class: 'blue fs22 lh30'
             .mb5.fs15.lh20.mid-gray
@@ -33,7 +32,6 @@
               = raw strip_tags fund.description_html.truncate_words(30)
 
           - else
-
             .muted
               .mb5.blue.fs22.lh30.redacted= scramble_name fund.name
               .mb5.fs15.lh20.mid-gray.redacted= scramble_name fund.funder.name
@@ -42,7 +40,7 @@
           %p.fs14.lh18
             = cell(:fund_insight, fund, proposal: @proposal).call(:themes)
 
-          - if i < 1
+          - if i < 1 && params[:page].to_i < 2
             %a{ href: account_upgrade_path(@recipient) }
               .mt40.fs14.white.bg-darken-blue.circle.shadow.inline-block.py5.pr14.pl5.truncate
                 .fs12.bg-green.caps.bold.circle.inline-block.py3.px5 Upgrade
