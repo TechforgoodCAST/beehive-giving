@@ -7,7 +7,7 @@ ActiveAdmin.register_page 'Dashboard' do
         span class: 'blank_slate' do
           h3 'Users'
           h5 'Non-profits'
-          h1 number_with_delimiter(User.user.count)
+          h1 number_with_delimiter(User.recipient.count)
           h5 'Funders'
           h1 User.funder.count
         end
@@ -43,7 +43,7 @@ ActiveAdmin.register_page 'Dashboard' do
         span class: 'blank_slate' do
           h3 'Funders'
           h5 'Active'
-          h1 Funder.where('active_on_beehive = ?', true).count
+          h1 Funder.where(active: true).count
           h5 'Total'
           h1 Funder.all.count
         end
@@ -65,14 +65,13 @@ ActiveAdmin.register_page 'Dashboard' do
     end
 
     def user_count
-      User.user.group_by_week(:created_at,
-                              week_start: :mon,
-                              last: 12,
-                              format: 'w/o %d %b').count
+      User.recipient.group_by_week(
+        :created_at, week_start: :mon, last: 12, format: 'w/o %d %b'
+      ).count
     end
 
     def user_count_by_month
-      User.user.group_by_month(:created_at, last: 12, format: '%b %Y').count
+      User.recipient.group_by_month(:created_at, last: 12, format: '%b %Y').count
     end
 
     def recipient_count
@@ -101,7 +100,7 @@ ActiveAdmin.register_page 'Dashboard' do
     end
 
     def proposal_count_by_month
-      Proposal.where(state: %w(registered complete))
+      Proposal.where(state: %w[registered complete])
               .group_by_month(:created_at, last: 12, format: '%b %Y').count
     end
 
@@ -145,7 +144,7 @@ ActiveAdmin.register_page 'Dashboard' do
           end
           tr do
             td 'Proposals'
-            proposal_count(%w(initial registered complete))
+            proposal_count(%w[initial registered complete])
               .each_with_index do |count, i|
                 td percentage(count, i) if count[1].positive?
               end

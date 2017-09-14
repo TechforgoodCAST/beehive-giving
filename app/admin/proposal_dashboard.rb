@@ -93,13 +93,13 @@ ActiveAdmin.register_page 'Proposal Dashboard' do
 
       column do
         panel "Recipient age" do
-          render partial: "bar_chart", locals: {data: get_proposals.joins(:recipient).group('org_type IN (2,4)').group(:operating_for).count.sort_by { |key, val| key[1].to_i }.map { |k, v| [[(k[0] ? 'Registered charity' : 'Other organisation'), (k[1] == nil ? 'Unknown' : Organisation::OPERATING_FOR[k[1].to_i][0].upcase_first)], v] }.to_h}
+          render partial: "bar_chart", locals: {data: get_proposals.joins(:recipient).group('org_type IN (2,4)').group(:operating_for).count.sort_by { |key, val| key[1].to_i }.map { |k, v| [[(k[0] ? 'Registered charity' : 'Other organisation'), (k[1] == nil ? 'Unknown' : Recipient::OPERATING_FOR[k[1].to_i][0].upcase_first)], v] }.to_h}
         end
       end
 
       column do
         panel "Recipient size" do
-          render partial: "bar_chart", locals: {data: get_proposals.joins(:recipient).group('org_type IN (2,4)').group(:income_band).count.sort_by { |key, val| key[1].to_i }.map { |k, v| [[(k[0] ? 'Registered charity' : 'Other organisation'), (k[1] == nil ? 'Unknown' : Organisation::INCOME_BANDS[k[1]][0])], v] }.to_h}
+          render partial: "bar_chart", locals: {data: get_proposals.joins(:recipient).group('org_type IN (2,4)').group(:income_band).count.sort_by { |key, val| key[1].to_i }.map { |k, v| [[(k[0] ? 'Registered charity' : 'Other organisation'), (k[1] == nil ? 'Unknown' : Recipient::INCOME_BANDS[k[1]][0])], v] }.to_h}
         end
       end
     end

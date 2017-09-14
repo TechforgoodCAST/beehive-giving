@@ -2,8 +2,8 @@ ActiveAdmin.register User do
   config.per_page = 10
 
   permit_params :first_name, :last_name, :org_type, :agree_to_terms,
-                :email, :password, :password_confirmation, :role,
-                :organisation_id
+                :email, :password, :password_confirmation, :organisation_id,
+                :organisation_type
 
   controller do
     def scoped_collection
@@ -47,9 +47,8 @@ ActiveAdmin.register User do
 
   form do |f|
     f.inputs 'User Details' do
-      f.input :organisation, required: true,
-                             input_html: { class: 'chosen-select' }
-      f.input :role
+      f.input :organisation_id
+      f.input :organisation_type, as: :select, collection: %w[Recipient Funder]
       f.input :org_type, as: :select, collection: ORG_TYPES
       f.input :first_name
       f.input :last_name

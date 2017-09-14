@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170818130830) do
+ActiveRecord::Schema.define(version: 20170914083243) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -209,6 +209,18 @@ ActiveRecord::Schema.define(version: 20170818130830) do
     t.index ["theme_id"], name: "index_fund_themes_on_theme_id"
   end
 
+  create_table "funders", force: :cascade do |t|
+    t.string "slug", null: false
+    t.string "name", null: false
+    t.string "website"
+    t.string "charity_number"
+    t.string "company_number"
+    t.boolean "active", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_funders_on_slug", unique: true
+  end
+
   create_table "funds", id: :serial, force: :cascade do |t|
     t.integer "funder_id"
     t.string "type_of_fund"
@@ -280,65 +292,6 @@ ActiveRecord::Schema.define(version: 20170818130830) do
     t.index ["implementation_id", "proposal_id"], name: "index_implementations_proposals"
   end
 
-  create_table "organisations", id: :serial, force: :cascade do |t|
-    t.string "name", limit: 255
-    t.string "contact_number", limit: 255
-    t.string "website", limit: 255
-    t.string "street_address", limit: 255
-    t.string "city", limit: 255
-    t.string "region", limit: 255
-    t.string "postal_code", limit: 255
-    t.string "country", limit: 255
-    t.string "charity_number", limit: 255
-    t.string "company_number", limit: 255
-    t.string "slug", limit: 255
-    t.string "type", limit: 255
-    t.text "mission"
-    t.string "status", limit: 255, default: "Active - currently operational"
-    t.date "founded_on"
-    t.date "registered_on"
-    t.boolean "registered"
-    t.boolean "active_on_beehive"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "recipient_funder_accesses_count"
-    t.integer "org_type"
-    t.float "latitude"
-    t.float "longitude"
-    t.string "contact_email"
-    t.string "charity_name"
-    t.string "charity_status"
-    t.float "charity_income"
-    t.float "charity_spending"
-    t.string "charity_recent_accounts_link"
-    t.string "charity_trustees"
-    t.string "charity_employees"
-    t.string "charity_volunteers"
-    t.string "charity_year_ending"
-    t.string "charity_days_overdue"
-    t.string "charity_registered_date"
-    t.string "company_name"
-    t.string "company_type"
-    t.string "company_status"
-    t.date "company_incorporated_date"
-    t.date "company_last_accounts_date"
-    t.date "company_next_accounts_date"
-    t.date "company_next_returns_date"
-    t.date "company_last_returns_date"
-    t.text "company_sic", array: true
-    t.string "company_recent_accounts_link"
-    t.integer "grants_count", default: 0
-    t.integer "operating_for"
-    t.boolean "multi_national"
-    t.integer "income_band"
-    t.integer "employees"
-    t.integer "volunteers"
-    t.integer "funds_checked", default: 0, null: false
-    t.integer "income"
-    t.index ["id", "type"], name: "index_organisations_on_id_and_type"
-    t.index ["slug"], name: "index_organisations_on_slug", unique: true
-  end
-
   create_table "proposal_themes", force: :cascade do |t|
     t.bigint "proposal_id"
     t.bigint "theme_id"
@@ -400,6 +353,63 @@ ActiveRecord::Schema.define(version: 20170818130830) do
     t.datetime "updated_at"
   end
 
+  create_table "recipients", id: :serial, force: :cascade do |t|
+    t.string "name", limit: 255
+    t.string "contact_number", limit: 255
+    t.string "website", limit: 255
+    t.string "street_address", limit: 255
+    t.string "city", limit: 255
+    t.string "region", limit: 255
+    t.string "postal_code", limit: 255
+    t.string "country", limit: 255
+    t.string "charity_number", limit: 255
+    t.string "company_number", limit: 255
+    t.string "slug", limit: 255
+    t.text "mission"
+    t.string "status", limit: 255, default: "Active - currently operational"
+    t.date "founded_on"
+    t.date "registered_on"
+    t.boolean "registered"
+    t.boolean "active_on_beehive"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "recipient_funder_accesses_count"
+    t.integer "org_type"
+    t.float "latitude"
+    t.float "longitude"
+    t.string "contact_email"
+    t.string "charity_name"
+    t.string "charity_status"
+    t.float "charity_income"
+    t.float "charity_spending"
+    t.string "charity_recent_accounts_link"
+    t.string "charity_trustees"
+    t.string "charity_employees"
+    t.string "charity_volunteers"
+    t.string "charity_year_ending"
+    t.string "charity_days_overdue"
+    t.string "charity_registered_date"
+    t.string "company_name"
+    t.string "company_type"
+    t.string "company_status"
+    t.date "company_incorporated_date"
+    t.date "company_last_accounts_date"
+    t.date "company_next_accounts_date"
+    t.date "company_next_returns_date"
+    t.date "company_last_returns_date"
+    t.text "company_sic", array: true
+    t.string "company_recent_accounts_link"
+    t.integer "grants_count", default: 0
+    t.integer "operating_for"
+    t.boolean "multi_national"
+    t.integer "income_band"
+    t.integer "employees"
+    t.integer "volunteers"
+    t.integer "funds_checked", default: 0, null: false
+    t.integer "income"
+    t.index ["slug"], name: "index_recipients_on_slug", unique: true
+  end
+
   create_table "restrictions", id: :serial, force: :cascade do |t|
     t.string "details", null: false
     t.datetime "created_at", null: false
@@ -411,14 +421,14 @@ ActiveRecord::Schema.define(version: 20170818130830) do
   end
 
   create_table "subscriptions", id: :serial, force: :cascade do |t|
-    t.integer "organisation_id"
+    t.integer "recipient_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "stripe_user_id"
     t.boolean "active", default: false, null: false
     t.date "expiry_date"
     t.integer "percent_off", default: 0, null: false
-    t.index ["organisation_id"], name: "index_subscriptions_on_organisation_id"
+    t.index ["recipient_id"], name: "index_subscriptions_on_recipient_id"
     t.index ["stripe_user_id"], name: "index_subscriptions_on_stripe_user_id", unique: true
   end
 
@@ -443,7 +453,7 @@ ActiveRecord::Schema.define(version: 20170818130830) do
     t.string "password_digest", limit: 255
     t.string "auth_token", limit: 255
     t.string "password_reset_token", limit: 255
-    t.string "role", limit: 255, default: "User"
+    t.string "organisation_type", limit: 255, default: "Recipient"
     t.datetime "password_reset_sent_at"
     t.datetime "last_seen"
     t.integer "sign_in_count", default: 0
@@ -453,6 +463,7 @@ ActiveRecord::Schema.define(version: 20170818130830) do
     t.boolean "authorised", default: true
     t.string "unlock_token"
     t.index ["organisation_id"], name: "index_users_on_organisation_id"
+    t.index ["organisation_type"], name: "index_users_on_organisation_type"
   end
 
   add_foreign_key "enquiries", "funds"
