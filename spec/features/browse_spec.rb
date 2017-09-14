@@ -52,8 +52,15 @@ feature 'Browse' do
               so I can discover new funding opportunties" do
       click_link @theme.name, match: :first
       expect(current_path).to eq theme_proposal_funds_path(@proposal, @theme.slug)
-      expect(page).to have_css '.card', count: 7
-      expect(page).to have_css '.locked-fund', count: 6
+      expect(page).to have_css '.mb5.fs15.lh20.mid-gray', count: 6
+      expect(page).to have_css '.mb5.fs15.lh20.mid-gray.redacted', count: 5
+    end
+
+    scenario 'Themes redacted on second page and CTA not shown' do
+      click_link @theme.name, match: :first
+      click_link '2'
+      expect(page).to have_css '.mb5.fs15.lh20.mid-gray.redacted', count: 1
+      expect(page).not_to have_text 'Upgrade'
     end
 
     scenario "When I visit a funding theme which isn't listed,
