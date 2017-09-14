@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170914083243) do
+ActiveRecord::Schema.define(version: 20170914140025) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -146,41 +146,13 @@ ActiveRecord::Schema.define(version: 20170914083243) do
   end
 
   create_table "enquiries", id: :serial, force: :cascade do |t|
-    t.integer "recipient_id"
-    t.integer "funder_id"
-    t.boolean "new_project"
-    t.boolean "new_location"
-    t.integer "amount_seeking"
-    t.integer "duration_seeking"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "approach_funder_count", default: 0
-    t.string "funding_stream"
     t.integer "fund_id"
     t.integer "proposal_id"
     t.index ["fund_id"], name: "index_enquiries_on_fund_id"
-    t.index ["funder_id"], name: "index_enquiries_on_funder_id"
     t.index ["proposal_id"], name: "index_enquiries_on_proposal_id"
-    t.index ["recipient_id"], name: "index_enquiries_on_recipient_id"
-  end
-
-  create_table "features", id: :serial, force: :cascade do |t|
-    t.integer "funder_id"
-    t.integer "recipient_id"
-    t.boolean "data_requested"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "request_amount_awarded"
-    t.boolean "request_funding_dates"
-    t.boolean "request_funding_countries"
-    t.boolean "request_grant_count"
-    t.boolean "request_applications_count"
-    t.boolean "request_enquiry_count"
-    t.boolean "request_funding_types"
-    t.boolean "request_funding_streams"
-    t.boolean "request_approval_months"
-    t.index ["funder_id"], name: "index_features_on_funder_id"
-    t.index ["recipient_id"], name: "index_features_on_recipient_id"
   end
 
   create_table "feedbacks", id: :serial, force: :cascade do |t|
@@ -448,7 +420,6 @@ ActiveRecord::Schema.define(version: 20170914083243) do
     t.integer "organisation_id"
     t.string "first_name", limit: 255
     t.string "last_name", limit: 255
-    t.string "job_role", limit: 255
     t.string "email", limit: 255
     t.string "password_digest", limit: 255
     t.string "auth_token", limit: 255
