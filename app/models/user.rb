@@ -1,8 +1,8 @@
 class User < ApplicationRecord
-  scope :user, -> { where role: 'User' }
-  scope :funder, -> { where role: 'Funder' }
+  scope :recipient, -> { where organisation_type: 'Recipient' }
+  scope :funder, -> { where organisation_type: 'Funder' }
 
-  belongs_to :organisation, optional: true
+  belongs_to :organisation, polymorphic: true, optional: true
   has_many :feedbacks
 
   attr_accessor :org_type, :charity_number, :company_number
@@ -10,20 +10,19 @@ class User < ApplicationRecord
   validates :org_type, inclusion: {
     in: (ORG_TYPES.pluck(1) - [-1]), message: 'Please select a valid option'
   }, on: :create
-  validates :charity_number,
-            presence: { message: "Can't be blank" },
-            if: proc { |o| [1, 3].include? o.org_type }
-  validates :company_number,
-            presence: { message: "Can't be blank" },
-            if: proc { |o| [2, 3, 5].include? o.org_type }
+  validates :charity_number, presence: true,
+                             if: proc { |o| [1, 3].include? o.org_type }
+  validates :company_number, presence: true,
+                             if: proc { |o| [2, 3, 5].include? o.org_type }
 
   validates :org_type,
-            presence: { message: "Can't be blank" },
+            presence: true,
             numericality: { only_integer: true, greater_than_or_equal_to: 0 },
             on: :create
 
-  validates :first_name, :last_name, :email, :role, :agree_to_terms,
-            presence: { message: "Can't be blank" }, on: :create
+  # TODO: add validations for association
+  validates :first_name, :last_name, :email, :agree_to_terms,
+            :organisation_type, presence: true, on: :create
 
   validates :first_name, :last_name, format: {
     with: /\A(([a-z]+)*(-)*)+\z/i, message: 'Only a-z and -'
@@ -36,12 +35,12 @@ class User < ApplicationRecord
             uniqueness: { message: "Please 'sign in' using the link above" },
             on: :create
 
-  validates :password, presence: { message: "Can't be blank" },
-                       length: { within: 6..25 }, on: [:create, :update]
+  validates :password, presence: true, length: { within: 6..25 },
+                       on: %i[create update]
   validates :password,
             format: { with: /\A(?=.*\d)(?=.*[a-zA-Z]).{6,25}\z/,
                       message: 'Must include 6 characters with 1 number' },
-            on: [:create, :update]
+            on: %i[create update]
 
   before_create { generate_token(:auth_token) }
 

@@ -1,6 +1,6 @@
 inherit_from: .rubocop_todo.yml
 
-Style/IndentationConsistency:
+Layout/IndentationConsistency:
   EnforcedStyle: rails
 
 Style/Documentation:

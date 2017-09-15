@@ -5,11 +5,19 @@ describe User do
     @app.create_recipient.with_user
     @db = @app.instances
     @user = @db[:user]
-    @org = @db[:recipient]
+    @recipient = @db[:recipient]
   end
 
-  it 'belongs to organisation' do
-    expect(@user.organisation).to eq @org
+  it 'belongs to Recipient' do
+    expect(@user.organisation).to eq @recipient
+    expect(@user.organisation_type).to eq 'Recipient'
+  end
+
+  it 'belongs to Funder' do
+    funder = create(:funder)
+    @user.update(organisation: funder)
+    expect(@user.organisation).to eq funder
+    expect(@user.organisation_type).to eq 'Funder'
   end
 
   it 'has many feedbacks' do

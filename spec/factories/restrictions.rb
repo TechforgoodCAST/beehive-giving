@@ -3,7 +3,7 @@ FactoryGirl.define do
     sequence(:details) { |n| "Random restriction #{n}" }
 
     factory :recipient_restriction, class: 'Restriction' do
-      category 'Organisation'
+      category 'Recipient'
     end
   end
 end

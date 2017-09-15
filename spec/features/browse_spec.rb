@@ -63,7 +63,8 @@ feature 'Browse' do
               I want to see similar funds,
               so I can discover new funding opportunties" do
       click_link @theme.name, match: :first
-      expect(current_path).to eq theme_proposal_funds_path(@proposal, @theme.slug)
+      expect(current_path)
+        .to eq theme_proposal_funds_path(@proposal, @theme.slug)
       expect(page).to have_css '.mb5.fs15.lh20.mid-gray', count: 6
       expect(page).to have_css '.mb5.fs15.lh20.mid-gray.redacted', count: 5
     end
@@ -120,9 +121,9 @@ feature 'Browse' do
 
       scenario 'I want to see which time period the analysis relates to,
                 so I can understand how up to date it is' do
-        expect(page).to have_text 1.year.ago.strftime("%b %Y") +
+        expect(page).to have_text 1.year.ago.strftime('%b %Y') +
                                   ' - ' +
-                                  Time.zone.today.strftime("%b %Y"),
+                                  Time.zone.today.strftime('%b %Y'),
                                   count: 4
       end
 
@@ -164,8 +165,8 @@ feature 'Browse' do
 
       scenario 'I want to see the sources of open data,
                 so I can further my research' do
-        expect(page).to have_link("License", :href=>'https://creativecommons.org/licenses/by/4.0/')
-        expect(page).to have_link("Source", :href=>'http://www.example.com')
+        expect(page).to have_link('License', href: 'https://creativecommons.org/licenses/by/4.0/')
+        expect(page).to have_link('Source', href: 'http://www.example.com')
       end
     end
   end

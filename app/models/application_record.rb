@@ -14,4 +14,12 @@ class ApplicationRecord < ActiveRecord::Base
 
     markdown.render(str)
   end
+
+  def generate_slug(obj, col, n = 1)
+    return nil unless col
+    slug = col.parameterize
+    slug += "-#{n}" if n > 1
+    return slug unless obj.class.find_by(slug: slug)
+    generate_slug(obj, col, n + 1)
+  end
 end

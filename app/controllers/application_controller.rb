@@ -31,7 +31,7 @@ class ApplicationController < ActionController::Base
     end
 
     def load_recipient
-      return unless logged_in?
+      return unless logged_in? && current_user.organisation.is_a?(Recipient)
       @recipient = current_user.organisation
     end
 
@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
     end
 
     def funder? # NOTE: legacy support
-      current_user.role == 'Funder'
+      current_user.organisation.is_a? Funder
     end
 
     def ensure_logged_in
