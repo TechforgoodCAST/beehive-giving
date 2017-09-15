@@ -10,6 +10,7 @@ feature 'Browse' do
     @db = @app.instances
     @proposal = @db[:registered_proposal]
     @theme = @db[:themes].first
+    @themes = @db[:themes]
     visit sign_in_path
   end
 
@@ -20,6 +21,17 @@ feature 'Browse' do
     fill_in :password, with: @db[:user].password
     click_button 'Sign in'
     expect(current_path).to eq proposal_funds_path(@proposal)
+  end
+
+  scenario 'When I browse the site,
+            there is a list of fund themes in the footer' do
+    Fund.first.update themes: [@themes.first, @themes.second]
+    Fund.second.update themes: [@themes.first]
+    visit root_path
+    expect(page).to have_text 'FUNDING'
+    expect(page).to have_text @themes.first.name
+    expect(page).to have_text @themes.second.name
+    expect(page).to have_text @themes.third.name
   end
 
   context 'signed in' do

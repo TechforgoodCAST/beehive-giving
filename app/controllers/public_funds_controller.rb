@@ -12,6 +12,15 @@ class PublicFundsController < ApplicationController
     @restrictions = @fund.restrictions.pluck(:category, :details)
   end
 
+  def themed
+    @theme = Theme.find_by(slug: params[:theme]) if params[:theme].present?
+    @funds = Fund.active
+                 .includes(:funder, :themes)
+                 .where(themes: { id: @theme })
+                 .page(params[:page])
+    redirect_to public_funds_path, alert: 'Not found' if @funds.empty?
+  end
+
   private
 
     def ensure_logged_out
