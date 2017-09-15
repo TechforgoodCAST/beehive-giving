@@ -22,9 +22,9 @@ p.uk-margin-bottom
     =<> counts[:restrictions]
     | criteria.
 
-- if @restrictions[:Organisation].present?
+- if @restrictions[:Recipient].present?
   h4.uk-text-bold Is your organisation?
-  - @restrictions[:Organisation].each do |r|
+  - @restrictions[:Recipient].each do |r|
     .recipient_restriction
       = render view: :restriction, locals: {r: r, f: f, e: r.eligibility(@proposal)}
 

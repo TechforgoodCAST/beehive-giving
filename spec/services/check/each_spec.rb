@@ -42,18 +42,18 @@ describe Check::Each do
       end
 
       response = {
-        'acme-awards-for-all-1' => {
-          'location' => { 'eligible' => true },
-          'org_type' => { 'eligible' => true },
-          'quiz' => { 'eligible' => false, 'count_failing' => 5 },
-          'amount' => { 'eligible' => true },
-          'org_income' => { 'eligible' => true }
+        'funder-awards-for-all-1' => {
+          'amount'     => { 'eligible' => true },
+          'location'   => { 'eligible' => true },
+          'org_income' => { 'eligible' => true },
+          'org_type'   => { 'eligible' => true },
+          'quiz'       => { 'eligible' => false, 'count_failing' => 5 }
         },
-        'acme-awards-for-all-2' => {
-          'location' => { 'eligible' => true },
-          'org_type' => { 'eligible' => true },
-          'amount' => { 'eligible' => true },
-          'org_income' => { 'eligible' => true }
+        'funder-awards-for-all-2' => {
+          'amount'     => { 'eligible' => true },
+          'location'   => { 'eligible' => true },
+          'org_income' => { 'eligible' => true },
+          'org_type'   => { 'eligible' => true }
         }
       }
 

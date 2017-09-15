@@ -5,7 +5,7 @@ ActiveAdmin.register Restriction do
     f.inputs do
       f.input :details, label: 'Are you seeking funding for ___ ?'
       f.input :invert
-      f.input :category, collection: %w(Proposal Organisation),
+      f.input :category, collection: %w[Proposal Recipient],
                          input_html: { class: 'chosen-select' }
     end
     f.actions
@@ -17,7 +17,7 @@ ActiveAdmin.register Restriction do
       row :invert
       row :category
     end
-    panel "Funds with this restriction" do
+    panel 'Funds with this restriction' do
       table_for restriction.funds do
         column :slug
         column :funder

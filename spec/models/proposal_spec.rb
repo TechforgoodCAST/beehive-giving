@@ -62,13 +62,13 @@ describe Proposal do
 
       it '#update_legacy_suitability' do
         result = {
-          'acme-2-awards-for-all-1' => {
-            'amount' => { 'score' => 0.2 },
-            'duration' => { 'score' => 0.0 },
+          'funder-awards-for-all-1' => {
+            'amount'   => { 'score' => 0.2 },
+            'duration' => { 'score' => 0.1 },
             'location' => { 'score' => 1, 'reason' => 'anywhere' },
             'org_type' => { 'score' => 0.41500000000000004 },
-            'theme' => { 'score' => 1.0 },
-            'total' => 0.0
+            'theme'    => { 'score' => 1.0 },
+            'total'    => 0.0
           }
         }
 
