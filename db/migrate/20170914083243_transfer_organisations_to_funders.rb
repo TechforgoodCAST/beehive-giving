@@ -1,6 +1,8 @@
 class TransferOrganisationsToFunders < ActiveRecord::Migration[5.1]
   def up
     Recipient.where(type_temp: 'Funder').each do |funder|
+      w = URI.parse(funder.website)
+      funder.website = "http://#{funder.website}/" unless w.scheme
       Funder.create!(
         id: funder.id,
         slug: funder.slug,

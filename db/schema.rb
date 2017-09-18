@@ -414,6 +414,7 @@ ActiveRecord::Schema.define(version: 20170914140025) do
     t.string "slug"
     t.index ["name"], name: "index_themes_on_name", unique: true
     t.index ["parent_id"], name: "index_themes_on_parent_id"
+    t.index ["slug"], name: "index_themes_on_slug", unique: true
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
