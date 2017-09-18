@@ -93,8 +93,8 @@ describe Recipient do
     end
 
     it 'has many eligibilities' do
-      expect(@recipient.eligibilities.count).to eq 2
-      expect(@recipient.eligibilities.last.category_type).to eq 'Recipient'
+      expect(@recipient.answers.count).to eq 2
+      expect(@recipient.answers.last.category_type).to eq 'Recipient'
     end
 
     it 'destroys eligibilities' do

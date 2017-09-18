@@ -8,9 +8,9 @@ class Restriction < Question
   def eligibility(proposal)
     return nil unless proposal
     if category == 'Proposal'
-      eligibilities.to_a.find { |f| f.category_id == proposal.id }
+      answers.to_a.find { |f| f.category_id == proposal.id }
     elsif category == 'Recipient'
-      eligibilities.to_a.find { |f| f.category_id == proposal.recipient.id }
+      answers.to_a.find { |f| f.category_id == proposal.recipient.id }
     end
   end
 end
