@@ -320,6 +320,15 @@ ActiveRecord::Schema.define(version: 20170914140025) do
     t.index ["state"], name: "index_proposals_on_state"
   end
 
+  create_table "questions", id: :serial, force: :cascade do |t|
+    t.string "details", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "invert", default: false, null: false
+    t.string "category", default: "Proposal", null: false
+    t.string "type", default: "Restriction"
+  end
+
   create_table "recipient_funder_accesses", id: :serial, force: :cascade do |t|
     t.integer "recipient_id"
     t.integer "funder_id"
@@ -382,22 +391,6 @@ ActiveRecord::Schema.define(version: 20170914140025) do
     t.integer "funds_checked", default: 0, null: false
     t.integer "income"
     t.index ["slug"], name: "index_recipients_on_slug", unique: true
-  end
-
-  create_table "questions", id: :serial, force: :cascade do |t|
-    t.string "details", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "invert", default: false, null: false
-    t.string "category", default: "Proposal", null: false
-    t.string "type", default: "Restriction"
-  end
-
-  create_table "recipient_funder_accesses", id: :serial, force: :cascade do |t|
-    t.integer "recipient_id"
-    t.integer "funder_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
   end
 
   create_table "subscriptions", id: :serial, force: :cascade do |t|
