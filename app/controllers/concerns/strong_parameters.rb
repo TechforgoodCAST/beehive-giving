@@ -3,7 +3,7 @@ module StrongParameters
 
   def user_params
     params.require(:user)
-          .permit(:first_name, :last_name, :job_role, :email, :password,
+          .permit(:first_name, :last_name, :email, :password,
                   :password_confirmation, :role, :agree_to_terms, :org_type,
                   :charity_number, :company_number)
   end
