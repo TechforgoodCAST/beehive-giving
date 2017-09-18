@@ -13,6 +13,7 @@ FactoryGirl.define do
     geographic_scale_limited false
 
     restrictions_known true
+    priorities_known true
 
     permitted_org_types [2, 3] # A registered charity, A registered company
     permitted_costs [1, 2] # Capital funding, Revenue funding

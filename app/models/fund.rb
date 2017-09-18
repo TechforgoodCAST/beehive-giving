@@ -12,8 +12,10 @@ class Fund < ApplicationRecord
 
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
-  has_and_belongs_to_many :restrictions
+  has_and_belongs_to_many :restrictions, association_foreign_key: 'question_id', join_table: 'funds_questions'
   accepts_nested_attributes_for :restrictions
+  has_and_belongs_to_many :priorities, association_foreign_key: 'question_id', join_table: 'funds_questions'
+  accepts_nested_attributes_for :priorities
 
   validates :funder, :type_of_fund, :slug, :name, :description, :currency,
             :key_criteria, :application_link, :countries, :themes,
@@ -26,6 +28,8 @@ class Fund < ApplicationRecord
 
   validates :restrictions, presence: true, if: :restrictions_known?
   validates :restrictions_known, presence: true, if: :restriction_ids?
+  validates :priorities, presence: true, if: :priorities_known?
+  validates :priorities_known, presence: true, if: :priority_ids?
 
   validates :open_data, :period_start, :period_end,
             :amount_awarded_distribution, :award_month_distribution,
@@ -56,6 +60,7 @@ class Fund < ApplicationRecord
   before_validation :check_beehive_data,
                     if: proc { |o| o.skip_beehive_data.to_i.zero? }
   after_save :set_restriction_ids, if: :restrictions_known?
+  after_save :set_priority_ids, if: :priorities_known?
 
   def self.order_by(proposal, col)
     case col
@@ -150,6 +155,10 @@ class Fund < ApplicationRecord
 
     def set_restriction_ids
       update_column :restriction_ids, restrictions.pluck(:id)
+    end
+
+    def set_priority_ids
+      update_column :priority_ids, priorities.pluck(:id)
     end
 
     def period_end_in_past

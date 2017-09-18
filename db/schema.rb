@@ -60,6 +60,18 @@ ActiveRecord::Schema.define(version: 20170914140025) do
     t.index ["age_group_id", "proposal_id"], name: "index_age_groups_proposals_on_age_group_id_and_proposal_id"
   end
 
+  create_table "answers", id: :serial, force: :cascade do |t|
+    t.integer "category_id", null: false
+    t.integer "question_id", null: false
+    t.boolean "eligible", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "category_type", default: "Proposal", null: false
+    t.index ["category_id"], name: "index_answers_on_category_id"
+    t.index ["category_type"], name: "index_answers_on_category_type"
+    t.index ["question_id"], name: "index_answers_on_question_id"
+  end
+
   create_table "articles", id: :serial, force: :cascade do |t|
     t.string "title", null: false
     t.string "slug", null: false
@@ -131,18 +143,6 @@ ActiveRecord::Schema.define(version: 20170914140025) do
     t.integer "proposal_id"
     t.index ["district_id"], name: "index_districts_proposals_on_district_id"
     t.index ["proposal_id"], name: "index_districts_proposals_on_proposal_id"
-  end
-
-  create_table "eligibilities", id: :serial, force: :cascade do |t|
-    t.integer "category_id", null: false
-    t.integer "restriction_id", null: false
-    t.boolean "eligible", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "category_type", default: "Proposal", null: false
-    t.index ["category_id"], name: "index_eligibilities_on_category_id"
-    t.index ["category_type"], name: "index_eligibilities_on_category_type"
-    t.index ["restriction_id"], name: "index_eligibilities_on_restriction_id"
   end
 
   create_table "enquiries", id: :serial, force: :cascade do |t|
@@ -238,18 +238,20 @@ ActiveRecord::Schema.define(version: 20170914140025) do
     t.integer "min_org_income"
     t.boolean "max_org_income_limited", default: false
     t.integer "max_org_income"
+    t.jsonb "priority_ids"
+    t.boolean "priorities_known"
     t.index ["funder_id"], name: "index_funds_on_funder_id"
     t.index ["slug"], name: "index_funds_on_slug"
     t.index ["tags"], name: "index_funds_on_tags", using: :gin
   end
 
-  create_table "funds_restrictions", id: :serial, force: :cascade do |t|
+  create_table "funds_questions", id: :serial, force: :cascade do |t|
     t.integer "fund_id"
-    t.integer "restriction_id"
+    t.integer "question_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["fund_id"], name: "index_funds_restrictions_on_fund_id"
-    t.index ["restriction_id"], name: "index_funds_restrictions_on_restriction_id"
+    t.index ["fund_id"], name: "index_funds_questions_on_fund_id"
+    t.index ["question_id"], name: "index_funds_questions_on_question_id"
   end
 
   create_table "implementations", id: :serial, force: :cascade do |t|
@@ -318,6 +320,15 @@ ActiveRecord::Schema.define(version: 20170914140025) do
     t.index ["state"], name: "index_proposals_on_state"
   end
 
+  create_table "questions", id: :serial, force: :cascade do |t|
+    t.string "details", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "invert", default: false, null: false
+    t.string "category", default: "Proposal", null: false
+    t.string "type", default: "Restriction"
+  end
+
   create_table "recipient_funder_accesses", id: :serial, force: :cascade do |t|
     t.integer "recipient_id"
     t.integer "funder_id"
@@ -380,16 +391,6 @@ ActiveRecord::Schema.define(version: 20170914140025) do
     t.integer "funds_checked", default: 0, null: false
     t.integer "income"
     t.index ["slug"], name: "index_recipients_on_slug", unique: true
-  end
-
-  create_table "restrictions", id: :serial, force: :cascade do |t|
-    t.string "details", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "invert", default: false, null: false
-    t.string "category", default: "Proposal", null: false
-    t.boolean "has_condition", default: false, null: false
-    t.string "condition"
   end
 
   create_table "subscriptions", id: :serial, force: :cascade do |t|
