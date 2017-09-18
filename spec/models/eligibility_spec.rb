@@ -35,7 +35,7 @@ describe 'Eligibility' do
 
     it 'category_type must equal Restriction category' do
       expect(@eligibility.category_type).to eq @proposal_restriction.category
-      @eligibility.category_type = 'Organisation'
+      @eligibility.category_type = 'Recipient'
       expect(@eligibility).not_to be_valid
     end
 
@@ -56,7 +56,7 @@ describe 'Eligibility' do
 
     it 'belongs to recipient' do
       expect(@eligibility.category).to eq @recipient
-      expect(@eligibility.category_type).to eq 'Organisation'
+      expect(@eligibility.category_type).to eq 'Recipient'
     end
 
     it 'category_type must equal Restriction category' do

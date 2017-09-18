@@ -10,6 +10,7 @@ feature 'Browse' do
     @db = @app.instances
     @proposal = @db[:registered_proposal]
     @theme = @db[:themes].first
+    @themes = @db[:themes]
     visit sign_in_path
   end
 
@@ -20,6 +21,17 @@ feature 'Browse' do
     fill_in :password, with: @db[:user].password
     click_button 'Sign in'
     expect(current_path).to eq proposal_funds_path(@proposal)
+  end
+
+  scenario 'When I browse the site,
+            there is a list of fund themes in the footer' do
+    Fund.first.update themes: [@themes.first, @themes.second]
+    Fund.second.update themes: [@themes.first]
+    visit root_path
+    expect(page).to have_text 'FUNDING'
+    expect(page).to have_text @themes.first.name
+    expect(page).to have_text @themes.second.name
+    expect(page).to have_text @themes.third.name
   end
 
   context 'signed in' do
@@ -51,9 +63,17 @@ feature 'Browse' do
               I want to see similar funds,
               so I can discover new funding opportunties" do
       click_link @theme.name, match: :first
-      expect(current_path).to eq theme_proposal_funds_path(@proposal, @theme.slug)
-      expect(page).to have_css '.card', count: 7
-      expect(page).to have_css '.locked-fund', count: 6
+      expect(current_path)
+        .to eq theme_proposal_funds_path(@proposal, @theme.slug)
+      expect(page).to have_css '.mb5.fs15.lh20.mid-gray', count: 6
+      expect(page).to have_css '.mb5.fs15.lh20.mid-gray.redacted', count: 5
+    end
+
+    scenario 'Themes redacted on second page and CTA not shown' do
+      click_link @theme.name, match: :first
+      click_link '2'
+      expect(page).to have_css '.mb5.fs15.lh20.mid-gray.redacted', count: 1
+      expect(page).not_to have_text 'Upgrade'
     end
 
     scenario "When I visit a funding theme which isn't listed,
@@ -101,9 +121,9 @@ feature 'Browse' do
 
       scenario 'I want to see which time period the analysis relates to,
                 so I can understand how up to date it is' do
-        expect(page).to have_text 1.year.ago.strftime("%b %Y") +
+        expect(page).to have_text 1.year.ago.strftime('%b %Y') +
                                   ' - ' +
-                                  Time.zone.today.strftime("%b %Y"),
+                                  Time.zone.today.strftime('%b %Y'),
                                   count: 4
       end
 
@@ -145,8 +165,8 @@ feature 'Browse' do
 
       scenario 'I want to see the sources of open data,
                 so I can further my research' do
-        expect(page).to have_link("License", :href=>'https://creativecommons.org/licenses/by/4.0/')
-        expect(page).to have_link("Source", :href=>'http://www.example.com')
+        expect(page).to have_link('License', href: 'https://creativecommons.org/licenses/by/4.0/')
+        expect(page).to have_link('Source', href: 'http://www.example.com')
       end
     end
   end

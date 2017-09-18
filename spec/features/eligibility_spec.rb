@@ -98,7 +98,7 @@ feature 'Eligibility' do
     scenario 'When I visit a fund without recipient restrictions,
               I want to only see proposal restrictions,
               so I avoid answering unnecessary questions' do
-      helper.remove_restrictions(@fund, 'Organisation')
+      helper.remove_restrictions(@fund, 'Recipient')
       click_link 'Eligiblity'
       helper.answer_proposal_restrictions(@fund).check_eligibility
       expect(page).not_to have_css '.recipient_restriction'
@@ -194,11 +194,11 @@ feature 'Eligibility' do
       helper.answer_recipient_restrictions(@fund)
             .answer_proposal_restrictions(@fund, eligible: false)
             .check_eligibility
-      visit proposal_fund_path(@proposal, 'acme-awards-for-all-6')
+      visit proposal_fund_path(@proposal, 'funder-awards-for-all-6')
 
       helper.check_eligibility(remaining: 2)
       # 3 questions previously answered should be checked
-      expect(page).to have_text "You have completed 3 of 5 criteria."
+      expect(page).to have_text 'You have completed 3 of 5 criteria.'
       expect(page).to have_css '.radio_buttons[checked=checked]', count: 3
     end
 

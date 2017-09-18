@@ -1,0 +1,51 @@
+= content_for :title, "#{@theme.name} funds"
+
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'Funds' => proposal_funds_path(@proposal), @theme.name => theme_proposal_funds_path(@proposal, @theme)
+
+%main
+  .maxw1080.mx-auto.px20.flex.flex-wrap
+    %aside.perc25.md.px20.mb40
+      = render partial: 'proposals/card'
+
+    %section.perc75.md.mb80.px20
+      %h1.light.mb20=@theme.name
+
+      .mb30
+        = cell :filter, params, funding_duration: @proposal.funding_duration
+        %small.slate
+          = pluralize(@fund_count, 'fund')
+          found
+
+      - @funds.each_with_index do |fund, i|
+        %article.mb40
+
+          = cell(:fund_indicators, fund, proposal: @proposal)
+
+          - if @recipient.subscribed? || (i < 1 && params[:page].to_i < 2)
+            .mb5
+              = link_to fund.title, proposal_fund_path(@proposal, fund), class: 'blue fs22 lh30'
+            .mb5.fs15.lh20.mid-gray
+              = fund.subtitle
+            %p.mb5.fs15.lh20
+              = raw strip_tags fund.description_html.truncate_words(30)
+
+          - else
+            .muted
+              .mb5.blue.fs22.lh30.redacted= scramble_name fund.name
+              .mb5.fs15.lh20.mid-gray.redacted= scramble_name fund.funder.name
+              %p.mb5.fs15.lh20= raw fund.description_redacted.truncate_words(30)
+
+          %p.fs14.lh18
+            = cell(:fund_insight, fund, proposal: @proposal).call(:themes)
+
+          - if i < 1 && params[:page].to_i < 2
+            %a{ href: account_upgrade_path(@recipient) }
+              .mt40.fs14.white.bg-darken-blue.circle.shadow.inline-block.py5.pr14.pl5.truncate
+                .fs12.bg-green.caps.bold.circle.inline-block.py3.px5 Upgrade
+                Go unlimited with Beehive Pro to see more
+                = @theme.name
+                funds
+
+      = paginate @funds

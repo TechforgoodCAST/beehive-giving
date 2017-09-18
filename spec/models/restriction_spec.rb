@@ -11,7 +11,7 @@ describe 'Restriction' do
   it 'category in range' do
     expect(@r1).to be_valid
 
-    @r1.category = 'Organisation'
+    @r1.category = 'Recipient'
     expect(@r1).to be_valid
 
     @r1.category = ''

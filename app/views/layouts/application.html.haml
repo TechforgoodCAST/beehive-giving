@@ -98,14 +98,9 @@
                     %li.mb10
                       = link_to 'Beehive for Funders', for_funders_path, class: 'slate'
 
-                -# .f1
-                -#   .bold.mb14 FUNDING
-                -#   %ul
-                -#     %li.mb10 Arts
-                -#     %li.mb10 Youth
-                -#     %li.mb10 Community
-                -#     %li.mb10 Sport
-                -#     %li.mb10 and more...
+                .f1
+                  .bold.mb14 FUNDING
+                  = cell(:footer_themes, @current_user, proposal: @proposal)
 
                 .f1
                   .bold.mb14 RESOURCES
@@ -125,7 +120,7 @@
               = link_to 'BeehiveGiving.org', root_path, class: 'mid-gray'
             Incubated by
             = succeed ',' do
-              = link_to 'CAST', 'http://wearecast.org.uk/', target: '_blank', class: 'mid-gray'
+              = link_to 'CAST', 'http://www.wearecast.org.uk/', target: '_blank', class: 'mid-gray'
             Registered Charity No: 1161998, Company No: 09544506
 
     - else

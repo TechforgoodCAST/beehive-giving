@@ -69,7 +69,7 @@ class TestHelper
   def stub_beehive_insight(endpoint, data)
     body = {}
     # TODO: match records in seeds
-    7.times { |i| body["acme-awards-for-all-#{i + 1}"] = (i + 1).to_f / 10 }
+    7.times { |i| body["funder-awards-for-all-#{i + 1}"] = (i + 1).to_f / 10 }
     stub_request(:post, endpoint).with(
       body: { data: data }.to_json,
       headers: {
@@ -129,7 +129,7 @@ class TestHelper
     self
   end
 
-  def with_user(opts = { organisation: @recipient })
+  def with_user(opts = { organisation_id: @recipient&.id })
     @user = create(:user, opts)
     self
   end

@@ -21,7 +21,7 @@ class EligibilityHelper
   end
 
   def answer_recipient_restrictions(fund, eligible: true)
-    answer(fund, eligible: eligible, category: 'Organisation', n: 2)
+    answer(fund, eligible: eligible, category: 'Recipient', n: 2)
     self
   end
 

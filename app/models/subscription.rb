@@ -1,5 +1,5 @@
 class Subscription < ApplicationRecord
-  belongs_to :organisation
+  belongs_to :recipient
 
   def self.plans
     plans = ENV['STRIPE_PLANS']
