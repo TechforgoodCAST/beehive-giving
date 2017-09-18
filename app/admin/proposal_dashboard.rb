@@ -50,12 +50,12 @@ ActiveAdmin.register_page 'Proposal Dashboard' do
 
     def org_size(k)
       return 'Unknown' if k.nil?
-      Organisation::INCOME_BANDS[k][0]
+      Recipient::INCOME_BANDS[k][0]
     end
 
     def operating_for(k)
       return 'Unknown' if k.nil?
-      Organisation::OPERATING_FOR[k.to_i][0].upcase_first
+      Recipient::OPERATING_FOR[k.to_i][0].upcase_first
     end
 
     def funding_type(k)
