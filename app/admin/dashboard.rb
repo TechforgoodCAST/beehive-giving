@@ -34,8 +34,6 @@ ActiveAdmin.register_page 'Dashboard' do
           h3 'Other'
           h5 'Feedback'
           h1 Feedback.all.count
-          h5 'Requests'
-          h1 Feature.all.count
         end
       end
 

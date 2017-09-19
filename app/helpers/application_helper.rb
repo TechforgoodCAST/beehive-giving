@@ -8,6 +8,7 @@ module ApplicationHelper
       articles: %i[index show],
       errors: %i[not_found gone internal_server_error],
       funds: %i[index themed],
+      microsites: %i[basics check_basics eligibility check_eligibility],
       pages: %i[about faq forfunders privacy terms],
       password_resets: %i[new create edit update],
       public_funds: %i[index show themed],

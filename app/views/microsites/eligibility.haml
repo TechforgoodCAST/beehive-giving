@@ -1,0 +1,15 @@
+%main
+  .maxw1080.mx-auto.px20.flex.flex-wrap
+    %aside.perc25.md.px20.mb40
+      Progress
+
+    %section.perc75.md.mb80.px20
+      %h1.mb40= @funder.name
+
+      %h3 Your organisation
+      - @restrictions.select { |r| r.category == 'Recipient' }.each do |r|
+        %li= r.details
+
+      %h3 Your proposal
+      - @restrictions.select { |r| r.category == 'Proposal' }.each do |r|
+        %li= r.details

@@ -17,6 +17,10 @@ describe Funder do
     expect(@funder.funds.size).to eq 2
   end
 
+  it 'has many Restrictions' do
+    expect(true).to eq false
+  end
+
   it 'has slug' do
     expect(@funder.slug).to eq 'funder-name'
   end

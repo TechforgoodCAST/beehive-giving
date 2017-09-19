@@ -81,6 +81,15 @@ Rails.application.routes.draw do
   post  '/account/:id/subscription/upgrade',   to: 'charges#create'
   get   '/account/:id/subscription/thank-you', to: 'charges#thank_you', as: 'thank_you'
 
+  # Microsite
+  get '/:slug/basics', to: 'microsites#basics', as: 'microsite_basics'
+  post '/:slug/basics', to: 'microsites#check_basics'
+  get '/:slug/eligibility/:recipient_id', to: 'microsites#eligibility', as: 'microsite_eligibility'
+  post '/:slug/eligibility/:recipient_id', to: 'microsites#check_eligibility'
+  # get '/:funder/suitability'
+  # get '/:funder/pre-results'
+  # get '/:funder/results'
+
   # Webhooks
   post '/webhooks/invoice-payment-succeeded',     to: 'webhooks#invoice_payment_succeeded'
   post '/webhooks/customer-subscription-deleted', to: 'webhooks#customer_subscription_deleted'
