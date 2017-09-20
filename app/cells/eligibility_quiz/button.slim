@@ -12,10 +12,10 @@
 
 - elsif (MAX_FREE_LIMIT - @proposal.recipient.funds_checked) < 1
 
-  = link_to "Upgrade to check eligibility", account_upgrade_path(@recipient),
+  = link_to "Upgrade to check eligibility", account_upgrade_path(@proposal.recipient),
             class: 'button white bg-blue caps shadow',
             :title => "You have no free eligibility checks remaining."
-  | You have no free eligibility checks remaining
+  p.mt10.red You have no free eligibility checks remaining
 
 - else
 

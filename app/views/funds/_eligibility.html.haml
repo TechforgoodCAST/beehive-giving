@@ -1,17 +1,24 @@
 = cell(:eligibility_banner, @proposal, fund: @fund).call(:eligible)
 
-- {'Location': 'location', 'Grant amount': 'amount', 'Organisation type': 'org_type', 'Organisation income': 'org_income'}.each do |k, v|
-  %p.mb20
-    = cell(:fund_indicators, @fund, proposal: @proposal, criteria: v).call(:dot)
-    = k
-    - if @proposal.ineligible_reasons(@fund.slug).include? v
-      .bg-red.rounded.shadow.fs14.p10.mb20.white
-        .bold.caps.mb10 Ineligible
-        = cell(:eligibility_banner, @proposal, fund: @fund).call(v.to_sym)
+%ul
+  - {'Location': 'location', 'Grant amount': 'amount', 'Organisation type': 'org_type', 'Organisation income': 'org_income'}.each do |k, v|
+    %li.mb15
+      .flex
+        %div
+          = cell(:fund_indicators, @fund, proposal: @proposal, criteria: v, large: true).call(:tag)
+        %div.ml5
+          = k
+      - if @proposal.ineligible_reasons(@fund.slug).include? v
+        .bg-red.rounded.shadow.fs14.p10.mb20.mt10.white
+          .bold.caps.mb10 Ineligible
+          = cell(:eligibility_banner, @proposal, fund: @fund).call(v.to_sym)
 
-%p.mb20
-  = cell(:fund_indicators, @fund, proposal: @proposal, criteria: 'quiz').call(:dot)
-  Quiz
+  %li.mb15
+    .flex
+      %div
+        = cell(:fund_indicators, @fund, proposal: @proposal, criteria: 'quiz', large: true).call(:tag)
+      %div.ml5
+        Quiz
 
 %h4.mb10
   Quiz

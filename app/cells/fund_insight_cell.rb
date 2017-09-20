@@ -34,7 +34,7 @@ class FundInsightCell < Cell::ViewModel
       link_to(
         theme.name,
         theme_path(theme),
-        class: 'blue'
+        class: 'blue nowrap'
       )
     end.join('<span class="mid-gray"> &middot; </span>')
   end

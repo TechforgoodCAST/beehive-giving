@@ -1,5 +1,5 @@
-.border.rounded{:class => (@proposal.eligible?(@fund.slug) ? 'border-green' : 'border-red')}
-  .px10.py10{:class => (@proposal.eligible?(@fund.slug) ? 'bg-green' : 'bg-red')}
+.border.rounded{:class => { -1 => 'border-blue', 0 => 'border-red', 1 => 'border-green' }[@proposal.eligible_status(@fund.slug)]}
+  .px10.py10{:class => { -1 => 'bg-blue', 0 => 'bg-red', 1 => 'bg-green' }[@proposal.eligible_status(@fund.slug)]}
     .fs15.lh20.caps.white.bold
       Analysis
   .px10.py15.fs15
@@ -13,14 +13,24 @@
         - else
           %span.right.red
             Ineligible
+      - else
+        %span.right.blue
+          Incomplete
 
-    - {'Location': 'location', 'Grant amount': 'amount', 'Organisation type': 'org_type', 'Organisation income': 'org_income', 'Quiz': 'quiz'}.each do |k, v|
-      %p.fs14.my10
-        = cell(:fund_indicators, @fund, proposal: @proposal, criteria: v).call(:dot)
-        = k
-        - if @proposal.ineligible_reasons(@fund.slug).include? v
-          .muted.fs12
-            = cell(:eligibility_banner, @proposal, fund: @fund).call(v.to_sym)
+    %ul
+      - {'Location': 'location', 'Grant amount': 'amount', 'Organisation type': 'org_type', 'Organisation income': 'org_income', 'Quiz': 'quiz'}.each do |k, v|
+        %li.fs14.my10
+          .flex
+            %div
+              = cell(:fund_indicators, @fund, proposal: @proposal, criteria: v).call(:dot)
+            %div.ml5
+              = k
+            .col
+              - if v == 'quiz' && !@proposal.checked_fund?(@fund)
+                = link_to 'Check', '#eligibility-quiz', class: 'blue right'
+          - if @proposal.ineligible_reasons(@fund.slug).include? v
+            .muted.fs12.lh15.mt5
+              = cell(:eligibility_banner, @proposal, fund: @fund).call(v.to_sym)
 
 
 

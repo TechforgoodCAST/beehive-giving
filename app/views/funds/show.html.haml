@@ -18,7 +18,7 @@
         %h1.light= @fund.title
         .fs15.lh20.mid-gray= @fund.subtitle
 
-        %p.fs15.mt15
+        %p.fs15.mt15.lh20
           = cell(:fund_insight, @fund, proposal: @proposal).call(:themes)
 
       %hr.my40
@@ -70,6 +70,11 @@
         %section.muted
           .mb40
             %h2.light Apply
+
+          - unless @fund.open_call?
+            .bg-silver.rounded.shadow.fs18.lh22.p10.mb20
+              .bold.caps.mb10.fs15 Unsolicited applications
+              Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
 
           .button.white.bg-blue.caps.shadow.mb40 Application form
         -#
