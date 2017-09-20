@@ -1,5 +1,6 @@
 class FundInsightCell < Cell::ViewModel
   include ActionView::Helpers::NumberHelper
+  include FundsHelper
 
   property :name
   property :funder
@@ -59,6 +60,21 @@ class FundInsightCell < Cell::ViewModel
     else
       render locals: {message: "between #{number_to_currency(model.min_amount_awarded, opts)} and #{number_to_currency(model.max_amount_awarded, opts)}"}
     end
+  end
+
+  def grant_count
+    return unless model.open_data? && model.grant_count?
+    render locals: {grant_count: model.grant_count}
+  end
+
+  def award_months
+    return unless model.open_data? && model.award_month_distribution?
+    render locals: {message: top_award_months(model)}
+  end
+
+  def countries
+    return unless model.open_data && model.country_distribution?
+    render locals: {message: top_countries(model)}
   end
 
   def data_source

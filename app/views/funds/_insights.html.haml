@@ -1,32 +1,39 @@
-%p= raw(fund.description_html)
-- if fund.period_end.present? && fund.period_end > 3.years.ago
-  = period(fund)
-- else
-  = period(fund)
-  %span.year.muted (recommendation based on older data)
+%div.markdown
+  = raw(fund.description_html)
+
+%p.my10.fs15.mid-gray
+  = cell(:fund_insight, fund, proposal: @proposal).call(:data_source)
+
+%h4.mb20.mt20.fs20.mid-gray
+  - if fund.period_end.present? && fund.period_end > 3.years.ago
+    = period(fund)
+  - else
+    = period(fund)
+    %span.year.muted (recommendation based on older data)
 
 - unless fund.open_call?
   %div.cta Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
 
 %ul.insights
-  - unless params[:controller] == 'recipients' && %w(eligibility update_eligibility apply).include?(params[:action])
-    - unless @proposal.eligible_status(fund.slug).negative?
-      %li{ class: (@proposal.eligible?(fund.slug) ? 'eligible' : 'ineligible')}
-        - if @proposal.eligible?(fund.slug)
-          %a.badge{ href: eligible_proposal_funds_path(@proposal) } Eligible
-          You are eligible for funding.
-          %a.action{href: eligibility_proposal_fund_path(@proposal, fund)} See criteria
-        - else
-          %a.badge{ href: ineligible_proposal_funds_path(@proposal) } Ineligible
-          You are ineligible for funding.
-          - if @recipient.subscribed?
-            %ul
-              - @proposal.ineligible_reasons(fund.slug).each do |r|
-                %li= cell(:eligibility_banner, @proposal, fund: fund).call(r.to_sym)
-          - else
-            %a.action{href: eligibility_proposal_fund_path(@proposal, fund)} Find out why
+  -# - unless params[:controller] == 'recipients' && %w(eligibility update_eligibility apply).include?(params[:action])
+  -#   - unless @proposal.eligible_status(fund.slug).negative?
+  -#     %li{ class: (@proposal.eligible?(fund.slug) ? 'eligible' : 'ineligible')}
+  -#       - if @proposal.eligible?(fund.slug)
+  -#         %a.badge{ href: eligible_proposal_funds_path(@proposal) } Eligible
+  -#         You are eligible for funding.
+  -#         %a.action{href: eligibility_proposal_fund_path(@proposal, fund)} See criteria
+  -#       - else
+  -#         %a.badge{ href: ineligible_proposal_funds_path(@proposal) } Ineligible
+  -#         You are ineligible for funding.
+  -#         - if @recipient.subscribed?
+  -#           %ul
+  -#             - @proposal.ineligible_reasons(fund.slug).each do |r|
+  -#               %li= cell(:eligibility_banner, @proposal, fund: fund).call(r.to_sym)
+  -#         - else
+  -#           %a.action{href: eligibility_proposal_fund_path(@proposal, fund)} Find out why
 
-  = cell(:fund_insight, fund).call(:amount)
+  %li<
+    = cell(:fund_insight, fund).call(:amount)
 
   - if @proposal && !@recipient.transferred?
     - if @proposal.suitability[fund.slug]['amount']['score'].positive?
@@ -36,7 +43,8 @@
         %strong amount
         you're seeking.
 
-  = cell(:fund_insight, fund).call(:duration)
+  %li<
+    = cell(:fund_insight, fund).call(:duration)
 
   - if @proposal && !@recipient.transferred?
     - if @proposal.suitability[fund.slug]['duration']['score'].positive?
@@ -49,7 +57,7 @@
   - if fund.open_data && fund.grant_count
     %li<
       Awarded
-      .highlight= number_with_delimiter(fund.grant_count)
+      %strong= number_with_delimiter(fund.grant_count)
       = "grant".pluralize(fund.grant_count) + '.'
       %a.action{href: proposal_fund_path(@proposal, fund, anchor: 'how-was-funding-distributed')} More info
 
@@ -67,4 +75,5 @@
         %strong= top_countries(fund)
       %a.action{href: proposal_fund_path(@proposal, fund, anchor: 'where-was-funding-awarded')} More info
 
-  = cell(:fund_insight, fund).call(:grant_examples)
+  %li<
+    = cell(:fund_insight, fund).call(:grant_examples)

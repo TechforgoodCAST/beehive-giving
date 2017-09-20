@@ -1,21 +1,24 @@
 = javascript_include_tag 'eligibilities'
 
-p.uk-margin-bottom
+p.mb15
   | The following questions have been set by
-  =<> model.funder.name
-  | complete them to see if you are eligible for their
-  =<> link_to model.short_name, proposal_fund_path(@proposal, model)
+  - if model.funder.website?
+    =< link_to model.funder.name, model.funder.website, target: '_blank', class: 'blue'
+  - else
+    =< model.funder.name
+  | , complete them to see if you are eligible for their
+  =<> link_to model.short_name, proposal_fund_path(@proposal, model), class: 'blue'
   | fund.
 
 - if counts[:completed] == counts[:restrictions]
   - if @proposal.ineligible_reasons(model.slug).include? 'quiz'
-    .cta.red
+    .bg-red.rounded.shadow.fs14.p10.mb20.white
       = cell(:eligibility_banner, @proposal, fund: model).call(:quiz)
   - else
-    .cta.green
-      | All criteria completed. You are eligible.
+    .bg-green.rounded.shadow.fs14.p10.mb20.white
+      | All criteria completed with none ineligible
 - else
-  .cta.yellow
+  .bg-yellow.rounded.shadow.fs14.p10.mb20
     | You have completed
     =<> counts[:completed]
     | of
@@ -23,16 +26,21 @@ p.uk-margin-bottom
     | criteria.
 
 - if @restrictions[:Recipient].present?
-  h4.uk-text-bold Is your organisation?
+  h5.mb20 Is your organisation?
   - @restrictions[:Recipient].each do |r|
     .recipient_restriction
       = render view: :restriction, locals: {r: r, f: f, e: r.eligibility(@proposal)}
 
 - if @restrictions[:Proposal].present?
-  h4.uk-text-bold Is your funding proposal for?
+  h5.my20 Is your funding proposal for?
   - @restrictions[:Proposal].each do |r|
     .proposal_restriction
       = render view: :restriction, locals: {r: r, f: f, e: r.eligibility(@proposal)}
 
+.bg-silver.rounded.shadow.fs14.p10.my20
+  .bold.caps.mb10 Good to know
+  | Eligibility checks for location, the amount you are seeking and other factors will been done automatically.
+
 - if @proposal
-  = render view: :button, locals: {f: f}
+  .my40
+    = render view: :button, locals: {f: f}

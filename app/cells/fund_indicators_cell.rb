@@ -7,6 +7,12 @@ class FundIndicatorsCell < Cell::ViewModel
     render
   end
 
+  def dot
+    @proposal = options[:proposal]
+    @eligible_status = ((@proposal.ineligible_reasons(model.slug).include? options[:criteria]) ? 0 : 1)
+    render
+  end
+
   private
 
     def bg_color(status)
