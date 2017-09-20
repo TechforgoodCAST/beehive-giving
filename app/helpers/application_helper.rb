@@ -5,14 +5,24 @@ module ApplicationHelper
 
   def v2_layout? # TODO: remove @ v2
     permitted = {
+      # accounts: %i[subscription],
       articles: %i[index show],
-      errors: %i[not_found gone internal_server_error],
-      funds: %i[index themed show],
-      pages: %i[about faq forfunders privacy terms],
-      password_resets: %i[new create edit update],
-      public_funds: %i[index show themed],
-      signup: %i[user create_user],
+      # charges: %i[new thank_you],
+      # eligibilities: %i[new], # removed?
       enquiries: %i[new],
+      errors: %i[not_found gone internal_server_error],
+      # feedback: %i[edit new],
+      funds: %i[index themed show],
+      pages: %i[about faq forfunders privacy terms], # preview?
+      password_resets: %i[new create edit update],
+      # proposals: %i[edit index new update],
+      public_funds: %i[index show themed],
+      # recipients: %i[edit],
+      # sessions: %i[new],
+      signup: %i[user create_user], # funder, granted_access, unauthorised
+      # signup_proposals: %i[edit new],
+      # signup_recipients: %i[edit new],
+      # users: %[edit],
     }
     controller = params[:controller].to_sym
     action = params[:action].to_sym
