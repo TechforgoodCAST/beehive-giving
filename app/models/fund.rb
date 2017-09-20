@@ -81,6 +81,8 @@ class Fund < ApplicationRecord
       where slug: proposal.eligible_funds.keys
     when 'ineligible'
       where slug: proposal.ineligible_funds.keys
+    when 'to_check'
+      where slug: proposal.to_check_funds.keys
     else
       all
     end

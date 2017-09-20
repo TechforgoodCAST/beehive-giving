@@ -15,7 +15,7 @@ class FilterCell < Cell::ViewModel
       tag.select id: id do
         options.map do |opt|
           unless opt.kind_of?(Array)
-            opt = [opt, opt.capitalize]
+            opt = [opt, opt.humanize.capitalize]
           end
           tag.option(opt[1], value: url_encode(opt[0]), selected: selected?(id, opt[0]))
         end.reduce(:+)
