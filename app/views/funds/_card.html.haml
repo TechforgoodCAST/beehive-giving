@@ -1,4 +1,4 @@
-.border.rounded{:class => { -1 => 'border-blue', 0 => 'border-red', 1 => 'border-green' }[@proposal.eligible_status(@fund.slug)]}
+.border.rounded.mb20{:class => { -1 => 'border-blue', 0 => 'border-red', 1 => 'border-green' }[@proposal.eligible_status(@fund.slug)]}
   .px10.py10{:class => { -1 => 'bg-blue', 0 => 'bg-red', 1 => 'bg-green' }[@proposal.eligible_status(@fund.slug)]}
     .fs15.lh20.caps.white.bold
       Analysis

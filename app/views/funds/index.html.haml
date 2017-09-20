@@ -33,7 +33,7 @@
 %main
   .maxw1080.mx-auto.px20.flex.flex-wrap
     %aside.perc25.md.px20.mb40
-      = render partial: 'proposals/card'
+      = render partial: 'proposals/card', locals: { context: 'bold' }
 
     %section.perc75.md.mb80.px20
       %h1.light.mb20 Funds
