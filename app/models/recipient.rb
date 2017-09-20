@@ -143,7 +143,7 @@ class Recipient < ApplicationRecord
   end
 
   def find_with_reg_nos
-    Recipient.find_by(
+    self.class.find_by(
       charity_number: charity_number,
       company_number: company_number
     )

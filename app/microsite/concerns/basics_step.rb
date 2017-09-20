@@ -1,7 +1,9 @@
 class BasicsStep
   include ActiveModel::Model
 
-  attr_accessor :funding_type, :total_costs, :org_type
+  attr_reader :recipient, :proposal
+  attr_accessor :funding_type, :total_costs, :org_type, :charity_number,
+                :company_number
 
   def funding_type=(str)
     @funding_type = str.blank? ? str : str.to_i
@@ -13,13 +15,17 @@ class BasicsStep
 
   validates :funding_type, inclusion: { in: FUNDING_TYPES.pluck(1) }
   validates :org_type, inclusion: { in: (ORG_TYPES.pluck(1) - [-1]) }
-  validates :total_costs, numericality: { greater_than_or_equal_to: 0 }
+  validates :total_costs, numericality: { greater_than: 0 }
+  validates :charity_number, presence: {
+    if: -> { [1, 3].include? org_type }
+  }
+  validates :company_number, presence: {
+    if: -> { [2, 3, 5].include? org_type }
+  }
 
   def save
     if valid?
-      # TODO: save_recipient!
-      # TODO: save_proposal!
-      true
+      save_proposal! if save_recipient!
     else
       false
     end
@@ -31,11 +37,31 @@ class BasicsStep
 
   private
 
+    def load_recipient
+      @recipient = Recipient.new(
+        charity_number: @charity_number,
+        company_number: @company_number,
+        org_type: @org_type
+      )
+      @recipient.scrape_org
+      @recipient = @recipient.find_with_reg_nos || @recipient
+    end
+
     def save_recipient!
-      # TODO: Save Recipient and set state
+      load_recipient
+      return true if @recipient.persisted?
+      @recipient.set_slug
+      @recipient.save(validate: false)
     end
 
     def save_proposal!
-      # TODO: Save Proposal and set state
+      Proposal.skip_callback(:save, :after, :initial_recommendation)
+      @proposal = @recipient.proposals.where(
+        state: 'microsite-basics', # TODO: set state
+        funding_type: @funding_type,
+        total_costs: @total_costs
+      ).first_or_initialize
+      @proposal.save(validate: false)
+      Proposal.set_callback(:save, :after, :initial_recommendation)
     end
 end

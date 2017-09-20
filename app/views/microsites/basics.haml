@@ -8,7 +8,7 @@
 
       = simple_form_for @microsite.step, url: microsite_basics_path do |f|
         .mb20
-          %label.block.fs15.bold.mb10 What type of grant funding?
+          %label.block.fs15.bold.mb10 What type of grant funding are you seeking?
           = f.input :funding_type, collection: FUNDING_TYPES
         .mb20
           %label.block.fs15.bold.mb10 How much funding are you seeking?
@@ -16,4 +16,10 @@
         .mb20
           %label.block.fs15.bold.mb10 Who will be receiving the funding?
           = f.input :org_type, collection: ORG_TYPES
+        .mb20
+          %label.block.fs15.bold.mb10 Charity number
+          = f.input :charity_number
+        .mb20
+          %label.block.fs15.bold.mb10 Company number
+          = f.input :company_number
         = f.button :button, 'Next', class: 'button white bg-olive caps truncate', data: { disable_with: 'Saving...' }

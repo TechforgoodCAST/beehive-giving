@@ -9,6 +9,9 @@
       %h3 Your organisation
       - @restrictions.select { |r| r.category == 'Recipient' }.each do |r|
         %li= r.details
+      
+      - unless @recipient.valid?
+        = @recipient.errors.full_messages
 
       %h3 Your proposal
       - @restrictions.select { |r| r.category == 'Proposal' }.each do |r|
