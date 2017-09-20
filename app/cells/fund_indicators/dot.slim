@@ -1,2 +1,2 @@
-span class=['dot white fs12 bold', bg_color(@eligible_status)]
-  = eligibility_text(@eligible_status)
+span class=['white fs12 bold', large ? 'dot-lg' : 'dot', bg_color(@eligible_status)] aria-label=eligibility_text(@eligible_status) title=eligibility_text(@eligible_status)
+  / = eligibility_text(@eligible_status)

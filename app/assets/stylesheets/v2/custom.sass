@@ -48,19 +48,29 @@
   .crumb:nth-last-child(4)
     display: inline-block !important
 
-.dot
-  height: 16px
-  line-height: 16px
-  max-width: 16px
+.dot, .dot-lg
   padding: 0 5px
   display: inline-block
   border-radius: 9999px
-  text-indent: 16px
   overflow: hidden
   transition: all .24s ease-in-out
   &:hover
     max-width: 150px
     opacity: 1
+
+.dot
+  height: 16px
+  line-height: 16px
+  max-width: 16px
+  min-width: 16px
+  text-indent: 16px
+
+.dot-lg
+  height: 22px
+  line-height: 22px
+  max-width: 22px
+  min-width: 22px
+  text-indent: 22px
 
 .progress
   height: 100%
@@ -218,4 +228,5 @@
     color: map-get($colors, blue)
   ul
     list-style: disc
+  ul, ol
     padding-left: 20px
