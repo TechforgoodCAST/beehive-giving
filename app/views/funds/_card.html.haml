@@ -6,13 +6,12 @@
     .mb20
       %span.caps.bold.light.blue
         Eligibility
-      - if @proposal.checked_fund?(@fund)
-        - if @proposal.eligible?(@fund.slug)
-          %span.right.green
-            Eligible
-        - else
-          %span.right.red
-            Ineligible
+      - if @proposal.eligible_status(@fund.slug) == 1
+        %span.right.green
+          Eligible
+      - elsif @proposal.eligible_status(@fund.slug) == 0
+        %span.right.red
+          Ineligible
       - else
         %span.right.blue
           Incomplete
