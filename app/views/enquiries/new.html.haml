@@ -33,13 +33,13 @@
           Apply to
           = @fund.funder.name
         .fs25.lh20.light.mt20
-          = @fund.name
+          = @fund.short_name
           fund
 
       %section
         %p
           If you haven't already, be sure to explore our analysis of the
-          = link_to "#{@fund.name.strip}", proposal_fund_path(@proposal, @fund), class: 'blue'
+          = link_to "#{@fund.short_name.strip}", proposal_fund_path(@proposal, @fund), class: 'blue'
           fund, otherwise below are a few things to consider before you proceed.
 
       %hr.my40
