@@ -11,7 +11,8 @@ module ApplicationHelper
       pages: %i[about faq forfunders privacy terms],
       password_resets: %i[new create edit update],
       public_funds: %i[index show themed],
-      signup: %i[user create_user]
+      signup: %i[user create_user],
+      enquiries: %i[new],
     }
     controller = params[:controller].to_sym
     action = params[:action].to_sym
