@@ -1,9 +1,9 @@
 class BasicsStep
   include ActiveModel::Model
 
-  attr_reader :recipient, :proposal
-  attr_accessor :funding_type, :total_costs, :org_type, :charity_number,
-                :company_number
+  attr_reader :assessment
+  attr_accessor :funder_id, :funding_type, :total_costs, :org_type,
+                :charity_number, :company_number
 
   def funding_type=(str)
     @funding_type = str.blank? ? str : str.to_i
@@ -25,14 +25,10 @@ class BasicsStep
 
   def save
     if valid?
-      save_proposal! if save_recipient!
+      create_assessment if save_recipient! && save_proposal!
     else
       false
     end
-  end
-
-  def transition
-    # TODO: implement
   end
 
   private
@@ -57,11 +53,21 @@ class BasicsStep
     def save_proposal!
       Proposal.skip_callback(:save, :after, :initial_recommendation)
       @proposal = @recipient.proposals.where(
-        state: 'microsite-basics', # TODO: set state
+        state: 'basics',
         funding_type: @funding_type,
         total_costs: @total_costs
       ).first_or_initialize
       @proposal.save(validate: false)
       Proposal.set_callback(:save, :after, :initial_recommendation)
+    end
+
+    def create_assessment
+      @assessment = Assessment.where(
+        funder_id: @funder_id,
+        recipient: @recipient,
+        proposal: @proposal
+      ).first_or_initialize
+      @assessment.state = 'eligibility'
+      @assessment.save
     end
 end

@@ -32,6 +32,12 @@ class Proposal < ApplicationRecord
   include Workflow
   workflow_column :state
   workflow do
+    state :basics do
+      event :next_step, transitions_to: :eligibility
+    end
+    state :eligibility do
+      event :next_step, transitions_to: :registered
+    end
     state :initial do
       event :next_step, transitions_to: :registered
     end

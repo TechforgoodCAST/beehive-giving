@@ -97,10 +97,30 @@ describe Proposal do
       expect(@initial_proposal.state).to eq 'initial'
     end
 
-    it 'transitions to registered state' do
+    it 'basics transitions to eligibility state' do
+      expect(proposal.state).to eq 'eligibility'
+    end
+
+    it 'eligibility transitions to registered state' do
+      expect(proposal.state).to eq 'registered'
+    end
+
+    it 'inital transitions to registered state' do
       @initial_proposal.save
       @initial_proposal.next_step!
       expect(@initial_proposal.state).to eq 'registered'
+    end
+
+    it 'transferred transitions to registered state' do
+      expect(proposal.state).to eq 'registered'
+    end
+
+    it 'registered transitions to complete state' do
+      expect(proposal.state).to eq 'complete'
+    end
+
+    it 'complete state does not transition' do
+      expect(proposal.state).to eq 'complete'
     end
 
     it 'clears age_groups and gender unless affect_people' do

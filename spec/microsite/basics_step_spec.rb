@@ -87,9 +87,15 @@ describe BasicsStep do
     end
   end
 
-  it '#recipient'
-  it '#proposal'
-  it '#save creates Recipient with state ?'
-  it '#save creates Proposal with state ?'
-  it '#transition'
+  it '#save creates Recipient' do
+    expect(recipient.persisted?).to eq true
+  end
+
+  it '#save creates Proposal' do
+    expect(proposal.state).to eq 'basics'
+  end
+
+  it '#save creates Assessment' do
+    expect(assessment.state).to eq 'eligibility'
+  end
 end

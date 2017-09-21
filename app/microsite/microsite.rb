@@ -3,17 +3,11 @@ class Microsite
 
   def initialize(step)
     @step = step
-    %i[save transition].each do |method|
-      next if @step.respond_to? method
-      raise NoMethodError, "undefined method #{method} for #{@step.inspect}"
-    end
+    return if @step.respond_to? :save
+    raise NoMethodError, "undefined method save for #{@step.inspect}"
   end
 
   def save
     @step.save
-  end
-
-  def transition
-    @step.transition
   end
 end

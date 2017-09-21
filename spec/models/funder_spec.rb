@@ -18,7 +18,7 @@ describe Funder do
   end
 
   it 'has many Restrictions' do
-    expect(true).to eq false
+    expect(@funder.restrictions.size).to eq 2
   end
 
   it 'has slug' do

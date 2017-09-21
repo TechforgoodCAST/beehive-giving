@@ -7,6 +7,7 @@
       %h1.mb40= @funder.name
 
       = simple_form_for @microsite.step, url: microsite_basics_path do |f|
+        = f.hidden_field :funder_id, value: @funder.id
         .mb20
           %label.block.fs15.bold.mb10 What type of grant funding are you seeking?
           = f.input :funding_type, collection: FUNDING_TYPES

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170914140025) do
+ActiveRecord::Schema.define(version: 20170920200255) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -79,6 +79,18 @@ ActiveRecord::Schema.define(version: 20170914140025) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["slug"], name: "index_articles_on_slug", unique: true
+  end
+
+  create_table "assessments", force: :cascade do |t|
+    t.bigint "funder_id"
+    t.bigint "recipient_id"
+    t.bigint "proposal_id"
+    t.string "state", default: "basics", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["funder_id"], name: "index_assessments_on_funder_id"
+    t.index ["proposal_id"], name: "index_assessments_on_proposal_id"
+    t.index ["recipient_id"], name: "index_assessments_on_recipient_id"
   end
 
   create_table "beneficiaries", id: :serial, force: :cascade do |t|
@@ -438,6 +450,9 @@ ActiveRecord::Schema.define(version: 20170914140025) do
     t.index ["organisation_type"], name: "index_users_on_organisation_type"
   end
 
+  add_foreign_key "assessments", "funders"
+  add_foreign_key "assessments", "proposals"
+  add_foreign_key "assessments", "recipients"
   add_foreign_key "enquiries", "funds"
   add_foreign_key "enquiries", "proposals"
   add_foreign_key "fund_themes", "funds"
