@@ -239,6 +239,12 @@
     position: absolute
     left: -9999px
 
+  input[type=radio] ~ label
+    cursor: pointer
+
   input[type=radio]:checked ~ label
     color: map-get($colors, white)
     background-color: map-get($colors, blue)
+
+  input[type=radio]:not(:checked) ~ label
+    color: map-get($colors, blue)
