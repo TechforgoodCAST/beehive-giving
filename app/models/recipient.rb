@@ -25,6 +25,7 @@ class Recipient < ApplicationRecord
 
   has_one :subscription, dependent: :destroy
   has_many :users, as: :organisation, dependent: :destroy
+  has_many :assessments
   has_many :proposals
   has_many :countries, -> { distinct }, through: :proposals
   has_many :districts, -> { distinct }, through: :proposals

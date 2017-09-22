@@ -47,7 +47,9 @@ class Proposal < ApplicationRecord
     state :registered do
       event :next_step, transitions_to: :complete
     end
-    state :complete
+    state :complete do
+      event :next_step, transitions_to: :complete
+    end
   end
 
   validate :prevent_second_proposal_until_first_is_complete,

@@ -10,15 +10,19 @@ describe Funder do
     expect(@funder.users.size).to eq 2
   end
 
+  it 'has many Assessments' do
+    expect(Funder.reflect_on_association(:assessments).macro).to eq :has_many
+  end
+
+  it 'has many Restrictions' do
+    expect(Funder.reflect_on_association(:restrictions).macro).to eq :has_many
+  end
+
   it 'has many Funds' do
     build_list(:fund, 2, funder: @funder).each do |fund|
       fund.save(validate: false)
     end
     expect(@funder.funds.size).to eq 2
-  end
-
-  it 'has many Restrictions' do
-    expect(@funder.restrictions.size).to eq 2
   end
 
   it 'has slug' do

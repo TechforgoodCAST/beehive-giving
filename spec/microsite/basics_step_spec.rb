@@ -1,12 +1,26 @@
 require 'rails_helper'
+require_relative '../support/match_helper'
 
 describe BasicsStep do
   subject do
     BasicsStep.new(
-      funding_type: 0,
+      funder_id: create(:funder).id,
+      funding_type: 0, # Don't know
       total_costs: 10_000,
-      org_type: ORG_TYPES[4][1]
+      org_type: ORG_TYPES[2][1], # A registered charity
+      charity_number: '123456'
     )
+  end
+
+  let(:helper) { MatchHelper.new }
+
+  before(:each) do
+    helper.stub_charity_commission subject.charity_number
+  end
+
+  it '#funder_id required' do
+    subject.funder_id = nil
+    is_expected.not_to be_valid
   end
 
   context '#funding_type' do
@@ -87,15 +101,33 @@ describe BasicsStep do
     end
   end
 
-  it '#save creates Recipient' do
-    expect(recipient.persisted?).to eq true
-  end
+  context '#save' do
+    before(:each) do
+      Proposal.skip_callback :save, :save_all_age_groups_if_all_ages
+      Proposal.skip_callback :save, :clear_age_groups_and_gender_unless_affect_people
+    end
 
-  it '#save creates Proposal' do
-    expect(proposal.state).to eq 'basics'
-  end
+    after(:each) do
+      Proposal.set_callback :save, :save_all_age_groups_if_all_ages
+      Proposal.set_callback :save, :clear_age_groups_and_gender_unless_affect_people
+    end
 
-  it '#save creates Assessment' do
-    expect(assessment.state).to eq 'eligibility'
+    it 'creates Recipient' do
+      expect(Recipient.count).to eq 0
+      subject.save
+      expect(Recipient.count).to eq 1
+    end
+
+    it 'creates Proposal' do
+      expect(Proposal.count).to eq 0
+      subject.save
+      expect(Proposal.last.state).to eq 'basics'
+    end
+
+    it 'creates Assessment' do
+      expect(Assessment.count).to eq 0
+      subject.save
+      expect(Assessment.last.state).to eq 'eligibility'
+    end
   end
 end
