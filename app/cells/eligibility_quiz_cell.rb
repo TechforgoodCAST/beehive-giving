@@ -13,6 +13,16 @@ class EligibilityQuizCell < Cell::ViewModel
     end
   end
 
+  def show_public
+    load_restrictions
+    counts = restrictions_count
+    if counts[:restrictions] > 0
+      render locals: { f: options[:f], counts: counts }
+    else
+      render :noquiz
+    end
+  end
+
   private
 
     def load_restrictions

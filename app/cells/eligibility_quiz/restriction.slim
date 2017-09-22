@@ -5,6 +5,7 @@
                                   :last,
                                   :first,
                                   checked: e&.read_attribute(:eligible),
+                                  disabled: ((defined? disabled) ? ["true", "false"] : nil),
                                   boolean_style: 'inline',
                                   collection_wrapper_tag: 'div',
                                   collection_wrapper_class: 'flex quiz',

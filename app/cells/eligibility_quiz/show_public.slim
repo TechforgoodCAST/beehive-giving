@@ -1,0 +1,29 @@
+p.mb15
+  | The following questions have been set by
+  - if model.funder.website?
+    =< link_to model.funder.name, model.funder.website, target: '_blank', class: 'blue'
+  - else
+    =< model.funder.name
+  | , complete them to see if you are eligible for their
+  =<> model.short_name
+  | fund.
+
+- if @restrictions[:Recipient].present?
+  h5.mb20 Is your organisation?
+  - @restrictions[:Recipient].each do |r|
+    .recipient_restriction
+      = render view: :restriction, locals: {r: r, f: f, e: nil, disabled: true}
+
+- if @restrictions[:Proposal].present?
+  h5.my20 Is your funding proposal for?
+  - @restrictions[:Proposal].each do |r|
+    .proposal_restriction
+      = render view: :restriction, locals: {r: r, f: f, e: nil, disabled: true}
+
+.bg-silver.rounded.shadow.fs14.p10.my20
+  .bold.caps.mb10 Good to know
+  | Eligibility checks for location, the amount you are seeking and other factors have been done automatically.
+
+- if @proposal
+  .my40
+    = render view: :button, locals: {f: f}

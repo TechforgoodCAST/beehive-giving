@@ -17,6 +17,13 @@
             :title => "You have no free eligibility checks remaining."
   p.mt10.red You have no free eligibility checks remaining
 
+- elsif @proposal.recipient.incomplete_first_proposal?
+
+  = f.button :button, "Check eligibility",
+                      class: 'button white bg-blue caps shadow',
+                      :disabled => true,
+                      :title => "This will use one of your free eligibility checks."
+
 - else
 
   = f.button :button, "Check eligibility (#{[0, (MAX_FREE_LIMIT - @proposal.recipient.funds_checked)].max} left)",
