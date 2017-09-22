@@ -89,7 +89,7 @@ class EligibilitiesController < ApplicationController
       @restrictions.each do |r|
         e = Eligibility.find_or_initialize_by(
           restriction_id: r.id,
-          category_id: (@recipient.id if r.category=="Organisation") || @proposal.id,
+          category_id: (@recipient.id if r.category=="Recipient") || @proposal.id,
           category_type: r.category
         )
         e.eligible = get_restriction_param(r.id)
