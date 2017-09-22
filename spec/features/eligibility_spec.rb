@@ -62,7 +62,7 @@ feature 'Eligibility' do
             eligiblity, I want to be told why I can't access them,
             so I understand what to do next" do
     visit apply_proposal_fund_path(@proposal, @fund)
-    expect(page).to have_text 'Complete your funding proposal to access '
+    expect(page).to have_text 'You need to check your eligibility before applying'
 
     helper.complete_proposal.submit_proposal
     visit apply_proposal_fund_path(@proposal, @fund)
@@ -208,7 +208,7 @@ feature 'Eligibility' do
 
       # checked funds don't require upgrade
       click_link 'Funds'
-      visit proposal_fund_path(@proposal, Fund.first)
+      helper.visit_first_fund
       expect(current_path)
         .to eq proposal_fund_path(@proposal, Fund.first)
 

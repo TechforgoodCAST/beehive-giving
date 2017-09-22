@@ -3,7 +3,7 @@ class EligibilityHelper
 
   def visit_first_fund
     click_link 'a', class: 'fs22', match: :first
-    click_link 'Check eligibility', match: :first
+    click_button 'Complete proposal', match: :first
     self
   end
 

@@ -26,13 +26,13 @@ p.mb15
 - if @restrictions[:Recipient].present?
   h5.mb20 Is your organisation?
   - @restrictions[:Recipient].each do |r|
-    .recipient_restriction
+    .recipient_restriction.restriction
       = render view: :restriction, locals: {r: r, f: f, e: r.eligibility(@proposal)}
 
 - if @restrictions[:Proposal].present?
   h5.my20 Is your funding proposal for?
   - @restrictions[:Proposal].each do |r|
-    .proposal_restriction
+    .proposal_restriction.restriction
       = render view: :restriction, locals: {r: r, f: f, e: r.eligibility(@proposal)}
 
 .bg-silver.rounded.shadow.fs14.p10.my20
