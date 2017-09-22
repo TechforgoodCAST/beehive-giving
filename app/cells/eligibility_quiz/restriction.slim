@@ -1,23 +1,16 @@
 .flex.mb5
   .col-one-quarter.pr10
-    / = f.collection_radio_buttons( "restriction_#{r.id}_eligible",
-    /                               Restriction.radio_buttons(r.invert),
-    /                               :last,
-    /                               :first,
-    /                               checked: e&.read_attribute(:eligible),
-    /                               boolean_style: 'inline',
-    /                               collection_wrapper_tag: 'div',
-    /                               collection_wrapper_class: 'flex',
-    /                               item_wrapper_class: 'col-half center py5 restriction') do |b| \
-    /   b.label(class: b.value) { b.radio_button(class: "") + b.text } \
-    / end
-    .flex
-      - Restriction.radio_buttons(r.invert).each do |t, answer|
-        .col-half.center
-          - if e&.read_attribute(:eligible) == answer
-            = link_to t, '#', class: 'button-wide px0 bg-blue white'
-          - else
-            = link_to t, '#', class: 'button-wide px0 blue'
+    = f.collection_radio_buttons( "restriction_#{r.id}_eligible",
+                                  Restriction.radio_buttons(r.invert),
+                                  :last,
+                                  :first,
+                                  checked: e&.read_attribute(:eligible),
+                                  boolean_style: 'inline',
+                                  collection_wrapper_tag: 'div',
+                                  collection_wrapper_class: 'flex quiz',
+                                  item_wrapper_class: 'col-half center py5 restriction') do |b| \
+      b.radio_button(class: "input-hidden") + b.label(class: ['button-wide px0', b.value]) { b.text }  \
+    end
 
   .col-three-quarters.py10
     = r.details.capitalize

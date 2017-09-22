@@ -230,3 +230,15 @@
     list-style: disc
   ul, ol
     padding-left: 20px
+
+// Quiz
+// =========================================================================
+
+.quiz
+  .input-hidden
+    position: absolute
+    left: -9999px
+
+  input[type=radio]:checked ~ label
+    color: map-get($colors, white)
+    background-color: map-get($colors, blue)
