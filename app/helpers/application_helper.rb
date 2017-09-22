@@ -8,7 +8,7 @@ module ApplicationHelper
       # accounts: %i[subscription],
       articles: %i[index show],
       # charges: %i[new thank_you],
-      # eligibilities: %i[new], # removed?
+      eligibilities: %i[new],
       enquiries: %i[new],
       errors: %i[not_found gone internal_server_error],
       # feedback: %i[edit new],
