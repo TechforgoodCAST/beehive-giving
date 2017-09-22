@@ -17,7 +17,7 @@ class FeedbackController < ApplicationController
 
     if @feedback.save
       session.delete(:redirect_to_funder)
-      redirect_to eligibility_proposal_fund_path(@proposal, @fund),
+      redirect_to proposal_fund_path(@proposal, @fund),
                   notice: "You're a star! Thanks for the feedback."
     else
       render :new

@@ -21,7 +21,7 @@
   -#       - if @proposal.eligible?(fund.slug)
   -#         %a.badge{ href: eligible_proposal_funds_path(@proposal) } Eligible
   -#         You are eligible for funding.
-  -#         %a.action{href: eligibility_proposal_fund_path(@proposal, fund)} See criteria
+  -#         %a.action{href: proposal_fund_path(@proposal, fund)} See criteria
   -#       - else
   -#         %a.badge{ href: ineligible_proposal_funds_path(@proposal) } Ineligible
   -#         You are ineligible for funding.
@@ -30,7 +30,7 @@
   -#             - @proposal.ineligible_reasons(fund.slug).each do |r|
   -#               %li= cell(:eligibility_banner, @proposal, fund: fund).call(r.to_sym)
   -#         - else
-  -#           %a.action{href: eligibility_proposal_fund_path(@proposal, fund)} Find out why
+  -#           %a.action{href: proposal_fund_path(@proposal, fund)} Find out why
 
   %li<
     = cell(:fund_insight, fund).call(:amount)

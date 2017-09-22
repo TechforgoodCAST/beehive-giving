@@ -66,7 +66,20 @@ feature 'Eligibility' do
 
     helper.complete_proposal.submit_proposal
     visit apply_proposal_fund_path(@proposal, @fund)
-    expect(current_path).to eq eligibility_proposal_fund_path(@proposal, @fund)
+    expect(current_path).to eq proposal_fund_path(@proposal, @fund)
+  end
+
+  scenario 'When I select a restriction that is inverted,
+            I want it to be recorded as eligible,
+            so I recieve an accurate check' do
+    @fund.restrictions.first.update(invert: true)
+    helper.visit_first_fund.complete_proposal.submit_proposal
+    within "label[for=check_restriction_#{@fund.restrictions.first.id}" \
+           '_eligible_true]' do
+      expect(page).to have_text 'Yes'
+    end
+    helper.answer_restrictions(@fund).check_eligibility
+    expect(page).to have_text 'You are eligible'
   end
 
   context 'complete proposal' do
@@ -74,32 +87,17 @@ feature 'Eligibility' do
       helper.visit_first_fund.complete_proposal.submit_proposal
     end
 
-    scenario 'When I select a restriction that is inverted,
-              I want it to be recorded as eligible,
-              so I recieve an accurate check' do
-      @fund.restrictions.first.update(invert: true)
-      click_link 'Eligiblity'
-      within "label[for=check_restriction_#{@fund.restrictions.first.id}" \
-             '_eligible_true]' do
-        expect(page).to have_text 'Yes'
-      end
-      helper.answer_restrictions(@fund).check_eligibility
-      expect(page).to have_text 'You are eligible'
-    end
-
     scenario "When I only answer recipient restrictions,
               I want them to be saved,
               so that I don't have to resubmit them" do
       helper.answer_recipient_restrictions(@fund).check_eligibility
-      click_link 'Eligiblity'
-      expect(page).to have_css '.radio_buttons[checked=checked]', count: 2
+      expect(page).to have_css '.quiz input[type=radio][checked=checked]', count: 2
     end
 
     scenario 'When I visit a fund without recipient restrictions,
               I want to only see proposal restrictions,
               so I avoid answering unnecessary questions' do
       helper.remove_restrictions(@fund, 'Recipient')
-      click_link 'Eligiblity'
       helper.answer_proposal_restrictions(@fund).check_eligibility
       expect(page).not_to have_css '.recipient_restriction'
       expect(page).to have_text 'You are eligible'
@@ -123,7 +121,6 @@ feature 'Eligibility' do
               I want to only see recipient restrictions,
               so I avoid answering unnecessary questions' do
       helper.remove_restrictions(@fund, 'Proposal')
-      click_link 'Eligiblity'
       helper.answer_recipient_restrictions(@fund).check_eligibility
       expect(page).not_to have_css '.proposal_restriction'
       expect(page).to have_text 'You are eligible'
@@ -133,7 +130,7 @@ feature 'Eligibility' do
               I want to see a list of all restrictions,
               so I can check to see if any apply' do
       expect(current_path)
-        .to eq eligibility_proposal_fund_path(@proposal, @fund)
+        .to eq proposal_fund_path(@proposal, @fund)
       expect(page).to have_css '.restriction', count: 5
       expect(page).to have_css '.recipient_restriction', count: 2
       expect(page).to have_css '.proposal_restriction', count: 3
@@ -145,15 +142,11 @@ feature 'Eligibility' do
       helper.answer_restrictions(@fund).check_eligibility
       expect(page).to have_text 'Update'
 
-      within('.card') { click_link 'Apply' }
-      expect(current_path).to eq apply_proposal_fund_path(@proposal, @fund)
-
-      visit eligibility_proposal_fund_path(@proposal, @fund)
-      click_link 'Apply for funding'
+      click_link 'Application form'
       expect(current_path).to eq apply_proposal_fund_path(@proposal, @fund)
 
       visit proposal_fund_path(@proposal, @fund)
-      within('.card') { click_link 'Apply' }
+      click_link 'Application form'
       expect(current_path).to eq apply_proposal_fund_path(@proposal, @fund)
     end
 
@@ -167,17 +160,11 @@ feature 'Eligibility' do
                                 'the criteria below.'
       expect(page).to have_text 'You did not meet this criteria', count: 3
 
-      click_link 'Why ineligible?'
-      expect(current_path)
-        .to eq eligibility_proposal_fund_path(@proposal, @fund)
-
       helper.answer_restrictions(@fund).update
       expect(page).to have_text 'Apply'
       expect(page).to have_text 'Apply for funding'
 
       # TODO: No feedback for unlocked funds
-      # TODO: eligibilities_controller does not prevent navigation
-      # e.g. visit eligibility_proposal_fund_path(@proposal, @fund)
     end
 
     scenario "When I check a fund with shared restrictions,
@@ -199,7 +186,7 @@ feature 'Eligibility' do
       helper.check_eligibility(remaining: 2)
       # 3 questions previously answered should be checked
       expect(page).to have_text 'You have completed 3 of 5 criteria.'
-      expect(page).to have_css '.radio_buttons[checked=checked]', count: 3
+      expect(page).to have_css '.quiz input[type=radio][checked=checked]', count: 3
     end
 
     scenario "When I'm ineligible and try to access application details,
@@ -210,7 +197,7 @@ feature 'Eligibility' do
             .check_eligibility
       visit apply_proposal_fund_path(@proposal, @fund)
       expect(current_path)
-        .to eq eligibility_proposal_fund_path(@proposal, @fund)
+        .to eq proposal_fund_path(@proposal, @fund)
     end
 
     scenario 'When I try check eligiblity but have reached the max free limit,
@@ -221,9 +208,9 @@ feature 'Eligibility' do
 
       # checked funds don't require upgrade
       click_link 'Funds'
-      visit eligibility_proposal_fund_path(@proposal, Fund.first)
+      visit proposal_fund_path(@proposal, Fund.first)
       expect(current_path)
-        .to eq eligibility_proposal_fund_path(@proposal, Fund.first)
+        .to eq proposal_fund_path(@proposal, Fund.first)
 
       # funds over MAX_FREE_LIMIT require upgrade
       visit proposal_fund_path(@proposal, Fund.first)

@@ -26,7 +26,6 @@ feature 'Proposal' do
       account_subscription_path(@recipient),
       account_upgrade_path(@recipient),
       edit_proposal_path('missing'),
-      eligibility_proposal_fund_path('missing', @fund),
       apply_proposal_fund_path('missing', @fund),
       proposal_fund_path('missing', @fund),
       theme_proposal_funds_path('missing', @theme.slug),

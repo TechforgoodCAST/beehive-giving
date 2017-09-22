@@ -106,14 +106,6 @@ feature 'Browse' do
       subscribe_and_visit proposal_fund_path(@proposal, Fund.first)
     end
 
-    scenario 'can only view eligibility_proposal_fund_path for ' \
-              'recommended funds unless subscribed' do
-      visit eligibility_proposal_fund_path(@proposal, Fund.first)
-      expect(current_path).to eq account_upgrade_path(@recipient)
-
-      subscribe_and_visit eligibility_proposal_fund_path(@proposal, Fund.first)
-    end
-
     context 'When I view fund a with open data' do
       before(:each) do
         click_link @top_fund.name

@@ -35,12 +35,6 @@ describe 'Ensure logged in' do
                 ])
   end
 
-  it 'eligibilities' do
-    expect_path([
-                  eligibility_proposal_fund_path(@proposal, @fund)
-                ])
-  end
-
   it 'enquiries' do
     expect_path([
                   apply_proposal_fund_path(@proposal, @fund)
