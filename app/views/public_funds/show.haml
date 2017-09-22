@@ -50,32 +50,8 @@
         .mb20
           %h2.light Eligibility
 
-        %p.mb40
-          The following questions have been set by
-          = succeed '.' do
-            = @fund.funder.name
-
-        %p.bold.mb20 Are you seeking funding for?
-
-        %h5.mb20 Your organisation
-
-        - @restrictions.select { |i| i[0] == 'Organisation' }.each do |r|
-          .mb20.flex.items-center.fs15.lh20
-            .blue.nowrap.mr30 Yes &nbsp;&nbsp; No
-            = r[1].capitalize
-
-        %h5.my20 Your proposal
-
-        - @restrictions.select { |i| i[0] == 'Proposal' }.each do |r|
-          .mb20.flex.items-center.fs15.lh20
-            .blue.nowrap.mr30 Yes &nbsp;&nbsp; No
-            = r[1].capitalize
-
-        .bg-silver.rounded.shadow.fs14.p10.mb20
-          .bold.caps.mb10 Good to know
-          Eligibility checks for location, the amount you are seeking and other factors will been done automatically.
-
-        .button.white.bg-blue.caps.shadow Check eligibility
+        = simple_form_for :check do |f|
+          = cell(:eligibility_quiz, @fund, f: f).call(:show_public)
 
       %hr.my40
 
