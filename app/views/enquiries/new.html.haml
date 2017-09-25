@@ -1,5 +1,9 @@
 = content_for :title, "Apply to #{@fund.title}, #{@fund.subtitle}"
 
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, (@proposal.title? ? @proposal.title : 'Current proposal').upcase_first => nil, 'Funds' => proposal_funds_path(@proposal), @fund.funder.name => nil, @fund.name => proposal_fund_path(@proposal, @fund), 'Apply' => apply_proposal_fund_path(@proposal, @fund)
+
 :javascript
   mixpanel.track("View Apply Page", {"Fund": "#{@fund.name}"});
 
@@ -18,32 +22,51 @@
   %div{ style: "display:inline;" }
     %img{ alt: "", height: "1", src: "//www.googleadservices.com/pagead/conversion/937505505/?label=8GqLCMWurGMQ4eWEvwM&amp;guid=ON&amp;script=0", style: "border-style:none;", width: "1" }
 
-= render partial: 'funds/fund_subnav', locals: { fund: @fund }
-
-.uk-container.uk-container-center.uk-margin-large.uk-margin-large-top
-  .uk-grid
-    .uk-width-medium-1-3
+%main
+  .maxw1080.mx-auto.px20.flex.flex-wrap
+    %aside.perc25.md.px20.mb40
       = render partial: 'funds/card', locals: { fund: @fund }
 
-    .uk-width-medium-2-3
-      %h3.uk-margin-top
-        Apply to
-        = @fund.title
-      %p.uk-margin-bottom
-        If you haven't already, be sure to explore our analysis of
-        = succeed ',' do
-          = link_to "#{@fund.title.strip}", proposal_fund_path(@proposal, @fund)
-        otherwise below are a few things to consider before you proceed.
+    %section.perc75.md.mb80.px20
+      %section.mb30
+        %h1.light
+          Apply to
+          = @fund.funder.name
+        .fs25.lh20.light.mt20
+          = @fund.short_name
+          fund
 
-      %hr.thick
+      %section
+        %p
+          If you haven't already, be sure to explore our analysis of the
+          = link_to "#{@fund.short_name.strip}", proposal_fund_path(@proposal, @fund), class: 'blue'
+          fund, otherwise below are a few things to consider before you proceed.
 
-      .uk-panel
-        %h4.uk-text-bold Key criteria
-        = raw(@fund.key_criteria_html)
+      %hr.my40
 
+      %section
+        .mb20
+          %h2.light
+            Key criteria
+        .mb20.markdown
+          = raw(@fund.key_criteria_html)
 
-        - if @fund.open_call?
-          = link_to "Apply to #{@fund.title}", apply_proposal_fund_path(@proposal, @fund), method: :post, target: '_blank', 'data-uk-tooltip': "{pos:'top'}", title: 'A new page will be opened with application details', class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right'
-        - else
-          %div.cta Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
-          = link_to "More information on #{@fund.title.strip}", apply_proposal_fund_path(@proposal, @fund), method: :post, target: '_blank', 'data-uk-tooltip': "{pos:'top'}", title: 'A new page will be opened with guidance', class: 'uk-button uk-button-primary uk-button-large uk-width-large-2-5 uk-float-right'
+      - if @fund.open_call?
+        = link_to "Apply to #{@fund.title}",
+                  apply_proposal_fund_path(@proposal, @fund),
+                  method: :post,
+                  target: '_blank',
+                  'data-uk-tooltip': "{pos:'top'}",
+                  title: 'A new page will be opened with application details',
+                  class: 'button white bg-blue caps shadow mb40 right'
+      - else
+        .bg-silver.rounded.shadow.fs18.lh22.p10.mb20
+          .bold.caps.mb10.fs15 Unsolicited applications
+          Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
+        = link_to "More information on #{@fund.name.strip}",
+                  apply_proposal_fund_path(@proposal, @fund),
+                  method: :post,
+                  target: '_blank',
+                  'data-uk-tooltip': "{pos:'top'}",
+                  title: 'A new page will be opened with guidance',
+                  class: 'button white bg-blue caps shadow mb40 right'

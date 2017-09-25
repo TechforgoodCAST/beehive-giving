@@ -44,7 +44,7 @@ class SignupProposalsController < ApplicationController
 
     def return_to_path
       if session[:return_to]
-        eligibility_proposal_fund_path(@proposal, session.delete(:return_to))
+        proposal_fund_path(@proposal, session.delete(:return_to))
       else
         proposal_funds_path(@proposal)
       end

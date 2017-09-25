@@ -1,14 +1,21 @@
-.restrictions
-  .restriction
-    label.capitalize
-      = r.details.capitalize
-      | ?
+.flex.mb5
+  .col-one-quarter.pr10
+    = f.collection_radio_buttons( "restriction_#{r.id}_eligible",
+                                  Restriction.radio_buttons(r.invert),
+                                  :last,
+                                  :first,
+                                  checked: e&.read_attribute(:eligible),
+                                  disabled: ((defined? disabled) ? ["true", "false"] : nil),
+                                  boolean_style: 'inline',
+                                  collection_wrapper_tag: 'div',
+                                  collection_wrapper_class: 'flex quiz',
+                                  item_wrapper_class: 'col-half center py5') do |b| \
+      b.radio_button(class: "input-hidden") + b.label(class: ['button-wide px0', b.value]) { b.text }  \
+    end
 
-  - if @proposal
-    .answer
-      = f.collection_radio_buttons( "restriction_#{r.id}_eligible", Restriction.radio_buttons(r.invert), :last, :first, checked: e&.read_attribute(:eligible), collection_wrapper_tag: 'div', collection_wrapper_class: 'input_wrapper radio_buttons optional', item_wrapper_class: 'radio') do |b| \
-        b.radio_button(class: "radio_buttons") + b.text \
-      end
-      - if e&.read_attribute(:eligible) == false
-        .restriction-error-message You did not meet this criteria
-  hr
+  .col-three-quarters.py10
+    = r.details.capitalize
+    | ?
+    - if e&.read_attribute(:eligible) == false
+      span.red.fs12.p5.nowrap
+        | You did not meet this criteria

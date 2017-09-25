@@ -30,7 +30,7 @@ class FundCardCell < Cell::ViewModel
 
     def check
       {
-        rating: link_to('Ineligible', eligibility_proposal_fund_path(model, options[:fund])),
+        rating: link_to('Ineligible', proposal_fund_path(model, options[:fund])),
         message: '<strong>Does not</strong> fund the areas in your proposal.',
         classes: 'very-poor'
       }
