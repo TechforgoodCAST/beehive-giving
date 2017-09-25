@@ -10,7 +10,7 @@ class EnquiriesController < ApplicationController
                   alert: 'Please provide details of your funding request ' \
                          'before applying.'
     else
-      redirect_to eligibility_proposal_fund_path(@proposal, @fund),
+      redirect_to proposal_fund_path(@proposal, @fund),
                   alert: 'You need to check your eligibility before applying.'
     end
   end

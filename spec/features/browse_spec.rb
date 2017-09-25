@@ -106,14 +106,6 @@ feature 'Browse' do
       subscribe_and_visit proposal_fund_path(@proposal, Fund.first)
     end
 
-    scenario 'can only view eligibility_proposal_fund_path for ' \
-              'recommended funds unless subscribed' do
-      visit eligibility_proposal_fund_path(@proposal, Fund.first)
-      expect(current_path).to eq account_upgrade_path(@recipient)
-
-      subscribe_and_visit eligibility_proposal_fund_path(@proposal, Fund.first)
-    end
-
     context 'When I view fund a with open data' do
       before(:each) do
         click_link @top_fund.name
@@ -123,18 +115,17 @@ feature 'Browse' do
                 so I can understand how up to date it is' do
         expect(page).to have_text 1.year.ago.strftime('%b %Y') +
                                   ' - ' +
-                                  Time.zone.today.strftime('%b %Y'),
-                                  count: 4
+                                  Time.zone.today.strftime('%b %Y')
       end
 
       scenario 'I want to see the grant_count,
                 so I can evaluate my chances of success' do
         expect(page).to have_text(
-          "Awarded #{@top_fund.grant_count} grants.", count: 2
+          "Awarded #{@top_fund.grant_count} grants"
         )
       end
 
-      scenario 'I want to see a amount_awarded_distribution chart,
+      xscenario 'I want to see a amount_awarded_distribution chart,
                 so I can evaluate how much funding to ask for' do
         expect(page).to have_css '#amount_awarded_distribution'
       end
@@ -142,11 +133,11 @@ feature 'Browse' do
       scenario 'I want to see the top_award_months,
                 so I can evaluate my chances of success' do
         expect(page).to have_text(
-          'Awarded the most funding in January and February.', count: 2
+          'Awarded the most funding in January and February'
         )
       end
 
-      scenario "I want to see a award_month_distribution chart,
+      xscenario "I want to see a award_month_distribution chart,
                 so I can understand which months funding is awarded" do
         expect(page).to have_css '#award_month_distribution'
       end
@@ -154,11 +145,11 @@ feature 'Browse' do
       scenario 'I want to see the top_countries,
                 so I can evaluate my chances of success' do
         expect(page).to have_text(
-          'Awarded most funding in the United Kingdom.', count: 2
+          'Awarded the most funding in the United Kingdom'
         )
       end
 
-      scenario "I want to see a country_distribution chart,
+      xscenario "I want to see a country_distribution chart,
                 so I can understand in which countries funding is awarded" do
         expect(page).to have_css '#country_distribution'
       end

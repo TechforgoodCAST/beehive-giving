@@ -1,12 +1,5 @@
-class Restriction < ApplicationRecord
-  has_and_belongs_to_many :funds # TODO: refactor
-  has_many :funders, -> { distinct }, through: :funds
-  has_many :eligibilities
-
-  validates :details, presence: true, uniqueness: true
-  validates :category, inclusion: { in: %w[Proposal Recipient] }
-  validates :has_condition, inclusion: { in: [true, false] }
-  validates :condition, presence: true, if: ->(o) { o.has_condition? }
+class Restriction < Question
+  validates :category, inclusion: { in: %w(Proposal Recipient) }
 
   def self.radio_buttons(invert)
     invert ? [['Yes', true], ['No', false]] : [['Yes', false], ['No', true]]
@@ -15,9 +8,9 @@ class Restriction < ApplicationRecord
   def eligibility(proposal)
     return nil unless proposal
     if category == 'Proposal'
-      eligibilities.to_a.find { |f| f.category_id == proposal.id }
+      answers.to_a.find { |f| f.category_id == proposal.id }
     elsif category == 'Recipient'
-      eligibilities.to_a.find { |f| f.category_id == proposal.recipient.id }
+      answers.to_a.find { |f| f.category_id == proposal.recipient.id }
     end
   end
 end

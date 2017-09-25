@@ -13,10 +13,20 @@ class EligibilityQuizCell < Cell::ViewModel
     end
   end
 
+  def show_public
+    load_restrictions
+    counts = restrictions_count
+    if counts[:restrictions] > 0
+      render locals: { f: options[:f], counts: counts }
+    else
+      render :noquiz
+    end
+  end
+
   private
 
     def load_restrictions
-      @restrictions = model.restrictions.includes(:eligibilities).to_a.group_by { |r| r[:category].to_sym }
+      @restrictions = model.restrictions.includes(:answers).to_a.group_by { |r| r[:category].to_sym }
       @proposal = options[:proposal]
     end
 

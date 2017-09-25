@@ -1,13 +1,19 @@
-.border.border-blue.rounded
-  .bg-blue.px10.py10
-    .fs15.lh20.caps.white.bold
+.border.rounded.mb20{class: (context == 'muted' ? 'border-lightest-gray' : 'border-blue')}
+  .px10.py10{class: (context == 'muted' ? 'bg-lightest-gray' : 'bg-blue')}
+    .fs15.lh20.caps.bold{class: (context == 'muted' ? 'gray' : 'white')}
       Current Proposal
   .px10.py15
+    - unless @proposal.complete?
+      .mb20.caps
+        %span.fs35
+          = cell(:proposal_indicators, @proposal).call(:percent_complete)
+        %span
+          complete
     .mb20.caps
       %span.fs35
-        = cell(:proposal_indicators, @proposal).call(:percent_complete)
+        = cell(:proposal_indicators, @proposal).call(:funds_checked)
       %span
-        complete
+        funds checked
     - if @proposal.complete?
       .fs20.mb10
         = @proposal.title.truncate_words(3)

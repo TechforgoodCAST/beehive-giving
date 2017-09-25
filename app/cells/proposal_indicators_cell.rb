@@ -1,5 +1,5 @@
 class ProposalIndicatorsCell < Cell::ViewModel
-  include ActionView::Helpers::NumberHelper 
+  include ActionView::Helpers::NumberHelper
 
   def eligibility_progress_bar
     @counts = eligibility_counts
@@ -8,8 +8,22 @@ class ProposalIndicatorsCell < Cell::ViewModel
   end
 
   def percent_complete
-    pcs = eligibility_percentages(eligibility_counts)
-    render locals: {complete: pcs[0] + pcs[1]}
+    case model.state
+    when 'initial'
+      complete = 0.25
+    when 'transferred'
+      complete = 0.5
+    when 'registered'
+      complete = 0.75
+    when 'complete'
+      complete = 1
+    end
+    render locals: {complete: complete}
+  end
+
+  def funds_checked
+    counts = eligibility_counts
+    render locals: {complete: counts[0] + counts[1]}
   end
 
   private

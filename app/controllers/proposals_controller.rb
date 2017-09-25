@@ -47,7 +47,7 @@ class ProposalsController < ApplicationController
 
           if session[:return_to]
             fund = Fund.find_by(slug: session.delete(:return_to))
-            render js: "window.location.href = '#{eligibility_proposal_fund_path(@proposal, fund)}';
+            render js: "window.location.href = '#{proposal_fund_path(@proposal, fund)}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
           else
@@ -62,7 +62,7 @@ class ProposalsController < ApplicationController
 
           if session[:return_to]
             fund = Fund.find_by(slug: session.delete(:return_to))
-            redirect_to eligibility_proposal_fund_path(@proposal, fund)
+            redirect_to proposal_fund_path(@proposal, fund)
           else
             redirect_to proposal_funds_path(@proposal)
           end

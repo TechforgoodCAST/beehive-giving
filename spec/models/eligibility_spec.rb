@@ -20,7 +20,7 @@ describe 'Eligibility' do
       @proposal = @app.instances[:registered_proposal]
       @eligibility = create(:proposal_eligibility,
                             category: @proposal,
-                            restriction: @proposal_restriction)
+                            question: @proposal_restriction)
     end
 
     it 'with eligible as null is invalid' do
@@ -41,8 +41,8 @@ describe 'Eligibility' do
 
     it 'is unique to proposal and restriction' do
       expect(
-        build(:eligibility, category: @proposal,
-                            restriction: @recipient_restriction)
+        build(:answer, category: @proposal,
+                       question: @recipient_restriction)
       ).not_to be_valid
     end
   end
@@ -51,7 +51,7 @@ describe 'Eligibility' do
     before(:each) do
       @eligibility = create(:recipient_eligibility,
                             category: @recipient,
-                            restriction: @recipient_restriction)
+                            question: @recipient_restriction)
     end
 
     it 'belongs to recipient' do
@@ -67,8 +67,8 @@ describe 'Eligibility' do
 
     it 'is unique to recipient and restriction' do
       expect(
-        build(:eligibility, category: @recipient,
-                            restriction: @proposal_restriction)
+        build(:answer, category: @recipient,
+                       question: @proposal_restriction)
       ).not_to be_valid
     end
   end

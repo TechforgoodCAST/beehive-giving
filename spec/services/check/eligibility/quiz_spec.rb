@@ -7,7 +7,7 @@ describe Check::Eligibility::Quiz do
     @fund = Fund.last
     @fund.restrictions.each do |r|
       category = r.category == 'Proposal' ? @proposal : @proposal.recipient
-      create(:proposal_eligibility, category: category, restriction: r)
+      create(:proposal_eligibility, category: category, question: r)
     end
     @fund.save
   end
@@ -22,7 +22,7 @@ describe Check::Eligibility::Quiz do
   end
 
   it '#call ineligible' do
-    Eligibility.update_all eligible: false
+    Answer.update_all eligible: false
     expect(subject.call(@proposal, @fund))
       .to eq 'eligible' => false, 'count_failing' => 5
   end

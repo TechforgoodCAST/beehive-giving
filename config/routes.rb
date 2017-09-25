@@ -12,7 +12,6 @@ Rails.application.routes.draw do
         get '/theme/:theme', to: 'funds#themed', as: 'theme'
       end
       member do
-        get   :eligibility, to: 'eligibilities#new'
         patch :eligibility, to: 'eligibilities#create'
         get   :apply,       to: 'enquiries#new'
         post  :apply,       to: 'enquiries#create'
