@@ -28,7 +28,7 @@ ActiveAdmin.register User do
     column :first_name
     column :last_name
     column :email
-    column :role
+    column :organisation_type
     column :sign_in_count
     column :last_seen
     actions
@@ -38,7 +38,7 @@ ActiveAdmin.register User do
   end
 
   filter :id
-  filter :role
+  filter :organisation_type
   filter :first_name
   filter :last_name
   filter :email

@@ -17,5 +17,11 @@ class TransferOrganisationsToFunders < ActiveRecord::Migration[5.1]
     remove_column :recipients, :type_temp
     User.where(organisation_type: 'User').update_all(organisation_type: 'Recipient')
     Restriction.where(category: 'Organisation').update_all(category: 'Recipient')
+    if defined? Eligibility
+      Eligibility.where(category_type: 'Organisation').update_all(category_type: 'Recipient')
+    end
+    if defined? Answer
+      Answer.where(category_type: 'Organisation').update_all(category_type: 'Recipient')
+    end
   end
 end

@@ -74,7 +74,7 @@
 
         %h5.mb20 Your organisation
 
-        - @restrictions.select { |i| i[0] == 'Organisation' }.each do |r|
+        - @restrictions.select { |i| i[0] == 'Recipient' }.each do |r|
           .mb20.flex.items-center.fs15.lh20
             .blue.nowrap.mr30 Yes &nbsp;&nbsp; No
             = r[1].capitalize
