@@ -149,7 +149,7 @@ feature 'Browse' do
         )
       end
 
-      scenario "I want to see a country_distribution chart,
+      xscenario "I want to see a country_distribution chart,
                 so I can understand in which countries funding is awarded" do
         expect(page).to have_css '#country_distribution'
       end
