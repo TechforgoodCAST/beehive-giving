@@ -209,9 +209,9 @@ feature 'Eligibility' do
 
       # checked funds don't require upgrade
       click_link 'Funds'
-      # visit proposal_fund_path(@proposal, Fund.first)
-      # expect(current_path)
-      #   .to eq proposal_fund_path(@proposal, Fund.first)
+      visit proposal_fund_path(@proposal, Fund.last)
+      expect(current_path)
+        .to eq proposal_fund_path(@proposal, Fund.last)
 
       # funds over MAX_FREE_LIMIT require upgrade
       visit proposal_fund_path(@proposal, Fund.first)
