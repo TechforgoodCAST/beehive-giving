@@ -5,11 +5,11 @@ module RecipientsHelper
   def fund_card_eligibility_text(fund)
     case @proposal.eligible_status(fund.slug)
     when 0
-      link_to('Ineligible', eligibility_proposal_fund_path(@proposal, fund), class: 'very-poor')
+      link_to('Ineligible', proposal_fund_path(@proposal, fund), class: 'very-poor')
     when 1
-      link_to('Eligible', eligibility_proposal_fund_path(@proposal, fund), class: 'excellent')
+      link_to('Eligible', proposal_fund_path(@proposal, fund), class: 'excellent')
     else
-      link_to('Check', eligibility_proposal_fund_path(@proposal, fund), class: 'primary')
+      link_to('Check', proposal_fund_path(@proposal, fund), class: 'primary')
     end
   end
 
@@ -28,11 +28,11 @@ module RecipientsHelper
     classes = 'uk-width-1-1 uk-button uk-button-primary uk-button-large'
     case @proposal.eligible_status(fund.slug)
     when 0
-      link_to('Why ineligible?', eligibility_proposal_fund_path(@proposal, fund), class: classes)
+      link_to('Why ineligible?', proposal_fund_path(@proposal, fund), class: classes)
     when 1
       link_to('Apply', apply_proposal_fund_path(@proposal, fund), class: classes)
     else
-      link_to('Check eligibility', eligibility_proposal_fund_path(@proposal, fund), class: classes)
+      link_to('Check eligibility', proposal_fund_path(@proposal, fund), class: classes)
     end
   end
 

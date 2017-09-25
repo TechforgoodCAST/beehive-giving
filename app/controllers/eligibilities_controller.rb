@@ -3,30 +3,10 @@ class EligibilitiesController < ApplicationController
   before_action :load_fund, # TODO: refactor
                 :load_restrictions, :load_eligibilities
 
-  def new # TODO: refactor
-    return redirect_to account_upgrade_path(@recipient) unless
-      @proposal.checked_fund?(@fund) || @proposal.show_fund?(@fund)
-
-    return if @recipient.subscribed?
-
-    if @recipient.incomplete_first_proposal?
-      session[:return_to] = @fund.slug
-      redirect_to edit_signup_proposal_path(@proposal)
-    elsif current_user.feedbacks.count < 1 &&
-          (!@proposal.checked_fund?(@fund) && @recipient.funds_checked == 2)
-      session[:redirect_to_funder] = @fund.slug
-      redirect_to new_feedback_path
-    elsif @recipient.funds_checked < 3 || @proposal.checked_fund?(@fund)
-      render :new
-    else
-      redirect_to account_upgrade_path(@recipient)
-    end
-  end
-
   def create
     if @recipient.incomplete_first_proposal?
       session[:return_to] = @fund.slug
-      redirect_to edit_signup_proposal_path(@proposal)
+      return redirect_to edit_signup_proposal_path(@proposal)
     elsif !can_check_eligibility?
       return redirect_to account_upgrade_path(@recipient)
     end
@@ -35,12 +15,7 @@ class EligibilitiesController < ApplicationController
       params[:mixpanel_eligibility_tracking] = true
       @recipient.update_funds_checked!(@proposal.eligibility)
 
-      case params.dig(:check, :return_to)
-      when 'eligibility'
-        redirect_to eligibility_proposal_fund_path(@proposal, @fund)
-      else
-        redirect_to proposal_fund_path(@proposal, @fund)
-      end
+      redirect_to proposal_fund_path(@proposal, @fund)
     end
   end
 

@@ -20,9 +20,7 @@ feature 'Apply' do
           .submit_proposal
           .answer_restrictions(@fund)
           .check_eligibility
-    within '.card' do
-      click_link 'Apply'
-    end
+    click_link 'Application form'
   end
 
   scenario 'When I look to apply to an eligible fund,

@@ -33,30 +33,15 @@
             = period(@fund)
 
         - unless @fund.open_call?
-          %div.cta Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
+          .bg-silver.rounded.shadow.fs18.lh22.p10.mb20
+            Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
 
         %ul.list.pl30
           = cell(:fund_insight, @fund).call(:amount)
           = cell(:fund_insight, @fund).call(:duration)
-
-          - if @fund.open_data && @fund.grant_count
-            %li.mb5
-              Awarded
-              %span.bold= number_with_delimiter(@fund.grant_count)
-              = "grant".pluralize(@fund.grant_count) + '.'
-
-          - if @fund.open_data? && @fund.award_month_distribution?
-            %li.mb5<
-              Awarded the most funding in
-              = succeed '.' do
-                %strong= top_award_months(@fund)
-
-          - if @fund.open_data? && @fund.country_distribution?
-            %li.mb5<
-              Awarded most funding in the
-              = succeed '.' do
-                %strong= top_countries(@fund)
-
+          = cell(:fund_insight, @fund).call(:grant_count)
+          = cell(:fund_insight, @fund).call(:award_months)
+          = cell(:fund_insight, @fund).call(:countries)
           = cell(:fund_insight, @fund).call(:grant_examples)
 
       %hr.my40
@@ -65,32 +50,8 @@
         .mb20
           %h2.light Eligibility
 
-        %p.mb40
-          The following questions have been set by
-          = succeed '.' do
-            = @fund.funder.name
-
-        %p.bold.mb20 Are you seeking funding for?
-
-        %h5.mb20 Your organisation
-
-        - @restrictions.select { |i| i[0] == 'Organisation' }.each do |r|
-          .mb20.flex.items-center.fs15.lh20
-            .blue.nowrap.mr30 Yes &nbsp;&nbsp; No
-            = r[1].capitalize
-
-        %h5.mb20 Your proposal
-
-        - @restrictions.select { |i| i[0] == 'Proposal' }.each do |r|
-          .mb20.flex.items-center.fs15.lh20
-            .blue.nowrap.mr30 Yes &nbsp;&nbsp; No
-            = r[1].capitalize
-
-        .bg-silver.rounded.shadow.fs14.p10.mb20
-          .bold.caps.mb10 Good to know
-          Eligibility checks for location, the amount you are seeking and other factors will been done automatically.
-
-        .button.white.bg-blue.caps.shadow Check eligibility
+        = simple_form_for :check do |f|
+          = cell(:eligibility_quiz, @fund, f: f).call(:show_public)
 
       %hr.my40
 
