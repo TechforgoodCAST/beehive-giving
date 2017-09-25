@@ -30,8 +30,7 @@ class SignupController < ApplicationController
                           '$created': '#{@user.created_at}',
                           '$last_login': '#{@user.last_seen}',
                           'Updated At': '#{@user.updated_at}',
-                          'Sign In Count': '#{@user.sign_in_count}',
-                          'Job Role': '#{@user.job_role}'
+                          'Sign In Count': '#{@user.sign_in_count}'
                         });
                         window.location.href = '#{new_signup_recipient_path}';
                         $('button[type=submit]').prop('disabled', true)
