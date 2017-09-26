@@ -67,10 +67,9 @@ class Fund < ApplicationRecord
     when 'name'
       order col
     else
-      suitable_funds = proposal.suitable_funds.pluck(0)
-
-      all.sort_by do |fund|
-        suitable_funds.index(fund.slug) || suitable_funds.size + 1
+      ordered = order_slugs(proposal)
+      active.sort_by do |fund|
+        ordered.index(fund.slug) || ordered.size + 1
       end
     end
   end
@@ -148,6 +147,13 @@ class Fund < ApplicationRecord
 
   include FundJsonSetters
   include FundArraySetters
+
+  private_class_method def self.order_slugs(proposal)
+    suitable_slugs = proposal.suitable_funds.pluck(0)
+    ineligible_slugs = proposal.ineligible_funds.pluck(0)
+    all_slugs = active.pluck(:slug)
+    (suitable_slugs + all_slugs).uniq - ineligible_slugs
+  end
 
   private
 
