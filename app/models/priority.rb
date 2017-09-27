@@ -1,4 +1,4 @@
-class Priority < Question
+class Priority < Criterion
   validates :category, inclusion: { in: %w(Proposal Recipient) }
 
   def self.radio_buttons(invert)

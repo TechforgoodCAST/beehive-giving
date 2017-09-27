@@ -1,5 +1,5 @@
-class Restriction < Question
-  validates :category, inclusion: { in: %w(Proposal Recipient) }
+class Restriction < Criterion
+  validates :category, inclusion: { in: %w[Proposal Recipient] }
 
   def self.radio_buttons(invert)
     invert ? [['Yes', true], ['No', false]] : [['Yes', false], ['No', true]]

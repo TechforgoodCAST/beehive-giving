@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170914140025) do
+ActiveRecord::Schema.define(version: 20170927112004) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,6 +117,15 @@ ActiveRecord::Schema.define(version: 20170914140025) do
     t.integer "proposal_id"
     t.index ["country_id"], name: "index_countries_proposals_on_country_id"
     t.index ["proposal_id"], name: "index_countries_proposals_on_proposal_id"
+  end
+
+  create_table "criteria", id: :serial, force: :cascade do |t|
+    t.string "details", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "invert", default: false, null: false
+    t.string "category", default: "Proposal", null: false
+    t.string "type", default: "Restriction"
   end
 
   create_table "districts", id: :serial, force: :cascade do |t|
@@ -318,15 +327,6 @@ ActiveRecord::Schema.define(version: 20170914140025) do
     t.integer "funding_type"
     t.index ["recipient_id"], name: "index_proposals_on_recipient_id"
     t.index ["state"], name: "index_proposals_on_state"
-  end
-
-  create_table "questions", id: :serial, force: :cascade do |t|
-    t.string "details", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "invert", default: false, null: false
-    t.string "category", default: "Proposal", null: false
-    t.string "type", default: "Restriction"
   end
 
   create_table "recipient_funder_accesses", id: :serial, force: :cascade do |t|
