@@ -1,5 +1,6 @@
 class Criterion < ApplicationRecord
-  has_and_belongs_to_many :funds # TODO: refactor
+  has_many :questions
+  has_many :funds, through: :questions
   has_many :funders, -> { distinct }, through: :funds
   has_many :answers
 

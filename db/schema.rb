@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170929112541) do
+ActiveRecord::Schema.define(version: 20170929130113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -254,15 +254,6 @@ ActiveRecord::Schema.define(version: 20170929112541) do
     t.index ["tags"], name: "index_funds_on_tags", using: :gin
   end
 
-  create_table "funds_questions", id: :serial, force: :cascade do |t|
-    t.integer "fund_id"
-    t.integer "criterion_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["criterion_id"], name: "index_funds_questions_on_criterion_id"
-    t.index ["fund_id"], name: "index_funds_questions_on_fund_id"
-  end
-
   create_table "implementations", id: :serial, force: :cascade do |t|
     t.string "label", limit: 255
     t.datetime "created_at", null: false
@@ -327,6 +318,17 @@ ActiveRecord::Schema.define(version: 20170929112541) do
     t.integer "funding_type"
     t.index ["recipient_id"], name: "index_proposals_on_recipient_id"
     t.index ["state"], name: "index_proposals_on_state"
+  end
+
+  create_table "questions", id: :serial, force: :cascade do |t|
+    t.integer "fund_id"
+    t.integer "criterion_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "criterion_type", default: "Restriction"
+    t.string "group"
+    t.index ["criterion_id"], name: "index_questions_on_criterion_id"
+    t.index ["fund_id"], name: "index_questions_on_fund_id"
   end
 
   create_table "recipient_funder_accesses", id: :serial, force: :cascade do |t|
