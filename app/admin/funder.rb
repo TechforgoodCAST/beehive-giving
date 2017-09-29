@@ -5,7 +5,7 @@ ActiveAdmin.register Funder do
 
   controller do
     def find_resource
-      Funder.where(slug: params[:id]).first!
+      scoped_collection.where(slug: params[:id]).first!
     end
   end
 
