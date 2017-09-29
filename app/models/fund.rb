@@ -65,7 +65,7 @@ class Fund < ApplicationRecord
   def self.order_by(proposal, col)
     case col
     when 'name'
-      order col
+      order 'funds.name'
     else
       ordered = order_slugs(proposal)
       active.sort_by do |fund|
