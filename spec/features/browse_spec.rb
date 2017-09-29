@@ -62,6 +62,7 @@ feature 'Browse' do
     scenario "When I find a funding theme I'm interested in,
               I want to see similar funds,
               so I can discover new funding opportunties" do
+      @proposal.update_column(:suitability, Fund.last.slug => { 'total': 0 })
       click_link @theme.name, match: :first
       expect(current_path)
         .to eq theme_proposal_funds_path(@proposal, @theme.slug)
