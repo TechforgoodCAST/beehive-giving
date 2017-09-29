@@ -36,7 +36,6 @@ class QuizCell < Cell::ViewModel
         end
       end
       @proposal = options[:proposal]
-      byebug
     end
 
     def question_count
