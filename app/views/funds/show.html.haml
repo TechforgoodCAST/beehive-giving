@@ -60,6 +60,14 @@
 
       %hr.my40
 
+      %section
+        .mb20
+          %h2.light Suitability
+
+        = render partial: 'suitability', locals: { return_to: 'fund' }
+
+      %hr.my40
+
       - if @proposal.eligible?(@fund.slug)
         %section
           .mb40

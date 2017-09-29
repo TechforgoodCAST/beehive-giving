@@ -1,7 +1,7 @@
 class EligibilitiesController < ApplicationController
   before_action :ensure_logged_in
   before_action :load_fund, # TODO: refactor
-                :load_restrictions, :load_eligibilities
+                :load_questions, :load_eligibilities
 
   def create
     if @recipient.incomplete_first_proposal?
@@ -25,14 +25,20 @@ class EligibilitiesController < ApplicationController
       @fund = Fund.includes(:funder).find_by(slug: params[:id])
     end
 
-    def load_restrictions
-      @restrictions = @fund.restrictions.to_a
+    def load_questions
+      @questions = @fund.questions&.map{|q| q.criterion}
     end
 
-    def load_eligibilities
-      @eligibilities = Answer.where(
-        criterion: @restrictions.pluck(:id),
-        category: [@recipient.id, @proposal.id]
+    # TODO : not currently called?
+    def load_answers
+      @answers = Answer.where(
+        criterion: @questions.pluck(:id),
+        category_id: @recipient.id,
+        category_type: 'Recipient'
+      ).to_a + Answer.where(
+        criterion: @questions.pluck(:id),
+        category_id: @proposal.id,
+        category_type: 'Proposal'
       ).to_a
     end
 
@@ -41,8 +47,8 @@ class EligibilitiesController < ApplicationController
       return (@recipient.funds_checked < 3 || @proposal.checked_fund?(@fund))
     end
 
-    def get_restriction_param(r_id)
-      p = params.dig(:check, "restriction_#{r_id}_eligible")
+    def get_question_param(r_id)
+      p = params.dig(:check, r.form_input_id)
       return nil unless p
       if p == "true"
         return true
@@ -61,13 +67,13 @@ class EligibilitiesController < ApplicationController
     def update_eligibility_params
       migrate_legacy_eligibilities
 
-      @restrictions.each do |r|
+      @questions.each do |r|
         e = Answer.find_or_initialize_by(
           criterion_id: r.id,
           category_id: (@recipient.id if r.category=="Recipient") || @proposal.id,
           category_type: r.category
         )
-        e.eligible = get_restriction_param(r.id)
+        e.eligible = get_question_param(r)
         e.save
       end
       @proposal.save

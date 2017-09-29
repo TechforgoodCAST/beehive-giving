@@ -1,6 +1,6 @@
 .flex.mb5
   .col-one-quarter.pr10
-    = f.collection_radio_buttons( "restriction_#{q.id}_eligible",
+    = f.collection_radio_buttons( q.form_input_id,
                                   Criterion.radio_buttons(q.invert),
                                   :last,
                                   :first,

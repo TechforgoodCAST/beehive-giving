@@ -15,4 +15,8 @@ class Criterion < ApplicationRecord
     category_id = (category == 'Recipient' ? proposal.recipient.id : proposal.id )
     answers.where(category_id: category_id, category_type: category).first
   end
+
+  def form_input_id
+    return "question_#{id}"
+  end
 end
