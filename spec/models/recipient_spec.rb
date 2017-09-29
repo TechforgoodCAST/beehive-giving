@@ -88,7 +88,7 @@ describe Recipient do
       2.times do
         create(:recipient_eligibility,
                category: @recipient,
-               question: create(:restriction, category: 'Recipient'))
+               criterion: create(:restriction, category: 'Recipient'))
       end
     end
 

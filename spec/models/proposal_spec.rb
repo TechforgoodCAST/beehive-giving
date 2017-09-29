@@ -222,7 +222,7 @@ describe Proposal do
       2.times do
         create(:proposal_eligibility,
                category: @proposal,
-               question: create(:restriction))
+               criterion: create(:restriction))
       end
     end
 

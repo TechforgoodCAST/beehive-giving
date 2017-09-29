@@ -50,7 +50,7 @@ describe 'Restriction' do
             .create_registered_proposal
             .create_complete_proposal
         Proposal.all.each do |proposal|
-          create(:answer, question: @r2,
+          create(:answer, criterion: @r2,
                           category: proposal)
         end
       end
@@ -63,7 +63,7 @@ describe 'Restriction' do
     context 'for Recipient' do
       before(:each) do
         [@db[:recipient], create(:recipient)].each do |recipient|
-          create(:answer, question: @r1,
+          create(:answer, criterion: @r1,
                           category: recipient)
         end
       end

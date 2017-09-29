@@ -31,7 +31,7 @@ class EligibilitiesController < ApplicationController
 
     def load_eligibilities
       @eligibilities = Answer.where(
-        question: @restrictions.pluck(:id),
+        criterion: @restrictions.pluck(:id),
         category: [@recipient.id, @proposal.id]
       ).to_a
     end
@@ -63,7 +63,7 @@ class EligibilitiesController < ApplicationController
 
       @restrictions.each do |r|
         e = Answer.find_or_initialize_by(
-          question_id: r.id,
+          criterion_id: r.id,
           category_id: (@recipient.id if r.category=="Recipient") || @proposal.id,
           category_type: r.category
         )

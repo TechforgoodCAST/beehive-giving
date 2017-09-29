@@ -4,22 +4,22 @@ FactoryGirl.define do
 
     factory :proposal_eligibility, class: Answer do
       category { |e| e.association(:proposal) }
-      question { |e| e.association(:question) }
+      criterion { |e| e.association(:criterion) }
     end
 
     factory :recipient_eligibility, class: Answer do
       category { |e| e.association(:recipient) }
-      question { |e| e.association(:question) }
+      criterion { |e| e.association(:criterion) }
     end
 
     factory :proposal_suitability, class: Answer do
       category { |e| e.association(:proposal) }
-      question { |e| e.association(:question) }
+      criterion { |e| e.association(:criterion) }
     end
 
     factory :recipient_suitability, class: Answer do
       category { |e| e.association(:recipient) }
-      question { |e| e.association(:question) }
+      criterion { |e| e.association(:criterion) }
     end
   end
 end

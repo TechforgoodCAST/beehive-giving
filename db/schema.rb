@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170927112004) do
+ActiveRecord::Schema.define(version: 20170929112541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,14 +62,14 @@ ActiveRecord::Schema.define(version: 20170927112004) do
 
   create_table "answers", id: :serial, force: :cascade do |t|
     t.integer "category_id", null: false
-    t.integer "question_id", null: false
+    t.integer "criterion_id", null: false
     t.boolean "eligible", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "category_type", default: "Proposal", null: false
     t.index ["category_id"], name: "index_answers_on_category_id"
     t.index ["category_type"], name: "index_answers_on_category_type"
-    t.index ["question_id"], name: "index_answers_on_question_id"
+    t.index ["criterion_id"], name: "index_answers_on_criterion_id"
   end
 
   create_table "articles", id: :serial, force: :cascade do |t|
@@ -256,11 +256,11 @@ ActiveRecord::Schema.define(version: 20170927112004) do
 
   create_table "funds_questions", id: :serial, force: :cascade do |t|
     t.integer "fund_id"
-    t.integer "question_id"
+    t.integer "criterion_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["criterion_id"], name: "index_funds_questions_on_criterion_id"
     t.index ["fund_id"], name: "index_funds_questions_on_fund_id"
-    t.index ["question_id"], name: "index_funds_questions_on_question_id"
   end
 
   create_table "implementations", id: :serial, force: :cascade do |t|
@@ -414,7 +414,6 @@ ActiveRecord::Schema.define(version: 20170927112004) do
     t.string "slug"
     t.index ["name"], name: "index_themes_on_name", unique: true
     t.index ["parent_id"], name: "index_themes_on_parent_id"
-    t.index ["slug"], name: "index_themes_on_slug", unique: true
   end
 
   create_table "users", id: :serial, force: :cascade do |t|
