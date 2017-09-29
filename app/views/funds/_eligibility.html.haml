@@ -35,9 +35,42 @@
           = f.button :button, "Complete proposal",
                               class: 'button white bg-blue caps shadow'
       .muted
-        = cell(:eligibility_quiz, @fund, proposal: @proposal, f: f).call(:show_public)
+
+        %p.mb15
+          The following questions have been set by
+          - if @fund.funder.website?
+            = link_to @fund.funder.name, @fund.funder.website, target: '_blank', class: 'blue'
+          - else
+            = @fund.funder.name
+          , complete them to see if you are eligible for their
+          = @fund.short_name
+          fund.
+
+        = cell(:quiz, @fund, quiz_type: 'Restriction', proposal: @proposal, f: f, 
+                           groups: {'Proposal' => 'Is your funding proposal for?', 
+                                    'Recipient' => 'Is your organisation?'}).call(:show_public)
+
+        .bg-silver.rounded.shadow.fs14.p10.my20
+          .bold.caps.mb10 Good to know
+          Eligibility checks for location, the amount you are seeking and other factors have been done automatically.
 
     - else
 
+      %p.mb15
+        The following questions have been set by
+        - if @fund.funder.website?
+          = link_to @fund.funder.name, @fund.funder.website, target: '_blank', class: 'blue'
+        - else
+          = @fund.funder.name
+        , complete them to see if you are eligible for their
+        = link_to @fund.short_name, proposal_fund_path(@proposal, @fund), class: 'blue'
+        fund.
+
+      - if @proposal.ineligible_reasons(@fund.slug).include? 'quiz'
+        .bg-red.rounded.shadow.fs14.p10.mb20.white
+          = cell(:eligibility_banner, @proposal, fund: model).call(:quiz)
+        
       = f.hidden_field :return_to, :value => return_to
-      = cell(:eligibility_quiz, @fund, proposal: @proposal, f: f).call(:show)
+      = cell(:quiz, @fund, quiz_type: 'Restriction', proposal: @proposal, f: f, 
+                           groups: {'Proposal' => 'Is your funding proposal for?', 
+                                    'Recipient' => 'Is your organisation?'}).call(:show)

@@ -145,7 +145,7 @@ class Fund < ApplicationRecord
     desc.gsub(reg, "<span class='mid-gray redacted'>#{scramble}</span>")
   end
 
-  def question_groups(question_type: 'Restriction')
+  def question_groups(question_type)
     case question_type
     when 'Restriction'
       restrictions.pluck(:category).uniq

@@ -9,4 +9,10 @@ class Criterion < ApplicationRecord
   def self.radio_buttons(invert)
     invert ? [['Yes', true], ['No', false]] : [['Yes', false], ['No', true]]
   end
+
+  def answer(proposal)
+    return nil unless proposal
+    category_id = (category == 'Recipient' ? proposal.recipient.id : proposal.id )
+    answers.where(category_id: category_id, category_type: category).first
+  end
 end
