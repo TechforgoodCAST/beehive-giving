@@ -6,7 +6,7 @@ ActiveAdmin.register Recipient do
 
   controller do
     def find_resource
-      Recipient.where(slug: params[:id]).first!
+      scoped_collection.where(slug: params[:id]).first!
     end
   end
 
@@ -48,9 +48,7 @@ ActiveAdmin.register Recipient do
           row :charity_number
           row :company_number
           row('Users') do |recipient|
-            recipient.users.each do |user|
-              li "#{user.email} | Authorised: #{user.authorised}"
-            end
+            recipient.users.each.map{|user| "<li><a href=\"#{admin_user_path(user)}\">#{user.email}</a> | Authorised: #{user.authorised}</li>"}.join("").html_safe
           end
         end
       end
