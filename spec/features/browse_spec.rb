@@ -53,10 +53,10 @@ feature 'Browse' do
     end
 
     scenario "When I visit a fund that doesn't exist,
-               I want to be redirected to where I came from and see a message,
-               so I avoid an error and understand what happened" do
+              I want to be redirected to where I came from and see a message,
+              so I avoid an error and understand what happened" do
       visit proposal_fund_path(@proposal, 'missing-fund')
-      expect(current_path).to eq proposal_funds_path(@proposal)
+      expect(current_path).to eq account_upgrade_path(@recipient)
     end
 
     scenario "When I find a funding theme I'm interested in,
@@ -83,7 +83,7 @@ feature 'Browse' do
       # TODO: v2 flash notices #391
       # expect(page.all('body script', visible: false)[0].native.text)
       #   .to have_text 'Fund not found'
-      expect(current_path).to eq proposal_funds_path(@proposal)
+      expect(current_path).to eq account_upgrade_path(@recipient)
 
       visit theme_proposal_funds_path(@proposal, 'missing')
       # TODO: v2 flash notices #391

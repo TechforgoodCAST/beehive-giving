@@ -282,8 +282,6 @@ describe Proposal do
       @proposal = Proposal.new(eligibility: eligibility)
     end
 
-    it '#show_fund?'
-
     it '#checked_fund?'
 
     it '#eligible_funds' do
