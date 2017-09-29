@@ -3,17 +3,13 @@ class ProposalsController < ApplicationController
   before_action :load_proposal, only: [:edit, :update] # TODO: refactor
 
   def new
-    if @proposal.complete?
-      @proposal = @recipient.proposals.new(
-        countries: [Country.find_by(alpha2: @recipient.country)]
-      )
-      return if @recipient.subscribed?
-      redirect_to request.referer || root_path,
-                  alert: 'Please upgrade to create multiple funding proposals'
-      # TODO: redirect to update path
-    else
-      redirect_to edit_signup_proposal_path(@proposal)
-    end
+    return redirect_to edit_signup_proposal_path(@proposal) unless
+      @proposal.complete?
+
+    authorize Proposal
+    @proposal = @recipient.proposals.new(
+      countries: [Country.find_by(alpha2: @recipient.country)]
+    )
   end
 
   def create
@@ -75,6 +71,10 @@ class ProposalsController < ApplicationController
   end
 
   private
+
+    def user_not_authorised
+      redirect_to account_upgrade_path(@recipient)
+    end
 
     def load_proposal # TODO: refactor
       @proposal = @recipient.proposals.find(params[:id])
