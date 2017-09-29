@@ -11,12 +11,12 @@ class Answer < ApplicationRecord
                           message: 'only one per fund' },
             if: :eligible?
 
-  validate :ensure_criteron_category_match
+  validate :ensure_criterion_category_match
 
   private
 
-    def ensure_criteron_category_match
-      return if category_type == criteron.category
-      errors.add(:eligible, "Category must be #{criteron.category}")
+    def ensure_criterion_category_match
+      return if category_type == criterion.category
+      errors.add(:eligible, "Category must be #{criterion.category}")
     end
 end
