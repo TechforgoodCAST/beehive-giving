@@ -51,7 +51,7 @@
 
           = cell(:fund_indicators, fund, proposal: @proposal)
 
-          - if @proposal.show_fund?(fund)
+          - if policy(FundContext.new(fund, @proposal)).show?
             .mb5
               = link_to fund.title, proposal_fund_path(@proposal, fund), class: 'blue fs22 lh30'
             .mb5.fs15.lh20.mid-gray

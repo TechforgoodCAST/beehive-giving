@@ -86,6 +86,10 @@ class User < ApplicationRecord
     UserMailer.password_reset(self).deliver_now
   end
 
+  def subscribed?
+    organisation.subscription.active?
+  end
+
   private
 
     def generate_token(column)
