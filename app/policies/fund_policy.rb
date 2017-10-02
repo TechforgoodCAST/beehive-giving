@@ -1,6 +1,6 @@
 class FundPolicy < ApplicationPolicy
   def show?
-    return false unless record.fund
+    return false unless record.fund && record.proposal
     return true if user.subscribed?
     record.proposal
           .suitable_funds

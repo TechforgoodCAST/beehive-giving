@@ -102,13 +102,6 @@ class Proposal < ApplicationRecord
             presence: { message: "please uncheck 'Other' or specify details" },
             if: :implementations_other_required
 
-  validate :recipient_subscribed, on: :create
-
-  def recipient_subscribed
-    return if recipient.subscribed? || recipient.proposals.count.zero?
-    errors.add(:title, 'Upgrade subscription to create multiple proposals')
-  end
-
   def beehive_insight_durations
     @beehive_insight_durations ||= call_beehive_insight(
       ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'],

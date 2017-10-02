@@ -67,22 +67,6 @@ describe Recipient do
     expect(@recipient.districts.count).to eq 3
   end
 
-  it 'has one proposal unless subscribed' do
-    expect(@recipient.subscribed?).to eq false
-    expect(@recipient.proposals.count).to eq 1
-  end
-
-  context 'subscribed' do
-    before(:each) do
-      @app.subscribe_recipient.create_registered_proposal
-    end
-
-    it 'has many proposals if subscribed' do
-      expect(@recipient.subscribed?).to eq true
-      expect(@recipient.proposals.count).to eq 2
-    end
-  end
-
   context 'eligibilities' do
     before(:each) do
       2.times do

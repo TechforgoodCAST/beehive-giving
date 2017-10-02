@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
 
     def user_not_authorised
       flash[:alert] = "Sorry, you don't have access to that"
-      redirect_to(request.referrer || root_path)
+      redirect_back(fallback_location: root_path)
     end
 
     def current_user

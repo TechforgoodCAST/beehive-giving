@@ -45,17 +45,6 @@ feature 'Subscriptions' do
       end
     end
 
-    scenario 'no plan/price for recipient.income_band 4' do
-      @db[:recipient].update(income_band: 4)
-      visit account_subscription_path(@db[:recipient])
-      expect(page).to have_text 'Contact us for a quote'
-      expect(page).to have_link 'Get in touch',
-                                href: 'mailto:support@beehivegiving.org'
-
-      visit account_upgrade_path(@db[:recipient])
-      expect(current_path).to eq account_subscription_path(@db[:recipient])
-    end
-
     scenario 'valid coupon' do
       visit account_upgrade_path(@db[:recipient])
       helper.pay_by_card(stripe, coupon: 'test10')
@@ -117,14 +106,6 @@ feature 'Subscriptions' do
             stripe.delete_plan(plan.to_s.parameterize)
           end
         end
-      end
-
-      scenario 'can only have 1 proposal' do
-        @app.build_complete_proposal
-        proposal = @app.instances[:complete_proposal]
-        expect(proposal).not_to be_valid
-        expect(proposal.errors[:title][0]).to eq 'Upgrade subscription to ' \
-                                                 'create multiple proposals'
       end
 
       scenario 'can only check 3 eligibilty'
