@@ -40,7 +40,7 @@
 
       - if @proposal.ineligible_reasons(@fund.slug).include? 'quiz'
         .bg-red.rounded.shadow.fs14.p10.mb20.white
-          = cell(:eligibility_banner, @proposal, fund: model).call(:quiz)
+          = cell(:eligibility_banner, @proposal, fund: @fund).call(:quiz)
         
       = f.hidden_field :return_to, :value => return_to
       = cell(:quiz, @fund, quiz_type: 'Priority', proposal: @proposal, f: f).call(:show)

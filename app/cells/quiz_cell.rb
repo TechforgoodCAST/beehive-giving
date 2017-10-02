@@ -32,7 +32,7 @@ class QuizCell < Cell::ViewModel
         if options[:quiz_type] == 'Restriction'
           @questions[g] = model.restrictions.where(category: g)
         else
-          @questions[g] = model.questions.include(:criteria).grouped(options[:quiz_type], g)&.map{|q| q.criterion}
+          @questions[g] = model.questions.includes(:criterion).grouped(options[:quiz_type], g)&.map{|q| q.criterion}
         end
       end
       @proposal = options[:proposal]

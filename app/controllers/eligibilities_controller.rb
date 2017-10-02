@@ -1,7 +1,7 @@
 class EligibilitiesController < ApplicationController
   before_action :ensure_logged_in
   before_action :load_fund, # TODO: refactor
-                :load_questions, :load_eligibilities
+                :load_questions, :load_answers
 
   def create
     if @recipient.incomplete_first_proposal?
@@ -26,10 +26,9 @@ class EligibilitiesController < ApplicationController
     end
 
     def load_questions
-      @questions = @fund.questions&.map{|q| q.criterion}
+      @questions = @fund.questions&.map{|q| q.criterion}.compact
     end
 
-    # TODO : not currently called?
     def load_answers
       @answers = Answer.where(
         criterion: @questions.pluck(:id),
@@ -47,7 +46,7 @@ class EligibilitiesController < ApplicationController
       return (@recipient.funds_checked < 3 || @proposal.checked_fund?(@fund))
     end
 
-    def get_question_param(r_id)
+    def get_question_param(r)
       p = params.dig(:check, r.form_input_id)
       return nil unless p
       if p == "true"
