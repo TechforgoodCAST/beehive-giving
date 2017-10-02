@@ -100,7 +100,8 @@ feature 'Browse' do
 
     scenario 'can only view proposal_fund_path for recommended funds ' \
               'unless subscribed' do
-      visit proposal_fund_path(@proposal, Fund.first)
+      click_link '2'
+      first('.redacted').click
       expect(current_path).to eq account_upgrade_path(@recipient)
 
       subscribe_and_visit proposal_fund_path(@proposal, Fund.first)
@@ -125,11 +126,6 @@ feature 'Browse' do
         )
       end
 
-      xscenario 'I want to see a amount_awarded_distribution chart,
-                so I can evaluate how much funding to ask for' do
-        expect(page).to have_css '#amount_awarded_distribution'
-      end
-
       scenario 'I want to see the top_award_months,
                 so I can evaluate my chances of success' do
         expect(page).to have_text(
@@ -137,21 +133,11 @@ feature 'Browse' do
         )
       end
 
-      xscenario "I want to see a award_month_distribution chart,
-                so I can understand which months funding is awarded" do
-        expect(page).to have_css '#award_month_distribution'
-      end
-
       scenario 'I want to see the top_countries,
                 so I can evaluate my chances of success' do
         expect(page).to have_text(
           'Awarded the most funding in the United Kingdom'
         )
-      end
-
-      xscenario "I want to see a country_distribution chart,
-                so I can understand in which countries funding is awarded" do
-        expect(page).to have_css '#country_distribution'
       end
 
       scenario 'I want to see the sources of open data,

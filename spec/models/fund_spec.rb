@@ -20,12 +20,14 @@ describe Fund do
         @proposal = build :proposal, suitability: {
           Fund.second.slug => { 'total' => 1.0 },
           Fund.first.slug => { 'total' => 0.5 }
+        }, eligibility: {
+          Fund.second.slug => { 'topic' => { 'eligible' => false } }
         }
       end
 
-      it 'default best' do
+      it 'default relevance orders ineligible last' do
         expect(Fund.order_by(@proposal, 'DROP TABLE "FUNDS";').pluck(:id))
-          .to eq [Fund.second.id, Fund.first.id, Fund.third.id]
+          .to eq [Fund.first.id, Fund.third.id, Fund.second.id]
       end
 
       it 'name' do
