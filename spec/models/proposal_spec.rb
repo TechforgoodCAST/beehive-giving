@@ -271,8 +271,6 @@ describe Proposal do
       @proposal = Proposal.new(eligibility: eligibility)
     end
 
-    it '#checked_fund?'
-
     it '#eligible_funds' do
 
       expect(@proposal.eligible_funds).to eq 'fund2' => { 'quiz' => { 'eligible' => true }, 'other' => { 'eligible' => true } }

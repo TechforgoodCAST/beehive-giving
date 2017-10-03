@@ -4,7 +4,7 @@ class FundsController < ApplicationController
 
   def show
     @fund = Fund.includes(:funder).find_by(slug: params[:id])
-    authorize FundContext.new(@fund, @proposal), :show?
+    authorize FundContext.new(@fund, @proposal)
   end
 
   def index

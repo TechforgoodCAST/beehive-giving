@@ -25,7 +25,7 @@
             %div.ml5
               = k
             .col
-              - if v == 'quiz' && !@proposal.checked_fund?(@fund)
+              - if v == 'quiz' && !EligibilityContext.new(@fund, @proposal).checked_fund?
                 = link_to 'Check', '#eligibility-quiz', class: 'blue right'
           - if @proposal.ineligible_reasons(@fund.slug).include? v
             .muted.fs12.lh15.mt5

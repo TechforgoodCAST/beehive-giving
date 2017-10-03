@@ -1,10 +1,6 @@
 class ChargePolicy < ApplicationPolicy
-  def new?
-    !user.subscribed?
-  end
-
   def create?
-    !user.subscribed?
+   !user.subscribed?
   end
 
   def thank_you?

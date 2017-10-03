@@ -1,8 +1,8 @@
-class FundContext
+class ApplicationContext
   attr_reader :fund, :proposal
 
   def self.policy_class
-    FundPolicy
+    raise NotImplementedError
   end
 
   def initialize(fund, proposal)

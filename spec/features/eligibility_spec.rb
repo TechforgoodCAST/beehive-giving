@@ -141,7 +141,6 @@ feature 'Eligibility' do
               I want to see a link to apply for funding,
               so I can see further details about applying" do
       helper.answer_restrictions(@fund).check_eligibility
-      expect(page).to have_text 'Update'
 
       click_link 'Application form'
       expect(current_path).to eq apply_proposal_fund_path(@proposal, @fund)
@@ -161,7 +160,7 @@ feature 'Eligibility' do
                                 'the criteria below.'
       expect(page).to have_text 'You did not meet this criteria', count: 3
 
-      helper.answer_restrictions(@fund).update
+      helper.answer_restrictions(@fund).check_eligibility
       expect(page).to have_text 'Apply'
       expect(page).to have_text 'Apply for funding'
 
@@ -184,7 +183,7 @@ feature 'Eligibility' do
             .check_eligibility
       visit proposal_fund_path(@proposal, 'funder-awards-for-all-6')
 
-      helper.check_eligibility(remaining: 2)
+      helper.check_eligibility
       # 3 questions previously answered should be checked
       expect(page).to have_text 'You have completed 3 of 5 criteria.'
       expect(page).to have_css '.quiz input[type=radio][checked=checked]', count: 3

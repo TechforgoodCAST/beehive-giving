@@ -36,13 +36,8 @@ class EligibilityHelper
     self
   end
 
-  def check_eligibility(remaining: 3)
-    click_button "Check eligibility (#{remaining} left)"
-    self
-  end
-
-  def update
-    click_button 'Update'
+  def check_eligibility
+    click_button 'Check eligibility'
     self
   end
 

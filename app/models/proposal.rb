@@ -142,10 +142,6 @@ class Proposal < ApplicationRecord
     suitability.sort_by { |fund| fund[1]['total'] }.reverse
   end
 
-  def checked_fund?(fund)
-    eligibility[fund.slug]&.all_values_for('quiz').present?
-  end
-
   def eligible_funds
     eligibility.select{|f, _| eligible_status(f) == 1}
   end

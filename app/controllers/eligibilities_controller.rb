@@ -7,9 +7,9 @@ class EligibilitiesController < ApplicationController
     if @recipient.incomplete_first_proposal?
       session[:return_to] = @fund.slug
       return redirect_to edit_signup_proposal_path(@proposal)
-    elsif !can_check_eligibility?
-      return redirect_to account_upgrade_path(@recipient)
     end
+
+    authorize EligibilityContext.new(@fund, @proposal)
 
     if update_eligibility_params
       params[:mixpanel_eligibility_tracking] = true
@@ -36,9 +36,8 @@ class EligibilitiesController < ApplicationController
       ).to_a
     end
 
-    def can_check_eligibility?
-      return true if @recipient.subscribed?
-      return (@recipient.funds_checked < 3 || @proposal.checked_fund?(@fund))
+    def user_not_authorised
+      redirect_to account_upgrade_path(@recipient)
     end
 
     def get_restriction_param(r_id)
