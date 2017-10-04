@@ -67,9 +67,17 @@ describe Recipient do
     expect(@recipient.districts.count).to eq 3
   end
 
-  fit 'reveals only has unique fund slugs' do
-    @recipient.reveals = ["fund-slug-1", "fund-slug-2", "fund-slug-1"]
-    expect(@recipient.reveals).to eq ["fund-slug-1", "fund-slug-2"]
+  it 'reveals only has unique fund slugs' do
+    @recipient.reveals = %w[fund-slug-1 fund-slug-1]
+    @recipient.save
+    expect(@recipient.reveals).to eq ['fund-slug-1']
+  end
+
+  it 'reveals push only has unique fund slugs' do
+    @recipient.reveals << 'fund-slug-1'
+    @recipient.reveals << 'fund-slug-1'
+    @recipient.save
+    expect(@recipient.reveals).to eq ['fund-slug-1']
   end
 
   context 'eligibilities' do
