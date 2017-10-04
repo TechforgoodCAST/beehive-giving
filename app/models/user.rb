@@ -86,8 +86,20 @@ class User < ApplicationRecord
     UserMailer.password_reset(self).deliver_now
   end
 
-  def subscribed?
-    organisation.subscription.active?
+  def subscription
+    organisation.subscription
+  end
+
+  def subscription_active?
+    subscription.active?
+  end
+
+  def subscription_version
+    subscription.version
+  end
+
+  def reveals
+    organisation.reveals
   end
 
   private

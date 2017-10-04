@@ -1,36 +1,66 @@
 require 'rails_helper'
 require 'pundit/rspec'
 
-describe FundPolicy do
+fdescribe FundPolicy do
   subject { described_class }
 
-  permissions :show? do
-    before(:each) do
-      @user = instance_double(User, subscribed?: false)
-      @fund = instance_double(Fund, slug: 'fund')
-      @proposal = Proposal.new
-    end
+  let(:version) { 1 }
 
-    it 'denies access if no fund supplied' do
-      is_expected.not_to permit(@user, FundContext.new(nil, @proposal))
-    end
+  let(:subscribed) { false }
+  let(:suitability) { {} }
 
-    it 'denies access if no proposal supplied' do
-      is_expected.not_to permit(@user, FundContext.new(@fund, nil))
-    end
+  let(:fund) { Fund.new(slug: 'fund') }
+  let(:proposal) { Proposal.new(suitability: suitability) }
+  let(:user) do
+    instance_double(
+      User,
+      subscription_active?: subscribed,
+      subscription_version: version,
+      reveals: []
+    )
+  end
 
-    it 'grants access if user subscribed' do
-      allow(@user).to receive(:subscribed?).and_return(true)
-      is_expected.to permit(@user, FundContext.new(@fund, @proposal))
-    end
+  context 'v1' do
+    permissions :show? do
+      it 'denies access if no fund supplied' do
+        is_expected.not_to permit(user, FundContext.new(nil, proposal))
+      end
 
-    it 'grants access if fund recommended' do
-      @proposal.suitability = { @fund.slug => { 'total' => 1 } }
-      is_expected.to permit(@user, FundContext.new(@fund, @proposal))
-    end
+      it 'denies access if no proposal supplied' do
+        is_expected.not_to permit(user, FundContext.new(fund, nil))
+      end
 
-    it 'denies access if fund not recommended' do
-      is_expected.not_to permit(@user, FundContext.new(@fund, @proposal))
+      context 'user subscribed' do
+        let(:subscribed) { true }
+
+        it 'grants access' do
+          is_expected.to permit(user, FundContext.new(fund, proposal))
+        end
+      end
+
+      context 'fund recommended' do
+        let(:suitability) { { fund.slug => { 'total' => 1 } } }
+
+        it 'grants access' do
+          is_expected.to permit(user, FundContext.new(fund, proposal))
+        end
+      end
+
+      context 'fund not recommended' do
+        it 'denies access' do
+          is_expected.not_to permit(user, FundContext.new(fund, proposal))
+        end
+      end
+    end
+  end
+
+  context 'v2' do
+    let(:version) { 2 }
+
+    permissions :show? do
+      it 'denies access if no fund supplied' do
+        is_expected.not_to permit(user, fund)
+      end
     end
   end
 end

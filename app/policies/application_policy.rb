@@ -50,4 +50,10 @@ class ApplicationPolicy
       scope
     end
   end
+
+  private
+
+    def use_subscription_version(method)
+      send("v#{user.subscription_version}_#{method}")
+    end
 end

@@ -5,7 +5,7 @@ describe ChargePolicy do
   subject { described_class }
 
   before(:each) do
-    @user = instance_double(User, subscribed?: false)
+    @user = instance_double(User, subscription_active?: false)
   end
 
   permissions :new?, :create? do
@@ -14,7 +14,7 @@ describe ChargePolicy do
     end
 
     it 'denies access if user subscribed' do
-      allow(@user).to receive(:subscribed?).and_return(true)
+      allow(@user).to receive(:subscription_active?).and_return(true)
       expect(subject).not_to permit(@user, :charge)
     end
   end
@@ -25,7 +25,7 @@ describe ChargePolicy do
     end
 
     it 'grants access if user subscribed' do
-      allow(@user).to receive(:subscribed?).and_return(true)
+      allow(@user).to receive(:subscription_active?).and_return(true)
       is_expected.to permit(@user, :charge)
     end
   end

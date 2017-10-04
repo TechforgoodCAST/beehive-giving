@@ -14,7 +14,7 @@ describe EligibilityPolicy do
     let(:user) do
       instance_double(
         User,
-        subscribed?: subscribed,
+        subscription_active?: subscribed,
         organisation: Recipient.new(funds_checked: funds_checked)
       )
     end

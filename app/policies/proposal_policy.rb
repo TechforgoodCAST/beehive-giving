@@ -1,5 +1,5 @@
 class ProposalPolicy < ApplicationPolicy
   def create?
-    user.subscribed?
+    user.subscription_active?
   end
 end
