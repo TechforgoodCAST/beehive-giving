@@ -67,6 +67,11 @@ describe Recipient do
     expect(@recipient.districts.count).to eq 3
   end
 
+  fit 'reveals only has unique fund slugs' do
+    @recipient.reveals = ["fund-slug-1", "fund-slug-2", "fund-slug-1"]
+    expect(@recipient.reveals).to eq ["fund-slug-1", "fund-slug-2"]
+  end
+
   context 'eligibilities' do
     before(:each) do
       2.times do
