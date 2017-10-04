@@ -1,7 +1,6 @@
-require 'rails_helper'
 require 'pundit/rspec'
 
-fdescribe FundPolicy do
+describe FundPolicy do
   subject { described_class }
 
   let(:version) { 1 }
@@ -11,12 +10,13 @@ fdescribe FundPolicy do
 
   let(:fund) { Fund.new(slug: 'fund') }
   let(:proposal) { Proposal.new(suitability: suitability) }
+  let(:reveals) { [] }
   let(:user) do
     instance_double(
       User,
       subscription_active?: subscribed,
       subscription_version: version,
-      reveals: []
+      reveals: reveals
     )
   end
 
@@ -60,6 +60,37 @@ fdescribe FundPolicy do
     permissions :show? do
       it 'denies access if no fund supplied' do
         is_expected.not_to permit(user, fund)
+      end
+
+      context 'user subscribed' do
+        let(:subscribed) { true }
+
+        it 'grants access' do
+          is_expected.to permit(user, fund)
+        end
+      end
+
+      context 'fund revealed' do
+        let(:reveals) { [fund.slug] }
+
+        it 'grants access' do
+          is_expected.to permit(user, fund)
+        end
+      end
+
+      context 'fund revealed and subscribed' do
+        let(:subscribed) { true }
+        let(:reveals) { [fund.slug] }
+
+        it 'grants access' do
+          is_expected.to permit(user, fund)
+        end
+      end
+
+      context 'fund not revealed' do
+        it 'denies access' do
+          is_expected.not_to permit(user, fund)
+        end
       end
     end
   end
