@@ -49,6 +49,10 @@
       - @funds.each_with_index do |fund, i|
         %article.mb40
 
+          -# TODO: refactor
+          - if @current_user.subscription_version == 2 && !policy(FundContext.new(fund, @proposal)).show?
+            = link_to 'Reveal', reveals_path(fund: fund), method: :post, class: 'blue'
+
           = cell(:fund_indicators, fund, proposal: @proposal)
 
           - if policy(FundContext.new(fund, @proposal)).show?

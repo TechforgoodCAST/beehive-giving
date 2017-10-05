@@ -1,4 +1,3 @@
-require 'rails_helper'
 require 'pundit/rspec'
 
 describe ChargePolicy do
@@ -10,12 +9,12 @@ describe ChargePolicy do
 
   permissions :new?, :create? do
     it 'grants access if user unsubscribed' do
-      expect(subject).to permit(@user, :charge)
+      is_expected.to permit(@user, :charge)
     end
 
     it 'denies access if user subscribed' do
       allow(@user).to receive(:subscription_active?).and_return(true)
-      expect(subject).not_to permit(@user, :charge)
+      is_expected.not_to permit(@user, :charge)
     end
   end
 
