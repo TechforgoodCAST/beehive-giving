@@ -181,7 +181,7 @@ feature 'Eligibility' do
       helper.answer_recipient_restrictions(@fund)
             .answer_proposal_restrictions(@fund, eligible: false)
             .check_eligibility
-      visit proposal_fund_path(@proposal, 'funder-awards-for-all-6')
+      visit proposal_fund_path(@proposal, Fund.first)
 
       helper.check_eligibility
       # 3 questions previously answered should be checked

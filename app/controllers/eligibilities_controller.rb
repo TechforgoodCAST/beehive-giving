@@ -5,7 +5,7 @@ class EligibilitiesController < ApplicationController
 
   def create
     if @recipient.incomplete_first_proposal?
-      session[:return_to] = @fund.slug
+      session[:return_to] = @fund.hashid
       return redirect_to edit_signup_proposal_path(@proposal)
     end
 
@@ -22,7 +22,7 @@ class EligibilitiesController < ApplicationController
   private
 
     def load_fund # TODO: refactor to applicaiton controller?
-      @fund = Fund.includes(:funder).find_by(slug: params[:id])
+      @fund = Fund.includes(:funder).find_by_hashid(params[:id])
     end
 
     def load_restrictions

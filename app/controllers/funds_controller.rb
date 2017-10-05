@@ -3,7 +3,7 @@ class FundsController < ApplicationController
   before_action :query, only: %i[index themed]
 
   def show
-    @fund = Fund.includes(:funder).find_by(slug: params[:id])
+    @fund = Fund.includes(:funder).find_by_hashid(params[:id])
     authorize FundContext.new(@fund, @proposal)
   end
 

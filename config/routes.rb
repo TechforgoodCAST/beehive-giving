@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :reveals, only: :create
 
   get '/funds', to: 'public_funds#index', as: 'public_funds'
-  get '/funds/:slug', to: 'public_funds#show', as: 'public_fund'
+  get '/funds/:id', to: 'public_funds#show', as: 'public_fund'
   get '/funds/theme/:theme', to: 'public_funds#themed', as: 'public_funds_theme'
 
   resources :proposals, except: [:show, :destroy] do

@@ -107,9 +107,6 @@ feature 'Subscriptions' do
           end
         end
       end
-
-      scenario 'can only check 3 eligibilty'
-      scenario 'can only see 6 funds'
     end
 
     context 'active' do
@@ -181,10 +178,6 @@ feature 'Subscriptions' do
         visit proposal_fund_path(@db[:complete_proposal], Fund.first)
         expect(page).not_to have_button 'Check eligibility (3 left)'
       end
-
-      scenario 'can have unlimited proposals'
-      scenario 'can check unlimited eligibilty'
-      scenario 'can see unlimited funds'
     end
   end
 end

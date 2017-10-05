@@ -3,7 +3,8 @@ class RevealsController < ApplicationController
 
   def create
     authorize :reveal
-    @recipient.reveals << params[:fund]
+    fund = Fund.find_by_hashid(params[:fund])
+    @recipient.reveals << fund.slug
     @recipient.save
     redirect_to proposal_fund_path(@proposal, params[:fund])
   end
