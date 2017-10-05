@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170914140025) do
+ActiveRecord::Schema.define(version: 20170929130113) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,14 +62,14 @@ ActiveRecord::Schema.define(version: 20170914140025) do
 
   create_table "answers", id: :serial, force: :cascade do |t|
     t.integer "category_id", null: false
-    t.integer "question_id", null: false
+    t.integer "criterion_id", null: false
     t.boolean "eligible", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "category_type", default: "Proposal", null: false
     t.index ["category_id"], name: "index_answers_on_category_id"
     t.index ["category_type"], name: "index_answers_on_category_type"
-    t.index ["question_id"], name: "index_answers_on_question_id"
+    t.index ["criterion_id"], name: "index_answers_on_criterion_id"
   end
 
   create_table "articles", id: :serial, force: :cascade do |t|
@@ -117,6 +117,15 @@ ActiveRecord::Schema.define(version: 20170914140025) do
     t.integer "proposal_id"
     t.index ["country_id"], name: "index_countries_proposals_on_country_id"
     t.index ["proposal_id"], name: "index_countries_proposals_on_proposal_id"
+  end
+
+  create_table "criteria", id: :serial, force: :cascade do |t|
+    t.string "details", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "invert", default: false, null: false
+    t.string "category", default: "Proposal", null: false
+    t.string "type", default: "Restriction"
   end
 
   create_table "districts", id: :serial, force: :cascade do |t|
@@ -245,15 +254,6 @@ ActiveRecord::Schema.define(version: 20170914140025) do
     t.index ["tags"], name: "index_funds_on_tags", using: :gin
   end
 
-  create_table "funds_questions", id: :serial, force: :cascade do |t|
-    t.integer "fund_id"
-    t.integer "question_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["fund_id"], name: "index_funds_questions_on_fund_id"
-    t.index ["question_id"], name: "index_funds_questions_on_question_id"
-  end
-
   create_table "implementations", id: :serial, force: :cascade do |t|
     t.string "label", limit: 255
     t.datetime "created_at", null: false
@@ -321,12 +321,14 @@ ActiveRecord::Schema.define(version: 20170914140025) do
   end
 
   create_table "questions", id: :serial, force: :cascade do |t|
-    t.string "details", null: false
+    t.integer "fund_id"
+    t.integer "criterion_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "invert", default: false, null: false
-    t.string "category", default: "Proposal", null: false
-    t.string "type", default: "Restriction"
+    t.string "criterion_type", default: "Restriction"
+    t.string "group"
+    t.index ["criterion_id"], name: "index_questions_on_criterion_id"
+    t.index ["fund_id"], name: "index_questions_on_fund_id"
   end
 
   create_table "recipient_funder_accesses", id: :serial, force: :cascade do |t|
@@ -414,7 +416,6 @@ ActiveRecord::Schema.define(version: 20170914140025) do
     t.string "slug"
     t.index ["name"], name: "index_themes_on_name", unique: true
     t.index ["parent_id"], name: "index_themes_on_parent_id"
-    t.index ["slug"], name: "index_themes_on_slug", unique: true
   end
 
   create_table "users", id: :serial, force: :cascade do |t|

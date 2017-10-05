@@ -3,7 +3,7 @@ require 'rails_helper'
 # include ActionView::Helpers::FormOptionsHelper
 # include SimpleForm::ActionViewExtensions::FormHelper
 
-describe EligibilityQuizCell do
+describe QuizCell do
   # controller ApplicationController
 
   # before(:each) do
@@ -19,7 +19,7 @@ describe EligibilityQuizCell do
     # end
 
     it 'no button is shown'
-    #   quiz = cell(:eligibility_quiz, @fund, proposal: @proposal).call(:show)
+    #   quiz = cell(:quiz, @fund, proposal: @proposal).call(:show)
     #   expect(quiz).not_to have_tag 'button.uk-button'
     # end
 
@@ -31,20 +31,20 @@ describe EligibilityQuizCell do
   it 'all eligibilities are shown correctly'
 
   it 'button is shown'
-  #   quiz = cell(:eligibility_quiz, @fund, proposal: @proposal).call(:show)
+  #   quiz = cell(:quiz, @fund, proposal: @proposal).call(:show)
   #   expect(quiz).to have_tag 'button.uk-button'
   # end
 
   it 'button shows correctly if fund is checked'
   #   @proposal.eligiblities[@fund.slug] = {"quiz": {"eligible": true}}
-  #   quiz = cell(:eligibility_quiz, @fund, proposal: @proposal).call(:show)
+  #   quiz = cell(:quiz, @fund, proposal: @proposal).call(:show)
   #   expect(quiz).to have_tag 'button.uk-button'
   #   expect(quiz).to have_text 'Update'
   # end
 
   it 'button shows correctly if subscribed'
   #   @proposal.recipient.subscribe!
-  #   quiz = cell(:eligibility_quiz, @fund, proposal: @proposal).call(:show)
+  #   quiz = cell(:quiz, @fund, proposal: @proposal).call(:show)
   #   expect(quiz).to have_tag 'button.uk-button'
   #   expect(quiz).to have_text 'Check eligibility'
   # end

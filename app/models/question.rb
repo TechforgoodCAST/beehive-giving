@@ -1,11 +1,6 @@
 class Question < ApplicationRecord
-  has_and_belongs_to_many :funds # TODO: refactor
-  has_many :funders, -> { distinct }, through: :funds
-  has_many :answers
-
-  validates :details, presence: true, uniqueness: true
-
-  def self.radio_buttons(invert)
-    invert ? [['Yes', true], ['No', false]] : [['Yes', false], ['No', true]]
-  end
+    scope :grouped, ->(type, group) { where(criterion_type: type, group: group) }
+    belongs_to :criterion, polymorphic: true, dependent: :destroy
+    belongs_to :fund
+    has_many :answers, through: :criterion
 end
