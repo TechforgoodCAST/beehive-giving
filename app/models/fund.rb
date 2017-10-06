@@ -135,6 +135,17 @@ class Fund < ApplicationRecord
     markdown(description)
   end
 
+  def geo_description_html
+    # return geo_description if geo_description
+    if countries.size > 5
+      "<span title=\"#{countries.pluck(:name).to_sentence(last_word_connector: " and ")}\">#{countries.size} countries</span>"
+    elsif countries.size == 1 && countries.pluck(:alpha2).include?('GB')
+      "In the UK"
+    else
+      countries.pluck(:name).to_sentence(two_words_connector: " & ", last_word_connector: " & ")
+    end
+  end
+
   def description_redacted
     tokens = name.downcase.split + funder.name.downcase.split
     stop_words = %w[and the fund trust foundation grants charitable]

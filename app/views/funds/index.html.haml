@@ -60,6 +60,8 @@
                 = cell(:fund_insight, fund, proposal: @proposal).call(:themes)
               %p.mb5.fs15.lh20
                 = raw strip_tags fund.description_html.truncate_words(30)
+              %p.fs12.lh18.mb5.slate
+                = cell(:fund_insight, fund, proposal: @proposal).call(:summary)
 
             .col-one-third.border-left.pl10.border-lightest-gray
               = render partial: 'actions', locals: { fund: fund }
