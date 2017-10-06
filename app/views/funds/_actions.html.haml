@@ -1,0 +1,45 @@
+%section.fs12.lh14
+  - if @proposal.eligible_status(fund.slug) == -1
+    .blue.mb10.fs14
+      %span.white.dot.dot-10.bg-blue
+      Eligibility
+    .mb5
+      = cell(:quiz, fund, quiz_type: 'Restriction', proposal: @proposal).call(:questions_completed)
+    .mb5
+      = link_to "Complete this check", "#", class: 'blue'
+
+  - elsif @proposal.eligible_status(fund.slug) == 0
+    .red.mb10.fs14
+      %span.red
+        = "\u2718".html_safe
+      Ineligible
+    = link_to "Find out why", "#", class: 'blue'
+
+  - else
+    .green.mb10.fs14
+      %span.green
+        = "\u2714".html_safe
+      Eligible
+    = link_to "View full report", "#", class: 'blue'
+
+
+%section.fs12.mt20.lh14
+  .blue.mb10.fs14
+    %span.white.dot.dot-10.bg-blue
+    Suitability
+
+%section.fs12.mt20.lh14
+  - if @proposal.eligible_status(fund.slug) == -1
+    .muted
+      .blue.mb10.fs14
+        %span.white.dot.dot-10.bg-blue
+        Apply
+      .mb5
+        Pending eligibility & suitability
+      = link_to "Reveal & apply >", "#", class: 'blue'
+
+  - elsif @proposal.eligible_status(fund.slug) == 1
+    .blue.mb10.fs14
+      %span.white.dot.dot-10.bg-blue
+      Apply
+    = link_to "Reveal & apply >", "#", class: 'blue'
