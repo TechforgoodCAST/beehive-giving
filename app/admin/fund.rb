@@ -169,7 +169,7 @@ ActiveAdmin.register Fund do
         f.inputs 'Restrictions' do
           f.input :permitted_costs, as: :select, collection: FUNDING_TYPES,
                            input_html: { multiple: true, class: 'chosen-select' }
-          f.input :permitted_org_types, as: :select, collection: ORG_TYPES,
+          f.input :permitted_org_types, as: :select, collection: ORG_TYPES.map{|o| [o[0], o[1]] },
                                input_html: { multiple: true, class: 'chosen-select' }
           f.input :restrictions_known
           f.input :restrictions, collection: Restriction.pluck(:details, :invert, :id).map { |r| [("#{r[0]} [INVERT]" if r[1]) || r[0], r[2]] },
