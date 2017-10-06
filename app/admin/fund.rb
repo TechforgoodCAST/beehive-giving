@@ -9,7 +9,7 @@ ActiveAdmin.register Fund do
                 :country_distribution, :sources, :national,
                 :org_type_distribution, :income_distribution, :slug,
                 :beneficiary_distribution, :grant_examples,
-                :geographic_scale_limited,
+                :geographic_scale_limited, :geo_description,
                 :min_amount_awarded_limited, :min_amount_awarded,
                 :max_amount_awarded_limited, :max_amount_awarded,
                 :min_duration_awarded_limited, :min_duration_awarded,
@@ -40,7 +40,7 @@ ActiveAdmin.register Fund do
       check_presence(fund, 'income_distribution')
     end
     column :open_data
-    column "Ltd geo", :geographic_scale_limited
+    column "Geo", :geo_description_html
     column :districts do |fund|
       fund.districts.count
     end
@@ -132,6 +132,7 @@ ActiveAdmin.register Fund do
 
       tab :geography do
         attributes_table do
+          row :geo_description_html
           row :countries do
             fund.countries.map{|c| "<span class=\"status_tag\">#{c&.name}</span>"}.join("").html_safe
           end
@@ -189,6 +190,7 @@ ActiveAdmin.register Fund do
         end
 
         inputs 'Geography' do
+          f.input :geo_description
           f.input :countries, collection: Country.pluck(:name, :id),
                               input_html: { multiple: true,
                                             class: 'chosen-select' }

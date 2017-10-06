@@ -136,11 +136,11 @@ class Fund < ApplicationRecord
   end
 
   def geo_description_html
-    # return geo_description if geo_description
+    return geo_description if geo_description
     if countries.size > 5
       "<span title=\"#{countries.pluck(:name).to_sentence(last_word_connector: " and ")}\">#{countries.size} countries</span>"
     elsif countries.size == 1 && countries.pluck(:alpha2).include?('GB')
-      "In the UK"
+      "UK"
     else
       countries.pluck(:name).to_sentence(two_words_connector: " & ", last_word_connector: " & ")
     end

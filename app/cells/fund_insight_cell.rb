@@ -41,7 +41,7 @@ class FundInsightCell < Cell::ViewModel
 
   def summary
     messages = []
-
+    
     # get location
     messages << model.geo_description_html
 
