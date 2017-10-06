@@ -65,13 +65,16 @@
               = render partial: 'actions', locals: { fund: fund }
 
           - else
-            .muted
+            .col-two-thirds.pr10.muted
               .mb5
                 = link_to scramble_name(fund.name), account_upgrade_path(@recipient), class: 'blue fs22 lh30 redacted'
               .mb5.fs15.lh20.mid-gray.redacted= scramble_name fund.funder.name
               %p.fs14.lh18.mb5
                 = cell(:fund_insight, fund, proposal: @proposal).call(:themes)
               %p.mb5.fs15.lh20= raw fund.description_redacted.truncate_words(30)
+              
+            .col-one-third.border-left.pl10.border-lightest-gray.muted
+              = render partial: 'actions', locals: { fund: fund }
 
 
       = paginate @funds
