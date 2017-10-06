@@ -108,14 +108,14 @@ feature 'Eligibility' do
               I want the check to be invalid,
               so I avoid accidently checking a fund' do
       helper.answer_proposal_restrictions(@fund).check_eligibility
-      expect(page).to have_text 'You have completed 3 of 5 criteria.'
+      expect(page).to have_text '3 of 5 questions answered.'
     end
 
     scenario 'When I only submit answers to recipient restrictions,
               I want the check to be invalid,
               so I avoid accidently checking a fund' do
       helper.answer_recipient_restrictions(@fund).check_eligibility
-      expect(page).to have_text 'You have completed 2 of 5 criteria.'
+      expect(page).to have_text '2 of 5 questions answered.'
     end
 
     scenario 'When I visit a fund without proposal restrictions,
@@ -186,7 +186,7 @@ feature 'Eligibility' do
 
       helper.check_eligibility(remaining: 2)
       # 3 questions previously answered should be checked
-      expect(page).to have_text 'You have completed 3 of 5 criteria.'
+      expect(page).to have_text '3 of 5 questions answered.'
       expect(page).to have_css '.quiz input[type=radio][checked=checked]', count: 3
     end
 
