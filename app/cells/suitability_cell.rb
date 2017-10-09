@@ -71,4 +71,12 @@ class SuitabilityCell < Cell::ViewModel
             link_text: "Find out more" 
         }
     end
+    
+    def protect_against_forgery?
+        controller.send(:protect_against_forgery?)
+    end
+
+    def form_authenticity_token(*args)
+        controller.send(:form_authenticity_token, *args)
+    end
 end

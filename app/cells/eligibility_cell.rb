@@ -81,4 +81,12 @@ class EligibilityCell < Cell::ViewModel
             }
         end
     end
+    
+    def protect_against_forgery?
+        controller.send(:protect_against_forgery?)
+    end
+
+    def form_authenticity_token(*args)
+        controller.send(:form_authenticity_token, *args)
+    end
 end
