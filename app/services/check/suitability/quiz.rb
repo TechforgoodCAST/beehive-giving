@@ -19,7 +19,7 @@ module Check
 
         def lookup_answers(proposal)
           ::Answer.where(category_id: [proposal.id, proposal.recipient.id])
-                  .pluck(:question_id, :eligible).to_h
+                  .pluck(:criterion_id, :eligible).to_h
         end
 
         def score(comparison, fund)

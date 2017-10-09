@@ -1,25 +1,3 @@
-= cell(:eligibility_banner, @proposal, fund: @fund).call(:eligible)
-
-%ul
-  - {'Location': 'location', 'Grant amount': 'amount', 'Organisation type': 'org_type', 'Organisation income': 'org_income'}.each do |k, v|
-    %li.mb15
-      .flex
-        %div
-          = cell(:fund_indicators, @fund, proposal: @proposal, criteria: v, large: true).call(:tag)
-        %div.ml5
-          = k
-      - if @proposal.ineligible_reasons(@fund.slug).include? v
-        .bg-red.rounded.shadow.fs14.p10.mb20.mt10.white
-          .bold.caps.mb10 Ineligible
-          = cell(:eligibility_banner, @proposal, fund: @fund).call(v.to_sym)
-
-  %li.mb15
-    .flex
-      %div
-        = cell(:fund_indicators, @fund, proposal: @proposal, criteria: 'quiz', large: true).call(:tag)
-      %div.ml5
-        Quiz
-
 %h4.mb10
   Quiz
 
@@ -46,13 +24,7 @@
           = @fund.short_name
           fund.
 
-        = cell(:quiz, @fund, quiz_type: 'Restriction', proposal: @proposal, f: f, 
-                           groups: {'Proposal' => 'Is your funding proposal for?', 
-                                    'Recipient' => 'Is your organisation?'}).call(:show_public)
-
-        .bg-silver.rounded.shadow.fs14.p10.my20
-          .bold.caps.mb10 Good to know
-          Eligibility checks for location, the amount you are seeking and other factors have been done automatically.
+        = cell(:quiz, @fund, quiz_type: 'Priority', proposal: @proposal, f: f).call(:show_public)
 
     - else
 
@@ -71,6 +43,4 @@
           = cell(:eligibility_banner, @proposal, fund: @fund).call(:quiz)
         
       = f.hidden_field :return_to, :value => return_to
-      = cell(:quiz, @fund, quiz_type: 'Restriction', proposal: @proposal, f: f, 
-                           groups: {'Proposal' => 'Is your funding proposal for?', 
-                                    'Recipient' => 'Is your organisation?'}).call(:show)
+      = cell(:quiz, @fund, quiz_type: 'Priority', proposal: @proposal, f: f).call(:show)

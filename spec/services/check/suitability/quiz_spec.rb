@@ -7,7 +7,7 @@ describe Check::Suitability::Quiz do
     @fund = Fund.last
     @fund.priorities.each do |p|
       category = p.category == 'Proposal' ? @proposal : @proposal.recipient
-      create(:proposal_suitability, category: category, question: p)
+      create(:proposal_suitability, category: category, criterion: p)
     end
     @fund.save
   end
@@ -36,7 +36,7 @@ describe Check::Suitability::Quiz do
   it 'no conflict with eligibility quiz' do
     @fund.restrictions.each_with_index do |r, i|
       category = r.category == 'Proposal' ? @proposal : @proposal.recipient
-      create(:proposal_eligibility, category: category, question: r, eligible: i.odd?)
+      create(:proposal_eligibility, category: category, criterion: r, eligible: i.odd?)
     end
     expect(subject.call(@proposal, @fund))
       .to eq 'score' => 1
