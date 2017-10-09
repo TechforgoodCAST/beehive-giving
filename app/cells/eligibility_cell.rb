@@ -38,20 +38,20 @@ class EligibilityCell < Cell::ViewModel
     def criteria_status(criteria)
         criteria.each do |k, v|
             if model.ineligible_reasons(options[:fund].slug).include? k.to_s
-                criteria[k][:status] = 'ineligible'
-                criteria[k][:colour] = 'red'
-                criteria[k][:message] = cell(:eligibility_banner, model, fund: options[:fund]).call(k)
-                criteria[k][:symbol] = "\u2718".html_safe
+                v[:status] = 'ineligible'
+                v[:colour] = 'red'
+                v[:message] = cell(:eligibility_banner, model, fund: options[:fund]).call(k)
+                v[:symbol] = "\u2718".html_safe
             elsif k == :quiz && !model.checked_fund?(options[:fund])
-                criteria[k][:status] = 'to_check'
-                criteria[k][:colour] = 'blue'
-                criteria[k][:message] = cell(:quiz, options[:fund], quiz_type: 'Restriction', proposal: model).call(:questions_completed)
-                criteria[k][:message] << "\nComplete the quiz below"
-                criteria[k][:symbol] = "<span class=\"white dot dot-14 bg-blue mr3\"></span>".html_safe
+                v[:status] = 'to_check'
+                v[:colour] = 'blue'
+                v[:message] = cell(:quiz, options[:fund], quiz_type: 'Restriction', proposal: model).call(:questions_completed)
+                v[:message] << "\nComplete the quiz below"
+                v[:symbol] = "<span class=\"white dot dot-14 bg-blue mr3\"></span>".html_safe
             else
-                criteria[k][:status] = 'eligible'
-                criteria[k][:colour] = 'green'
-                criteria[k][:symbol] = "\u2714".html_safe
+                v[:status] = 'eligible'
+                v[:colour] = 'green'
+                v[:symbol] = "\u2714".html_safe
             end
         end
     end
