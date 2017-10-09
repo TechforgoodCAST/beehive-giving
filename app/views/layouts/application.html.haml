@@ -10,13 +10,6 @@
     = javascript_pack_tag 'application'
     = Gon::Base.render_data
 
-    -# TODO: refactor
-    - if params[:controller] == 'funds' && params[:action] == 'show'
-      = stylesheet_link_tag 'overrides/morris_overrides'
-      = javascript_include_tag 'raphael', 'data-turbolinks-track' => 'reload'
-      = javascript_include_tag 'morris', 'data-turbolinks-track' => 'reload'
-      = javascript_include_tag '//www.google.com/jsapi', 'chartkick', 'data-turbolinks-track' => 'reload'
-
     / Google Analytics
     :javascript
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){

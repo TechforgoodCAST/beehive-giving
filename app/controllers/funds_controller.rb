@@ -22,10 +22,18 @@ class FundsController < ApplicationController
     redirect_to root_path, alert: 'Not found' if @funds.empty?
   end
 
+  def hidden
+    @fund = Fund.includes(:funder).find_by_hashid(params[:id])
+  end
+
   private
 
     def user_not_authorised
-      redirect_to account_upgrade_path(@recipient)
+      if @current_user.subscription_version == 2
+        redirect_to hidden_proposal_fund_path(@proposal, @fund)
+      else
+        redirect_to account_upgrade_path(@recipient)
+      end
     end
 
     def update_legacy_suitability

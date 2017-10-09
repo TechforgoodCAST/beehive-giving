@@ -102,7 +102,7 @@ feature 'Browse' do
     scenario 'can only view proposal_fund_path for recommended funds ' \
               'unless subscribed' do
       click_link '2'
-      first('.redacted').click
+      click_link 'Hidden fund'
       expect(current_path).to eq account_upgrade_path(@recipient)
 
       subscribe_and_visit proposal_fund_path(@proposal, Fund.first)

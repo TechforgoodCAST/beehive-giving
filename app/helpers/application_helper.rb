@@ -16,7 +16,7 @@ module ApplicationHelper
       enquiries: %i[new],
       errors: %i[not_found gone internal_server_error],
       # feedback: %i[edit new],
-      funds: %i[index themed show],
+      funds: %i[index themed show hidden],
       pages: %i[about faq forfunders privacy terms], # preview?
       password_resets: %i[new create edit update],
       # proposals: %i[edit index new update],

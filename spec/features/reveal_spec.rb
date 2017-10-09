@@ -56,13 +56,21 @@ feature 'RevealFunds' do
 
       scenario 'can browse redacted fund after reaching limit' do
         click_link('Check eligibility', match: :first)
-        expect(current_path).to eq proposal_fund_path(@proposal, @fund)
+        expect(current_path).to eq hidden_proposal_fund_path(@proposal, @fund)
       end
 
       scenario 'can check eligibility after reaching limit' do
+        expect(find('a', match: :first, text: 'Check eligibility')[:href])
+          .to eq proposal_fund_path(@proposal, @fund, anchor: 'eligibility')
+
         click_link('Check eligibility', match: :first)
         expect(current_path)
-          .to eq proposal_fund_path(@proposal, @fund, anchor: 'eligibility')
+          .to eq hidden_proposal_fund_path(@proposal, @fund)
+      end
+
+      scenario 'can only apply once revealed or subscribed' do
+        # TODO: visit apply path of hidden fund
+        expect(current_path).to eq account_upgrade_path(@recipient)
       end
     end
   end
