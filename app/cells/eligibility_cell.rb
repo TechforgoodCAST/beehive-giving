@@ -30,7 +30,7 @@ class EligibilityCell < Cell::ViewModel
             org_income: {title: 'Organisation income'}
         }
         if options[:fund].restrictions.present?
-            criteria[:quiz] = {title: 'Additional questions'}
+            criteria[:quiz] = {title: 'Additional question'.pluralize(options[:fund].restrictions.size)}
         end
         criteria_status(criteria)
     end
