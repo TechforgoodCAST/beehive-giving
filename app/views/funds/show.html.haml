@@ -54,14 +54,9 @@
 
       = cell(:eligibility, @proposal, fund: @fund).call(:page)
 
-      %hr.my40
+      -# %hr.my40
 
-      %section
-        .mb20
-          %h2.light 
-            Suitability
-
-        = render partial: 'suitability', locals: { return_to: 'fund' }
+      -# = cell(:suitability, @proposal, fund: @fund).call(:page)
 
       %hr.my40
 
