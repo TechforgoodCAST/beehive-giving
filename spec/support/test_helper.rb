@@ -49,6 +49,7 @@ class TestHelper
       fund.restrictions = (i.even? ? recipient_restrictions + proposal_restrictions.first(3) : recipient_restrictions + proposal_restrictions.last(3))
       fund.priorities = (i.even? ? recipient_priorities + proposal_priorities.first(3) : recipient_priorities + proposal_priorities.last(3))
       fund.save! if save
+      fund.questions.where(criterion_type: "Priority").update(group: "test_group")
     end
     self
   end
@@ -63,7 +64,8 @@ class TestHelper
                   create_list(:priority, 5)
     }
 
-    create_list :fund, num, opts
+    funds = create_list :fund, num, opts
+    funds.each{|f| f.questions.where(criterion_type: "Priority").update(group: "test_group")}
   end
 
   def stub_beehive_insight(endpoint, data)

@@ -1,0 +1,17 @@
+- unless counts[:completed] == counts[:restrictions]
+  .bg-yellow.rounded.shadow.fs14.p10.mb20
+    | You have completed
+    =<> counts[:completed]
+    | of
+    =<> counts[:questions]
+    | criteria.
+
+- @groups.each do |g, title|
+  - if @questions[g].present?
+    h5.mb20 =title
+    - @questions[g].each do |q|
+      .question class=("#{q.class.name.underscore}_question #{q.class.name.underscore}_#{g.underscore}_question")
+        = render view: :question, locals: {q: q, f: f, e: q.answer(@proposal)}
+
+.my40
+  = f.button :button, 'Check eligibility', class: 'button white bg-blue caps shadow'

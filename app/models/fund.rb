@@ -12,10 +12,10 @@ class Fund < ApplicationRecord
 
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
-  has_and_belongs_to_many :restrictions, association_foreign_key: 'question_id', join_table: 'funds_questions'
-  accepts_nested_attributes_for :restrictions
-  has_and_belongs_to_many :priorities, association_foreign_key: 'question_id', join_table: 'funds_questions'
-  accepts_nested_attributes_for :priorities
+
+  has_many :questions
+  has_many :restrictions, through: :questions, source: :criterion, source_type: 'Restriction'
+  has_many :priorities, through: :questions, source: :criterion, source_type: 'Priority'
 
   validates :funder, :type_of_fund, :slug, :name, :description, :currency,
             :key_criteria, :application_link, :countries, :themes,
@@ -143,6 +143,15 @@ class Fund < ApplicationRecord
     scramble = Array.new(rand(5..10)) { [*'a'..'z'].sample }.join
     desc = ActionView::Base.full_sanitizer.sanitize(description)
     desc.gsub(reg, "<span class='mid-gray redacted'>#{scramble}</span>")
+  end
+
+  def question_groups(question_type)
+    case question_type
+    when 'Restriction'
+      restrictions.pluck(:category).uniq
+    else
+      questions.where(criterion_type: question_type).pluck(:group).uniq
+    end
   end
 
   include FundJsonSetters

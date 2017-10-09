@@ -69,7 +69,7 @@ class EligibilityHelper
 
     def answer(fund, category: 'Proposal', eligible: true, n: 3)
       fund.restrictions.where(category: category).limit(n).pluck(:id).each do |i|
-        choose "check_restriction_#{i}_eligible_#{eligible}"
+        choose "check_question_#{i}_#{eligible}"
       end
     end
 end

@@ -64,7 +64,7 @@ feature 'Eligibility' do
     visit apply_proposal_fund_path(@proposal, @fund)
     expect(page).to have_text 'To complete eligibility for this fund you need to add some more information to your proposal'
 
-    click_button 'Complete proposal'
+    click_button 'Complete proposal', match: :first
     helper.complete_proposal.submit_proposal
     visit apply_proposal_fund_path(@proposal, @fund)
     expect(current_path).to eq proposal_fund_path(@proposal, @fund)
@@ -75,8 +75,8 @@ feature 'Eligibility' do
             so I recieve an accurate check' do
     @fund.restrictions.first.update(invert: true)
     helper.visit_first_fund.complete_proposal.submit_proposal
-    within "label[for=check_restriction_#{@fund.restrictions.first.id}" \
-           '_eligible_true]' do
+    within "label[for=check_question_#{@fund.restrictions.first.id}" \
+           '_true]' do
       expect(page).to have_text 'Yes'
     end
     helper.answer_restrictions(@fund).check_eligibility
@@ -100,7 +100,7 @@ feature 'Eligibility' do
               so I avoid answering unnecessary questions' do
       helper.remove_restrictions(@fund, 'Recipient')
       helper.answer_proposal_restrictions(@fund).check_eligibility
-      expect(page).not_to have_css '.recipient_restriction'
+      expect(page).not_to have_css '.restriction_recipient_question'
       expect(page).to have_text 'You are eligible'
     end
 
@@ -123,7 +123,7 @@ feature 'Eligibility' do
               so I avoid answering unnecessary questions' do
       helper.remove_restrictions(@fund, 'Proposal')
       helper.answer_recipient_restrictions(@fund).check_eligibility
-      expect(page).not_to have_css '.proposal_restriction'
+      expect(page).not_to have_css '.restriction_proposal_question'
       expect(page).to have_text 'You are eligible'
     end
 
@@ -132,9 +132,9 @@ feature 'Eligibility' do
               so I can check to see if any apply' do
       expect(current_path)
         .to eq proposal_fund_path(@proposal, @fund)
-      expect(page).to have_css '.restriction', count: 5
-      expect(page).to have_css '.recipient_restriction', count: 2
-      expect(page).to have_css '.proposal_restriction', count: 3
+      expect(page).to have_css '.restriction_question', count: 5
+      expect(page).to have_css '.restriction_recipient_question', count: 2
+      expect(page).to have_css '.restriction_proposal_question', count: 3
     end
 
     scenario "When I run a check and I'm eligible,
