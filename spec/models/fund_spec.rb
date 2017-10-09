@@ -134,25 +134,23 @@ describe Fund do
       expect(@fund).not_to be_valid
     end
 
-    it 'countries required' do
-      @fund.countries = []
-      expect(@fund).not_to be_valid
-    end
-
+    # move to geo_area?
     it 'has many countries' do
       @fund.save
       expect(@fund.countries.count).to eq 2
     end
 
+    # move to geo_area?
     it 'districts empty unless geographic_scale_limited' do
-      @fund.district_ids = [District.first.id]
+      @fund.geo_area.update!(districts: [District.first])
       expect(@fund).not_to be_valid
     end
 
+    # move to geo_area?
     it 'districts required per country if geographic_scale_limited ' \
        'unless fund is national' do
       @fund.geographic_scale_limited = true
-      @fund.district_ids = []
+      @fund.geo_area.update!(districts: [])
       errors = [
         'Districts for United Kingdom not selected',
         'Districts for Kenya not selected'
@@ -161,6 +159,7 @@ describe Fund do
       expect(@fund.errors.full_messages).to eq errors
     end
 
+    # move to geo_area?
     it 'cannot set national unless geographic_scale_limited' do
       @fund.national = true
       expect(@fund).not_to be_valid
@@ -168,10 +167,11 @@ describe Fund do
         .to eq 'National cannot be set unless geographic scale limited'
     end
 
+    # move to geo_area?
     it 'districts not allowed if fund is national' do
       @fund.geographic_scale_limited = true
       @fund.national = true
-      @fund.district_ids = [District.first.id]
+      @fund.geo_area.update!(districts: [District.first])
 
       expect(@fund).not_to be_valid
       expect(@fund.errors.full_messages[0])

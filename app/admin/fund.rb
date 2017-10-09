@@ -9,7 +9,7 @@ ActiveAdmin.register Fund do
                 :country_distribution, :sources, :national,
                 :org_type_distribution, :income_distribution, :slug,
                 :beneficiary_distribution, :grant_examples,
-                :geographic_scale_limited, :geo_description,
+                :geographic_scale_limited, :geo_area,
                 :min_amount_awarded_limited, :min_amount_awarded,
                 :max_amount_awarded_limited, :max_amount_awarded,
                 :min_duration_awarded_limited, :min_duration_awarded,
@@ -40,10 +40,7 @@ ActiveAdmin.register Fund do
       check_presence(fund, 'income_distribution')
     end
     column :open_data
-    column "Geo", :geo_description_html
-    column :districts do |fund|
-      fund.districts.count
-    end
+    column "Geo", :geo_area
     column "Grants", :grant_count
     column :last_updated do |fund|
       fund.updated_at.strftime("%F")
@@ -132,15 +129,9 @@ ActiveAdmin.register Fund do
 
       tab :geography do
         attributes_table do
-          row :geo_description_html
-          row :countries do
-            fund.countries.map{|c| "<span class=\"status_tag\">#{c&.name}</span>"}.join("").html_safe
-          end
+          row :geo_area
           row :geographic_scale_limited
           row :national
-          row :districts do
-            fund.districts.map{|c| "<span class=\"status_tag\">#{c&.name}</span>"}.join("").html_safe
-          end
         end
       end
     end
@@ -190,15 +181,9 @@ ActiveAdmin.register Fund do
         end
 
         inputs 'Geography' do
-          f.input :geo_description
-          f.input :countries, collection: Country.pluck(:name, :id),
-                              input_html: { multiple: true,
-                                            class: 'chosen-select' }
+          f.input :geo_area, collection: GeoArea.pluck(:name, :id)
           f.input :geographic_scale_limited
           f.input :national
-          f.input :districts, collection: District.pluck(:name, :id),
-                              input_html: { multiple: true,
-                                            class: 'chosen-select' }
         end
       end
 
