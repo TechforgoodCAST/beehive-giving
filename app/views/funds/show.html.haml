@@ -54,7 +54,14 @@
 
       %section
         .mb20
-          %h2.light Eligibility
+          %h2.light 
+            Eligibility
+            - if @proposal.eligible_status(@fund.slug) == 1
+              %small.green.right
+                = "\u2714 Eligible".html_safe 
+            - elsif @proposal.eligible_status(@fund.slug) == 0
+              %small.red.right
+                = "\u2718 Ineligible".html_safe 
 
         = render partial: 'eligibility', locals: { return_to: 'fund' }
 

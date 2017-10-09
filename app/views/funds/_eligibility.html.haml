@@ -1,76 +1,63 @@
 = cell(:eligibility_banner, @proposal, fund: @fund).call(:eligible)
 
-%ul
-  - {'Location': 'location', 'Grant amount': 'amount', 'Organisation type': 'org_type', 'Organisation income': 'org_income'}.each do |k, v|
-    %li.mb15
-      .flex
-        %div
-          = cell(:fund_indicators, @fund, proposal: @proposal, criteria: v, large: true).call(:tag)
-        %div.ml5
-          = k
+%ul.flex.flex-wrap
+  - {'Location': 'location', 'Grant amount': 'amount', 'Organisation type': 'org_type', 'Organisation income': 'org_income', 'Additional questions': 'quiz'}.each do |k, v|
+    %li.col-one-third.mb15.px5
       - if @proposal.ineligible_reasons(@fund.slug).include? v
-        .bg-red.rounded.shadow.fs14.p10.mb20.mt10.white
-          .bold.caps.mb10 Ineligible
+        %span.red
+          = "\u2718".html_safe
+        = k
+        .fs14.mt5.lh16.p5.border-red.border.rounded
           = cell(:eligibility_banner, @proposal, fund: @fund).call(v.to_sym)
-
-  %li.mb15
-    .flex
-      %div
-        = cell(:fund_indicators, @fund, proposal: @proposal, criteria: 'quiz', large: true).call(:tag)
-      %div.ml5
-        Quiz
-
-%h4.mb10
-  Quiz
-
-.uk-form.uk-form-stacked.uk-clearfix
-  = simple_form_for :check, url: eligibility_proposal_fund_path(@proposal, @fund), method: :patch do |f|
-
-    - if @proposal.recipient.incomplete_first_proposal?
-    
-      .bg-silver.rounded.shadow.fs18.lh22.p10.mb20
-        .bold.caps.mb10.fs15 Incomplete proposal
-        To complete eligibility for this fund you need to add some more information to your proposal.
-        .mt10
-          = f.button :button, "Complete proposal",
-                              class: 'button white bg-blue caps shadow'
-      .muted
-
-        %p.mb15
-          The following questions have been set by
-          - if @fund.funder.website?
-            = link_to @fund.funder.name, @fund.funder.website, target: '_blank', class: 'blue'
+      - elsif v == "quiz"
+        - if @fund.restrictions.present?
+          - if !@proposal.checked_fund?(@fund)
+            %span.white.dot.dot-14.bg-blue.mr3
+            = k
+            .fs14.mt5.lh16.p5.border-blue.border.rounded
+              = cell(:quiz, @fund, quiz_type: 'Restriction', proposal: @proposal).call(:questions_completed)
+              Complete the quiz below
           - else
-            = @fund.funder.name
-          , complete them to see if you are eligible for their
-          = @fund.short_name
-          fund.
+            %span.green.fs20
+              = "\u2714".html_safe
+            = k
+      - else
+        %span.green.fs20
+          = "\u2714".html_safe
+        = k
 
+- if @fund.restrictions.present?
+  %h4.mb10
+    Additional questions
+
+  .uk-form.uk-form-stacked.uk-clearfix
+    = simple_form_for :check, url: eligibility_proposal_fund_path(@proposal, @fund), method: :patch do |f|
+
+      - if @proposal.recipient.incomplete_first_proposal?
+      
+        .bg-silver.rounded.shadow.fs18.lh22.p10.mb20
+          .bold.caps.mb10.fs15 Incomplete proposal
+          To complete eligibility for this fund you need to add some more information to your proposal.
+          .mt10
+            = f.button :button, "Complete proposal",
+                                class: 'button white bg-blue caps shadow'
+        .muted
+
+          = cell(:quiz, @fund, quiz_type: 'Restriction', proposal: @proposal, f: f, 
+                            groups: {'Proposal' => 'Is your funding proposal for?', 
+                                      'Recipient' => 'Is your organisation?'}).call(:show_public)
+
+          .bg-silver.rounded.shadow.fs14.p10.my20
+            .bold.caps.mb10 Good to know
+            Eligibility checks for location, the amount you are seeking and other factors have been done automatically.
+
+      - else
+
+        - if @proposal.ineligible_reasons(@fund.slug).include? 'quiz'
+          .bg-red.rounded.shadow.fs14.p10.mb20.white
+            = cell(:eligibility_banner, @proposal, fund: @fund).call(:quiz)
+          
+        = f.hidden_field :return_to, :value => return_to
         = cell(:quiz, @fund, quiz_type: 'Restriction', proposal: @proposal, f: f, 
-                           groups: {'Proposal' => 'Is your funding proposal for?', 
-                                    'Recipient' => 'Is your organisation?'}).call(:show_public)
-
-        .bg-silver.rounded.shadow.fs14.p10.my20
-          .bold.caps.mb10 Good to know
-          Eligibility checks for location, the amount you are seeking and other factors have been done automatically.
-
-    - else
-
-      %p.mb15
-        The following questions have been set by
-        - if @fund.funder.website?
-          = link_to @fund.funder.name, @fund.funder.website, target: '_blank', class: 'blue'
-        - else
-          = @fund.funder.name
-        , complete them to see if you are eligible for their
-        = link_to @fund.short_name, proposal_fund_path(@proposal, @fund), class: 'blue'
-        fund.
-
-      - if @proposal.ineligible_reasons(@fund.slug).include? 'quiz'
-        .bg-red.rounded.shadow.fs14.p10.mb20.white
-          = cell(:eligibility_banner, @proposal, fund: @fund).call(:quiz)
-        
-      = f.hidden_field :return_to, :value => return_to
-      = cell(:quiz, @fund, quiz_type: 'Restriction', proposal: @proposal, f: f, 
-                           groups: {'Proposal' => 'Is your funding proposal for?', 
-                                    'Recipient' => 'Is your organisation?'}).call(:show)
+                            groups: {'Proposal' => 'Is your funding proposal for?', 
+                                      'Recipient' => 'Is your organisation?'}).call(:show)
