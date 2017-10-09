@@ -52,18 +52,16 @@
 
       %hr.my40
 
+      = cell(:eligibility, @proposal, fund: @fund).call(:page)
+
+      %hr.my40
+
       %section
         .mb20
           %h2.light 
-            Eligibility
-            - if @proposal.eligible_status(@fund.slug) == 1
-              %small.green.right
-                = "\u2714 Eligible".html_safe 
-            - elsif @proposal.eligible_status(@fund.slug) == 0
-              %small.red.right
-                = "\u2718 Ineligible".html_safe 
+            Suitability
 
-        = render partial: 'eligibility', locals: { return_to: 'fund' }
+        = render partial: 'suitability', locals: { return_to: 'fund' }
 
       %hr.my40
 

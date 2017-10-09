@@ -1,46 +1,35 @@
-%h4.mb10
-  Quiz
+%ul.flex.flex-wrap
+  - {'Location': 'location', 'Grant amount': 'amount', 'Organisation type': 'org_type', 'Funding duration': 'duration', 'Theme': 'theme', 'Additional questions': 'quiz'}.each do |k, v|
+    %li.col-one-third.mb15.px5
+      %span.green.fs20
+        = "\u2714".html_safe
+      = k
+      .fs14.mt5.lh16.p5.border-green.border.rounded
+        - if @proposal.suitability[@fund.slug][v]
+          = score_to_match_copy(@proposal.suitability[@fund.slug][v]&.fetch("score", 0))
 
-.uk-form.uk-form-stacked.uk-clearfix
-  = simple_form_for :check, url: eligibility_proposal_fund_path(@proposal, @fund), method: :patch do |f|
+= @proposal.suitability[@fund.slug]
 
-    - if @proposal.recipient.incomplete_first_proposal?
-    
-      .bg-silver.rounded.shadow.fs18.lh22.p10.mb20
-        .bold.caps.mb10.fs15 Incomplete proposal
-        To complete eligibility for this fund you need to add some more information to your proposal.
-        .mt10
-          = f.button :button, "Complete proposal",
-                              class: 'button white bg-blue caps shadow'
-      .muted
+- if @fund.priorities.present?
+  %h4.mb10
+    Additional questions
 
-        %p.mb15
-          The following questions have been set by
-          - if @fund.funder.website?
-            = link_to @fund.funder.name, @fund.funder.website, target: '_blank', class: 'blue'
-          - else
-            = @fund.funder.name
-          , complete them to see if you are eligible for their
-          = @fund.short_name
-          fund.
+  .uk-form.uk-form-stacked.uk-clearfix
+    = simple_form_for :check, url: eligibility_proposal_fund_path(@proposal, @fund), method: :patch do |f|
 
-        = cell(:quiz, @fund, quiz_type: 'Priority', proposal: @proposal, f: f).call(:show_public)
+      - if @proposal.recipient.incomplete_first_proposal?
+      
+        .bg-silver.rounded.shadow.fs18.lh22.p10.mb20
+          .bold.caps.mb10.fs15 Incomplete proposal
+          To complete eligibility for this fund you need to add some more information to your proposal.
+          .mt10
+            = f.button :button, "Complete proposal",
+                                class: 'button white bg-blue caps shadow'
+        .muted
 
-    - else
+          = cell(:quiz, @fund, quiz_type: 'Priority', proposal: @proposal, f: f).call(:show_public)
 
-      %p.mb15
-        The following questions have been set by
-        - if @fund.funder.website?
-          = link_to @fund.funder.name, @fund.funder.website, target: '_blank', class: 'blue'
-        - else
-          = @fund.funder.name
-        , complete them to see if you are eligible for their
-        = link_to @fund.short_name, proposal_fund_path(@proposal, @fund), class: 'blue'
-        fund.
-
-      - if @proposal.ineligible_reasons(@fund.slug).include? 'quiz'
-        .bg-red.rounded.shadow.fs14.p10.mb20.white
-          = cell(:eligibility_banner, @proposal, fund: @fund).call(:quiz)
-        
-      = f.hidden_field :return_to, :value => return_to
-      = cell(:quiz, @fund, quiz_type: 'Priority', proposal: @proposal, f: f).call(:show)
+      - else
+          
+        = f.hidden_field :return_to, :value => return_to
+        = cell(:quiz, @fund, quiz_type: 'Priority', proposal: @proposal, f: f).call(:show)
