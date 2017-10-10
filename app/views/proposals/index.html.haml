@@ -33,11 +33,11 @@
         .mb20.border.rounded.border-lightest-gray.proposal
           = render partial: 'proposals/card', locals: { proposal: proposal }
           .fs16.center.py15.border-top.border-lightest-gray
-            - if model.registered? || model.complete?
-              = link_to 'Funds', proposal_funds_path(model), class: 'red px15'
-              = link_to 'Edit', edit_proposal_path(model), class: 'blue px15'
+            - if proposal.registered? || proposal.complete?
+              = link_to 'Funds', proposal_funds_path(proposal), class: 'red px15'
+              = link_to 'Edit', edit_proposal_path(proposal), class: 'blue px15'
             - else
-              = link_to 'Complete', edit_signup_proposal_path(model), class: 'blue px15'
+              = link_to 'Complete', edit_signup_proposal_path(proposal), class: 'blue px15'
       
       .mb20
         - if @proposal.complete?
