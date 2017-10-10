@@ -32,16 +32,7 @@
     %section.md.mb20.px20
       %h1.light.mb20 Dashboard
 
-    %nav.md.mb40.px20
-      %ul.border-bottom.border-lightest-gray.fs14
-        %li.mr20.py10.inline-block
-          = link_to 'Account', account_path, class: 'blue'
-        %li.mr20.py10.inline-block
-          = link_to 'Organisation', account_organisation_path(@recipient), class: 'blue'
-        %li.mr20.py10.inline-block.border-bottom-thick.border-blue
-          = link_to 'Subscription', account_subscription_path(@recipient), class: 'blue'
-        %li.mr20.py10.inline-block
-          = link_to 'Proposals', proposals_path, class: 'blue'
+    = render partial: 'accounts/subnav'
           
   .maxw1080.mx-auto.px20.flex.flex-wrap
     %aside.perc33.md.px20.mb40
