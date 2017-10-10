@@ -415,6 +415,7 @@ ActiveRecord::Schema.define(version: 20171009133514) do
     t.integer "volunteers"
     t.integer "funds_checked", default: 0, null: false
     t.integer "income"
+    t.jsonb "reveals", default: [], null: false
     t.index ["slug"], name: "index_recipients_on_slug", unique: true
   end
 
@@ -426,6 +427,7 @@ ActiveRecord::Schema.define(version: 20171009133514) do
     t.boolean "active", default: false, null: false
     t.date "expiry_date"
     t.integer "percent_off", default: 0, null: false
+    t.integer "version", default: 1, null: false
     t.index ["recipient_id"], name: "index_subscriptions_on_recipient_id"
     t.index ["stripe_user_id"], name: "index_subscriptions_on_stripe_user_id", unique: true
   end

@@ -10,4 +10,4 @@
         = render view: :question, locals: {q: q, f: f, e: q.answer(@proposal)}
 
 .my40
-  = render view: :button, locals: {f: f}
+  = f.button :button, 'Check eligibility', class: 'button white bg-blue caps shadow'

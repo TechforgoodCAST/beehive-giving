@@ -67,20 +67,17 @@ describe Recipient do
     expect(@recipient.districts.count).to eq 3
   end
 
-  it 'has one proposal unless subscribed' do
-    expect(@recipient.subscribed?).to eq false
-    expect(@recipient.proposals.count).to eq 1
+  it 'reveals only has unique fund slugs' do
+    @recipient.reveals = %w[fund-slug-1 fund-slug-1]
+    @recipient.save
+    expect(@recipient.reveals).to eq ['fund-slug-1']
   end
 
-  context 'subscribed' do
-    before(:each) do
-      @app.subscribe_recipient.create_registered_proposal
-    end
-
-    it 'has many proposals if subscribed' do
-      expect(@recipient.subscribed?).to eq true
-      expect(@recipient.proposals.count).to eq 2
-    end
+  it 'reveals push only has unique fund slugs' do
+    @recipient.reveals << 'fund-slug-1'
+    @recipient.reveals << 'fund-slug-1'
+    @recipient.save
+    expect(@recipient.reveals).to eq ['fund-slug-1']
   end
 
   context 'eligibilities' do

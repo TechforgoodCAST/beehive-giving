@@ -53,15 +53,16 @@ feature 'Browse' do
     end
 
     scenario "When I visit a fund that doesn't exist,
-               I want to be redirected to where I came from and see a message,
-               so I avoid an error and understand what happened" do
+              I want to be redirected to where I came from and see a message,
+              so I avoid an error and understand what happened" do
       visit proposal_fund_path(@proposal, 'missing-fund')
-      expect(current_path).to eq proposal_funds_path(@proposal)
+      expect(current_path).to eq account_upgrade_path(@recipient)
     end
 
     scenario "When I find a funding theme I'm interested in,
               I want to see similar funds,
               so I can discover new funding opportunties" do
+      @proposal.update_column(:suitability, Fund.last.slug => { 'total': 0 })
       click_link @theme.name, match: :first
       expect(current_path)
         .to eq theme_proposal_funds_path(@proposal, @theme.slug)
@@ -83,7 +84,7 @@ feature 'Browse' do
       # TODO: v2 flash notices #391
       # expect(page.all('body script', visible: false)[0].native.text)
       #   .to have_text 'Fund not found'
-      expect(current_path).to eq proposal_funds_path(@proposal)
+      expect(current_path).to eq account_upgrade_path(@recipient)
 
       visit theme_proposal_funds_path(@proposal, 'missing')
       # TODO: v2 flash notices #391
@@ -101,7 +102,7 @@ feature 'Browse' do
     scenario 'can only view proposal_fund_path for recommended funds ' \
               'unless subscribed' do
       click_link '2'
-      first('.redacted').click
+      click_link 'Hidden fund'
       expect(current_path).to eq account_upgrade_path(@recipient)
 
       subscribe_and_visit proposal_fund_path(@proposal, Fund.first)

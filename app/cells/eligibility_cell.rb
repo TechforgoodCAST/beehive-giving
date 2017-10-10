@@ -36,24 +36,26 @@ class EligibilityCell < Cell::ViewModel
     end
 
     def criteria_status(criteria)
-        criteria.each do |k, v|
-            if model.ineligible_reasons(options[:fund].slug).include? k.to_s
-                v[:status] = 'ineligible'
-                v[:colour] = 'red'
-                v[:message] = cell(:eligibility_banner, model, fund: options[:fund]).call(k)
-                v[:symbol] = "\u2718".html_safe
-            elsif k == :quiz && !model.checked_fund?(options[:fund])
-                v[:status] = 'to_check'
-                v[:colour] = 'blue'
-                v[:message] = cell(:quiz, options[:fund], quiz_type: 'Restriction', proposal: model).call(:questions_completed)
-                v[:message] << "\nComplete the quiz below"
-                v[:symbol] = "<span class=\"white dot dot-14 bg-blue mr3\"></span>".html_safe
-            else
-                v[:status] = 'eligible'
-                v[:colour] = 'green'
-                v[:symbol] = "\u2714".html_safe
-            end
+      checked = EligibilityContext.new(options[:fund], model).checked_fund?
+
+      criteria.each do |k, v|
+        if model.ineligible_reasons(options[:fund].slug).include? k.to_s
+          v[:status] = 'ineligible'
+          v[:colour] = 'red'
+          v[:message] = cell(:eligibility_banner, model, fund: options[:fund]).call(k)
+          v[:symbol] = "\u2718".html_safe
+        elsif k == :quiz && !checked
+          v[:status] = 'to_check'
+          v[:colour] = 'blue'
+          v[:message] = cell(:quiz, options[:fund], quiz_type: 'Restriction', proposal: model).call(:questions_completed)
+          v[:message] << "\nComplete the quiz below"
+          v[:symbol] = '<span class="white dot dot-14 bg-blue mr3"></span>'.html_safe
+        else
+          v[:status] = 'eligible'
+          v[:colour] = 'green'
+          v[:symbol] = "\u2714".html_safe
         end
+      end
     end
 
     def status
@@ -81,7 +83,7 @@ class EligibilityCell < Cell::ViewModel
             }
         end
     end
-    
+
     def protect_against_forgery?
         controller.send(:protect_against_forgery?)
     end

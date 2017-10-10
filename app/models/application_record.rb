@@ -22,4 +22,12 @@ class ApplicationRecord < ActiveRecord::Base
     return slug unless obj.class.find_by(slug: slug)
     generate_slug(obj, col, n + 1)
   end
+
+  def hashid
+    @hashid = HASHID.encode(id)
+  end
+
+  def self.find_by_hashid(hashid)
+    find_by id: HASHID.decode(hashid)
+  end
 end
