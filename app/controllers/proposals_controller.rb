@@ -3,17 +3,13 @@ class ProposalsController < ApplicationController
   before_action :load_proposal, only: [:edit, :update] # TODO: refactor
 
   def new
-    if @proposal.complete?
-      @proposal = @recipient.proposals.new(
-        countries: [Country.find_by(alpha2: @recipient.country)]
-      )
-      return if @recipient.subscribed?
-      redirect_to request.referer || root_path,
-                  alert: 'Please upgrade to create multiple funding proposals'
-      # TODO: redirect to update path
-    else
-      redirect_to edit_signup_proposal_path(@proposal)
-    end
+    return redirect_to edit_signup_proposal_path(@proposal) unless
+      @proposal.complete?
+
+    authorize Proposal
+    @proposal = @recipient.proposals.new(
+      countries: [Country.find_by(alpha2: @recipient.country)]
+    )
   end
 
   def create
@@ -46,7 +42,7 @@ class ProposalsController < ApplicationController
           flash[:notice] = 'Funding recommendations updated!'
 
           if session[:return_to]
-            fund = Fund.find_by(slug: session.delete(:return_to))
+            fund = Fund.find_by_hashid(session.delete(:return_to))
             render js: "window.location.href = '#{proposal_fund_path(@proposal, fund)}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
@@ -61,7 +57,7 @@ class ProposalsController < ApplicationController
           flash[:notice] = 'Funding recommendations updated!'
 
           if session[:return_to]
-            fund = Fund.find_by(slug: session.delete(:return_to))
+            fund = Fund.find_by_hashid(session.delete(:return_to))
             redirect_to proposal_fund_path(@proposal, fund)
           else
             redirect_to proposal_funds_path(@proposal)
@@ -75,6 +71,10 @@ class ProposalsController < ApplicationController
   end
 
   private
+
+    def user_not_authorised
+      redirect_to account_upgrade_path(@recipient)
+    end
 
     def load_proposal # TODO: refactor
       @proposal = @recipient.proposals.find(params[:id])

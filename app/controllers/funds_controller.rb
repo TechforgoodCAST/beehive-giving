@@ -3,10 +3,8 @@ class FundsController < ApplicationController
   before_action :query, only: %i[index themed]
 
   def show
-    @fund = Fund.includes(:funder).find_by(slug: params[:id])
-    return redirect_to request.referer || root_path, alert: 'Fund not found' unless @fund
-    redirect_to account_upgrade_path(@recipient) unless
-      @proposal.show_fund?(@fund)
+    @fund = Fund.includes(:funder).find_by_hashid(params[:id])
+    authorize FundContext.new(@fund, @proposal)
   end
 
   def index
@@ -24,7 +22,19 @@ class FundsController < ApplicationController
     redirect_to root_path, alert: 'Not found' if @funds.empty?
   end
 
+  def hidden
+    @fund = Fund.includes(:funder).find_by_hashid(params[:id])
+  end
+
   private
+
+    def user_not_authorised
+      if @current_user.subscription_version == 2
+        redirect_to hidden_proposal_fund_path(@proposal, @fund)
+      else
+        redirect_to account_upgrade_path(@recipient)
+      end
+    end
 
     def update_legacy_suitability
       @proposal.update_legacy_suitability
@@ -32,7 +42,7 @@ class FundsController < ApplicationController
 
     def query
       @query = Fund.active
-                   .includes(:funder, :themes, :countries)
+                   .includes(:funder, :themes, :geo_area)
                    .eligibility(@proposal, params[:eligibility])
                    .duration(@proposal, params[:duration])
     end

@@ -45,17 +45,6 @@ feature 'Subscriptions' do
       end
     end
 
-    scenario 'no plan/price for recipient.income_band 4' do
-      @db[:recipient].update(income_band: 4)
-      visit account_subscription_path(@db[:recipient])
-      expect(page).to have_text 'Contact us for a quote'
-      expect(page).to have_link 'Get in touch',
-                                href: 'mailto:support@beehivegiving.org'
-
-      visit account_upgrade_path(@db[:recipient])
-      expect(current_path).to eq account_subscription_path(@db[:recipient])
-    end
-
     scenario 'valid coupon' do
       visit account_upgrade_path(@db[:recipient])
       helper.pay_by_card(stripe, coupon: 'test10')
@@ -118,17 +107,6 @@ feature 'Subscriptions' do
           end
         end
       end
-
-      scenario 'can only have 1 proposal' do
-        @app.build_complete_proposal
-        proposal = @app.instances[:complete_proposal]
-        expect(proposal).not_to be_valid
-        expect(proposal.errors[:title][0]).to eq 'Upgrade subscription to ' \
-                                                 'create multiple proposals'
-      end
-
-      scenario 'can only check 3 eligibilty'
-      scenario 'can only see 6 funds'
     end
 
     context 'active' do
@@ -200,10 +178,6 @@ feature 'Subscriptions' do
         visit proposal_fund_path(@db[:complete_proposal], Fund.first)
         expect(page).not_to have_button 'Check eligibility (3 left)'
       end
-
-      scenario 'can have unlimited proposals'
-      scenario 'can check unlimited eligibilty'
-      scenario 'can see unlimited funds'
     end
   end
 end

@@ -22,7 +22,7 @@ ActiveAdmin.register Fund do
 
   controller do
     def find_resource
-      scoped_collection.find_by(slug: params[:id])
+      scoped_collection.find_by_hashid(params[:id])
     end
   end
 

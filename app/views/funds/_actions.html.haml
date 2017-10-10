@@ -1,6 +1,7 @@
 %section.fs12.lh14
   = cell(:eligibility, @proposal, fund: fund).call(:index)
 
+-# TODO: Suitability quiz #439
 -# %section.fs12.mt20.lh14
 -#   = cell(:suitability, @proposal, fund: fund).call(:index)
 
@@ -17,7 +18,7 @@
     .blue.mb10.fs14
       %span.white.dot.dot-10.bg-blue
       Apply
-    - if @proposal.show_fund?(fund)
-      = link_to "Apply >", "#", class: 'blue'
+    - if policy(FundContext.new(fund, @proposal)).show?
+      = link_to 'Apply ❯', apply_proposal_fund_path(@proposal, fund), class: 'blue'
     - else
-      = link_to "Reveal & apply >", "#", class: 'blue'
+      = link_to 'Reveal & Apply ❯', apply_proposal_fund_path(@proposal, fund), class: 'blue'

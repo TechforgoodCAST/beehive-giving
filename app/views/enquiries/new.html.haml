@@ -52,7 +52,7 @@
           = raw(@fund.key_criteria_html)
 
       - if @fund.open_call?
-        = link_to "Apply to #{@fund.title}",
+        = link_to "Apply to #{@fund.title} ❯",
                   apply_proposal_fund_path(@proposal, @fund),
                   method: :post,
                   target: '_blank',

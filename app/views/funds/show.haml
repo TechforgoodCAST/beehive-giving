@@ -18,7 +18,10 @@
           .fs15.lh20.caps.bold.gray
             Current Proposal
         = render partial: 'proposals/card', locals: { proposal: @proposal }
-        = cell :new_proposal_links, @proposal
+        .fs14.center.py15.border-top.border-lightest-gray 
+          = link_to 'Edit', edit_proposal_path(model), class: 'blue' 
+          span.slate>  &middot; 
+          = link_to 'Change', proposals_path, class: 'blue' 
 
     %section.perc75.md.mb80.px20
       %section
@@ -60,8 +63,8 @@
 
       = cell(:eligibility, @proposal, fund: @fund).call(:page)
 
+      -# TODO: Suitability quiz #439
       -# %hr.my40
-
       -# = cell(:suitability, @proposal, fund: @fund).call(:page)
 
       %hr.my40
@@ -84,9 +87,3 @@
               Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
 
           .button.white.bg-blue.caps.shadow.mb40 Application form
-        -#
-        -# %h5.mb20 Status
-        -#
-        -# .button.blue.border-blue.caps.mb10 Submitted
-        -# .button.green.border-green.caps.mb10 Successful
-        -# .button.red.border-red.caps.mb10 Declined

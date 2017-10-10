@@ -109,7 +109,7 @@ class Fund < ApplicationRecord
   end
 
   def to_param
-    slug
+    hashid
   end
 
   def short_name

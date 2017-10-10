@@ -1,4 +1,8 @@
 module ApplicationHelper
+  def scramble_name(name)
+    name.chars.map { |c| c.sub(/\w/, ('a'..'z').to_a.sample) }.join.capitalize
+  end
+
   def v2_stylesheet # TODO: remove @ v2
     v2_layout? ? 'v2/' : ''
   end
@@ -12,7 +16,7 @@ module ApplicationHelper
       enquiries: %i[new],
       errors: %i[not_found gone internal_server_error],
       # feedback: %i[edit new],
-      funds: %i[index themed show],
+      funds: %i[index themed show hidden],
       pages: %i[about faq forfunders privacy terms], # preview?
       password_resets: %i[new create edit update],
       proposals: %i[index], # edit new update
