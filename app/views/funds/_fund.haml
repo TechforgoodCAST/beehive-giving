@@ -1,0 +1,24 @@
+%article.mb40     
+  = cell(:fund_indicators, fund, proposal: @proposal)
+
+  - if policy(FundContext.new(fund, @proposal)).show?
+    .mb5
+      = link_to fund.title, proposal_fund_path(@proposal, fund), class: 'blue fs22 lh30'
+    .mb5.fs15.lh20.mid-gray
+      = fund.subtitle
+    %p.mb5.fs15.lh20
+      = raw strip_tags fund.description_html.truncate_words(30)
+
+  - else
+    .mb5
+      = link_to 'Hidden fund', proposal_fund_path(@proposal, fund), class: 'blue fs22 lh30 italic'
+
+      - if @current_user.subscription_version == 2
+        = link_to 'Reveal', reveals_path(fund: fund), method: :post, class: 'bg-blue white fs14 bold rounded py2 px5 ml5'
+
+    .mb5.fs15.lh20.mid-gray.redacted= scramble_name fund.funder.name
+    %p.mb5.fs15.lh20
+      = raw fund.description_redacted.truncate_words(30)
+
+  %p.fs14.lh18
+    = cell(:fund_insight, fund, proposal: @proposal).call(:themes)
