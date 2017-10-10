@@ -44,7 +44,7 @@ class TestHelper
       stub_fund_summary_endpoint(fund.instance_eval { set_slug })
 
       fund.themes = @themes
-      
+
       fund.geo_area = create(:geo_area, countries: @countries, districts: (fund.geographic_scale_limited ? @uk_districts + @kenya_districts : []))
 
       fund.restrictions = (i.even? ? recipient_restrictions + proposal_restrictions.first(3) : recipient_restrictions + proposal_restrictions.last(3))
@@ -127,6 +127,12 @@ class TestHelper
     self
   end
 
+  def create_recipient_with_subscription_v1!
+    create_recipient
+    @recipient.subscription.update(version: 1)
+    self
+  end
+
   def subscribe_recipient
     @recipient.subscribe!
     self
@@ -134,6 +140,11 @@ class TestHelper
 
   def with_user(opts = { organisation_id: @recipient&.id })
     @user = create(:user, opts)
+    self
+  end
+
+  def sign_in2(user)
+    create_cookie(:auth_token, user.auth_token)
     self
   end
 

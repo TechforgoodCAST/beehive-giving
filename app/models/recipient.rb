@@ -155,7 +155,7 @@ class Recipient < ApplicationRecord
   end
 
   def create_subscription
-    Subscription.create(recipient_id: id) if subscription.nil?
+    Subscription.create(recipient_id: id, version: 2) if subscription.nil?
   end
 
   def max_income
