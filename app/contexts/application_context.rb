@@ -9,4 +9,8 @@ class ApplicationContext
     @fund = fund
     @proposal = proposal
   end
+
+  def slug
+    fund.slug
+  end
 end

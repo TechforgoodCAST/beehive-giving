@@ -1,3 +1,4 @@
+require 'rails_helper'
 require 'pundit/rspec'
 
 describe RevealPolicy do

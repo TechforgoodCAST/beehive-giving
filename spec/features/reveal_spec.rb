@@ -69,7 +69,11 @@ feature 'RevealFunds' do
       end
 
       scenario 'can only apply once revealed or subscribed' do
-        # TODO: visit apply path of hidden fund
+        @proposal.update_column(
+          :eligibility,
+          'funder-awards-for-all-1' => { 'quiz' => { 'eligible' => true } }
+        )
+        visit apply_proposal_fund_path(@proposal, Fund.first)
         expect(current_path).to eq account_upgrade_path(@recipient)
       end
     end

@@ -1,19 +1,7 @@
 class EnquiriesController < ApplicationController
   before_action :ensure_logged_in
   before_action :load_fund # TODO: refactor
-
-  def new
-    if @proposal && @proposal.eligible?(@fund.slug)
-      render :new
-    elsif !@proposal
-      redirect_to new_recipient_proposal_path(@recipient, return_to: @fund),
-                  alert: 'Please provide details of your funding request ' \
-                         'before applying.'
-    else
-      redirect_to proposal_fund_path(@proposal, @fund),
-                  alert: 'You need to check your eligibility before applying.'
-    end
-  end
+  before_action :authenticate
 
   def create
     @enquiry = Enquiry.where(
@@ -28,5 +16,17 @@ class EnquiriesController < ApplicationController
 
     def load_fund # TODO: refactor to applicaiton controller?
       @fund = Fund.includes(:funder).find_by_hashid(params[:id])
+    end
+
+    def authenticate
+      authorize EnquiryContext.new(@fund, @proposal)
+    end
+
+    def user_not_authorised
+      if @current_user.subscription_version == 2
+        redirect_to account_upgrade_path(@recipient)
+      else
+        redirect_to proposal_fund_path(@proposal, @fund)
+      end
     end
 end
