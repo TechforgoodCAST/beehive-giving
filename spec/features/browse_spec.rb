@@ -4,7 +4,7 @@ feature 'Browse' do
   before(:each) do
     @app.seed_test_db
         .setup_funds(num: 7, open_data: true)
-        .create_recipient
+        .create_recipient_with_subscription_v1!
         .with_user
         .create_registered_proposal
     @db = @app.instances
