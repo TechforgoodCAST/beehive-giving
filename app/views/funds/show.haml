@@ -17,11 +17,7 @@
         .px10.py10.bg-lightest-gray
           .fs15.lh20.caps.bold.gray
             Current Proposal
-        = render partial: 'proposals/card', locals: { proposal: @proposal }
-        .fs14.center.py15.border-top.border-lightest-gray 
-          = link_to 'Edit', edit_proposal_path(@proposal), class: 'blue' 
-          %span.slate>  &middot; 
-          = link_to 'Change', proposals_path, class: 'blue' 
+        = render partial: 'proposals/card', locals: { proposal: @proposal, context: 'fund' }
 
     %section.perc75.md.mb80.px20
       %section
