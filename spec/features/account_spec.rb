@@ -26,7 +26,7 @@ feature 'Account' do
 
     scenario 'can navigate to user profile page' do
       click_on 'Account', match: :first
-      click_on 'Profile'
+      click_on 'Account', match: :first
       expect(current_path).to eq account_path
     end
 
