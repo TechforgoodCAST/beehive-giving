@@ -45,7 +45,7 @@ class AddGeoArea < ActiveRecord::Migration[5.1]
           if countries.size == 1
             if districts.size == 0
               name = countries.first.name
-            if districts.size < 6
+            elsif districts.size < 6
               name = districts.pluck(:name).uniq.join(", ")
             elsif districts.pluck(:region).uniq.count < 4
               name = districts.pluck(:region).uniq.join(", ")
@@ -53,7 +53,6 @@ class AddGeoArea < ActiveRecord::Migration[5.1]
               name = districts.pluck(:sub_country).uniq.join(", ")
             end
           end
-
 
           g = GeoArea.new(name: "#{name} #{index}")
           g.districts = districts
@@ -68,6 +67,5 @@ class AddGeoArea < ActiveRecord::Migration[5.1]
       dir.down do
       end
     end
-
   end
 end
