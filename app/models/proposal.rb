@@ -104,6 +104,17 @@ class Proposal < ApplicationRecord
 
   validate :recipient_subscribed, on: :create
 
+  def self.order_by(col)
+    case col
+    when 'name'
+      order :title
+    when 'amount'
+      order total_costs: :desc
+    else
+      order created_at: :desc
+    end
+  end
+
   def recipient_subscribed
     return if recipient.subscribed? || recipient.proposals.count.zero?
     errors.add(:title, 'Upgrade subscription to create multiple proposals')

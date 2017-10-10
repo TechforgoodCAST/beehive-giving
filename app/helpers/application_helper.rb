@@ -15,7 +15,7 @@ module ApplicationHelper
       funds: %i[index themed show],
       pages: %i[about faq forfunders privacy terms], # preview?
       password_resets: %i[new create edit update],
-      # proposals: %i[edit index new update],
+      proposals: %i[index], # edit new update
       public_funds: %i[index show themed],
       # recipients: %i[edit],
       # sessions: %i[new],

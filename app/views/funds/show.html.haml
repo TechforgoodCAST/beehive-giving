@@ -12,7 +12,13 @@
   .maxw1080.mx-auto.px20.flex.flex-wrap
     %aside.perc25.md.px20.mb40
       = render partial: 'card', locals: { fund: @fund }
-      = render partial: 'proposals/card', locals: { context: 'muted' }
+
+      .border.rounded.mb20.border-lightest-gray
+        .px10.py10.bg-lightest-gray
+          .fs15.lh20.caps.bold.gray
+            Current Proposal
+        = render partial: 'proposals/card', locals: { proposal: @proposal }
+        = cell :new_proposal_links, @proposal
 
     %section.perc75.md.mb80.px20
       %section
