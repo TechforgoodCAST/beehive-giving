@@ -17,12 +17,12 @@ module ApplicationHelper
       password_resets: %i[new create edit update],
       proposals: %i[index], # edit new update
       public_funds: %i[index show themed],
-      # recipients: %i[edit],
+      recipients: %i[edit update],
       # sessions: %i[new],
       signup: %i[user create_user], # funder, granted_access, unauthorised
       # signup_proposals: %i[edit new],
       # signup_recipients: %i[edit new],
-      # users: %[edit],
+      users: %i[edit update],
     }
     controller = params[:controller].to_sym
     action = params[:action].to_sym

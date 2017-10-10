@@ -107,7 +107,11 @@ class Recipient < ApplicationRecord
   end
 
   def subscribe!
-    subscription.update(active: true)
+    subscription.update(active: true, expiry_date: 1.years.from_now)
+  end
+
+  def unsubscribe!
+    subscription.update(active: false)
   end
 
   def subscribed?
