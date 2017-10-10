@@ -44,8 +44,9 @@ class TestHelper
       stub_fund_summary_endpoint(fund.instance_eval { set_slug })
 
       fund.themes = @themes
-      fund.countries = @countries
-      fund.districts = @uk_districts + @kenya_districts if fund.geographic_scale_limited
+      
+      fund.geo_area = create(:geo_area, countries: @countries, districts: (fund.geographic_scale_limited ? @uk_districts + @kenya_districts : []))
+
       fund.restrictions = (i.even? ? recipient_restrictions + proposal_restrictions.first(3) : recipient_restrictions + proposal_restrictions.last(3))
       fund.priorities = (i.even? ? recipient_priorities + proposal_priorities.first(3) : recipient_priorities + proposal_priorities.last(3))
       fund.save! if save
@@ -57,7 +58,7 @@ class TestHelper
   def create_simple_fund(num: 1)
     opts = {
       themes: create_list(:theme, 3),
-      countries: create_list(:country, 2),
+      geo_area: create(:geo_area, countries: create_list(:country, 2)),
       restrictions: create_list(:recipient_restriction, 2) +
                     create_list(:restriction, 5),
       priorities: create_list(:recipient_priority, 2) +

@@ -52,11 +52,11 @@
 
       %hr.my40
 
-      %section
-        .mb20
-          %h2.light Eligibility
+      = cell(:eligibility, @proposal, fund: @fund).call(:page)
 
-        = render partial: 'eligibility', locals: { return_to: 'fund' }
+      -# %hr.my40
+
+      -# = cell(:suitability, @proposal, fund: @fund).call(:page)
 
       %hr.my40
 

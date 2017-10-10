@@ -47,26 +47,36 @@
           found
 
       - @funds.each_with_index do |fund, i|
-        %article.mb40
-
-          = cell(:fund_indicators, fund, proposal: @proposal)
+        %article.mb40.flex
 
           - if @proposal.show_fund?(fund)
-            .mb5
-              = link_to fund.title, proposal_fund_path(@proposal, fund), class: 'blue fs22 lh30'
-            .mb5.fs15.lh20.mid-gray
-              = fund.subtitle
-            %p.mb5.fs15.lh20
-              = raw strip_tags fund.description_html.truncate_words(30)
+            .col-two-thirds.pr10
+
+              .mb5
+                = link_to fund.title, proposal_fund_path(@proposal, fund), class: 'blue fs22 lh30'
+              .mb5.fs15.lh20.mid-gray
+                = fund.subtitle
+              %p.fs14.lh18.mb5.mid-gray.truncate
+                = cell(:fund_insight, fund, proposal: @proposal).call(:themes)
+              %p.mb5.fs15.lh20
+                = raw strip_tags fund.description_html.truncate_words(30)
+              %p.fs12.lh18.mb5.slate
+                = cell(:fund_insight, fund, proposal: @proposal).call(:summary)
+
+            .col-one-third.border-left.pl10.border-lightest-gray
+              = render partial: 'actions', locals: { fund: fund }
 
           - else
-            .muted
+            .col-two-thirds.pr10.muted
               .mb5
                 = link_to scramble_name(fund.name), account_upgrade_path(@recipient), class: 'blue fs22 lh30 redacted'
               .mb5.fs15.lh20.mid-gray.redacted= scramble_name fund.funder.name
+              %p.fs14.lh18.mb5.mid-gray.truncate
+                = cell(:fund_insight, fund, proposal: @proposal).call(:themes)
               %p.mb5.fs15.lh20= raw fund.description_redacted.truncate_words(30)
+              
+            .col-one-third.border-left.pl10.border-lightest-gray.muted
+              = render partial: 'actions', locals: { fund: fund }
 
-          %p.fs14.lh18
-            = cell(:fund_insight, fund, proposal: @proposal).call(:themes)
 
       = paginate @funds

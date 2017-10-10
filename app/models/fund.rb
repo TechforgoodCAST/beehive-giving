@@ -10,15 +10,16 @@ class Fund < ApplicationRecord
   has_many :fund_themes, dependent: :destroy
   has_many :themes, through: :fund_themes
 
-  has_and_belongs_to_many :countries
-  has_and_belongs_to_many :districts
+  belongs_to :geo_area
+  has_many :countries, through: :geo_area
+  has_many :districts, through: :geo_area
 
   has_many :questions
   has_many :restrictions, through: :questions, source: :criterion, source_type: 'Restriction'
   has_many :priorities, through: :questions, source: :criterion, source_type: 'Priority'
 
   validates :funder, :type_of_fund, :slug, :name, :description, :currency,
-            :key_criteria, :application_link, :countries, :themes,
+            :key_criteria, :application_link, :themes,
             presence: true
 
   validates :open_call, :active, :restrictions_known,
@@ -133,6 +134,10 @@ class Fund < ApplicationRecord
 
   def description_html
     markdown(description)
+  end
+
+  def geo_description_html
+    return geo_area.short_name
   end
 
   def description_redacted
