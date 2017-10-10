@@ -35,10 +35,12 @@ describe FundCardCell do
 
     it 'exact message' do
       proposal(1, 'exact')
-      @fund.update!(
-        geographic_scale_limited: true,
+      @fund.geo_area.update!(
         countries: @proposal.countries,
         districts: @proposal.districts
+      )
+      @fund.update!(
+        geographic_scale_limited: true
       )
       card = cell(:fund_card, @proposal, fund: @fund).call(:location)
       expect(card).to have_content 'Supports all of the areas in your proposal.'
@@ -47,10 +49,12 @@ describe FundCardCell do
 
     it 'intersect message' do
       proposal(0, 'intersect')
-      @fund.update!(
-        geographic_scale_limited: true,
+      @fund.geo_area.update!(
         countries: @proposal.countries,
         districts: @db[:uk_districts].take(2)
+      )
+      @fund.update!(
+        geographic_scale_limited: true,
       )
       card = cell(:fund_card, @proposal, fund: @fund).call(:location)
       expect(card).to have_content 'Supports some of the areas in your proposal.'
@@ -59,10 +63,12 @@ describe FundCardCell do
 
     it 'partial message' do
       proposal(1, 'partial')
-      @fund.update!(
-        geographic_scale_limited: true,
+      @fund.geo_area.update!(
         countries: @proposal.countries,
         districts: @db[:uk_districts].take(2)
+      )
+      @fund.update!(
+        geographic_scale_limited: true,
       )
       card = cell(:fund_card, @proposal, fund: @fund).call(:location)
       expect(card).to have_content 'Supports all of the areas in your proposal.'
@@ -71,10 +77,12 @@ describe FundCardCell do
 
     it 'overlap message' do
       proposal(-1, 'overlap')
-      @fund.update!(
-        geographic_scale_limited: true,
+      @fund.geo_area.update!(
         countries: @proposal.countries,
         districts: [@db[:uk_districts].first]
+      )
+      @fund.update!(
+        geographic_scale_limited: true,
       )
       card = cell(:fund_card, @proposal, fund: @fund).call(:location)
       expect(card).to have_content 'Supports projects in a smaller area than you are seeking.'

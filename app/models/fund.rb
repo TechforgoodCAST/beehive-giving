@@ -10,15 +10,16 @@ class Fund < ApplicationRecord
   has_many :fund_themes, dependent: :destroy
   has_many :themes, through: :fund_themes
 
-  has_and_belongs_to_many :countries
-  has_and_belongs_to_many :districts
+  belongs_to :geo_area
+  has_many :countries, through: :geo_area
+  has_many :districts, through: :geo_area
 
   has_many :questions
   has_many :restrictions, through: :questions, source: :criterion, source_type: 'Restriction'
   has_many :priorities, through: :questions, source: :criterion, source_type: 'Priority'
 
   validates :funder, :type_of_fund, :slug, :name, :description, :currency,
-            :key_criteria, :application_link, :countries, :themes,
+            :key_criteria, :application_link, :themes,
             presence: true
 
   validates :open_call, :active, :restrictions_known,
@@ -136,14 +137,7 @@ class Fund < ApplicationRecord
   end
 
   def geo_description_html
-    return geo_description if geo_description
-    if countries.size > 5
-      "<span title=\"#{countries.pluck(:name).to_sentence(last_word_connector: " and ")}\">#{countries.size} countries</span>"
-    elsif countries.size == 1 && countries.pluck(:alpha2).include?('GB')
-      "UK"
-    else
-      countries.pluck(:name).to_sentence(two_words_connector: " & ", last_word_connector: " & ")
-    end
+    return geo_area.short_name
   end
 
   def description_redacted

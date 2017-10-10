@@ -32,7 +32,7 @@ class FundsController < ApplicationController
 
     def query
       @query = Fund.active
-                   .includes(:funder, :themes, :funds_countries, :countries)
+                   .includes(:funder, :themes, :countries)
                    .eligibility(@proposal, params[:eligibility])
                    .duration(@proposal, params[:duration])
     end
