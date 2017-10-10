@@ -5,9 +5,9 @@ module ApplicationHelper
 
   def v2_layout? # TODO: remove @ v2
     permitted = {
-      # accounts: %i[subscription],
+      accounts: %i[subscription],
       articles: %i[index show],
-      # charges: %i[new thank_you],
+      charges: %i[new thank_you],
       eligibilities: %i[new],
       enquiries: %i[new],
       errors: %i[not_found gone internal_server_error],

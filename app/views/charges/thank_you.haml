@@ -21,45 +21,60 @@
   %div{ style: "display:inline;" }
     %img{ alt: "", height: "1", src: "//www.googleadservices.com/pagead/conversion/937505505/?value=50.00&currency_code=GBP&label=X50XCO3-_G8Q4eWEvwM&guid=ON&script=0", style: "border-style:none;", width: "1" }
 
-= render partial: 'accounts/subnav'
 
-.uk-container.uk-container-center
-  .uk-grid.uk-margin-large.uk-margin-large-top
-    .uk-width-medium-1-1
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'Subscription' => account_subscription_path(@recipient)
 
-      .uk-width-1-2.uk-container-center
-        %h2 Thank you!
-        .cta.green
-          You have successfully subscribed!
+%main
+  .maxw1080.mx-auto.px20
 
-        .uk-panel.uk-panel-box.none.card
-          %h3 Order summary
+    %section.md.mb20.px20
+      %h1.light.mb20 Dashboard
 
-          .uk-width-medium-1-1.uk-margin-top
-            .uk-text-bold Plan
-            Pro
+    %nav.md.mb40.px20
+      %ul.border-bottom.border-lightest-gray.fs14
+        %li.mr20.py10.inline-block
+          = link_to 'Account', account_path, class: 'blue'
+        %li.mr20.py10.inline-block
+          = link_to 'Organisation', account_organisation_path(@recipient), class: 'blue'
+        %li.mr20.py10.inline-block.border-bottom-thick.border-blue
+          = link_to 'Subscription', account_subscription_path(@recipient), class: 'blue'
+        %li.mr20.py10.inline-block
+          = link_to 'Proposals', proposals_path, class: 'blue'
+          
+  .maxw1080.mx-auto.px20.flex.flex-wrap
+    %aside.perc33.md.px20.mb40
 
-          .uk-width-medium-1-1.uk-margin-top
-            .uk-text-bold Status
-            Active
+      .p20.border.border-green.rounded
+        %h3.light.mb20 Your plan
 
-          .uk-width-medium-1-1.uk-margin-top
-            .uk-text-bold Period
-            1 year
-            %small= 1.year.from_now.strftime("(expires %d %B %Y)")
+        .mb30
+          .label.mb10.bold Plan
+          Pro
 
-          .uk-width-medium-1-1.uk-margin-top
-            .uk-text-bold Price
-            = number_to_currency(@payment.plan_cost, unit: '£')
-            - if @payment.discount
-              %small
-                = surround '(', ')' do
-                  = @payment.discount
-                  discount
+        .mb30
+          .label.mb10.bold Period
+          1 year
+          %small= 1.year.from_now.strftime("(expires %d %B %Y)")
 
-          .uk-width-medium-1-1.uk-margin-top
-            .uk-text-bold Features
-            = render 'accounts/premium_features'
+        .mb30
+          .label.mb10.bold Price
+          = number_to_currency(@payment.plan_cost, unit: '£')
+          - if @payment.discount
+            %small
+              = surround '(', ')' do
+                = @payment.discount
+                discount
 
-      .uk-width-1-2.uk-container-center.uk-margin-top
-        = link_to 'Continue', session.delete(:return_to) || account_subscription_path(@recipient), class: 'uk-button uk-button-primary uk-button-large uk-width-1-1'
+        %div
+          .label.mb10.bold Features
+          = render 'accounts/premium_features'
+
+    %section.perc66.md.mb80.px20.fs14
+
+      %h1.light.fs40.p50 Thank you!
+      .p50.fs40.light.lh120
+        You have successfully subscribed
+
+      = link_to 'Continue', session.delete(:return_to) || account_subscription_path(@recipient), class: 'button bg-green caps white'

@@ -34,12 +34,13 @@
           = render partial: 'proposals/card', locals: { proposal: proposal }
           = cell(:new_proposal_links, proposal).call(:dashboard)
       
-      .mb20.flex.items-center
+      .mb20
         - if @proposal.complete?
           - if @recipient.subscribed?
             = link_to "+ New proposal", new_proposal_path, class: 'button-wide bg-green white fs16 caps'
           - else
-            Upgrade to add new proposals
+            %div.mb30
+              Upgrade to add new proposals
             = link_to '+ New proposal', account_upgrade_path(@recipient), class: 'button-wide bg-green white fs16 caps'
         - else
           = link_to '+ New proposal', edit_signup_proposal_path(@proposal), class: 'button-wide bg-green white fs16 caps'
