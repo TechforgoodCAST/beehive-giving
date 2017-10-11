@@ -1,9 +1,8 @@
 %section.fs12.lh14
   = cell(:eligibility, @proposal, fund: fund).call(:index)
 
--# TODO: Suitability quiz #439
--# %section.fs12.mt20.lh14
--#   = cell(:suitability, @proposal, fund: fund).call(:index)
+%section.fs12.mt20.lh14
+  = cell(:suitability, @proposal, fund: fund).call(:index)
 
 %section.fs12.mt20.lh14
   - if @proposal.eligible_status(fund.slug) == -1
