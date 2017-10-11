@@ -26,3 +26,5 @@
 
 # Ignore data
 *.dump
+
+\.vscode/

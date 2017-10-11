@@ -9,24 +9,33 @@ describe Check::Eligibility::Location do
     @proposal = Proposal.last
 
     @local = @funds[0]
+    @local.geo_area.update!(
+      countries: [@db[:uk]],
+      districts: [@db[:uk_districts].first]
+    )
     @local.update!(
       slug: 'blagrave',
       geographic_scale_limited: true, national: false,
-      countries: [@db[:uk]], districts: [@db[:uk_districts].first]
     )
 
     @anywhere = @funds[1]
+    @anywhere.geo_area.update!(
+      countries: [@db[:uk]],
+      districts: []
+    )
     @anywhere.update!(
       slug: 'esmee',
       geographic_scale_limited: false, national: false,
-      countries: [@db[:uk]], district_ids: []
     )
 
     @national = @funds[2]
+    @national.geo_area.update!(
+      countries: [@db[:uk]],
+      districts: []
+    )
     @national.update!(
       slug: 'ellerman',
       geographic_scale_limited: true, national: true,
-      countries: [@db[:uk]], districts: []
     )
   end
 
@@ -45,7 +54,7 @@ describe Check::Eligibility::Location do
   end
 
   it '#call countries_ineligible?' do
-    @local.country_ids = []
+    @local.geo_area.update!(countries: [@db[:kenya]])
     expect(subject.call(@proposal, @local)).to eq 'eligible' => false
   end
 

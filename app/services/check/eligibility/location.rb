@@ -15,7 +15,7 @@ module Check
       private
 
         def countries_ineligible?(proposal, fund)
-          (proposal.country_ids & fund.country_ids).length.zero?
+          (proposal.country_ids & fund.geo_area.countries.pluck(:id)).length.zero?
         end
 
         def national_ineligible?(_proposal, fund)
@@ -24,7 +24,7 @@ module Check
 
         def districts_ineligible?(proposal, fund)
           return false unless fund.geographic_scale_limited && !fund.national
-          (proposal.district_ids & fund.district_ids).length.zero?
+          (proposal.district_ids & fund.geo_area.districts.pluck(:id)).length.zero?
         end
     end
   end
