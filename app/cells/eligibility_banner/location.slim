@@ -1,5 +1,10 @@
-| You are ineligible because of the
-strong<> location
-| of your
-=< link_to 'proposal', edit_proposal_path(model)
-| .
+- if eligible
+    | Awards funds in
+    strong=< location
+    | .
+- else
+    | You are ineligible because of the
+    strong<> location
+    | of your
+    =< link_to 'proposal', edit_proposal_path(model)
+    | .
