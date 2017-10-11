@@ -25,6 +25,11 @@
       Eligibility
     .col-two-thirds.fs12
       = cell(:proposal_indicators, proposal).call(:eligibility_progress_bar)
+  .flex.mt3
+    .col-one-third.fs12
+      Suitability
+    .col-two-thirds.fs12
+      = cell(:proposal_indicators, proposal).call(:suitability_progress_bar)
 
 .fs14.center.py15.border-top.border-lightest-gray 
   - if context == 'fund' 
