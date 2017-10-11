@@ -31,6 +31,24 @@
 
       %section
         .mb20
+          %h2.light Analysis
+
+        .mb20.flex
+          .col.border-right.border-lightest-gray.pr10
+            %h3.caps.fs14.bold 1. Eligibility
+            = cell(:eligibility, @proposal, fund: @fund).call(:analysis)
+
+          .col.border-right.border-lightest-gray.px10
+            %h3.caps.fs14.bold 2. Suitability
+            = cell(:suitability, @proposal, fund: @fund).call(:analysis)
+
+          .col.pl10
+            %h3.caps.fs14.bold 3. Apply
+      
+      %hr.my40
+
+      %section
+        .mb20
           %h2.light Summary
 
         .mb20.markdown
@@ -55,13 +73,11 @@
           = cell(:fund_insight, @fund).call(:countries)
           = cell(:fund_insight, @fund).call(:grant_examples)
 
-      %hr.my40
-
       = cell(:eligibility, @proposal, fund: @fund).call(:page)
 
       -# TODO: Suitability quiz #439
-      -# %hr.my40
-      -# = cell(:suitability, @proposal, fund: @fund).call(:page)
+      
+      = cell(:suitability, @proposal, fund: @fund).call(:page)
 
       %hr.my40
 
