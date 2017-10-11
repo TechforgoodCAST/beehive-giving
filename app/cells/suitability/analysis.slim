@@ -1,0 +1,16 @@
+.mt10 class=status[:colour]
+  = status[:symbol]
+  =<> status[:status]
+
+- if criteria.dig(:quiz, :status) == 'to_check' && status[:status] == 'Incomplete'
+  = link_to "Complete", "#suitability-quiz", class: 'mt20 button-wide caps bg-green white'
+
+ul.mt20
+  - criteria.each do |k, v|
+    li.mb15.fs14
+      span.fs16 class=v[:colour]
+        = v[:symbol]
+      =<> v[:title]
+      - if v[:message]
+        .fs12.mt5.lh16
+          = v[:message]
