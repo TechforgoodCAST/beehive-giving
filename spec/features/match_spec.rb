@@ -235,6 +235,8 @@ feature 'Match' do
     expect(current_path).to eq proposal_funds_path(Proposal.last)
     expect(page).to have_css '.fs22', count: 3
 
-    expect(page.first('.fs22').text).to eq 'Awards for All 3'
+    click_link 'Hidden fund', match: :first
+    expect(current_path)
+      .to eq hidden_proposal_fund_path(Proposal.last, Fund.third)
   end
 end

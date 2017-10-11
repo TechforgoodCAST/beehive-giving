@@ -7,7 +7,7 @@ feature 'Eligibility' do
   before(:each) do
     @app.seed_test_db
         .setup_funds(num: 7, open_data: true)
-        .create_recipient
+        .create_recipient_with_subscription_v1!
         .with_user
         .create_registered_proposal
         .sign_in
@@ -108,14 +108,14 @@ feature 'Eligibility' do
               I want the check to be invalid,
               so I avoid accidently checking a fund' do
       helper.answer_proposal_restrictions(@fund).check_eligibility
-      expect(page).to have_text 'You have completed 3 of 5 criteria.'
+      expect(page).to have_text '3 of 5 questions answered.'
     end
 
     scenario 'When I only submit answers to recipient restrictions,
               I want the check to be invalid,
               so I avoid accidently checking a fund' do
       helper.answer_recipient_restrictions(@fund).check_eligibility
-      expect(page).to have_text 'You have completed 2 of 5 criteria.'
+      expect(page).to have_text '2 of 5 questions answered.'
     end
 
     scenario 'When I visit a fund without proposal restrictions,
@@ -141,7 +141,6 @@ feature 'Eligibility' do
               I want to see a link to apply for funding,
               so I can see further details about applying" do
       helper.answer_restrictions(@fund).check_eligibility
-      expect(page).to have_text 'Update'
 
       click_link 'Application form'
       expect(current_path).to eq apply_proposal_fund_path(@proposal, @fund)
@@ -161,7 +160,7 @@ feature 'Eligibility' do
                                 'the criteria below.'
       expect(page).to have_text 'You did not meet this criteria', count: 3
 
-      helper.answer_restrictions(@fund).update
+      helper.answer_restrictions(@fund).check_eligibility
       expect(page).to have_text 'Apply'
       expect(page).to have_text 'Apply for funding'
 
@@ -182,11 +181,11 @@ feature 'Eligibility' do
       helper.answer_recipient_restrictions(@fund)
             .answer_proposal_restrictions(@fund, eligible: false)
             .check_eligibility
-      visit proposal_fund_path(@proposal, 'funder-awards-for-all-6')
+      visit proposal_fund_path(@proposal, Fund.first)
 
-      helper.check_eligibility(remaining: 2)
+      helper.check_eligibility
       # 3 questions previously answered should be checked
-      expect(page).to have_text 'You have completed 3 of 5 criteria.'
+      expect(page).to have_text '3 of 5 questions answered.'
       expect(page).to have_css '.quiz input[type=radio][checked=checked]', count: 3
     end
 

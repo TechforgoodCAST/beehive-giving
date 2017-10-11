@@ -34,7 +34,7 @@ module Check
         def match_districts(fund, proposal)
           return {} unless proposal.affect_geo != 2 &&
                            (fund.geographic_scale_limited && !fund.national)
-          match = match_result(fund.district_ids, proposal.district_ids)
+          match = match_result(fund.geo_area.districts.pluck(:id), proposal.district_ids)
           { 'score' => match[0], 'reason' => match[1] }
         end
 

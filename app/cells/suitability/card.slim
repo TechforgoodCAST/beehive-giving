@@ -1,0 +1,16 @@
+.mb20
+  span.caps.bold.light.blue
+    | Suitability
+  span.right class=status[:colour]
+    = status[:status]
+
+ul
+  - criteria.each do |k, v|
+    li.fs14.my10
+      .flex
+        span.white.fs12.bold.dot class="bg-#{v[:colour]}"
+        .ml5
+          = v[:title]
+      - if v[:message]
+        .muted.fs12.lh15.mt5
+          = v[:message]

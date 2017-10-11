@@ -1,11 +1,11 @@
-= content_for :title, @fund.title
+= content_for :title, "Hidden Fund [#{@fund.hashid}]"
 
 %header
   = cell :v2_navbar, @current_user
-  = cell :breadcrumb, (@proposal.title? ? @proposal.title : 'Current proposal').upcase_first => nil, 'Funds' => proposal_funds_path(@proposal), @fund.funder.name => nil, @fund.name => proposal_fund_path(@proposal, @fund)
+  = cell :breadcrumb, (@proposal.title? ? @proposal.title : 'Current proposal').upcase_first => nil, 'Funds' => proposal_funds_path(@proposal), 'Hidden funder' => nil, 'Hidden fund' => proposal_fund_path(@proposal, @fund)
 
 :javascript
-  mixpanel.track('View Fund Page', { "Fund": "#{@fund.name}" });
+  mixpanel.track('View Fund Page', { "Fund": "#{@fund.hashid}" });
   mixpanel.identify("#{@current_user.id}");
 
 %main
@@ -16,8 +16,10 @@
 
     %section.perc75.md.mb80.px20
       %section
-        %h1.light= @fund.title
-        .fs15.lh20.mid-gray= @fund.subtitle
+        = link_to 'Reveal Fund Identity', reveals_path(fund: @fund), method: :post, class: 'button white bg-blue caps shadow mb20'
+
+        %h1.light.italic Hidden Fund
+        .fs15.lh20.mid-gray.redacted= scramble_name(@fund.funder.name)
 
         %p.fs15.mt15.lh20
           = cell(:fund_insight, @fund, proposal: @proposal).call(:themes)
@@ -29,7 +31,7 @@
           %h2.light Summary
 
         .mb20.markdown
-          = raw @fund.description_html
+          = raw @fund.description_redacted
 
         - if @fund.period_end.present? && @fund.period_end > 3.years.ago
           %small.slate
@@ -48,15 +50,17 @@
           = cell(:fund_insight, @fund).call(:grant_count)
           = cell(:fund_insight, @fund).call(:award_months)
           = cell(:fund_insight, @fund).call(:countries)
-          = cell(:fund_insight, @fund).call(:grant_examples)
+          %li
+            = link_to 'Reveal', reveals_path(fund: @fund), method: :post, class: 'bold blue'
+            this fund to see recent grants
 
       %hr.my40
 
-      %section
-        .mb20
-          %h2.light Eligibility
+      = cell(:eligibility, @proposal, fund: @fund).call(:page)
 
-        = render partial: 'eligibility', locals: { return_to: 'fund' }
+      -# TODO: Suitability quiz #439
+      -# %hr.my40
+      -# = cell(:suitability, @proposal, fund: @fund).call(:page)
 
       %hr.my40
 
@@ -65,7 +69,7 @@
           .mb40
             %h2.light Apply
 
-          = link_to "Application form", apply_proposal_fund_path(@proposal, @fund), class: "button white bg-blue caps shadow mb40"
+          = link_to 'Application form', apply_proposal_fund_path(@proposal, @fund), class: "button white bg-blue caps shadow mb40"
 
       - else
         %section.muted
@@ -78,9 +82,3 @@
               Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
 
           .button.white.bg-blue.caps.shadow.mb40 Application form
-        -#
-        -# %h5.mb20 Status
-        -#
-        -# .button.blue.border-blue.caps.mb10 Submitted
-        -# .button.green.border-green.caps.mb10 Successful
-        -# .button.red.border-red.caps.mb10 Declined

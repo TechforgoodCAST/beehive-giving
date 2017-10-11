@@ -72,6 +72,14 @@
   min-width: 22px
   text-indent: 22px
 
+@each $var, $val in $scales
+  .dot-#{$var}
+    height: $val
+    line-height: $val
+    max-width: $val
+    min-width: $val
+    text-indent: $val
+
 .progress
   height: 100%
   overflow: hidden

@@ -15,23 +15,6 @@
   %div.cta Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
 
 %ul.insights
-  -# - unless params[:controller] == 'recipients' && %w(eligibility update_eligibility apply).include?(params[:action])
-  -#   - unless @proposal.eligible_status(fund.slug).negative?
-  -#     %li{ class: (@proposal.eligible?(fund.slug) ? 'eligible' : 'ineligible')}
-  -#       - if @proposal.eligible?(fund.slug)
-  -#         %a.badge{ href: eligible_proposal_funds_path(@proposal) } Eligible
-  -#         You are eligible for funding.
-  -#         %a.action{href: proposal_fund_path(@proposal, fund)} See criteria
-  -#       - else
-  -#         %a.badge{ href: ineligible_proposal_funds_path(@proposal) } Ineligible
-  -#         You are ineligible for funding.
-  -#         - if @recipient.subscribed?
-  -#           %ul
-  -#             - @proposal.ineligible_reasons(fund.slug).each do |r|
-  -#               %li= cell(:eligibility_banner, @proposal, fund: fund).call(r.to_sym)
-  -#         - else
-  -#           %a.action{href: proposal_fund_path(@proposal, fund)} Find out why
-
   %li<
     = cell(:fund_insight, fund).call(:amount)
 

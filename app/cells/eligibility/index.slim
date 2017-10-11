@@ -1,0 +1,10 @@
+.mb10.fs14 class=status[:colour]
+  - if status[:status] == "Incomplete"
+    span.white.dot.dot-10.bg-blue
+    |  Eligibility
+  - else
+    = status[:symbol]
+    =< status[:status]
+- if status[:message]
+  .mb5 = status[:message]
+= link_to status[:link_text], proposal_fund_path(model, fund), class: 'blue'

@@ -1,4 +1,6 @@
 class ApplicationController < ActionController::Base
+  include Pundit
+
   protect_from_forgery with: :exception
 
   helper_method :logged_in?
@@ -7,6 +9,7 @@ class ApplicationController < ActionController::Base
   before_action :ensure_signed_up
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :bad_token
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorised
 
   def logged_in?
     current_user != nil
@@ -22,6 +25,11 @@ class ApplicationController < ActionController::Base
 
     def bad_token
       redirect_to '/logout', warning: 'Please sign in'
+    end
+
+    def user_not_authorised
+      flash[:alert] = "Sorry, you don't have access to that"
+      redirect_back(fallback_location: root_path)
     end
 
     def current_user
