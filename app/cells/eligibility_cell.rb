@@ -4,6 +4,7 @@ class EligibilityCell < Cell::ViewModel
   include SimpleForm::ActionViewExtensions::FormHelper
 
   def page
+    return unless options[:fund].restrictions.present?
     render locals: { fund: options[:fund], status: status, criteria: criteria }
   end
 
@@ -12,6 +13,10 @@ class EligibilityCell < Cell::ViewModel
   end
 
   def index
+    render locals: { fund: options[:fund], status: status, criteria: criteria }
+  end
+
+  def analysis
     render locals: { fund: options[:fund], status: status, criteria: criteria }
   end
 
@@ -42,17 +47,18 @@ class EligibilityCell < Cell::ViewModel
         if model.ineligible_reasons(options[:fund].slug).include? k.to_s
           v[:status] = 'ineligible'
           v[:colour] = 'red'
-          v[:message] = cell(:eligibility_banner, model, fund: options[:fund]).call(k)
+          v[:message] = cell(:eligibility_banner, model, fund: options[:fund], eligible: false).call(k)
           v[:symbol] = "\u2718".html_safe
         elsif k == :quiz && !checked
           v[:status] = 'to_check'
           v[:colour] = 'blue'
           v[:message] = cell(:quiz, options[:fund], quiz_type: 'Restriction', proposal: model).call(:questions_completed)
-          v[:message] << "\nComplete the quiz below"
+          v[:message] << "<br><a href=\"#eligibility-quiz\" class=\"blue\">Complete the quiz below</a>".html_safe
           v[:symbol] = '<span class="white dot dot-14 bg-blue mr3"></span>'.html_safe
         else
           v[:status] = 'eligible'
           v[:colour] = 'green'
+          v[:message] = ActionController::Base.helpers.strip_tags(cell(:eligibility_banner, model, fund: options[:fund], eligible: true).call(k))
           v[:symbol] = "\u2714".html_safe
         end
       end
