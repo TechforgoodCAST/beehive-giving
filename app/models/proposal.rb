@@ -102,13 +102,6 @@ class Proposal < ApplicationRecord
             presence: { message: "please uncheck 'Other' or specify details" },
             if: :implementations_other_required
 
-  validate :recipient_subscribed, on: :create
-
-  def recipient_subscribed
-    return if recipient.subscribed? || recipient.proposals.count.zero?
-    errors.add(:title, 'Upgrade subscription to create multiple proposals')
-  end
-
   def beehive_insight_durations
     @beehive_insight_durations ||= call_beehive_insight(
       ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'],
@@ -147,15 +140,6 @@ class Proposal < ApplicationRecord
 
   def suitable_funds
     suitability.sort_by { |fund| fund[1]['total'] }.reverse
-  end
-
-  def show_fund?(fund)
-    recipient.subscribed? ||
-      suitable_funds.pluck(0).take(RECOMMENDATION_LIMIT).include?(fund.slug)
-  end
-
-  def checked_fund?(fund)
-    eligibility[fund.slug]&.all_values_for('quiz').present?
   end
 
   def eligible_funds

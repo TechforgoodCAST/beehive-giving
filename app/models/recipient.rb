@@ -78,6 +78,7 @@ class Recipient < ApplicationRecord
             presence: true,
             if: proc { |o| o.charity_name.present? || o.company_name.present? }
 
+  before_save :unique_reveals
   before_validation :set_slug, if: :should_set_slug?
   before_validation :clear_registration_numbers_if_unregistered
   after_create :create_subscription
@@ -150,7 +151,7 @@ class Recipient < ApplicationRecord
   end
 
   def create_subscription
-    Subscription.create(recipient_id: id) if subscription.nil?
+    Subscription.create(recipient_id: id, version: 2) if subscription.nil?
   end
 
   def max_income
@@ -164,6 +165,10 @@ class Recipient < ApplicationRecord
   end
 
   private
+
+    def unique_reveals
+      self[:reveals] = self[:reveals].uniq
+    end
 
     def search_address
       if postal_code.present?

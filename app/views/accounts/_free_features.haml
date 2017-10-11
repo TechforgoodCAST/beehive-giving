@@ -1,13 +1,35 @@
 -# TODO: remove .uk-margin-remove @ v2
-%ul.list.pl20.uk-margin-remove
-  %li
-    %strong 1
-    funding proposal analysed
-  %li
-    Conduct
-    %strong 3
-    eligibility checks
-  %li
-    Browse
-    %strong 6
-    funds
+- if @current_user&.subscription_version == 1
+  %ul.list.pl20.uk-margin-remove
+    %li
+      %strong 1
+      funding proposal analysed
+    %li
+      Conduct
+      %strong 3
+      eligibility checks
+    %li
+      Browse
+      %strong 6
+      funds
+
+- else
+  Free includes basics like:
+  %ul.list.pl20.uk-margin-remove
+    %li
+      %strong Unlimited
+      eligibility and suitability checking
+    %li
+      Analysis on
+      %strong 100+
+      charitable funds and growing
+    %li
+      Reveal the identity of
+      %strong 3
+      funds
+    %li
+      %strong 1
+      funding proposal analysed
+    %li
+      %strong 1
+      user

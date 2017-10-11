@@ -31,4 +31,9 @@
         = cell(:proposal_indicators, @proposal).call(:eligibility_progress_bar)
 
     %hr.my15
-      = cell :new_proposal_links, @proposal
+      .fs14.center
+        = link_to 'Edit', edit_proposal_path(@proposal), class: 'blue'
+        %span.slate &middot;
+        = link_to 'Change', proposals_path, class: 'blue'
+        %span.slate &middot;
+        = link_to 'New', new_proposal_path, class: 'blue'

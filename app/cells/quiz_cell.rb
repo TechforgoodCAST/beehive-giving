@@ -23,6 +23,11 @@ class QuizCell < Cell::ViewModel
     end
   end
 
+  def questions_completed
+    load_questions
+    render locals: { counts: question_count }
+  end
+
   private
 
     def load_questions

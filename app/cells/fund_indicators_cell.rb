@@ -30,7 +30,8 @@ class FundIndicatorsCell < Cell::ViewModel
     end
 
     def eligibility_criteria_status
-      return -1 if options[:criteria] == 'quiz' && !options[:proposal].checked_fund?(model)
+      checked = EligibilityContext.new(model, options[:proposal]).checked_fund?
+      return -1 if options[:criteria] == 'quiz' && !checked
       (options[:proposal].ineligible_reasons(model.slug).include? options[:criteria]) ? 0 : 1
     end
 end

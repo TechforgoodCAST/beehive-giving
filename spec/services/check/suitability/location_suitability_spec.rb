@@ -9,24 +9,33 @@ describe Check::Suitability::Location do
     @db = @app.instances
 
     @local = @funds[0]
+    @local.geo_area.update!(
+      countries: [@db[:uk]],
+      districts: [@db[:uk_districts].first]
+    )
     @local.update!(
       slug: 'blagrave',
       geographic_scale_limited: true, national: false,
-      countries: [@db[:uk]], districts: [@db[:uk_districts].first]
     )
 
     @anywhere = @funds[1]
+    @anywhere.geo_area.update!(
+      countries: [@db[:uk]],
+      districts: []
+    )
     @anywhere.update!(
       slug: 'esmee',
       geographic_scale_limited: false, national: false,
-      countries: [@db[:uk]], district_ids: []
     )
 
     @national = @funds[2]
+    @national.geo_area.update!(
+      countries: [@db[:uk]],
+      districts: []
+    )
     @national.update!(
       slug: 'ellerman',
       geographic_scale_limited: true, national: true,
-      countries: [@db[:uk]], districts: []
     )
   end
 
@@ -84,7 +93,7 @@ describe Check::Suitability::Location do
 
   context 'proposal intersect' do
     before(:each) do
-      @local.update! districts: @db[:uk_districts].take(2)
+      @local.geo_area.update! districts: @db[:uk_districts].take(2)
       @proposal.update! districts: @db[:uk_districts].slice(1, 2)
       @proposal.update_column :eligibility, {}
     end
@@ -107,7 +116,7 @@ describe Check::Suitability::Location do
 
   context 'proposal partial' do
     before(:each) do
-      @local.update! districts: @db[:uk_districts].take(2)
+      @local.geo_area.update!(districts: @db[:uk_districts].take(2))
       @proposal.update! districts: [@db[:uk_districts].first]
       @proposal.update_column :eligibility, {}
     end
