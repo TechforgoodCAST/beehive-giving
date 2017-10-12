@@ -36,13 +36,8 @@ class EligibilityHelper
     self
   end
 
-  def check_eligibility(remaining: 3)
-    click_button "Check eligibility (#{remaining} left)"
-    self
-  end
-
-  def update
-    click_button 'Update'
+  def check_eligibility
+    click_button 'Check eligibility'
     self
   end
 
@@ -74,7 +69,7 @@ class EligibilityHelper
 
     def answer(fund, category: 'Proposal', eligible: true, n: 3)
       fund.restrictions.where(category: category).limit(n).pluck(:id).each do |i|
-        choose "check_restriction_#{i}_eligible_#{eligible}"
+        choose "check_question_#{i}_#{eligible}"
       end
     end
 end

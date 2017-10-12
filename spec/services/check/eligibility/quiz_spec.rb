@@ -7,7 +7,7 @@ describe Check::Eligibility::Quiz do
     @fund = Fund.last
     @fund.restrictions.each do |r|
       category = r.category == 'Proposal' ? @proposal : @proposal.recipient
-      create(:proposal_eligibility, category: category, question: r)
+      create(:proposal_eligibility, category: category, criterion: r)
     end
     @fund.save
   end

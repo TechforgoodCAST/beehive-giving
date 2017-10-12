@@ -1,22 +1,22 @@
 class Answer < ApplicationRecord
   belongs_to :category, polymorphic: true
-  belongs_to :question
+  belongs_to :criterion
 
-  validates :category_id, :category_type, :question, presence: true
+  validates :category_id, :category_type, :criterion, presence: true
   validates :eligible,
             inclusion: { in: [true, false],
                          message: 'please select from the list' }
   validates :eligible,
-            uniqueness: { scope: [:category, :question],
+            uniqueness: { scope: %i[category criterion],
                           message: 'only one per fund' },
             if: :eligible?
 
-  validate :ensure_question_category_match
+  validate :ensure_criterion_category_match
 
   private
 
-    def ensure_question_category_match
-      return if category_type == question.category
-      errors.add(:eligible, "Category must be #{question.category}")
+    def ensure_criterion_category_match
+      return if category_type == criterion.category
+      errors.add(:eligible, "Category must be #{criterion.category}")
     end
 end

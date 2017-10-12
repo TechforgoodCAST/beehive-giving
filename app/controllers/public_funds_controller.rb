@@ -6,8 +6,8 @@ class PublicFundsController < ApplicationController
   end
 
   def show
-    return redirect_to public_funds_path unless public_fund?(params[:slug])
-    @fund = Fund.find_by(slug: params[:slug])
+    return redirect_to public_funds_path unless public_fund?(params[:id])
+    @fund = Fund.find_by_hashid(params[:id])
     return redirect_to public_funds_path unless @fund
     @restrictions = @fund.restrictions.pluck(:category, :details)
   end
@@ -27,7 +27,9 @@ class PublicFundsController < ApplicationController
       redirect_to root_path if logged_in?
     end
 
-    def public_fund?(slug)
-      Fund.active.recent.limit(3).pluck(:slug).include?(slug)
+    def public_fund?(id)
+      Fund.active.recent.limit(3).pluck(:id)
+          .map { |i| HASHID.encode(i) }
+          .include?(id)
     end
 end

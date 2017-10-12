@@ -132,8 +132,6 @@ feature 'Proposal' do
     scenario 'When I have funding proposals,
               I want to be able to edit them,
               so I make any neccessary changes' do
-      @app.create_registered_proposal
-      @proposal = Proposal.last
       visit proposal_funds_path(@proposal)
 
       click_link 'Proposals'

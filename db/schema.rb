@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170920200255) do
+ActiveRecord::Schema.define(version: 20171009133514) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,14 +62,14 @@ ActiveRecord::Schema.define(version: 20170920200255) do
 
   create_table "answers", id: :serial, force: :cascade do |t|
     t.integer "category_id", null: false
-    t.integer "question_id", null: false
+    t.integer "criterion_id", null: false
     t.boolean "eligible", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "category_type", default: "Proposal", null: false
     t.index ["category_id"], name: "index_answers_on_category_id"
     t.index ["category_type"], name: "index_answers_on_category_type"
-    t.index ["question_id"], name: "index_answers_on_question_id"
+    t.index ["criterion_id"], name: "index_answers_on_criterion_id"
   end
 
   create_table "articles", id: :serial, force: :cascade do |t|
@@ -124,11 +124,27 @@ ActiveRecord::Schema.define(version: 20170920200255) do
     t.index ["fund_id"], name: "index_countries_funds_on_fund_id"
   end
 
+  create_table "countries_geo_areas", id: false, force: :cascade do |t|
+    t.bigint "country_id", null: false
+    t.bigint "geo_area_id", null: false
+    t.index ["country_id", "geo_area_id"], name: "index_countries_geo_areas_on_country_id_and_geo_area_id"
+    t.index ["geo_area_id", "country_id"], name: "index_countries_geo_areas_on_geo_area_id_and_country_id"
+  end
+
   create_table "countries_proposals", id: :serial, force: :cascade do |t|
     t.integer "country_id"
     t.integer "proposal_id"
     t.index ["country_id"], name: "index_countries_proposals_on_country_id"
     t.index ["proposal_id"], name: "index_countries_proposals_on_proposal_id"
+  end
+
+  create_table "criteria", id: :serial, force: :cascade do |t|
+    t.string "details", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "invert", default: false, null: false
+    t.string "category", default: "Proposal", null: false
+    t.string "type", default: "Restriction"
   end
 
   create_table "districts", id: :serial, force: :cascade do |t|
@@ -148,6 +164,13 @@ ActiveRecord::Schema.define(version: 20170920200255) do
     t.datetime "updated_at", null: false
     t.index ["district_id"], name: "index_districts_funds_on_district_id"
     t.index ["fund_id"], name: "index_districts_funds_on_fund_id"
+  end
+
+  create_table "districts_geo_areas", id: false, force: :cascade do |t|
+    t.bigint "district_id", null: false
+    t.bigint "geo_area_id", null: false
+    t.index ["district_id", "geo_area_id"], name: "index_districts_geo_areas_on_district_id_and_geo_area_id"
+    t.index ["geo_area_id", "district_id"], name: "index_districts_geo_areas_on_geo_area_id_and_district_id"
   end
 
   create_table "districts_proposals", id: :serial, force: :cascade do |t|
@@ -252,18 +275,18 @@ ActiveRecord::Schema.define(version: 20170920200255) do
     t.integer "max_org_income"
     t.jsonb "priority_ids"
     t.boolean "priorities_known"
+    t.string "geo_description"
+    t.integer "geo_area_id"
     t.index ["funder_id"], name: "index_funds_on_funder_id"
     t.index ["slug"], name: "index_funds_on_slug"
     t.index ["tags"], name: "index_funds_on_tags", using: :gin
   end
 
-  create_table "funds_questions", id: :serial, force: :cascade do |t|
-    t.integer "fund_id"
-    t.integer "question_id"
+  create_table "geo_areas", force: :cascade do |t|
+    t.string "name"
+    t.string "short_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["fund_id"], name: "index_funds_questions_on_fund_id"
-    t.index ["question_id"], name: "index_funds_questions_on_question_id"
   end
 
   create_table "implementations", id: :serial, force: :cascade do |t|
@@ -333,12 +356,14 @@ ActiveRecord::Schema.define(version: 20170920200255) do
   end
 
   create_table "questions", id: :serial, force: :cascade do |t|
-    t.string "details", null: false
+    t.integer "fund_id"
+    t.integer "criterion_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "invert", default: false, null: false
-    t.string "category", default: "Proposal", null: false
-    t.string "type", default: "Restriction"
+    t.string "criterion_type", default: "Restriction"
+    t.string "group"
+    t.index ["criterion_id"], name: "index_questions_on_criterion_id"
+    t.index ["fund_id"], name: "index_questions_on_fund_id"
   end
 
   create_table "recipient_funder_accesses", id: :serial, force: :cascade do |t|
@@ -402,6 +427,7 @@ ActiveRecord::Schema.define(version: 20170920200255) do
     t.integer "volunteers"
     t.integer "funds_checked", default: 0, null: false
     t.integer "income"
+    t.jsonb "reveals", default: [], null: false
     t.index ["slug"], name: "index_recipients_on_slug", unique: true
   end
 
@@ -413,6 +439,7 @@ ActiveRecord::Schema.define(version: 20170920200255) do
     t.boolean "active", default: false, null: false
     t.date "expiry_date"
     t.integer "percent_off", default: 0, null: false
+    t.integer "version", default: 1, null: false
     t.index ["recipient_id"], name: "index_subscriptions_on_recipient_id"
     t.index ["stripe_user_id"], name: "index_subscriptions_on_stripe_user_id", unique: true
   end
@@ -457,6 +484,7 @@ ActiveRecord::Schema.define(version: 20170920200255) do
   add_foreign_key "enquiries", "proposals"
   add_foreign_key "fund_themes", "funds"
   add_foreign_key "fund_themes", "themes"
+  add_foreign_key "funds", "geo_areas"
   add_foreign_key "proposal_themes", "proposals"
   add_foreign_key "proposal_themes", "themes"
 end

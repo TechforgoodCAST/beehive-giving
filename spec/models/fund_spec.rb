@@ -20,12 +20,14 @@ describe Fund do
         @proposal = build :proposal, suitability: {
           Fund.second.slug => { 'total' => 1.0 },
           Fund.first.slug => { 'total' => 0.5 }
+        }, eligibility: {
+          Fund.second.slug => { 'topic' => { 'eligible' => false } }
         }
       end
 
-      it 'default best' do
+      it 'default relevance orders ineligible last' do
         expect(Fund.order_by(@proposal, 'DROP TABLE "FUNDS";').pluck(:id))
-          .to eq [Fund.second.id, Fund.first.id, Fund.third.id]
+          .to eq [Fund.first.id, Fund.third.id, Fund.second.id]
       end
 
       it 'name' do
@@ -132,25 +134,23 @@ describe Fund do
       expect(@fund).not_to be_valid
     end
 
-    it 'countries required' do
-      @fund.countries = []
-      expect(@fund).not_to be_valid
-    end
-
+    # move to geo_area?
     it 'has many countries' do
       @fund.save
       expect(@fund.countries.count).to eq 2
     end
 
+    # move to geo_area?
     it 'districts empty unless geographic_scale_limited' do
-      @fund.district_ids = [District.first.id]
+      @fund.geo_area.update!(districts: [District.first])
       expect(@fund).not_to be_valid
     end
 
+    # move to geo_area?
     it 'districts required per country if geographic_scale_limited ' \
        'unless fund is national' do
       @fund.geographic_scale_limited = true
-      @fund.district_ids = []
+      @fund.geo_area.update!(districts: [])
       errors = [
         'Districts for United Kingdom not selected',
         'Districts for Kenya not selected'
@@ -159,6 +159,7 @@ describe Fund do
       expect(@fund.errors.full_messages).to eq errors
     end
 
+    # move to geo_area?
     it 'cannot set national unless geographic_scale_limited' do
       @fund.national = true
       expect(@fund).not_to be_valid
@@ -166,10 +167,11 @@ describe Fund do
         .to eq 'National cannot be set unless geographic scale limited'
     end
 
+    # move to geo_area?
     it 'districts not allowed if fund is national' do
       @fund.geographic_scale_limited = true
       @fund.national = true
-      @fund.district_ids = [District.first.id]
+      @fund.geo_area.update!(districts: [District.first])
 
       expect(@fund).not_to be_valid
       expect(@fund.errors.full_messages[0])

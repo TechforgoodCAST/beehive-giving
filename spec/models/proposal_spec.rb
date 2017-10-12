@@ -235,7 +235,7 @@ describe Proposal do
       2.times do
         create(:proposal_eligibility,
                category: @proposal,
-               question: create(:restriction))
+               criterion: create(:restriction))
       end
     end
 
@@ -270,17 +270,6 @@ describe Proposal do
       @proposal2.save!
       expect(@app.instances[:recipient].proposals.count).to eq 2
     end
-
-    it 'cannot create multiple proposals unless subscribed' do
-      expect(@proposal2.recipient.subscribed?).to eq false
-      expect { @proposal2.save! }.to raise_error(ActiveRecord::RecordInvalid)
-    end
-
-    it 'can create multiple proposals if subscribed' do
-      @proposal2.recipient.subscribe!
-      expect(@proposal2.recipient.subscribed?).to eq true
-      expect(@proposal2).to be_valid
-    end
   end
 
   context 'methods' do
@@ -294,10 +283,6 @@ describe Proposal do
       }
       @proposal = Proposal.new(eligibility: eligibility)
     end
-
-    it '#show_fund?'
-
-    it '#checked_fund?'
 
     it '#eligible_funds' do
 

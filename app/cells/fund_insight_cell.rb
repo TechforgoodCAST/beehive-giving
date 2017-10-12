@@ -39,6 +39,38 @@ class FundInsightCell < Cell::ViewModel
     end.join('<span class="mid-gray"> &middot; </span>')
   end
 
+  def summary
+    messages = []
+    
+    # get location
+    messages << model.geo_description_html
+
+    # messages << (model.national? ? "National" : "Local")
+
+    # get grant types
+    costs = model.permitted_costs
+                 .select{ |c| c!= 0 }
+                 .map{ |c| FUNDING_TYPES[c][0].split.first.downcase }
+                 .to_sentence(two_words_connector: " & ", last_word_connector: " & ")
+    if costs.present?
+      messages << "#{costs.capitalize} grants"
+    end
+
+    # get amount
+    if model.min_amount_awarded_limited || model.max_amount_awarded_limited
+      opts = {precision: 0, unit: "£"}
+      messages << if !model.min_amount_awarded_limited || model.min_amount_awarded == 0
+        "#{number_to_currency(1, opts)} - #{number_to_currency(model.max_amount_awarded, opts)}"
+      elsif !model.max_amount_awarded_limited
+        "#{number_to_currency(model.min_amount_awarded, opts)} +"
+      else
+        "#{number_to_currency(model.min_amount_awarded, opts)} - #{number_to_currency(model.max_amount_awarded, opts)}"
+      end
+    end
+
+    messages.join('<span class="mid-gray"> &middot; </span>')
+  end
+
   def duration
     return unless model.min_duration_awarded_limited || model.max_duration_awarded_limited
     if !model.min_duration_awarded_limited || model.min_duration_awarded == 0

@@ -10,15 +10,16 @@ class Fund < ApplicationRecord
   has_many :fund_themes, dependent: :destroy
   has_many :themes, through: :fund_themes
 
-  has_and_belongs_to_many :countries
-  has_and_belongs_to_many :districts
-  has_and_belongs_to_many :restrictions, association_foreign_key: 'question_id', join_table: 'funds_questions'
-  accepts_nested_attributes_for :restrictions
-  has_and_belongs_to_many :priorities, association_foreign_key: 'question_id', join_table: 'funds_questions'
-  accepts_nested_attributes_for :priorities
+  belongs_to :geo_area
+  has_many :countries, through: :geo_area
+  has_many :districts, through: :geo_area
+
+  has_many :questions
+  has_many :restrictions, through: :questions, source: :criterion, source_type: 'Restriction'
+  has_many :priorities, through: :questions, source: :criterion, source_type: 'Priority'
 
   validates :funder, :type_of_fund, :slug, :name, :description, :currency,
-            :key_criteria, :application_link, :countries, :themes,
+            :key_criteria, :application_link, :themes,
             presence: true
 
   validates :open_call, :active, :restrictions_known,
@@ -65,12 +66,11 @@ class Fund < ApplicationRecord
   def self.order_by(proposal, col)
     case col
     when 'name'
-      order col
+      order 'funds.name'
     else
-      suitable_funds = proposal.suitable_funds.pluck(0)
-
-      all.sort_by do |fund|
-        suitable_funds.index(fund.slug) || suitable_funds.size + 1
+      ordered = order_slugs(proposal)
+      active.sort_by do |fund|
+        ordered.index(fund.slug) || ordered.size + 1
       end
     end
   end
@@ -109,7 +109,7 @@ class Fund < ApplicationRecord
   end
 
   def to_param
-    slug
+    hashid
   end
 
   def short_name
@@ -136,6 +136,10 @@ class Fund < ApplicationRecord
     markdown(description)
   end
 
+  def geo_description_html
+    return geo_area.short_name
+  end
+
   def description_redacted
     tokens = name.downcase.split + funder.name.downcase.split
     stop_words = %w[and the fund trust foundation grants charitable]
@@ -146,8 +150,24 @@ class Fund < ApplicationRecord
     desc.gsub(reg, "<span class='mid-gray redacted'>#{scramble}</span>")
   end
 
+  def question_groups(question_type)
+    case question_type
+    when 'Restriction'
+      restrictions.pluck(:category).uniq
+    else
+      questions.where(criterion_type: question_type).pluck(:group).uniq
+    end
+  end
+
   include FundJsonSetters
   include FundArraySetters
+
+  private_class_method def self.order_slugs(proposal)
+    suitable_slugs = proposal.suitable_funds.pluck(0)
+    ineligible_slugs = proposal.ineligible_funds.pluck(0)
+    all_slugs = active.pluck(:slug)
+    (suitable_slugs + all_slugs).uniq - ineligible_slugs
+  end
 
   private
 

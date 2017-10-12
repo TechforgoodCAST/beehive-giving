@@ -37,7 +37,7 @@ describe Check::Each do
     it '#call_each response' do
       Fund.first.restrictions.each do |r|
         category = r.category == 'Proposal' ? @proposal : @proposal.recipient
-        create(:proposal_eligibility, category: category, question: r,
+        create(:proposal_eligibility, category: category, criterion: r,
                                       eligible: false)
       end
 

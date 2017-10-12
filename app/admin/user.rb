@@ -49,7 +49,7 @@ ActiveAdmin.register User do
     f.inputs 'User Details' do
       f.input :organisation_id
       f.input :organisation_type, as: :select, collection: %w[Recipient Funder]
-      f.input :org_type, as: :select, collection: ORG_TYPES
+      f.input :org_type, as: :select, collection: ORG_TYPES.map{|o| [o[0], o[1]] }
       f.input :first_name
       f.input :last_name
       f.input :email

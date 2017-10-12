@@ -1,9 +1,10 @@
 Rails.application.routes.draw do
-  resources :articles, only: %i[index show]
-  resources :password_resets, except: %i[show index destroy]
+  resources :articles, only: [:index, :show]
+  resources :password_resets, except: [:show, :index, :destroy]
+  resources :reveals, only: :create
 
   get '/funds', to: 'public_funds#index', as: 'public_funds'
-  get '/funds/:slug', to: 'public_funds#show', as: 'public_fund'
+  get '/funds/:id', to: 'public_funds#show', as: 'public_fund'
   get '/funds/theme/:theme', to: 'public_funds#themed', as: 'public_funds_theme'
 
   resources :proposals, except: %i[show destroy] do
@@ -15,6 +16,7 @@ Rails.application.routes.draw do
         patch :eligibility, to: 'eligibilities#create'
         get   :apply,       to: 'enquiries#new'
         post  :apply,       to: 'enquiries#create'
+        get   :hidden,      to: 'funds#hidden'
       end
     end
   end
