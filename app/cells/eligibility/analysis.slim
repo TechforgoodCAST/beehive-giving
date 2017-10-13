@@ -1,16 +1,22 @@
-.mt10 class=status[:colour]
-  = status[:symbol]
-  =<> status[:status]
+.col.border-right.border-lightest-gray.pr10
+  h3.caps.fs14.bold 1. Eligibility
+    
+  .mt10 class=status[:colour]
+    = status[:symbol]
+    =<> status[:status]
 
-- if criteria.dig(:quiz, :status) == 'to_check' && status[:status] == 'Incomplete'
-  = link_to "Complete", "#eligibility-quiz", class: 'mt20 button-wide caps bg-green white'
+  - if criteria.dig(:quiz, :status) == 'to_check' && status[:status] == 'Incomplete'
+    = link_to "Complete", "#eligibility-quiz", class: 'mt20 button-wide caps bg-blue white'
+  - else
+    .mt20.py10
+      | &nbsp;
 
-ul.mt20
-  - criteria.each do |k, v|
-    li.mb15.fs14
-      span.fs16 class=v[:colour]
-        = v[:symbol]
-      =<> v[:title]
-      - if v[:message]
-        .fs12.mt5.lh16
-          = v[:message]
+  ul.mt20
+    - criteria.each do |k, v|
+      li.mb15.fs14
+        span.fs16 class=v[:colour]
+          = v[:symbol]
+        =<> v[:title]
+        - if v[:message]
+          .fs12.mt5.lh16
+            = v[:message]

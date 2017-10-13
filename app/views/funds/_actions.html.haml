@@ -5,19 +5,4 @@
   = cell(:suitability, @proposal, fund: fund).call(:index)
 
 %section.fs12.mt20.lh14
-  - if @proposal.eligible_status(fund.slug) == -1
-    .muted
-      .blue.mb10.fs14
-        %span.white.dot.dot-10.bg-blue
-        Apply
-      .mb5
-        Pending eligibility & suitability
-
-  - elsif @proposal.eligible_status(fund.slug) == 1
-    .blue.mb10.fs14
-      %span.white.dot.dot-10.bg-blue
-      Apply
-    - if policy(FundContext.new(fund, @proposal)).show?
-      = link_to 'Apply ❯', apply_proposal_fund_path(@proposal, fund), class: 'blue'
-    - else
-      = link_to 'Reveal & Apply ❯', apply_proposal_fund_path(@proposal, fund), class: 'blue'
+  = cell(:application, @proposal, fund: fund).call(:index)

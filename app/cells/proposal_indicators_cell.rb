@@ -13,7 +13,7 @@ class ProposalIndicatorsCell < Cell::ViewModel
     @counts = suitability_counts
     @pcs = count_percentages(@counts)
     bg_color = { 0 => 'bg-red', 1 => 'bg-yellow', -1 => 'bg-green' }
-    names = { 0 => 'Unsuitable', 1 => 'Fair', -1 => 'Suitable' }
+    names = { 0 => 'unsuitable', 1 => 'fair suitability', -1 => 'suitable' }
     render view: :progress_bar, locals: {bg_color: bg_color, names: names}
   end
 

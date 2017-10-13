@@ -27,7 +27,8 @@ class SuitabilityCell < Cell::ViewModel
   end
 
   def analysis
-    render locals: { fund: options[:fund], status: status, criteria: criteria }
+    muted = model.eligible_status(options[:fund].slug) == -1 ? 'muted' : nil
+    render locals: { fund: options[:fund], status: status, criteria: criteria, muted: muted }
   end
 
   def quiz
@@ -58,56 +59,59 @@ class SuitabilityCell < Cell::ViewModel
             status = score_to_status(score)
             v[:colour] = status[:colour]
             v[:symbol] = status[:symbol]
-            v[:status] = status[:title]
+            v[:status] = status[:status] || status[:title]
             v[:message] = message(k, score, reason)
         end
     end
 
     def score_to_status(score, scale = 1)
         return {
+            max_score: nil,
             score: nil, 
-            title: 'Unavailable', 
+            title: 'Incomplete', 
             colour: 'blue', 
-            symbol: "<span class=\"white dot dot-14 bg-blue mr3\"></span>".html_safe
+            symbol: "<span class=\"white dot dot-14 bg-blue mr3\"></span>".html_safe,
+            status: 'to_check'
         } if score == nil
         scale = score > 1 ? score.ceil : 1
         [
-            {score: 0.2, title: 'Unsuitable', colour: 'red', symbol: "\u2718".html_safe},
-            {score: 0.5, title: 'Suitability', colour: 'yellow', symbol: "~"},
-            {score: 1.0, title: 'Suitable', colour: 'green', symbol: "\u2714".html_safe},
+            {max_score: 0.2, score: score, title: 'Unsuitable', colour: 'red', symbol: "\u2718".html_safe},
+            {max_score: 0.5, score: score, title: 'Suitability', colour: 'yellow', symbol: "~"},
+            {max_score: 1.0, score: score, title: 'Suitable', colour: 'green', symbol: "\u2714".html_safe},
         ].each do |v|
-            return v if score <= (v[:score] * scale)
+            return v if score <= (v[:max_score] * scale)
         end
     end
 
     def status
-        score = model.suitability[options[:fund].slug]&.dig("total")
+        score = criteria.dig(:quiz, :status) == 'to_check' ? nil : model.suitability[options[:fund].slug]&.dig("total")
         status = score_to_status(score)
         status[:link_text] = "Find out more"
         status[:status] = status[:title]
         status
     end
 
+    # TODO: Better way of deciding the message
     def message(criteria, score, reason)
         case criteria
         when :amount
-            return "No grants for a similar amount." if score == 0
+            "No grants for a similar amount." if score == 0
             "#{number_to_percentage(score * 100, precision: 0)} of grants were for a similar amount."
         when :location
             LOCATION_MESSAGES[reason]
         when :org_type
             org_type = ORG_TYPES[model.recipient.org_type + 1][2]
-            return "No grants to #{org_type}." if score == 0
+            "No grants to #{org_type}." if score == 0
             "#{number_to_percentage(score * 100, precision: 0)} of grants were to #{org_type}."
         when :duration
-            return "No grants for a similar length." if score == 0
+            "No grants for a similar length." if score == 0
             "#{number_to_percentage(score * 100, precision: 0)} of grants were for a similar length."
         when :theme
             themes = model.themes.map{ |t| t.name } & options[:fund].themes.map{ |t| t.name }
-            return "No themes in common with your proposal" if themes.size == 0
+            "No themes in common with your proposal" if themes.size == 0
             "This fund works in #{themes.take(3).to_sentence}."
         when :quiz
-            "#{number_to_percentage(score * 100, precision: 0)} of grants were for a similar amount."
+            cell(:quiz, options[:fund], quiz_type: 'Priority', proposal: model).call(:questions_completed)
         end
     end
     

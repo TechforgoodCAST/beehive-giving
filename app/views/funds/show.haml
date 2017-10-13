@@ -34,16 +34,9 @@
           %h2.light Analysis
 
         .mb20.flex
-          .col.border-right.border-lightest-gray.pr10
-            %h3.caps.fs14.bold 1. Eligibility
-            = cell(:eligibility, @proposal, fund: @fund).call(:analysis)
-
-          .col.border-right.border-lightest-gray.px10
-            %h3.caps.fs14.bold 2. Suitability
-            = cell(:suitability, @proposal, fund: @fund).call(:analysis)
-
-          .col.pl10
-            %h3.caps.fs14.bold 3. Apply
+          = cell(:eligibility, @proposal, fund: @fund).call(:analysis)
+          = cell(:suitability, @proposal, fund: @fund).call(:analysis)
+          = cell(:application, @proposal, fund: @fund).call(:analysis)
       
       %hr.my40
 
@@ -74,28 +67,4 @@
           = cell(:fund_insight, @fund).call(:grant_examples)
 
       = cell(:eligibility, @proposal, fund: @fund).call(:page)
-
-      -# TODO: Suitability quiz #439
-      
       = cell(:suitability, @proposal, fund: @fund).call(:page)
-
-      %hr.my40
-
-      - if @proposal.eligible?(@fund.slug)
-        %section
-          .mb40
-            %h2.light Apply
-
-          = link_to "Application form", apply_proposal_fund_path(@proposal, @fund), class: "button white bg-blue caps shadow mb40"
-
-      - else
-        %section.muted
-          .mb40
-            %h2.light Apply
-
-          - unless @fund.open_call?
-            .bg-silver.rounded.shadow.fs18.lh22.p10.mb20
-              .bold.caps.mb10.fs15 Unsolicited applications
-              Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
-
-          .button.white.bg-blue.caps.shadow.mb40 Application form
