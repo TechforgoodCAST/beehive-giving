@@ -199,6 +199,24 @@ class Proposal < ApplicationRecord
     Fund.where(slug: ineligible_funds.keys).pluck(:id)
   end
 
+  def suitable?(fund_slug, scale = 1)
+    score = suitability[fund_slug]&.dig("total")
+    return -1 if score == nil
+    scale = score > 1 ? score.ceil : 1
+    [
+      [0.2, 0], # unsuitable
+      [0.5, 1], # fair suitability
+      [1.0, 2], # suitable
+    ].each do |v|
+        return v[1] if score <= (v[0] * scale)
+    end
+  end
+
+  def suitable_status(fund_slug)
+    # return -1 unless suitability[fund_slug]&.key?('quiz') # check
+    suitable?(fund_slug)
+  end
+
   private
 
     def save_all_age_groups_if_all_ages
