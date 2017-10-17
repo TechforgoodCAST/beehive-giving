@@ -89,11 +89,11 @@ class Recipient < ApplicationRecord
   end
 
   def charity_number=(s)
-    self[:charity_number] = s.try(:strip)
+    self[:charity_number] = s.presence.try(:strip)
   end
 
   def company_number=(s)
-    self[:company_number] = s.try(:strip)
+    self[:company_number] = s.presence.try(:strip)
   end
 
   def to_param
@@ -145,6 +145,7 @@ class Recipient < ApplicationRecord
   end
 
   def find_with_reg_nos
+    return false unless [1, 2, 3, 5].include?(self[:org_type])
     self.class.find_by(
       charity_number: charity_number,
       company_number: company_number

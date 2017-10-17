@@ -62,6 +62,21 @@ feature 'Microsite' do
       expect(Assessment.last.recipient).to eq existing_recipient
     end
 
+    scenario 'only find existing recipient with valid reg numbers' do
+      Recipient.new(org_type: 'Another type of organisation')
+               .save(validate: false)
+
+      expect(Recipient.count).to eq 1
+
+      visit microsite_basics_path(@funder)
+      user.submit_basics_step(
+        org_type: 'Another type of organisation',
+        charity_number: nil
+      )
+
+      expect(Recipient.count).to eq 2
+    end
+
     scenario 'assessment per funder' do
       funder2 = create(:funder)
 

@@ -105,6 +105,20 @@ describe Recipient do
     end
   end
 
+  it 'blank registration numbers are nil' do
+    %i[charity_number company_number].each do |attribute|
+      @recipient.send("#{attribute}=", '')
+      expect(@recipient[attribute]).to eq nil
+    end
+  end
+
+  it 'registration numbers strip whitespace' do
+    %i[charity_number company_number].each do |attribute|
+      @recipient.send("#{attribute}=", ' strip whitespace ')
+      expect(@recipient[attribute]).to eq 'strip whitespace'
+    end
+  end
+
   context 'registration numbers present' do
     before(:each) do
       expect(@recipient.charity_number).not_to eq nil
