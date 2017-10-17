@@ -3,11 +3,11 @@ class Microsite
 
   def initialize(step)
     @step = step
-    return if @step.respond_to? :save
-    raise NoMethodError, "undefined method save for #{@step.inspect}"
+    return if step.respond_to? :save
+    raise NotImplementedError, "#{step.class} does not respond to #save"
   end
 
   def save
-    @step.save
+    step.save
   end
 end

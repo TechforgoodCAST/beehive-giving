@@ -7,7 +7,7 @@ describe Microsite do
 
   it '#initialize step must respond to save' do
     step = Struct.new(:fields)
-    expect { Microsite.new(step.new) }.to raise_error NoMethodError
+    expect { Microsite.new(step.new) }.to raise_error NotImplementedError
   end
 
   it '#step returns passed in object' do
