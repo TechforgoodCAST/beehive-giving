@@ -20,7 +20,9 @@ feature 'Apply' do
           .submit_proposal
           .answer_restrictions(@fund)
           .check_eligibility
-    click_link 'Application form'
+          .answer_priorities(@fund)
+          .check_suitability
+    click_link 'Apply'
   end
 
   scenario 'When I look to apply to an eligible fund,

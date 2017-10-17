@@ -13,7 +13,7 @@ class ApplicationCell < Cell::ViewModel
     private
 
         def suitable_status
-            return -1 if options[:fund].priorities.present? && model.suitability[options[:fund].slug]&.dig(:quiz, "score") == nil
+            # return -1 if options[:fund].priorities.present? && model.suitability[options[:fund].slug]&.dig(:quiz, "score") == nil
             model.suitable_status(options[:fund].slug)
         end
 

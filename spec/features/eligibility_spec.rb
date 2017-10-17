@@ -137,7 +137,7 @@ feature 'Eligibility' do
       expect(page).to have_css '.restriction_proposal_question', count: 3
     end
 
-    fscenario "When I run a check and I'm eligible,
+    scenario "When I run a check and I'm eligible,
               I want to see a link to apply for funding,
               so I can see further details about applying" do
       helper.answer_restrictions(@fund).check_eligibility
