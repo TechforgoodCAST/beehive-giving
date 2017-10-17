@@ -69,12 +69,8 @@
         %h2.fs22.mb30
           Pro
         %h4
-          - if @recipient.income_band > 3
-            - unless @subscription.active?
-              %strong Contact us for a quote
-          - else
-            %strong= number_to_currency(@payment.plan_cost, unit: '£', precision: 0)
-            %small per year
+          %strong= number_to_currency(@payment.plan_cost, unit: '£', precision: 0)
+          %small per year
           - if @payment.discount
             %div
               %small
@@ -83,7 +79,4 @@
         .py10
           = render 'premium_features'
         - unless @subscription.active?
-          - if @recipient.income_band > 3
-            = mail_to 'support@beehivegiving.org', 'Get in touch', class: 'button-wide bg-green white'
-          - else
-            = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'button-wide bg-green white'
+          = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'button-wide bg-green white'
