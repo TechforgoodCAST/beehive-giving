@@ -6,15 +6,17 @@ class ProposalIndicatorsCell < Cell::ViewModel
     @pcs = count_percentages(@counts)
     bg_color = { -1 => 'bg-blue', 0 => 'bg-red', 1 => 'bg-green' }
     names = { -1 => 'to check', 0 => 'ineligible', 1 => 'eligible' }
-    render view: :progress_bar, locals: {bg_color: bg_color, names: names}
+    states = [0, 1, -1]
+    render view: :progress_bar, locals: {bg_color: bg_color, names: names, states: states}
   end
 
   def suitability_progress_bar
     @counts = suitability_counts
     @pcs = count_percentages(@counts)
-    bg_color = { 0 => 'bg-red', 1 => 'bg-yellow', -1 => 'bg-green' }
-    names = { 0 => 'unsuitable', 1 => 'fair suitability', -1 => 'suitable' }
-    render view: :progress_bar, locals: {bg_color: bg_color, names: names}
+    bg_color = { 0 => 'bg-red', 1 => 'bg-yellow', 2 => 'bg-green', -1 => 'bg-blue' }
+    names = { 0 => 'unsuitable', 1 => 'fair suitability', 2 => 'suitable', -1 => 'to check' }
+    states = [-1, 0, 1, 2]
+    render view: :progress_bar, locals: {bg_color: bg_color, names: names, states: states}
   end
 
   def percent_complete
@@ -52,14 +54,11 @@ class ProposalIndicatorsCell < Cell::ViewModel
     end
 
     def suitability_counts
-      model.suitability.group_by do |k, s|
-        if s["total"] < 0.2
-          0
-        elsif s["total"] < 0.5
-          1
-        else
-          -1
-        end
-      end.map{ |k, v| [k, v.size] }.to_h
+      {
+        -1 => model.suitability.count{ |k, s| s.fetch('total') == nil },
+        0 => model.suitability.count{ |k, s| s.fetch('total') < 0.2 },
+        1 => model.suitability.count{ |k, s| s.fetch('total').between?(0.2, 0.5) },
+        2 => model.suitability.count{ |k, s| s.fetch('total') > 0.5 },
+      }
     end
 end

@@ -95,20 +95,20 @@ class SuitabilityCell < Cell::ViewModel
     def message(criteria, score, reason)
         case criteria
         when :amount
-            "No grants for a similar amount." if score == 0
+            "No grants for a similar amount." if (score.nil? || score == 0)
             "#{number_to_percentage(score * 100, precision: 0)} of grants were for a similar amount."
         when :location
             LOCATION_MESSAGES[reason]
         when :org_type
             org_type = ORG_TYPES[model.recipient.org_type + 1][2]
-            "No grants to #{org_type}." if score == 0
+            "No grants to #{org_type}." if (score.nil? || score == 0)
             "#{number_to_percentage(score * 100, precision: 0)} of grants were to #{org_type}."
         when :duration
-            "No grants for a similar length." if score == 0
+            "No grants for a similar length." if (score.nil? || score == 0)
             "#{number_to_percentage(score * 100, precision: 0)} of grants were for a similar length."
         when :theme
             themes = model.themes.map{ |t| t.name } & options[:fund].themes.map{ |t| t.name }
-            "No themes in common with your proposal" if themes.size == 0
+            "No themes in common with your proposal" if themes.empty?
             "This fund works in #{themes.take(3).to_sentence}."
         when :quiz
             cell(:quiz, options[:fund], quiz_type: 'Priority', proposal: model).call(:questions_completed)
