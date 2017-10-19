@@ -11,7 +11,7 @@
 %main
   .maxw1080.mx-auto.px20.flex.flex-wrap
     %aside.perc25.md.px20.mb40
-      
+
       .border.rounded.mb20.border-lightest-gray
         .px10.py10.bg-lightest-gray
           .fs15.lh20.caps.bold.gray
@@ -27,6 +27,17 @@
 
         %p.fs15.mt15.lh20
           = cell(:fund_insight, @fund, proposal: @proposal).call(:themes)
+
+      %hr.my40
+
+      %section
+        .mb20
+          %h2.light Analysis
+
+        .mb20.flex
+          = cell(:eligibility, @proposal, fund: @fund).call(:analysis)
+          = cell(:suitability, @proposal, fund: @fund).call(:analysis)
+          = cell(:application, @proposal, fund: @fund).call(:analysis)
 
       %hr.my40
 
@@ -58,31 +69,5 @@
             = link_to 'Reveal', reveals_path(fund: @fund), method: :post, class: 'bold blue'
             this fund to see recent grants
 
-      %hr.my40
-
       = cell(:eligibility, @proposal, fund: @fund).call(:page)
-
-      -# TODO: Suitability quiz #439
-      -# %hr.my40
-      -# = cell(:suitability, @proposal, fund: @fund).call(:page)
-
-      %hr.my40
-
-      - if @proposal.eligible?(@fund.slug)
-        %section
-          .mb40
-            %h2.light Apply
-
-          = link_to 'Application form', apply_proposal_fund_path(@proposal, @fund), class: "button white bg-blue caps shadow mb40"
-
-      - else
-        %section.muted
-          .mb40
-            %h2.light Apply
-
-          - unless @fund.open_call?
-            .bg-silver.rounded.shadow.fs18.lh22.p10.mb20
-              .bold.caps.mb10.fs15 Unsolicited applications
-              Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
-
-          .button.white.bg-blue.caps.shadow.mb40 Application form
+      = cell(:suitability, @proposal, fund: @fund).call(:page)
