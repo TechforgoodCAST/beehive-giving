@@ -134,7 +134,7 @@ feature 'Proposal' do
               so I make any neccessary changes' do
       visit proposal_funds_path(@proposal)
 
-      click_link 'Proposals'
+      click_link 'Dashboard'
       expect(current_path).to eq proposals_path
 
       click_link 'Edit'
