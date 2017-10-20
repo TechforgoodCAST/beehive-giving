@@ -41,6 +41,7 @@ class EligibilityCell < Cell::ViewModel
     end
 
     def criteria_status(criteria)
+      return criteria unless model.present?
       checked = EligibilityContext.new(options[:fund], model).checked_fund?
 
       criteria.each do |k, v|
@@ -65,6 +66,7 @@ class EligibilityCell < Cell::ViewModel
     end
 
     def status
+        return { status: "", colour: "", symbol: "", link_text: ""} unless model.present?
         if model.eligible_status(options[:fund].slug) == 1
             {
                 status: "Eligible",

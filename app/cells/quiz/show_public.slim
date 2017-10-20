@@ -5,5 +5,5 @@
       .question class=("#{q}_question")
         = render view: :question, locals: {q: q, f: f, e: nil, disabled: true}
 
-  .my40
-    .button.white.bg-blue.caps.shadow Check eligibility
+.my40
+  .button.white.bg-blue.caps.shadow = 'Restriction' ? 'Check eligibility' : 'Check suitability'

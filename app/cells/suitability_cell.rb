@@ -53,6 +53,7 @@ class SuitabilityCell < Cell::ViewModel
     end
 
     def criteria_status(criteria)
+        return criteria unless model.present?
         criteria.each do |k, v|
             score = model.suitability[options[:fund].slug]&.dig(k.to_s, "score")
             reason = model.suitability[options[:fund].slug]&.dig(k.to_s, "reason")
@@ -84,6 +85,7 @@ class SuitabilityCell < Cell::ViewModel
     end
 
     def status
+        return { title: "", status: "", colour: "", symbol: ""} unless model.present?
         score = criteria.dig(:quiz, :status) == 'to_check' ? nil : model.suitability[options[:fund].slug]&.dig("total")
         status = score_to_status(score)
         status[:link_text] = "Find out more"
