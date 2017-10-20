@@ -19,11 +19,33 @@ class MicrositesController < ApplicationController
   end
 
   def eligibility
+    # TODO: must be logged out OR avoid calls to ApplicationController
+
     @recipient = @assessment.recipient
-    @restrictions = @funder.restrictions
+    @recipient.valid? # TODO: refactor?
+
+    @microsite = Microsite.new(
+      EligibilityStep.new(@recipient.attributes.slice(*recipient_attrs))
+    )
+
+    @recipient_answers = @microsite.step.build_answers(@funder, @recipient)
+    @proposal_answers = @microsite.step.build_answers(@funder, @assessment.proposal)
   end
 
-  def check_eligibility; end
+  def check_eligibility
+    @recipient = @assessment.recipient
+    @recipient.valid? # TODO: refactor?
+
+    @microsite = Microsite.new(EligibilityStep.new(eligibility_params))
+    @recipient_answers = @microsite.step.answers_for('Recipient')
+    @proposal_answers = @microsite.step.answers_for('Proposal')
+
+    if @microsite.save
+      redirect_to microsite_suitability_path @funder, @microsite.step.assessment
+    else
+      render :eligibility
+    end
+  end
 
   private
 
@@ -40,6 +62,18 @@ class MicrositesController < ApplicationController
         :funder_id, :funding_type, :total_costs, :org_type, :charity_number,
         :company_number
       )
+    end
+
+    def eligibility_params
+      params.require(:eligibility_step).permit(
+        *recipient_attrs,
+        answers: %w[eligible category_id category_type criterion_id]
+      )
+    end
+
+    def recipient_attrs
+      %w[charity_number company_number name country street_address org_type
+         income_band operating_for employees volunteers]
     end
 
     def ensure_funder

@@ -6,13 +6,85 @@
     %section.perc75.md.mb80.px20
       %h1.mb40= @funder.name
 
-      %h3 Your organisation
-      - @restrictions.select { |r| r.category == 'Recipient' }.each do |r|
-        %li= r.details
-      
-      - unless @recipient.valid?
-        = @recipient.errors.full_messages
+      -# TODO: remove
+      :css
+        input[type='radio'] {
+          display: inline-block;
+          width: auto;
+          height: auto;
+          margin: 8px;
+        }
+        span.error {
+          color: red;
+        }
 
-      %h3 Your proposal
-      - @restrictions.select { |r| r.category == 'Proposal' }.each do |r|
-        %li= r.details
+      = simple_form_for @microsite.step, url: microsite_eligibility_path(@funder, @assessment) do |f|
+
+        %section
+          %h3 Your organisation
+          %p Are you seeking funding for?
+
+          -# TODO: DRY
+          - @recipient_answers.each_with_index do |answer, i|
+            = f.simple_fields_for "answers[#{answer.criterion_id}]", answer do |a|
+              = a.hidden_field :category_id
+              = a.hidden_field :category_type
+              = a.hidden_field :criterion_id
+
+              -# TODO: avoid multiple db calls on validation
+              = a.object.criterion.details
+              = a.input :eligible, as: :radio_buttons
+
+        %section
+          .mb20
+            %label.block.fs15.bold.mb10 Who will be receiving the funding?
+            = f.input :org_type, collection: ORG_TYPES
+          .mb20
+            %label.block.fs15.bold.mb10 Charity number
+            = f.input :charity_number
+          .mb20
+            %label.block.fs15.bold.mb10 Company number
+            = f.input :company_number
+          - if @recipient.errors.added?(:name, :blank)
+            .mb20
+              %label.block.fs15.bold.mb10 Organisation or project name
+              = f.input :name
+          - if @recipient.errors.added?(:country, :blank)
+            .mb20
+              %label.block.fs15.bold.mb10 Where is your organisation or project based?
+              -# TODO: geocoding
+              -# .street-address
+              -#   = f.input :street_address
+              = f.input :country, include_blank: true, priority: ['United Kingdom']
+          - if @recipient.errors.added?(:income, :blank)
+            .mb20
+              %label.block.fs15.bold.mb10 What is the annual income of your organisation or project?
+              = f.input :income_band, collection: Recipient::INCOME_BANDS
+          - if @recipient.errors.added?(:operating_for, :blank)
+            .mb20
+              %label.block.fs15.bold.mb10 How long has your organisation or project been operating for?
+              = f.input :operating_for, collection: Recipient::OPERATING_FOR
+          - if @recipient.errors.added?(:employees, :blank)
+            .mb20
+              %label.block.fs15.bold.mb10 How many employees does your organisation or project have?
+              = f.input :employees, collection: Recipient::EMPLOYEES
+          - if @recipient.errors.added?(:volunteers, :blank)
+            .mb20
+              %label.block.fs15.bold.mb10 How many volunteers does your organisation or project have?
+              = f.input :volunteers, collection: Recipient::EMPLOYEES
+
+        %section
+          %h3 Your proposal
+
+          -# TODO: DRY
+          - @proposal_answers.each do |answer|
+            = f.simple_fields_for "answers[#{answer.criterion_id}]", answer do |a|
+              = a.hidden_field :category_id
+              = a.hidden_field :category_type
+              = a.hidden_field :criterion_id
+
+              -# TODO: avoid multiple db calls on validation
+              = a.object.criterion.details
+              = a.input :eligible, as: :radio_buttons
+
+        = f.button :button, 'Next', class: 'button white bg-olive caps truncate', data: { disable_with: 'Saving...' }
