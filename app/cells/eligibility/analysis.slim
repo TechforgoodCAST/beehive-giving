@@ -1,4 +1,4 @@
-.col.border-right.border-lightest-gray.pr10
+.md.perc33.pr10.mb20
   h3.caps.fs14.bold 1. Eligibility
     
   .mt10 class=status[:colour]
@@ -8,7 +8,7 @@
   - if criteria.dig(:quiz, :status) == 'to_check' && status[:status] == 'Incomplete'
     = link_to "Complete", "#eligibility-quiz", class: 'mt20 button-wide caps bg-blue white'
   - else
-    .mt20.py10
+    .mt20.py10.hide-md
       | &nbsp;
 
   ul.mt20

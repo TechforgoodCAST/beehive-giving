@@ -16,15 +16,17 @@
     = render partial: 'accounts/subnav'
 
     %section.md.mb20.px20.flex-wrap.flex.dashboard-columns
-      .mb20.border.rounded.border-lightest-gray.bg-lightest-gray.p15.shadow
-        %h2.fs22
-          Your proposals
+      .mb20.md.border.rounded.border-lightest-gray.bg-lightest-gray.shadow
+        .p15
+          %h2.fs22
+            Your proposals
 
       - @proposals.each do |proposal|
-        .mb20.border.rounded.border-lightest-gray.proposal
-          = render partial: 'proposals/card', locals: { proposal: proposal, context: 'proposal' }
+        .mb20.md
+          .border.rounded.border-lightest-gray.proposal
+            = render partial: 'proposals/card', locals: { proposal: proposal, context: 'proposal' }
       
-      .mb20
+      .mb20.md
         - if @proposal.complete?
           - if @recipient.subscribed?
             = link_to "+ New proposal", new_proposal_path, class: 'button-wide bg-green white fs16 caps'

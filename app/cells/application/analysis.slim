@@ -1,4 +1,4 @@
-.col.pl10 class=[muted]
+.md.perc33.pl10.mb20.border-left.border-lightest-gray class=[muted]
     h3.caps.fs14.bold 3. Apply
     = model.suitability[options[:fund].slug]&.dig(:quiz, "score")
     
@@ -11,7 +11,7 @@
     - elsif status[:apply]
         = link_to status[:link_text] || "Apply >", apply_proposal_fund_path(model, options[:fund]), class: 'mt20 button-wide caps bg-blue white'
     - else
-        .mt20.py10
+        .mt20.py10.hide-md
             | &nbsp;
 
     .mt20.fs14.lh16

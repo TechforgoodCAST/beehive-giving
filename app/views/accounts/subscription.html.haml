@@ -21,53 +21,56 @@
     = render partial: 'accounts/subnav'
 
     %section.md.mb20.px20.flex-wrap.flex
-      .mb20.border.rounded.border-lightest-gray.bg-lightest-gray.p15.shadow.perc25.mr40
-        %h2.fs22.mb30
-          Your subscription
-        - if @subscription.active?
-          %h4.light
-            You are currently subscribed to a
-            %strong Pro
-            plan which expires on
-            = succeed '.' do
+      .mb20.border.rounded.border-lightest-gray.bg-lightest-gray.shadow.perc25.mr40.md
+        .p15
+          %h2.fs22.mb30
+            Your subscription
+          - if @subscription.active?
+            %h4.light
+              You are currently subscribed to a
+              %strong Pro
+              plan which expires on
+              = succeed '.' do
+                %strong= @subscription.expiry_date.strftime("%-d %b %Y")
+            %h5.mt20.light
+              After 
               %strong= @subscription.expiry_date.strftime("%-d %b %Y")
-          %h5.mt20.light
-            After 
-            %strong= @subscription.expiry_date.strftime("%-d %b %Y")
-            you will be downgraded to a
-            %strong Basic
-            plan unless you manually re-subscribe.
-        - else
-          %h4.light
-            You are currently subscribed to a free
-            %strong Basic
-            plan which
-            = succeed '.' do
-              %strong does not expire
+              you will be downgraded to a
+              %strong Basic
+              plan unless you manually re-subscribe.
+          - else
+            %h4.light
+              You are currently subscribed to a free
+              %strong Basic
+              plan which
+              = succeed '.' do
+                %strong does not expire
 
-      .mb20.p15.perc33
-        - unless @subscription.active?
-          .right.caps.bg-blue.white.py5.px10.rounded.bold Active
-        %h2.fs22.mb30
-          Basic
-        %h4 FREE
-        .py10
-          = render 'free_features'
+      .mb20.perc33.md
+        .p15
+          - unless @subscription.active?
+            .right.caps.bg-blue.white.py5.px10.rounded.bold Active
+          %h2.fs22.mb30
+            Basic
+          %h4 FREE
+          .py10
+            = render 'free_features'
 
-      .mb20.p15.border-thick.rounded.border-green.perc33
-        - if @subscription.active?
-          .right.caps.bg-green.white.py5.px10.rounded.bold Active
-        %h2.fs22.mb30
-          Pro
-        %h4
-          %strong= number_to_currency(@payment.plan_cost, unit: '£', precision: 0)
-          %small per year
-          - if @payment.discount
-            %div
-              %small
-                = @payment.discount
-                discount
-        .py10
-          = render 'premium_features'
-        - unless @subscription.active?
-          = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'button-wide bg-green white'
+      .mb20.perc33.md
+        .p15.border-thick.rounded.border-green
+          - if @subscription.active?
+            .right.caps.bg-green.white.py5.px10.rounded.bold Active
+          %h2.fs22.mb30
+            Pro
+          %h4
+            %strong= number_to_currency(@payment.plan_cost, unit: '£', precision: 0)
+            %small per year
+            - if @payment.discount
+              %div
+                %small
+                  = @payment.discount
+                  discount
+          .py10
+            = render 'premium_features'
+          - unless @subscription.active?
+            = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'button-wide bg-green white'

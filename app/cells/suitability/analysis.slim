@@ -1,4 +1,4 @@
-.col.border-right.border-lightest-gray.px10 class=[muted]
+.md.perc33.px10.mb20.border-left.border-lightest-gray class=[muted]
   h3.caps.fs14.bold 2. Suitability
 
   .mt10 class=status[:colour]
@@ -8,7 +8,7 @@
   - if criteria.dig(:quiz, :status) == 'to_check'
     = link_to "Complete", "#suitability-quiz", class: 'mt20 button-wide caps bg-blue white'
   - else
-    .mt20.py10
+    .mt20.py10.hide-md
       | &nbsp;
 
   ul.mt20

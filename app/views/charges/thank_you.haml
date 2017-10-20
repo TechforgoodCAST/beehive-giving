@@ -41,16 +41,16 @@
         %h3.light.mb20 Your plan
 
         .mb30
-          .label.mb10.bold Plan
+          %label.label.mb10.bold.lh16 Plan
           Pro
 
         .mb30
-          .label.mb10.bold Period
+          %label.label.mb10.bold.lh16 Period
           1 year
           %small= 1.year.from_now.strftime("(expires %d %B %Y)")
 
         .mb30
-          .label.mb10.bold Price
+          %label.label.mb10.bold.lh16 Price
           = number_to_currency(@payment.plan_cost, unit: '£')
           - if @payment.discount
             %small
@@ -59,7 +59,7 @@
                 discount
 
         %div
-          .label.mb10.bold Features
+          %label.label.mb10.bold.lh16 Features
           = render 'accounts/premium_features'
 
     %section.perc66.md.mb80.px20.fs14
