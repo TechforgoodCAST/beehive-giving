@@ -9,14 +9,26 @@
   mixpanel.track("View Edit Organisation Page");
   mixpanel.identify("#{@current_user.id}");
 
-= render partial: 'accounts/subnav'
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'Organisation' => account_organisation_path(@recipient)
 
-.uk-container.uk-container-center.uk-margin-large
-  %h2 Organisation
-  %h4 Update your organisation or project's details.
+%main
+  .maxw1080.mx-auto.px20
 
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top
-    = simple_form_for @recipient, url: account_organisation_path(@recipient) do |f|
-      = cell(:recipient_form, @recipient, f: f)
-      .uk-width-medium-1-1.uk-margin-top
+    %section.md.mb20.px20
+      %h1.light.mb20 Dashboard
+
+    = render partial: 'accounts/subnav'
+
+  .maxw1080.mx-auto.px20.flex.flex-wrap
+    %aside.perc25.md.px20.mb40
+      %h2.light.mb20 Organisation
+      %h4.light Update your organisation or project's details.
+
+
+    %section.perc75.md.mb80.px20.fs14
+      = simple_form_for @recipient, url: account_organisation_path(@recipient) do |f|
+
+        = cell(:recipient_form, @recipient, f: f)
         = cell(:submit_form, @recipient, f: f, button_text: 'Update', disable_with_text: 'Saving')

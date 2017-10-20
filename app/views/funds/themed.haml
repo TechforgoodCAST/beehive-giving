@@ -6,8 +6,12 @@
 
 %main
   .maxw1080.mx-auto.px20.flex.flex-wrap
-    %aside.perc25.md.px20.mb40
-      = render partial: 'proposals/card', locals: { context: 'bold' }
+    %aside.perc25.md.px20.mb40.to-end-md
+      .border.rounded.mb20.border-blue
+        .px10.py10.bg-blue
+          .fs15.lh20.caps.bold.white
+            Current Proposal
+        = render partial: 'proposals/card', locals: { proposal: @proposal, context: 'fund' }
 
     %section.perc75.md.mb80.px20
       %h1.light.mb20=@theme.name

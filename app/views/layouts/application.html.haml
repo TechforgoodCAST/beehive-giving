@@ -76,9 +76,9 @@
                 %a{ href: root_path, alt: 'Beehive logo' }
                   #logo-hex
                 .fs12.ml5 Intelligently connecting non-profits with funders
-            .f1.minw250.mx40.py40
-              .flex.fs14
-                .f1
+            .f1.minw250.mx40.pt40
+              .flex.fs14.flex-wrap
+                .f1.minw150.pb40
                   .bold.mb14 BEEHIVE
                   %ul
                     %li.mb10
@@ -91,11 +91,11 @@
                     %li.mb10
                       = link_to 'Beehive for Funders', for_funders_path, class: 'slate'
 
-                .f1
+                .f1.minw150.pb40
                   .bold.mb14 FUNDING
                   = cell(:footer_themes, @current_user, proposal: @proposal)
 
-                .f1
+                .f1.minw150.pb40
                   .bold.mb14 RESOURCES
                   %ul
                     %li.mb10
@@ -106,7 +106,7 @@
                     %li.mb10
                       = mail_to 'support@beehivegiving.org', 'Contact', class: 'slate'
 
-          .mx40.pb40.fs12.mid-gray
+          .mx40.pb40.fs12.mid-gray.lh16
             &copy;
             = Time.zone.today.year
             = succeed ';' do

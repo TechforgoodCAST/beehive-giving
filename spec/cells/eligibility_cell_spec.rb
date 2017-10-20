@@ -42,7 +42,7 @@ describe EligibilityCell do
     end
 
     it 'shows all criteria' do
-      eligibility = cell(:eligibility, @proposal, fund: @fund).call(:page)
+      eligibility = cell(:eligibility, @proposal, fund: @fund).call(:analysis)
       expect(eligibility).to have_css 'li', count: 5
     end
 
@@ -54,7 +54,7 @@ describe EligibilityCell do
           'quiz' => { 'eligible' => true, 'count_failing' => 0 }
         }
       )
-      eligibility = cell(:eligibility, @proposal, fund: @fund).call(:page)
+      eligibility = cell(:eligibility, @proposal, fund: @fund).call(:analysis)
       expect(eligibility).to have_css 'li span.red', count: 1
     end
   end

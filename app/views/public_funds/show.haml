@@ -44,14 +44,11 @@
           = cell(:fund_insight, @fund).call(:countries)
           = cell(:fund_insight, @fund).call(:grant_examples)
 
-      %hr.my40
+      .muted
+        = cell(:eligibility, @proposal, fund: @fund).call(:page)
 
-      %section.muted
-        .mb20
-          %h2.light Eligibility
-
-        = simple_form_for :check do |f|
-          = cell(:quiz, @fund, f: f).call(:show_public)
+      .muted
+        = cell(:suitability, @proposal, fund: @fund).call(:page)
 
       %hr.my40
 

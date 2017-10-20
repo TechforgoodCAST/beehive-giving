@@ -16,21 +16,22 @@ feature 'Account' do
     end
 
     scenario 'account link visible in navbar' do
-      expect(page).to have_text 'Account'
+      expect(page).to have_text 'Dashboard'
     end
 
-    scenario 'can navigate to account page and defaults to user profile page' do
-      click_on 'Account', match: :first
-      expect(current_path).to eq account_path
+    scenario 'can navigate to account page and defaults to proposals dashboard' do
+      click_on 'Dashboard', match: :first
+      expect(current_path).to eq proposals_path
     end
 
     scenario 'can navigate to user profile page' do
+      click_on 'Dashboard', match: :first
       click_on 'Account', match: :first
-      click_on 'Profile'
       expect(current_path).to eq account_path
     end
 
     scenario 'can update user profile' do
+      click_on 'Dashboard', match: :first
       click_on 'Account', match: :first
       helper.update_user
       expect(page).to have_selector("input[value='Updates']")
@@ -38,6 +39,7 @@ feature 'Account' do
     end
 
     scenario 'after user profile update must use updated details to sign in' do
+      click_on 'Dashboard', match: :first
       click_on 'Account', match: :first
       helper.update_user
       @app.sign_out
@@ -52,13 +54,13 @@ feature 'Account' do
     scenario 'password update optional when updating user profile'
 
     scenario 'can navigate to organisation page' do
-      click_on 'Account', match: :first
+      click_on 'Dashboard', match: :first
       click_on 'Organisation'
       expect(current_path).to eq account_organisation_path(@db[:recipient])
     end
 
     scenario 'can update recipient' do
-      click_on 'Account', match: :first
+      click_on 'Dashboard', match: :first
       click_on 'Organisation'
       fill_in :recipient_name, with: 'A new name'
       click_button 'Update'
@@ -67,7 +69,7 @@ feature 'Account' do
     end
 
     scenario 'cannot submit invalid record' do
-      click_on 'Account', match: :first
+      click_on 'Dashboard', match: :first
       click_on 'Organisation'
       fill_in :recipient_name, with: ''
       click_button 'Update'
@@ -75,7 +77,7 @@ feature 'Account' do
     end
 
     scenario 'can navigate to subscription page' do
-      click_on 'Account', match: :first
+      click_on 'Dashboard', match: :first
       click_on 'Subscription'
       expect(current_path).to eq account_subscription_path(@db[:recipient])
     end

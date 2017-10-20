@@ -1,21 +1,11 @@
-section
+hr.my40
+
+section#eligibility-quiz
   .mb20
     h2.light 
       | Eligibility
       small.right class=status[:colour]
         = status[:symbol]
         =<> status[:status]
-
-= cell(:eligibility_banner, model, fund: fund).call(:eligible)
-
-ul.flex.flex-wrap
-  - criteria.each do |k, v|
-    li.col-one-third.mb15.px5
-      span.fs20 class=v[:colour]
-        = v[:symbol]
-      =<> v[:title]
-      - if v[:message]
-        .fs14.mt5.lh16.p5.border.rounded class="border-#{v[:colour]}"
-          = v[:message]
 
 = cell(:eligibility, model, fund: fund).call(:quiz)

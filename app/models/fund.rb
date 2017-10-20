@@ -1,4 +1,6 @@
 class Fund < ApplicationRecord
+  include ActionView::Helpers::NumberHelper
+
   scope :active, -> { where(active: true) }
   scope :newer_than, ->(date) { where('updated_at > ?', date) }
   scope :recent, -> { order updated_at: :desc }
@@ -150,6 +152,41 @@ class Fund < ApplicationRecord
     desc.gsub(reg, "<span class='mid-gray redacted'>#{scramble}</span>")
   end
 
+  def amount_desc
+    return unless min_amount_awarded_limited || max_amount_awarded_limited
+    opts = {precision: 0, unit: "£"}
+    if !min_amount_awarded_limited || min_amount_awarded == 0
+      "up to #{number_to_currency(max_amount_awarded, opts)}"
+    elsif !max_amount_awarded_limited
+      "more than #{number_to_currency(min_amount_awarded, opts)}"
+    else
+      "between #{number_to_currency(min_amount_awarded, opts)} and #{number_to_currency(max_amount_awarded, opts)}"
+    end
+  end
+
+  def duration_desc
+    return unless min_duration_awarded_limited || max_duration_awarded_limited
+    if !min_duration_awarded_limited || min_duration_awarded == 0
+      "up to #{months_to_str(max_duration_awarded)}"
+    elsif !max_duration_awarded_limited
+      "more than #{months_to_str(min_duration_awarded)}"
+    else
+      "between #{months_to_str(min_duration_awarded)} and #{months_to_str(max_duration_awarded)}"
+    end
+  end
+
+  def org_income_desc
+    return unless min_org_income_limited || max_org_income_limited
+    opts = {precision: 0, unit: "£"}
+    if !min_org_income_limited || min_org_income == 0
+      "up to #{number_to_currency(max_org_income, opts)}"
+    elsif !max_org_income_limited
+      "more than #{number_to_currency(min_org_income, opts)}"
+    else
+      "between #{number_to_currency(min_org_income, opts)} and #{number_to_currency(max_org_income, opts)}"
+    end
+  end
+
   def question_groups(question_type)
     case question_type
     when 'Restriction'
@@ -193,6 +230,18 @@ class Fund < ApplicationRecord
       return unless period_start && period_end
       errors.add(:period_start, 'Period start must be before period end') if
         period_start > period_end
+    end
+
+    def months_to_str(months)
+      if months == 12
+        '1 year'
+      elsif months < 24
+        "#{months} months"
+      elsif (months % 12).zero?
+        "#{months / 12} years"
+      else
+        "#{months_to_str(months - (months % 12))} and #{months % 12} months"
+      end
     end
 
     def check_beehive_data # TODO: refactor as service

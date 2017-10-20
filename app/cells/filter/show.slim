@@ -1,10 +1,13 @@
-form#filter
+form#filter.flex.flex-wrap
 
-  | Sort:
-  = select 'sort', %w[relevance name]
+  .md.inline-block.mr10
+    | Sort:
+    = select 'sort', %w[relevance name]
 
-  | Eligibility:
-  = select 'eligibility', %w[all eligible ineligible to_check]
+  .md.inline-block.mr10
+    | Eligibility:
+    = select 'eligibility', %w[all eligible ineligible to_check]
 
-  | Grant duration:
-  = select 'duration', [["all", "All"], ["proposal", "Your proposal (#{@options[:funding_duration]} months)"], ["up-to-2y", "Up to 2 years"], ["2y-plus", "More than 2 years"]]
+  .md.inline-block
+    | Grant duration:
+    = select 'duration', [["all", "All"], ["proposal", "Your proposal (#{@options[:funding_duration]} months)"], ["up-to-2y", "Up to 2 years"], ["2y-plus", "More than 2 years"]]

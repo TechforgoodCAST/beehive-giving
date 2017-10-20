@@ -1,19 +1,11 @@
-section
+hr.my40
+
+section#suitability-quiz
   .mb20
     h2.light 
       | Suitability
       small.right class=status[:colour]
         = status[:symbol]
         =<> status[:status]
-
-ul.flex.flex-wrap
-  - criteria.each do |k, v|
-    li.col-one-third.mb15.px5
-      span.fs20 class=v[:colour]
-        = v[:symbol]
-      =<> v[:title]
-      - if v[:message]
-        .fs14.mt5.lh16.p5.border.rounded class="border-#{v[:colour]}"
-          = v[:message]
 
 = cell(:suitability, model, fund: fund).call(:quiz)

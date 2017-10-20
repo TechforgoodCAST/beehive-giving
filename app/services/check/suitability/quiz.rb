@@ -8,6 +8,7 @@ module Check
 
       def call(_proposal, fund)
         raise 'Invalid Fund' unless fund.is_a? Fund
+        return unless @priorities[fund.slug].present?
         comparison = (@answers.keys & @priorities[fund.slug])
         return unless comparison.count == @priorities[fund.slug].count
         {
@@ -23,7 +24,7 @@ module Check
         end
 
         def score(comparison, fund)
-          @answers.slice(*comparison).values.select { |i| i == true }.count / @priorities[fund.slug].count.to_f
+          @answers.slice(*comparison).values.select { |i| i == true }.count / @priorities[fund.slug].to_a.count.to_f
         end
     end
   end

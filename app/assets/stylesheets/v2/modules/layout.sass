@@ -1,7 +1,7 @@
 // Config
 // =========================================================================
 
-$widths: (200: 12.5rem, 250: 15.625rem, 340: 21.25rem, 500: 31.25rem, 750: 46.875rem, 790: 49.375rem, 1000: 62.5rem, 1080: 67.5rem)
+$widths: (100: 6.25rem, 150: 9.375rem, 200: 12.5rem, 250: 15.625rem, 340: 21.25rem, 500: 31.25rem, 750: 46.875rem, 790: 49.375rem, 1000: 62.5rem, 1080: 67.5rem)
 
 // =========================================================================
 
@@ -21,11 +21,27 @@ $widths: (200: 12.5rem, 250: 15.625rem, 340: 21.25rem, 500: 31.25rem, 750: 46.87
 .sm
   @media screen and (max-width: 25rem)
     width: 100%
-    border-left-color: transparent
+    border-left-color: transparent !important
+    padding-left: 0px !important
+    padding-right: 0px !important
 .md
   @media screen and (max-width: 46.875rem)
     width: 100%
-    border-left-color: transparent
+    border-left-color: transparent !important
+    padding-left: 0px !important
+    padding-right: 0px !important
+.hide-sm
+  @media screen and (max-width: 25rem)
+    display: none
+.hide-md
+  @media screen and (max-width: 46.875rem)
+    display: none
+.to-end-sm
+  @media screen and (max-width: 25rem)
+    order: 1
+.to-end-md
+  @media screen and (max-width: 46.875rem)
+    order: 1
 
 .fit
   max-width: 100%

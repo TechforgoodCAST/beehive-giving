@@ -1,6 +1,0 @@
-div.progress.circle
-  - [0, 1, -1].each do |category|
-    div[style="width: #{number_to_percentage(@pcs[category] * 100, precision: 1)};"
-        class=["bar", bg_color(category)]
-        title="#{pluralize(@counts[category], 'fund')} #{name(category)}"
-        ]

@@ -21,12 +21,12 @@ class EligibilityHelper
   end
 
   def answer_recipient_restrictions(fund, eligible: true)
-    answer(fund, eligible: eligible, category: 'Recipient', n: 2)
+    answer_restriction(fund, eligible: eligible, category: 'Recipient', n: 2)
     self
   end
 
   def answer_proposal_restrictions(fund, eligible: true, n: 3)
-    answer(fund, eligible: eligible, n: n)
+    answer_restriction(fund, eligible: eligible, n: n)
     self
   end
 
@@ -37,7 +37,28 @@ class EligibilityHelper
   end
 
   def check_eligibility
-    click_button 'Check eligibility'
+    click_button 'Check eligibility', match: :first
+    self
+  end
+
+  def answer_recipient_priorities(fund, eligible: true)
+    answer_priority(fund, eligible: eligible, category: 'Recipient', n: 2)
+    self
+  end
+
+  def answer_proposal_priorities(fund, eligible: true, n: 3)
+    answer_priority(fund, eligible: eligible, n: n)
+    self
+  end
+
+  def answer_priorities(fund)
+    answer_recipient_priorities(fund)
+    answer_proposal_priorities(fund)
+    self
+  end
+
+  def check_suitability
+    click_button 'Check suitability', match: :first
     self
   end
 
@@ -67,8 +88,14 @@ class EligibilityHelper
 
   private
 
-    def answer(fund, category: 'Proposal', eligible: true, n: 3)
+    def answer_restriction(fund, category: 'Proposal', eligible: true, n: 3)
       fund.restrictions.where(category: category).limit(n).pluck(:id).each do |i|
+        choose "check_question_#{i}_#{eligible}"
+      end
+    end
+
+    def answer_priority(fund, category: 'Proposal', eligible: true, n: 3)
+      fund.priorities.where(category: category).limit(n).pluck(:id).each do |i|
         choose "check_question_#{i}_#{eligible}"
       end
     end
