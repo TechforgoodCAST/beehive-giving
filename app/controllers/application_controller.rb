@@ -63,9 +63,13 @@ class ApplicationController < ActionController::Base
 
     def ensure_signed_up
       return unless logged_in?
-      return if params[:controller] =~ /admin|articles|pages|sessions/
+      return if public_controller?
       return redirect_funder if funder? # NOTE: legacy support
       redirect start_path unless signed_up?
+    end
+
+    def public_controller?
+      params[:controller] =~ /admin|articles|pages|sessions|microsites/
     end
 
     def signed_up?

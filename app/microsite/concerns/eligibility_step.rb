@@ -5,12 +5,12 @@ class EligibilityStep
                 :street_address, :org_type, :income_band, :operating_for,
                 :employees, :volunteers, :answers
 
-  # TODO: validations
-  validate :validate_answers
-
   def answers=(answers)
     @answers = answers.map { |_criterion_id, answer| Answer.new(answer) }
   end
+
+  # TODO: validations
+  validate :validate_answers
 
   def build_answers(funder, category)
     funder.restrictions
@@ -21,6 +21,7 @@ class EligibilityStep
   end
 
   def answers_for(category)
+    return [] if answers.nil?
     answers.select { |a| a.category_type == category }
   end
 
