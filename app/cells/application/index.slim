@@ -9,7 +9,9 @@ div class=[muted]
     - elsif status[:apply]
         .blue.mb10.fs14
             =<> status[:symbol]
-            / - if policy(FundContext.new(options[:fund], model)).show?
-            /     = link_to status[:link_text] || 'Apply ❯', apply_proposal_fund_path(model, options[:fund]), class: 'blue'
-            / - else
-            = link_to status[:link_text] || 'Apply ❯', apply_proposal_fund_path(model, options[:fund]), class: 'blue'
+            - if options[:show_fund]
+                = link_to status[:link_text] || 'Apply ❯', apply_proposal_fund_path(model, options[:fund]), class: 'blue'
+            - elsif options[:current_user].subscription_version == 2
+                = link_to 'Reveal & Apply ❯', reveals_path(fund: options[:fund]), method: :post, class: 'blue'
+            - else
+                = link_to status[:link_text] || 'Apply ❯', proposal_fund_path(model, options[:fund]), class: 'blue'
