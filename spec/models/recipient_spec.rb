@@ -1,6 +1,8 @@
 require 'rails_helper'
 require 'support/match_helper'
-require 'validations/reg_no_validations_shared_examples'
+require 'shared/recipient_validations'
+require 'shared/reg_no_validations'
+require 'shared/org_type_validations'
 
 describe Recipient do
   before(:each) do
@@ -15,7 +17,15 @@ describe Recipient do
     @proposal = @db[:complete_proposal]
   end
 
+  include_examples 'recipient validations' do
+    subject { @recipient }
+  end
+
   include_examples 'reg no validations' do
+    subject { @recipient }
+  end
+
+  include_examples 'org_type validations' do
     subject { @recipient }
   end
 
@@ -145,29 +155,6 @@ describe Recipient do
     it 'registration numbers cleared if other org type' do
       clear_numbers(4)
     end
-  end
-
-  it 'requires charity_number if org_type charity' do
-    @recipient.org_type = 1
-    @recipient.charity_number = nil
-    expect(@recipient).not_to be_valid
-  end
-
-  it 'requires company_number if org_type company' do
-    @recipient.org_type = 2
-    @recipient.company_number = nil
-    expect(@recipient).not_to be_valid
-  end
-
-  it 'requires both numbers if org_type both' do
-    @recipient.charity_number = nil
-    expect(@recipient).not_to be_valid
-    @recipient.charity_number = @recipient.company_number
-    @recipient.company_number = nil
-    expect(@recipient).not_to be_valid
-    @recipient.charity_number = nil
-    @recipient.company_number = nil
-    expect(@recipient).not_to be_valid
   end
 
   it 'strips whitespace from charity_number' do

@@ -18,7 +18,7 @@ module Check
         if org_type_score.positive?
           org_type_score += parse_distribution(
             fund.income_distribution,
-            Recipient::INCOME_BANDS[proposal.recipient.income_band][0]
+            INCOME_BANDS[proposal.recipient.income_band][0]
           )
         end
 

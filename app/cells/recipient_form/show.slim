@@ -11,19 +11,19 @@
 
   .uk-width-medium-1-1.uk-margin-top.name
     .label How long has your organisation or project been operating for?
-    = f.input :operating_for, as: :select, collection: Recipient::OPERATING_FOR, input_html: { class: 'large uk-width-1-1' }
+    = f.input :operating_for, as: :select, collection: OPERATING_FOR, input_html: { class: 'large uk-width-1-1' }
 
   .uk-width-medium-1-1.uk-margin-top.name
     .label What is the annual income of your organisation or project?
-    = f.input :income_band, as: :select, collection: Recipient::INCOME_BANDS, input_html: { class: 'large uk-width-1-1' }
+    = f.input :income_band, as: :select, collection: INCOME_BANDS, input_html: { class: 'large uk-width-1-1' }
 
   .uk-width-medium-1-1.uk-margin-top.name
     .label How many employees does your organisation or project have?
-    = f.input :employees, as: :select, collection: Recipient::EMPLOYEES, input_html: { class: 'large uk-width-1-1' }
+    = f.input :employees, as: :select, collection: EMPLOYEES, input_html: { class: 'large uk-width-1-1' }
 
   .uk-width-medium-1-1.uk-margin-top.name
     .label How many volunteers does your organisation or project have?
-    = f.input :volunteers, as: :select, collection: Recipient::EMPLOYEES, input_html: { class: 'large uk-width-1-1' }
+    = f.input :volunteers, as: :select, collection: EMPLOYEES, input_html: { class: 'large uk-width-1-1' }
 
   .uk-width-medium-1-1
     .uk-grid

@@ -1,6 +1,7 @@
 require 'rails_helper'
 require 'support/match_helper'
-require 'validations/reg_no_validations_shared_examples'
+require 'shared/reg_no_validations'
+require 'shared/org_type_validations'
 
 describe BasicsStep do
   subject do
@@ -20,6 +21,7 @@ describe BasicsStep do
   end
 
   include_examples 'reg no validations'
+  include_examples 'org_type validations'
 
   it '#funder_id required' do
     subject.funder_id = nil
@@ -51,18 +53,6 @@ describe BasicsStep do
 
     it 'greater than zero' do
       subject.total_costs = 0
-      is_expected.not_to be_valid
-    end
-  end
-
-  context '#org_type' do
-    it 'required' do
-      subject.org_type = nil
-      is_expected.not_to be_valid
-    end
-
-    it 'in list' do
-      subject.org_type = -1
       is_expected.not_to be_valid
     end
   end

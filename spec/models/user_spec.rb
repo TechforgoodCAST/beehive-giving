@@ -1,5 +1,5 @@
 require 'rails_helper'
-require 'validations/reg_no_validations_shared_examples'
+require 'shared/reg_no_validations'
 
 describe User do
   before(:each) do

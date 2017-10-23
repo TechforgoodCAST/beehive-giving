@@ -1,6 +1,8 @@
 class EligibilityStep
   include ActiveModel::Model
+  include RecipientValidations
   include RegNoValidations
+  include OrgTypeValidations
 
   attr_accessor :charity_number, :company_number, :name, :country,
                 :street_address, :org_type, :income_band, :operating_for,
@@ -14,7 +16,6 @@ class EligibilityStep
     @answers = answers.map { |_criterion_id, answer| Answer.new(answer) }
   end
 
-  # TODO: validations
   validate :validate_answers
 
   def build_answers(funder, category)

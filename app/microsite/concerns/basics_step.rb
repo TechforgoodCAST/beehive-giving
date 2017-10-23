@@ -1,6 +1,7 @@
 class BasicsStep
   include ActiveModel::Model
   include RegNoValidations
+  include OrgTypeValidations
 
   attr_reader :assessment
   attr_accessor :charity_number, :company_number, :funder_id, :funding_type,
@@ -16,7 +17,6 @@ class BasicsStep
 
   validates :funder_id, presence: true
   validates :funding_type, inclusion: { in: FUNDING_TYPES.pluck(1) }
-  validates :org_type, inclusion: { in: (ORG_TYPES.pluck(1) - [-1]) }
   validates :total_costs, numericality: { greater_than: 0 }
 
   def save

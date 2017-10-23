@@ -1,29 +1,7 @@
 class Recipient < ApplicationRecord
+  include RecipientValidations
   include RegNoValidations
-
-  OPERATING_FOR = [
-    ['Yet to start', 0],
-    ['Less than 12 months', 1],
-    ['Less than 3 years', 2],
-    ['4 years or more', 3]
-  ].freeze
-  INCOME_BANDS = [
-    ['Less than £10k', 0, 0, 10_000],
-    ['£10k - £100k', 1, 10_000, 100_000],
-    ['£100k - £1m', 2, 100_000, 1_000_000],
-    ['£1m - £10m', 3, 1_000_000, 10_000_000],
-    ['£10m+', 4, 10_000_000, Float::INFINITY]
-  ].freeze
-  EMPLOYEES = [
-    ['None', 0, 0, 0],
-    ['1 - 5', 1, 1, 5],
-    ['6 - 25', 2, 6, 25],
-    ['26 - 50', 3, 26, 50],
-    ['51 - 100', 4, 51, 100],
-    ['101 - 250', 5, 101, 250],
-    ['251 - 500', 6, 251, 500],
-    ['500+', 7, 501, Float::INFINITY]
-  ].freeze
+  include OrgTypeValidations
 
   has_one :subscription, dependent: :destroy
   has_many :users, as: :organisation, dependent: :destroy
@@ -40,24 +18,6 @@ class Recipient < ApplicationRecord
   after_validation :geocode,
                    if: :street_address_changed?,
                    unless: ->(o) { o.country != 'GB' }
-
-  validates :income_band, :employees, :volunteers,
-            presence: true, numericality: { greater_than_or_equal_to: 0 }
-
-  validates :income_band, inclusion: { in: INCOME_BANDS.pluck(1) }
-
-  validates :employees, :volunteers, inclusion: { in: EMPLOYEES.pluck(1) }
-
-  validates :org_type, :name, :status, :country, :operating_for,
-            presence: true
-
-  validates :org_type,
-            inclusion: { in: (ORG_TYPES.pluck(1) - [-1]), message: 'please select a valid option' }
-
-  validates :operating_for,
-            inclusion: { in: OPERATING_FOR.pluck(1), message: 'please select a valid option' }
-
-  validates :street_address, presence: true, if: :unregistered_org
 
   validates :charity_number, uniqueness: { scope: :company_number }
   validates :company_number, uniqueness: { scope: :charity_number }
@@ -181,10 +141,6 @@ class Recipient < ApplicationRecord
     def street_address_changed?
       street_address.present? ||
         (postal_code.present? && postal_code_changed?)
-    end
-
-    def unregistered_org
-      org_type.nil? || (org_type.zero? || org_type == 4)
     end
 
     def clear_registration_numbers_if_unregistered

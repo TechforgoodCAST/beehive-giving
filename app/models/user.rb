@@ -13,11 +13,6 @@ class User < ApplicationRecord
     in: (ORG_TYPES.pluck(1) - [-1]), message: 'Please select a valid option'
   }, on: :create
 
-  validates :org_type,
-            presence: true,
-            numericality: { only_integer: true, greater_than_or_equal_to: 0 },
-            on: :create
-
   # TODO: add validations for association
   validates :first_name, :last_name, :email, :agree_to_terms,
             :organisation_type, presence: true, on: :create

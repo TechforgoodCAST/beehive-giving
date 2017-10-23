@@ -1,8 +1,12 @@
 require 'rails_helper'
-require 'validations/reg_no_validations_shared_examples'
+require 'shared/recipient_validations'
+require 'shared/reg_no_validations'
+require 'shared/org_type_validations'
 
 describe EligibilityStep do
+  include_examples 'recipient validations'
   include_examples 'reg no validations'
+  include_examples 'org_type validations'
 
   it '#answers empty' do
     expect(subject.answers).to eq []
@@ -49,15 +53,16 @@ describe EligibilityStep do
 
   context '#save' do
     it 'updates Recipient' do
-      raise
+      expect(subject.recipient.volunteers).to eq 0
     end
 
     it 'updates runs eligibility check and updates Proposal' do
-      raise
+      result = {}
+      expect(subject.proposal.eligibility).not_to eq result
     end
 
     it 'updates Assessment' do
-      raise
+      expect(subject.assessment.state).to eq 'results'
     end
   end
 end

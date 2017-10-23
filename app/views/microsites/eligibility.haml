@@ -52,26 +52,27 @@
           - if @recipient.errors.added?(:country, :blank)
             .mb20
               %label.block.fs15.bold.mb10 Where is your organisation or project based?
-              -# TODO: geocoding
-              -# .street-address
-              -#   = f.input :street_address
               = f.input :country, include_blank: true, priority: ['United Kingdom']
+          - if @recipient.errors.added?(:street_address, :blank)
+            .mb20
+              %label.block.fs15.bold.mb10 Street address
+              = f.input :street_address
           - if @recipient.errors.added?(:income, :blank)
             .mb20
               %label.block.fs15.bold.mb10 What is the annual income of your organisation or project?
-              = f.input :income_band, collection: Recipient::INCOME_BANDS
+              = f.input :income_band, collection: INCOME_BANDS
           - if @recipient.errors.added?(:operating_for, :blank)
             .mb20
               %label.block.fs15.bold.mb10 How long has your organisation or project been operating for?
-              = f.input :operating_for, collection: Recipient::OPERATING_FOR
+              = f.input :operating_for, collection: OPERATING_FOR
           - if @recipient.errors.added?(:employees, :blank)
             .mb20
               %label.block.fs15.bold.mb10 How many employees does your organisation or project have?
-              = f.input :employees, collection: Recipient::EMPLOYEES
+              = f.input :employees, collection: EMPLOYEES
           - if @recipient.errors.added?(:volunteers, :blank)
             .mb20
               %label.block.fs15.bold.mb10 How many volunteers does your organisation or project have?
-              = f.input :volunteers, collection: Recipient::EMPLOYEES
+              = f.input :volunteers, collection: EMPLOYEES
 
         %section
           %h3 Your proposal
