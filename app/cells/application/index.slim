@@ -1,0 +1,15 @@
+div class=[muted]
+
+    - if status[:apply] == 'pending'
+        .blue.mb10.fs14
+            =<> status[:symbol]
+            | Apply
+        .mb5
+            = status[:message]
+    - elsif status[:apply]
+        .blue.mb10.fs14
+            =<> status[:symbol]
+            / - if policy(FundContext.new(options[:fund], model)).show?
+            /     = link_to status[:link_text] || 'Apply ❯', apply_proposal_fund_path(model, options[:fund]), class: 'blue'
+            / - else
+            = link_to status[:link_text] || 'Apply ❯', apply_proposal_fund_path(model, options[:fund]), class: 'blue'

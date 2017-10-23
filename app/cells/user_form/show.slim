@@ -1,23 +1,19 @@
-.uk-form.form
+.mb40
+  label.label.mb10.bold.lh16 First name
+  = f.input :first_name, type: 'text'
 
-  .uk-grid.uk-grid-small.uk-width-1-1
-    .uk-width-medium-1-2
-      .label First name
-      = f.input :first_name, type: 'text', input_html: { class: 'large uk-width-1-1' }
+.mb40
+  label.label.mb10.bold.lh16 Last name
+  = f.input :last_name, type: 'text'
 
-    .uk-width-medium-1-2
-      .label Last name
-      = f.input :last_name, type: 'text', input_html: { class: 'large uk-width-1-1' }
+.mb40
+  label.label.mb10.bold.lh16 Email
+  = f.input :email, type: 'text'
 
-    .uk-width-1-1.uk-margin-top
-      .label Email
-      = f.input :email, type: 'text', input_html: { class: 'large uk-width-1-1' }
+.mb40
+  label.label.mb10.bold.lh16 Password
+  = f.input :password, type: 'password', input_html: { title: 'At least 6 characters with 1 number.' }
 
-  .uk-grid.uk-grid-small.uk-width-1-1.uk-margin-top
-    .uk-width-medium-1-2
-      .label Password
-      = f.input :password, type: 'password', input_html: { class: 'large uk-width-1-1', "data-uk-tooltip" => "{pos:'top', animation:true}", title: 'At least 6 characters with 1 number.' }
-
-    .uk-width-medium-1-2
-      .label Confirm password
-      = f.input :password_confirmation, type: 'password', input_html: { class: 'large uk-width-1-1' }
+.mb40
+  label.label.mb10.bold.lh16 Confirm password
+  = f.input :password_confirmation, type: 'password'

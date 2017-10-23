@@ -25,7 +25,7 @@ class ProposalsController < ApplicationController
   end
 
   def index
-    @proposals = @recipient.proposals
+    @proposals = @recipient.proposals.order_by(params[:sort])
   end
 
   def edit

@@ -1,5 +1,5 @@
-%article.mb40.flex
-  .col-two-thirds.pr10
+%article.mb30.flex.flex-wrap
+  .col-two-thirds.pr10.md.mb10
     - if policy(FundContext.new(fund, @proposal)).show?
       .mb5
         = link_to fund.title, proposal_fund_path(@proposal, fund), class: 'blue fs22 lh30'
@@ -25,5 +25,5 @@
     %p.fs12.lh18.mb5.slate
       = cell(:fund_insight, fund, proposal: @proposal).call(:summary)
 
-  .col-one-third.border-left.pl10.border-lightest-gray
+  .col-one-third.border-left.pl10.border-lightest-gray.md.mb10
     = render partial: 'actions', locals: { fund: fund }

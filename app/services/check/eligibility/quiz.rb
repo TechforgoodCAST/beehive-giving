@@ -8,8 +8,8 @@ module Check
 
       def call(_proposal, fund)
         raise 'Invalid Fund' unless fund.is_a? Fund
-        comparison = (@answers.keys & @restrictions[fund.slug])
-        return unless comparison.count == @restrictions[fund.slug].count
+        comparison = (@answers.keys & @restrictions[fund.slug].to_a)
+        return unless comparison.count == @restrictions[fund.slug].to_a.count
         {
           'eligible' => eligible?(comparison),
           'count_failing' => count_failing(comparison)

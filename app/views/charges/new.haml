@@ -23,98 +23,108 @@
 
   ga("send", "event", "charges#new", "view", "Plan Cost: #{@payment.plan_cost}");
 
-= render partial: 'accounts/subnav'
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'Subscription' => account_subscription_path(@recipient)
 
-.uk-container.uk-container-center.uk-margin-large
+%main
+  .maxw1080.mx-auto.px20
 
-  - unless @notice
-    .cta.tight.uk-margin-bottom
-      Please upgrade to access this feature.
+    %section.md.mb20.px20
+      %h1.light.mb20 Dashboard
+    
+    = render partial: 'accounts/subnav'
+    
+  .maxw1080.mx-auto.px20.flex.flex-wrap
+    %aside.perc33.md.px20.mb40
 
-  %h2 Upgrade
-  %h4
-    By completing the form you will be charged
-    %strong= number_to_currency(@payment.plan_cost, unit: '£', precision: 0)
-    for one years access to a
-    %strong Pro
-    plan.
+      .p20.border.border-green.rounded
+        %h3.light.mb20 Order summary
 
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top
+        .mb30
+          .label.mb10.bold Plan
+          Pro
 
-    .uk-grid
-      .uk-width-medium-1-2.uk-margin-bottom
-        .uk-panel.uk-panel-box.none
-          %h3 Payment details
+        .mb30
+          .label.mb10.bold Period
+          1 year
+          %small= 1.year.from_now.strftime("(expires %d %B %Y)")
 
-          = form_tag account_upgrade_path(@recipient), id: 'payment-form', class: 'uk-form form' do
-            %noscript
-              .cta.red.tight.uk-margin-bottom
-                %strong You have JavaScript disabled
-                and this page will not work. Please use a device that supports JavaScript.
+        .mb30
+          .label.mb10.bold Price
+          = number_to_currency(@payment.plan_cost, unit: '£')
+          - if @payment.discount
+            %small
+              = surround '(', ')' do
+                = @payment.discount
+                discount
 
-            %input#stripeToken{ name: "stripeToken", type: "hidden" }
+        %div
+          .label.mb10.bold Features
+          = render 'accounts/premium_features'
 
-            .payment-errors
-              - if params[:card_errors]
-                .cta.red= params[:card_errors]
+    %section.perc66.md.mb80.px20.fs14
+      - unless @notice
+        .light.mb20.fit.bg-blue.caps.white.bold.rounded.p15
+          Please upgrade to access this feature.
+      %h2.light.mb40 Upgrade
+      %p.lh22.mb40.fs16
+        By completing the form you will be charged
+        %strong= number_to_currency(@payment.plan_cost, unit: '£', precision: 0)
+        for one years access to a
+        %strong Pro
+        plan.
+        
+      %h3.mb40.light Payment details
+      = form_tag account_upgrade_path(@recipient), id: 'payment-form', class: 'uk-form form' do
+        %noscript
+          .p20.red.border-red
+            %strong You have JavaScript disabled
+            and this page will not work. Please use a device that supports JavaScript.
 
-            .uk-width-medium-1-1.uk-margin-top
-              .uk-text-bold Card number
-              .uk-width-1-1
-                %input.large#card-number{ "data-stripe": "number", size: "24", type: "text", placeholder: '4242 4242 4242 4242' }
-                .payment-card
+        %input#stripeToken{ name: "stripeToken", type: "hidden" }
 
-            .uk-width-medium-1-1.uk-margin-top
-              .uk-text-bold Expiration
-              %input.large#expiry-month{ "data-stripe": "exp_month", size: "10", type: "text", placeholder: 'MM' }
-              %span
-              %input.large#expiry-year{ "data-stripe": "exp_year", size: "10", type: "text", placeholder: 'YY' }
+        .payment-errors.mb20
+          - if params[:card_errors]
+            .p20.red.border-red= params[:card_errors]
+              
+        .mb40
+          .label.mb10.bold Card number
+          %input.input#card-number{ "data-stripe": "number", size: "24", type: "text", placeholder: '4242 4242 4242 4242' }
+          .payment-card
 
-            .uk-width-medium-1-1.uk-margin-top
-              .uk-text-bold CVC
-              %input.large#cvc{ "data-stripe": "cvc", size: "10", type: "text", placeholder: '123' }
+        .mb40
+          .label.mb10.bold Expiration
+          .flex
+            .col.maxw200.mr10
+              %input.input#expiry-month{ "data-stripe": "exp_month", size: "10", type: "text", placeholder: 'MM' }
+            .col.maxw200
+              %input.input#expiry-year{ "data-stripe": "exp_year", size: "10", type: "text", placeholder: 'YY' }
 
-            -# .uk-width-medium-1-1.uk-margin-top
-            -#   .uk-text-bold Cardholder Name
-            -#   %input.large#cardholder-name{ "data-stripe": "name", size: "24", type: "text" }
+        .mb40
+          .label.mb10.bold CVC
+          %input.input.maxw200#cvc{ "data-stripe": "cvc", size: "10", type: "text", placeholder: '123' }
 
-            -# .uk-width-medium-1-1.uk-margin-top
-            -#   .uk-text-bold Billing Address
-            -#   %input.large#address-line1{ "data-stripe": "address_line1", size: "24", type: "text" }
+        -# .mb40
+        -#   .label.mb10.bold Cardholder Name
+        -#   %input.input#cardholder-name{ "data-stripe": "name", size: "24", type: "text" }
 
-            -# .uk-width-medium-1-1.uk-margin-top
-            -#   .uk-text-bold Postal Code
-            -#   %input.large#address-zip{ "data-stripe": "address_zip", size: "24", type: "text", placeholder: '123 ABC' }
+        -# .mb40
+        -#   .label.mb10.bold Billing Address
+        -#   %input.input#address-line1{ "data-stripe": "address_line1", size: "24", type: "text" }
 
-            .uk-width-medium-1-1.uk-margin-top
-              .uk-text-bold Discount coupon
-              %input.large#coupon{ name: "coupon", size: "24", type: "text", placeholder: 'Optional' }
+        -# .mb40
+        -#   .label.mb10.bold Postal Code
+        -#   %input.input#address-zip{ "data-stripe": "address_zip", size: "24", type: "text", placeholder: '123 ABC' }
 
-            .uk-width-medium-1-1.uk-margin-top
-              %button.uk-button.uk-button-primary.uk-button-large.submit{ type: "submit", style:"width: 192px;" } Pay securely
+        .mb40
+          .label.mb10.bold Discount coupon
+          %input.input#coupon{ name: "coupon", size: "24", type: "text", placeholder: 'Optional' }
 
-              .uk-margin-small-top= link_to image_tag('powered-by-stripe.svg', width: 120), 'https://stripe.com/', target: '_blank'
+        .mb10
+          %button.button.bg-green.white.caps{ type: "submit" } Pay securely
 
-            :javascript
-              Stripe.setPublishableKey("#{Rails.configuration.stripe[:publishable_key]}");
+        = link_to image_tag('powered-by-stripe.svg', width: 120), 'https://stripe.com/', target: '_blank'
 
-      .uk-width-medium-1-2
-        .uk-panel.uk-panel-box.none.card
-          %h3 Order summary
-
-          .uk-width-medium-1-1.uk-margin-top
-            .uk-text-bold Plan
-            Pro
-
-          .uk-width-medium-1-1.uk-margin-top
-            .uk-text-bold Period
-            1 year
-            %small= 1.year.from_now.strftime("(expires %d %B %Y)")
-
-          .uk-width-medium-1-1.uk-margin-top
-            .uk-text-bold Price
-            = number_to_currency(@payment.plan_cost, unit: '£')
-
-          .uk-width-medium-1-1.uk-margin-top
-            .uk-text-bold Features
-            = render 'accounts/premium_features'
+        :javascript
+          Stripe.setPublishableKey("#{Rails.configuration.stripe[:publishable_key]}");

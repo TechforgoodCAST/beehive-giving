@@ -9,6 +9,7 @@ class SubmitFormCell < Cell::ViewModel
   private
 
     def classes
+      'button bg-green white caps ' \
       'uk-button uk-button-primary uk-button-large uk-width-medium-1-2 ' \
       'uk-float-right'
     end
