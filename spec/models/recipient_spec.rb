@@ -1,5 +1,6 @@
 require 'rails_helper'
-require_relative '../support/match_helper'
+require 'support/match_helper'
+require 'validations/reg_no_validations_shared_examples'
 
 describe Recipient do
   before(:each) do
@@ -12,6 +13,10 @@ describe Recipient do
     @db = @app.instances
     @recipient = @db[:recipient]
     @proposal = @db[:complete_proposal]
+  end
+
+  include_examples 'reg no validations' do
+    subject { @recipient }
   end
 
   it 'website invalid' do

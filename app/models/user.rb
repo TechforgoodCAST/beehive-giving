@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include RegNoValidations
+
   scope :recipient, -> { where organisation_type: 'Recipient' }
   scope :funder, -> { where organisation_type: 'Funder' }
 
@@ -10,10 +12,6 @@ class User < ApplicationRecord
   validates :org_type, inclusion: {
     in: (ORG_TYPES.pluck(1) - [-1]), message: 'Please select a valid option'
   }, on: :create
-  validates :charity_number, presence: true,
-                             if: proc { |o| [1, 3].include? o.org_type }
-  validates :company_number, presence: true,
-                             if: proc { |o| [2, 3, 5].include? o.org_type }
 
   validates :org_type,
             presence: true,

@@ -1,9 +1,14 @@
 class EligibilityStep
   include ActiveModel::Model
+  include RegNoValidations
 
   attr_accessor :charity_number, :company_number, :name, :country,
                 :street_address, :org_type, :income_band, :operating_for,
-                :employees, :volunteers, :answers
+                :employees, :volunteers
+
+  def answers
+    @answers ||= []
+  end
 
   def answers=(answers)
     @answers = answers.map { |_criterion_id, answer| Answer.new(answer) }
@@ -21,7 +26,6 @@ class EligibilityStep
   end
 
   def answers_for(category)
-    return [] if answers.nil?
     answers.select { |a| a.category_type == category }
   end
 

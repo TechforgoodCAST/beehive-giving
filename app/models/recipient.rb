@@ -1,4 +1,6 @@
 class Recipient < ApplicationRecord
+  include RegNoValidations
+
   OPERATING_FOR = [
     ['Yet to start', 0],
     ['Less than 12 months', 1],
@@ -56,17 +58,9 @@ class Recipient < ApplicationRecord
             inclusion: { in: OPERATING_FOR.pluck(1), message: 'please select a valid option' }
 
   validates :street_address, presence: true, if: :unregistered_org
-  validates :charity_number, presence: true,
-                             if: proc { |o| [1, 3].include? o.org_type }
-  validates :company_number, presence: true,
-                             if: proc { |o| [2, 3, 5].include? o.org_type }
 
-  validates :charity_number,
-            uniqueness: { on: :create, scope: :company_number },
-            allow_nil: true, allow_blank: true
-  validates :company_number,
-            uniqueness: { on: :create, scope: :charity_number },
-            allow_nil: true, allow_blank: true
+  validates :charity_number, uniqueness: { scope: :company_number }
+  validates :company_number, uniqueness: { scope: :charity_number }
 
   validates :website, format: {
     with: URI.regexp(%w[http https]),

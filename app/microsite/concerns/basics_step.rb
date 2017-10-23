@@ -1,5 +1,6 @@
 class BasicsStep
   include ActiveModel::Model
+  include RegNoValidations
 
   attr_reader :assessment
   attr_accessor :charity_number, :company_number, :funder_id, :funding_type,
@@ -13,12 +14,6 @@ class BasicsStep
     @org_type = str.blank? ? str : str.to_i
   end
 
-  validates :charity_number, presence: {
-    if: -> { [1, 3].include? org_type }
-  }
-  validates :company_number, presence: {
-    if: -> { [2, 3, 5].include? org_type }
-  }
   validates :funder_id, presence: true
   validates :funding_type, inclusion: { in: FUNDING_TYPES.pluck(1) }
   validates :org_type, inclusion: { in: (ORG_TYPES.pluck(1) - [-1]) }

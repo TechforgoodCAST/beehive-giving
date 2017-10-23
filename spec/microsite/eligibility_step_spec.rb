@@ -1,36 +1,41 @@
 require 'rails_helper'
+require 'validations/reg_no_validations_shared_examples'
 
 describe EligibilityStep do
-  it 'Recipient validations from shared module' do
-    raise
+  include_examples 'reg no validations'
+
+  it '#answers empty' do
+    expect(subject.answers).to eq []
   end
 
-  it '#answers=' do
-    answer_params = {
-      category_id: 2,
-      category_type: 'Recipient',
-      criterion_id: 1
-    }
-    subject.answers = { '1': answer_params.merge(eligible: '') }
+  context 'with answers params' do
+    let(:answer_params) do
+      { category_id: 2, category_type: 'Recipient', criterion_id: 1 }
+    end
 
-    expect(subject.answers.first)
-      .to have_attributes(answer_params.merge(eligible: nil))
+    before(:each) do
+      subject.answers = { '1': answer_params.merge(eligible: '') }
+    end
+
+    it '#answers' do
+      expect(subject.answers.size).to eq 1
+    end
+
+    it '#answers=' do
+      expect(subject.answers.first)
+        .to have_attributes(answer_params.merge(eligible: nil))
+    end
   end
 
   context 'with Funder' do
     let(:funder) do
-      instance_double(Funder, restrictions: create_list(:restriction, 2))
+      instance_double(Funder, restrictions: build_list(:restriction, 2))
     end
 
     it '#build_answers' do
       answers = subject.build_answers(funder, build(:proposal))
       expect(answers.size).to eq 2
-      expect(answers.first.criterion_id).to eq 1
     end
-  end
-
-  it '#answers_for with no #answers' do
-    expect(subject.answers_for('Proposal')).to eq []
   end
 
   it '#answers_for invalid `category`' do
