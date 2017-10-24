@@ -9,7 +9,7 @@ ActiveAdmin.register Fund do
                 :country_distribution, :sources, :national,
                 :org_type_distribution, :income_distribution, :slug,
                 :beneficiary_distribution, :grant_examples,
-                :geographic_scale_limited, :geo_area,
+                :geographic_scale_limited, :geo_area_id,
                 :min_amount_awarded_limited, :min_amount_awarded,
                 :max_amount_awarded_limited, :max_amount_awarded,
                 :min_duration_awarded_limited, :min_duration_awarded,
@@ -181,7 +181,7 @@ ActiveAdmin.register Fund do
         end
 
         inputs 'Geography' do
-          f.input :geo_area, collection: GeoArea.pluck(:name, :id)
+          f.input :geo_area, input_html: { class: 'chosen-select' }
           f.input :geographic_scale_limited
           f.input :national
         end

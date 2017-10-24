@@ -54,7 +54,7 @@ describe Check::Eligibility::Location do
   end
 
   it '#call countries_ineligible?' do
-    @local.geo_area.update!(countries: [@db[:kenya]])
+    @local.geo_area.update!(countries: [@db[:kenya]], districts: [@db[:kenya_districts].first])
     expect(subject.call(@proposal, @local)).to eq 'eligible' => false
   end
 
