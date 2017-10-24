@@ -4,9 +4,12 @@ class EligibilityStep
   include RegNoValidations
   include OrgTypeValidations
 
-  attr_accessor :charity_number, :company_number, :name, :country,
-                :street_address, :org_type, :income_band, :operating_for,
-                :employees, :volunteers
+  def self.attrs
+    %i[assessment org_type charity_number company_number name country
+       street_address income_band operating_for employees volunteers]
+  end
+
+  attr_accessor(*attrs)
 
   def answers
     @answers ||= []
@@ -17,6 +20,10 @@ class EligibilityStep
   end
 
   validate :validate_answers
+
+  def attributes
+    self.class.attrs.map { |a| [a, send(a)] }.to_h
+  end
 
   def build_answers(funder, category)
     funder.restrictions
@@ -32,7 +39,7 @@ class EligibilityStep
 
   def save
     if valid?
-      # TODO: update recipient
+      save_recipient!
       # TODO: run eligibility checks
       # TODO: update proposal
       # TODO: update assessment state
@@ -47,5 +54,9 @@ class EligibilityStep
       answers.each do |answer|
         answer.valid? ? next : errors.add('answer', 'invalid')
       end
+    end
+
+    def save_recipient!
+      assessment.recipient.update(attributes.except(:assessment))
     end
 end

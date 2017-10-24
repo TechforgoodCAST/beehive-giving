@@ -8,6 +8,22 @@ describe EligibilityStep do
   include_examples 'reg no validations'
   include_examples 'org_type validations'
 
+  let(:attrs) do
+    %i[
+      assessment org_type charity_number company_number name country
+      street_address income_band operating_for employees volunteers
+    ]
+  end
+
+  it 'self.attrs' do
+    expect(subject.class.attrs).to include(*attrs)
+  end
+
+  it '#attributes' do
+    expect(subject.attributes).to include(*attrs)
+    expect(subject.attributes).to be_a(Hash)
+  end
+
   it '#answers empty' do
     expect(subject.answers).to eq []
   end
@@ -52,8 +68,23 @@ describe EligibilityStep do
   end
 
   context '#save' do
+    let(:recipient) { build(:recipient) }
+    let(:assessment) { Assessment.new(recipient: recipient) }
+
     it 'updates Recipient' do
-      expect(subject.recipient.volunteers).to eq 0
+      subject.assign_attributes(
+        assessment: assessment,
+        org_type: 1,
+        charity_number: '123',
+        name: 'charity name',
+        country: 'GB',
+        operating_for: 0, # Yet to start
+        income_band: 0, # Less than 10k
+        employees: 0, # None
+        volunteers: 0 # None
+      )
+      subject.save
+      expect(recipient.name).to eq 'Charity name'
     end
 
     it 'updates runs eligibility check and updates Proposal' do
