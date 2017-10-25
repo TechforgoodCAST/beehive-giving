@@ -18,25 +18,23 @@ class MicrositesController < ApplicationController
     end
   end
 
-  def eligibility
+  def eligibility # TODO: refactor
     # TODO: must be logged out OR avoid calls to ApplicationController
 
     @recipient = @assessment.recipient
-    @recipient.valid? # TODO: refactor?
+    @recipient.valid?
 
-    @microsite = Microsite.new(
-      EligibilityStep.new(@recipient.attributes.slice(*recipient_attrs))
-    )
+    @microsite = Microsite.new(EligibilityStep.new(@recipient.attributes.slice(*recipient_attrs).merge(assessment: @assessment)))
 
-    @recipient_answers = @microsite.step.build_answers(@funder, @recipient)
-    @proposal_answers = @microsite.step.build_answers(@funder, @assessment.proposal)
+    @recipient_answers = @microsite.step.answers_for('Recipient')
+    @proposal_answers = @microsite.step.answers_for('Proposal')
   end
 
-  def check_eligibility
+  def check_eligibility # TODO: refactor
     @recipient = @assessment.recipient
-    @recipient.valid? # TODO: refactor?
+    @recipient.valid?
 
-    @microsite = Microsite.new(EligibilityStep.new(eligibility_params))
+    @microsite = Microsite.new(EligibilityStep.new({ assessment: @assessment }.merge(eligibility_params)))
     @recipient_answers = @microsite.step.answers_for('Recipient')
     @proposal_answers = @microsite.step.answers_for('Proposal')
 
@@ -65,10 +63,8 @@ class MicrositesController < ApplicationController
     end
 
     def eligibility_params
-      params.require(:eligibility_step).permit(
-        *recipient_attrs,
-        answers: %w[eligible category_id category_type criterion_id]
-      )
+      params.require(:eligibility_step)
+            .permit(*recipient_attrs, answers: %w[eligible])
     end
 
     def recipient_attrs

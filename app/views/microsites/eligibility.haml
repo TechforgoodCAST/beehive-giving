@@ -27,10 +27,6 @@
           -# TODO: DRY
           - @recipient_answers.each_with_index do |answer, i|
             = f.simple_fields_for "answers[#{answer.criterion_id}]", answer do |a|
-              = a.hidden_field :category_id
-              = a.hidden_field :category_type
-              = a.hidden_field :criterion_id
-
               -# TODO: avoid multiple db calls on validation
               = a.object.criterion.details
               = a.input :eligible, as: :radio_buttons
@@ -80,10 +76,6 @@
           -# TODO: DRY
           - @proposal_answers.each do |answer|
             = f.simple_fields_for "answers[#{answer.criterion_id}]", answer do |a|
-              = a.hidden_field :category_id
-              = a.hidden_field :category_type
-              = a.hidden_field :criterion_id
-
               -# TODO: avoid multiple db calls on validation
               = a.object.criterion.details
               = a.input :eligible, as: :radio_buttons

@@ -12,25 +12,17 @@ class EligibilityStep
   attr_accessor(*attrs)
 
   def answers
-    @answers ||= []
+    @answers ||= build_answers
   end
 
   def answers=(answers)
-    @answers = answers.map { |_criterion_id, answer| Answer.new(answer) }
+    @answers = build_answers(answers)
   end
 
   validate :validate_answers
 
   def attributes
     self.class.attrs.map { |a| [a, send(a)] }.to_h
-  end
-
-  def build_answers(funder, category)
-    funder.restrictions
-          .select { |criterion| criterion.category == category.class.name }
-          .map do |criterion|
-            Answer.new(category: category, criterion: criterion)
-          end
   end
 
   def answers_for(category)
@@ -49,6 +41,21 @@ class EligibilityStep
   end
 
   private
+
+    def build_answers(updates = {})
+      return [] unless assessment
+      assessment.funder.restrictions.map do |criterion|
+        Answer.new(
+          category: lookup_category(criterion.category),
+          criterion: criterion,
+          eligible: updates.dig(criterion.id.to_s, 'eligible')
+        )
+      end
+    end
+
+    def lookup_category(category_type)
+      category_type == 'Recipient' ? assessment.recipient : assessment.proposal
+    end
 
     def validate_answers
       answers.each do |answer|

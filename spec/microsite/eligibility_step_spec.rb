@@ -28,50 +28,24 @@ describe EligibilityStep do
     expect(subject.answers).to eq []
   end
 
-  context 'with answers params' do
-    let(:answer_params) do
-      { category_id: 2, category_type: 'Recipient', criterion_id: 1 }
-    end
-
-    before(:each) do
-      subject.answers = { '1': answer_params.merge(eligible: '') }
-    end
-
-    it '#answers' do
-      expect(subject.answers.size).to eq 1
-    end
-
-    it '#answers=' do
-      expect(subject.answers.first)
-        .to have_attributes(answer_params.merge(eligible: nil))
-    end
-  end
-
-  context 'with Funder' do
-    let(:funder) do
-      instance_double(Funder, restrictions: build_list(:restriction, 2))
-    end
-
-    it '#build_answers' do
-      answers = subject.build_answers(funder, build(:proposal))
-      expect(answers.size).to eq 2
-    end
-  end
-
   it '#answers_for invalid `category`' do
     expect(subject.answers_for('Prop')).to eq []
   end
 
-  it '#answers_for' do
-    subject.answers = { '1': { category_type: 'Proposal' } }
-    expect(subject.answers_for('Proposal').size).to eq 1
-  end
-
-  context '#save' do
+  context 'with Assessment' do
     let(:recipient) { build(:recipient) }
-    let(:assessment) { Assessment.new(recipient: recipient) }
+    let(:restriction) { build(:restriction) }
+    let(:funder) { instance_double(Funder, restrictions: [restriction]) }
+    let(:assessment) do
+      instance_double(
+        Assessment,
+        recipient: recipient,
+        proposal: build(:proposal, id: 1),
+        funder: funder
+      )
+    end
 
-    it 'updates Recipient' do
+    before do
       subject.assign_attributes(
         assessment: assessment,
         org_type: 1,
@@ -81,18 +55,34 @@ describe EligibilityStep do
         operating_for: 0, # Yet to start
         income_band: 0, # Less than 10k
         employees: 0, # None
-        volunteers: 0 # None
+        volunteers: 0, # None
+        answers: { restriction.id.to_s => { 'eligible' => true } }
       )
+    end
+
+    it '#answers' do
+      expect(subject.answers.size).to eq 1
+    end
+
+    it '#answers=' do
+      subject.answers = { restriction.id.to_s => { 'eligible' => true } }
+      expect(subject.answers.first).to have_attributes(eligible: true)
+    end
+
+    it '#answers_for' do
+      expect(subject.answers_for('Proposal').size).to eq 1
+    end
+
+    it '#save updates Recipient' do
       subject.save
       expect(recipient.name).to eq 'Charity name'
     end
 
-    it 'updates runs eligibility check and updates Proposal' do
-      result = {}
+    it '#save updates runs eligibility check and updates Proposal' do
       expect(subject.proposal.eligibility).not_to eq result
     end
 
-    it 'updates Assessment' do
+    it '#save updates Assessment' do
       expect(subject.assessment.state).to eq 'results'
     end
   end
