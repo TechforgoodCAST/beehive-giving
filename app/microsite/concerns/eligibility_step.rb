@@ -31,9 +31,7 @@ class EligibilityStep
 
   def save
     if valid?
-      save_recipient!
-      # TODO: run eligibility checks
-      # TODO: update proposal
+      save_recipient! && save_proposal!
       # TODO: update assessment state
     else
       false
@@ -45,12 +43,19 @@ class EligibilityStep
     def build_answers(updates = {})
       return [] unless assessment
       assessment.funder.restrictions.map do |criterion|
-        Answer.new(
-          category: lookup_category(criterion.category),
-          criterion: criterion,
-          eligible: updates.dig(criterion.id.to_s, 'eligible')
-        )
+        answer = load_answer(criterion)
+        if answer.eligible.nil?
+          answer.eligible = updates.dig(criterion.id.to_s, 'eligible')
+        end
+        answer
       end
+    end
+
+    def load_answer(criterion)
+      Answer.where(
+        category: lookup_category(criterion.category),
+        criterion: criterion
+      ).first_or_initialize
     end
 
     def lookup_category(category_type)
@@ -59,11 +64,27 @@ class EligibilityStep
 
     def validate_answers
       answers.each do |answer|
-        answer.valid? ? next : errors.add('answer', 'invalid')
+        answer.valid? ? answer.save : errors.add('answer', 'invalid')
       end
     end
 
     def save_recipient!
       assessment.recipient.update(attributes.except(:assessment))
+    end
+
+    def save_proposal!
+      # TODO: refactor with factory
+      check_eligibility = Check::Each.new(
+        [
+          Check::Eligibility::Amount.new,
+          Check::Eligibility::Location.new,
+          Check::Eligibility::OrgIncome.new,
+          Check::Eligibility::OrgType.new,
+          Check::Eligibility::Quiz.new(assessment.proposal, assessment.funder.funds)
+        ]
+      )
+      assessment.proposal.update_columns(
+        eligibility: check_eligibility.call_each(assessment.proposal, assessment.funder.funds)
+      )
     end
 end

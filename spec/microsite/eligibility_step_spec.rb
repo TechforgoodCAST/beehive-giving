@@ -32,18 +32,29 @@ describe EligibilityStep do
     expect(subject.answers_for('Prop')).to eq []
   end
 
+  it 'valid answers saved' do
+    expect(answer.persisted?)
+  end
+
+  it 'does not create duplicate answers' do
+    expect(answer).not_to eq dup_answer
+  end
+
+  it 'displays existing answer.eligible' do
+    expect(answer.eligible).to eq true
+  end
+
   context 'with Assessment' do
-    let(:recipient) { build(:recipient) }
     let(:restriction) { build(:restriction) }
-    let(:funder) { instance_double(Funder, restrictions: [restriction]) }
     let(:assessment) do
       instance_double(
         Assessment,
-        recipient: recipient,
+        recipient: build(:recipient),
         proposal: build(:proposal, id: 1),
-        funder: funder
+        funder: instance_double(Funder, restrictions: [restriction])
       )
     end
+    let(:answers) { { restriction.id.to_s => { 'eligible' => true } } }
 
     before do
       subject.assign_attributes(
@@ -56,7 +67,7 @@ describe EligibilityStep do
         income_band: 0, # Less than 10k
         employees: 0, # None
         volunteers: 0, # None
-        answers: { restriction.id.to_s => { 'eligible' => true } }
+        answers: answers
       )
     end
 
@@ -73,17 +84,41 @@ describe EligibilityStep do
       expect(subject.answers_for('Proposal').size).to eq 1
     end
 
-    it '#save updates Recipient' do
-      subject.save
-      expect(recipient.name).to eq 'Charity name'
-    end
+    context '#save' do
+      let(:assessment) do
+        @app.seed_test_db
+            .create_recipient
+            .create_registered_proposal
+            .setup_funds
 
-    it '#save updates runs eligibility check and updates Proposal' do
-      expect(subject.proposal.eligibility).not_to eq result
-    end
+        instance_double(
+          Assessment,
+          recipient: Recipient.last,
+          proposal: Proposal.last,
+          funder: Funder.last
+        )
+      end
 
-    it '#save updates Assessment' do
-      expect(subject.assessment.state).to eq 'results'
+      let(:answers) do
+        Funder.last.restrictions.map do |r|
+          [r.id.to_s, { 'eligible' => true }]
+        end.to_h
+      end
+
+      it 'updates Recipient' do
+        subject.save
+        expect(Recipient.last.name).to eq 'Charity name'
+      end
+
+      it 'updates runs eligibility check and updates Proposal' do
+        subject.save
+        expect(subject.assessment.proposal.eligibility[Fund.first.slug])
+          .to have_key 'quiz'
+      end
+
+      it '#save updates Assessment' do
+        expect(subject.assessment.state).to eq 'results'
+      end
     end
   end
 end
