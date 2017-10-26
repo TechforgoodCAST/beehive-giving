@@ -210,7 +210,7 @@ class Proposal < ApplicationRecord
       [0.5, 1], # fair suitability
       [1.0, 2], # suitable
     ].each do |v|
-      v[1] if score <= (v[0] * scale)
+      return v[1] if score <= (v[0] * scale)
     end
   end
 
