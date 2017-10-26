@@ -154,7 +154,8 @@ class Proposal < ApplicationRecord
   end
 
   def update_legacy_suitability
-    initial_recommendation if suitability.all_values_for('total').empty?
+    # TODO: refactor
+    initial_recommendation unless suitability.key?(Fund.last&.slug)
   end
 
   def suitable_funds
@@ -162,15 +163,15 @@ class Proposal < ApplicationRecord
   end
 
   def eligible_funds
-    eligibility.select{|f, _| eligible_status(f) == 1}
+    eligibility.select { |f, _| eligible_status(f) == 1 }
   end
 
   def ineligible_funds
-    eligibility.select{|f, _| eligible_status(f) == 0}
+    eligibility.select { |f, _| eligible_status(f).zero? }
   end
 
   def to_check_funds
-    eligibility.select{|f, _| eligible_status(f) == -1}
+    eligibility.select { |f, _| eligible_status(f) == -1 }
   end
 
   def eligible?(fund_slug)
@@ -193,7 +194,7 @@ class Proposal < ApplicationRecord
 
   def ineligible_reasons(fund_slug)
     return [] if eligible?(fund_slug)
-    return eligibility[fund_slug].select{ |r, e| e['eligible'] == false }.keys
+    eligibility[fund_slug].select { |_r, e| e['eligible'] == false }.keys
   end
 
   def ineligible_fund_ids # TODO: refactor
@@ -201,20 +202,19 @@ class Proposal < ApplicationRecord
   end
 
   def suitable?(fund_slug, scale = 1)
-    score = suitability[fund_slug]&.dig("total")
-    return -1 if score == nil
+    score = suitability[fund_slug]&.dig('total')
+    return -1 if score.nil?
     scale = score > 1 ? score.ceil : 1
     [
       [0.2, 0], # unsuitable
       [0.5, 1], # fair suitability
       [1.0, 2], # suitable
     ].each do |v|
-        return v[1] if score <= (v[0] * scale)
+      return v[1] if score <= (v[0] * scale)
     end
   end
 
   def suitable_status(fund_slug)
-    # return -1 unless suitability[fund_slug]&.key?('quiz') # check
     suitable?(fund_slug)
   end
 
