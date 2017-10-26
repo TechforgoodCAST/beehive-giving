@@ -154,7 +154,8 @@ class Proposal < ApplicationRecord
   end
 
   def update_legacy_suitability
-    initial_recommendation if suitability.all_values_for('total').empty?
+    # TODO: refactor
+    initial_recommendation unless eligibility.key?(Fund.last.slug)
   end
 
   def suitable_funds
