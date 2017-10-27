@@ -79,8 +79,7 @@ describe EligibilityStep do
             .create_registered_proposal
             .setup_funds
 
-        instance_double(
-          Assessment,
+        Assessment.create!(
           recipient: Recipient.last,
           proposal: Proposal.last,
           funder: Funder.last
@@ -124,6 +123,7 @@ describe EligibilityStep do
       end
 
       it '#save updates Assessment' do
+        subject.save
         expect(subject.assessment.state).to eq 'results'
       end
     end

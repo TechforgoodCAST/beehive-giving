@@ -31,8 +31,7 @@ class EligibilityStep
 
   def save
     if valid?
-      save_recipient! && save_proposal!
-      # TODO: update assessment state
+      save_assessment! if save_recipient! && save_proposal!
     else
       false
     end
@@ -100,5 +99,9 @@ class EligibilityStep
       assessment.proposal.update_columns(
         eligibility: check_eligibility.call_each(assessment.proposal, assessment.funder.funds)
       )
+    end
+
+    def save_assessment!
+      assessment.update(state: 'results')
     end
 end
