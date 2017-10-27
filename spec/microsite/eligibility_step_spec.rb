@@ -32,18 +32,6 @@ describe EligibilityStep do
     expect(subject.answers_for('Prop')).to eq []
   end
 
-  it 'valid answers saved' do
-    expect(answer.persisted?)
-  end
-
-  it 'does not create duplicate answers' do
-    expect(answer).not_to eq dup_answer
-  end
-
-  it 'displays existing answer.eligible' do
-    expect(answer.eligible).to eq true
-  end
-
   context 'with Assessment' do
     let(:restriction) { build(:restriction) }
     let(:assessment) do
@@ -76,8 +64,8 @@ describe EligibilityStep do
     end
 
     it '#answers=' do
-      subject.answers = { restriction.id.to_s => { 'eligible' => true } }
-      expect(subject.answers.first).to have_attributes(eligible: true)
+      subject.answers = { restriction.id.to_s => { 'eligible' => false } }
+      expect(subject.answers.first).to have_attributes(eligible: false)
     end
 
     it '#answers_for' do
@@ -103,6 +91,25 @@ describe EligibilityStep do
         Funder.last.restrictions.map do |r|
           [r.id.to_s, { 'eligible' => true }]
         end.to_h
+      end
+
+      it 'valid answers saved' do
+        subject.valid?
+        expect(Answer.count).to eq 5
+      end
+
+      it 'displays existing answer.eligible' do
+        subject.valid?
+        expect(subject.answers.first).to have_attributes(eligible: true)
+      end
+
+      it 'does not create duplicate answers' do
+        subject.valid?
+        expect(Answer.count).to eq 5
+
+        subject.answers = answers.each { |_, v| v['eligible'] = false }
+        expect(subject.answers.first).to have_attributes(eligible: false)
+        expect(Answer.count).to eq 5
       end
 
       it 'updates Recipient' do

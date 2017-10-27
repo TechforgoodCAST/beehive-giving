@@ -22,7 +22,7 @@ class EligibilityStep
   validate :validate_answers
 
   def attributes
-    self.class.attrs.map { |a| [a, send(a)] }.to_h
+    self.class.attrs.map { |a| [a, send(a)] }.to_h.merge(answers: answers)
   end
 
   def answers_for(category)
@@ -42,20 +42,34 @@ class EligibilityStep
 
     def build_answers(updates = {})
       return [] unless assessment
-      assessment.funder.restrictions.map do |criterion|
-        answer = load_answer(criterion)
-        if answer.eligible.nil?
-          answer.eligible = updates.dig(criterion.id.to_s, 'eligible')
-        end
+
+      criteria = assessment.funder.restrictions
+      answers = persisted_answers(criteria)
+
+      criteria.map do |criterion|
+        answer = answers[criterion.id] || new_answer(criterion)
+        update_answer(updates, criterion, answer)
         answer
       end
     end
 
-    def load_answer(criterion)
-      Answer.where(
+    def update_answer(updates, criterion, answer)
+      update = updates.dig(criterion.id.to_s, 'eligible')
+      answer.eligible = update.nil? ? answer.eligible : update
+    end
+
+    def persisted_answers(criteria)
+      Answer.includes(:criterion).where(
+        category: [assessment.recipient, assessment.proposal],
+        criterion: criteria.pluck(:id)
+      ).map { |a| [a.criterion_id, a] }.to_h
+    end
+
+    def new_answer(criterion)
+      Answer.new(
         category: lookup_category(criterion.category),
         criterion: criterion
-      ).first_or_initialize
+      )
     end
 
     def lookup_category(category_type)
@@ -69,7 +83,7 @@ class EligibilityStep
     end
 
     def save_recipient!
-      assessment.recipient.update(attributes.except(:assessment))
+      assessment.recipient.update(attributes.except(:assessment, :answers))
     end
 
     def save_proposal!
