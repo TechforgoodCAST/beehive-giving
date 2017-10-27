@@ -39,10 +39,22 @@ class EligibilityStep
 
   private
 
+    def funder
+      assessment&.funder
+    end
+
+    def proposal
+      assessment&.proposal
+    end
+
+    def recipient
+      assessment&.recipient
+    end
+
     def build_answers(updates = {})
       return [] unless assessment
 
-      criteria = assessment.funder.restrictions
+      criteria = funder.restrictions
       answers = persisted_answers(criteria)
 
       criteria.map do |criterion|
@@ -59,7 +71,7 @@ class EligibilityStep
 
     def persisted_answers(criteria)
       Answer.includes(:criterion).where(
-        category: [assessment.recipient, assessment.proposal],
+        category: [recipient, proposal],
         criterion: criteria.pluck(:id)
       ).map { |a| [a.criterion_id, a] }.to_h
     end
@@ -72,7 +84,7 @@ class EligibilityStep
     end
 
     def lookup_category(category_type)
-      category_type == 'Recipient' ? assessment.recipient : assessment.proposal
+      category_type == 'Recipient' ? recipient : proposal
     end
 
     def validate_answers
@@ -82,23 +94,13 @@ class EligibilityStep
     end
 
     def save_recipient!
-      assessment.recipient.update(attributes.except(:assessment, :answers))
+      recipient.update(attributes.except(:assessment, :answers))
     end
 
     def save_proposal!
-      # TODO: refactor with factory
-      check_eligibility = Check::Each.new(
-        [
-          Check::Eligibility::Amount.new,
-          Check::Eligibility::Location.new,
-          Check::Eligibility::OrgIncome.new,
-          Check::Eligibility::OrgType.new,
-          Check::Eligibility::Quiz.new(assessment.proposal, assessment.funder.funds)
-        ]
-      )
-      assessment.proposal.update_columns(
-        eligibility: check_eligibility.call_each(assessment.proposal, assessment.funder.funds)
-      )
+      eligibility = CheckEligibilityFactory.new(proposal, funder.funds)
+                                           .call_each(proposal, funder.funds)
+      proposal.update_column(:eligibility, eligibility)
     end
 
     def save_assessment!
