@@ -55,16 +55,16 @@ feature 'Match' do
   def expect_charity_scrape
     expect(page).to have_selector("input[value='Centre For The Acceleration " \
                                   "Of Social Technology']")
-    expect(page).to have_text "can't be blank", count: 4
+    expect(page).to have_text "can't be blank", count: 2
     self
   end
 
-  def expect_company_lookup
+  def expect_company_lookup(count: 1)
     expect(page).to have_selector("input[value='Centre For The Acceleration " \
                                   "Of Social Technology']")
     expect(find_field(:recipient_country).value).to eq 'GB'
     expect(find_field(:recipient_operating_for).value).to eq '2'
-    expect(page).to have_text "can't be blank", count: 3
+    expect(page).to have_text "can't be blank", count: count
     self
   end
 
@@ -92,7 +92,7 @@ feature 'Match' do
             so I feel confident my results will be accurate' do
     helper.fill_user_form(seeking: 'A registered company')
           .submit_user_form
-    expect_company_lookup
+    expect_company_lookup(count: 3)
   end
 
   scenario 'When I sign up as both a charity and company,

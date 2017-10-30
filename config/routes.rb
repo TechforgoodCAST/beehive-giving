@@ -87,9 +87,9 @@ Rails.application.routes.draw do
   post '/:slug/basics',            to: 'microsites#check_basics'
   get  '/:slug/eligibility/(:id)', to: 'microsites#eligibility', as: 'microsite_eligibility'
   post '/:slug/eligibility/:id',   to: 'microsites#check_eligibility'
-  get  '/:slug/suitability/(:id)', to: 'microsites#eligibility', as: 'microsite_suitability'
-  post '/:slug/suitability/:id',   to: 'microsites#check_eligibility'
-  # get '/:funder/pre-results'
+  # get  '/:slug/suitability/(:id)', to: 'microsites#suitability', as: 'microsite_suitability'
+  # post '/:slug/suitability/:id',   to: 'microsites#check_suitability'
+  get  '/:slug/pre-results/(:id)', to: 'microsites#pre_results', as: 'microsite_pre_results'
   # get '/:funder/results'
 
   # Webhooks

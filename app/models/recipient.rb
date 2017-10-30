@@ -19,8 +19,12 @@ class Recipient < ApplicationRecord
                    if: :street_address_changed?,
                    unless: ->(o) { o.country != 'GB' }
 
-  validates :charity_number, uniqueness: { scope: :company_number }
-  validates :company_number, uniqueness: { scope: :charity_number }
+  validates :charity_number,
+            uniqueness: { scope: :company_number },
+            allow_blank: true
+  validates :company_number,
+            uniqueness: { scope: :charity_number },
+            allow_blank: true
 
   validates :website, format: {
     with: URI.regexp(%w[http https]),
@@ -182,7 +186,7 @@ class Recipient < ApplicationRecord
         if company_no_scrape.present?
           self.company_number = company_no_scrape
                                 .text
-                                .strip.sub(/Company no. 0|Company no. /, '0')
+                                .gsub(/\s+/, '').sub('Companyno.', '')
         end
 
         self.name = name_scrape.text if name_scrape.present?

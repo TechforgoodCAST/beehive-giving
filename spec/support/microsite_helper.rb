@@ -14,4 +14,11 @@ class MicrositeHelper
     click_button 'Next'
     self
   end
+
+  def submit_eligibility_step
+    select 'Less than 3 years'
+    select '1 - 5', from: :eligibility_step_volunteers
+    click_button 'Next'
+    self
+  end
 end

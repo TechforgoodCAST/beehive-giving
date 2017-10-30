@@ -34,15 +34,19 @@ class MicrositesController < ApplicationController
     @recipient = @assessment.recipient
     @recipient.valid?
 
-    @microsite = Microsite.new(EligibilityStep.new({ assessment: @assessment }.merge(eligibility_params)))
+    @microsite = Microsite.new(EligibilityStep.new(@recipient.attributes.slice(*recipient_attrs).merge({ assessment: @assessment }).merge(eligibility_params)))
     @recipient_answers = @microsite.step.answers_for('Recipient')
     @proposal_answers = @microsite.step.answers_for('Proposal')
 
     if @microsite.save
-      redirect_to microsite_suitability_path @funder, @microsite.step.assessment
+      redirect_to microsite_pre_results_path @funder, @microsite.step.assessment
     else
       render :eligibility
     end
+  end
+
+  def pre_results
+    # TODO: implement
   end
 
   private

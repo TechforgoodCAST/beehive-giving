@@ -1,4 +1,5 @@
 class EligibilityStep
+  extend SetterToInteger
   include ActiveModel::Model
   include RecipientValidations
   include RegNoValidations
@@ -18,6 +19,8 @@ class EligibilityStep
   def answers=(answers)
     @answers = build_answers(answers)
   end
+
+  to_integer :org_type, :income_band, :operating_for, :employees, :volunteers
 
   validate :validate_answers
 

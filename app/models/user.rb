@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  extend SetterToInteger
   include RegNoValidations
 
   scope :recipient, -> { where organisation_type: 'Recipient' }
@@ -35,13 +36,11 @@ class User < ApplicationRecord
                       message: 'Must include 6 characters with 1 number' },
             on: %i[create update]
 
+  to_integer :org_type
+
   before_create { generate_token(:auth_token) }
 
   has_secure_password
-
-  def org_type=(str)
-    @org_type = str.present? ? str.to_i : ''
-  end
 
   def first_name=(s)
     self[:first_name] = s.to_s.strip.capitalize

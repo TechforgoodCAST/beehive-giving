@@ -2,11 +2,17 @@ require 'rails_helper'
 require 'shared/recipient_validations'
 require 'shared/reg_no_validations'
 require 'shared/org_type_validations'
+require 'shared/setter_to_integer'
 
 describe EligibilityStep do
   include_examples 'recipient validations'
   include_examples 'reg no validations'
   include_examples 'org_type validations'
+  include_examples 'setter to integer' do
+    let(:attributes) do
+      %i[org_type income_band operating_for employees volunteers]
+    end
+  end
 
   let(:attrs) do
     %i[

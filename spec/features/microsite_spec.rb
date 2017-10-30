@@ -40,7 +40,11 @@ feature 'Microsite' do
       assessment = Assessment.last
       expect(current_path).to eq microsite_eligibility_path(@funder, assessment)
 
-      # TODO: eligibility to results steps
+      # TODO: no eligibility questions
+      user.submit_eligibility_step
+      expect(current_path).to eq microsite_pre_results_path(@funder, assessment)
+
+      user.submit_pre_results
       expect(current_path).to eq microsite_results_path(@funder, assessment)
     end
 

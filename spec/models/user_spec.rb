@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'shared/reg_no_validations'
+require 'shared/setter_to_integer'
 
 describe User do
   before(:each) do
@@ -11,6 +12,10 @@ describe User do
 
   include_examples 'reg no validations' do
     subject { @user }
+  end
+
+  include_examples 'setter to integer' do
+    let(:attributes) { [:org_type] }
   end
 
   it 'belongs to Recipient' do

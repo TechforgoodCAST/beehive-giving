@@ -53,7 +53,7 @@
             .mb20
               %label.block.fs15.bold.mb10 Street address
               = f.input :street_address
-          - if @recipient.errors.added?(:income, :blank)
+          - if @recipient.errors.added?(:income_band, :blank)
             .mb20
               %label.block.fs15.bold.mb10 What is the annual income of your organisation or project?
               = f.input :income_band, collection: INCOME_BANDS
