@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe PreResultsStep do
   let(:recipient) {}
-  let(:assessment) { Assessment.new(recipient: recipient) }
+  let(:funder) { create(:funder, name: 'Funder Name') }
+  let(:assessment) { Assessment.new(id: 1, recipient: recipient, funder: funder) }
 
   context '#email' do
     it 'required' do
@@ -16,12 +17,6 @@ describe PreResultsStep do
     end
   end
 
-  it '#save creates User' do
-    subject.email = 'email@example.com'
-    subject.save
-    expect(User.count).to eq 1
-  end
-
   context 'existing User' do
     let(:user) { create(:user) }
 
@@ -32,26 +27,27 @@ describe PreResultsStep do
     end
   end
 
-  context 'existing Recipient' do
-    let(:recipient) { create(:recipient) }
-
-    it '#save associates User' do
+  context '#save' do
+    before do
       subject.assessment = assessment
       subject.email = 'email@example.com'
       subject.save
-      expect(User.last.organisation).to eq recipient
     end
-  end
 
-  it '#save updates Assessment' do
-    subject.assessment = assessment
-    subject.email = 'email@example.com'
-    subject.save
-    expect(assessment.state).to eq 'results'
-  end
+    it 'creates User' do
+      expect(User.count).to eq 1
+    end
 
-  it '#save triggers email' do
-    subject.save
-    expect(deliveries.count).to eq 1
+    it 'updates Assessment' do
+      expect(assessment.state).to eq 'results'
+    end
+
+    context 'existing Recipient' do
+      let(:recipient) { create(:recipient) }
+
+      it 'associates User' do
+        expect(User.last.organisation).to eq recipient
+      end
+    end
   end
 end

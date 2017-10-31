@@ -25,6 +25,9 @@ class PreResultsStep
 
     def save_assessment!
       return false unless assessment
-      assessment.update(state: 'results')
+      assessment.update(
+        state: 'results',
+        access_token: SecureRandom.urlsafe_base64
+      )
     end
 end

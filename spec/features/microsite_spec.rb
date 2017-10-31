@@ -46,6 +46,8 @@ feature 'Microsite' do
 
       user.submit_pre_results
       expect(current_path).to eq microsite_results_path(@funder, assessment)
+      expect(ActionMailer::Base.deliveries.last.subject)
+        .to eq "[Results] Should you apply to #{@funder.name}?"
     end
 
     scenario 'signed in' do
@@ -134,15 +136,18 @@ feature 'Microsite' do
           expect(current_path).to eq path
         end
       end
-    end
 
-    context 'results' do
-      scenario 'valid token grants access' do
-        expect(current_path).to eq microsite_results_path(@funder, assessment)
-      end
+      context 'results' do
+        scenario 'valid token grants access' do
+          assessment.update(state: 'results', access_token: 'secret')
+          visit microsite_results_path(@funder, assessment, t: assessment.access_token)
+          expect(current_path).to eq microsite_results_path(@funder, assessment)
+        end
 
-      scenario 'invalid token denies access' do
-        expect(current_path).to eq microsite_basics_path(@funder)
+        scenario 'invalid token denies access' do
+          visit microsite_results_path(@funder, 1)
+          expect(current_path).to eq microsite_basics_path(@funder)
+        end
       end
     end
   end

@@ -39,7 +39,7 @@ class MicrositesController < ApplicationController
     @proposal_answers = @microsite.step.answers_for('Proposal')
 
     if @microsite.save
-      redirect_to microsite_pre_results_path @funder, @microsite.step.assessment
+      redirect_to microsite_pre_results_path(@funder, @assessment)
     else
       render :eligibility
     end
@@ -52,22 +52,26 @@ class MicrositesController < ApplicationController
   def check_pre_results # TODO: refactor
     @microsite = Microsite.new(PreResultsStep.new({ assessment: @assessment }.merge(pre_results_params)))
     if @microsite.save
-      redirect_to microsite_results_path @funder, @assessment
+      MicrositeMailer.results(pre_results_params[:email], @funder, @assessment).deliver_now
+      redirect_to microsite_results_path(@funder, @assessment, t: @assessment.access_token)
     else
       render :pre_results
     end
   end
 
-  def results; end
+  def results
+    return if params[:t] == @assessment.access_token
+    redirect_to microsite_basics_path(@funder)
+  end
 
   private
 
     def load_funder
-      @funder = Funder.find_by slug: params[:slug]
+      @funder = Funder.find_by(slug: params[:slug])
     end
 
     def load_assessment
-      @assessment = Assessment.find_by id: params[:id], funder: @funder
+      @assessment = Assessment.find_by(id: params[:id], funder: @funder)
     end
 
     def basics_params
