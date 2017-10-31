@@ -18,8 +18,7 @@ describe Proposal do
       @app.create_initial_proposal
       proposal = @app.instances[:initial_proposal]
       {
-        'basics'      => 'eligibility',
-        'eligibility' => 'registered',
+        'basics'      => 'initial',
         'initial'     => 'registered',
         'transferred' => 'registered',
         'registered'  => 'complete',

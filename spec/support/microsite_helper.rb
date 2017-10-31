@@ -21,4 +21,10 @@ class MicrositeHelper
     click_button 'Next'
     self
   end
+
+  def submit_pre_results
+    fill_in :pre_results_step_email, with: 'email@example.com'
+    click_button 'Next'
+    self
+  end
 end

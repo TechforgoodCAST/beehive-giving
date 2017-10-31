@@ -103,10 +103,11 @@ class EligibilityStep
     def save_proposal!
       eligibility = CheckEligibilityFactory.new(proposal, funder.funds)
                                            .call_each(proposal, funder.funds)
+      proposal.next_step!
       proposal.update_column(:eligibility, eligibility)
     end
 
     def save_assessment!
-      assessment.update(state: 'results')
+      assessment.update(state: 'pre_results')
     end
 end

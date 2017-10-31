@@ -1,7 +1,7 @@
 class MicrositesController < ApplicationController
   before_action :load_funder, :load_assessment
   before_action :ensure_funder
-  before_action only: %i[basics eligibility] do
+  before_action only: %i[basics eligibility pre_results results] do
     start_path(@funder, @assessment)
   end
 
@@ -34,7 +34,7 @@ class MicrositesController < ApplicationController
     @recipient = @assessment.recipient
     @recipient.valid?
 
-    @microsite = Microsite.new(EligibilityStep.new(@recipient.attributes.slice(*recipient_attrs).merge({ assessment: @assessment }).merge(eligibility_params)))
+    @microsite = Microsite.new(EligibilityStep.new(@recipient.attributes.slice(*recipient_attrs).merge(assessment: @assessment).merge(eligibility_params)))
     @recipient_answers = @microsite.step.answers_for('Recipient')
     @proposal_answers = @microsite.step.answers_for('Proposal')
 
@@ -46,8 +46,19 @@ class MicrositesController < ApplicationController
   end
 
   def pre_results
-    # TODO: implement
+    @microsite = Microsite.new(PreResultsStep.new(assessment: @assessment))
   end
+
+  def check_pre_results # TODO: refactor
+    @microsite = Microsite.new(PreResultsStep.new({ assessment: @assessment }.merge(pre_results_params)))
+    if @microsite.save
+      redirect_to microsite_results_path @funder, @assessment
+    else
+      render :pre_results
+    end
+  end
+
+  def results; end
 
   private
 
@@ -71,6 +82,10 @@ class MicrositesController < ApplicationController
             .permit(*recipient_attrs, answers: %w[eligible])
     end
 
+    def pre_results_params
+      params.require(:pre_results_step).permit(:email)
+    end
+
     def recipient_attrs
       %w[charity_number company_number name country street_address org_type
          income_band operating_for employees volunteers]
@@ -86,14 +101,8 @@ class MicrositesController < ApplicationController
     end
 
     def start_path(funder, assessment)
-      return unless should_redirect? assessment
-      case assessment&.state
-      when 'eligibility'
-        redirect_to microsite_eligibility_path funder, assessment
-      when 'suitability'
-        redirect_to microsite_suitability_path funder, assessment
-      else
-        redirect_to microsite_basics_path
-      end
+      return unless should_redirect?(assessment)
+      action = assessment&.state || 'basics'
+      redirect_to send("microsite_#{action}_path", funder, assessment)
     end
 end

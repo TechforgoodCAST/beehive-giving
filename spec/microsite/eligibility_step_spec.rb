@@ -130,7 +130,7 @@ describe EligibilityStep do
 
       it '#save updates Assessment' do
         subject.save
-        expect(subject.assessment.state).to eq 'results'
+        expect(subject.assessment.state).to eq 'pre_results'
       end
     end
   end

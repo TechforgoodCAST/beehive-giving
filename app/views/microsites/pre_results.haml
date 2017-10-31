@@ -1,1 +1,13 @@
-%h1 Add Email to see results...
+%main
+  .maxw1080.mx-auto.px20.flex.flex-wrap
+    %aside.perc25.md.px20.mb40
+      Progress
+
+    %section.perc75.md.mb80.px20
+      %h1.mb40= @funder.name
+
+      = simple_form_for @microsite.step, url: microsite_pre_results_path(@funder, @assessment) do |f|
+        .mb20
+          %label.block.fs15.bold.mb10 Add Email to see results...
+          = f.input :email, as: :email
+        = f.button :button, 'Next', class: 'button white bg-olive caps truncate', data: { disable_with: 'Saving...' }

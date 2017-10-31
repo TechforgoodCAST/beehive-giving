@@ -34,7 +34,7 @@ feature 'Microsite' do
     end
 
     scenario 'new assessment' do
-      visit microsite_basics_path @funder
+      visit microsite_basics_path(@funder)
       user.submit_basics_step
 
       assessment = Assessment.last
@@ -55,12 +55,12 @@ feature 'Microsite' do
     end
 
     scenario 'existing recipient' do
-      visit microsite_basics_path @funder
+      visit microsite_basics_path(@funder)
       user.submit_basics_step
 
       existing_recipient = Recipient.last
 
-      visit microsite_basics_path @funder
+      visit microsite_basics_path(@funder)
       user.submit_basics_step
 
       expect(Assessment.last.recipient).to eq existing_recipient
@@ -84,10 +84,10 @@ feature 'Microsite' do
     scenario 'assessment per funder' do
       funder2 = create(:funder)
 
-      visit microsite_basics_path @funder
+      visit microsite_basics_path(@funder)
       user.submit_basics_step
 
-      visit microsite_basics_path funder2
+      visit microsite_basics_path(funder2)
       user.submit_basics_step
 
       expect(@funder.assessments.size).to eq 1
@@ -95,13 +95,55 @@ feature 'Microsite' do
     end
 
     scenario 'new assessment and proposal per unique request' do
-      visit microsite_basics_path @funder
+      visit microsite_basics_path(@funder)
       user.submit_basics_step
 
-      visit microsite_basics_path @funder
+      visit microsite_basics_path(@funder)
       user.submit_basics_step total_costs: 12_345
 
       expect(Recipient.last.assessments.size).to eq 2
+    end
+
+    scenario 'no assessment redirects to basics path' do
+      visit microsite_results_path(@funder, 'missing')
+      expect(current_path).to eq microsite_basics_path(@funder)
+    end
+
+    context 'existing assessment' do
+      let(:assessment) do
+        @app.seed_test_db
+            .create_recipient
+            .create_registered_proposal
+            .setup_funds
+
+        Assessment.create!(
+          recipient: Recipient.last,
+          proposal: Proposal.last,
+          funder: @funder
+        )
+      end
+
+      scenario 'redirects to correct path' do
+        {
+          'eligibility' => microsite_eligibility_path(@funder, assessment),
+          'pre_results' => microsite_pre_results_path(@funder, assessment),
+          'results'     => microsite_results_path(@funder, assessment)
+        }.each do |state, path|
+          assessment.update_column(:state, state)
+          visit microsite_results_path(@funder, assessment)
+          expect(current_path).to eq path
+        end
+      end
+    end
+
+    context 'results' do
+      scenario 'valid token grants access' do
+        expect(current_path).to eq microsite_results_path(@funder, assessment)
+      end
+
+      scenario 'invalid token denies access' do
+        expect(current_path).to eq microsite_basics_path(@funder)
+      end
     end
   end
 end

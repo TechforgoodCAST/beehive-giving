@@ -33,10 +33,7 @@ class Proposal < ApplicationRecord
   workflow_column :state
   workflow do
     state :basics do
-      event :next_step, transitions_to: :eligibility
-    end
-    state :eligibility do
-      event :next_step, transitions_to: :registered
+      event :next_step, transitions_to: :initial
     end
     state :initial do
       event :next_step, transitions_to: :registered

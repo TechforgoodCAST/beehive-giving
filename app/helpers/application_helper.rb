@@ -15,7 +15,7 @@ module ApplicationHelper
       eligibilities: %i[new],
       enquiries: %i[new],
       errors: %i[not_found gone internal_server_error],
-      microsites: %i[basics check_basics eligibility check_eligibility],
+      microsites: %i[basics check_basics eligibility check_eligibility pre_results check_pre_results results],
       # feedback: %i[edit new],
       funds: %i[index themed show hidden],
       pages: %i[about faq forfunders privacy terms], # preview?
