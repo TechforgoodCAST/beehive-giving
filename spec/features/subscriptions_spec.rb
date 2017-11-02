@@ -130,7 +130,7 @@ feature 'Subscriptions' do
       scenario 'shows expiry date' do
         click_link 'Continue'
         expect(page).to have_text 'Pro plan which expires on ' +
-                                  1.year.since.strftime('%d %b %Y')
+                                  1.year.since.strftime('%-d %b %Y')
       end
 
       scenario 'webhook invoice-payment-succeeded', type: :request do

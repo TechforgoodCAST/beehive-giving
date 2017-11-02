@@ -35,7 +35,9 @@
         .mb20.flex.flex-wrap
           = cell(:eligibility, @proposal, fund: @fund).call(:analysis)
           = cell(:suitability, @proposal, fund: @fund).call(:analysis)
-          = cell(:application, @proposal, fund: @fund).call(:analysis)
+          = cell(:application, @proposal, fund: @fund, 
+                  show_fund: policy(FundContext.new(@fund, @proposal)).show?,
+                  current_user: @current_user).call(:analysis)
       
       %hr.my40
 

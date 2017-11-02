@@ -143,11 +143,11 @@ feature 'Eligibility' do
       helper.answer_restrictions(@fund).check_eligibility
             .answer_priorities(@fund).check_suitability
 
-      click_link 'Apply >'
+      click_link 'Apply ❯'
       expect(current_path).to eq apply_proposal_fund_path(@proposal, @fund)
 
       visit proposal_fund_path(@proposal, @fund)
-      click_link 'Apply >'
+      click_link 'Apply ❯'
       expect(current_path).to eq apply_proposal_fund_path(@proposal, @fund)
     end
 
@@ -163,7 +163,7 @@ feature 'Eligibility' do
 
       helper.answer_restrictions(@fund).check_eligibility
       expect(page).to have_text 'Apply'
-      expect(page).to have_text 'Apply >'
+      expect(page).to have_text 'Apply ❯'
 
       # TODO: No feedback for unlocked funds
     end

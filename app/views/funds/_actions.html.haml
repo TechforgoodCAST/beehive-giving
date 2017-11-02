@@ -5,4 +5,6 @@
   = cell(:suitability, @proposal, fund: fund).call(:index)
 
 %section.fs12.mt20.lh14
-  = cell(:application, @proposal, fund: fund).call(:index)
+  = cell(:application, @proposal, fund: fund, 
+          show_fund: policy(FundContext.new(fund, @proposal)).show?,
+          current_user: @current_user).call(:index)
