@@ -2,9 +2,9 @@
   nav.flex.items-center.px20.md
     = link_to 'Beehive', root_path, id: 'navbar-logo', alt: 'Beehive logo', class: type
 
-    - if model.present?
+    - if model&.organisation
       = link_to 'Dashboard', proposals_path, class: "#{type} ml35"
-      = link_to 'Pricing', account_subscription_path(model.organisation), class: "#{type} ml35" unless model.organisation.subscribed?
+      = link_to 'Pricing', account_subscription_path(model&.organisation), class: "#{type} ml35" unless model.organisation.subscribed?
       = link_to 'Sign out', logout_path, class: "#{type} ml35"
     - else
       = link_to 'About', about_path, class: "#{type} ml35"
