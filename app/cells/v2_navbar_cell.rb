@@ -1,6 +1,4 @@
 class V2NavbarCell < Cell::ViewModel
-  property :organisation
-
   def show
     render locals: { type: type }
   end
