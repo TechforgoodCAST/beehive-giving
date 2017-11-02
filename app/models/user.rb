@@ -87,7 +87,7 @@ class User < ApplicationRecord
   end
 
   def subscription
-    organisation.subscription
+    organisation&.subscription
   end
 
   def subscription_active?
@@ -95,7 +95,7 @@ class User < ApplicationRecord
   end
 
   def subscription_version
-    subscription.version
+    subscription ? subscription.version : 2
   end
 
   def reveals
