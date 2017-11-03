@@ -1,5 +1,9 @@
-ActiveAdmin.register Restriction do
-  permit_params :restriction, :details, :invert, :category
+ActiveAdmin.register Criterion do
+  permit_params :priority, :details, :invert, :category
+
+  filter :funds, input_html: { class: 'chosen-select' }
+  filter :category, as: :select, collection: %w[Proposal Recipient]
+  filter :type, as: :select, collection: %w[Restriction Priority]
 
   form do |f|
     f.inputs do
@@ -17,8 +21,8 @@ ActiveAdmin.register Restriction do
       row :invert
       row :category
     end
-    panel 'Funds with this restriction' do
-      table_for restriction.funds do
+    panel 'Funds with this priority' do
+      table_for priority.funds do
         column :slug
         column :funder
         column :name
@@ -31,6 +35,8 @@ ActiveAdmin.register Restriction do
   end
 
   index do
+    selectable_column
+    column :type
     column :details
     column :invert
     column :category
@@ -41,6 +47,7 @@ ActiveAdmin.register Restriction do
   end
 
   csv do
+    column :type
     column :details
     column :invert
     column :category
