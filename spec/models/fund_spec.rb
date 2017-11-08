@@ -10,6 +10,29 @@ describe Fund do
       @funder = @db[:funder]
     end
 
+    # state column
+    fcontext '#state' do
+      it 'defaults to initial' do
+        expect(subject.state).to eq 'initial'
+      end
+
+      it 'transitions' do
+        @app.create_initial_proposal
+        proposal = @app.instances[:initial_proposal]
+        {
+          'basics'      => 'initial',
+          'initial'     => 'registered',
+          'transferred' => 'registered',
+          'registered'  => 'complete',
+          'complete'    => 'complete'
+        }.each do |from, to|
+          proposal.state = from
+          proposal.next_step!
+          expect(proposal.state).to eq to
+        end
+      end
+    end
+
     it 'self.active' do
       Fund.last.update active: false
       expect(Fund.active.count).to eq 2
