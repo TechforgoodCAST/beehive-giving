@@ -1,27 +1,47 @@
-describe FundStub do
+fdescribe FundStub do
+  subject { FundStub.new(name: 'Main Fund', funder: funder, description: 'Desc') }
+  let(:funder) { build(:funder) }
+
   context 'single' do
-    before(:each) do
-      @app.seed_test_db
-          .setup_funds(num: 3)
-      @db = @app.instances
-      #   @fund = @db[:funds].first
-      @funder = @db[:funder]
+    it 'requires funder' do
+      subject.funder = nil
+      is_expected.not_to be_valid
     end
 
-    # needs name
+    it '#funder is Funder object' do
+      subject.funder = 'Funder'
+      is_expected.not_to be_valid
+    end
 
-    # name should be name of the funder
+    it 'requires name' do
+      subject.name = nil
+      is_expected.not_to be_valid
+    end
 
-    # requires a description
+    it 'belongs to funder' do
+      subject.funder = funder
+      expect(subject.funder.name).to eq funder.name
+    end
 
-    # requires themes
+    it 'requires description' do
+      subject.description = nil
+      is_expected.not_to be_valid
+    end
+
+    it 'requires themes' do
+      subject.themes = nil
+      is_expected.not_to be_valid
+    end
+
+    it 'themes is an Array' do
+      subject.themes = 'themes'
+      is_expected.not_to be_valid
+    end
 
     # geo_areas
 
     # permitted_costs is empty
 
     # other validations not needed
-
-
   end
 end
