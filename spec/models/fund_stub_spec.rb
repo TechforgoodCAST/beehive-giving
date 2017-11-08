@@ -1,4 +1,4 @@
-fdescribe FundStub do
+describe FundStub do
   subject { FundStub.new(name: 'Main Fund', funder: funder, description: 'Desc') }
   let(:funder) { build(:funder) }
 
@@ -47,9 +47,5 @@ fdescribe FundStub do
       subject.geo_area = 'Geo area'
       is_expected.not_to be_valid
     end
-
-    # permitted_costs is empty
-
-    # other validations not needed
   end
 end

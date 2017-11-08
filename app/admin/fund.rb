@@ -2,7 +2,7 @@ ActiveAdmin.register Fund do
   config.per_page = 100
 
   permit_params :funder_id, :type_of_fund, :name, :description, :open_call,
-                :active, :currency, :application_link, :key_criteria,
+                :state, :currency, :application_link, :key_criteria,
                 :restrictions_known, :skip_beehive_data, :open_data,
                 :period_start, :period_end, :grant_count, :amount_awarded_sum,
                 :amount_awarded_distribution, :award_month_distribution,
@@ -29,7 +29,7 @@ ActiveAdmin.register Fund do
   index do
     selectable_column
     column :slug
-    column :active
+    column :state
     column 'year end' do |o|
       o&.period_end&.strftime('%Y')
     end
@@ -50,7 +50,7 @@ ActiveAdmin.register Fund do
 
   filter :funder, input_html: { class: 'chosen-select' }
   filter :slug
-  filter :active
+  filter :state, as: :select
   filter :open_data
   filter :updated_at
   config.sort_order = 'updated_at_desc'
@@ -65,7 +65,7 @@ ActiveAdmin.register Fund do
       row :type_of_fund
       row :description do fund.description.html_safe end
       row :open_call
-      row :active
+      row :state
       row :currency
       row :application_link do
         "<a href=\"#{fund.application_link}\">#{fund.application_link}</a>".html_safe
@@ -145,7 +145,7 @@ ActiveAdmin.register Fund do
       f.input :name
       f.input :description
       f.input :open_call
-      f.input :active
+      f.input :state, as: :select, collection: Fund::STATES
       f.input :currency, input_html: { value: 'GBP' }
       f.input :application_link
       f.input :key_criteria

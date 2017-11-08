@@ -10,23 +10,21 @@ describe Fund do
       @funder = @db[:funder]
     end
 
-    # state column
-    fcontext '#state' do
+    context '#state' do
       it 'defaults to draft' do
         expect(subject.state).to eq 'draft'
       end
-      
+
       it 'state is in list' do
-        subject.state = "Not valid state"
-        is_expected.not_to be_valid
+        @fund.state = 'Not valid state'
+        expect(@fund).not_to be_valid
       end
-      
+
       it 'self.active' do
         Fund.last.update state: 'inactive'
         expect(Fund.active.count).to eq 2
       end
     end
-
 
     context 'self.order_by' do
       before(:each) do

@@ -5,7 +5,7 @@ FactoryGirl.define do
     sequence(:name) { |n| "Awards for All #{n}" }
     description 'Some description of the fund.'
     open_call true
-    active true
+    state 'active'
     currency 'GBP'
     key_criteria '<p>E.g. Local charitable organisations are viewed more favourably than large national organisations.</p><p>Grants can be used for:</p><ul><li>Projects that meet the needs of communities experiencing high levels of deprivation.</li></ul>'
     application_link 'http://www.example.org/'

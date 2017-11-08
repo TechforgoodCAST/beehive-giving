@@ -1,9 +1,11 @@
 class Fund < ApplicationRecord
   include ActionView::Helpers::NumberHelper
 
-  scope :active, -> { where(active: true) }
+  scope :active, -> { where(state: 'active') }
   scope :newer_than, ->(date) { where('updated_at > ?', date) }
   scope :recent, -> { order updated_at: :desc }
+
+  STATES = %w[active inactive draft stub]
 
   belongs_to :funder
 
@@ -24,8 +26,10 @@ class Fund < ApplicationRecord
             :key_criteria, :application_link, :themes,
             presence: true
 
-  validates :open_call, :active, :restrictions_known,
+  validates :open_call, :restrictions_known,
             inclusion: { in: [true, false] }
+
+  validates :state, inclusion: { in: STATES }
 
   validates :name, uniqueness: { scope: :funder }
 
