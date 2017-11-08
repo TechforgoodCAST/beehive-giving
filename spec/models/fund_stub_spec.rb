@@ -38,7 +38,15 @@ fdescribe FundStub do
       is_expected.not_to be_valid
     end
 
-    # geo_areas
+    it 'requires geo_area' do
+      subject.geo_area = nil
+      is_expected.not_to be_valid
+    end
+
+    it '#geo_area is GeoArea object' do
+      subject.geo_area = 'Geo area'
+      is_expected.not_to be_valid
+    end
 
     # permitted_costs is empty
 

@@ -1,18 +1,26 @@
 class FundStub
   include ActiveModel::Model
 
-  attr_accessor :funder, :name, :description, :themes
+  attr_accessor :funder, :name, :description, :themes, :geo_area
 
   validates :funder, :name, :description, :themes, presence: true
-  validate :type_of_funder, :type_of_themes
+  validate :type_of_funder, :type_of_themes, :type_of_geo_area
 
   private
 
     def type_of_funder
-      errors.add(:funder, 'not a type of Funder') unless funder.is_a?(Funder)
+      type_of_object(:funder, Funder)
+    end
+
+    def type_of_geo_area
+      type_of_object(:geo_area, GeoArea)
     end
 
     def type_of_themes
-      errors.add(:themes, 'not a type of Array') unless themes.is_a?(Array)
+      type_of_object(:themes, Array)
+    end
+
+    def type_of_object(field, object)
+      errors.add(field, "not a type of #{object.class.name}") unless send(field).is_a?(object)
     end
 end
