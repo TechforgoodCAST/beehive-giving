@@ -12,31 +12,21 @@ describe Fund do
 
     # state column
     fcontext '#state' do
-      it 'defaults to initial' do
-        expect(subject.state).to eq 'initial'
+      it 'defaults to draft' do
+        expect(subject.state).to eq 'draft'
       end
-
-      it 'transitions' do
-        @app.create_initial_proposal
-        proposal = @app.instances[:initial_proposal]
-        {
-          'basics'      => 'initial',
-          'initial'     => 'registered',
-          'transferred' => 'registered',
-          'registered'  => 'complete',
-          'complete'    => 'complete'
-        }.each do |from, to|
-          proposal.state = from
-          proposal.next_step!
-          expect(proposal.state).to eq to
-        end
+      
+      it 'state is in list' do
+        subject.state = "Not valid state"
+        is_expected.not_to be_valid
+      end
+      
+      it 'self.active' do
+        Fund.last.update state: 'inactive'
+        expect(Fund.active.count).to eq 2
       end
     end
 
-    it 'self.active' do
-      Fund.last.update active: false
-      expect(Fund.active.count).to eq 2
-    end
 
     context 'self.order_by' do
       before(:each) do
