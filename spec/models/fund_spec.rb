@@ -10,6 +10,17 @@ describe Fund do
       @funder = @db[:funder]
     end
 
+    it '#save draft or stub' do
+      @fund.state = 'draft'
+      @fund.key_criteria = nil
+      expect(@fund.save).to eq true
+    end
+
+    it '#save active or inactive' do
+      @fund.key_criteria = nil
+      expect(@fund.save).to eq false
+    end
+
     context '#state' do
       it 'defaults to draft' do
         expect(subject.state).to eq 'draft'

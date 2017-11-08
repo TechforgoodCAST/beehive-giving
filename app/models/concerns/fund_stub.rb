@@ -1,12 +1,25 @@
 class FundStub
   include ActiveModel::Model
 
-  attr_accessor :funder, :name, :description, :themes, :geo_area
+  attr_accessor :fund, :funder, :name, :description, :themes, :geo_area
 
   validates :funder, :name, :description, :themes, :geo_area, presence: true
   validate :type_of_funder, :type_of_themes, :type_of_geo_area
 
+  def initialize(opts = {})
+    super
+    @fund = opts[:fund]
+    parse_and_set_attributes(@fund)
+  end
+
   private
+
+    def parse_and_set_attributes(fund)
+      return unless fund
+      attributes = fund.slice(:funder, :name, :description, :themes, :geo_area)
+      attributes[:themes] = attributes[:themes].to_a
+      assign_attributes(attributes)
+    end
 
     def type_of_funder
       type_of_object(:funder, Funder)

@@ -5,7 +5,7 @@ class Fund < ApplicationRecord
   scope :newer_than, ->(date) { where('updated_at > ?', date) }
   scope :recent, -> { order updated_at: :desc }
 
-  STATES = %w[active inactive draft stub]
+  STATES = %w[active inactive draft stub].freeze
 
   belongs_to :funder
 
@@ -68,6 +68,14 @@ class Fund < ApplicationRecord
                     if: proc { |o| o.skip_beehive_data.to_i.zero? }
   after_save :set_restriction_ids, if: :restrictions_known?
   after_save :set_priority_ids, if: :priorities_known?
+
+  def save(*args)
+    if state =~ /draft|stub/ && FundStub.new(fund: self).valid?
+      super(validate: false)
+    else
+      super
+    end
+  end
 
   def self.order_by(proposal, col)
     case col
