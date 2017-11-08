@@ -69,10 +69,28 @@ namespace :funds do
       funder.website = f["website"] unless funder.website.present?
       funder.save! if ENV["SAVE"]
 
-      
-      # find existing fund
-      # Fund.where()
-      # puts f["name"]
+      unless funder.funds.where.not(state: 'draft').count > 0
+        # only funders who have draft funds or no funds
+        fund = funder.funds.where(state: 'draft').first
+
+        themes = Theme.where(name: f['themes']).to_a
+
+        params = {
+          funder: funder,
+          name: 'Main Fund',
+          description: f['description'],
+          themes: themes
+        }
+
+        if fund
+          fund.update
+        else
+          stub = FundStub.new(params)
+          stub.valid?
+          puts stub.errors.messages
+          # stub.create_fund!
+        end
+      end
     end
   end
 end

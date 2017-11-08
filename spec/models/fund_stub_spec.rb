@@ -1,5 +1,12 @@
 describe FundStub do
-  subject { FundStub.new(name: 'Main Fund', funder: funder, description: 'Desc') }
+  subject do
+    FundStub.new(
+      name: 'Main Fund',
+      funder: funder,
+      description: 'Desc',
+      themes: []
+    )
+  end
   let(:funder) { build(:funder) }
 
   context 'single' do

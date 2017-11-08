@@ -3,7 +3,7 @@ class FundStub
 
   attr_accessor :funder, :name, :description, :themes, :geo_area
 
-  validates :funder, :name, :description, :themes, presence: true
+  validates :funder, :name, :description, :themes, :geo_area, presence: true
   validate :type_of_funder, :type_of_themes, :type_of_geo_area
 
   private
@@ -21,6 +21,6 @@ class FundStub
     end
 
     def type_of_object(field, object)
-      errors.add(field, "not a type of #{object.class.name}") unless send(field).is_a?(object)
+      errors.add(field, "not a type of #{object.name}") unless send(field).is_a?(object)
     end
 end
