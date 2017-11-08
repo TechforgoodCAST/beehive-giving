@@ -75,11 +75,31 @@ namespace :funds do
 
         themes = Theme.where(name: f['themes']).to_a
 
+        if f["countries"].blank? and f["districts"].blank?
+          f["countries"] = ["Other"]
+        end
+
+        if f["geo_area"] =~ /\d/ or f["geo_area"].blank?
+          geo_area_name = f["countries"].uniq.sort.join(",") + f["districts"].uniq.sort.join(",")
+        else
+          geo_area_name = f["geo_area"]
+        end
+
+        geo_area = GeoArea.where(name: geo_area_name).first_or_initialize
+        unless geo_area.persisted?
+          geo_area.name = geo_area_name
+          geo_area.short_name = f["geo_area"]
+          geo_area.countries = Country.where(alpha2: f["countries"])
+          geo_area.districts = District.where(subdivision: f["districts"])
+          geo_area.save! if ENV['SAVE']
+        end
+
         params = {
           funder: funder,
           name: 'Main Fund',
           description: f['description'],
-          themes: themes
+          themes: themes,
+          geo_area: geo_area
         }
 
         if fund
