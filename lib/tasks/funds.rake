@@ -37,4 +37,42 @@ namespace :funds do
       puts "\n"
     end
   end
+
+  # usage: rake funds:fetch_stubs
+  desc 'Fetch fund stubs from Beehive data'
+  task fetch_stubs: :environment do
+    # accepts optional parameters:
+    #  - number of funds
+    #  - country covered?
+    #  - beneficiaries/themes
+    #  - skip/save on duplicate
+    # calls API
+    # get list of objects
+    # loop objects
+    # find existing (and skip/update) or create new
+    # BEEHIVE_DATA_STUB_FUNDS_ENDPOINT
+    options = {
+      headers: {
+        'Content-Type' => 'application/json',
+        'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN']
+      }
+    }
+    response = HTTParty.get(ENV['BEEHIVE_DATA_STUB_FUNDS_ENDPOINT'], options)
+    funders = JSON.parse(response.body)
+    funders.each do |f|
+      # find funder first
+      funder = Funder.where('name = ? OR charity_number = ?', f["name"], f["reg_number"]).first_or_initialize
+      unless funder.persisted?
+        funder.name = f["name"]
+        funder.charity_number = f["reg_number"]
+      end
+      funder.website = f["website"] unless funder.website.present?
+      funder.save! if ENV["SAVE"]
+
+      
+      # find existing fund
+      # Fund.where()
+      # puts f["name"]
+    end
+  end
 end
