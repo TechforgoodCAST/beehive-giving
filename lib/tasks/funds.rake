@@ -66,7 +66,7 @@ namespace :funds do
         funder.name = f["name"]
         funder.charity_number = f["reg_number"]
       end
-      funder.website = f["website"] unless funder.website.present?
+      funder.website = f['website'].sub(/^www./, 'http://www.') unless funder.website
       funder.save! if ENV["SAVE"]
 
       unless funder.funds.where.not(state: 'draft').count > 0
@@ -103,12 +103,10 @@ namespace :funds do
         }
 
         if fund
-          fund.update
+          fund.update(params)
         else
           stub = FundStub.new(params)
-          stub.valid?
-          puts stub.errors.messages
-          # stub.create_fund!
+          stub.save if ENV['SAVE']
         end
       end
     end

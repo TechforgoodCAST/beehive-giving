@@ -1,10 +1,14 @@
 class FundStub
   include ActiveModel::Model
 
+  ATTRIBUTES = %i[funder name description themes geo_area].freeze
+
   attr_accessor :fund, :funder, :name, :description, :themes, :geo_area
 
-  validates :funder, :name, :description, :themes, :geo_area, presence: true
+  validates :funder, :name, :description, :geo_area, presence: true
   validate :type_of_funder, :type_of_themes, :type_of_geo_area
+
+  validates :themes, presence: true, unless: -> { state == 'draft' }
 
   def initialize(opts = {})
     super
@@ -12,11 +16,23 @@ class FundStub
     parse_and_set_attributes(@fund)
   end
 
+  def state
+    fund&.state || 'draft'
+  end
+
+  def save
+    if valid?
+      Fund.new(ATTRIBUTES.map { |a| [a, send(a)] }.to_h).save(validate: false)
+    else
+      false
+    end
+  end
+
   private
 
     def parse_and_set_attributes(fund)
       return unless fund
-      attributes = fund.slice(:funder, :name, :description, :themes, :geo_area)
+      attributes = fund.slice(ATTRIBUTES)
       attributes[:themes] = attributes[:themes].to_a
       assign_attributes(attributes)
     end
@@ -30,6 +46,7 @@ class FundStub
     end
 
     def type_of_themes
+      return if state == 'draft'
       type_of_object(:themes, Array)
     end
 

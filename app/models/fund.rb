@@ -71,6 +71,7 @@ class Fund < ApplicationRecord
 
   def save(*args)
     if state =~ /draft|stub/ && FundStub.new(fund: self).valid?
+      set_slug unless slug
       super(validate: false)
     else
       super

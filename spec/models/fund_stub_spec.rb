@@ -4,7 +4,8 @@ describe FundStub do
       name: 'Main Fund',
       funder: funder,
       description: 'Desc',
-      themes: []
+      themes: [],
+      geo_area: GeoArea.new
     )
   end
   let(:funder) { build(:funder) }
@@ -43,14 +44,24 @@ describe FundStub do
     is_expected.not_to be_valid
   end
 
-  it 'requires themes' do
+  it 'does not require themes' do
     subject.themes = nil
-    is_expected.not_to be_valid
+    expect(subject.state).to eq 'draft'
+    is_expected.to be_valid
   end
 
-  it 'themes is an Array' do
-    subject.themes = 'themes'
-    is_expected.not_to be_valid
+  context 'not draft' do
+    before { subject.fund = Fund.new(state: 'stub') }
+
+    it 'requires themes' do
+      subject.themes = nil
+      is_expected.not_to be_valid
+    end
+
+    it 'themes is an Array' do
+      subject.themes = 'themes'
+      is_expected.not_to be_valid
+    end
   end
 
   it 'requires geo_area' do
@@ -61,5 +72,24 @@ describe FundStub do
   it '#geo_area is GeoArea object' do
     subject.geo_area = 'Geo area'
     is_expected.not_to be_valid
+  end
+
+  it '#state defaults to draft' do
+    expect(subject.state).to eq 'draft'
+  end
+
+  it '#state uses fund.state' do
+    subject.fund = Fund.new(state: 'stub')
+    expect(subject.state).to eq 'stub'
+  end
+
+  it 'invalid #save returns false' do
+    subject.name = nil
+    expect(subject.save).to eq false
+  end
+
+  it 'valid #save creates draft Fund' do
+    expect(subject.save).to eq true
+    expect(Fund.last.state).to eq 'draft'
   end
 end
