@@ -1,7 +1,7 @@
 ActiveAdmin.register Fund do
   config.per_page = 100
 
-  permit_params :funder_id, :type_of_fund, :name, :description, :open_call,
+  permit_params :funder_id, :name, :description, :open_call,
                 :state, :currency, :application_link, :key_criteria,
                 :restrictions_known, :skip_beehive_data, :open_data,
                 :period_start, :period_end, :grant_count, :amount_awarded_sum,
@@ -62,7 +62,6 @@ ActiveAdmin.register Fund do
         link_to fund.funder.name, [:admin, fund.funder]
       end
       row :name
-      row :type_of_fund
       row :description do fund.description.html_safe end
       row :open_call
       row :state
@@ -141,7 +140,6 @@ ActiveAdmin.register Fund do
     f.inputs 'Basics' do
       f.input :slug
       f.input :funder, input_html: { class: 'chosen-select' }
-      f.input :type_of_fund, input_html: { value: 'Grant' }
       f.input :name
       f.input :description
       f.input :open_call

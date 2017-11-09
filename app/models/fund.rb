@@ -22,7 +22,7 @@ class Fund < ApplicationRecord
   has_many :restrictions, through: :questions, source: :criterion, source_type: 'Restriction'
   has_many :priorities, through: :questions, source: :criterion, source_type: 'Priority'
 
-  validates :funder, :type_of_fund, :slug, :name, :description, :currency,
+  validates :funder, :slug, :name, :description, :currency,
             :key_criteria, :application_link, :themes,
             presence: true
 

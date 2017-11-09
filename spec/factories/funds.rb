@@ -1,7 +1,6 @@
 FactoryGirl.define do
   factory :fund do
     funder
-    type_of_fund 'Grant'
     sequence(:name) { |n| "Awards for All #{n}" }
     description 'Some description of the fund.'
     open_call true
