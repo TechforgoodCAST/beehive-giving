@@ -37,4 +37,78 @@ namespace :funds do
       puts "\n"
     end
   end
+
+  # usage: rake funds:fetch_stubs
+  desc 'Fetch fund stubs from Beehive data'
+  task fetch_stubs: :environment do
+    # accepts optional parameters:
+    #  - number of funds
+    #  - country covered?
+    #  - beneficiaries/themes
+    #  - skip/save on duplicate
+    # calls API
+    # get list of objects
+    # loop objects
+    # find existing (and skip/update) or create new
+    # BEEHIVE_DATA_STUB_FUNDS_ENDPOINT
+    options = {
+      headers: {
+        'Content-Type' => 'application/json',
+        'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN']
+      }
+    }
+    response = HTTParty.get(ENV['BEEHIVE_DATA_STUB_FUNDS_ENDPOINT'], options)
+    funders = JSON.parse(response.body)
+    funders.each do |f|
+      # find funder first
+      funder = Funder.where('name = ? OR charity_number = ?', f["name"], f["reg_number"]).first_or_initialize
+      unless funder.persisted?
+        funder.name = f["name"]
+        funder.charity_number = f["reg_number"]
+      end
+      funder.website = f['website'].sub(/^www./, 'http://www.') unless funder.website
+      funder.save! if ENV["SAVE"]
+
+      unless funder.funds.where.not(state: 'draft').count > 0
+        # only funders who have draft funds or no funds
+        fund = funder.funds.where(state: 'draft').first
+
+        themes = Theme.where(name: f['themes']).to_a
+
+        if f["countries"].blank? and f["districts"].blank?
+          f["countries"] = ["Other"]
+        end
+
+        if f["geo_area"] =~ /\d/ or f["geo_area"].blank?
+          geo_area_name = f["countries"].uniq.sort.join(",") + f["districts"].uniq.sort.join(",")
+        else
+          geo_area_name = f["geo_area"]
+        end
+
+        geo_area = GeoArea.where(name: geo_area_name).first_or_initialize
+        unless geo_area.persisted?
+          geo_area.name = geo_area_name
+          geo_area.short_name = f["geo_area"]
+          geo_area.countries = Country.where(alpha2: f["countries"])
+          geo_area.districts = District.where(subdivision: f["districts"])
+          geo_area.save! if ENV['SAVE']
+        end
+
+        params = {
+          funder: funder,
+          name: 'Main Fund',
+          description: f['description'],
+          themes: themes,
+          geo_area: geo_area
+        }
+
+        if fund
+          fund.update(params)
+        else
+          stub = FundStub.new(params)
+          stub.save if ENV['SAVE']
+        end
+      end
+    end
+  end
 end
