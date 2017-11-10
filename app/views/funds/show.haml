@@ -26,6 +26,9 @@
         %p.fs15.mt15.lh20
           = cell(:fund_insight, @fund, proposal: @proposal).call(:themes)
 
+        %p.fs12.lh18.mb5.slate
+          = cell(:fund_insight, @fund, proposal: @proposal).call(:summary)
+
       %hr.my40
 
       %section
@@ -61,10 +64,11 @@
 
         %ul.list.pl30
           = cell(:fund_insight, @fund).call(:amount)
+          = cell(:fund_insight, @fund).call(:costs)
+          = cell(:fund_insight, @fund).call(:countries)
           = cell(:fund_insight, @fund).call(:duration)
           = cell(:fund_insight, @fund).call(:grant_count)
           = cell(:fund_insight, @fund).call(:award_months)
-          = cell(:fund_insight, @fund).call(:countries)
           = cell(:fund_insight, @fund).call(:grant_examples)
 
       = cell(:eligibility, @proposal, fund: @fund).call(:page)
