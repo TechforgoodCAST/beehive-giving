@@ -102,9 +102,13 @@ class SuitabilityCell < Cell::ViewModel
         when :location
             LOCATION_MESSAGES[reason]
         when :org_type
-            org_type = ORG_TYPES[model.recipient.org_type + 1][2]
-            return "No grants to #{org_type}." if (score.nil? || score == 0)
-            "#{number_to_percentage(score * 100, precision: 0)} of grants were to #{org_type}."
+            org_type = ORG_TYPES[model.recipient.org_type + 1]
+            if options[:fund].org_type_distribution?
+                score = options[:fund].org_type_distribution.find{ |d| d["label"] == org_type[0] }
+                score = score["percent"] unless score.nil?
+            end
+            return "No grants to #{org_type[2]}." if (score.nil? || score == 0)
+            "#{number_to_percentage(score * 100, precision: 0)} of grants were to #{org_type[2]}."
         when :duration
             return "No grants for a similar length." if (score.nil? || score == 0)
             "#{number_to_percentage(score * 100, precision: 0)} of grants were for a similar length."
