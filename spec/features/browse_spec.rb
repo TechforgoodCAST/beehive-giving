@@ -134,13 +134,6 @@ feature 'Browse' do
         )
       end
 
-      scenario 'I want to see the top_countries,
-                so I can evaluate my chances of success' do
-        expect(page).to have_text(
-          'Awarded the most funding in the United Kingdom'
-        )
-      end
-
       scenario 'I want to see the sources of open data,
                 so I can further my research' do
         expect(page).to have_link('License', href: 'https://creativecommons.org/licenses/by/4.0/')
