@@ -17,6 +17,86 @@
         %h1.light= @fund.title
         .fs15.lh20.mid-gray= @fund.subtitle
 
+        %p.fs15.mt15.lh20
+          = cell(:fund_insight, @fund, proposal: @proposal).call(:themes)
+
+      %hr.my40
+
+      %section
+        .mb20
+          %h2.light Analysis
+
+        .mb20.flex.flex-wrap
+
+          .md.perc33.mb20.pr10
+            %h3.caps.fs14.bold 
+              1. Eligibility
+
+            .mt20.fs14.lh16
+              Check your eligibility against the fund's criteria
+
+            %ul.mt20
+              %li.mb15.fs14 
+                %span.fs16.green 
+                  = "\u2714".html_safe
+                Location
+              %li.mb15.fs14 
+                %span.fs16.green 
+                  = "\u2714".html_safe
+                Grant amount
+              %li.mb15.fs14 
+                %span.fs16.green 
+                  = "\u2714".html_safe
+                Organisation type
+              %li.mb15.fs14 
+                %span.fs16.green 
+                  = "\u2714".html_safe
+                Organisation income
+              %li.mb15.fs14 
+                %span.fs16.green 
+                  = "\u2714".html_safe
+                Additional restrictions
+
+          .md.perc33.px10.mb20.border-left.border-lightest-gray
+            %h3.caps.fs14.bold 
+              2. Suitability
+
+            .mt20.fs14.lh16
+              Check if you're suitable for this fund
+
+            %ul.mt20
+              %li.mb15.fs14 
+                %span.fs16.green 
+                  = "\u2714".html_safe
+                Location
+              %li.mb15.fs14 
+                %span.fs16.green 
+                  = "\u2714".html_safe
+                Grant amount
+              %li.mb15.fs14 
+                %span.fs16.green 
+                  = "\u2714".html_safe
+                Organisation type
+              %li.mb15.fs14 
+                %span.fs16.green 
+                  = "\u2714".html_safe
+                Funding duration
+              %li.mb15.fs14 
+                %span.fs16.green 
+                  = "\u2714".html_safe
+                Funding themes
+              %li.mb15.fs14 
+                %span.fs16.green 
+                  = "\u2714".html_safe
+                Fund priorities
+
+          .md.perc33.pl10.mb20.border-left.border-lightest-gray
+            %h3.caps.fs14.bold 
+              3. Apply
+
+            .mt20.fs14.lh16
+              Once you've checked your eligibility and suitability you can apply for the funding.
+
       %hr.my40
 
       %section
@@ -49,19 +129,5 @@
 
       .muted
         = cell(:suitability, @proposal, fund: @fund).call(:page)
-
-      %hr.my40
-
-      %section.muted
-        .mb40
-          %h2.light Apply
-
-        .button.white.bg-blue.caps.shadow.mb40 Application form
-
-        %h5.mb20 Status
-
-        .button.blue.border-blue.caps.mb10 Submitted
-        .button.green.border-green.caps.mb10 Successful
-        .button.red.border-red.caps.mb10 Declined
 
   = render partial: 'layouts/sign_up_cta'
