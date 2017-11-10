@@ -204,7 +204,6 @@ ActiveAdmin.register Fund do
       tab :open_data do
 
         f.inputs do
-          f.input :skip_beehive_data, as: :boolean
           f.input :open_data
           f.input :sources
           f.input :period_start
@@ -227,6 +226,11 @@ ActiveAdmin.register Fund do
         end
       end
     end
+
+    f.inputs 'Options' do
+      f.input :skip_beehive_data, as: :boolean
+    end
+
     f.actions
   end
 end
