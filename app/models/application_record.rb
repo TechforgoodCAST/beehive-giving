@@ -2,6 +2,7 @@ class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
   def markdown(str)
+    return "" if str.blank?
     options = { hard_wrap: true,
                 space_after_headers: true, fenced_code_blocks: true,
                 tables: true, footnotes: true,

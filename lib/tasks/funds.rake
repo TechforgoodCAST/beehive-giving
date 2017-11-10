@@ -1,4 +1,6 @@
 namespace :funds do
+  include ActionView::Helpers::TextHelper
+
   # usage: rake funds:update FUNDS='fund-slug1, fund-slug2'
   desc 'Update specified funds'
   task update: :environment do
@@ -39,26 +41,77 @@ namespace :funds do
   end
 
   # usage: rake funds:fetch_stubs
+  # usage: rake funds:fetch_stubs COUNTRIES=GB,US BENEFICIARIES='PEOPLE WITH DISABILITIES' ACTIVITIES= PURPOSE=
   desc 'Fetch fund stubs from Beehive data'
   task fetch_stubs: :environment do
-    # accepts optional parameters:
-    #  - number of funds
-    #  - country covered?
-    #  - beneficiaries/themes
-    #  - skip/save on duplicate
-    # calls API
-    # get list of objects
-    # loop objects
-    # find existing (and skip/update) or create new
-    # BEEHIVE_DATA_STUB_FUNDS_ENDPOINT
+    # needs BEEHIVE_DATA_STUB_FUNDS_ENDPOINT to be set
     options = {
       headers: {
         'Content-Type' => 'application/json',
         'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN']
-      }
+      },
+      query: {}
     }
-    response = HTTParty.get(ENV['BEEHIVE_DATA_STUB_FUNDS_ENDPOINT'], options)
+    options[:query][:country] = ENV['COUNTRY'] if ENV['COUNTRY']
+    # Optional - comma-separated, use ISO3166-1 2-digit code
+
+    options[:query][:beneficiaries] = ENV['BENEFICIARIES'] if ENV['BENEFICIARIES']
+    # Optional - comma-separated, choose from:
+    # - "CHILDREN/YOUNG PEOPLE"
+    # - "ELDERLY/OLD PEOPLE"
+    # - "PEOPLE WITH DISABILITIES"
+    # - "PEOPLE OF A PARTICULAR ETHNIC OR RACIAL ORIGIN"
+    # - "OTHER CHARITIES OR VOLUNTARY BODIES"
+    # - "OTHER DEFINED GROUPS"
+    # - "THE GENERAL PUBLIC/MANKIND"
+
+    options[:query][:activities] = ENV['ACTIVITIES'] if ENV['ACTIVITIES']
+    # Optional - comma-separated, choose from:
+    # - "MAKES GRANTS TO INDIVIDUALS"
+    # - "MAKES GRANTS TO ORGANISATIONS"
+    # - "PROVIDES OTHER FINANCE"
+    # - "PROVIDES HUMAN RESOURCES"
+    # - "PROVIDES BUILDINGS/FACILITIES/OPEN SPACE"
+    # - "PROVIDES SERVICES"
+    # - "PROVIDES ADVOCACY/ADVICE/INFORMATION"
+    # - "SPONSORS OR UNDERTAKES RESEARCH"
+    # - "ACTS AS AN UMBRELLA OR RESOURCE BODY"
+    # - "OTHER CHARITABLE ACTIVITIES"
+
+    options[:query][:purpose] = ENV['PURPOSE'] if ENV['PURPOSE']
+    # Optional - comma-separated, choose from:
+    # - "GENERAL CHARITABLE PURPOSES"
+    # - "EDUCATION/TRAINING"
+    # - "THE ADVANCEMENT OF HEALTH OR SAVING OF LIVES"
+    # - "DISABILITY"
+    # - "THE PREVENTION OR RELIEF OF POVERTY"
+    # - "OVERSEAS AID/FAMINE RELIEF"
+    # - "ACCOMMODATION/HOUSING"
+    # - "RELIGIOUS ACTIVITIES"
+    # - "ARTS/CULTURE/HERITAGE/SCIENCE"
+    # - "AMATEUR SPORT"
+    # - "ANIMALS"
+    # - "ENVIRONMENT/CONSERVATION/HERITAGE"
+    # - "ECONOMIC/COMMUNITY DEVELOPMENT/EMPLOYMENT"
+    # - "ARMED FORCES/EMERGENCY SERVICE EFFICIENCY"
+    # - "HUMAN RIGHTS/RELIGIOUS OR RACIAL HARMONY/EQUALITY OR DIVERSITY"
+    # - "RECREATION"
+    # - "OTHER CHARITABLE PURPOSES"
+    
+    # Optional - number of funders returned - default is 50, max is 1000
+    options[:query][:limit] = ENV['LIMIT'] if ENV['LIMIT'] 
+    # Optional - minimum size of funders returned (by grants made) - default is 100000
+    options[:query][:min_size] = ENV['MIN_SIZE'] if ENV['MIN_SIZE'] 
+  
+    response = HTTParty.get(
+      ENV['BEEHIVE_DATA_STUB_FUNDS_ENDPOINT'], 
+      options
+    )
     funders = JSON.parse(response.body)
+
+    puts "Found #{pluralize(funders.size, "funder")}"
+
+    gb = Country.find_by(alpha2: 'GB')
     funders.each do |f|
       # find funder first
       funder = Funder.where('name = ? OR charity_number = ?', f["name"], f["reg_number"]).first_or_initialize
@@ -68,8 +121,14 @@ namespace :funds do
       end
       funder.website = f['website'].sub(/^www./, 'http://www.') unless funder.website
       funder.save! if ENV["SAVE"]
+      fund_count = funder.funds.where.not(state: 'draft').count
 
-      unless funder.funds.where.not(state: 'draft').count > 0
+      puts 
+      puts funder.name
+      puts "=" * funder.name.size
+      log_messages = []
+
+      unless fund_count > 0
         # only funders who have draft funds or no funds
         fund = funder.funds.where(state: 'draft').first
 
@@ -80,7 +139,7 @@ namespace :funds do
         end
 
         if f["geo_area"] =~ /\d/ or f["geo_area"].blank?
-          geo_area_name = f["countries"].uniq.sort.join(",") + f["districts"].uniq.sort.join(",")
+          geo_area_name = f["countries"].uniq.sort.join(",") + ";" + f["districts"].uniq.sort.join(",")
         else
           geo_area_name = f["geo_area"]
         end
@@ -90,8 +149,11 @@ namespace :funds do
           geo_area.name = geo_area_name
           geo_area.short_name = f["geo_area"]
           geo_area.countries = Country.where(alpha2: f["countries"])
-          geo_area.districts = District.where(subdivision: f["districts"])
+          geo_area.districts = f["districts"].select{|d| d.present? }
+                                             .map{ |d| District.where("subdivision LIKE ? and country_id = ?", "#{d}%", gb.id)}
+                                             .flatten.uniq
           geo_area.save! if ENV['SAVE']
+          log_messages.push("New geo area created: [#{geo_area.short_name}]")
         end
 
         params = {
@@ -103,12 +165,29 @@ namespace :funds do
         }
 
         if fund
-          fund.update(params)
+          update = fund.update(params)
+          if update
+            log_messages.append("Updating draft fund id #{fund.id}")
+          else
+            log_messages.append("Could not update draft fund id #{fund.id}")
+          end
         else
           stub = FundStub.new(params)
+          if stub.valid?
+            log_messages.append("Saving new draft fund")
+          else
+            log_messages.append("Could not save new draft fund")
+          end
           stub.save if ENV['SAVE']
         end
       end
+      if log_messages.empty?
+        log_messages = [
+          "Funder has #{pluralize(fund_count, "existing fund")}",
+          "No update"
+        ]
+      end
+      log_messages.each{|l| puts l}
     end
   end
 end
