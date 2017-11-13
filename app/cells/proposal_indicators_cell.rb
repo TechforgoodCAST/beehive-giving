@@ -42,6 +42,7 @@ class ProposalIndicatorsCell < Cell::ViewModel
 
     def count_percentages(counts)
       total = counts.values.inject(0, :+).to_f
+      return counts.map{|k, v| [k,0]}.to_h if total == 0
       counts.map{|k, v| [k, v / total]}.to_h
     end
 

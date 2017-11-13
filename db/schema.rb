@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171009133514) do
+ActiveRecord::Schema.define(version: 20171109091743) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -218,12 +218,10 @@ ActiveRecord::Schema.define(version: 20171009133514) do
 
   create_table "funds", id: :serial, force: :cascade do |t|
     t.integer "funder_id"
-    t.string "type_of_fund"
     t.string "name"
     t.text "description"
     t.string "slug"
     t.boolean "open_call"
-    t.boolean "active"
     t.text "key_criteria"
     t.string "currency"
     t.string "application_link"
@@ -265,6 +263,7 @@ ActiveRecord::Schema.define(version: 20171009133514) do
     t.boolean "priorities_known"
     t.string "geo_description"
     t.integer "geo_area_id"
+    t.string "state", default: "draft", null: false
     t.index ["funder_id"], name: "index_funds_on_funder_id"
     t.index ["slug"], name: "index_funds_on_slug"
     t.index ["tags"], name: "index_funds_on_tags", using: :gin

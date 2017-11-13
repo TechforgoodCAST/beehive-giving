@@ -1,9 +1,11 @@
 class Fund < ApplicationRecord
   include ActionView::Helpers::NumberHelper
 
-  scope :active, -> { where(active: true) }
+  scope :active, -> { where(state: 'active') }
   scope :newer_than, ->(date) { where('updated_at > ?', date) }
   scope :recent, -> { order updated_at: :desc }
+
+  STATES = %w[active inactive draft stub].freeze
 
   belongs_to :funder
 
@@ -17,15 +19,18 @@ class Fund < ApplicationRecord
   has_many :districts, through: :geo_area
 
   has_many :questions
+  accepts_nested_attributes_for :questions, :allow_destroy => true
   has_many :restrictions, through: :questions, source: :criterion, source_type: 'Restriction'
   has_many :priorities, through: :questions, source: :criterion, source_type: 'Priority'
 
-  validates :funder, :type_of_fund, :slug, :name, :description, :currency,
+  validates :funder, :slug, :name, :description, :currency,
             :key_criteria, :application_link, :themes,
             presence: true
 
-  validates :open_call, :active, :restrictions_known,
+  validates :open_call, :restrictions_known,
             inclusion: { in: [true, false] }
+
+  validates :state, inclusion: { in: STATES }
 
   validates :name, uniqueness: { scope: :funder }
 
@@ -64,6 +69,15 @@ class Fund < ApplicationRecord
                     if: proc { |o| o.skip_beehive_data.to_i.zero? }
   after_save :set_restriction_ids, if: :restrictions_known?
   after_save :set_priority_ids, if: :priorities_known?
+
+  def save(*args)
+    if state =~ /draft|stub/ && FundStub.new(fund: self).valid?
+      set_slug unless slug
+      super(validate: false)
+    else
+      super
+    end
+  end
 
   def self.order_by(proposal, col)
     case col

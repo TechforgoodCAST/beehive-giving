@@ -69,6 +69,15 @@ class FundInsightCell < Cell::ViewModel
     render locals: {message: model.duration_desc}
   end
 
+  def costs
+    costs = model.permitted_costs
+                 .select{ |c| c!= 0 }
+                 .map{ |c| FUNDING_TYPES[c][0].split.first.downcase }
+                 .to_sentence(two_words_connector: " & ", last_word_connector: " & ")
+    return unless costs.present?
+    render locals: {message: costs}
+  end
+
   def amount
     return unless model.min_amount_awarded_limited || model.max_amount_awarded_limited
     render locals: {message: model.amount_desc}
@@ -85,6 +94,7 @@ class FundInsightCell < Cell::ViewModel
   end
 
   def countries
+    return render locals: {message: model.geo_description_html} if model.geo_description_html.present?
     return unless model.open_data && model.country_distribution?
     render locals: {message: top_countries(model)}
   end

@@ -4,6 +4,11 @@ ActiveAdmin.register GeoArea do
                 country_ids: [], district_ids: [],
                 fund_ids: []
 
+  filter :districts, input_html: { class: 'chosen-select' }
+  filter :countries, input_html: { class: 'chosen-select' }
+  filter :name
+  filter :short_name
+
   index do
     selectable_column
     column :name
