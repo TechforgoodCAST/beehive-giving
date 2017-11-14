@@ -52,6 +52,12 @@ describe Fund do
           .to eq [Fund.first.id, Fund.third.id, Fund.second.id]
       end
 
+      it 'featured fund is always ordered first' do
+        Fund.third.update featured: true
+        expect(Fund.order_by(@proposal, 'DROP TABLE "FUNDS";').pluck(:id))
+          .to eq [Fund.third.id, Fund.first.id, Fund.second.id]
+      end
+
       it 'name' do
         Fund.first.update name: 'z'
         expect(Fund.order_by(@proposal, 'name').pluck(:name))

@@ -20,7 +20,11 @@
 
     %section.perc75.md.mb80.px20
       %section
-        %h1.light= @fund.title
+        %h1.light
+          = @fund.title
+          - if @fund.featured
+            %span.bg-blue.white.fs14.bold.rounded.py3.px5.inline-block
+              Featured
         .fs15.lh20.mid-gray= @fund.subtitle
 
         %p.fs15.mt15.lh20
@@ -30,6 +34,18 @@
           = cell(:fund_insight, @fund, proposal: @proposal).call(:summary)
 
       %hr.my40
+
+      - if @fund.featured
+
+        %section.border-thick.border-blue.rounded.p20.mb20
+          .mb20
+            %h3.blue Featured fund
+            .fs15.lh20.mid-gray What does this mean?
+
+          %small.gray.lh12
+            From time to time we partner with funders to highlight a particular
+            fund. This means we ensure it appears at the top of your search results
+            and will always be shown to users even if they don't have a subscription.
 
       %section
         .mb20

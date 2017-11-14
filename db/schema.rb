@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171109091743) do
+ActiveRecord::Schema.define(version: 20171114103802) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -264,6 +264,7 @@ ActiveRecord::Schema.define(version: 20171109091743) do
     t.string "geo_description"
     t.integer "geo_area_id"
     t.string "state", default: "draft", null: false
+    t.boolean "featured", default: false
     t.index ["funder_id"], name: "index_funds_on_funder_id"
     t.index ["slug"], name: "index_funds_on_slug"
     t.index ["tags"], name: "index_funds_on_tags", using: :gin
