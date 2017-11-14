@@ -37,6 +37,12 @@ feature 'RevealFunds' do
       expect(page).to have_link 'Reveal', count: 6
     end
 
+    scenario 'Featured fund does not need to be revealed' do
+      Fund.first.update featured: true
+      visit proposal_funds_path(@proposal)
+      expect(page).to have_link 'Reveal', count: 5
+    end
+
     scenario 'clicking on reveal button reveals that fund' do
       click_link('Reveal', match: :first)
       expect(@user.reveals.count).to eq 1

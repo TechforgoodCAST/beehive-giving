@@ -7,6 +7,7 @@ class FundPolicy < ApplicationPolicy
 
     def v1_show?
       return false unless record.fund && record.proposal
+      return true if record.fund.featured
       return true if user.subscription_active?
       record.proposal
             .suitable_funds
@@ -17,6 +18,7 @@ class FundPolicy < ApplicationPolicy
 
     def v2_show?
       return false unless record
+      return true if record.featured
       return true if user.subscription_active?
       user.reveals.include?(record.slug)
     end

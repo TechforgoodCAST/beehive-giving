@@ -4,7 +4,7 @@ ActiveAdmin.register Fund do
   permit_params :funder_id, :name, :description, :open_call,
                 :state, :currency, :application_link, :key_criteria,
                 :restrictions_known, :priorities_known,
-                :skip_beehive_data, :open_data,
+                :featured, :skip_beehive_data, :open_data,
                 :period_start, :period_end, :grant_count, :amount_awarded_sum,
                 :amount_awarded_distribution, :award_month_distribution,
                 :country_distribution, :sources, :national,
@@ -27,11 +27,15 @@ ActiveAdmin.register Fund do
     end
   end
 
+  scope("Full funds", default: true) { |scope| scope.where(state: ["inactive", "active"]) }
+  scope("Stubs") { |scope| scope.where(state: ["draft", "stub"]) }
+
   index do
     selectable_column
     # column :slug
     column :funder
     column :name
+    column :featured
     column :state
     column 'year end' do |o|
       o&.period_end&.strftime('%Y')
@@ -48,6 +52,7 @@ ActiveAdmin.register Fund do
   filter :funder, input_html: { class: 'chosen-select' }
   filter :slug
   filter :state, as: :select
+  filter :featured
   filter :open_data
   filter :updated_at
   config.sort_order = 'updated_at_desc'
@@ -61,6 +66,7 @@ ActiveAdmin.register Fund do
       row :name
       row :description do fund.description_html.html_safe end
       row :open_call
+      row :featured
       row :state
       row :currency
       row :application_link do
@@ -150,6 +156,7 @@ ActiveAdmin.register Fund do
       f.input :name
       f.input :description
       f.input :open_call
+      f.input :featured
       f.input :state, as: :select, collection: Fund::STATES
       f.input :currency, input_html: { value: 'GBP' }
       f.input :application_link

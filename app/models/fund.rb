@@ -27,7 +27,7 @@ class Fund < ApplicationRecord
             :key_criteria, :application_link, :themes,
             presence: true
 
-  validates :open_call, :restrictions_known,
+  validates :open_call, :restrictions_known, :featured,
             inclusion: { in: [true, false] }
 
   validates :state, inclusion: { in: STATES }
@@ -216,8 +216,10 @@ class Fund < ApplicationRecord
   private_class_method def self.order_slugs(proposal)
     suitable_slugs = proposal.suitable_funds.pluck(0)
     ineligible_slugs = proposal.ineligible_funds.pluck(0)
+    featured_slugs = active.where(featured: true).pluck(:slug)
+    featured_slugs = featured_slugs - ineligible_slugs
     all_slugs = active.pluck(:slug)
-    (suitable_slugs + all_slugs).uniq - ineligible_slugs
+    (featured_slugs + suitable_slugs + all_slugs).uniq - ineligible_slugs
   end
 
   private
