@@ -14,7 +14,7 @@
         = render partial: 'proposals/card', locals: { proposal: @proposal, context: 'fund' }
 
     %section.perc75.md.mb80.px20
-      %h1.light.mb20=@theme.name
+      %h1.mb20=@theme.name
 
       .mb30
         = cell :filter, params, funding_duration: @proposal.funding_duration

@@ -9,67 +9,51 @@
   = cell :breadcrumb, (@proposal.title? ? @proposal.title : 'Current proposal').upcase_first => nil, 'Funds' => proposal_funds_path(@proposal), @fund.funder.name => nil, @fund.name => proposal_fund_path(@proposal, @fund)
 
 %main
-  .maxw1080.mx-auto.px20.flex.flex-wrap
-    %aside.perc25.md.px20.mb40.to-end-md
+  .maxw1080.mx-auto.px40.mt40
 
-      .border.rounded.mb20.border-lightest-gray
-        .px10.py10.bg-lightest-gray
-          .fs15.lh20.caps.bold.gray
-            Current Proposal
-        = render partial: 'proposals/card', locals: { proposal: @proposal, context: 'fund' }
+    .flex.flex-wrap.mb40
+      %section.perc50.md.mb40.px20
+        %h1.mb10= @fund.name
+        .mb30.night
+          by
+          = @fund.funder.name
 
-    %section.perc75.md.mb80.px20
-      %section
-        %h1.light= @fund.title
-        .fs15.lh20.mid-gray= @fund.subtitle
+        .mb30.fs18.night.lh25= raw strip_tags @fund.description_html.truncate_words(30)
 
-        %p.fs15.mt15.lh20
-          = cell(:fund_insight, @fund, proposal: @proposal).call(:themes)
+        %hr
+        %h6.my20.slate= cell(:fund_insight, @fund, proposal: @proposal).call(:summary)
+        %hr.mb30
 
-        %p.fs12.lh18.mb5.slate
-          = cell(:fund_insight, @fund, proposal: @proposal).call(:summary)
+        = cell(:fund_insight, @fund, proposal: @proposal).call(:themes)
 
-      %hr.my40
+      %section.perc50.md
+        = cell(:progress, @proposal, fund: @fund)
 
-      %section
-        .mb20
-          %h2.light Analysis
+    %section.px20.mb80.md
+      %h2.mb20 Summary
 
-        .mb20.flex.flex-wrap
-          = cell(:eligibility, @proposal, fund: @fund).call(:analysis)
-          = cell(:suitability, @proposal, fund: @fund).call(:analysis)
-          = cell(:application, @proposal, fund: @fund, 
-                  show_fund: policy(FundContext.new(@fund, @proposal)).show?,
-                  current_user: @current_user).call(:analysis)
-      
-      %hr.my40
+      .mb20.markdown
+        = raw @fund.description_html
 
-      %section
-        .mb20
-          %h2.light Summary
-
-        .mb20.markdown
-          = raw @fund.description_html
-
-        - if @fund.period_end.present? && @fund.period_end > 3.years.ago
-          %small.slate
+      - if @fund.period_end.present? && @fund.period_end > 3.years.ago
+        .mt30.night
+          .fs14.mb10
             = cell(:fund_insight, @fund).call(:data_source)
-          .slate.fs15.my10
-            = period(@fund)
+          .mb20
+            %strong= period(@fund)
 
-        - unless @fund.open_call?
-          .bg-silver.rounded.shadow.fs18.lh22.p10.mb20
-            .bold.caps.mb10.fs15 Unsolicited applications
-            Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
+      - unless @fund.open_call?
+        .bg-ice.rounded.shadow.fs18.lh22.p10.mb20
+          .bold.caps.mb10.fs15 Unsolicited applications
+          Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
 
-        %ul.list.pl30
-          = cell(:fund_insight, @fund).call(:amount)
-          = cell(:fund_insight, @fund).call(:costs)
-          = cell(:fund_insight, @fund).call(:countries)
-          = cell(:fund_insight, @fund).call(:duration)
-          = cell(:fund_insight, @fund).call(:grant_count)
-          = cell(:fund_insight, @fund).call(:award_months)
-          = cell(:fund_insight, @fund).call(:grant_examples)
+      %ul.list.pl30
+        = cell(:fund_insight, @fund).call(:amount)
+        = cell(:fund_insight, @fund).call(:costs)
+        = cell(:fund_insight, @fund).call(:countries)
+        = cell(:fund_insight, @fund).call(:duration)
+        = cell(:fund_insight, @fund).call(:grant_count)
+        = cell(:fund_insight, @fund).call(:award_months)
+        = cell(:fund_insight, @fund).call(:grant_examples)
 
-      = cell(:eligibility, @proposal, fund: @fund).call(:page)
-      = cell(:suitability, @proposal, fund: @fund).call(:page)
+    = render partial: 'checks'

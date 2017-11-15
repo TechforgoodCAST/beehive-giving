@@ -30,15 +30,15 @@
   .maxw1080.mx-auto.px20
 
     %section.md.mb20.px20
-      %h1.light.mb20 Dashboard
+      %h1.mb20 Dashboard
 
     = render partial: 'accounts/subnav'
-          
+
   .maxw1080.mx-auto.px20.flex.flex-wrap
     %aside.perc33.md.px20.mb40
 
       .p20.border.border-green.rounded
-        %h3.light.mb20 Your plan
+        %h3.mb20 Your plan
 
         .mb30
           %label.label.mb10.bold.lh16 Plan
@@ -64,8 +64,8 @@
 
     %section.perc66.md.mb80.px20.fs14
 
-      %h1.light.fs40.p50 Thank you!
-      .p50.fs40.light.lh120
+      %h1.fs40.p50 Thank you!
+      .p50.fs40.lh120
         You have successfully subscribed
 
       = link_to 'Continue', session.delete(:return_to) || account_subscription_path(@recipient), class: 'button bg-green caps white'

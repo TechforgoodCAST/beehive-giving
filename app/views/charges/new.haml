@@ -31,15 +31,15 @@
   .maxw1080.mx-auto.px20
 
     %section.md.mb20.px20
-      %h1.light.mb20 Dashboard
-    
+      %h1.mb20 Dashboard
+
     = render partial: 'accounts/subnav'
-    
+
   .maxw1080.mx-auto.px20.flex.flex-wrap
     %aside.perc33.md.px20.mb40
 
       .p20.border.border-green.rounded
-        %h3.light.mb20 Order summary
+        %h3.mb20 Order summary
 
         .mb30
           .label.mb10.bold Plan
@@ -65,17 +65,17 @@
 
     %section.perc66.md.mb80.px20.fs14
       - unless @notice
-        .light.mb20.fit.bg-blue.caps.white.bold.rounded.p15
-          Please upgrade to access this feature.
-      %h2.light.mb40 Upgrade
+        .mb20.fit.bg-blue.caps.white.bold.rounded.p15
+          Please 'reveal' the fund or upgrade to access this feature.
+      %h2.mb40 Upgrade
       %p.lh22.mb40.fs16
         By completing the form you will be charged
         %strong= number_to_currency(@payment.plan_cost, unit: '£', precision: 0)
         for one years access to a
         %strong Pro
         plan.
-        
-      %h3.mb40.light Payment details
+
+      %h3.mb40 Payment details
       = form_tag account_upgrade_path(@recipient), id: 'payment-form', class: 'uk-form form' do
         %noscript
           .p20.red.border-red
@@ -87,7 +87,7 @@
         .payment-errors.mb20
           - if params[:card_errors]
             .p20.red.border-red= params[:card_errors]
-              
+
         .mb40
           .label.mb10.bold Card number
           %input.input#card-number{ "data-stripe": "number", size: "24", type: "text", placeholder: '4242 4242 4242 4242' }
