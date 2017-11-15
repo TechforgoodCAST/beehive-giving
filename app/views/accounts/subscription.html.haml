@@ -16,30 +16,30 @@
   .maxw1080.mx-auto.px20
 
     %section.md.mb20.px20
-      %h1.light.mb20 Dashboard
+      %h1.mb20 Dashboard
 
     = render partial: 'accounts/subnav'
 
     %section.md.mb20.px20.flex-wrap.flex
-      .mb20.border.rounded.border-lightest-gray.bg-lightest-gray.shadow.perc25.mr40.md
+      .mb20.border.rounded.border-silver.bg-silver.shadow.perc25.mr40.md
         .p15
           %h2.fs22.mb30
             Your subscription
           - if @subscription.active?
-            %h4.light
+            %h4
               You are currently subscribed to a
               %strong Pro
               plan which expires on
               = succeed '.' do
                 %strong= @subscription.expiry_date.strftime("%-d %b %Y")
-            %h5.mt20.light
-              After 
+            %h5.mt20
+              After
               %strong= @subscription.expiry_date.strftime("%-d %b %Y")
               you will be downgraded to a
               %strong Basic
               plan unless you manually re-subscribe.
           - else
-            %h4.light
+            %h4
               You are currently subscribed to a free
               %strong Basic
               plan which

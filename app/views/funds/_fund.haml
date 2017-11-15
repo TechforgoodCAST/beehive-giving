@@ -6,9 +6,9 @@
         - if fund.featured
           %span.bg-blue.white.fs14.bold.rounded.py3.px5.inline-block
             Featured
-      .mb5.fs15.lh20.mid-gray
+      .mb5.fs15.lh20.night
         = fund.subtitle
-      %p.fs14.lh18.mb5.mid-gray.truncate
+      %p.fs14.lh18.mb5.truncate
         = cell(:fund_insight, fund, proposal: @proposal).call(:themes)
       %p.mb5.fs15.lh20
         = raw strip_tags fund.description_html.truncate_words(30)
@@ -20,13 +20,13 @@
         - if @current_user.subscription_version == 2
           = link_to 'Reveal', reveals_path(fund: fund), method: :post, class: 'bg-blue white fs14 bold rounded py3 px5 inline-block'
 
-      .mb5.fs15.lh20.mid-gray.redacted= scramble_name fund.funder.name
-      %p.fs14.lh18.mb5.mid-gray.truncate
+      .mb5.fs15.lh20.grey.redacted= scramble_name fund.funder.name
+      %p.fs14.lh18.mb5.truncate
         = cell(:fund_insight, fund, proposal: @proposal).call(:themes)
-      %p.mb5.fs15.lh20= raw fund.description_redacted.truncate_words(30)
+      %p.mb5.fs15.lh20= raw fund.description_redacted(plain: true).truncate_words(30)
 
     %p.fs12.lh18.mb5.slate
       = cell(:fund_insight, fund, proposal: @proposal).call(:summary)
 
-  .col-one-third.border-left.pl10.border-lightest-gray.md.mb10.pt20
+  .col-one-third.border-left.pl10.border-silver.md.mb10.pt20
     = render partial: 'actions', locals: { fund: fund }

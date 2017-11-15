@@ -5,12 +5,12 @@
 
 // =========================================================================
 
-.button, .button-wide
+// TODO: .button, .button-wide deprecated
+.button, .button-wide, .btn
   font-size: map-get($scales, 16)
   text-decoration: none
   display: inline-block
   line-height: map-get($scales, 16)
-  padding: map-get($scales, 10) map-get($scales, 40)
   margin: 0
   height: auto
   border: 2px solid transparent
@@ -27,8 +27,21 @@
   &:focus
     outline: none
 
+// TODO: deprecated
+.button, .button-wide
+  padding: map-get($scales, 10) map-get($scales, 40)
+
+// TODO: deprecated
 .button-wide
   width: 100%
 
+// TODO: deprecated
 .button-bottom
   border-radius: 0 0 $base-radius $base-radius
+
+.btn
+  font-weight: bold
+  padding: 6px 12px
+
+  &.wide
+    width: 100%

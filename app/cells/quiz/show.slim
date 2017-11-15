@@ -1,7 +1,3 @@
-- unless counts[:completed] == counts[:restrictions]
-  .bg-yellow.rounded.shadow.fs14.p10.mb20
-    = render view: :questions_completed, locals: { counts: counts }
-
 - @groups.each do |g, title|
   - if @questions[g].present?
     h5.mb20 =title

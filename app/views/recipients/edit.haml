@@ -17,15 +17,14 @@
   .maxw1080.mx-auto.px20
 
     %section.md.mb20.px20
-      %h1.light.mb20 Dashboard
+      %h1.mb20 Dashboard
 
     = render partial: 'accounts/subnav'
 
   .maxw1080.mx-auto.px20.flex.flex-wrap
     %aside.perc25.md.px20.mb40
-      %h2.light.mb20 Organisation
-      %h4.light Update your organisation or project's details.
-
+      %h2.mb20 Organisation
+      %h4 Update your organisation or project's details.
 
     %section.perc75.md.mb80.px20.fs14
       = simple_form_for @recipient, url: account_organisation_path(@recipient) do |f|

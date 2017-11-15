@@ -152,24 +152,20 @@ class Fund < ApplicationRecord
     markdown(description)
   end
 
-  def geo_description_html
-    return geo_area.short_name
-  end
-
-  def description_redacted
+  def description_redacted(plain: false)
     tokens = name.downcase.split + funder.name.downcase.split
     stop_words = %w[and the fund trust foundation grants charitable]
     final_tokens = tokens - stop_words
     reg = Regexp.new(final_tokens.join('\b|\b'), options: 'i')
     scramble = Array.new(rand(5..10)) { [*'a'..'z'].sample }.join
-    desc = ActionView::Base.full_sanitizer.sanitize(description)
-    desc.gsub(reg, "<span class='mid-gray redacted'>#{scramble}</span>")
+    desc = description.gsub(reg, "<span class='grey redacted'>#{scramble}</span>")
+    markdown(desc, plain: plain)
   end
 
   def amount_desc
     return unless min_amount_awarded_limited || max_amount_awarded_limited
-    opts = {precision: 0, unit: "£"}
-    if !min_amount_awarded_limited || min_amount_awarded == 0
+    opts = { precision: 0, unit: '£' }
+    if !min_amount_awarded_limited || min_amount_awarded.zero?
       "up to #{number_to_currency(max_amount_awarded, opts)}"
     elsif !max_amount_awarded_limited
       "more than #{number_to_currency(min_amount_awarded, opts)}"

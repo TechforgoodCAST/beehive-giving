@@ -31,9 +31,9 @@
     .col-two-thirds.fs12
       = cell(:proposal_indicators, proposal).call(:suitability_progress_bar)
 
-.fs14.center.py15.border-top.border-lightest-gray 
-  - if context == 'fund' 
-    = link_to 'Edit', edit_proposal_path(proposal), class: 'blue px10' 
+.fs14.center.py15.border-top.border-silver
+  - if context == 'fund'
+    = link_to 'Edit', edit_proposal_path(proposal), class: 'blue px10'
     = link_to 'Change', proposals_path, class: 'blue px10'
     = link_to 'New', new_proposal_path, class: 'blue px10'
   - elsif proposal.registered? || proposal.complete?

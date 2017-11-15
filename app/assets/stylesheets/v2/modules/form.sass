@@ -12,13 +12,13 @@
   width: 100%
   +responsive(height, map-get($scales, 40))
   +responsive(padding-left, map-get($scales, 10), .6, .8)
-  border: 1px solid map-get($colors, gray)
+  border: 1px solid map-get($colors, 'grey')
   border-radius: $base-radius
   box-sizing: border-box
-  background: map-get($colors, white)
+  background: map-get($colors, 'white')
   &:focus
     outline: none
-    border-color: map-get($colors, blue)
+    border-color: map-get($colors, 'blue')
 
 .input + .error
   display: inline-block
@@ -29,7 +29,7 @@
 
 .field_with_errors > input
 .field_with_errors > select
-  border-color: map-get($colors, red)
+  border-color: map-get($colors, 'red')
 
 .label
   display: block
