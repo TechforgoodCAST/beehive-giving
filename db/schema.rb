@@ -439,6 +439,7 @@ ActiveRecord::Schema.define(version: 20171114103802) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug"
+    t.string "classes"
     t.index ["name"], name: "index_themes_on_name", unique: true
     t.index ["parent_id"], name: "index_themes_on_parent_id"
     t.index ["slug"], name: "index_themes_on_slug", unique: true

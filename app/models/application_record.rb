@@ -1,7 +1,9 @@
 class ApplicationRecord < ActiveRecord::Base
+  require 'redcarpet/render_strip'
+
   self.abstract_class = true
 
-  def markdown(str)
+  def markdown(str, plain: false)
     return "" if str.blank?
     options = { hard_wrap: true,
                 space_after_headers: true, fenced_code_blocks: true,
@@ -10,7 +12,11 @@ class ApplicationRecord < ActiveRecord::Base
 
     extensions = { autolink: true, disable_indented_code_blocks: true }
 
-    renderer = Redcarpet::Render::HTML.new(options)
+    renderer = if plain
+                 Redcarpet::Render::StripDown
+               else
+                Redcarpet::Render::HTML.new(options)
+               end
     markdown = Redcarpet::Markdown.new(renderer, extensions)
 
     markdown.render(str)

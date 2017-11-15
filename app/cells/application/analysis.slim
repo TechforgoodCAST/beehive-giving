@@ -1,7 +1,7 @@
-.md.perc33.pl10.mb20.border-left.border-lightest-gray class=[muted]
+.md.perc33.pl10.mb20.border-left.border-silver class=[muted]
     h3.caps.fs14.bold 3. Apply
     = model.suitability[options[:fund].slug]&.dig(:quiz, "score")
-    
+
     .mt10 class=status[:colour]
         = status[:symbol]
         =<> status[:status]

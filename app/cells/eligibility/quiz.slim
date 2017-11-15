@@ -1,13 +1,12 @@
-h4.mb10
-  | Additional questions
+h3.mb10 Quiz
 
 .uk-form.uk-form-stacked.uk-clearfix
   - if model.present?
     = simple_form_for :check, url: eligibility_proposal_fund_path(model, fund), method: :patch do |f|
 
       - if model.recipient.incomplete_first_proposal?
-      
-        .bg-silver.rounded.shadow.fs18.lh22.p10.mb20
+
+        .bg-ice.rounded.shadow.fs18.lh22.p10.mb20
           .bold.caps.mb10.fs15 Incomplete proposal
           | To complete eligibility for this fund you need to add some more information to your proposal.
           .mt10
@@ -15,8 +14,8 @@ h4.mb10
                               class: 'button white bg-blue caps shadow'
         .muted
 
-          = cell(:quiz, fund, quiz_type: 'Restriction', proposal: model, f: f, 
-                          groups: {'Proposal' => 'Is your funding proposal for?', 
+          = cell(:quiz, fund, quiz_type: 'Restriction', proposal: model, f: f,
+                          groups: {'Proposal' => 'Is your funding proposal for?',
                                       'Recipient' => 'Is your organisation?'}).call(:show_public)
 
       - else
@@ -24,20 +23,20 @@ h4.mb10
         - if model.ineligible_reasons(fund.slug).include? 'quiz'
           .bg-red.rounded.shadow.fs14.p10.mb20.white
             = cell(:eligibility_banner, model, fund: fund).call(:quiz)
-          
+
         = f.hidden_field :return_to, :value => 'fund'
-        = cell(:quiz, fund, quiz_type: 'Restriction', proposal: model, f: f, 
-                          groups: {'Proposal' => 'Is your funding proposal for?', 
+        = cell(:quiz, fund, quiz_type: 'Restriction', proposal: model, f: f,
+                          groups: {'Proposal' => 'Is your funding proposal for?',
                                       'Recipient' => 'Is your organisation?'}).call(:show)
 
   - else
 
     = simple_form_for :check do |f|
 
-      = cell(:quiz, fund, quiz_type: 'Restriction', proposal: model, f: f, 
-                        groups: {'Proposal' => 'Is your funding proposal for?', 
+      = cell(:quiz, fund, quiz_type: 'Restriction', proposal: model, f: f,
+                        groups: {'Proposal' => 'Is your funding proposal for?',
                                     'Recipient' => 'Is your organisation?'}).call(:show_public)
 
-  .bg-silver.rounded.shadow.fs14.p10.my20
+  .bg-ice.rounded.shadow.fs14.p10.my20
     .bold.caps.mb10 Good to know
     | Eligibility checks for location, the amount you are seeking and other factors have been done automatically.

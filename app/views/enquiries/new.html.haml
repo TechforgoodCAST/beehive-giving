@@ -29,10 +29,10 @@
 
     %section.perc75.md.mb80.px20
       %section.mb30
-        %h1.light
+        %h1
           Apply to
           = @fund.funder.name
-        .fs25.lh20.light.mt20
+        .fs25.lh20.mt20
           = @fund.short_name
           fund
 
@@ -46,7 +46,7 @@
 
       %section
         .mb20
-          %h2.light
+          %h2
             Key criteria
         .mb20.markdown
           = raw(@fund.key_criteria_html)
@@ -60,7 +60,7 @@
                   title: 'A new page will be opened with application details',
                   class: 'button white bg-blue caps shadow mb40 right'
       - else
-        .bg-silver.rounded.shadow.fs18.lh22.p10.mb20
+        .bg-ice.rounded.shadow.fs18.lh22.p10.mb20
           .bold.caps.mb10.fs15 Unsolicited applications
           Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
         = link_to "More information on #{@fund.name.strip}",

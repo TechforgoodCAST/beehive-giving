@@ -1,22 +1,12 @@
-.md.perc33.px10.mb20.border-left.border-lightest-gray class=[muted]
-  h3.caps.fs14.bold 2. Suitability
-
-  .mt10 class=status[:colour]
-    = status[:symbol]
-    =<> status[:status]
-
-  - if criteria.dig(:quiz, :status) == 'to_check'
-    = link_to "Complete", "#suitability-quiz", class: 'mt20 button-wide caps bg-blue white'
-  - else
-    .mt20.py10.hide-md
-      | &nbsp;
-
-  ul.mt20
-    - criteria.each do |k, v|
-      li.mb15.fs14
-        span.fs16 class=v[:colour]
-          = v[:symbol]
-        =<> v[:title]
-        - if v[:message]
-          .fs12.mt5.lh16
-            = v[:message]
+.border.rounded.border-silver
+  - criteria.each do |k, v|
+    .flex.flex-wrap.items-center.border-top.border-silver
+      .perc33.md
+        .m20
+          .flex.items-center
+            .dot class="bg-#{v[:colour]}"
+            h5.pl20.mr-auto = v[:title]
+            h5 class="#{v[:colour]}" = v[:symbol]
+      .perc66.md
+        .m20
+          .fs15 = v[:message]

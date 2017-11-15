@@ -1,0 +1,14 @@
+.mx-auto.shadow.border.rounded.border-silver.maxw420
+  .p20
+    .flex.justify-between.mb10
+      h5.bold Current proposal
+      = link_to 'Change', proposals_path, class: 'fs15'
+    .fs15
+      = proposal_summary
+
+  - steps.each do |s|
+    .border-top.border-silver class=s.highlight
+      .flex.items-center.px20.py16.progress-item
+        .indicator.mr20 class=s.indicator
+        h5.mr-auto = s.label
+        h6.bold = s.message

@@ -1,0 +1,30 @@
+%section.px20.mb80.md#eligibility
+  %h2.mb20 Eligibility
+
+  -# TODO: refactor
+  - if @proposal.eligible_status(@fund.slug) == -1
+    .mb20
+      .pb20.shadow.rounded.border.flex.items-center.flex-wrap.border-soft-blue.bg-light-blue
+        .pt20.px20.flex.items-center.mr-auto
+          .dot.bg-blue
+          %h5.bold.pl20.blue Incomplete check
+        .pt20.px20
+          = link_to 'Complete checks', '#eligibility-quiz', class: 'btn bg-blue white', 'data-turbolinks' => false
+
+  .mb40= cell(:eligibility, @proposal, fund: @fund).call(:analysis)
+
+  - if @fund.restrictions.exists?
+    #eligibility-quiz= cell(:eligibility, @proposal, fund: @fund).call(:quiz)
+
+%section.px20.mb80.md#suitability
+  %h2.mb30 Suitability
+
+  .mb20
+    .p20.shadow.rounded.border.flex.items-center.bg-light-yellow.border-soft-yellow
+      .dot.bg-yellow
+      %h5.bold.pl20.dark-yellow Review
+
+  .mb40= cell(:suitability, @proposal, fund: @fund).call(:analysis)
+
+  - if @fund.priorities.exists?
+    #suitability-quiz= cell(:suitability, @proposal, fund: @fund).call(:quiz)

@@ -1,13 +1,13 @@
 ' Analysis powered by open data
-' &middot;
+' •
 - if model.sources.size == 1
-  => link_to 'Source', model.sources.values[0], {target: "_blank", class: "blue"}
-  ' &middot;
-  = link_to 'License', model.sources.keys[0], {target: "_blank", class: "blue"}
+  => link_to 'Source', model.sources.values[0], { target: '_blank' }
+  ' •
+  = link_to 'License', model.sources.keys[0], { target: '_blank' }
 - else
   ' Sources:
   - model.sources.each do |l, s|
     br/
-    => link_to 'Source', s, {target: "_blank"}
-    ' &middot;
-    = link_to 'License', l, {target: "_blank"}
+    => link_to 'Source', s, { target: '_blank' }
+    ' •
+    = link_to 'License', l, { target: '_blank' }

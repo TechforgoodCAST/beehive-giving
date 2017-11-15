@@ -121,7 +121,7 @@ article.featured
     overflow: hidden
     outline: none
     font-size: 15px
-    color: map-get($colors, blue)
+    color: map-get($colors, 'blue')
     background: none
     min-width: 63px
     margin: 0 5px
@@ -177,7 +177,7 @@ article.featured
     background-size: 24px 20px
 
 .pagination a
-  color: map-get($colors, blue)
+  color: map-get($colors, 'blue')
 
 @font-face
   font-family: 'Redacted'
@@ -246,11 +246,11 @@ article.featured
   h1, h2, h3, h4
     font-weight: 300
   a
-    color: map-get($colors, blue)
+    color: map-get($colors, 'blue')
   ul
     list-style: disc
   ul, ol
-    padding-left: 20px
+    padding-left: 30px
 
 // Quiz
 // =========================================================================
@@ -264,8 +264,33 @@ article.featured
     cursor: pointer
 
   input[type=radio]:checked ~ label
-    color: map-get($colors, white)
-    background-color: map-get($colors, blue)
+    color: map-get($colors, 'white')
+    background-color: map-get($colors, 'blue')
 
   input[type=radio]:not(:checked) ~ label
-    color: map-get($colors, blue)
+    color: map-get($colors, 'blue')
+
+// Progress
+// =========================================================================
+
+.progress-item
+  overflow: hidden
+  +responsive(min-height, 3.938rem, .85, .9)
+
+.indicator
+  position: relative
+  background: map-get($colors, 'grey')
+  width: 16px
+  height: 16px
+  border-radius: 9999px
+  &.top:before, &.bot:after
+    content: ''
+    position: absolute
+    background: map-get($colors, 'silver')
+    width: 6px
+    height: 100vh
+    left: 5px
+  &.top:before
+    bottom: 16px
+  &.bot:after
+    top: 16px

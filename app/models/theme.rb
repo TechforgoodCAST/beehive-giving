@@ -5,6 +5,7 @@ class Theme < ApplicationRecord
   has_many :funds, through: :fund_themes
 
   validates :name, :slug, uniqueness: true
+  validates :classes, presence: true
   # See app/validators/hash_validator.rb
   validates :related, hash: { key_in: pluck(:name), value_in: :number }
 
