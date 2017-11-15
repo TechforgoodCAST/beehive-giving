@@ -78,58 +78,62 @@
 
       = yield
 
-      %footer.bg-silver.border-top.border-lightest-gray
+      - if content_for?(:footer)
+        = yield(:footer)
+      - else
 
-        .maxw1080.mx-auto
-          .flex.flex-wrap.items-center.slate
-            .f1.minw250.mx40.py40
-              .flex.items-center
-                %a{ href: root_path, alt: 'Beehive logo' }
-                  #logo-hex
-                .fs12.ml5 Intelligently connecting non-profits with funders
-            .f1.minw250.mx40.pt40
-              .flex.fs14.flex-wrap
-                .f1.minw150.pb40
-                  .bold.mb14 BEEHIVE
-                  %ul
-                    %li.mb10
-                      = link_to 'About', about_path, class: 'slate'
-                    %li.mb10
-                      = link_to 'FAQ', faq_path, class: 'slate'
-                    -# %li.mb10 Pricing
-                    %li.mb10
-                      = link_to 'Research', articles_path, class: 'slate'
-                    %li.mb10
-                      = link_to 'Beehive for Funders', for_funders_path, class: 'slate'
+        %footer.bg-silver.border-top.border-lightest-gray
 
-                .f1.minw150.pb40
-                  .bold.mb14 FUNDING
-                  = cell(:footer_themes, @current_user, proposal: @proposal)
+          .maxw1080.mx-auto
+            .flex.flex-wrap.items-center.slate
+              .f1.minw250.mx40.py40
+                .flex.items-center
+                  %a{ href: root_path, alt: 'Beehive logo' }
+                    #logo-hex
+                  .fs12.ml5 Intelligently connecting non-profits with funders
+              .f1.minw250.mx40.pt40
+                .flex.fs14.flex-wrap
+                  .f1.minw150.pb40
+                    .bold.mb14 BEEHIVE
+                    %ul
+                      %li.mb10
+                        = link_to 'About', about_path, class: 'slate'
+                      %li.mb10
+                        = link_to 'FAQ', faq_path, class: 'slate'
+                      -# %li.mb10 Pricing
+                      %li.mb10
+                        = link_to 'Research', articles_path, class: 'slate'
+                      %li.mb10
+                        = link_to 'Beehive for Funders', for_funders_path, class: 'slate'
 
-                .f1.minw150.pb40
-                  .bold.mb14 RESOURCES
-                  %ul
-                    %li.mb10
-                      = link_to 'Privacy', privacy_path, class: 'slate'
-                    %li.mb10
-                      = link_to 'Terms', terms_path, class: 'slate'
-                    -# %li.mb10 Developers
-                    %li.mb10
-                      = mail_to 'support@beehivegiving.org', 'Contact', class: 'slate'
+                  .f1.minw150.pb40
+                    .bold.mb14 FUNDING
+                    = cell(:footer_themes, @current_user, proposal: @proposal)
 
-          .mx40.pb40.fs12.mid-gray.lh16
-            &copy;
-            = Time.zone.today.year
-            = succeed ';' do
-              = link_to 'BeehiveGiving.org', root_path, class: 'mid-gray'
-            Incubated by
-            = succeed ',' do
-              = link_to 'CAST', 'http://www.wearecast.org.uk/', target: '_blank', class: 'mid-gray'
-            Registered Charity No:
-            = succeed ',' do
-              = link_to '1161998', 'http://beta.charitycommission.gov.uk/charity-details/?regid=1161998&subid=0', target: '_blank', class: 'mid-gray'
-            Company No:
-            = link_to '09544506', 'https://beta.companieshouse.gov.uk/company/09544506', target: '_blank', class: 'mid-gray'
+                  .f1.minw150.pb40
+                    .bold.mb14 RESOURCES
+                    %ul
+                      %li.mb10
+                        = link_to 'Privacy', privacy_path, class: 'slate'
+                      %li.mb10
+                        = link_to 'Terms', terms_path, class: 'slate'
+                      -# %li.mb10 Developers
+                      %li.mb10
+                        = mail_to 'support@beehivegiving.org', 'Contact', class: 'slate'
+
+            .mx40.pb40.fs12.mid-gray.lh16
+              &copy;
+              = Time.zone.today.year
+              = succeed ';' do
+                = link_to 'BeehiveGiving.org', root_path, class: 'mid-gray'
+              Incubated by
+              = succeed ',' do
+                = link_to 'CAST', 'http://www.wearecast.org.uk/', target: '_blank', class: 'mid-gray'
+              Registered Charity No:
+              = succeed ',' do
+                = link_to '1161998', 'http://beta.charitycommission.gov.uk/charity-details/?regid=1161998&subid=0', target: '_blank', class: 'mid-gray'
+              Company No:
+              = link_to '09544506', 'https://beta.companieshouse.gov.uk/company/09544506', target: '_blank', class: 'mid-gray'
 
     - else
       %main
