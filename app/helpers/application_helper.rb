@@ -15,14 +15,14 @@ module ApplicationHelper
       eligibilities: %i[new],
       enquiries: %i[new],
       errors: %i[not_found gone internal_server_error],
-      # feedback: %i[edit new],
+      feedback: %i[edit new create],
       funds: %i[index themed show hidden],
       pages: %i[about faq forfunders privacy terms], # preview?
       password_resets: %i[new create edit update],
       proposals: %i[index], # edit new update
       public_funds: %i[index show themed],
       recipients: %i[edit update],
-      # sessions: %i[new],
+      sessions: %i[new],
       signup: %i[user create_user], # funder, granted_access, unauthorised
       # signup_proposals: %i[edit new],
       # signup_recipients: %i[edit new],

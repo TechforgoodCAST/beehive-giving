@@ -1,58 +1,56 @@
 = content_for :title, 'Before you continue'
 
-.uk-container.uk-container-center.uk-margin-large-top.uk-margin-large-bottom
-  .uk-width-medium-2-3.uk-width-large-1-2.uk-container-center
-    %h2 Before you continue
-    %h4
-      %strong Take a minute and let us know what you think.
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'Feedback' => ''
 
-    = simple_form_for @feedback, url: feedback_index_path do |f|
-      .form.uk-form.uk-form-stacked.uk-panel.uk-panel-box.shadow
+%main
+  .maxw1080.mx-auto.px20
 
-        .uk-width-1-1.uk-margin-bottom
-          .uk-margin-small-bottom How suitable were your recommended funders?
-          = f.input :suitable, as: :select, collection: (0..10).to_a.reverse, label_method: lambda { |n| "#{n} #{Feedback::SUITABLE[n]}" }, input_html: {class: 'large uk-width-1-1'}
-          = f.error :suitable, class: 'error-message'
+  .maxw1080.mx-auto.px20.flex.flex-wrap
+    %aside.perc25.md.px20.mb40
+      %h2.light.mb20 Before you continue
+      %h4.light Take a minute and let us know what you think.
 
-        .uk-width-1-1.uk-margin-bottom
-          .uk-margin-small-bottom What was most useful about Beehive?
-          = f.input :most_useful, as: :select, collection: Feedback::MOST_USEFUL, input_html: {class: 'large uk-width-1-1'}
-          = f.error :most_useful, class: 'error-message'
 
-        .uk-width-1-1.uk-margin-bottom
-          .uk-margin-small-bottom How likely is it that you would recommend Beehive to a friend or colleague?
-          = f.input :nps, as: :select, collection: (0..10).to_a.reverse, label_method: lambda { |n| "#{n} #{Feedback::NPS[n]}" }, input_html: {class: 'large uk-width-1-1'}
-          = f.error :nps, class: 'error-message'
+    %section.perc75.md.mb80.px20.fs14
+      = simple_form_for @feedback, url: feedback_index_path do |f|
 
-        .uk-width-1-1.uk-margin-bottom
-          .uk-margin-small-bottom How would you feel if Beehive was taken away?
-          = f.input :taken_away, as: :select, collection: (0..10).to_a.reverse, label_method: lambda { |n| "#{n} #{Feedback::TAKEN_AWAY[n]}" }, input_html: {class: 'large uk-width-1-1'}
-          = f.error :taken_away, class: 'error-message'
+        .mb40
+          %label.label.mb10.bold.lh16 How suitable were your recommended funders?
+          = f.input :suitable, as: :select, collection: (0..10).to_a.reverse, label_method: lambda { |n| "#{n} #{Feedback::SUITABLE[n]}" }, input_html: {class: 'chosen-select'}
 
-        .uk-width-1-1.uk-margin-bottom
-          .uk-margin-small-bottom Beehive informed my fundraising
-          = f.input :informs_decision, as: :select, collection: (0..10).to_a.reverse, label_method: lambda { |n| "#{n} #{Feedback::INFORMS_DECISION[n]}" }, input_html: {class: 'large uk-width-1-1'}
-          = f.error :informs_decision, class: 'error-message'
+        .mb40
+          %label.label.mb10.bold.lh16 What was most useful about Beehive?
+          = f.input :most_useful, as: :select, collection: Feedback::MOST_USEFUL, input_html: {class: 'chosen-select'}
 
-        .uk-width-1-1.uk-margin-bottom
-          .uk-margin-small-bottom How many funding applications did you submit in the past 12 months?
-          = f.input :application_frequency, as: :select, collection: Feedback::APP_AND_GRANT_FREQUENCY, input_html: {class: 'large uk-width-1-1'}
-          = f.error :application_frequency, class: 'error-message'
+        .mb40
+          %label.label.mb10.bold.lh16 How likely is it that you would recommend Beehive to a friend or colleague?
+          = f.input :nps, as: :select, collection: (0..10).to_a.reverse, label_method: lambda { |n| "#{n} #{Feedback::NPS[n]}" }, input_html: {class: 'chosen-select'}
 
-        .uk-width-1-1.uk-margin-bottom
-          .uk-margin-small-bottom How many grants did you recieve in the past 12 months?
-          = f.input :grant_frequency, as: :select, collection: Feedback::APP_AND_GRANT_FREQUENCY, input_html: {class: 'large uk-width-1-1'}
-          = f.error :grant_frequency, class: 'error-message'
+        .mb40
+          %label.label.mb10.bold.lh16 How would you feel if Beehive was taken away?
+          = f.input :taken_away, as: :select, collection: (0..10).to_a.reverse, label_method: lambda { |n| "#{n} #{Feedback::TAKEN_AWAY[n]}" }, input_html: {class: 'chosen-select'}
 
-        .uk-width-1-1.uk-margin-bottom
-          .uk-margin-small-bottom How often would you like to be informed about new funders and funding rounds?
-          = f.input :marketing_frequency, as: :select, collection: Feedback::MARKETING_FREQUENCY, input_html: {class: 'large uk-width-1-1'}
-          = f.error :marketing_frequency, class: 'error-message'
+        .mb40
+          %label.label.mb10.bold.lh16 Beehive informed my fundraising
+          = f.input :informs_decision, as: :select, collection: (0..10).to_a.reverse, label_method: lambda { |n| "#{n} #{Feedback::INFORMS_DECISION[n]}" }, input_html: {class: 'chosen-select'}
 
-        .uk-width-1-1.uk-margin-bottom
-          .uk-margin-small-bottom Any other feedback?
-          = f.input :other, as: :text, input_html: {class: 'uk-width-1-1'}
-          = f.error :other, class: 'error-message'
+        .mb40
+          %label.label.mb10.bold.lh16 How many funding applications did you submit in the past 12 months?
+          = f.input :application_frequency, as: :select, collection: Feedback::APP_AND_GRANT_FREQUENCY, input_html: {class: 'chosen-select'}
+
+        .mb40
+          %label.label.mb10.bold.lh16 How many grants did you recieve in the past 12 months?
+          = f.input :grant_frequency, as: :select, collection: Feedback::APP_AND_GRANT_FREQUENCY, input_html: {class: 'chosen-select'}
+
+        .mb40
+          %label.label.mb10.bold.lh16 How often would you like to be informed about new funders and funding rounds?
+          = f.input :marketing_frequency, as: :select, collection: Feedback::MARKETING_FREQUENCY, input_html: {class: 'chosen-select'}
+
+        .mb40
+          %label.label.mb10.bold.lh16 Any other feedback?
+          = f.input :other, as: :text, input_html: {class: 'mb10 p5', rows: 5}
 
         .uk-text-right
-          = f.button :button, 'Submit feedback', class: 'uk-button uk-button-primary uk-button-large uk-width-1-1'
+          = f.button :button, 'Submit feedback', class: 'button bg-green white caps'
