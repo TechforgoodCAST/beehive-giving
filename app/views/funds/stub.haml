@@ -42,7 +42,7 @@
             = link_to 'Beehive Pro user', account_subscription_path(@recipient), class: 'blue' 
             you can request that we update this fund with the full details.
 
-          = link_to 'Request fund update', '#request', class: 'button white bg-blue shadow caps mt10'
+          = link_to 'Request fund update', requests_path(fund: @fund), method: :post, class: 'button white bg-blue shadow caps mt10'
 
         - else
 

@@ -2,8 +2,6 @@ module Progress
   class Request < Base
     def initialize(*args)
       super
-      return if @fund.stub?
-      @status = @proposal.eligible_status(@fund.slug)
     end
 
     def label
@@ -15,7 +13,7 @@ module Progress
     end
 
     def message
-      link_to('Request', '#eligibility', class: 'fs15 btn white bg-blue shadow')
+      link_to('Request', requests_path(fund: @fund), method: :post, class: 'fs15 btn white bg-blue shadow')
     end
 
     def highlight

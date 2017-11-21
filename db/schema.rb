@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171114103802) do
+ActiveRecord::Schema.define(version: 20171121183536) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -417,6 +417,16 @@ ActiveRecord::Schema.define(version: 20171114103802) do
     t.integer "income"
     t.jsonb "reveals", default: [], null: false
     t.index ["slug"], name: "index_recipients_on_slug", unique: true
+  end
+
+  create_table "requests", force: :cascade do |t|
+    t.bigint "fund_id"
+    t.bigint "recipient_id"
+    t.string "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fund_id"], name: "index_requests_on_fund_id"
+    t.index ["recipient_id"], name: "index_requests_on_recipient_id"
   end
 
   create_table "subscriptions", id: :serial, force: :cascade do |t|
