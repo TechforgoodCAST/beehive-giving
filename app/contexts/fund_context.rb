@@ -6,4 +6,8 @@ class FundContext < ApplicationContext
   def featured
     fund.featured
   end
+
+  def stub?
+    fund.stub?
+  end
 end

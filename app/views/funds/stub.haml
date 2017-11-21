@@ -1,0 +1,63 @@
+= content_for :title, @fund.title
+
+:javascript
+  mixpanel.track('View Fund Page', { "Fund": "#{@fund.name}" });
+  mixpanel.identify("#{@current_user.id}");
+
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, (@proposal.title? ? @proposal.title : 'Current proposal').upcase_first => nil, 'Funds' => proposal_funds_path(@proposal), @fund.funder.name => proposal_fund_path(@proposal, @fund)
+
+%main
+  .maxw1080.mx-auto.px40.mt40
+
+    .flex.flex-wrap.mb40
+      %section.perc50.md.mb40.px20
+        %h1.mb10= @fund.funder.name
+
+        .mb30.fs18.night.lh25= raw @fund.description_html
+
+        %hr
+        %h6.my20.slate= cell(:fund_insight, @fund, proposal: @proposal).call(:summary)
+        %hr.mb30
+
+        = cell(:fund_insight, @fund, proposal: @proposal).call(:themes)
+
+      %section.perc50.md
+        = cell(:progress, @proposal, fund: @fund)
+
+    %section.px20.mb80.md
+      .p20.bg-light-blue.border.border-blue.rounded
+        %h2.mb20 About this fund
+
+        %p.mb10
+          This fund is a "stub". This means we don't have all the information we would usually 
+          need to check your eligibility and suitability. We have selected it based on the theme
+          and location of your proposal.
+
+        - if @recipient.subscribed?
+
+          %p.mb10
+            As a 
+            = link_to 'Beehive Pro user', account_subscription_path(@recipient), class: 'blue' 
+            you can request that we update this fund with the full details.
+
+          = link_to 'Request fund update', '#request', class: 'button white bg-blue shadow caps mt10'
+
+        - else
+
+          %p.mb10
+            Beehive Pro users can request that this fund is updated with full details.
+
+          = link_to 'Subscribe now', account_subscription_path(@recipient), class: 'button white bg-blue shadow caps mt10'
+
+        %h4.mb20.mt20 Data source
+
+        %p.mb10
+          The information we have here is generated from data from the Charity Commission for England
+          and Wales, used under the 
+          = succeed '.' do
+            = link_to 'Open Government License', 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/', class: 'blue'
+          More details are available on our
+          = link_to 'Beehive Data', 'http://data.beehivegiving.org/sources', class: 'blue'
+          site.

@@ -147,8 +147,14 @@ class Proposal < ApplicationRecord
         # Check::Suitability::Quiz.new(self, Fund.active),
       ]
     )
+    check_stub_eligibility = Check::Each.new(
+      [
+        Check::Eligibility::Location.new,
+        Check::Eligibility::Theme.new,
+      ]
+    )
     update_columns(
-      eligibility: check_eligibility.call_each(self, Fund.active),
+      eligibility: check_stub_eligibility.call_each(self, Fund.stubs).merge(check_eligibility.call_each(self, Fund.active)),
       suitability: check_suitability.call_each_with_total(self, Fund.active)
     )
   end
@@ -160,6 +166,11 @@ class Proposal < ApplicationRecord
 
   def suitable_funds
     suitability.sort_by { |fund| fund[1]['total'] }.reverse
+  end
+
+  def eligible_noquiz
+    # Same as eligible_funds except doesn't check for the quiz
+    eligibility.select { |f, fund| fund.all_values_for('eligible').exclude?(false) }
   end
 
   def eligible_funds

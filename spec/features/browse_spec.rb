@@ -36,12 +36,19 @@ feature 'Browse' do
 
   context 'signed in' do
     before(:each) do
-      @unsuitable_fund = Fund.first
-      @low_fund = Fund.find_by(name: 'Awards for All 2')
-      @top_fund = Fund.last
+      @unsuitable_fund = Fund.active.first
+      @low_fund = Fund.active.find_by(name: 'Awards for All 2')
+      @top_fund = Fund.active.last
       @recipient = @db[:recipient]
       @app.sign_in
       visit root_path
+    end
+
+    fscenario "Fund stub selection shown on proposal fund page" do
+      @app.setup_fund_stubs(num: 5)
+      @fund_stubs = @app.instances[:fund_stubs]
+      visit proposal_funds_path(@proposal)
+      expect(page).to have_text @fund_stubs.first.name
     end
 
     scenario "When I find a recommended fund I'm interested in,

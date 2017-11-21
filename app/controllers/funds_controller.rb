@@ -1,16 +1,20 @@
 class FundsController < ApplicationController
   before_action :ensure_logged_in, :update_legacy_suitability, except: :sources
-  before_action :query, only: %i[index themed]
+  before_action :query, :stub_query, only: %i[index themed]
 
   def show
     @fund = Fund.includes(:funder).find_by_hashid(params[:id])
     authorize FundContext.new(@fund, @proposal)
+    render :stub if @fund.stub?
   end
 
   def index
     query = @query.order_by(@proposal, params[:sort])
     @fund_count = query.size
     @funds = Kaminari.paginate_array(query).page(params[:page])
+
+    @fund_stubs = @stub_query.order("RANDOM()").limit(5)
+
   end
 
   def themed
@@ -45,5 +49,11 @@ class FundsController < ApplicationController
                    .includes(:funder, :themes, :geo_area)
                    .eligibility(@proposal, params[:eligibility])
                    .duration(@proposal, params[:duration])
+    end
+
+    def stub_query
+      @stub_query = Fund.stubs
+                        .includes(:funder)
+                        .eligibility(@proposal, 'eligible_noquiz')
     end
 end

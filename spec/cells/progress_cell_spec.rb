@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'shared_context'
 
-describe ProgressCell do
+fdescribe ProgressCell do
   include_context 'shared context'
 
   controller ApplicationController
@@ -46,5 +46,20 @@ describe ProgressCell do
     expect(subject).to have_text 'Eligibility'
     expect(subject).to have_text 'Suitability'
     expect(subject).to have_text 'Apply'
+  end
+
+  context 'fund stub' do
+    before { fund.state = 'stub' }
+
+    it '#steps' do
+      expect(subject).to have_text 'Request'
+      expect(subject).to have_text 'Eligibility'
+      expect(subject).to have_text 'Suitability'
+      expect(subject).to have_text 'Apply'
+    end
+
+    it 'eligibility and suitability missing' do
+      expect(subject).to have_text 'Missing', count: 2
+    end
   end
 end

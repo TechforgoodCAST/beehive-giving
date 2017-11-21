@@ -2,6 +2,7 @@ module Progress
   class Eligibility < Base
     def initialize(*args)
       super
+      return if @fund.stub?
       @status = @proposal.eligible_status(@fund.slug)
     end
 
@@ -10,6 +11,7 @@ module Progress
     end
 
     def indicator
+      return " #{@position}" if @status.nil?
       {
         -1 => 'bg-blue', 0 => 'bg-red', 1 => 'bg-green'
       }[@status] << " #{@position}"
@@ -17,6 +19,8 @@ module Progress
 
     def message
       case @status
+      when nil
+        "Missing"
       when -1
         link_to(
           'Complete this check',
@@ -31,6 +35,7 @@ module Progress
     end
 
     def highlight
+      return '' if @status.nil?
       'bg-light-blue' unless @status == 1
     end
   end

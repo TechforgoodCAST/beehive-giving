@@ -2,6 +2,7 @@ module Progress
   class Suitability < Base
     def initialize(*args)
       super
+      return if @fund.stub?
       @status = @proposal.suitability[@fund.slug]
                          .all_values_for('score')
                          .count { |s| s > 0.2 }
@@ -12,7 +13,9 @@ module Progress
     end
 
     def indicator
-      "#{@position} " << if @status == 5
+      "#{@position} " << if @status.nil?
+                           'grey'
+                         elsif @status == 5
                            'bg-green'
                          elsif @status >= 2
                            'bg-yellow'
@@ -22,7 +25,9 @@ module Progress
     end
 
     def message
-      if @status == 5
+      if @status.nil?
+        "Missing"
+      elsif @status == 5
         link_to('Good', '#suitability', link_opts.merge(class: 'green'))
       elsif @status >= 2
         link_to('Review', '#suitability', link_opts.merge(class: 'yellow'))
