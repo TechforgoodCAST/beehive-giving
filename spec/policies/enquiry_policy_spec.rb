@@ -10,7 +10,7 @@ describe EnquiryPolicy do
   let(:eligibility) { {} }
   let(:suitability) { {} }
 
-  let(:fund) { Fund.new(slug: 'fund') }
+  let(:fund) { Fund.new(slug: 'fund', state: 'active') }
   let(:proposal) do
     Proposal.new(eligibility: eligibility, suitability: suitability)
   end

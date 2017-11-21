@@ -13,7 +13,7 @@ module Progress
     end
 
     def message
-      link_to('Request', requests_path(fund: @fund), method: :post, class: 'fs15 btn white bg-blue shadow')
+      link_to('Request', url_helpers.requests_path(fund: @fund), method: :post, class: 'fs15 btn white bg-blue shadow')
     end
 
     def highlight

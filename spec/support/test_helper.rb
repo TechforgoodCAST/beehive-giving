@@ -57,13 +57,12 @@ class TestHelper
 
   def setup_fund_stubs(num: 1, save: true, opts: {})
     FactoryGirl.reload
-    @funder = create(:funder)
+    @funder = create(:funder, name: 'Fund Stub Funder')
     @fund_stubs = build_list(:fundstub, num, opts.merge(funder: @funder))
     @fund_stubs.each_with_index do |fund, i|
       stub_fund_summary_endpoint(fund.instance_eval { set_slug })
       fund.themes = @themes
       fund.geo_area = GeoArea.first
-      fund = FundStub.new(fund: fund)
       fund.save if save
     end
     self

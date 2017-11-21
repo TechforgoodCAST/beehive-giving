@@ -1,18 +1,16 @@
 require 'rails_helper'
 require 'pundit/rspec'
 
-fdescribe RequestPolicy do
+describe RequestPolicy do
   subject { described_class }
 
   let(:subscribed) { false }
   let(:fund) { Fund.new(slug: 'fund') }
-  let(:proposal) { Proposal.new(suitability: suitability) }
   let(:requests) { [] }
   let(:user) do
     instance_double(
       User,
-      subscription_active?: subscribed,
-      subscription_version: version
+      subscription_active?: subscribed
     )
   end
   let(:recipient) { Recipient.new() }
@@ -22,9 +20,12 @@ fdescribe RequestPolicy do
       is_expected.not_to permit(user, :requests)
     end
 
-    it 'subscribed' do
+    context 'subscribed' do
       let(:subscribed){ true }
-      is_expected.to permit(user, :requests)
+
+      it 'permit' do
+        is_expected.to permit(user, :requests)
+      end
     end
   end
 end

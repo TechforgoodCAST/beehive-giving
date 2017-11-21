@@ -4,10 +4,12 @@ feature 'Browse' do
   before(:each) do
     @app.seed_test_db
         .setup_funds(num: 7, open_data: true)
+        .setup_fund_stubs(num: 5)
         .create_recipient_with_subscription_v1!
         .with_user
         .create_registered_proposal
     @db = @app.instances
+    @fund_stubs = @app.instances[:fund_stubs]
     @proposal = @db[:registered_proposal]
     @theme = @db[:themes].first
     @themes = @db[:themes]
@@ -25,8 +27,8 @@ feature 'Browse' do
 
   scenario 'When I browse the site,
             there is a list of fund themes in the footer' do
-    Fund.first.update themes: [@themes.first, @themes.second]
-    Fund.second.update themes: [@themes.first]
+    Fund.active.first.update themes: [@themes.first, @themes.second]
+    Fund.active.second.update themes: [@themes.first]
     visit root_path
     expect(page).to have_text 'FUNDING'
     expect(page).to have_text @themes.first.name
@@ -44,11 +46,10 @@ feature 'Browse' do
       visit root_path
     end
 
-    fscenario "Fund stub selection shown on proposal fund page" do
-      @app.setup_fund_stubs(num: 5)
-      @fund_stubs = @app.instances[:fund_stubs]
+    scenario "Fund stub selection shown on proposal fund page" do
+      @proposal.update_column(:eligibility, @proposal.eligibility.merge( @fund_stubs.first.slug => {'location': true}) )
       visit proposal_funds_path(@proposal)
-      expect(page).to have_text @fund_stubs.first.name
+      expect(page).to have_text @fund_stubs.first.funder.name
     end
 
     scenario "When I find a recommended fund I'm interested in,
@@ -69,7 +70,7 @@ feature 'Browse' do
     scenario "When I find a funding theme I'm interested in,
               I want to see similar funds,
               so I can discover new funding opportunties" do
-      @proposal.update_column(:suitability, Fund.last.slug => { 'total': 0 })
+      @proposal.update_column(:suitability, Fund.active.last.slug => { 'total': 0 })
       click_link @theme.name, match: :first
       expect(current_path)
         .to eq theme_proposal_funds_path(@proposal, @theme.slug)
@@ -112,7 +113,7 @@ feature 'Browse' do
       click_link 'Hidden fund'
       expect(current_path).to eq account_upgrade_path(@recipient)
 
-      subscribe_and_visit proposal_fund_path(@proposal, Fund.first)
+      subscribe_and_visit proposal_fund_path(@proposal, Fund.active.first)
     end
 
     context 'When I view fund a with open data' do

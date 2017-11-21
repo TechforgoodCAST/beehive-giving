@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'shared_context'
 
-fdescribe ProgressCell do
+describe ProgressCell do
   include_context 'shared context'
 
   controller ApplicationController
