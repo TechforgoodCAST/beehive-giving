@@ -82,7 +82,7 @@
         = yield(:footer)
       - else
 
-        %footer.bg-silver.border-top.border-lightest-gray
+        %footer.bg-ice.border-top.border-silver
 
           .maxw1080.mx-auto
             .flex.flex-wrap.items-center.slate
@@ -121,19 +121,19 @@
                       %li.mb10
                         = mail_to 'support@beehivegiving.org', 'Contact', class: 'slate'
 
-            .mx40.pb40.fs12.mid-gray.lh16
+            .mx40.pb40.fs12.grey.lh16
               &copy;
               = Time.zone.today.year
               = succeed ';' do
-                = link_to 'BeehiveGiving.org', root_path, class: 'mid-gray'
+                = link_to 'BeehiveGiving.org', root_path, class: 'grey'
               Incubated by
               = succeed ',' do
-                = link_to 'CAST', 'http://www.wearecast.org.uk/', target: '_blank', class: 'mid-gray'
+                = link_to 'CAST', 'http://www.wearecast.org.uk/', target: '_blank', class: 'grey'
               Registered Charity No:
               = succeed ',' do
-                = link_to '1161998', 'http://beta.charitycommission.gov.uk/charity-details/?regid=1161998&subid=0', target: '_blank', class: 'mid-gray'
+                = link_to '1161998', 'http://beta.charitycommission.gov.uk/charity-details/?regid=1161998&subid=0', target: '_blank', class: 'grey'
               Company No:
-              = link_to '09544506', 'https://beta.companieshouse.gov.uk/company/09544506', target: '_blank', class: 'mid-gray'
+              = link_to '09544506', 'https://beta.companieshouse.gov.uk/company/09544506', target: '_blank', class: 'grey'
 
     - else
       %main
