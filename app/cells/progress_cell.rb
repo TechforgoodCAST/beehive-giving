@@ -21,8 +21,15 @@ class ProgressCell < Cell::ViewModel
 
     def steps
       opts = { proposal: model, fund: options[:fund] }
-      [
+      return [
         ::Progress::Eligibility.new(opts.merge(position: 'bot')),
+        ::Progress::Suitability.new(opts.merge(position: 'top bot')),
+        ::Progress::Apply.new(opts.merge(position: 'top'))
+      ] unless options[:fund].stub?
+
+      [
+        ::Progress::Request.new(opts.merge(position: 'bot')),
+        ::Progress::Eligibility.new(opts.merge(position: 'top bot')),
         ::Progress::Suitability.new(opts.merge(position: 'top bot')),
         ::Progress::Apply.new(opts.merge(position: 'top'))
       ]
