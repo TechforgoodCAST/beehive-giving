@@ -4,8 +4,7 @@ class RequestsController < ApplicationController
   def create
     authorize :request
     fund = Fund.find_by_hashid(params[:fund])
-    @request = Request.new(fund: fund, recipient: @recipient, message: @params[:message])
-    @request.save
+    Request.create(fund: fund, recipient: @recipient, message: params[:message])
     redirect_to proposal_fund_path(@proposal, fund)
   end
 

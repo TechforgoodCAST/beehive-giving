@@ -14,10 +14,10 @@ describe RequestPolicy do
     )
   end
   let(:recipient) { Recipient.new() }
- 
+
   permissions :create? do
     it 'not subscribed' do
-      is_expected.not_to permit(user, :requests)
+      is_expected.to permit(user, :requests)
     end
 
     context 'subscribed' do

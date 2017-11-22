@@ -13,7 +13,7 @@ module Progress
     end
 
     def message
-      if model.recipient.requests.where(fund_id: @fund.id)
+      if @proposal.recipient.requests.find_by(fund_id: @fund.id)
         tag.a('Requested', class: 'btn fs15 slate border-silver disabled')
       else
         link_to('Request', url_helpers.requests_path(fund: @fund), method: :post, class: 'fs15 btn white bg-blue shadow')
