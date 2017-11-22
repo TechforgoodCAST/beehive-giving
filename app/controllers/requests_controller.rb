@@ -1,4 +1,4 @@
-class RevealsController < ApplicationController
+class RequestsController < ApplicationController
   before_action :ensure_logged_in
 
   def create

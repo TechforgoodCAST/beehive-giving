@@ -35,21 +35,10 @@
           need to check your eligibility and suitability. We have selected it based on the theme
           and location of your proposal.
 
-        - if @recipient.subscribed?
+        %p.mb10
+          You can request that we update this fund with the full details.
 
-          %p.mb10
-            As a 
-            = link_to 'Beehive Pro user', account_subscription_path(@recipient), class: 'blue' 
-            you can request that we update this fund with the full details.
-
-          = link_to 'Request fund update', requests_path(fund: @fund), method: :post, class: 'button white bg-blue shadow caps mt10'
-
-        - else
-
-          %p.mb10
-            Beehive Pro users can request that this fund is updated with full details.
-
-          = link_to 'Subscribe now', account_subscription_path(@recipient), class: 'button white bg-blue shadow caps mt10'
+        = link_to 'Request fund update', requests_path(fund: @fund), method: :post, class: 'button white bg-blue shadow caps mt10'
 
         %h4.mb20.mt20 Data source
 

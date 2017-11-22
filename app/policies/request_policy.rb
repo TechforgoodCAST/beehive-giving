@@ -1,5 +1,5 @@
 class RequestPolicy < ApplicationPolicy
   def create?
-    user.subscription_active?
+    true
   end
 end
