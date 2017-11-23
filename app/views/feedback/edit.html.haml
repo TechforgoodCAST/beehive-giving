@@ -1,36 +1,38 @@
 = content_for :title, 'Coming soon'
 
-.uk-container.uk-container-center
-  .uk-grid.uk-margin-large.uk-margin-large-top
-    .uk-width-medium-1-1
-      .uk-width-large-1-2.uk-container-center
-        %h2 Coming soon
-        %p
-          Dear
-          = succeed ',' do
-            = @current_user.first_name
-        %p Thank you for using the Beehive Beta! We're working hard to add new features and funders every week.
-        %p You are seeing this page because we've currently restricted access to some parts of the site. We'll be in touch when we're ready to give access to all areas, but in the meantime please help to shape our strategy by providing some feedback below.
-        %p Thank you
-        %p
-          Suraj
-          %br
-            Creator of Beehive
-        %p P.S. You'll be returned to where you left off once you save your feedback.
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'Feedback' => ''
 
-        %hr.thick
+%main
+  .maxw1080.mx-auto.px20
 
-      .uk-width-large-1-2.uk-container-center
-        .cta.tight
-          %h4.uk-text-bold Give us some feedback
-          = simple_form_for @feedback, url: feedback_path, method: :patch do |f|
-            .uk-form.uk-form-stacked.form
-              .uk-width-1-1.uk-margin-bottom
-                %p{style: 'font-size: 14px;'}
-                  How much would you pay
-                  %strong a year
-                  to have unlimited access to all of the funders on Beehive?
-                = f.input :price, as: :currency, input_html: { class: 'large numeric integer uk-width-1-1', min: 0 }, placeholder: 'e.g. 50'
-                = f.error :price, class: 'error-message'
+  .maxw1080.mx-auto.px20.flex.flex-wrap
+    %aside.perc25.md.px20.mb40
+      %h2.light.mb20 Coming soon
 
-            = f.submit 'Save feedback', class: 'uk-button uk-button-primary uk-button-large uk-width-1-1'
+    %section.perc75.md.mb80.px20.fs16.lh18
+      %p.mb15
+        Dear
+        = succeed ',' do
+          = @current_user.first_name
+      %p.mb15 Thank you for using the Beehive Beta! We're working hard to add new features and funders every week.
+      %p.mb15 You are seeing this page because we've currently restricted access to some parts of the site. We'll be in touch when we're ready to give access to all areas, but in the meantime please help to shape our strategy by providing some feedback below.
+      %p.mb15 Thank you
+      %p.mb15
+        Suraj
+        %br
+          Creator of Beehive
+      %p.mb15 P.S. You'll be returned to where you left off once you save your feedback.
+
+      %hr.thick
+
+      .mt40
+        = simple_form_for @feedback, url: feedback_path, method: :patch do |f|
+          %label.label.mb10.bold.lh16
+            How much would you pay
+            %strong a year
+            to have unlimited access to all of the funders on Beehive?
+          = f.input :price, as: :currency, input_html: { class: 'input', min: 0 }, placeholder: 'e.g. 50'
+
+          = f.submit 'Save feedback', class: 'button bg-green white caps mt30'

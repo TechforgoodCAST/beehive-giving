@@ -2,6 +2,7 @@ class Fund < ApplicationRecord
   include ActionView::Helpers::NumberHelper
 
   scope :active, -> { where(state: 'active') }
+  scope :stubs, -> { where(state: 'stub') }
   scope :newer_than, ->(date) { where('updated_at > ?', date) }
   scope :recent, -> { order updated_at: :desc }
 
@@ -10,6 +11,7 @@ class Fund < ApplicationRecord
   belongs_to :funder
 
   has_many :enquiries, dependent: :destroy
+  has_many :requests, dependent: :destroy
 
   has_many :fund_themes, dependent: :destroy
   has_many :themes, through: :fund_themes
@@ -93,6 +95,8 @@ class Fund < ApplicationRecord
 
   def self.eligibility(proposal, state)
     case state
+    when 'eligible_noquiz'
+      where slug: proposal.eligible_noquiz.keys
     when 'eligible'
       where slug: proposal.eligible_funds.keys
     when 'ineligible'
@@ -142,6 +146,10 @@ class Fund < ApplicationRecord
 
   def tags?
     tags.count.positive?
+  end
+
+  def stub?
+    %w[stub draft].include? state
   end
 
   def key_criteria_html

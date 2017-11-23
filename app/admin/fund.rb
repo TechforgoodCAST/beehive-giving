@@ -43,6 +43,9 @@ ActiveAdmin.register Fund do
     column :open_data
     column "Geo", :geo_area
     column "Grants", :grant_count
+    column "Requests" do |fund|
+      fund.requests.size
+    end
     column :last_updated do |fund|
       fund.updated_at.strftime("%F")
     end
