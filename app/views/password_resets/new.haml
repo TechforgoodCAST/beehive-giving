@@ -28,7 +28,5 @@
       %hr.maxw790.my20
 
       = simple_form_for @password_reset do |f|
-        .mb20
-          .fs15.bold.mb10 Email
-          = f.input :email
+        .mb20= f.input :email
         = f.button :button, 'Reset password', class: 'button-wide white bg-olive caps truncate', data: { disable_with: 'Resetting...' }

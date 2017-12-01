@@ -2,22 +2,17 @@
 
   .uk-grid.uk-grid-small.uk-width-1-1
     .uk-width-medium-1-2
-      .label First name
-      = f.input :first_name, type: 'text', input_html: { class: 'large uk-width-1-1' }
+      = f.input :first_name, input_html: { class: 'large uk-width-1-1' }
 
     .uk-width-medium-1-2
-      .label Last name
-      = f.input :last_name, type: 'text', input_html: { class: 'large uk-width-1-1' }
+      = f.input :last_name, input_html: { class: 'large uk-width-1-1' }
 
     .uk-width-1-1.uk-margin-top
-      .label Email
-      = f.input :email, type: 'text', input_html: { class: 'large uk-width-1-1' }
+      = f.input :email, input_html: { class: 'large uk-width-1-1' }
 
   .uk-grid.uk-grid-small.uk-width-1-1.uk-margin-top
     .uk-width-medium-1-2
-      .label Password
-      = f.input :password, type: 'password', input_html: { class: 'large uk-width-1-1', "data-uk-tooltip" => "{pos:'top', animation:true}", title: 'At least 6 characters with 1 number.' }
+      = f.input :password, input_html: { class: 'large uk-width-1-1', "data-uk-tooltip" => "{pos:'top', animation:true}", title: 'At least 6 characters with 1 number.' }
 
     .uk-width-medium-1-2
-      .label Confirm password
-      = f.input :password_confirmation, type: 'password', input_html: { class: 'large uk-width-1-1' }
+      = f.input :password_confirmation, input_html: { class: 'large uk-width-1-1' }

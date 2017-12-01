@@ -29,10 +29,6 @@
       %hr.maxw790.my20
 
       = simple_form_for @password_reset, url: password_reset_path(params[:id]), method: :patch do |f|
-        .mb20
-          .fs15.bold.mb10 Password
-          = f.input :password
-        .mb20
-          .fs15.bold.mb10 Password confirmation
-          = f.input :password_confirmation
+        .mb20= f.input :password
+        .mb20= f.input :password_confirmation
         = f.button :button, 'Change password', class: 'button-wide white bg-olive caps truncate', data: { disable_with: 'Changing...' }

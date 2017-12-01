@@ -1,6 +1,46 @@
 en:
   simple_form:
+    "yes": 'Yes'
+    "no": 'No'
+    required:
+      text: ''
+      mark: ''
+      # You can uncomment the line below if you need to overwrite the whole required html.
+      # When using html, text and mark won't be used.
+      # html: '<abbr title="required">*</abbr>'
+    error_notification:
+      default_message: "Please review the problems below:"
+
+    labels:
+      defaults:
+        password_confirmation: 'Confirm password'
+        funding_type: 'What type of grant funding are you seeking?'
+        total_costs: 'How much funding are you seeking?'
+        org_type: 'Who will be receiving the funding?'
+      recipient:
+        name: 'Organisation or project name'
+        country: 'Where is your organisation or project based?'
+        operating_for: 'How long has your organisation or project been operating for?'
+        income_band: 'What is the annual income of your organisation or project?'
+        employees: 'How many employees does your organisation or project have?'
+        volunteers: 'How many volunteers does your organisation or project have?'
+        website: "Your organisation or project's website"
+      proposal:
+        title: 'Proposal title'
+        tagline: 'Describe your proposed work in a sentence or two'
+        type_of_support: 'What type of support are you seeking?'
+        funding_duration: 'How long do you require funding for?'
+        all_funding_required: 'Is this all of the funding required for the proposed work?'
+        affect_people: 'Will your proposed work affect people?'
+        gender: 'Which genders?'
+        age_groups: 'Which age groups?'
+        affect_geo: 'Where will your proposed work affect?'
+        implementations: 'What will you proposed work provide?'
+
     placeholders:
+      defaults:
+        funding_duration: 'e.g. 12'
+        total_costs: 'e.g. 1234'
       password_reset:
         email: 'someone@example.com'
       user:
@@ -12,10 +52,8 @@ en:
         password: 'Password'
         password_confirmation: 'Confirm password'
       recipient:
-        street_address: 'Street address e.g. 123 New street'
+        street_address: 'e.g. 123 New street'
         website: 'Optional'
-        charity_number: 'Charity number'
-        company_number: 'Company number'
       funder:
         name: 'Organisation name'
         mission: 'Mission'
@@ -37,8 +75,4 @@ en:
         outcome3: 'Outcome 3 - optional'
         outcome4: 'Outcome 4 - optional'
         outcome5: 'Outcome 5 - optional'
-    required:
-      text: 'required'
-      mark: '*'
-    error_notification:
-      default_message: "Please review the problems below:"
+        implementations_other: 'Please specify'

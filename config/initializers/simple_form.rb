@@ -6,7 +6,7 @@ SimpleForm.setup do |config|
   # stack. The options given below are used to wrap the
   # whole input.
   config.wrappers :default, class: :input_wrapper,
-                            hint_class: :field_with_hint, error_class: :field_with_errors do |b|
+    hint_class: :field_with_hint, error_class: :field_with_errors do |b|
     ## Extensions enabled by default
     # Any of these extensions can be disabled for a
     # given input by passing: `f.input EXTENSION_NAME => false`.
@@ -28,7 +28,11 @@ SimpleForm.setup do |config|
     # extensions by default, you can change `b.optional` to `b.use`.
 
     # Calculates maxlength from length validations for string inputs
+    # and/or database column lengths
     b.optional :maxlength
+
+    # Calculate minlength from length validations for string inputs
+    b.optional :minlength
 
     # Calculates pattern from format validations for string inputs
     b.optional :pattern
@@ -40,8 +44,9 @@ SimpleForm.setup do |config|
     b.optional :readonly
 
     ## Inputs
+    b.use :label, class: 'label block bold mb10'
     b.use :input, class: :input
-    # b.use :hint,  wrap_with: { tag: :span, class: :hint }
+    b.use :hint,  wrap_with: { tag: :span, class: :hint }
     b.use :error, wrap_with: { tag: :span, class: :error }
 
     ## full_messages_for
@@ -90,8 +95,7 @@ SimpleForm.setup do |config|
   # config.collection_wrapper_class = nil
 
   # You can wrap each item in a collection of radio/check boxes with a tag,
-  # defaulting to :span. Please note that when using :boolean_style = :nested,
-  # SimpleForm will force this option to be a label.
+  # defaulting to :span.
   # config.item_wrapper_tag = :span
 
   # You can define a class to use in all item wrappers. Defaulting to none.

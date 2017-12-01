@@ -455,26 +455,12 @@ input::-webkit-inner-spin-button
   -webkit-appearance: none
   margin: 0
 
-.currency
-  margin-left: 17px
-  &:before
-    content: '£'
-    position: relative
-    margin-left: -17px
-    margin-right: 5px
-    font-size: 20px
-    top: 3px
-    color: $dark-brown
-
-.month
-  margin-right: 17px
-  &:after
-    content: 'months'
-    position: relative
-    margin-right: -17px
-    margin-left: 5px
-    font-size: 14px
-    color: $dark-brown
+.input_wrapper.currency span
+  position: relative
+  top: 3px
+  font-size: 20px
+input.currency
+  width: calc(100% - 17px)
 
 /* Call to actions
  ========================================================================== */
@@ -688,3 +674,4 @@ ul.insights
 .error
   color: $red-base
   font-size: 12px
+  display: block
