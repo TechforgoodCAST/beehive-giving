@@ -107,6 +107,24 @@ class Proposal < ApplicationRecord
             presence: { message: "please uncheck 'Other' or specify details" },
             if: :implementations_other_required
 
+  validate :recipient_subscribed, on: :create
+
+  def self.order_by(col)
+    case col
+    when 'name'
+      order :title
+    when 'amount'
+      order total_costs: :desc
+    else
+      order created_at: :desc
+    end
+  end
+
+  def recipient_subscribed
+    return if recipient.subscribed? || recipient.proposals.count.zero?
+    errors.add(:title, 'Upgrade subscription to create multiple proposals')
+  end
+
   def beehive_insight_durations
     @beehive_insight_durations ||= call_beehive_insight(
       ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'],
@@ -124,23 +142,29 @@ class Proposal < ApplicationRecord
   end
 
   def update_legacy_suitability
-    initial_recommendation if suitability.all_values_for('total').empty?
+    # TODO: refactor
+    initial_recommendation unless suitability.key?(Fund.active.last&.slug)
   end
 
   def suitable_funds
     suitability.sort_by { |fund| fund[1]['total'] }.reverse
   end
 
+  def eligible_noquiz
+    # Same as eligible_funds except doesn't check for the quiz
+    eligibility.select { |f, fund| fund.all_values_for('eligible').exclude?(false) }
+  end
+
   def eligible_funds
-    eligibility.select{|f, _| eligible_status(f) == 1}
+    eligibility.select { |f, _| eligible_status(f) == 1 }
   end
 
   def ineligible_funds
-    eligibility.select{|f, _| eligible_status(f) == 0}
+    eligibility.select { |f, _| eligible_status(f).zero? }
   end
 
   def to_check_funds
-    eligibility.select{|f, _| eligible_status(f) == -1}
+    eligibility.select { |f, _| eligible_status(f) == -1 }
   end
 
   def eligible?(fund_slug)
@@ -163,11 +187,28 @@ class Proposal < ApplicationRecord
 
   def ineligible_reasons(fund_slug)
     return [] if eligible?(fund_slug)
-    return eligibility[fund_slug].select{ |r, e| e['eligible'] == false }.keys
+    eligibility[fund_slug].select { |_r, e| e['eligible'] == false }.keys
   end
 
   def ineligible_fund_ids # TODO: refactor
     Fund.where(slug: ineligible_funds.keys).pluck(:id)
+  end
+
+  def suitable?(fund_slug, scale = 1)
+    score = suitability[fund_slug]&.dig('total')
+    return -1 if score.nil?
+    scale = score > 1 ? score.ceil : 1
+    [
+      [0.2, 0], # unsuitable
+      [0.5, 1], # fair suitability
+      [1.0, 2], # suitable
+    ].each do |v|
+      return v[1] if score <= (v[0] * scale)
+    end
+  end
+
+  def suitable_status(fund_slug)
+    suitable?(fund_slug)
   end
 
   private

@@ -67,4 +67,14 @@ class BasicsStep
       @assessment.state = 'eligibility'
       @assessment.save
     end
+
+    def create_assessment
+      @assessment = Assessment.where(
+        funder_id: @funder_id,
+        recipient: @recipient,
+        proposal: @proposal
+      ).first_or_initialize
+      @assessment.state = 'eligibility'
+      @assessment.save
+    end
 end

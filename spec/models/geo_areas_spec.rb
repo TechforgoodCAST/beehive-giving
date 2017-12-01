@@ -18,5 +18,15 @@ describe GeoArea do
       @area.update(name: nil)
       expect(@area).not_to be_valid
     end
+
+    it 'districts must be from countries' do
+      @area.update(districts: @db[:uk_districts], countries: [@db[:kenya]])
+      expect(@area).not_to be_valid
+    end
+
+    it 'districts must be from countries valid' do
+      @area.update(districts: @db[:uk_districts], countries: [@db[:uk]])
+      expect(@area).to be_valid
+    end
   end
 end

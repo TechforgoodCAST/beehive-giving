@@ -3,35 +3,36 @@
 :javascript
   mixpanel.track('View Proposals Index Page');
 
-= render partial: 'subnav'
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'Proposals' => proposals_path
 
-.uk-container.uk-container-center.uk-margin-large{ style: 'min-height: 480px;' }
-  %h2 Your funding proposals
-  %h4
-    Update and manage your funding proposals.
+%main
+  .maxw1080.mx-auto.px20
 
-    %a.uk-button.uk-button-primary{ href: new_proposal_path }
-      %i.uk-icon-plus
-      New proposal
+    %section.md.mb20.px20
+      %h1.mb20 Dashboard
 
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top
-    .uk-grid
+    = render partial: 'accounts/subnav'
+
+    %section.md.mb20.px20.flex-wrap.flex.dashboard-columns
+      .mb20.md.border.rounded.border-silver.bg-silver.shadow
+        .p15
+          %h2.fs22
+            Your proposals
+
       - @proposals.each do |proposal|
-        .uk-width-medium-1-2
-          .card
-            .details
-              .content
-                %h3= proposal.title
-                %h4= proposal.tagline
-                .muted
-                  Seeking
-                  %strong= number_to_currency(proposal.total_costs, unit: '£', precision: 0)
-                  over
-                  %strong= proposal.funding_duration
-                  months
-              %hr
-              .content.uk-grid.uk-grid-small{style: 'margin-top: 15px;'}
-                .uk-width-1-2
-                  = link_to 'Update proposal', edit_proposal_path(proposal), class: 'invert uk-button uk-button-primary uk-button-large uk-width-1-1', style: 'font-size: 14px;'
-                .uk-width-1-2
-                  = link_to 'Matched funds', proposal_funds_path(proposal), class: 'uk-button uk-button-primary uk-button-large uk-width-1-1', style: 'font-size: 14px;'
+        .mb20.md
+          .border.rounded.border-silver.proposal
+            = render partial: 'proposals/card', locals: { proposal: proposal, context: 'proposal' }
+
+      .mb20.md
+        - if @proposal.complete?
+          - if @recipient.subscribed?
+            = link_to "+ New proposal", new_proposal_path, class: 'button-wide bg-green white fs16 caps'
+          - else
+            %div.mb30
+              Upgrade to add new proposals
+            = link_to '+ New proposal', account_upgrade_path(@recipient), class: 'button-wide bg-green white fs16 caps'
+        - else
+          = link_to '+ New proposal', edit_signup_proposal_path(@proposal), class: 'button-wide bg-green white fs16 caps'

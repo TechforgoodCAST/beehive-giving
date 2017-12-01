@@ -1,33 +1,10 @@
-.subnav{"data-uk-sticky" => ""}
-  .uk-container.uk-container-center
-    %ul.nav.recipient
-      %a{ href: account_path }
-        %li.first{ class: ('active' if current_page?(account_path)) }
-          Profile
-          .highlight
-      %span &middot;
-
-      %a{ href: account_organisation_path(@recipient) }
-        %li.first{ class: ('active' if current_page?(account_organisation_path(@recipient))) }
-          Organisation
-          .highlight
-      %span &rsaquo;
-
-      %a{ href: account_subscription_path(@recipient) }
-        %li.first{ class: ('active' if current_page?(account_subscription_path(@recipient))) }
-          Subscription
-          .highlight
-
-      - if current_page?(account_upgrade_path(@recipient))
-        %span &rsaquo;
-        %a{ href: account_upgrade_path(@recipient) }
-          %li.last.active
-            Upgrade
-            .highlight
-
-      - if current_page?(thank_you_path(@recipient))
-        %span &rsaquo;
-        %a{ href: thank_you_path(@recipient) }
-          %li.last.active
-            Confirmation
-            .highlight
+%nav.md.mb40.px20
+  %ul.border-bottom.border-silver.fs14
+    %li.mr20.py10.inline-block{ class: ('border-bottom-thick border-blue' if current_page?(account_path)) }
+      = link_to 'Account', account_path, class: 'blue'
+    %li.mr20.py10.inline-block{ class: ('border-bottom-thick border-blue' if current_page?(account_organisation_path(@recipient))) }
+      = link_to 'Organisation', account_organisation_path(@recipient), class: 'blue'
+    %li.mr20.py10.inline-block{ class: ('border-bottom-thick border-blue' if current_page?(account_subscription_path(@recipient))) }
+      = link_to 'Subscription', account_subscription_path(@recipient), class: 'blue'
+    %li.mr20.py10.inline-block{ class: ('border-bottom-thick border-blue' if current_page?(proposals_path)) }
+      = link_to 'Proposals', proposals_path, class: 'blue'

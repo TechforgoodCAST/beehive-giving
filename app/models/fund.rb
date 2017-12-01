@@ -1,11 +1,17 @@
 class Fund < ApplicationRecord
-  scope :active, -> { where(active: true) }
+  include ActionView::Helpers::NumberHelper
+
+  scope :active, -> { where(state: 'active') }
+  scope :stubs, -> { where(state: 'stub') }
   scope :newer_than, ->(date) { where('updated_at > ?', date) }
   scope :recent, -> { order updated_at: :desc }
+
+  STATES = %w[active inactive draft stub].freeze
 
   belongs_to :funder
 
   has_many :enquiries, dependent: :destroy
+  has_many :requests, dependent: :destroy
 
   has_many :fund_themes, dependent: :destroy
   has_many :themes, through: :fund_themes
@@ -15,15 +21,18 @@ class Fund < ApplicationRecord
   has_many :districts, through: :geo_area
 
   has_many :questions
+  accepts_nested_attributes_for :questions, :allow_destroy => true
   has_many :restrictions, through: :questions, source: :criterion, source_type: 'Restriction'
   has_many :priorities, through: :questions, source: :criterion, source_type: 'Priority'
 
-  validates :funder, :type_of_fund, :slug, :name, :description, :currency,
+  validates :funder, :slug, :name, :description, :currency,
             :key_criteria, :application_link, :themes,
             presence: true
 
-  validates :open_call, :active, :restrictions_known,
+  validates :open_call, :restrictions_known, :featured,
             inclusion: { in: [true, false] }
+
+  validates :state, inclusion: { in: STATES }
 
   validates :name, uniqueness: { scope: :funder }
 
@@ -63,6 +72,15 @@ class Fund < ApplicationRecord
   after_save :set_restriction_ids, if: :restrictions_known?
   after_save :set_priority_ids, if: :priorities_known?
 
+  def save(*args)
+    if state =~ /draft|stub/ && FundStub.new(fund: self).valid?
+      set_slug unless slug
+      super(validate: false)
+    else
+      super
+    end
+  end
+
   def self.order_by(proposal, col)
     case col
     when 'name'
@@ -77,6 +95,8 @@ class Fund < ApplicationRecord
 
   def self.eligibility(proposal, state)
     case state
+    when 'eligible_noquiz'
+      where slug: proposal.eligible_noquiz.keys
     when 'eligible'
       where slug: proposal.eligible_funds.keys
     when 'ineligible'
@@ -128,6 +148,10 @@ class Fund < ApplicationRecord
     tags.count.positive?
   end
 
+  def stub?
+    %w[stub draft].include? state
+  end
+
   def key_criteria_html
     markdown(key_criteria)
   end
@@ -136,18 +160,49 @@ class Fund < ApplicationRecord
     markdown(description)
   end
 
-  def geo_description_html
-    return geo_area.short_name
-  end
-
-  def description_redacted
+  def description_redacted(plain: false)
     tokens = name.downcase.split + funder.name.downcase.split
     stop_words = %w[and the fund trust foundation grants charitable]
     final_tokens = tokens - stop_words
     reg = Regexp.new(final_tokens.join('\b|\b'), options: 'i')
     scramble = Array.new(rand(5..10)) { [*'a'..'z'].sample }.join
-    desc = ActionView::Base.full_sanitizer.sanitize(description)
-    desc.gsub(reg, "<span class='mid-gray redacted'>#{scramble}</span>")
+    desc = description.gsub(reg, "<span class='grey redacted'>#{scramble}</span>")
+    markdown(desc, plain: plain)
+  end
+
+  def amount_desc
+    return unless min_amount_awarded_limited || max_amount_awarded_limited
+    opts = { precision: 0, unit: '£' }
+    if !min_amount_awarded_limited || min_amount_awarded.zero?
+      "up to #{number_to_currency(max_amount_awarded, opts)}"
+    elsif !max_amount_awarded_limited
+      "more than #{number_to_currency(min_amount_awarded, opts)}"
+    else
+      "between #{number_to_currency(min_amount_awarded, opts)} and #{number_to_currency(max_amount_awarded, opts)}"
+    end
+  end
+
+  def duration_desc
+    return unless min_duration_awarded_limited || max_duration_awarded_limited
+    if !min_duration_awarded_limited || min_duration_awarded == 0
+      "up to #{months_to_str(max_duration_awarded)}"
+    elsif !max_duration_awarded_limited
+      "more than #{months_to_str(min_duration_awarded)}"
+    else
+      "between #{months_to_str(min_duration_awarded)} and #{months_to_str(max_duration_awarded)}"
+    end
+  end
+
+  def org_income_desc
+    return unless min_org_income_limited || max_org_income_limited
+    opts = {precision: 0, unit: "£"}
+    if !min_org_income_limited || min_org_income == 0
+      "up to #{number_to_currency(max_org_income, opts)}"
+    elsif !max_org_income_limited
+      "more than #{number_to_currency(min_org_income, opts)}"
+    else
+      "between #{number_to_currency(min_org_income, opts)} and #{number_to_currency(max_org_income, opts)}"
+    end
   end
 
   def question_groups(question_type)
@@ -165,8 +220,10 @@ class Fund < ApplicationRecord
   private_class_method def self.order_slugs(proposal)
     suitable_slugs = proposal.suitable_funds.pluck(0)
     ineligible_slugs = proposal.ineligible_funds.pluck(0)
+    featured_slugs = active.where(featured: true).pluck(:slug)
+    featured_slugs = featured_slugs - ineligible_slugs
     all_slugs = active.pluck(:slug)
-    (suitable_slugs + all_slugs).uniq - ineligible_slugs
+    (featured_slugs + suitable_slugs + all_slugs).uniq - ineligible_slugs
   end
 
   private
@@ -193,6 +250,18 @@ class Fund < ApplicationRecord
       return unless period_start && period_end
       errors.add(:period_start, 'Period start must be before period end') if
         period_start > period_end
+    end
+
+    def months_to_str(months)
+      if months == 12
+        '1 year'
+      elsif months < 24
+        "#{months} months"
+      elsif (months % 12).zero?
+        "#{months / 12} years"
+      else
+        "#{months_to_str(months - (months % 12))} and #{months % 12} months"
+      end
     end
 
     def check_beehive_data # TODO: refactor as service

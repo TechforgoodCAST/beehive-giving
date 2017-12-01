@@ -1,39 +1,43 @@
-.border.rounded.mb20{class: (context == 'muted' ? 'border-lightest-gray' : 'border-blue')}
-  .px10.py10{class: (context == 'muted' ? 'bg-lightest-gray' : 'bg-blue')}
-    .fs15.lh20.caps.bold{class: (context == 'muted' ? 'gray' : 'white')}
-      Current Proposal
-  .px10.py15
-    - unless @proposal.complete?
-      .mb20.caps
-        %span.fs35
-          = cell(:proposal_indicators, @proposal).call(:percent_complete)
-        %span
-          complete
+.px10.py15
+  - unless proposal.complete?
     .mb20.caps
       %span.fs35
-        = cell(:proposal_indicators, @proposal).call(:funds_checked)
+        = cell(:proposal_indicators, proposal).call(:percent_complete)
       %span
-        funds checked
-    - if @proposal.complete?
-      .fs20.mb10
-        = @proposal.title.truncate_words(3)
-    .fs15.mb20
-      = number_to_currency(@proposal.total_costs, unit: "£", precision: 0)
-      &middot;
-      - if @proposal.funding_type == 1
-        Revenue
-      - elsif @proposal.funding_type == 2
-        Capital
-    .flex
-      .col-one-third.fs12
-        Eligibility
-      .col-two-thirds.fs12
-        = cell(:proposal_indicators, @proposal).call(:eligibility_progress_bar)
+        complete
+  .mb20.caps
+    %span.fs35
+      = cell(:proposal_indicators, proposal).call(:funds_checked)
+    %span
+      funds checked
+  - if proposal.complete?
+    .fs20.mb40
+      = link_to proposal.title.truncate_words(3), proposal_funds_path(proposal), class: 'black'
+  .fs15.mb20
+    = number_to_currency(proposal.total_costs, unit: "£", precision: 0)
+    &middot;
+    - if proposal.funding_type == 1
+      Revenue
+    - elsif proposal.funding_type == 2
+      Capital
+  .flex
+    .col-one-third.fs12
+      Eligibility
+    .col-two-thirds.fs12
+      = cell(:proposal_indicators, proposal).call(:eligibility_progress_bar)
+  .flex.mt3
+    .col-one-third.fs12
+      Suitability
+    .col-two-thirds.fs12
+      = cell(:proposal_indicators, proposal).call(:suitability_progress_bar)
 
-    %hr.my15
-      .fs14.center
-        = link_to 'Edit', edit_proposal_path(@proposal), class: 'blue'
-        %span.slate &middot;
-        = link_to 'Change', proposals_path, class: 'blue'
-        %span.slate &middot;
-        = link_to 'New', new_proposal_path, class: 'blue'
+.fs14.center.py15.border-top.border-silver
+  - if context == 'fund'
+    = link_to 'Edit', edit_proposal_path(proposal), class: 'blue px10'
+    = link_to 'Change', proposals_path, class: 'blue px10'
+    = link_to 'New', new_proposal_path, class: 'blue px10'
+  - elsif proposal.registered? || proposal.complete?
+    = link_to 'Funds', proposal_funds_path(proposal), class: 'red px15'
+    = link_to 'Edit', edit_proposal_path(proposal), class: 'blue px15'
+  - else
+    = link_to 'Complete', edit_signup_proposal_path(proposal), class: 'blue px15'

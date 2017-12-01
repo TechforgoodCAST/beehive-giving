@@ -231,12 +231,10 @@ ActiveRecord::Schema.define(version: 20171031113332) do
 
   create_table "funds", id: :serial, force: :cascade do |t|
     t.integer "funder_id"
-    t.string "type_of_fund"
     t.string "name"
     t.text "description"
     t.string "slug"
     t.boolean "open_call"
-    t.boolean "active"
     t.text "key_criteria"
     t.string "currency"
     t.string "application_link"
@@ -278,6 +276,8 @@ ActiveRecord::Schema.define(version: 20171031113332) do
     t.boolean "priorities_known"
     t.string "geo_description"
     t.integer "geo_area_id"
+    t.string "state", default: "draft", null: false
+    t.boolean "featured", default: false
     t.index ["funder_id"], name: "index_funds_on_funder_id"
     t.index ["slug"], name: "index_funds_on_slug"
     t.index ["tags"], name: "index_funds_on_tags", using: :gin
@@ -432,6 +432,16 @@ ActiveRecord::Schema.define(version: 20171031113332) do
     t.index ["slug"], name: "index_recipients_on_slug", unique: true
   end
 
+  create_table "requests", force: :cascade do |t|
+    t.bigint "fund_id"
+    t.bigint "recipient_id"
+    t.string "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["fund_id"], name: "index_requests_on_fund_id"
+    t.index ["recipient_id"], name: "index_requests_on_recipient_id"
+  end
+
   create_table "subscriptions", id: :serial, force: :cascade do |t|
     t.integer "recipient_id"
     t.datetime "created_at", null: false
@@ -452,6 +462,7 @@ ActiveRecord::Schema.define(version: 20171031113332) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "slug"
+    t.string "classes"
     t.index ["name"], name: "index_themes_on_name", unique: true
     t.index ["parent_id"], name: "index_themes_on_parent_id"
     t.index ["slug"], name: "index_themes_on_slug", unique: true

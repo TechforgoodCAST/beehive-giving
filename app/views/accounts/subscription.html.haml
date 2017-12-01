@@ -8,44 +8,60 @@
   :javascript
     ga("send", "event", "accounts#subscription", "view", "Plan Cost: #{@payment.plan_cost}");
 
-= render partial: 'subnav'
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'Subscription' => account_subscription_path(@recipient)
 
-.uk-container.uk-container-center.uk-margin-large
-  %h2 Subscription
-  %h4
-    You are currently subscribed to a
-    - if @subscription.active?
-      %strong Pro
-      plan which expires on
-      = succeed '.' do
-        %strong= @subscription.expiry_date.strftime("%d %b %Y")
-      After which you will be downgraded to a
-      %strong Basic
-      plan unless you manually re-subscribe.
-    - else
-      free
-      %strong Basic
-      plan which
-      = succeed '.' do
-        %strong does not expire
+%main
+  .maxw1080.mx-auto.px20
 
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top
-    .uk-grid
-      .uk-width-medium-1-2.uk-margin-bottom
-        .uk-panel.uk-panel-box.none
-          %h3
+    %section.md.mb20.px20
+      %h1.mb20 Dashboard
+
+    = render partial: 'accounts/subnav'
+
+    %section.md.mb20.px20.flex-wrap.flex
+      .mb20.border.rounded.border-silver.bg-silver.shadow.perc25.mr40.md
+        .p15
+          %h2.fs22.mb30
+            Your subscription
+          - if @subscription.active?
+            %h4
+              You are currently subscribed to a
+              %strong Pro
+              plan which expires on
+              = succeed '.' do
+                %strong= @subscription.expiry_date.strftime("%-d %b %Y")
+            %h5.mt20
+              After
+              %strong= @subscription.expiry_date.strftime("%-d %b %Y")
+              you will be downgraded to a
+              %strong Basic
+              plan unless you manually re-subscribe.
+          - else
+            %h4
+              You are currently subscribed to a free
+              %strong Basic
+              plan which
+              = succeed '.' do
+                %strong does not expire
+
+      .mb20.perc33.md
+        .p15
+          - unless @subscription.active?
+            .right.caps.bg-blue.white.py5.px10.rounded.bold Active
+          %h2.fs22.mb30
             Basic
-            - unless @subscription.active?
-              .uk-button.uk-button-small.uk-button-primary.invert Active
-          %h4.uk-text-bold FREE
-          = render partial: 'accounts/free_features'
+          %h4 FREE
+          .py10
+            = render 'free_features'
 
-      .uk-width-medium-1-2
-        .uk-panel.uk-panel-box.none.card
-          %h3
+      .mb20.perc33.md
+        .p15.border-thick.rounded.border-green
+          - if @subscription.active?
+            .right.caps.bg-green.white.py5.px10.rounded.bold Active
+          %h2.fs22.mb30
             Pro
-            - if @subscription.active?
-              .uk-button.uk-button-small.uk-button-primary.invert Active
           %h4
             %strong= number_to_currency(@payment.plan_cost, unit: '£', precision: 0)
             %small per year
@@ -54,8 +70,7 @@
                 %small
                   = @payment.discount
                   discount
-
-          = render 'premium_features'
-
+          .py10
+            = render 'premium_features'
           - unless @subscription.active?
-            = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'uk-button uk-button-primary uk-button-large uk-width-1-1 uk-margin-top'
+            = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'button-wide bg-green white'

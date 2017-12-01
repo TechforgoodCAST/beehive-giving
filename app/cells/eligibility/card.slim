@@ -1,5 +1,5 @@
 .mb20
-  span.caps.bold.light.blue
+  span.caps.bold.blue
     | Eligibility
   span.right class=status[:colour]
     = status[:status]
@@ -11,6 +11,6 @@ ul
         span.white.fs12.bold.dot class="bg-#{v[:colour]}"
         .ml5
           = v[:title]
-      - if v[:message]
+      - if v[:message] && v[:status] != 'eligible'
         .muted.fs12.lh15.mt5
           = v[:message]

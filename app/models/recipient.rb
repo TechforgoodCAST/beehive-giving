@@ -7,6 +7,7 @@ class Recipient < ApplicationRecord
   has_many :users, as: :organisation, dependent: :destroy
   has_many :assessments
   has_many :proposals
+  has_many :requests
   has_many :countries, -> { distinct }, through: :proposals
   has_many :districts, -> { distinct }, through: :proposals
   has_many :answers, as: :category, dependent: :destroy
@@ -67,7 +68,11 @@ class Recipient < ApplicationRecord
   end
 
   def subscribe!
-    subscription.update(active: true)
+    subscription.update(active: true, expiry_date: 1.years.from_now)
+  end
+
+  def unsubscribe!
+    subscription.update(active: false)
   end
 
   def subscribed?

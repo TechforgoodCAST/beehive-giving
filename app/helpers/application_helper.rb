@@ -9,25 +9,25 @@ module ApplicationHelper
 
   def v2_layout? # TODO: remove @ v2
     permitted = {
-      # accounts: %i[subscription],
+      accounts: %i[subscription],
       articles: %i[index show],
-      # charges: %i[new thank_you],
+      charges: %i[new thank_you],
       eligibilities: %i[new],
       enquiries: %i[new],
       errors: %i[not_found gone internal_server_error],
-      microsites: %i[basics check_basics eligibility check_eligibility pre_results check_pre_results results],
-      # feedback: %i[edit new],
+      feedback: %i[edit new create],
       funds: %i[index themed show hidden],
       pages: %i[about faq forfunders privacy terms], # preview?
       password_resets: %i[new create edit update],
-      # proposals: %i[edit index new update],
+      proposals: %i[index], # edit new update
       public_funds: %i[index show themed],
-      # recipients: %i[edit],
-      # sessions: %i[new],
+      recipients: %i[edit update],
+      sessions: %i[new],
       signup: %i[user create_user], # funder, granted_access, unauthorised
       # signup_proposals: %i[edit new],
       # signup_recipients: %i[edit new],
-      # users: %[edit],
+      users: %i[edit update],
+      microsites: %i[basics check_basics eligibility check_eligibility pre_results check_pre_results results]
     }
     controller = params[:controller].to_sym
     action = params[:action].to_sym

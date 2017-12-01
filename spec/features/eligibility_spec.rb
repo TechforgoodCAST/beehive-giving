@@ -80,7 +80,7 @@ feature 'Eligibility' do
       expect(page).to have_text 'Yes'
     end
     helper.answer_restrictions(@fund).check_eligibility
-    expect(page).to have_text 'You are eligible'
+    expect(page).to have_text 'Eligible'
   end
 
   context 'complete proposal' do
@@ -101,7 +101,7 @@ feature 'Eligibility' do
       helper.remove_restrictions(@fund, 'Recipient')
       helper.answer_proposal_restrictions(@fund).check_eligibility
       expect(page).not_to have_css '.restriction_recipient_question'
-      expect(page).to have_text 'You are eligible'
+      expect(page).to have_text 'Eligible'
     end
 
     scenario 'When I only submit answers to proposal restrictions,
@@ -124,7 +124,7 @@ feature 'Eligibility' do
       helper.remove_restrictions(@fund, 'Proposal')
       helper.answer_recipient_restrictions(@fund).check_eligibility
       expect(page).not_to have_css '.restriction_proposal_question'
-      expect(page).to have_text 'You are eligible'
+      expect(page).to have_text 'Eligible'
     end
 
     scenario 'When I try check eligibility for a recommended fund,
@@ -141,12 +141,13 @@ feature 'Eligibility' do
               I want to see a link to apply for funding,
               so I can see further details about applying" do
       helper.answer_restrictions(@fund).check_eligibility
+            .answer_priorities(@fund).check_suitability
 
-      click_link 'Application form'
+      click_link 'Apply ❯'
       expect(current_path).to eq apply_proposal_fund_path(@proposal, @fund)
 
       visit proposal_fund_path(@proposal, @fund)
-      click_link 'Application form'
+      click_link 'Apply ❯'
       expect(current_path).to eq apply_proposal_fund_path(@proposal, @fund)
     end
 
@@ -162,7 +163,7 @@ feature 'Eligibility' do
 
       helper.answer_restrictions(@fund).check_eligibility
       expect(page).to have_text 'Apply'
-      expect(page).to have_text 'Apply for funding'
+      expect(page).to have_text 'Apply ❯'
 
       # TODO: No feedback for unlocked funds
     end

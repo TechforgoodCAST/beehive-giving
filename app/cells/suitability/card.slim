@@ -1,8 +1,8 @@
 .mb20
-  span.caps.bold.light.blue
+  span.caps.bold.blue
     | Suitability
   span.right class=status[:colour]
-    = status[:status]
+    = status[:title]
 
 ul
   - criteria.each do |k, v|
@@ -11,6 +11,6 @@ ul
         span.white.fs12.bold.dot class="bg-#{v[:colour]}"
         .ml5
           = v[:title]
-      - if v[:message]
+      - if v[:message] && !%w[Suitable Suitability].include?(v[:status])
         .muted.fs12.lh15.mt5
           = v[:message]

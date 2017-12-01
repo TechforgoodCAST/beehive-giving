@@ -9,7 +9,7 @@ describe FundPolicy do
   let(:subscribed) { false }
   let(:suitability) { {} }
 
-  let(:fund) { Fund.new(slug: 'fund') }
+  let(:fund) { Fund.new(slug: 'fund', state: 'active') }
   let(:proposal) { Proposal.new(suitability: suitability) }
   let(:reveals) { [] }
   let(:user) do

@@ -4,10 +4,12 @@ feature 'Browse' do
   before(:each) do
     @app.seed_test_db
         .setup_funds(num: 7, open_data: true)
+        .setup_fund_stubs(num: 5)
         .create_recipient_with_subscription_v1!
         .with_user
         .create_registered_proposal
     @db = @app.instances
+    @fund_stubs = @app.instances[:fund_stubs]
     @proposal = @db[:registered_proposal]
     @theme = @db[:themes].first
     @themes = @db[:themes]
@@ -25,8 +27,8 @@ feature 'Browse' do
 
   scenario 'When I browse the site,
             there is a list of fund themes in the footer' do
-    Fund.first.update themes: [@themes.first, @themes.second]
-    Fund.second.update themes: [@themes.first]
+    Fund.active.first.update themes: [@themes.first, @themes.second]
+    Fund.active.second.update themes: [@themes.first]
     visit root_path
     expect(page).to have_text 'FUNDING'
     expect(page).to have_text @themes.first.name
@@ -36,12 +38,18 @@ feature 'Browse' do
 
   context 'signed in' do
     before(:each) do
-      @unsuitable_fund = Fund.first
-      @low_fund = Fund.find_by(name: 'Awards for All 2')
-      @top_fund = Fund.last
+      @unsuitable_fund = Fund.active.first
+      @low_fund = Fund.active.find_by(name: 'Awards for All 2')
+      @top_fund = Fund.active.last
       @recipient = @db[:recipient]
       @app.sign_in
       visit root_path
+    end
+
+    scenario "Fund stub selection shown on proposal fund page" do
+      @proposal.update_column(:eligibility, @proposal.eligibility.merge( @fund_stubs.first.slug => {'location': true}) )
+      visit proposal_funds_path(@proposal)
+      expect(page).to have_text @fund_stubs.first.funder.name
     end
 
     scenario "When I find a recommended fund I'm interested in,
@@ -62,18 +70,18 @@ feature 'Browse' do
     scenario "When I find a funding theme I'm interested in,
               I want to see similar funds,
               so I can discover new funding opportunties" do
-      @proposal.update_column(:suitability, Fund.last.slug => { 'total': 0 })
+      @proposal.update_column(:suitability, Fund.active.last.slug => { 'total': 0 })
       click_link @theme.name, match: :first
       expect(current_path)
         .to eq theme_proposal_funds_path(@proposal, @theme.slug)
-      expect(page).to have_css '.mb5.fs15.lh20.mid-gray', count: 6
-      expect(page).to have_css '.mb5.fs15.lh20.mid-gray.redacted', count: 5
+      expect(page).to have_css '.col-two-thirds.pr10.md.mb10', count: 6
+      expect(page).to have_css '.mb5.fs15.lh20.grey.redacted', count: 5
     end
 
     scenario 'Themes redacted on second page and CTA not shown' do
       click_link @theme.name, match: :first
       click_link '2'
-      expect(page).to have_css '.mb5.fs15.lh20.mid-gray.redacted', count: 1
+      expect(page).to have_css '.mb5.fs15.lh20.grey.redacted', count: 1
       expect(page).not_to have_text 'Upgrade'
     end
 
@@ -105,7 +113,7 @@ feature 'Browse' do
       click_link 'Hidden fund'
       expect(current_path).to eq account_upgrade_path(@recipient)
 
-      subscribe_and_visit proposal_fund_path(@proposal, Fund.first)
+      subscribe_and_visit proposal_fund_path(@proposal, Fund.active.first)
     end
 
     context 'When I view fund a with open data' do
@@ -131,13 +139,6 @@ feature 'Browse' do
                 so I can evaluate my chances of success' do
         expect(page).to have_text(
           'Awarded the most funding in January and February'
-        )
-      end
-
-      scenario 'I want to see the top_countries,
-                so I can evaluate my chances of success' do
-        expect(page).to have_text(
-          'Awarded the most funding in the United Kingdom'
         )
       end
 

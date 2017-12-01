@@ -10,9 +10,31 @@ describe Fund do
       @funder = @db[:funder]
     end
 
-    it 'self.active' do
-      Fund.last.update active: false
-      expect(Fund.active.count).to eq 2
+    it '#save draft or stub' do
+      @fund.state = 'draft'
+      @fund.key_criteria = nil
+      expect(@fund.save).to eq true
+    end
+
+    it '#save active or inactive' do
+      @fund.key_criteria = nil
+      expect(@fund.save).to eq false
+    end
+
+    context '#state' do
+      it 'defaults to draft' do
+        expect(subject.state).to eq 'draft'
+      end
+
+      it 'state is in list' do
+        @fund.state = 'Not valid state'
+        expect(@fund).not_to be_valid
+      end
+
+      it 'self.active' do
+        Fund.last.update state: 'inactive'
+        expect(Fund.active.count).to eq 2
+      end
     end
 
     context 'self.order_by' do
@@ -28,6 +50,12 @@ describe Fund do
       it 'default relevance orders ineligible last' do
         expect(Fund.order_by(@proposal, 'DROP TABLE "FUNDS";').pluck(:id))
           .to eq [Fund.first.id, Fund.third.id, Fund.second.id]
+      end
+
+      it 'featured fund is always ordered first' do
+        Fund.third.update featured: true
+        expect(Fund.order_by(@proposal, 'DROP TABLE "FUNDS";').pluck(:id))
+          .to eq [Fund.third.id, Fund.first.id, Fund.second.id]
       end
 
       it 'name' do

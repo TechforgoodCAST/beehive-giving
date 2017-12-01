@@ -1,7 +1,7 @@
 class PagesController < ApplicationController
   def preview
     @user = User.new
-    @fund = Fund.where(
+    @fund = Fund.active.where(
       "? IN (SELECT lower(
         regexp_replace(
           regexp_replace(jsonb_array_elements_text(tags), ' ', '-', 'g'),

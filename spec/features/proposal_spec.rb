@@ -124,7 +124,7 @@ feature 'Proposal' do
       click_link 'Change'
       expect(current_path).to eq proposals_path
 
-      click_link 'New'
+      click_link '+ New proposal'
       expect(current_path).to eq edit_signup_proposal_path(@proposal)
       expect(page).to have_text 'Please fully complete'
     end
@@ -134,10 +134,10 @@ feature 'Proposal' do
               so I make any neccessary changes' do
       visit proposal_funds_path(@proposal)
 
-      click_link 'Proposals'
+      click_link 'Dashboard'
       expect(current_path).to eq proposals_path
 
-      click_link 'Update proposal'
+      click_link 'Edit'
       expect(current_path).to eq edit_proposal_path(@proposal)
 
       [
@@ -195,7 +195,7 @@ feature 'Proposal' do
                I want to be able to create multiple proposals,
                so I can search for alternative funds' do
       click_link 'Change'
-      expect(page).to have_css '.card', count: 1
+      expect(page).to have_css '.proposal', count: 1
 
       click_link 'New'
       @match_helper.fill_proposal_form
@@ -205,7 +205,7 @@ feature 'Proposal' do
       expect(current_path).to eq proposal_funds_path(Proposal.last)
 
       click_link 'Change'
-      expect(page).to have_css '.card', count: 2
+      expect(page).to have_css '.proposal', count: 2
     end
 
     scenario 'When I have more than one proposal,
@@ -213,13 +213,13 @@ feature 'Proposal' do
               so I can understand the context of my results' do
       proposal1 = @app.instances[:complete_proposal]
       visit proposals_path
-      click_link 'Matched funds', match: :first
+      click_link 'Funds', match: :first
       expect(current_path).to eq proposal_funds_path(proposal1)
 
       @app.create_registered_proposal
       proposal2 = @app.instances[:registered_proposal]
       visit proposals_path
-      click_link 'Matched funds', match: :first
+      click_link 'Funds', match: :first
       expect(current_path).to eq proposal_funds_path(proposal2)
     end
   end

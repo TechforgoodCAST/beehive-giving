@@ -1,80 +1,59 @@
 = content_for :title, @fund.title
 
-%header
-  = cell :v2_navbar, @current_user
-  = cell :breadcrumb, (@proposal.title? ? @proposal.title : 'Current proposal').upcase_first => nil, 'Funds' => proposal_funds_path(@proposal), @fund.funder.name => nil, @fund.name => proposal_fund_path(@proposal, @fund)
-
 :javascript
   mixpanel.track('View Fund Page', { "Fund": "#{@fund.name}" });
   mixpanel.identify("#{@current_user.id}");
 
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, (@proposal.title? ? @proposal.title : 'Current proposal').upcase_first => nil, 'Funds' => proposal_funds_path(@proposal), @fund.funder.name => nil, @fund.name => proposal_fund_path(@proposal, @fund)
+
 %main
-  .maxw1080.mx-auto.px20.flex.flex-wrap
-    %aside.perc25.md.px20.mb40
-      = render partial: 'card', locals: { fund: @fund }
-      = render partial: 'proposals/card', locals: { context: 'muted' }
+  .maxw1080.mx-auto.px40.mt40
 
-    %section.perc75.md.mb80.px20
-      %section
-        %h1.light= @fund.title
-        .fs15.lh20.mid-gray= @fund.subtitle
+    .flex.flex-wrap.mb40
+      %section.perc50.md.mb40.px20
+        %h1.mb10= @fund.name
+        .mb30.night
+          by
+          = @fund.funder.name
 
-        %p.fs15.mt15.lh20
-          = cell(:fund_insight, @fund, proposal: @proposal).call(:themes)
+        .mb30.fs18.night.lh25= raw strip_tags @fund.description_html.truncate_words(30)
 
-      %hr.my40
+        %hr
+        %h6.my20.slate= cell(:fund_insight, @fund, proposal: @proposal).call(:summary)
+        %hr.mb30
 
-      %section
-        .mb20
-          %h2.light Summary
+        = cell(:fund_insight, @fund, proposal: @proposal).call(:themes)
 
-        .mb20.markdown
-          = raw @fund.description_html
+      %section.perc50.md
+        = cell(:progress, @proposal, fund: @fund)
 
-        - if @fund.period_end.present? && @fund.period_end > 3.years.ago
-          %small.slate
+    %section.px20.mb80.md
+      %h2.mb20 Summary
+
+      .mb20.markdown
+        = raw @fund.description_html
+
+      - if @fund.period_end.present? && @fund.period_end > 3.years.ago
+        .mt30.night
+          .fs14.mb10
             = cell(:fund_insight, @fund).call(:data_source)
-          .slate.fs15.my10
-            = period(@fund)
+          .mb20
+            %strong= period(@fund)
 
-        - unless @fund.open_call?
-          .bg-silver.rounded.shadow.fs18.lh22.p10.mb20
-            .bold.caps.mb10.fs15 Unsolicited applications
-            Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
+      - unless @fund.open_call?
+        .bg-ice.rounded.shadow.fs18.lh22.p10.mb20
+          .bold.caps.mb10.fs15 Unsolicited applications
+          Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
 
-        %ul.list.pl30
-          = cell(:fund_insight, @fund).call(:amount)
-          = cell(:fund_insight, @fund).call(:duration)
-          = cell(:fund_insight, @fund).call(:grant_count)
-          = cell(:fund_insight, @fund).call(:award_months)
-          = cell(:fund_insight, @fund).call(:countries)
-          = cell(:fund_insight, @fund).call(:grant_examples)
+      %ul.list.pl30
+        = cell(:fund_insight, @fund).call(:amount)
+        = cell(:fund_insight, @fund).call(:costs)
+        = cell(:fund_insight, @fund).call(:countries)
+        = cell(:fund_insight, @fund).call(:duration)
+        = cell(:fund_insight, @fund).call(:grant_count)
+        = cell(:fund_insight, @fund).call(:award_months)
+        = cell(:fund_insight, @fund).call(:grant_examples)
 
-      %hr.my40
-
-      = cell(:eligibility, @proposal, fund: @fund).call(:page)
-
-      -# TODO: Suitability quiz #439
-      -# %hr.my40
-      -# = cell(:suitability, @proposal, fund: @fund).call(:page)
-
-      %hr.my40
-
-      - if @proposal.eligible?(@fund.slug)
-        %section
-          .mb40
-            %h2.light Apply
-
-          = link_to "Application form", apply_proposal_fund_path(@proposal, @fund), class: "button white bg-blue caps shadow mb40"
-
-      - else
-        %section.muted
-          .mb40
-            %h2.light Apply
-
-          - unless @fund.open_call?
-            .bg-silver.rounded.shadow.fs18.lh22.p10.mb20
-              .bold.caps.mb10.fs15 Unsolicited applications
-              Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
-
-          .button.white.bg-blue.caps.shadow.mb40 Application form
+    = render partial: 'checks'

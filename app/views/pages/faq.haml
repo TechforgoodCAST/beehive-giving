@@ -7,14 +7,14 @@
 %main
   %section.maxw1080.mx-auto
     .mb40.mx40
-      %h1.light.center Frequently Asked Questions (FAQ)
+      %h1.center Frequently Asked Questions (FAQ)
 
-  %section.bg-silver
+  %section.bg-ice
     .maxw1080.mx-auto.pt40
 
       .flex.flex-wrap
         .f1.minw340.px40.mb40
-          %h2.light.mb20 Beehive
+          %h2.mb20 Beehive
 
           %ul
             %li.mb10
@@ -29,7 +29,7 @@
               %a.blue{ href: '#data-source' } Where does Beehive get its information about funders?
 
         .f1.minw340.px40.mb40
-          %h2.light.mb20 Getting started
+          %h2.mb20 Getting started
 
           %ul.uk-list.padded
             %li.mb10
@@ -51,9 +51,8 @@
 
     %section.p40#background
       .mb20
-        %h3.lato.light
-          Who’s behind Beehive?
-          %span.fs16.noto.mid-gray Beehive
+        %h3.inline-block Who’s behind Beehive?
+        .inline-block.slate Beehive
       %p.mb20
         Beehive is a tech for good project being incubated by
         = link_to 'The Centre for the Acceleration of Social Technology', 'http://wearecast.org.uk/', target: '_blank', class: 'blue'
@@ -80,18 +79,16 @@
 
     %section.p40#name
       .mb20
-        %h3.lato.light
-          What’s with the name?
-          %span.fs16.noto.mid-gray Beehive
+        %h3.inline-block What’s with the name?
+        .inline-block.slate Beehive
       %p Much like the humble honeybee we believe that social sector organisations are essential to healthy and productive communities, and that without them countless communities would be worse off. That’s why we’re committed to developing technology that helps them find the right funders for their essential work.
 
     %hr.maxw1000.mx40
 
     %section.p40#cost
       .mb20
-        %h3.lato.light
-          How much does Beehive cost?
-          %span.fs16.noto.mid-gray Beehive
+        %h3.inline-block How much does Beehive cost?
+        .inline-block.slate Beehive
       %p.mb20
         Nothing, a
         %strong Basic
@@ -108,9 +105,8 @@
 
     %section.p40#what
       .mb20
-        %h3.lato.light
-          What does Beehive do?
-          %span.fs16.noto.mid-gray Beehive
+        %h3.inline-block What does Beehive do?
+        .inline-block.slate Beehive
       %p.mb20 Beehive is a website that does three things:
       %ol.pl40
         %li Uses information about your organisation or project to identify suitable funds for you.
@@ -121,9 +117,8 @@
 
     %section.p40#data-source
       .mb20
-        %h3.lato.light
-          Where does Beehive get its information about funders?
-          %span.fs16.noto.mid-gray Beehive
+        %h3.inline-block Where does Beehive get its information about funders?
+        .inline-block.slate Beehive
       %p.mb20
         We work closely with
         = succeed ',' do
@@ -134,9 +129,8 @@
 
     %section.p40#sign-in
       .mb20
-        %h3.lato.light
-          How do I sign in?
-          %span.fs16.noto.mid-gray Getting started
+        %h3.inline-block How do I sign in?
+        .inline-block.slate Getting started
       %p.mb20
         To sign in visit the
         = link_to 'sign in page', sign_in_path, class: 'blue'
@@ -158,9 +152,8 @@
 
     %section.p40#reset-password
       .mb20
-        %h3.lato.light
-          How do I reset my password?
-          %span.fs16.noto.mid-gray Getting started
+        %h3.inline-block How do I reset my password?
+        .inline-block.slate Getting started
       %p.mb20
         %strong Important:
         In order to reset your password you must first have an account on Beehive.
@@ -241,9 +234,8 @@
 
     %section.p40#no-org
       .mb20
-        %h3.lato.light
-          I don’t have an organisation or project I’m seeking funding for. Can I still use Beehive?
-          %span.fs16.noto.mid-gray Getting started
+        %h3.inline-block I don’t have an organisation or project I’m seeking funding for. Can I still use Beehive?
+        .inline-block.slate Getting started
       %p.mb20 None of the funders currently on Beehive provide funding directly to individuals instead they support organisations or projects delivered by groups. We strongly advise you to only sign up if you are associated with an organisation or project seeking charitable funding.
       %p.mb20
         If you are a funder please contact
@@ -257,9 +249,8 @@
 
     %section.p40#already-registered
       .mb20
-        %h3.lato.light
-          Beehive is telling me my organisation or project is already registered
-          %span.fs16.noto.mid-gray Getting started
+        %h3.inline-block Beehive is telling me my organisation or project is already registered
+        .inline-block.slate Getting started
       %p.mb20
         This means that either, we have your details on our records, or another person has signed up for your organisation or project. If this is the case then please get in touch with
         = link_to 'support@beehivegiving.org', 'mailto:support@beehivegiving.org', class: 'blue'
@@ -275,9 +266,8 @@
 
     %section.p40#not-charity
       .mb20
-        %h3.lato.light
-          My organisation or project isn’t a registered charity can I still use Beehive?
-          %span.fs16.noto.mid-gray Getting started
+        %h3.inline-block My organisation or project isn’t a registered charity can I still use Beehive?
+        .inline-block.slate Getting started
       %p.mb20
         = succeed '.' do
           %strong Yes
@@ -290,9 +280,8 @@
 
     %section.p40#individual
       .mb20
-        %h3.lato.light
-          I’m looking for funding to support an individual beneficiary. Can Beehive help me find this kind of funding?
-          %span.fs16.noto.mid-gray Getting started
+        %h3.inline-block I’m looking for funding to support an individual beneficiary. Can Beehive help me find this kind of funding?
+        .inline-block.slate Getting started
       %p.mb20
         Unfortunately, none of the funders on Beehive provide funding for individual beneficiaries. However there are other online tools available that may help you to find funding for an individual beneficiary, such as
         = succeed ',' do
@@ -310,7 +299,7 @@
 
     %section.p40#individual-fundraiser
       .mb20
-        %h3.lato.light
+        %h3
           I'm fundraising on behalf of a charity through an event, expedition or other activity. Can Beehive help me?
       %p.mb20
         Unfortunately not, the funders on Beehive only provide support to charitable organisations or projects directly. Meaning, that they are unable to support individuals who are fundraising on behalf of an organisation or project.

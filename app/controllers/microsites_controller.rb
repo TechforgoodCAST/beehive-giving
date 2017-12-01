@@ -1,9 +1,19 @@
 class MicrositesController < ApplicationController
+<<<<<<< HEAD
   before_action :load_funder, :load_assessment
   before_action :ensure_funder
   before_action only: %i[basics eligibility pre_results results] do
     start_path(@funder, @assessment)
   end
+||||||| merged common ancestors
+  before_action :load_funder
+=======
+  before_action :load_funder, :load_assessment
+  before_action :ensure_funder
+  before_action only: %i[basics eligibility] do
+    start_path(@funder, @assessment)
+  end
+>>>>>>> Microsite #442 pass 3
 
   def basics
     @microsite = Microsite.new(BasicsStep.new)
@@ -68,6 +78,10 @@ class MicrositesController < ApplicationController
 
     def load_funder
       @funder = Funder.find_by(slug: params[:slug])
+    end
+
+    def load_assessment
+      @assessment = Assessment.find_by(id: params[:id], funder: @funder)
     end
 
     def load_assessment

@@ -1,4 +1,6 @@
 class RecipientFormCell < Cell::ViewModel
+  include ApplicationHelper # TODO: refactor
+
   def show
     render locals: { f: options[:f] }
   end

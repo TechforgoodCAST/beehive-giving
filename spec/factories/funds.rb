@@ -1,11 +1,10 @@
 FactoryGirl.define do
   factory :fund do
     funder
-    type_of_fund 'Grant'
     sequence(:name) { |n| "Awards for All #{n}" }
     description 'Some description of the fund.'
     open_call true
-    active true
+    state 'active'
     currency 'GBP'
     key_criteria '<p>E.g. Local charitable organisations are viewed more favourably than large national organisations.</p><p>Grants can be used for:</p><ul><li>Projects that meet the needs of communities experiencing high levels of deprivation.</li></ul>'
     application_link 'http://www.example.org/'
@@ -102,5 +101,13 @@ FactoryGirl.define do
         ].to_json
       end
     end
+  end
+
+
+  factory :fundstub, class: Fund do
+    funder
+    sequence(:name) { |n| "Foundation Main Fund Stub #{n}" }
+    description 'Some description of the fund stub.'
+    state 'stub'
   end
 end

@@ -32,11 +32,33 @@
 
 %main
   .maxw1080.mx-auto.px20.flex.flex-wrap
-    %aside.perc25.md.px20.mb40
-      = render partial: 'proposals/card', locals: { context: 'bold' }
+    %aside.perc25.md.px20.mb40.to-end-md
+      .border.rounded.mb20.border-blue
+        .px10.py10.bg-blue
+          .fs15.lh20.caps.bold.white
+            Current Proposal
+        = render partial: 'proposals/card', locals: { proposal: @proposal, context: 'fund' }
+      
+      - if @fund_stubs.present?
+        .mt40
+          %h2.mb20.fs18
+            Other potential leads
+          .fs12.lh16.mb20.grey
+            %p.mb10
+              These are funds without the full set of data that 
+              Beehive uses to check eligibility and suitability.
+            %p.mb10
+              They have been selected based on the theme and location
+              of your proposal.]
+            %p
+              You can request more information about these funds.
+          %ul
+            - @fund_stubs.each do |f|
+              %li.mb20.fs14.lh16
+                = link_to f.funder.name, proposal_fund_path(@proposal, f), class: "blue"
 
     %section.perc75.md.mb80.px20
-      %h1.light.mb20 Funds
+      %h1.mb20 Funds
 
       = render partial: 'eligibilities/legacy_notice'
 

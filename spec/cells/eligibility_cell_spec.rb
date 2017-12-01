@@ -11,7 +11,6 @@ describe EligibilityCell do
   end
 
   context 'fund page' do
-
     it 'shows eligible' do
       @proposal.update_column(
         :eligibility,
@@ -20,7 +19,7 @@ describe EligibilityCell do
           'quiz' => { 'eligible' => true, 'count_failing' => 0 }
         }
       )
-      eligibility = cell(:eligibility, @proposal, fund: @fund).call(:page)
+      eligibility = cell(:eligibility, @proposal, fund: @fund).call(:analysis)
       expect(eligibility).to have_text 'Eligible'
     end
 
@@ -32,35 +31,22 @@ describe EligibilityCell do
           'quiz' => { 'eligible' => true, 'count_failing' => 0 }
         }
       )
-      eligibility = cell(:eligibility, @proposal, fund: @fund).call(:page)
+      eligibility = cell(:eligibility, @proposal, fund: @fund).call(:analysis)
       expect(eligibility).to have_text 'Ineligible'
     end
 
     it 'shows incomplete' do
-      eligibility = cell(:eligibility, @proposal, fund: @fund).call(:page)
+      eligibility = cell(:eligibility, @proposal, fund: @fund).call(:analysis)
       expect(eligibility).to have_text 'Incomplete'
     end
 
     it 'shows all criteria' do
-      eligibility = cell(:eligibility, @proposal, fund: @fund).call(:page)
-      expect(eligibility).to have_css 'li', count: 5
-    end
-
-    it 'shows correct ineligible criteria' do
-      @proposal.update_column(
-        :eligibility,
-        @fund.slug => {
-          'location' => { 'eligible' => false },
-          'quiz' => { 'eligible' => true, 'count_failing' => 0 }
-        }
-      )
-      eligibility = cell(:eligibility, @proposal, fund: @fund).call(:page)
-      expect(eligibility).to have_css 'li span.red', count: 1
+      eligibility = cell(:eligibility, @proposal, fund: @fund).call(:analysis)
+      expect(eligibility).to have_css '.perc66', count: 5
     end
   end
 
   context 'fund card' do
-
     it 'shows eligible' do
       @proposal.update_column(
         :eligibility,
@@ -106,11 +92,9 @@ describe EligibilityCell do
       eligibility = cell(:eligibility, @proposal, fund: @fund).call(:card)
       expect(eligibility).to have_css 'li span.bg-red', count: 1
     end
-
   end
 
   context 'funds actions' do
-
     it 'shows eligible' do
       @proposal.update_column(
         :eligibility,
@@ -140,5 +124,4 @@ describe EligibilityCell do
       expect(eligibility).to have_text 'Eligibility'
     end
   end
-  
 end

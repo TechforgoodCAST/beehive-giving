@@ -4,16 +4,25 @@
   mixpanel.track("View Edit Profile Page");
   mixpanel.identify("#{@current_user.id}");
 
-= render partial: 'accounts/subnav'
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'Account' => account_path
 
-.uk-container.uk-container-center.uk-margin-large
-  %h2 Profile
-  %h4 Update your personal account details.
+%main
+  .maxw1080.mx-auto.px20
 
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top
-    = simple_form_for @current_user, url: account_path do |f|
+    %section.md.mb20.px20
+      %h1.mb20 Dashboard
 
-      = cell(:user_form, @current_user, f: f)
+    = render partial: 'accounts/subnav'
 
-      .uk-width-medium-1-1.uk-margin-top
+  .maxw1080.mx-auto.px20.flex.flex-wrap
+    %aside.perc25.md.px20.mb40
+      %h2.mb20 Profile
+      %h4 Update your personal account details.
+
+    %section.perc75.md.mb80.px20.fs15
+      = simple_form_for @current_user, url: account_path do |f|
+
+        = cell(:user_form, @current_user, f: f)
         = cell(:submit_form, @current_user, f: f, button_text: 'Update', disable_with_text: 'Saving')

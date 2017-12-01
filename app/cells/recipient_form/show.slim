@@ -1,4 +1,23 @@
-.uk-grid.uk-form.form
+- if v2_layout? # TODO: refactor
+  .mb20= f.input :name
+
+  .mb20= f.input :country, input_html: { class: 'chosen-select' }, include_blank: true, priority: ['United Kingdom']
+
+  .mb20= f.input :street_address
+
+  .mb20= f.input :operating_for, as: :select, collection: Recipient::OPERATING_FOR
+
+  .mb20= f.input :income_band, as: :select, collection: Recipient::INCOME_BANDS
+
+  .mb20= f.input :employees, as: :select, collection: Recipient::EMPLOYEES
+
+  .mb20= f.input :volunteers, as: :select, collection: Recipient::EMPLOYEES
+
+  .mb20= f.input :website, as: :url
+
+/ TODO: refactor
+- else
+  .uk-grid.uk-form.form
   .uk-width-medium-1-1.name
     = f.input :name, input_html: { class: 'large uk-width-1-1' }
 
