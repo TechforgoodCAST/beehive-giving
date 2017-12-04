@@ -19,7 +19,7 @@ ActiveAdmin.register Fund do
                 :max_org_income_limited, :max_org_income,
                 country_ids: [], district_ids: [], restriction_ids: [],
                 tags: [], permitted_costs: [], permitted_org_types: [],
-                theme_ids: [], questions_attributes: [:id, :group, :criterion, :_destroy]
+                theme_ids: [], questions_attributes: [:id, :group, :criterion, :criterion_id, :_destroy]
 
   controller do
     def find_resource

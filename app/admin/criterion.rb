@@ -16,14 +16,14 @@ ActiveAdmin.register Criterion do
     f.actions
   end
 
-  show do
+  show do |r|
     attributes_table do
       row :details
       row :invert
       row :category
     end
     panel 'Funds with this priority' do
-      table_for funds do
+      table_for r.funds do
         column :slug
         column :funder
         column :name
