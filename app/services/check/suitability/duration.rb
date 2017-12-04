@@ -5,6 +5,7 @@ module Check
 
       def call(proposal, fund)
         validate_call proposal, fund
+        return { 'error' => 'No data available' } unless fund.open_data?
         response = proposal.beehive_insight_durations
         { 'score' => response.key?(fund.slug) ? response[fund.slug].to_f : 0.0 }
       end
