@@ -36,11 +36,15 @@ class SuitabilityCell < Cell::ViewModel
     def criteria
       criteria = {
         location: { title: 'Location' },
-        amount:   { title: 'Grant amount' },
-        org_type: { title: 'Organisation type' },
-        duration: { title: 'Funding duration' },
         theme:    { title: 'Funding themes' }
       }
+      if options[:fund].open_data?
+        criteria = {
+          amount:   { title: 'Grant amount' },
+          org_type: { title: 'Organisation type' },
+          duration: { title: 'Funding duration' },
+        }.merge(criteria)
+      end
       if options[:fund].priorities.exists?
         criteria = { quiz: { title: 'Quiz' } }.merge(criteria)
       end

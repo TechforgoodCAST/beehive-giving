@@ -6,6 +6,8 @@ module Check
       def call(proposal, fund)
         validate_call proposal, fund
 
+        return { 'error' => 'No data available' } unless fund.open_data?
+
         org_type_score = 0
 
         if fund.org_type_distribution?

@@ -144,7 +144,7 @@ class Proposal < ApplicationRecord
         Check::Suitability::Location.new,
         Check::Suitability::OrgType.new,
         Check::Suitability::Theme.new,
-        # Check::Suitability::Quiz.new(self, Fund.active),
+        Check::Suitability::Quiz.new(self, Fund.active),
       ]
     )
     check_stub_eligibility = Check::Each.new(

@@ -4,6 +4,7 @@ class Topsis
   WEIGHTS = {
     'theme'    => 10,
     'location' => 9,
+    'quiz'     => 7,
     'org_type' => 5,
     'amount'   => 2,
     'duration' => 2
@@ -12,6 +13,7 @@ class Topsis
   def initialize(hash)
     raise "#{self.class} not initialized with Hash" unless hash.is_a? Hash
     raise 'Empty Hash supplied' if hash.empty?
+    hash = only_with_scores(hash)
     @decision_matrix = decision_matrix(hash, standardisation(hash))
   end
 
@@ -24,6 +26,12 @@ class Topsis
   end
 
   private
+
+    def only_with_scores(data)
+      data.map do |slug, hash|
+        [slug, hash.except('total').select{ |k, v| v.has_key?('score') }]
+      end.to_h
+    end
 
     def decision_matrix(data, standardised)
       data.map do |slug, hash|
@@ -42,7 +50,11 @@ class Topsis
         [
           k,
           Math.sqrt(
-            hash.all_values_for(k).pluck('score').map { |i| i**2 }.reduce(:+)
+            hash.all_values_for(k)
+                .pluck('score')
+                .reject{ |i| i.nil? }
+                .map { |i| i**2 }
+                .reduce(:+).to_f
           )
         ]
       end.to_h
