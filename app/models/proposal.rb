@@ -134,6 +134,7 @@ class Proposal < ApplicationRecord
         Check::Eligibility::Location.new,
         Check::Eligibility::OrgIncome.new,
         Check::Eligibility::OrgType.new,
+        Check::Eligibility::FundingType.new,
         Check::Eligibility::Quiz.new(self, Fund.active)
       ]
     )
