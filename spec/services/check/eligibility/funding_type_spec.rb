@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-fdescribe Check::Eligibility::FundingType do
+describe Check::Eligibility::FundingType do
   before(:each) do
     @app.seed_test_db.setup_funds.create_recipient.create_registered_proposal
     @fund = Fund.last
