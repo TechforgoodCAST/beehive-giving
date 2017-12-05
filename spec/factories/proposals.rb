@@ -3,7 +3,7 @@ FactoryGirl.define do
     recipient
     type_of_support       Proposal::TYPE_OF_SUPPORT.sample
     funding_duration      12
-    funding_type          0 # Don't know
+    funding_type          1 # Capital
     total_costs           10_000
     total_costs_estimated false
     all_funding_required  true

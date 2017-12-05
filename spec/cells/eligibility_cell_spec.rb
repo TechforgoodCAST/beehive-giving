@@ -42,7 +42,7 @@ describe EligibilityCell do
 
     it 'shows all criteria' do
       eligibility = cell(:eligibility, @proposal, fund: @fund).call(:analysis)
-      expect(eligibility).to have_css '.perc66', count: 5
+      expect(eligibility).to have_css '.perc66', count: 6
     end
   end
 
@@ -78,7 +78,7 @@ describe EligibilityCell do
 
     it 'shows all criteria' do
       eligibility = cell(:eligibility, @proposal, fund: @fund).call(:card)
-      expect(eligibility).to have_css 'li', count: 5
+      expect(eligibility).to have_css 'li', count: 6
     end
 
     it 'shows correct ineligible criteria' do
