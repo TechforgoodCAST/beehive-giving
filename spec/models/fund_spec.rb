@@ -216,11 +216,6 @@ describe Fund do
       expect(@fund.restrictions.count).to eq 5
     end
 
-    it 'saves restriction_ids' do
-      @fund.save
-      expect(@fund.restriction_ids).to eq @fund.restrictions.pluck(:id)
-    end
-
     it 'min_amount_awarded required if min_amount_awarded_limited' do
       @fund.min_amount_awarded_limited = true
       @fund.min_amount_awarded = nil

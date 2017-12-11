@@ -19,7 +19,6 @@ ActiveAdmin.register Fund do
                 :max_org_income_limited, :max_org_income,
                 country_ids: [], district_ids: [], theme_ids: [],
                 tags: [], permitted_costs: [], permitted_org_types: [],
-                restriction_ids: [], priority_ids: [],
                 questions_attributes: [:id, :group, :criterion, :criterion_id, :criterion_type, :_destroy]
 
   controller do
