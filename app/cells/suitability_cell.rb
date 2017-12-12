@@ -36,11 +36,15 @@ class SuitabilityCell < Cell::ViewModel
     def criteria
       criteria = {
         location: { title: 'Location' },
-        amount:   { title: 'Grant amount' },
-        org_type: { title: 'Organisation type' },
-        duration: { title: 'Funding duration' },
         theme:    { title: 'Funding themes' }
       }
+      if options[:fund].open_data?
+        criteria = {
+          amount:   { title: 'Grant amount' },
+          org_type: { title: 'Organisation type' },
+          duration: { title: 'Funding duration' },
+        }.merge(criteria)
+      end
       if options[:fund].priorities.exists?
         criteria = { quiz: { title: 'Quiz' } }.merge(criteria)
       end
@@ -66,7 +70,7 @@ class SuitabilityCell < Cell::ViewModel
         score: nil,
         title: 'Incomplete',
         colour: 'blue',
-        symbol: '<span class="white dot dot-14 bg-blue mr3"></span>'.html_safe,
+        symbol: 'Incomplete',
         status: 'to_check'
       } if score.nil?
       scale = score > 1 ? score.ceil : 1
@@ -112,7 +116,8 @@ class SuitabilityCell < Cell::ViewModel
         return 'No themes in common with your proposal' if themes.empty?
         "This fund works in #{themes.take(3).to_sentence}."
       when :quiz
-        cell(:quiz, options[:fund], quiz_type: 'Priority', proposal: model).call(:questions_completed)
+        return cell(:quiz, options[:fund], quiz_type: 'Priority', proposal: model).call(:questions_completed) if score.nil?
+        return "<strong>#{number_to_percentage(score * 100, precision: 0)}</strong> of your answers match this fund's priorities.".html_safe
       end
     end
 

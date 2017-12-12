@@ -24,10 +24,11 @@ class EligibilityCell < Cell::ViewModel
 
     def criteria
       criteria = {
-        location:   { title: 'Location' },
-        amount:     { title: 'Grant amount' },
-        org_type:   { title: 'Organisation type' },
-        org_income: { title: 'Organisation income' }
+        location:     { title: 'Location' },
+        amount:       { title: 'Grant amount' },
+        funding_type: { title: 'Funding type' },
+        org_type:     { title: 'Organisation type' },
+        org_income:   { title: 'Organisation income' }
       }
       if options[:fund].restrictions.exists?
         criteria = { quiz: { title: 'Quiz' } }.merge(criteria)

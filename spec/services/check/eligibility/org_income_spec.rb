@@ -51,6 +51,22 @@ describe Check::Eligibility::OrgIncome do
     expect(subject.call(@proposal, @fund)).to eq 'eligible' => true
   end
 
+  it 'on the edge of a band' do
+    @proposal.recipient.income = nil
+    @proposal.recipient.income_band = 3
+    @fund.max_org_income_limited = true
+    @fund.max_org_income = 1_000_000
+    expect(subject.call(@proposal, @fund)).to eq 'eligible' => false
+  end
+
+  it 'on the edge of a band minimum' do
+    @proposal.recipient.income = nil
+    @proposal.recipient.income_band = 3
+    @fund.min_org_income_limited = true
+    @fund.min_org_income = 10_000_000
+    expect(subject.call(@proposal, @fund)).to eq 'eligible' => false
+  end
+
   it 'outside two values based on band' do
     @proposal.recipient.income = nil
     @proposal.recipient.income_band = 1

@@ -30,3 +30,11 @@ document.addEventListener('turbolinks:load', () => {
 document.addEventListener('ajax:success', () => {
   select.init('user_org_type', selectOpts)
 })
+
+// Prevent turbolinks on funds#show and funds#hidden for Google Optimize
+document.addEventListener('turbolinks:before-visit', (e) => {
+  if (/\/proposals\/[0-9]+\/funds\/[^theme]|\/hidden/.test(e.data.url)) {
+    e.preventDefault()
+    window.location = e.data.url
+  }
+})

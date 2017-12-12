@@ -3,7 +3,11 @@ module Check
     class Quiz
       def initialize(proposal, funds)
         @answers = lookup_answers(proposal)
-        @priorities = funds.pluck(:slug, :priority_ids).to_h
+        @priorities = funds.includes(:priorities)
+                           .pluck(:slug, 'criteria.id')
+                           .group_by{|i| i[0]}
+                           .map{ |k,v| [k, v.map{|j| j[1]}.select{|j| j.present?}]}
+                           .to_h
       end
 
       def call(_proposal, fund)

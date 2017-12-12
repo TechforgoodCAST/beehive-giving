@@ -21,6 +21,12 @@ class EligibilityBannerCell < Cell::ViewModel
     render locals: { org_type: ORG_TYPES[model.recipient.org_type + 1][2], fund_org_types: fund_org_types, eligible: options[:eligible]  }
   end
 
+  def funding_type
+    return '-' unless model.eligibility.dig(options[:fund]&.slug, 'funding_type')
+    fund_type = FUNDING_TYPES[model.funding_type][0].truncate_words(2, omission: '').downcase
+    render locals: { message: fund_type, eligible: options[:eligible]  }
+  end
+
   def org_income
     return '-' unless model.eligibility.dig(options[:fund]&.slug, 'org_income')
     return '-' if options[:eligible] && !options[:fund].org_income_desc

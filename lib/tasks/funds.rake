@@ -10,6 +10,15 @@ namespace :funds do
     end
   end
 
+  # usage: rake funds:update_all!
+  desc 'Update all funds with open data'
+  task update_all!: :environment do
+    Fund.where(open_data: true).each do |fund|
+      fund.save!
+      puts fund.slug + ' saved'
+    end
+  end
+
   # usage: rake funds:themes THEMES=/path/to/file.json RELATED=true SAVE=true
   desc 'Update themes'
   task themes: :environment do
@@ -41,7 +50,8 @@ namespace :funds do
   end
 
   # usage: rake funds:fetch_stubs
-  # usage: rake funds:fetch_stubs COUNTRIES=GB,US BENEFICIARIES='PEOPLE WITH DISABILITIES' ACTIVITIES= PURPOSE=
+  # usage: rake funds:fetch_stubs SAVE=true
+  # usage: rake funds:fetch_stubs SAVE=true COUNTRIES=GB,US BENEFICIARIES='PEOPLE WITH DISABILITIES' ACTIVITIES= PURPOSE=
   desc 'Fetch fund stubs from Beehive data'
   task fetch_stubs: :environment do
     # needs BEEHIVE_DATA_STUB_FUNDS_ENDPOINT to be set
@@ -120,74 +130,74 @@ namespace :funds do
         funder.charity_number = f["reg_number"]
       end
       funder.website = f['website'].sub(/^www./, 'http://www.') unless funder.website
-      funder.save! if ENV["SAVE"]
+      unless funder.valid?
+        next
+      end
+      funder.save if ENV["SAVE"]
       fund_count = funder.funds.where.not(state: 'draft').count
 
       puts 
       puts funder.name
       puts "=" * funder.name.size
-      log_messages = []
 
-      unless fund_count > 0
-        # only funders who have draft funds or no funds
-        fund = funder.funds.where(state: 'draft').first
-
-        themes = Theme.where(name: f['themes']).to_a
-
-        if f["countries"].blank? and f["districts"].blank?
-          f["countries"] = ["Other"]
-        end
-
-        if f["geo_area"] =~ /\d/ or f["geo_area"].blank?
-          geo_area_name = f["countries"].uniq.sort.join(",") + ";" + f["districts"].uniq.sort.join(",")
-        else
-          geo_area_name = f["geo_area"]
-        end
-
-        geo_area = GeoArea.where(name: geo_area_name).first_or_initialize
-        unless geo_area.persisted?
-          geo_area.name = geo_area_name
-          geo_area.short_name = f["geo_area"]
-          geo_area.countries = Country.where(alpha2: f["countries"])
-          geo_area.districts = f["districts"].select{|d| d.present? }
-                                             .map{ |d| District.where("subdivision LIKE ? and country_id = ?", "#{d}%", gb.id)}
-                                             .flatten.uniq
-          geo_area.save! if ENV['SAVE']
-          log_messages.push("New geo area created: [#{geo_area.short_name}]")
-        end
-
-        params = {
-          funder: funder,
-          name: 'Main Fund',
-          description: f['description'],
-          themes: themes,
-          geo_area: geo_area
-        }
-
-        if fund
-          update = fund.update(params)
-          if update
-            log_messages.append("Updating draft fund id #{fund.id}")
-          else
-            log_messages.append("Could not update draft fund id #{fund.id}")
-          end
-        else
-          stub = FundStub.new(params)
-          if stub.valid?
-            log_messages.append("Saving new draft fund")
-          else
-            log_messages.append("Could not save new draft fund")
-          end
-          stub.save if ENV['SAVE']
-        end
+      if fund_count > 0
+        puts "Funder has #{pluralize(fund_count, "existing fund")}"
+        puts "No update"
+        next
       end
-      if log_messages.empty?
-        log_messages = [
-          "Funder has #{pluralize(fund_count, "existing fund")}",
-          "No update"
-        ]
+
+      # only funders who have draft funds or no funds
+      fund = funder.funds.where(state: 'draft').first
+
+      themes = Theme.where(name: f['themes']).to_a
+
+      if f["countries"].blank? and f["districts"].blank?
+        f["countries"] = ["Other"]
       end
-      log_messages.each{|l| puts l}
+
+      if f["geo_area"] =~ /\d/ or f["geo_area"].blank?
+        geo_area_name = f["countries"].uniq.sort.join(",") + ";" + f["districts"].uniq.sort.join(",")
+      else
+        geo_area_name = f["geo_area"]
+      end
+
+      geo_area = GeoArea.where(name: geo_area_name).first_or_initialize
+      unless geo_area.persisted?
+        geo_area.name = geo_area_name
+        geo_area.short_name = f["geo_area"]
+        geo_area.countries = Country.where(alpha2: f["countries"])
+        geo_area.districts = f["districts"].select{|d| d.present? }
+                                            .map{ |d| District.where("subdivision LIKE ? and country_id = ?", "#{d}%", gb.id)}
+                                            .flatten.uniq
+        geo_area.save! if ENV['SAVE']
+        puts "New geo area created: [#{geo_area.short_name}]"
+      end
+
+      params = {
+        funder: funder,
+        name: 'Main Fund',
+        description: f['description'],
+        themes: themes,
+        geo_area: geo_area
+      }
+
+      if fund
+        update = fund.update(params)
+        if update
+          puts "Updating draft fund id #{fund.id}"
+        else
+          puts "Could not update draft fund id #{fund.id}"
+        end
+      else
+        stub = FundStub.new(params)
+        if stub.valid?
+          puts "Saving new draft fund"
+        else
+          puts "Could not save new draft fund"
+        end
+        stub.save if ENV['SAVE']
+      end
+      
     end
   end
 end

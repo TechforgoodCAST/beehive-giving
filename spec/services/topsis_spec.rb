@@ -40,4 +40,15 @@ describe Topsis do
     }
     expect(subject.rank).to eq result
   end
+
+  it '#ignores checks with no score' do
+    @suitability['fund3']['duration'] = { 'error' => 'error message'}
+    @suitability['fund3']['org_type'] = { 'error' => 'error message'}
+    result = {
+      'fund1' => 1.0, 
+      'fund2' => 0.0, 
+      'fund3' => 0.3889010135594836
+    }
+    expect(subject.rank).to eq result
+  end
 end

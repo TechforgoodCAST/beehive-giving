@@ -1,6 +1,7 @@
 ActiveAdmin.register Criterion do
-  permit_params :priority, :details, :invert, :category
+  permit_params :priority, :details, :invert, :category, :type
 
+  filter :details
   filter :funds, input_html: { class: 'chosen-select' }
   filter :category, as: :select, collection: %w[Proposal Recipient]
   filter :type, as: :select, collection: %w[Restriction Priority]
@@ -11,18 +12,21 @@ ActiveAdmin.register Criterion do
       f.input :invert
       f.input :category, collection: %w[Proposal Recipient],
                          input_html: { class: 'chosen-select' }
+      f.input :type, collection: %w[Restriction Priority],
+                         input_html: { class: 'chosen-select' }
     end
     f.actions
   end
 
-  show do
+  show do |r|
     attributes_table do
       row :details
       row :invert
       row :category
+      row :type
     end
     panel 'Funds with this priority' do
-      table_for priority.funds do
+      table_for r.funds do
         column :slug
         column :funder
         column :name

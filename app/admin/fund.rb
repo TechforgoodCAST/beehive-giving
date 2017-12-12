@@ -17,9 +17,9 @@ ActiveAdmin.register Fund do
                 :max_duration_awarded_limited, :max_duration_awarded,
                 :min_org_income_limited, :min_org_income,
                 :max_org_income_limited, :max_org_income,
-                country_ids: [], district_ids: [], restriction_ids: [],
+                country_ids: [], district_ids: [], theme_ids: [],
                 tags: [], permitted_costs: [], permitted_org_types: [],
-                theme_ids: [], questions_attributes: [:id, :group, :criterion, :_destroy]
+                questions_attributes: [:id, :group, :criterion, :criterion_id, :criterion_type, :_destroy]
 
   controller do
     def find_resource
@@ -202,6 +202,7 @@ ActiveAdmin.register Fund do
           f.input :priorities_known
           f.has_many :questions, heading: false, allow_destroy: true do |q|
             q.input :group
+            q.input :criterion_type, as: :select, collection: %W[Restriction Priority]
             q.input :criterion, collection: Criterion.pluck(:details, :invert, :id, :type).map { |r| ["#{r[3]}: #{r[0]}#{(" [INVERT]" if r[1])}", r[2]] },
                                 input_html: { class: 'chosen-select' }
             q.actions

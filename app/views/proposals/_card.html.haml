@@ -16,9 +16,9 @@
   .fs15.mb20
     = number_to_currency(proposal.total_costs, unit: "£", precision: 0)
     &middot;
-    - if proposal.funding_type == 1
+    - if proposal.funding_type == 2
       Revenue
-    - elsif proposal.funding_type == 2
+    - elsif proposal.funding_type == 1
       Capital
   .flex
     .col-one-third.fs12
