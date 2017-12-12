@@ -1,16 +1,18 @@
+= content_for :title, "Basics - Should you apply to #{@funder.name}?"
+
 %main
-  .maxw1080.mx-auto.px20
-    %section
-      %h1.mb40.px20
-        Should you apply to
-        = succeed '?' do
-          = @funder.name
+  %section.bg-ice
+    .maxw1080.mx-auto.p40.mb40
+      %section
+        %h1.mb5
+          Should you apply to
+          = succeed '?' do
+            = @funder.name
+        .fs18 Check your eligibility and suitability to avoid wasted effort
 
-    %section.flex.flex-wrap
-      %aside.perc25.md.px20.mb40
-        Progress
-
-      %article.perc75.md.mb80.px20
+  %section.maxw1080.mx-auto.px40
+    .flex.flex-wrap.justify-center
+      %article.perc75.md.mb40.px20
         %h2.mb40 Step 1 of 3 - Basics
 
         = simple_form_for @microsite.step, url: microsite_basics_path do |f|
@@ -18,7 +20,18 @@
           .mb40= f.input :funding_type, collection: FUNDING_TYPES
           .mb40= f.input :total_costs, as: :currency
           .mb20= f.input :org_type, collection: ORG_TYPES
-          %blockquote.mb20
-            = f.input :charity_number, input_html: { class: 'mb20' }
-            = f.input :company_number, input_html: { class: 'mb20' }
+
+          -# TODO: refactor
+          .individual_notice.fs14.p10.my15.white.bg-red.rounded
+            %strong Important.
+            This funder checking service does not currently support grants for individuals. See our
+            = link_to 'FAQ', faq_path(anchor: 'individual'), class: 'bold white'
+            for more details.
+
+          .mb40.mx20
+            = f.input :charity_number, wrapper_html: { class: 'mt20' }
+            = f.input :company_number, wrapper_html: { class: 'mt20' }
+
+          .mb20= f.input :country, include_blank: true, priority: ['United Kingdom']
+
           = f.button :button, 'Next', class: 'button white bg-olive caps truncate', data: { disable_with: 'Saving...' }

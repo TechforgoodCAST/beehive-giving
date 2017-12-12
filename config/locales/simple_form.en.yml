@@ -17,13 +17,13 @@ en:
         funding_type: 'What type of grant funding are you seeking?'
         total_costs: 'How much funding are you seeking?'
         org_type: 'Who will be receiving the funding?'
-      recipient:
         name: 'Organisation or project name'
         country: 'Where is your organisation or project based?'
-        operating_for: 'How long has your organisation or project been operating for?'
         income_band: 'What is the annual income of your organisation or project?'
+        operating_for: 'How long has your organisation or project been operating for?'
         employees: 'How many employees does your organisation or project have?'
         volunteers: 'How many volunteers does your organisation or project have?'
+      recipient:
         website: "Your organisation or project's website"
       proposal:
         title: 'Proposal title'
@@ -36,6 +36,13 @@ en:
         age_groups: 'Which age groups?'
         affect_geo: 'Where will your proposed work affect?'
         implementations: 'What will you proposed work provide?'
+      basics_step:
+        country: 'In which country is the funding recipient based?'
+      eligibility_step:
+        affect_geo: 'Where will your proposed work affect?'
+        country_ids: 'Please select the countries your proposed work will affect'
+      pre_results_step:
+        email: 'Add an active email address to see your results...'
 
     placeholders:
       defaults:
@@ -76,3 +83,5 @@ en:
         outcome4: 'Outcome 4 - optional'
         outcome5: 'Outcome 5 - optional'
         implementations_other: 'Please specify'
+      pre_results_step:
+        email: 'e.g. email@example.com'

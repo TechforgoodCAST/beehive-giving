@@ -1,9 +1,11 @@
 module Check
   module Suitability
     class Quiz
+      include Check::Helpers
+
       def initialize(proposal, funds)
         @answers = lookup_answers(proposal)
-        @priorities = funds.pluck(:slug, :priority_ids).to_h
+        @priorities = lookup_questions(funds, 'Priority')
       end
 
       def call(_proposal, fund)
@@ -18,13 +20,8 @@ module Check
 
       private
 
-        def lookup_answers(proposal)
-          ::Answer.where(category_id: [proposal.id, proposal.recipient.id])
-                  .pluck(:criterion_id, :eligible).to_h
-        end
-
         def score(comparison, fund)
-          @answers.slice(*comparison).values.select { |i| i == true }.count / @priorities[fund.slug].to_a.count.to_f
+          @answers.slice(*comparison).values.select { |i| i == true }.count / @priorities[fund.slug].to_a.size.to_f
         end
     end
   end

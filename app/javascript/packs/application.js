@@ -16,8 +16,15 @@ const select = new Select()
 
 document.addEventListener('turbolinks:load', () => {
   filter.init('filter')
-  select.orgType('user')
-  select.orgType('basics_step')
+  select.orgType(['user', 'basics_step', 'eligibility_step'])
+
+  const eligibilityStepOpts = {
+    '0': ['districts'],
+    '1': ['districts'],
+    '2': ['recipient_country'],
+    '3': ['eligibility_step_country_ids']
+  }
+  select.init('eligibility_step_affect_geo', eligibilityStepOpts)
 })
 
 document.addEventListener('ajax:success', () => {

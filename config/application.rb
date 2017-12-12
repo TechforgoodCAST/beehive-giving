@@ -50,6 +50,7 @@ module Beehive
       chosen.css
       overrides/chosen_overrides.css
       overrides/morris_overrides.css
+      proposals.css
     )
     config.assets.precompile += %w(
       chosen.js

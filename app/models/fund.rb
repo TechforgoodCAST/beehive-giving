@@ -37,9 +37,7 @@ class Fund < ApplicationRecord
   validates :name, uniqueness: { scope: :funder }
 
   validates :restrictions, presence: true, if: :restrictions_known?
-  validates :restrictions_known, presence: true, if: :restriction_ids?
   validates :priorities, presence: true, if: :priorities_known?
-  validates :priorities_known, presence: true, if: :priority_ids?
 
   validates :open_data, :period_start, :period_end,
             :amount_awarded_distribution, :award_month_distribution,
@@ -69,8 +67,6 @@ class Fund < ApplicationRecord
   before_validation :set_slug, unless: :slug
   before_validation :check_beehive_data,
                     if: proc { |o| o.skip_beehive_data.to_i.zero? }
-  after_save :set_restriction_ids, if: :restrictions_known?
-  after_save :set_priority_ids, if: :priorities_known?
 
   def save(*args)
     if state =~ /draft|stub/ && FundStub.new(fund: self).valid?
@@ -230,14 +226,6 @@ class Fund < ApplicationRecord
 
     def set_slug
       self[:slug] = "#{funder.slug}-#{name.parameterize}" if funder
-    end
-
-    def set_restriction_ids
-      update_column :restriction_ids, restrictions.pluck(:id)
-    end
-
-    def set_priority_ids
-      update_column :priority_ids, priorities.pluck(:id)
     end
 
     def period_end_in_past

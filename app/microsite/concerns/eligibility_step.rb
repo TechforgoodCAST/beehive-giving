@@ -7,7 +7,8 @@ class EligibilityStep
 
   def self.attrs
     %i[assessment org_type charity_number company_number name country
-       street_address income_band operating_for employees volunteers]
+       street_address income_band operating_for employees volunteers
+       affect_geo country_ids district_ids]
   end
 
   attr_accessor(*attrs)
@@ -20,9 +21,20 @@ class EligibilityStep
     @answers = build_answers(answers)
   end
 
-  to_integer :org_type, :income_band, :operating_for, :employees, :volunteers
+  def country_ids
+    @country_ids ||= []
+  end
 
-  validate :validate_answers
+  def district_ids
+    @district_ids ||= []
+  end
+
+  to_integer :org_type, :income_band, :operating_for, :employees, :volunteers,
+             :affect_geo
+
+  validates :affect_geo, inclusion: { in: 0..3,
+                                      message: 'please select an option' }
+  validate :country_ids_presence, :district_ids_presence, :validate_answers
 
   def attributes
     self.class.attrs.map { |a| [a, send(a)] }.to_h.merge(answers: answers)
@@ -57,7 +69,7 @@ class EligibilityStep
     def build_answers(updates = {})
       return [] unless assessment
 
-      criteria = funder.restrictions
+      criteria = funder.restrictions.uniq
       answers = persisted_answers(criteria)
 
       criteria.map do |criterion|
@@ -96,13 +108,40 @@ class EligibilityStep
       end
     end
 
+    def validate_array(field)
+      errors.add(field, "can't be blank") if send(field).reject(&:blank?).empty?
+    end
+
+    def country_ids_presence
+      return if affect_geo && affect_geo < 3
+      validate_array(:country_ids)
+    end
+
+    def district_ids_presence
+      return if affect_geo && affect_geo > 1
+      validate_array(:district_ids)
+    end
+
     def save_recipient!
-      recipient.update(attributes.except(:assessment, :answers))
+      recipient.update(
+        attributes.except(
+          :assessment, :answers, :affect_geo, :country_ids, :district_ids
+        )
+      )
     end
 
     def save_proposal!
-      eligibility = CheckEligibilityFactory.new(proposal, funder.funds)
-                                           .call_each(proposal, funder.funds)
+      proposal.assign_attributes(
+        affect_geo: affect_geo,
+        country_ids: (country_ids << Country.find_by(alpha2: country).id).uniq,
+        district_ids: district_ids
+      )
+      Proposal.skip_callback :save, :after, :initial_recommendation # TODO: refactor
+      proposal.save(validate: false)
+      Proposal.set_callback :save, :after, :initial_recommendation # TODO: refactor
+      funds = funder.funds.active
+      eligibility = CheckEligibilityFactory.new(proposal, funds)
+                                           .call_each(proposal, funds)
       proposal.next_step!
       proposal.update_column(:eligibility, eligibility)
     end

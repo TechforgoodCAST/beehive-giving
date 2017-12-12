@@ -1,4 +1,6 @@
 class MicrositesController < ApplicationController
+  layout 'microsite'
+
   before_action :load_funder, :load_assessment
   before_action :ensure_funder
   before_action only: %i[basics eligibility pre_results results] do
@@ -60,8 +62,9 @@ class MicrositesController < ApplicationController
   end
 
   def results
-    return if params[:t] == @assessment.access_token
-    redirect_to microsite_basics_path(@funder)
+    redirect_to microsite_basics_path(@funder) unless
+      params[:t] == @assessment.access_token
+    @proposal = @assessment.proposal
   end
 
   private
@@ -81,17 +84,17 @@ class MicrositesController < ApplicationController
     def basics_params
       params.require(:basics_step).permit(
         :funder_id, :funding_type, :total_costs, :org_type, :charity_number,
-        :company_number
+        :company_number, :country
       )
     end
 
     def eligibility_params
       params.require(:eligibility_step)
-            .permit(*recipient_attrs, answers: %w[eligible])
+            .permit(*recipient_attrs, :affect_geo, country_ids: [], district_ids: [], answers: %w[eligible])
     end
 
     def pre_results_params
-      params.require(:pre_results_step).permit(:email)
+      params.require(:pre_results_step).permit(:email, :agree_to_terms)
     end
 
     def recipient_attrs

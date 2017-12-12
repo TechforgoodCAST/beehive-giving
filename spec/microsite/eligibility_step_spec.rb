@@ -10,7 +10,7 @@ describe EligibilityStep do
   include_examples 'org_type validations'
   include_examples 'setter to integer' do
     let(:attributes) do
-      %i[org_type income_band operating_for employees volunteers]
+      %i[org_type income_band operating_for employees volunteers affect_geo]
     end
   end
 
@@ -18,6 +18,7 @@ describe EligibilityStep do
     %i[
       assessment org_type charity_number company_number name country
       street_address income_band operating_for employees volunteers
+      affect_geo country_ids district_ids
     ]
   end
 
@@ -25,13 +26,51 @@ describe EligibilityStep do
     expect(subject.class.attrs).to include(*attrs)
   end
 
+  it '#answers empty' do
+    expect(subject.answers).to eq []
+  end
+
+  it '#country_ids default' do
+    expect(subject.country_ids).to eq []
+  end
+
+  it '#district_ids default' do
+    expect(subject.district_ids).to eq []
+  end
+
+  it '#country_ids_presence valid' do
+    [0, 1, 2].each do |affect_geo|
+      subject.affect_geo = affect_geo
+      subject.valid?
+      expect(subject.errors.messages).not_to have_key :country_ids
+    end
+  end
+
+  it '#country_ids_presence invalid' do
+    subject.affect_geo = 3
+    subject.valid?
+    expect(subject.errors.messages).to have_key :country_ids
+  end
+
+  it '#district_ids_presence valid' do
+    [0, 1].each do |affect_geo|
+      subject.affect_geo = affect_geo
+      subject.valid?
+      expect(subject.errors.messages).to have_key :district_ids
+    end
+  end
+
+  it '#district_ids_presence invalid' do
+    [2, 3].each do |affect_geo|
+      subject.affect_geo = affect_geo
+      subject.valid?
+      expect(subject.errors.messages).not_to have_key :district_ids
+    end
+  end
+
   it '#attributes' do
     expect(subject.attributes).to include(*attrs)
     expect(subject.attributes).to be_a(Hash)
-  end
-
-  it '#answers empty' do
-    expect(subject.answers).to eq []
   end
 
   it '#answers_for invalid `category`' do
@@ -39,7 +78,7 @@ describe EligibilityStep do
   end
 
   context 'with Assessment' do
-    let(:restriction) { build(:restriction) }
+    let(:restriction) { build(:restriction, id: 1) }
     let(:assessment) do
       instance_double(
         Assessment,
@@ -61,6 +100,7 @@ describe EligibilityStep do
         income_band: 0, # Less than 10k
         employees: 0, # None
         volunteers: 0, # None
+        affect_geo: 2, # An entire country
         answers: answers
       )
     end

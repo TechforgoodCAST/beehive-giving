@@ -30,6 +30,7 @@ feature 'Microsite' do
 
   context 'integration' do
     before(:each) do
+      create(:country, name: 'United Kingdom', alpha2: 'GB')
       @funder = create(:funder)
     end
 
@@ -113,6 +114,7 @@ feature 'Microsite' do
 
     context 'existing assessment' do
       let(:assessment) do
+        Country.destroy_all
         @app.seed_test_db
             .create_recipient
             .create_registered_proposal

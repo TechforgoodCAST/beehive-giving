@@ -1,7 +1,43 @@
-%main
+= content_for :title, "Results - Should you apply to #{@funder.name}?"
+
+%main.pt40
   .maxw1080.mx-auto.px20.flex.flex-wrap
     %aside.perc25.md.px20.mb40
-      Results
+      Should you apply to
+      = succeed '?' do
+        = @funder.name
 
-    %section.perc75.md.mb80.px20
-      %h1.mb40= @funder.name
+    %section.perc75.md.px20
+      .mb40
+        %h1.mb10 Results
+        = @funder.name
+        has
+        %strong= @funder.funds.active.count
+        active funds of which you are eligible for
+
+      - @funder.funds.active.each do |fund|
+        .mb40.border.border-silver.rounded
+          .p20
+            %h3.mb5= fund.name
+            .fs15.night
+              by
+              = @funder.name
+          .p20.border-top.border-silver
+            %h6.bold.mb10= cell(:fund_insight, fund, proposal: @proposal).call(:summary)
+            .night= raw strip_tags(fund.description_html).truncate_words(30)
+
+          - opts = { proposal: @proposal, fund: fund }
+          .p20.border-top.border-silver
+            .flex.justify-between
+              .mx-auto.flex.items-center
+                .dot{ class: Progress::Eligibility.new(opts).indicator }
+                %h6.ml10 Eligibility
+              -# TODO: implement
+              -# .slate ❯
+              -# .mx-auto.flex.items-center
+              -#   .dot{ class: Progress::Suitability.new(opts).indicator }
+              -#   %h6.ml10 Suitability
+              .slate ❯
+              .mx-auto.flex.items-center
+                .dot{ class: Progress::Apply.new(opts).indicator }
+                %h6.ml10 Apply

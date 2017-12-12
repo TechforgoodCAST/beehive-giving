@@ -1,4 +1,6 @@
 class SessionsController < ApplicationController
+  layout 'fullscreen'
+
   def new
     redirect_to start_path if logged_in?
   end

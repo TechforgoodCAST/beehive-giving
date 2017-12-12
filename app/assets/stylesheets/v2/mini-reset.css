@@ -65,7 +65,8 @@ video {
   max-width: 100%;
 }
 
-iframe {
+iframe,
+fieldset {
   border: 0;
 }
 

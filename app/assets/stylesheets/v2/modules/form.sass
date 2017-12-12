@@ -5,6 +5,9 @@
 
 // =========================================================================
 
+.label
+  display: block
+
 .input
   font-family: inherit
   font-size: inherit
@@ -20,15 +23,21 @@
     outline: none
     border-color: map-get($colors, 'blue')
 
-.input + .error
+.field_with_errors > .input
+  border-color: map-get($colors, 'red')
+
+.field_with_errors > .error
   display: inline-block
-  color: map-get($colors, red)
+  color: map-get($colors, 'red')
   +responsive(font-size, map-get($scales, 12))
   &:first-letter
     text-transform: capitalize
 
-.field_with_errors > input
-  border-color: map-get($colors, 'red')
+.boolean
+  display: inline
+  width: auto
+  vertical-align: middle
 
-.label
-  display: block
+.currency > .input
+  display: inline-block
+  width: calc(100% - 14px)

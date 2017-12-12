@@ -31,6 +31,7 @@ describe PreResultsStep do
     before do
       subject.assessment = assessment
       subject.email = 'email@example.com'
+      subject.agree_to_terms = true
       subject.save
     end
 

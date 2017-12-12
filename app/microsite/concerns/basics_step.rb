@@ -5,7 +5,7 @@ class BasicsStep
 
   attr_reader :assessment
   attr_accessor :charity_number, :company_number, :funder_id, :funding_type,
-                :org_type, :total_costs
+                :org_type, :total_costs, :country
 
   def funding_type=(str)
     @funding_type = str.blank? ? str : str.to_i
@@ -31,9 +31,10 @@ class BasicsStep
 
     def load_recipient
       @recipient = Recipient.new(
-        charity_number: @charity_number,
-        company_number: @company_number,
-        org_type: @org_type
+        charity_number: charity_number,
+        company_number: company_number,
+        org_type: org_type,
+        country: country
       )
       @recipient.scrape_org
       @recipient = @recipient.find_with_reg_nos || @recipient

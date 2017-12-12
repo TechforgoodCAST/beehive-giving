@@ -1,0 +1,10 @@
+!!!
+%html
+  = render 'shared/head'
+  %body
+    = yield
+    %footer
+      .maxw1080.mx-auto.p40
+        %a.flex.items-center.justify-center{ href: '/', target: '_blank' }
+          %small.blue.mr5.block Powered by
+          #navbar-logo.blue{ style: 'margin-right: 0 !important;' }

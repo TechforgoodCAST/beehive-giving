@@ -5,7 +5,7 @@ class Answer < ApplicationRecord
   validates :category_id, :category_type, :criterion, presence: true
   validates :eligible,
             inclusion: { in: [true, false],
-                         message: 'please select from the list' }
+                         message: 'please select option' }
   validates :eligible,
             uniqueness: { scope: %i[category criterion],
                           message: 'only one per fund' },

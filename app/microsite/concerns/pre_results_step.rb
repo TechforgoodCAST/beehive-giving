@@ -1,8 +1,9 @@
 class PreResultsStep
   include ActiveModel::Model
 
-  attr_accessor :assessment, :email
+  attr_accessor :assessment, :email, :agree_to_terms
 
+  validates :agree_to_terms, presence: true
   validates :email, presence: true, format: {
     with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171121183536) do
+ActiveRecord::Schema.define(version: 20171211161208) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,9 +86,9 @@ ActiveRecord::Schema.define(version: 20171121183536) do
     t.bigint "recipient_id"
     t.bigint "proposal_id"
     t.string "state", default: "basics", null: false
+    t.string "access_token"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "access_token"
     t.index ["funder_id"], name: "index_assessments_on_funder_id"
     t.index ["proposal_id"], name: "index_assessments_on_proposal_id"
     t.index ["recipient_id"], name: "index_assessments_on_recipient_id"
@@ -252,7 +252,6 @@ ActiveRecord::Schema.define(version: 20171121183536) do
     t.jsonb "income_distribution", default: {}, null: false
     t.jsonb "country_distribution", default: {}, null: false
     t.jsonb "tags", default: [], null: false
-    t.jsonb "restriction_ids", default: [], null: false
     t.jsonb "sources", default: {}, null: false
     t.boolean "national", default: false, null: false
     t.decimal "amount_awarded_sum"
@@ -272,7 +271,6 @@ ActiveRecord::Schema.define(version: 20171121183536) do
     t.integer "min_org_income"
     t.boolean "max_org_income_limited", default: false
     t.integer "max_org_income"
-    t.jsonb "priority_ids"
     t.boolean "priorities_known"
     t.string "geo_description"
     t.integer "geo_area_id"

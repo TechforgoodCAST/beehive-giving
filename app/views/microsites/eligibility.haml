@@ -1,83 +1,80 @@
-%main
+= content_for :title, "Eligibility - Should you apply to #{@funder.name}?"
+
+-# TODO: refactor
+= stylesheet_link_tag 'proposals'
+= stylesheet_link_tag 'chosen'
+= stylesheet_link_tag 'overrides/chosen_overrides'
+= javascript_include_tag 'proposals'
+= javascript_include_tag 'chosen-jquery'
+= javascript_include_tag 'chosen'
+= javascript_include_tag 'jquery.tree-multiselect.min'
+
+%main.pt40
   .maxw1080.mx-auto.px20.flex.flex-wrap
     %aside.perc25.md.px20.mb40
-      Progress
+      Should you apply to
+      = succeed '?' do
+        = @funder.name
 
     %section.perc75.md.mb80.px20
-      %h1.mb40= @funder.name
-
-      -# TODO: remove
-      :css
-        input[type='radio'] {
-          display: inline-block;
-          width: auto;
-          height: auto;
-          margin: 8px;
-        }
-        span.error {
-          color: red;
-        }
+      .mb40
+        %h2.mb10 Step 2 of 3 - Eligibility
+        The following eligibility questions have been set by
+        = succeed '.' do
+          = @funder.name
 
       = simple_form_for @microsite.step, url: microsite_eligibility_path(@funder, @assessment) do |f|
 
         %section
-          %h3 Your organisation
-          %p Are you seeking funding for?
+          %h3.mb20 Your organisation
+          %h4.mb20 Are you seeking funding for?
 
           -# TODO: DRY
-          - @recipient_answers.each_with_index do |answer, i|
-            = f.simple_fields_for "answers[#{answer.criterion_id}]", answer do |a|
-              -# TODO: avoid multiple db calls on validation
-              = a.object.criterion.details
-              = a.input :eligible, as: :radio_buttons
+          .mb40
+            - @recipient_answers.each_with_index do |answer, i|
+              = f.simple_fields_for "answers[#{answer.criterion_id}]", answer do |a|
+                -# TODO: avoid multiple db calls on validation
+                .flex.items-center.quiz.mb20
+                  = a.input :eligible, label: false do |r|
+                    %fieldset
+                      = a.radio_button :eligible, :true
+                      = a.label :eligible_true, 'Yes'
+                      = a.radio_button :eligible, :false
+                      = a.label :eligible_false, 'No'
+                  %label.mx20= a.object.criterion.details
 
-        %section
-          .mb20
-            %label.block.fs15.bold.mb10 Who will be receiving the funding?
-            = f.input :org_type, collection: ORG_TYPES
-          .mb20
-            %label.block.fs15.bold.mb10 Charity number
-            = f.input :charity_number
-          .mb20
-            %label.block.fs15.bold.mb10 Company number
-            = f.input :company_number
+        %section.mb40
           - if @recipient.errors.added?(:name, :blank)
-            .mb20
-              %label.block.fs15.bold.mb10 Organisation or project name
-              = f.input :name
-          - if @recipient.errors.added?(:country, :blank)
-            .mb20
-              %label.block.fs15.bold.mb10 Where is your organisation or project based?
-              = f.input :country, include_blank: true, priority: ['United Kingdom']
+            .mb20= f.input :name
           - if @recipient.errors.added?(:street_address, :blank)
-            .mb20
-              %label.block.fs15.bold.mb10 Street address
-              = f.input :street_address
+            .mb20= f.input :street_address
           - if @recipient.errors.added?(:income_band, :blank)
-            .mb20
-              %label.block.fs15.bold.mb10 What is the annual income of your organisation or project?
-              = f.input :income_band, collection: INCOME_BANDS
+            .mb20= f.input :income_band, collection: INCOME_BANDS
           - if @recipient.errors.added?(:operating_for, :blank)
-            .mb20
-              %label.block.fs15.bold.mb10 How long has your organisation or project been operating for?
-              = f.input :operating_for, collection: OPERATING_FOR
+            .mb20= f.input :operating_for, collection: OPERATING_FOR
           - if @recipient.errors.added?(:employees, :blank)
-            .mb20
-              %label.block.fs15.bold.mb10 How many employees does your organisation or project have?
-              = f.input :employees, collection: EMPLOYEES
+            .mb20= f.input :employees, collection: EMPLOYEES
           - if @recipient.errors.added?(:volunteers, :blank)
-            .mb20
-              %label.block.fs15.bold.mb10 How many volunteers does your organisation or project have?
-              = f.input :volunteers, collection: EMPLOYEES
+            = f.input :volunteers, collection: EMPLOYEES
 
         %section
-          %h3 Your proposal
+          %h3.mb20 Your proposal
+          %h4.mb20 Are you seeking funding for?
 
           -# TODO: DRY
-          - @proposal_answers.each do |answer|
-            = f.simple_fields_for "answers[#{answer.criterion_id}]", answer do |a|
-              -# TODO: avoid multiple db calls on validation
-              = a.object.criterion.details
-              = a.input :eligible, as: :radio_buttons
+          .mb20
+            - @proposal_answers.each do |answer|
+              = f.simple_fields_for "answers[#{answer.criterion_id}]", answer do |a|
+                -# TODO: avoid multiple db calls on validation
+                .flex.items-center.quiz.mb20
+                  = a.input :eligible, label: false do |r|
+                    %fieldset
+                      = a.radio_button :eligible, a.object.criterion.invert
+                      = a.label "eligible_#{a.object.criterion.invert}", 'Yes'
+                      = a.radio_button :eligible, !a.object.criterion.invert
+                      = a.label "eligible_#{!a.object.criterion.invert}", 'No'
+                  %label.mx20= a.object.criterion.details
+
+          = cell(:proposal_form, @assessment.proposal, f: f).call(:location_microsite)
 
         = f.button :button, 'Next', class: 'button white bg-olive caps truncate', data: { disable_with: 'Saving...' }

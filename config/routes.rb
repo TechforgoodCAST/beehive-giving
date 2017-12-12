@@ -84,13 +84,13 @@ Rails.application.routes.draw do
   get   '/account/:id/subscription/thank-you', to: 'charges#thank_you', as: 'thank_you'
 
   # Microsite
-  get  '/:slug/basics',            to: 'microsites#basics', as: 'microsite_basics'
-  post '/:slug/basics',            to: 'microsites#check_basics'
-  get  '/:slug/eligibility/(:id)', to: 'microsites#eligibility', as: 'microsite_eligibility'
-  post '/:slug/eligibility/:id',   to: 'microsites#check_eligibility'
-  get  '/:slug/pre-results/(:id)', to: 'microsites#pre_results', as: 'microsite_pre_results'
-  post '/:slug/pre-results/:id',   to: 'microsites#check_pre_results'
-  get  '/:slug/results/:id',       to: 'microsites#results', as: 'microsite_results'
+  get  '/check/:slug',                   to: 'microsites#basics', as: 'microsite_basics'
+  post '/check/:slug',                   to: 'microsites#check_basics'
+  get  '/check/:slug/eligibility/(:id)', to: 'microsites#eligibility', as: 'microsite_eligibility'
+  post '/check/:slug/eligibility/:id',   to: 'microsites#check_eligibility'
+  get  '/check/:slug/pre-results/(:id)', to: 'microsites#pre_results', as: 'microsite_pre_results'
+  post '/check/:slug/pre-results/:id',   to: 'microsites#check_pre_results'
+  get  '/check/:slug/results/:id',       to: 'microsites#results', as: 'microsite_results'
 
   # Webhooks
   post '/webhooks/invoice-payment-succeeded',     to: 'webhooks#invoice_payment_succeeded'

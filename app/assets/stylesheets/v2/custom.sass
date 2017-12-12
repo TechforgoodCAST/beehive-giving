@@ -164,8 +164,6 @@ article.featured
   text-indent: 100%
   white-space: nowrap
   overflow: hidden
-  &:hover
-    opacity: .6
   &.blue
     background: image-url('blue-logo.svg') no-repeat
     @media screen and (max-width: 25rem)
@@ -256,18 +254,30 @@ article.featured
 // =========================================================================
 
 .quiz
-  .input-hidden
-    position: absolute
-    left: -9999px
+  .input_wrapper
+    white-space: nowrap
 
-  input[type=radio] ~ label
+  input[type='radio']
+    position: absolute !important
+    height: 1px
+    width: 1px
+    overflow: hidden
+    clip: rect(1px, 1px, 1px, 1px)
+
+  input[type='radio'] + label
+    display: inline-block
+    min-width: 52px
+    padding: 6px 12px
+    margin-right: 5px
+    border-radius: $base-radius
     cursor: pointer
+    text-align: center
 
-  input[type=radio]:checked ~ label
+  input[type='radio']:checked + label
     color: map-get($colors, 'white')
-    background-color: map-get($colors, 'blue')
+    background: map-get($colors, 'blue')
 
-  input[type=radio]:not(:checked) ~ label
+  input[type=radio]:not(:checked) + label
     color: map-get($colors, 'blue')
 
 // Progress
