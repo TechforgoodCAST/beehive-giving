@@ -1,4 +1,4 @@
-class Assessment < ApplicationRecord
+class Attempt < ApplicationRecord
   belongs_to :funder
   belongs_to :recipient
   belongs_to :proposal

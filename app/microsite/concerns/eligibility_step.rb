@@ -6,7 +6,7 @@ class EligibilityStep
   include OrgTypeValidations
 
   def self.attrs
-    %i[assessment org_type charity_number company_number name country
+    %i[attempt org_type charity_number company_number name country
        street_address income_band operating_for employees volunteers
        affect_geo country_ids district_ids]
   end
@@ -46,7 +46,7 @@ class EligibilityStep
 
   def save
     if valid?
-      save_assessment! if save_recipient! && save_proposal!
+      save_attempt! if save_recipient! && save_proposal!
     else
       false
     end
@@ -55,19 +55,19 @@ class EligibilityStep
   private
 
     def funder
-      assessment&.funder
+      attempt&.funder
     end
 
     def proposal
-      assessment&.proposal
+      attempt&.proposal
     end
 
     def recipient
-      assessment&.recipient
+      attempt&.recipient
     end
 
     def build_answers(updates = {})
-      return [] unless assessment
+      return [] unless attempt
 
       criteria = funder.restrictions.uniq
       answers = persisted_answers(criteria)
@@ -125,7 +125,7 @@ class EligibilityStep
     def save_recipient!
       recipient.update(
         attributes.except(
-          :assessment, :answers, :affect_geo, :country_ids, :district_ids
+          :attempt, :answers, :affect_geo, :country_ids, :district_ids
         )
       )
     end
@@ -146,7 +146,7 @@ class EligibilityStep
       proposal.update_column(:eligibility, eligibility)
     end
 
-    def save_assessment!
-      assessment.update(state: 'pre_results')
+    def save_attempt!
+      attempt.update(state: 'pre_results')
     end
 end

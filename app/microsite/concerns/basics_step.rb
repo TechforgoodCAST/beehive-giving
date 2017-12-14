@@ -3,7 +3,7 @@ class BasicsStep
   include RegNoValidations
   include OrgTypeValidations
 
-  attr_reader :assessment
+  attr_reader :attempt
   attr_accessor :charity_number, :company_number, :funder_id, :funding_type,
                 :org_type, :total_costs, :country
 
@@ -21,7 +21,7 @@ class BasicsStep
 
   def save
     if valid?
-      create_assessment if save_recipient! && save_proposal!
+      create_attempt if save_recipient! && save_proposal!
     else
       false
     end
@@ -51,31 +51,21 @@ class BasicsStep
       Proposal.skip_callback :save, :after, :initial_recommendation # TODO: refactor
       @proposal = @recipient.proposals.where(
         state: 'basics',
-        funding_type: @funding_type,
-        total_costs: @total_costs
+        funding_type: funding_type,
+        total_costs: total_costs
       ).first_or_initialize
       @proposal.save(validate: false)
       Proposal.set_callback :save, :after, :initial_recommendation # TODO: refactor
       @proposal.persisted?
     end
 
-    def create_assessment
-      @assessment = Assessment.where(
-        funder_id: @funder_id,
+    def create_attempt
+      @attempt = Attempt.where(
+        funder_id: funder_id,
         recipient: @recipient,
         proposal: @proposal
       ).first_or_initialize
-      @assessment.state = 'eligibility'
-      @assessment.save
-    end
-
-    def create_assessment
-      @assessment = Assessment.where(
-        funder_id: @funder_id,
-        recipient: @recipient,
-        proposal: @proposal
-      ).first_or_initialize
-      @assessment.state = 'eligibility'
-      @assessment.save
+      @attempt.state = 'eligibility'
+      @attempt.save
     end
 end

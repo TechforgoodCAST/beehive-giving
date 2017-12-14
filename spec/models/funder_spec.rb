@@ -10,8 +10,8 @@ describe Funder do
     expect(@funder.users.size).to eq 2
   end
 
-  it 'has many Assessments' do
-    expect(Funder.reflect_on_association(:assessments).macro).to eq :has_many
+  it 'has many Attempts' do
+    expect(Funder.reflect_on_association(:attempts).macro).to eq :has_many
   end
 
   it 'has many Restrictions' do

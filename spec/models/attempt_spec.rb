@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe Assessment do
+describe Attempt do
   def assoc(model, relationship)
     expect(subject.class.reflect_on_association(model).macro).to eq relationship
   end

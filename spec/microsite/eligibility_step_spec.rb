@@ -16,7 +16,7 @@ describe EligibilityStep do
 
   let(:attrs) do
     %i[
-      assessment org_type charity_number company_number name country
+      attempt org_type charity_number company_number name country
       street_address income_band operating_for employees volunteers
       affect_geo country_ids district_ids
     ]
@@ -77,11 +77,11 @@ describe EligibilityStep do
     expect(subject.answers_for('Prop')).to eq []
   end
 
-  context 'with Assessment' do
+  context 'with Attempt' do
     let(:restriction) { build(:restriction, id: 1) }
-    let(:assessment) do
+    let(:attempt) do
       instance_double(
-        Assessment,
+        Attempt,
         recipient: build(:recipient),
         proposal: build(:proposal, id: 1),
         funder: instance_double(Funder, restrictions: [restriction])
@@ -91,7 +91,7 @@ describe EligibilityStep do
 
     before do
       subject.assign_attributes(
-        assessment: assessment,
+        attempt: attempt,
         org_type: 1,
         charity_number: '123',
         name: 'charity name',
@@ -119,13 +119,13 @@ describe EligibilityStep do
     end
 
     context '#save' do
-      let(:assessment) do
+      let(:attempt) do
         @app.seed_test_db
             .create_recipient
             .create_registered_proposal
             .setup_funds
 
-        Assessment.create!(
+        Attempt.create!(
           recipient: Recipient.last,
           proposal: Proposal.last,
           funder: Funder.last
@@ -164,13 +164,13 @@ describe EligibilityStep do
 
       it 'updates runs eligibility check and updates Proposal' do
         subject.save
-        expect(subject.assessment.proposal.eligibility[Fund.first.slug])
+        expect(subject.attempt.proposal.eligibility[Fund.first.slug])
           .to have_key 'quiz'
       end
 
-      it '#save updates Assessment' do
+      it '#save updates Attempt' do
         subject.save
-        expect(subject.assessment.state).to eq 'pre_results'
+        expect(subject.attempt.state).to eq 'pre_results'
       end
     end
   end

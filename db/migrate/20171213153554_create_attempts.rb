@@ -1,6 +1,6 @@
-class CreateAssessments < ActiveRecord::Migration[5.1]
+class CreateAttempts < ActiveRecord::Migration[5.1]
   def change
-    create_table :assessments do |t|
+    create_table :attempts do |t|
       t.references :funder, foreign_key: true
       t.references :recipient, foreign_key: true
       t.references :proposal, foreign_key: true

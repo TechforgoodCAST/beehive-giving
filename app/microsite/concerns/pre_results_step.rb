@@ -1,7 +1,7 @@
 class PreResultsStep
   include ActiveModel::Model
 
-  attr_accessor :assessment, :email, :agree_to_terms
+  attr_accessor :attempt, :email, :agree_to_terms
 
   validates :agree_to_terms, presence: true
   validates :email, presence: true, format: {
@@ -10,7 +10,7 @@ class PreResultsStep
 
   def save
     if valid?
-      save_assessment! if save_user!
+      save_attempt! if save_user!
     else
       false
     end
@@ -20,13 +20,13 @@ class PreResultsStep
 
     def save_user!
       user = User.where(email: email).first_or_initialize
-      user.organisation = assessment&.recipient
+      user.organisation = attempt&.recipient
       user.save(validate: false)
     end
 
-    def save_assessment!
-      return false unless assessment
-      assessment.update(
+    def save_attempt!
+      return false unless attempt
+      attempt.update(
         state: 'results',
         access_token: SecureRandom.urlsafe_base64
       )

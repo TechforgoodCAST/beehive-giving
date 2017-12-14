@@ -1,10 +1,10 @@
 class MicrositesController < ApplicationController
   layout 'microsite'
 
-  before_action :load_funder, :load_assessment
+  before_action :load_funder, :load_attempt
   before_action :ensure_funder
   before_action only: %i[basics eligibility pre_results results] do
-    start_path(@funder, @assessment)
+    start_path(@funder, @attempt)
   end
 
   def basics
@@ -14,7 +14,7 @@ class MicrositesController < ApplicationController
   def check_basics
     @microsite = Microsite.new(BasicsStep.new(basics_params))
     if @microsite.save
-      redirect_to microsite_eligibility_path @funder, @microsite.step.assessment
+      redirect_to microsite_eligibility_path @funder, @microsite.step.attempt
     else
       render :basics
     end
@@ -23,39 +23,39 @@ class MicrositesController < ApplicationController
   def eligibility # TODO: refactor
     # TODO: must be logged out OR avoid calls to ApplicationController
 
-    @recipient = @assessment.recipient
+    @recipient = @attempt.recipient
     @recipient.valid?
 
-    @microsite = Microsite.new(EligibilityStep.new(@recipient.attributes.slice(*recipient_attrs).merge(assessment: @assessment)))
+    @microsite = Microsite.new(EligibilityStep.new(@recipient.attributes.slice(*recipient_attrs).merge(attempt: @attempt)))
 
     @recipient_answers = @microsite.step.answers_for('Recipient')
     @proposal_answers = @microsite.step.answers_for('Proposal')
   end
 
   def check_eligibility # TODO: refactor
-    @recipient = @assessment.recipient
+    @recipient = @attempt.recipient
     @recipient.valid?
 
-    @microsite = Microsite.new(EligibilityStep.new(@recipient.attributes.slice(*recipient_attrs).merge(assessment: @assessment).merge(eligibility_params)))
+    @microsite = Microsite.new(EligibilityStep.new(@recipient.attributes.slice(*recipient_attrs).merge(attempt: @attempt).merge(eligibility_params)))
     @recipient_answers = @microsite.step.answers_for('Recipient')
     @proposal_answers = @microsite.step.answers_for('Proposal')
 
     if @microsite.save
-      redirect_to microsite_pre_results_path(@funder, @assessment)
+      redirect_to microsite_pre_results_path(@funder, @attempt)
     else
       render :eligibility
     end
   end
 
   def pre_results
-    @microsite = Microsite.new(PreResultsStep.new(assessment: @assessment))
+    @microsite = Microsite.new(PreResultsStep.new(attempt: @attempt))
   end
 
   def check_pre_results # TODO: refactor
-    @microsite = Microsite.new(PreResultsStep.new({ assessment: @assessment }.merge(pre_results_params)))
+    @microsite = Microsite.new(PreResultsStep.new({ attempt: @attempt }.merge(pre_results_params)))
     if @microsite.save
-      MicrositeMailer.results(pre_results_params[:email], @funder, @assessment).deliver_now
-      redirect_to microsite_results_path(@funder, @assessment, t: @assessment.access_token)
+      MicrositeMailer.results(pre_results_params[:email], @funder, @attempt).deliver_now
+      redirect_to microsite_results_path(@funder, @attempt, t: @attempt.access_token)
     else
       render :pre_results
     end
@@ -63,8 +63,8 @@ class MicrositesController < ApplicationController
 
   def results
     redirect_to microsite_basics_path(@funder) unless
-      params[:t] == @assessment.access_token
-    @proposal = @assessment.proposal
+      params[:t] == @attempt.access_token
+    @proposal = @attempt.proposal
   end
 
   private
@@ -73,12 +73,8 @@ class MicrositesController < ApplicationController
       @funder = Funder.find_by(slug: params[:slug])
     end
 
-    def load_assessment
-      @assessment = Assessment.find_by(id: params[:id], funder: @funder)
-    end
-
-    def load_assessment
-      @assessment = Assessment.find_by(id: params[:id], funder: @funder)
+    def load_attempt
+      @attempt = Attempt.find_by(id: params[:id], funder: @funder)
     end
 
     def basics_params
@@ -106,14 +102,14 @@ class MicrositesController < ApplicationController
       redirect_to root_path unless @funder
     end
 
-    def should_redirect?(assessment)
+    def should_redirect?(attempt)
       return false if params[:action] == 'basics'
-      assessment&.state != params[:action]
+      attempt&.state != params[:action]
     end
 
-    def start_path(funder, assessment)
-      return unless should_redirect?(assessment)
-      action = assessment&.state || 'basics'
-      redirect_to send("microsite_#{action}_path", funder, assessment)
+    def start_path(funder, attempt)
+      return unless should_redirect?(attempt)
+      action = attempt&.state || 'basics'
+      redirect_to send("microsite_#{action}_path", funder, attempt)
     end
 end

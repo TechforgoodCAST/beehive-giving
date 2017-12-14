@@ -1,6 +1,6 @@
 class Funder < ApplicationRecord
   has_many :users, as: :organisation, dependent: :destroy
-  has_many :assessments
+  has_many :attempts
   has_many :funds
   has_many :restrictions, through: :funds
 

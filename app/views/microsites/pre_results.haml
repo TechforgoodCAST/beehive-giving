@@ -10,7 +10,7 @@
     %section.perc75.md.mb80.px20
       %h1.mb40 Step 3 of 3 - Nearly done
 
-      = simple_form_for @microsite.step, url: microsite_pre_results_path(@funder, @assessment) do |f|
+      = simple_form_for @microsite.step, url: microsite_pre_results_path(@funder, @attempt) do |f|
         .mb20= f.input :email, as: :email
         .bg-ice.rounded.shadow.fs14.p10.my20
           .bold.caps.mb10 Why do we need this?

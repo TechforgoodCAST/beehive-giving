@@ -3,7 +3,7 @@ require 'rails_helper'
 describe PreResultsStep do
   let(:recipient) {}
   let(:funder) { create(:funder, name: 'Funder Name') }
-  let(:assessment) { Assessment.new(id: 1, recipient: recipient, funder: funder) }
+  let(:attempt) { Attempt.new(id: 1, recipient: recipient, funder: funder) }
 
   context '#email' do
     it 'required' do
@@ -29,7 +29,7 @@ describe PreResultsStep do
 
   context '#save' do
     before do
-      subject.assessment = assessment
+      subject.attempt = attempt
       subject.email = 'email@example.com'
       subject.agree_to_terms = true
       subject.save
@@ -39,8 +39,8 @@ describe PreResultsStep do
       expect(User.count).to eq 1
     end
 
-    it 'updates Assessment' do
-      expect(assessment.state).to eq 'results'
+    it 'updates Attempt' do
+      expect(attempt.state).to eq 'results'
     end
 
     context 'existing Recipient' do

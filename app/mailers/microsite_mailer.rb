@@ -1,7 +1,7 @@
 class MicrositeMailer < ApplicationMailer
-  def results(email, funder, assessment)
+  def results(email, funder, attempt)
     @funder = funder
-    @assessment = assessment
+    @attempt = attempt
     mail(to: email, subject: "[Results] Should you apply to #{@funder.name}?")
   end
 end

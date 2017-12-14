@@ -72,8 +72,8 @@ describe Recipient do
     expect(@recipient.users.count).to eq 2
   end
 
-  it 'has many Assessments' do
-    expect(Recipient.reflect_on_association(:assessments).macro).to eq :has_many
+  it 'has many Attempts' do
+    expect(Recipient.reflect_on_association(:attempts).macro).to eq :has_many
   end
 
   it 'has many countries through proposals' do

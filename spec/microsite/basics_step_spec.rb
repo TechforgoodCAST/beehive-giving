@@ -80,10 +80,10 @@ describe BasicsStep do
       expect(Proposal.last.state).to eq 'basics'
     end
 
-    it 'creates Assessment' do
-      expect(Assessment.count).to eq 0
+    it 'creates Attempt' do
+      expect(Attempt.count).to eq 0
       subject.save
-      expect(Assessment.last.state).to eq 'eligibility'
+      expect(Attempt.last.state).to eq 'eligibility'
     end
   end
 end

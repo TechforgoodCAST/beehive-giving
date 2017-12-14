@@ -23,7 +23,7 @@
         = succeed '.' do
           = @funder.name
 
-      = simple_form_for @microsite.step, url: microsite_eligibility_path(@funder, @assessment) do |f|
+      = simple_form_for @microsite.step, url: microsite_eligibility_path(@funder, @attempt) do |f|
 
         %section
           %h3.mb20 Your organisation
@@ -75,6 +75,6 @@
                       = a.label "eligible_#{!a.object.criterion.invert}", 'No'
                   %label.mx20= a.object.criterion.details
 
-          = cell(:proposal_form, @assessment.proposal, f: f).call(:location_microsite)
+          = cell(:proposal_form, @attempt.proposal, f: f).call(:location_microsite)
 
         = f.button :button, 'Next', class: 'button white bg-olive caps truncate', data: { disable_with: 'Saving...' }
