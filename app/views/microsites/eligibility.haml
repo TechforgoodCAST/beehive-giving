@@ -9,28 +9,44 @@
 = javascript_include_tag 'chosen'
 = javascript_include_tag 'jquery.tree-multiselect.min'
 
-%main.pt40
-  .maxw1080.mx-auto.px20.flex.flex-wrap
-    %aside.perc25.md.px20.mb40
-      Should you apply to
-      = succeed '?' do
-        = @funder.name
+%main
+  %section.bg-ice
+    .maxw1080.mx-auto.p20.mb40
+      .perc75.md.px20.mx-auto.center
+        %h2.fs22
+          Should you apply to
+          = succeed '?' do
+            = @funder.name
 
-    %section.perc75.md.mb80.px20
-      .mb40
-        %h2.mb10 Step 2 of 3 - Eligibility
-        The following eligibility questions have been set by
-        = succeed '.' do
-          = @funder.name
+  .maxw1080.mx-auto.px20
+    %section.perc75.md.mb40.mx-auto.px20
+      .flex.justify-between.items-center
+        %h6.mx-auto.slate Basics
+        .slate ❯
+        %h6.mx-auto.bold.blue Eligibility
+        .slate ❯
+        %h6.mx-auto.slate Results
+
+%main
+  .maxw1080.mx-auto.px20
+    %section.perc75.md.mx-auto.border-silver.rounded.shadow
+      .p20.bg-ice
+        .flex.justify-between.items-baseline.mb10
+          %h1.fs30 Eligibility
+          .fs18.night Step 2 of 3
+        .night
+          The following eligibility questions have been set by
+          = succeed '.' do
+            = @funder.name
 
       = simple_form_for @microsite.step, url: microsite_eligibility_path(@funder, @attempt) do |f|
 
-        %section
-          %h3.mb20 Your organisation
-          %h4.mb20 Are you seeking funding for?
+        %section.border-top.border-silver.p20
+          %h3.mb20.slate Your organisation
+          %strong.block.mb20 Are you seeking funding for?
 
           -# TODO: DRY
-          .mb40
+          .mb0
             - @recipient_answers.each_with_index do |answer, i|
               = f.simple_fields_for "answers[#{answer.criterion_id}]", answer do |a|
                 -# TODO: avoid multiple db calls on validation
@@ -43,23 +59,23 @@
                       = a.label :eligible_false, 'No'
                   %label.mx20= a.object.criterion.details
 
-        %section.mb40
-          - if @recipient.errors.added?(:name, :blank)
-            .mb20= f.input :name
-          - if @recipient.errors.added?(:street_address, :blank)
-            .mb20= f.input :street_address
-          - if @recipient.errors.added?(:income_band, :blank)
-            .mb20= f.input :income_band, collection: INCOME_BANDS
-          - if @recipient.errors.added?(:operating_for, :blank)
-            .mb20= f.input :operating_for, collection: OPERATING_FOR
-          - if @recipient.errors.added?(:employees, :blank)
-            .mb20= f.input :employees, collection: EMPLOYEES
-          - if @recipient.errors.added?(:volunteers, :blank)
-            = f.input :volunteers, collection: EMPLOYEES
+          %fieldset
+            - if @recipient.errors.added?(:name, :blank)
+              .mb20= f.input :name
+            - if @recipient.errors.added?(:street_address, :blank)
+              .mb20= f.input :street_address
+            - if @recipient.errors.added?(:income_band, :blank)
+              .mb20= f.input :income_band, collection: INCOME_BANDS
+            - if @recipient.errors.added?(:operating_for, :blank)
+              .mb20= f.input :operating_for, collection: OPERATING_FOR
+            - if @recipient.errors.added?(:employees, :blank)
+              .mb20= f.input :employees, collection: EMPLOYEES
+            - if @recipient.errors.added?(:volunteers, :blank)
+              = f.input :volunteers, collection: EMPLOYEES
 
-        %section
-          %h3.mb20 Your proposal
-          %h4.mb20 Are you seeking funding for?
+        %section.border-top.border-silver.p20
+          %h3.mb20.slate Your proposal
+          %strong.block.mb20 Are you seeking funding for?
 
           -# TODO: DRY
           .mb20
@@ -77,4 +93,5 @@
 
           = cell(:proposal_form, @attempt.proposal, f: f).call(:location_microsite)
 
-        = f.button :button, 'Next', class: 'button white bg-olive caps truncate', data: { disable_with: 'Saving...' }
+        %fieldset.border-top.border-silver.p20
+          = f.button :button, 'Next ❯', class: 'button white bg-olive caps truncate', data: { disable_with: 'Saving...' }

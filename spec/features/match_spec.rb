@@ -5,6 +5,12 @@ feature 'Match' do
   let(:helper) { MatchHelper.new }
 
   before(:each) do
+    # TODO: refactor
+    options = {js_errors: false}
+    Capybara.register_driver :poltergeist do |app|
+      Capybara::Poltergeist::Driver.new(app, options)
+    end
+
     @app.seed_test_db.setup_funds(num: 3, open_data: true)
     @db = @app.instances
     helper.stub_charity_commission.stub_companies_house

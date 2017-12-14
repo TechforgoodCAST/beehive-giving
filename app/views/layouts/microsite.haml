@@ -4,7 +4,8 @@
   %body
     = yield
     %footer
-      .maxw1080.mx-auto.p40
-        %a.flex.items-center.justify-center{ href: '/', target: '_blank' }
-          %small.blue.mr5.block Powered by
-          #navbar-logo.blue{ style: 'margin-right: 0 !important;' }
+      .maxw1080.mx-auto.p40.center
+        %a{ href: '/', target: '_blank' }
+          .inline-flex.items-center.justify-center
+            %small.blue.mr5.block Powered by
+            #navbar-logo.blue{ style: 'margin-right: 0 !important;' }

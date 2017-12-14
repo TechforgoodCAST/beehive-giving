@@ -1,43 +1,51 @@
 = content_for :title, "Results - Should you apply to #{@funder.name}?"
 
-%main.pt40
-  .maxw1080.mx-auto.px20.flex.flex-wrap
-    %aside.perc25.md.px20.mb40
-      Should you apply to
-      = succeed '?' do
-        = @funder.name
+%main
+  %section.bg-ice
+    .maxw1080.mx-auto.p20.mb40
+      .perc75.md.px20.mx-auto.center
+        %h2.fs22
+          Should you apply to
+          = succeed '?' do
+            = @funder.name
 
-    %section.perc75.md.px20
-      .mb40
-        %h1.mb10 Results
-        = @funder.name
-        has
-        %strong= @funder.funds.active.count
-        active funds of which you are eligible for
+  .maxw1080.mx-auto.px20
+    %section.perc75.md.mb40.mx-auto.px20
+      .flex.justify-between.items-center
+        %h6.mx-auto.slate Basics
+        .slate ❯
+        %h6.mx-auto.slate Eligibility
+        .slate ❯
+        %h6.mx-auto.bold.blue Results
 
-      - @funder.funds.active.each do |fund|
-        .mb40.border.border-silver.rounded
+    %section.perc75.md.mx-auto
+
+      .flex.justify-between.items-baseline.p20.bg-ice.rounded
+        %h1.fs30 Results
+        .fs18.night
+          = pluralize(@funder.funds.active.count, 'fund')
+          checked
+
+      - @funds.each do |fund|
+        .mt40.border.border-silver.rounded.shadow
           .p20
-            %h3.mb5= fund.name
-            .fs15.night
-              by
-              = @funder.name
+            .flex.justify-between.items-center
+              .flex.items-center
+                - opts = { proposal: @proposal, fund: fund }
+                .dot.mr20{ class: Progress::Eligibility.new(opts).indicator }
+                %div
+                  %h3.mb5= fund.name
+                  .fs15.night
+                    by
+                    = @funder.name
+              %div
+                - if @proposal.eligible_status(fund.slug).positive?
+                  = link_to 'Apply ❯', fund.application_link, target: '_blank', class: 'fs15 btn white bg-blue shadow'
+                - else
+                  = link_to 'More funds', new_password_reset_path, class: 'fs15 btn blue border border-blue'
+
           .p20.border-top.border-silver
             %h6.bold.mb10= cell(:fund_insight, fund, proposal: @proposal).call(:summary)
-            .night= raw strip_tags(fund.description_html).truncate_words(30)
+            .night= raw strip_tags(fund.description_html).truncate_words(30, omission: "... #{link_to 'more on Beehive', '/'}")
 
-          - opts = { proposal: @proposal, fund: fund }
-          .p20.border-top.border-silver
-            .flex.justify-between
-              .mx-auto.flex.items-center
-                .dot{ class: Progress::Eligibility.new(opts).indicator }
-                %h6.ml10 Eligibility
-              -# TODO: implement
-              -# .slate ❯
-              -# .mx-auto.flex.items-center
-              -#   .dot{ class: Progress::Suitability.new(opts).indicator }
-              -#   %h6.ml10 Suitability
-              .slate ❯
-              .mx-auto.flex.items-center
-                .dot{ class: Progress::Apply.new(opts).indicator }
-                %h6.ml10 Apply
+          .bg-ice= cell(:eligibility, @proposal, fund: fund).call(:analysis)

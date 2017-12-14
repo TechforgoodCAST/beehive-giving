@@ -7,7 +7,7 @@
 
   = f.input :district_ids, as: :select, collection: @district_ids, label: false, input_html: { multiple: true }
 
-.m20.recipient_country
+.mt20.mx20.recipient_country
   .block
     | Your work will affect all of the
     strong<
@@ -18,4 +18,4 @@
     strong<> 'Across many countries'
     | above.
 
-.m20= f.input :country_ids, collection: Country.order('priority DESC'), input_html: { class: 'chosen-select', multiple: true }
+= f.input :country_ids, collection: Country.order('priority DESC'), input_html: { class: 'chosen-select', multiple: true }

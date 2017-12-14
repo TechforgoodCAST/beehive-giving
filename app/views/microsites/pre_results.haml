@@ -1,20 +1,37 @@
 = content_for :title, "Pre-results - Should you apply to #{@funder.name}?"
 
-%main.pt40
-  .maxw1080.mx-auto.px20.flex.flex-wrap
-    %aside.perc25.md.px20.mb40
-      Should you apply to
-      = succeed '?' do
-        = @funder.name
+%main
+  %section.bg-ice
+    .maxw1080.mx-auto.p20.mb40
+      .perc75.md.px20.mx-auto.center
+        %h2.fs22
+          Should you apply to
+          = succeed '?' do
+            = @funder.name
 
-    %section.perc75.md.mb80.px20
-      %h1.mb40 Step 3 of 3 - Nearly done
+  .maxw1080.mx-auto.px20
+    %section.perc75.md.mb40.mx-auto.px20
+      .flex.justify-between.items-center
+        %h6.mx-auto.slate Basics
+        .slate ❯
+        %h6.mx-auto.slate Eligibility
+        .slate ❯
+        %h6.mx-auto.bold.blue Results
+
+    %section.perc75.md.mx-auto.border-silver.rounded.shadow
+      .flex.justify-between.items-baseline.p20.bg-ice
+        %h1.fs30 Results
+        .fs18.night Step 3 of 3
 
       = simple_form_for @microsite.step, url: microsite_pre_results_path(@funder, @attempt) do |f|
-        .mb20= f.input :email, as: :email
-        .bg-ice.rounded.shadow.fs14.p10.my20
-          .bold.caps.mb10 Why do we need this?
-          Your email address will be used to send you a secure link to your results.
-        .mb20
+        %fieldset.border-top.border-silver.p20
+          .mb20= f.input :email, as: :email
+
+          .bg-ice.rounded.shadow.fs14.p10.my20
+            .bold.caps.mb10 Why do we need this?
+            Your email address will be used to send you a secure link to your results.
+
           = f.input :agree_to_terms, as: :boolean, label: false, input_html: { checked: true }, inline_label: "Accept #{link_to('terms of service', terms_path, target: '_blank')} and #{link_to('privacy policy', privacy_path, target: '_blank')}".html_safe
-        = f.button :button, 'Next', class: 'button white bg-olive caps truncate', data: { disable_with: 'Saving...' }
+
+        %fieldset.border-top.border-silver.p20
+          = f.button :button, 'Next', class: 'button white bg-olive caps truncate', data: { disable_with: 'Saving...' }

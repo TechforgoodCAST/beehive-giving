@@ -65,6 +65,7 @@ class MicrositesController < ApplicationController
     redirect_to microsite_basics_path(@funder) unless
       params[:t] == @attempt.access_token
     @proposal = @attempt.proposal
+    @funds = @funder.funds.includes(:geo_area).active.order_by(@proposal, '')
   end
 
   private
