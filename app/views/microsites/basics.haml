@@ -1,19 +1,19 @@
 = content_for :title, "Should you apply to #{@funder.name}?"
 
 %main
-  %section.bg-ice
+  %section.bg-ice.bg-primary
     .maxw1080.mx-auto.p40.mb40
       .perc75.md.px20.mx-auto.center
-        %h1.mb5
+        %h1.mb5.headline
           Should you apply to
           = succeed '?' do
             = @funder.name
-        .fs18.night Quickly check your eligibility and suitability to avoid wasted effort
+        .fs18.night.subtitle Quickly check your eligibility and suitability to avoid wasted effort
 
   .maxw1080.mx-auto.px20
     %section.perc75.md.mb40.mx-auto.px20
       .flex.justify-between.items-center
-        %h6.mx-auto.bold.blue Basics
+        %h6.mx-auto.bold.blue.primary Basics
         .slate ❯
         %h6.mx-auto.slate Eligibility
         .slate ❯
@@ -21,10 +21,10 @@
 
   %section.maxw1080.mx-auto.px40
     .flex.flex-wrap.justify-center
-      %article.perc75.md.border.border-silver.rounded.shadow
-        .flex.justify-between.items-baseline.p20.bg-ice
+      %article.perc75.md.border.border-silver.border-primary.rounded.shadow
+        .flex.justify-between.items-baseline.p20.bg-ice.bg-primary.headline
           %h2 Basics
-          .fs18.night Step 1 of 3
+          .fs18.night.subtitle Step 1 of 3
 
         = simple_form_for @microsite.step, url: microsite_basics_path do |f|
           %fieldset.border-top.border-silver.p20
@@ -47,4 +47,4 @@
             = f.input :country, include_blank: true, priority: ['United Kingdom']
 
           %fieldset.border-top.border-silver.p20
-            = f.button :button, 'Next ❯', class: 'button white bg-olive caps truncate', data: { disable_with: 'Saving...' }
+            = f.button :button, 'Next ❯', class: 'button white bg-olive caps truncate bg-primary headline', data: { disable_with: 'Saving...' }

@@ -2,7 +2,8 @@ ActiveAdmin.register Funder do
   config.sort_order = 'created_at_asc'
 
   permit_params :name, :slug, :website, :charity_number, :company_number,
-                :active, :microsite
+                :active, :microsite, :primary_colour, :headline_colour,
+                :subtitle_colour
 
   controller do
     def find_resource
@@ -39,6 +40,9 @@ ActiveAdmin.register Funder do
       row :company_number
       row :active
       row :microsite
+      row :primary_colour
+      row :headline_colour
+      row :subtitle_colour
     end
 
     panel 'Funds' do

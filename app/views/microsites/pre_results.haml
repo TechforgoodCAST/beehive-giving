@@ -1,10 +1,10 @@
 = content_for :title, "Pre-results - Should you apply to #{@funder.name}?"
 
 %main
-  %section.bg-ice
+  %section.bg-ice.bg-primary
     .maxw1080.mx-auto.p20.mb40
       .perc75.md.px20.mx-auto.center
-        %h2.fs22
+        %h2.fs22.headline
           Should you apply to
           = succeed '?' do
             = @funder.name
@@ -16,12 +16,12 @@
         .slate ❯
         %h6.mx-auto.slate Eligibility
         .slate ❯
-        %h6.mx-auto.bold.blue Results
+        %h6.mx-auto.bold.blue.primary Results
 
-    %section.perc75.md.mx-auto.border-silver.rounded.shadow
-      .flex.justify-between.items-baseline.p20.bg-ice
+    %section.perc75.md.mx-auto.border.border-silver.rounded.shadow
+      .flex.justify-between.items-baseline.p20.bg-ice.bg-primary.headline
         %h1.fs30 Results
-        .fs18.night Step 3 of 3
+        .fs18.night.subtitle Step 3 of 3
 
       = simple_form_for @microsite.step, url: microsite_pre_results_path(@funder, @attempt) do |f|
         %fieldset.border-top.border-silver.p20
@@ -31,7 +31,7 @@
             .bold.caps.mb10 Why do we need this?
             Your email address will be used to send you a secure link to your results.
 
-          = f.input :agree_to_terms, as: :boolean, label: false, input_html: { checked: true }, inline_label: "Accept #{link_to('terms of service', terms_path, target: '_blank')} and #{link_to('privacy policy', privacy_path, target: '_blank')}".html_safe
+          = f.input :agree_to_terms, as: :boolean, label: false, input_html: { checked: true }, inline_label: "Accept #{link_to('terms of service', terms_path, target: '_blank', class: 'primary')} and #{link_to('privacy policy', privacy_path, target: '_blank', class: 'primary')}".html_safe
 
         %fieldset.border-top.border-silver.p20
-          = f.button :button, 'Next', class: 'button white bg-olive caps truncate', data: { disable_with: 'Saving...' }
+          = f.button :button, 'Next ❯', class: 'button white bg-olive caps truncate bg-primary headline', data: { disable_with: 'Saving...' }

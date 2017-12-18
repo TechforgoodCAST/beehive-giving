@@ -10,10 +10,10 @@
 = javascript_include_tag 'jquery.tree-multiselect.min'
 
 %main
-  %section.bg-ice
+  %section.bg-ice.bg-primary
     .maxw1080.mx-auto.p20.mb40
       .perc75.md.px20.mx-auto.center
-        %h2.fs22
+        %h2.fs22.headline
           Should you apply to
           = succeed '?' do
             = @funder.name
@@ -23,18 +23,18 @@
       .flex.justify-between.items-center
         %h6.mx-auto.slate Basics
         .slate ❯
-        %h6.mx-auto.bold.blue Eligibility
+        %h6.mx-auto.bold.blue.primary Eligibility
         .slate ❯
         %h6.mx-auto.slate Results
 
 %main
   .maxw1080.mx-auto.px20
-    %section.perc75.md.mx-auto.border-silver.rounded.shadow
-      .p20.bg-ice
+    %section.perc75.md.mx-auto.border.border-silver.border-primary.rounded.shadow
+      .p20.bg-ice.bg-primary.headline
         .flex.justify-between.items-baseline.mb10
           %h1.fs30 Eligibility
-          .fs18.night Step 2 of 3
-        .night
+          .fs18.night.subtitle Step 2 of 3
+        .night.subtitle
           The following eligibility questions have been set by
           = succeed '.' do
             = @funder.name
@@ -94,4 +94,4 @@
           = cell(:proposal_form, @attempt.proposal, f: f).call(:location_microsite)
 
         %fieldset.border-top.border-silver.p20
-          = f.button :button, 'Next ❯', class: 'button white bg-olive caps truncate', data: { disable_with: 'Saving...' }
+          = f.button :button, 'Next ❯', class: 'button white bg-olive caps truncate bg-primary headline', data: { disable_with: 'Saving...' }

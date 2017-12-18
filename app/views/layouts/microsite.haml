@@ -1,6 +1,33 @@
 !!!
 %html
   = render 'shared/head'
+  :css
+    .bg-primary {
+      background: #{@funder&.primary_colour} !important;
+    }
+    .border-primary {
+      border-color: #{@funder&.primary_colour} !important;
+    }
+    .primary {
+      color: #{@funder&.primary_colour} !important;
+    }
+    .headline {
+      color: #{@funder&.headline_colour} !important;
+    }
+    .subtitle {
+      color: #{@funder&.subtitle_colour} !important;
+    }
+    .input:focus {
+      border-color: #{@funder&.primary_colour} !important;
+    }
+    .quiz input[type='radio']:checked + label {
+      color: #{@funder&.headline_colour} !important;
+      background: #{@funder&.primary_colour} !important;
+    }
+    .quiz input[type=radio]:not(:checked) + label {
+      color: #{@funder&.primary_colour} !important;
+    }
+
   %body
     = yield
     %footer
