@@ -6,16 +6,11 @@
       and you may be unable to use the site properly.
 
   .flex.mb10
-    .f1.mr5
-      = f.input :first_name
-    .f1
-      = f.input :last_name
-
-  .fs15.mb5
-    %label Are you seeking funds for...
+    .f1.mr5= f.input :first_name, label: false
+    .f1= f.input :last_name, label: false
 
   .mb10
-    = f.input :org_type, as: :select, collection: ORG_TYPES
+    = f.input :org_type, as: :select, collection: ORG_TYPES, label_html: { class: 'normal fs15 mb5' }
 
   .individual_notice.fs14.p10.my15.white.bg-red.rounded
     %strong Important.
@@ -23,17 +18,13 @@
     = link_to 'FAQ', faq_path(anchor: 'individual'), class: 'bold white'
     for more details.
 
-  .mb10
-    = f.input :charity_number
+  .mb10= f.input :charity_number, label: false
 
-  .mb10
-    = f.input :company_number
+  .mb10= f.input :company_number, label: false
 
-  .mb10
-    = f.input :email, as: :email
+  .mb10= f.input :email, as: :email, label: false
 
-  .mb10
-    = f.input :password, as: :password
+  .mb10= f.input :password, as: :password, label: false
 
   .mb10.fs12.center.slate
     Accept

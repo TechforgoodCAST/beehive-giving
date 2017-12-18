@@ -107,14 +107,14 @@ namespace :funds do
     # - "HUMAN RIGHTS/RELIGIOUS OR RACIAL HARMONY/EQUALITY OR DIVERSITY"
     # - "RECREATION"
     # - "OTHER CHARITABLE PURPOSES"
-    
+
     # Optional - number of funders returned - default is 50, max is 1000
-    options[:query][:limit] = ENV['LIMIT'] if ENV['LIMIT'] 
+    options[:query][:limit] = ENV['LIMIT'] if ENV['LIMIT']
     # Optional - minimum size of funders returned (by grants made) - default is 100000
-    options[:query][:min_size] = ENV['MIN_SIZE'] if ENV['MIN_SIZE'] 
-  
+    options[:query][:min_size] = ENV['MIN_SIZE'] if ENV['MIN_SIZE']
+
     response = HTTParty.get(
-      ENV['BEEHIVE_DATA_STUB_FUNDS_ENDPOINT'], 
+      ENV['BEEHIVE_DATA_STUB_FUNDS_ENDPOINT'],
       options
     )
     funders = JSON.parse(response.body)
@@ -136,7 +136,7 @@ namespace :funds do
       funder.save if ENV["SAVE"]
       fund_count = funder.funds.where.not(state: 'draft').count
 
-      puts 
+      puts
       puts funder.name
       puts "=" * funder.name.size
 
@@ -197,7 +197,7 @@ namespace :funds do
         end
         stub.save if ENV['SAVE']
       end
-      
+
     end
   end
 end

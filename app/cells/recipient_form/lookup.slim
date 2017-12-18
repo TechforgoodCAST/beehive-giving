@@ -2,18 +2,15 @@
   .uk-width-medium-1-1
     .uk-grid
       .uk-width-large-1-2
-        .label.uk-form-label Seeking funds for...
         = f.input :org_type, as: :select, collection: ORG_TYPES, input_html: { class: 'large uk-width-1-1' }
 
   .uk-width-medium-1-1.uk-margin-bottom
     .uk-grid
       .uk-width-large-1-2.uk-margin-top.fade-out.charity-number
-        .label Charity No.
         .uk-form-controls
           = f.input :charity_number, type: 'text', input_html: { class: 'large uk-width-1-1' }
 
       .uk-width-large-1-2.uk-margin-top.fade-out.company-number
-        .label Company No.
         .uk-form-controls
           = f.input :company_number, type: 'text', input_html: { class: 'large uk-width-1-1' }
 

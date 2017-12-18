@@ -9,6 +9,28 @@ describe Proposal do
 
   it 'eligibility field'
 
+  context '#state' do
+    it 'defaults to initial' do
+      expect(subject.state).to eq 'initial'
+    end
+
+    it 'transitions' do
+      @app.create_initial_proposal
+      proposal = @app.instances[:initial_proposal]
+      {
+        'basics'      => 'initial',
+        'initial'     => 'registered',
+        'transferred' => 'registered',
+        'registered'  => 'complete',
+        'complete'    => 'complete'
+      }.each do |from, to|
+        proposal.state = from
+        proposal.next_step!
+        expect(proposal.state).to eq to
+      end
+    end
+  end
+
   context 'initial' do
     before(:each) do
       @app.build_initial_proposal
@@ -91,16 +113,6 @@ describe Proposal do
       @initial_proposal.funding_duration = -1
       @initial_proposal.save
       expect(@initial_proposal).not_to be_valid
-    end
-
-    it 'defaults to initial state' do
-      expect(@initial_proposal.state).to eq 'initial'
-    end
-
-    it 'transitions to registered state' do
-      @initial_proposal.save
-      @initial_proposal.next_step!
-      expect(@initial_proposal.state).to eq 'registered'
     end
 
     it 'clears age_groups and gender unless affect_people' do

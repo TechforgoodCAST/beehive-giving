@@ -38,3 +38,10 @@
 //= require uikit/components/notify
 //= require uikit/components/sticky
 //= require uikit/components/tooltip
+
+document.addEventListener('turbolinks:load', function () {
+  (function () {
+    var $el = $('#eligibility_step_district_ids')
+    if ($el.length) $el.treeMultiselect()
+  })()
+})

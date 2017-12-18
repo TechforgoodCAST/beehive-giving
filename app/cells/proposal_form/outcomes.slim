@@ -5,6 +5,6 @@
   .uk-width-medium-1-1.uk-margin-top
     .label List 1-5 outcomes for your proposed work below:
     - 5.times do |i|
-      = f.input "outcome#{i + 1}".to_sym, input_html: { class: classes }
+      = f.input "outcome#{i + 1}".to_sym, input_html: { class: classes }, label: false
 
 hr.thick

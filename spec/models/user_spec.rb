@@ -1,4 +1,6 @@
 require 'rails_helper'
+require 'shared/reg_no_validations'
+require 'shared/setter_to_integer'
 
 describe User do
   before(:each) do
@@ -6,6 +8,14 @@ describe User do
     @db = @app.instances
     @user = @db[:user]
     @recipient = @db[:recipient]
+  end
+
+  include_examples 'reg no validations' do
+    subject { @user }
+  end
+
+  include_examples 'setter to integer' do
+    let(:attributes) { [:org_type] }
   end
 
   it 'belongs to Recipient' do
@@ -42,28 +52,6 @@ describe User do
     @user.first_name = ' john '
     @user.save!
     expect(@user.first_name).to eq 'John'
-  end
-
-  it 'charity and company numbers requried based on org type' do
-    case @user.org_type
-    when 1
-      expect(@user).not_to be_valid
-      @user.charity_number = '123'
-    when 2
-      expect(@user).not_to be_valid
-      @user.company_number = '123'
-    when 3
-      expect(@user).not_to be_valid
-      @user.charity_number = '123'
-      @user.company_number = '123'
-    when 5
-      expect(@user).not_to be_valid
-      @user.company_number = '123'
-    else
-      expect(@user.charity_number).to be_nil
-      expect(@user.company_number).to be_nil
-    end
-    expect(@user).to be_valid
   end
 
   it 'email is downcased' do

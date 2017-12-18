@@ -1,6 +1,8 @@
 class Funder < ApplicationRecord
   has_many :users, as: :organisation, dependent: :destroy
+  has_many :attempts
   has_many :funds
+  has_many :restrictions, through: :funds
 
   validates :name, :slug, presence: true
   validates :slug, uniqueness: true
@@ -10,7 +12,7 @@ class Funder < ApplicationRecord
     message: 'enter a valid website address e.g. http://www.example.com'
   }, if: :website?
 
-  before_validation :set_slug
+  before_validation :set_slug, unless: :slug
 
   def to_param
     slug

@@ -31,7 +31,7 @@ describe Check::Each do
 
     it '#call_each invalid Fund::ActiveRecord_Relation' do
       expect { subject.call_each(@proposal, {}) }
-        .to raise_error 'Invalid Fund::ActiveRecord_Relation'
+        .to raise_error 'Invalid collection of Funds'
     end
 
     it '#call_each response' do

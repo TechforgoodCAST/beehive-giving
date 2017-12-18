@@ -29,6 +29,7 @@ module Beehive
       feedback.js
       funds.js
       helpers.js
+      microsites.js
       organisations.js
       pages.js
       password_resets.js
@@ -49,6 +50,7 @@ module Beehive
       chosen.css
       overrides/chosen_overrides.css
       overrides/morris_overrides.css
+      proposals.css
     )
     config.assets.precompile += %w(
       chosen.js

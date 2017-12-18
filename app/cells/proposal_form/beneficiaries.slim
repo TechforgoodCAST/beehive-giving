@@ -3,18 +3,15 @@
   h3 Beneficiaries
 
   .uk-width-1-1.uk-margin-top
-    .label Will your proposed work affect people?
     = f.input :affect_people, as: :radio_buttons, input_html: { class: 'large uk-width-1-1' }
 
     #people-options class=hidden(affect_people)
 
-      .label.question-padding Which genders?
       .question-padding
         = f.input :gender, collection: Proposal::GENDERS, input_html: { class: 'large uk-width-1-1' }
 
       hr
 
-      .label.question-padding Which age groups?
       #age_groups
         = f.association :age_groups, as: :check_boxes, label_method: :label, value_method: :id
 

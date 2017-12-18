@@ -33,8 +33,8 @@ module Check
 
       def validate_call_each(proposal, funds)
         raise 'Invalid Proposal' unless proposal.is_a? Proposal
-        raise 'Invalid Fund::ActiveRecord_Relation' unless
-          funds.class.to_s == 'Fund::ActiveRecord_Relation'
+        raise 'Invalid collection of Funds' unless
+          funds.respond_to?(:each) && funds.try(:klass) == Fund
       end
 
       def remove_funds_not_passed_in!(funds, updates)
