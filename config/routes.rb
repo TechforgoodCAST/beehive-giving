@@ -8,8 +8,8 @@ Rails.application.routes.draw do
   get '/funds/:id', to: 'public_funds#show', as: 'public_fund'
   get '/funds/theme/:theme', to: 'public_funds#themed', as: 'public_funds_theme'
 
-  resources :proposals, except: [:show, :destroy] do
-    resources :funds, only: [:show, :index] do
+  resources :proposals, except: %i[show destroy] do
+    resources :funds, only: %i[show index] do
       collection do
         get '/theme/:theme', to: 'funds#themed', as: 'theme'
       end
@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   get '/proposals/:id/funds?eligibility=eligible', to: 'funds#index', as: 'eligible_proposal_funds'
   get '/proposals/:id/funds?eligibility=ineligible', to: 'funds#index', as: 'ineligible_proposal_funds'
 
-  resources :feedback, except: [:show, :index, :destroy]
+  resources :feedback, except: %i[show index destroy]
 
   # Errors
   match '/404', to: 'errors#not_found', via: :all
@@ -82,6 +82,15 @@ Rails.application.routes.draw do
   get   '/account/:id/subscription/upgrade',   to: 'charges#new', as: 'account_upgrade'
   post  '/account/:id/subscription/upgrade',   to: 'charges#create'
   get   '/account/:id/subscription/thank-you', to: 'charges#thank_you', as: 'thank_you'
+
+  # Microsite
+  get  '/check/:slug',                   to: 'microsites#basics', as: 'microsite_basics'
+  post '/check/:slug',                   to: 'microsites#check_basics'
+  get  '/check/:slug/eligibility/(:id)', to: 'microsites#eligibility', as: 'microsite_eligibility'
+  post '/check/:slug/eligibility/:id',   to: 'microsites#check_eligibility'
+  get  '/check/:slug/pre-results/(:id)', to: 'microsites#pre_results', as: 'microsite_pre_results'
+  post '/check/:slug/pre-results/:id',   to: 'microsites#check_pre_results'
+  get  '/check/:slug/results/:id',       to: 'microsites#results', as: 'microsite_results'
 
   # Webhooks
   post '/webhooks/invoice-payment-succeeded',     to: 'webhooks#invoice_payment_succeeded'

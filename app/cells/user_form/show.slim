@@ -1,19 +1,7 @@
-.mb40
-  label.label.mb10.bold.lh16 First name
-  = f.input :first_name, type: 'text'
-
-.mb40
-  label.label.mb10.bold.lh16 Last name
-  = f.input :last_name, type: 'text'
-
-.mb40
-  label.label.mb10.bold.lh16 Email
-  = f.input :email, type: 'text'
-
-.mb40
-  label.label.mb10.bold.lh16 Password
-  = f.input :password, type: 'password', input_html: { title: 'At least 6 characters with 1 number.' }
-
-.mb40
-  label.label.mb10.bold.lh16 Confirm password
-  = f.input :password_confirmation, type: 'password'
+.mb20= f.input :first_name
+.mb20= f.input :last_name
+.mb20= f.input :email
+.mb20
+  .mb5= f.input :password
+  small At least 6 characters with 1 number
+.mb20= f.input :password_confirmation

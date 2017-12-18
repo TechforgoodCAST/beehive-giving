@@ -10,6 +10,14 @@ describe Funder do
     expect(@funder.users.size).to eq 2
   end
 
+  it 'has many Attempts' do
+    expect(Funder.reflect_on_association(:attempts).macro).to eq :has_many
+  end
+
+  it 'has many Restrictions' do
+    expect(Funder.reflect_on_association(:restrictions).macro).to eq :has_many
+  end
+
   it 'has many Funds' do
     build_list(:fund, 2, funder: @funder).each do |fund|
       fund.save(validate: false)

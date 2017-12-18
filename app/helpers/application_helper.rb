@@ -27,6 +27,7 @@ module ApplicationHelper
       # signup_proposals: %i[edit new],
       # signup_recipients: %i[edit new],
       users: %i[edit update],
+      microsites: %i[basics check_basics eligibility check_eligibility pre_results check_pre_results results]
     }
     controller = params[:controller].to_sym
     action = params[:action].to_sym

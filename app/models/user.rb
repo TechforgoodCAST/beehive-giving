@@ -1,4 +1,7 @@
 class User < ApplicationRecord
+  extend SetterToInteger
+  include RegNoValidations
+
   scope :recipient, -> { where organisation_type: 'Recipient' }
   scope :funder, -> { where organisation_type: 'Funder' }
 
@@ -10,15 +13,6 @@ class User < ApplicationRecord
   validates :org_type, inclusion: {
     in: (ORG_TYPES.pluck(1) - [-1]), message: 'Please select a valid option'
   }, on: :create
-  validates :charity_number, presence: true,
-                             if: proc { |o| [1, 3].include? o.org_type }
-  validates :company_number, presence: true,
-                             if: proc { |o| [2, 3, 5].include? o.org_type }
-
-  validates :org_type,
-            presence: true,
-            numericality: { only_integer: true, greater_than_or_equal_to: 0 },
-            on: :create
 
   # TODO: add validations for association
   validates :first_name, :last_name, :email, :agree_to_terms,
@@ -42,13 +36,11 @@ class User < ApplicationRecord
                       message: 'Must include 6 characters with 1 number' },
             on: %i[create update]
 
+  to_integer :org_type
+
   before_create { generate_token(:auth_token) }
 
   has_secure_password
-
-  def org_type=(str)
-    @org_type = str.present? ? str.to_i : ''
-  end
 
   def first_name=(s)
     self[:first_name] = s.to_s.strip.capitalize

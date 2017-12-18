@@ -1,7 +1,9 @@
 ActiveAdmin.register Funder do
   config.sort_order = 'created_at_asc'
 
-  permit_params :name, :slug, :website, :charity_number, :company_number, :active
+  permit_params :name, :slug, :website, :charity_number, :company_number,
+                :active, :microsite, :primary_colour, :headline_colour,
+                :subtitle_colour
 
   controller do
     def find_resource
@@ -18,6 +20,7 @@ ActiveAdmin.register Funder do
       link_to funder.name, [:admin, funder]
     end
     column :active
+    column :microsite
     column :has_funds do |funder|
       funder.funds.count.positive?
     end
@@ -36,12 +39,17 @@ ActiveAdmin.register Funder do
       row :charity_number
       row :company_number
       row :active
+      row :microsite
+      row :primary_colour
+      row :headline_colour
+      row :subtitle_colour
     end
 
     panel 'Funds' do
       table_for funder.funds do
         column :slug
         column :active
+        column :microsite
         column :actions do |fund|
           link_to 'View', [:admin, fund]
           link_to 'Edit', [:edit_admin, fund]

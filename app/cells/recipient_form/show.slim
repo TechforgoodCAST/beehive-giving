@@ -1,64 +1,44 @@
 - if v2_layout? # TODO: refactor
-  .mb40
-    label.label.mb10.bold.lh16 Organisation or project name
-    = f.input :name, type: 'text'
+  .mb20= f.input :name
 
-  .mb40
-    label.label.mb10.bold.lh16 Where is your organisation or project based?
-    = f.input :street_address, type: 'text', input_html: { class: 'mb10' }
-    = f.input :country, type: 'text', input_html: { class: 'chosen-select' }, include_blank: true, priority: ['United Kingdom']
+  .mb20= f.input :country, input_html: { class: 'chosen-select' }, include_blank: true, priority: ['United Kingdom']
 
-  .mb40
-    label.label.mb10.bold.lh16 How long has your organisation or project been operating for?
-    = f.input :operating_for, as: :select, collection: Recipient::OPERATING_FOR
+  .mb20= f.input :street_address
 
-  .mb40
-    label.label.mb10.bold.lh16 What is the annual income of your organisation or project?
-    = f.input :income_band, as: :select, collection: Recipient::INCOME_BANDS
+  .mb20= f.input :operating_for, as: :select, collection: OPERATING_FOR
 
-  .mb40
-    label.label.mb10.bold.lh16 How many employees does your organisation or project have?
-    = f.input :employees, as: :select, collection: Recipient::EMPLOYEES
+  .mb20= f.input :income_band, as: :select, collection: INCOME_BANDS
 
-  .mb40
-    label.label.mb10.bold.lh16 How many volunteers does your organisation or project have?
-    = f.input :volunteers, as: :select, collection: Recipient::EMPLOYEES
+  .mb20= f.input :employees, as: :select, collection: EMPLOYEES
 
-  .mb40
-    label.label.mb10.bold.lh16 Your organisation or project's website
-    = f.input :website, as: :url
+  .mb20= f.input :volunteers, as: :select, collection: EMPLOYEES
+
+  .mb20= f.input :website, as: :url
 
 / TODO: refactor
 - else
   .uk-grid.uk-form.form
     .uk-width-medium-1-1.name
-      .label Organisation or project name
       = f.input :name, input_html: { class: 'large uk-width-1-1' }
 
     .uk-width-medium-1-1.uk-margin-top.recipient-country
-      .label Where is your organisation or project based?
       .street-address.uk-margin-bottom
-        = f.input :street_address, type: 'text', input_html: { class: 'large uk-width-1-1' }
+        = f.input :street_address, input_html: { class: 'large uk-width-1-1' }
       = f.input :country, input_html: { class: 'large uk-width-1-1 chosen-select' }, include_blank: true, priority: ['United Kingdom']
 
     .uk-width-medium-1-1.uk-margin-top.name
-      .label How long has your organisation or project been operating for?
-      = f.input :operating_for, collection: Recipient::OPERATING_FOR, input_html: { class: 'large uk-width-1-1' }
+      = f.input :operating_for, as: :select, collection: OPERATING_FOR, input_html: { class: 'large uk-width-1-1' }
 
     .uk-width-medium-1-1.uk-margin-top.name
-      .label What is the annual income of your organisation or project?
-      = f.input :income_band, collection: Recipient::INCOME_BANDS, input_html: { class: 'large uk-width-1-1' }
+      = f.input :income_band, as: :select, collection: INCOME_BANDS, input_html: { class: 'large uk-width-1-1' }
 
     .uk-width-medium-1-1.uk-margin-top.name
-      .label How many employees does your organisation or project have?
-      = f.input :employees, collection: Recipient::EMPLOYEES, input_html: { class: 'large uk-width-1-1' }
+      = f.input :employees, as: :select, collection: EMPLOYEES, input_html: { class: 'large uk-width-1-1' }
 
     .uk-width-medium-1-1.uk-margin-top.name
-      .label How many volunteers does your organisation or project have?
-      = f.input :volunteers, collection: Recipient::EMPLOYEES, input_html: { class: 'large uk-width-1-1' }
+      = f.input :volunteers, as: :select, collection: EMPLOYEES, input_html: { class: 'large uk-width-1-1' }
 
     .uk-width-medium-1-1
       .uk-grid
         .uk-width-medium-1-2.uk-margin-top.website
-          .label Your organisation or project's website
           = f.input :website, as: :url, input_html: { class: 'large uk-width-1-1' }

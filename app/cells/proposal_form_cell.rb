@@ -25,6 +25,11 @@ class ProposalFormCell < Cell::ViewModel
     render locals: { f: options[:f] }
   end
 
+  def location_microsite
+    load_districts
+    render locals: { f: options[:f] }
+  end
+
   def activities
     render locals: { f: options[:f] }
   end
