@@ -19,12 +19,14 @@
         %h6.mx-auto.bold.blue.primary Results
 
     %section.perc75.md.mx-auto
-
-      .flex.justify-between.items-baseline.p20.bg-ice.rounded.bg-primary.headline
-        %h1.fs30 Results
-        .fs18.night.subtitle
-          = pluralize(@funder.funds.active.count, 'fund')
-          checked
+      .p20.rounded.bg-ice.bg-primary.headline
+        .flex.justify-between.items-baseline.mb10
+          %h1.fs30 Results
+          .fs18.night.subtitle
+            = pluralize(@funder.funds.active.count, 'fund')
+            checked
+        .night.subtitle
+          = [number_to_currency(@proposal.total_costs, unit: '£', precision: 0), { 1 => 'Capital', 2 => 'Revenue' }[@proposal.funding_type]].compact.join(' • ')
 
       - @funds.each do |fund|
         .mt40.border.border-silver.rounded.shadow
