@@ -100,7 +100,7 @@ class MicrositesController < ApplicationController
     end
 
     def ensure_funder
-      redirect_to root_path unless @funder
+      redirect_to root_path unless @funder&.microsite
     end
 
     def should_redirect?(attempt)

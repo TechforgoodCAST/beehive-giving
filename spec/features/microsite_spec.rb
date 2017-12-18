@@ -31,7 +31,18 @@ feature 'Microsite' do
   context 'integration' do
     before(:each) do
       create(:country, name: 'United Kingdom', alpha2: 'GB')
-      @funder = create(:funder)
+      @funder = create(:funder, microsite: true)
+    end
+
+    scenario 'active microsite' do
+      visit microsite_basics_path(@funder)
+      expect(current_path).to eq microsite_basics_path(@funder)
+    end
+
+    scenario 'inactive microsite' do
+      @funder.update(microsite: false)
+      visit microsite_basics_path(@funder)
+      expect(current_path).to eq root_path
     end
 
     scenario 'new attempt' do
@@ -85,7 +96,7 @@ feature 'Microsite' do
     end
 
     scenario 'attempt per funder' do
-      funder2 = create(:funder)
+      funder2 = create(:funder, microsite: true)
 
       visit microsite_basics_path(@funder)
       user.submit_basics_step
