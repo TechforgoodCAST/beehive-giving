@@ -10,4 +10,13 @@ module CheckEligibilityFactory
       ]
     )
   end
+
+  def self.stubs
+    Check::Each.new(
+      [
+        Check::Eligibility::Location.new,
+        Check::Eligibility::Theme.new,
+      ]
+    )
+  end
 end
