@@ -134,9 +134,10 @@ class Proposal < ApplicationRecord
 
   def initial_recommendation
     eligibility = CheckEligibilityFactory.new(self, Fund.active)
+    eligibility_stubs = CheckEligibilityFactory.stubs
     suitability = CheckSuitabilityFactory.new
     update_columns(
-      eligibility: eligibility.call_each(self, Fund.active),
+      eligibility: eligibility_stubs.call_each(self, Fund.stubs).merge(eligibility.call_each(self, Fund.active)),
       suitability: suitability.call_each_with_total(self, Fund.active)
     )
   end
