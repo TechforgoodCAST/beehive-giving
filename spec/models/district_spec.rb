@@ -1,44 +1,25 @@
 require 'rails_helper'
 
 describe District do
-  let(:deprecated) { DeprecatedHelper.new }
+  subject { build(:district, country: country) }
 
-  before(:each) do
-    @app.seed_test_db
-        .setup_funds(num: 2, opts: { geographic_scale_limited: true })
-        .create_recipient
-        .subscribe_recipient
-        .create_complete_proposal
-        .create_registered_proposal
-    @db = @app.instances
-    @uk = @db[:uk]
-    @arun = @db[:uk_districts].first
-  end
+  let(:country) { create(:country) }
 
-  it 'belongs to country' do
-    expect(@arun.country).to eq @uk
-  end
+  it('belongs_to Country') { assoc(:country, :belongs_to) }
 
-  it 'has many proposals' do
-    expect(@arun.proposals.count).to eq 2
-  end
+  it('has many Funds') { assoc(:funds, :has_many, through: :geo_areas) }
 
-  it 'has many funds' do
-    expect(@arun.funds.count).to eq 2
-  end
+  it('has many Funders') { assoc(:funders, :has_many, through: :funds) }
 
-  it 'has many funders through funds' do
-    fund = Fund.last
-    fund.funder = create(:funder)
-    fund.save!
-    expect(@arun.funders.count).to eq 2
-  end
+  it('HABTM GeoAreas') { assoc(:geo_areas, :has_and_belongs_to_many) }
 
-  it 'is valid' do
-    expect(@arun).to be_valid
-  end
+  it('HABTM Proposals') { assoc(:proposals, :has_and_belongs_to_many) }
 
-  it 'is unique for country' do
-    expect(build(:district, name: 'Arun', country: @uk)).not_to be_valid
+  it { is_expected.to be_valid }
+
+  it 'unique per country' do
+    subject.save
+    duplicate = build(:district, name: subject.name, country: country)
+    expect(duplicate).not_to be_valid
   end
 end

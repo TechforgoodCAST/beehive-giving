@@ -9,7 +9,7 @@ class Proposal < ApplicationRecord
 
   belongs_to :recipient
   has_many :enquiries, dependent: :destroy
-  has_and_belongs_to_many :beneficiaries
+  has_and_belongs_to_many :beneficiaries # TODO: deprecated
   has_and_belongs_to_many :age_groups
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts

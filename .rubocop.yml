@@ -6,15 +6,10 @@ Layout/IndentationConsistency:
 Style/Documentation:
   Enabled: false
 
-Style/ClassAndModuleChildren:
-  Exclude:
-    - 'test/test_helper.rb' # TODO: deprecated
-
 Metrics/AbcSize:
   Exclude:
     - lib/tasks/**
     - spec/**/**
-    - test/**/** # TODO: deprecated
 
 Metrics/BlockLength:
   Exclude:
@@ -22,12 +17,6 @@ Metrics/BlockLength:
     - config/**/**
     - lib/tasks/**
     - spec/**/**
-    - test/**/** # TODO: deprecated
-
-Metrics/ClassLength:
-  Exclude:
-    - spec/**/**
-    - app/models/beneficiary.rb
 
 Metrics/LineLength:
   Exclude:
@@ -36,13 +25,11 @@ Metrics/LineLength:
     - config/**/**
     - lib/tasks/**
     - app/admin/**
-    - test/**/** # TODO: deprecated
 
 Metrics/MethodLength:
   Exclude:
     - spec/**/**
     - lib/tasks/**
-    - test/**/** # TODO: deprecated
 
 Rails/SkipsModelValidations:
   Exclude:

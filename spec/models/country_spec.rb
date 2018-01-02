@@ -1,48 +1,29 @@
 require 'rails_helper'
 
 describe Country do
-  let(:deprecated) { DeprecatedHelper.new }
+  subject { build(:country) }
 
-  before(:each) do
-    @app.seed_test_db
-        .setup_funds(num: 2)
-        .create_recipient
-        .subscribe_recipient
-        .create_complete_proposal
-        .create_registered_proposal
-    @db = @app.instances
-    @uk = @db[:uk]
-    @uk_districts = @db[:uk_districts]
-  end
+  it('has many Districts') { assoc(:districts, :has_many) }
 
-  it 'has many districts' do
-    expect(@uk.districts.order(:name).to_a).to eq @uk_districts
-  end
+  it('has many Funds') { assoc(:funds, :has_many, through: :geo_areas) }
 
-  it 'has many proposals' do
-    expect(@uk.proposals.count).to eq 2
-  end
+  it('has many Funders') { assoc(:funders, :has_many, through: :funds) }
 
-  it 'has many funds' do
-    expect(@uk.funds.count).to eq 2
-  end
+  it('HABTM GeoAreas') { assoc(:geo_areas, :has_and_belongs_to_many) }
 
-  it 'has many funders through funds' do
-    fund = Fund.last
-    fund.funder = create(:funder)
-    fund.save!
-    expect(@uk.funders.count).to eq 2
-  end
+  it('HABTM Proposals') { assoc(:proposals, :has_and_belongs_to_many) }
 
-  it 'is valid' do
-    expect(@uk).to be_valid
-  end
+  it { is_expected.to be_valid }
 
-  it 'name is unique' do
-    expect(build(:country, name: @uk.name)).not_to be_valid
-  end
+  context 'unique' do
+    before { subject.save }
 
-  it 'alpha2 is unique' do
-    expect(build(:country, alpha2: @uk.alpha2)).not_to be_valid
+    it 'name' do
+      expect(build(:country, name: subject.name)).not_to be_valid
+    end
+
+    it 'alpha2' do
+      expect(build(:country, alpha2: subject.alpha2)).not_to be_valid
+    end
   end
 end

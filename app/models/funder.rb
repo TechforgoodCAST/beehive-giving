@@ -1,8 +1,8 @@
 class Funder < ApplicationRecord
-  has_many :users, as: :organisation, dependent: :destroy
   has_many :attempts
   has_many :funds
   has_many :restrictions, through: :funds
+  has_many :users, as: :organisation, dependent: :destroy
 
   validates :name, :slug, presence: true
   validates :slug, uniqueness: true
