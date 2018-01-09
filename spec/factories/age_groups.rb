@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :age_group do
     sequence(:label, (0..7).cycle) do |i|
       AgeGroup::AGE_GROUPS[i][:label]

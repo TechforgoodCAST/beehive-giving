@@ -1,5 +1,7 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :fund do
+    association :geo_area, strategy: :build
+
     funder
     sequence(:name) { |n| "Awards for All #{n}" }
     description 'Some description of the fund.'
@@ -14,12 +16,18 @@ FactoryGirl.define do
     restrictions_known true
     priorities_known true
 
-    permitted_org_types [2, 3] # A registered charity, A registered company
+    permitted_org_types [1, 2, 3] # A registered charity, A registered company
     permitted_costs [1, 2] # Capital funding, Revenue funding
 
-    max_amount_awarded_limited false
     min_amount_awarded_limited true
     min_amount_awarded 5_000
+    max_amount_awarded_limited true
+    max_amount_awarded 10_000
+
+    min_org_income_limited true
+    min_org_income 10_000
+    max_org_income_limited true
+    max_org_income 250_000
 
     factory :fund_with_open_data, class: Fund do
       open_data true
@@ -102,7 +110,6 @@ FactoryGirl.define do
       end
     end
   end
-
 
   factory :fundstub, class: Fund do
     funder

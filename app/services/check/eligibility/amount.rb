@@ -3,23 +3,44 @@ module Check
     class Amount
       include Check::Base
 
-      def call(proposal, fund)
-        validate_call proposal, fund
-        return eligible false if less_than_min_amount_awarded? proposal, fund
-        return eligible false if more_than_max_amount_awarded? proposal, fund
-        eligible true
+      def call(assessment)
+        super
+        assessment.eligibility_amount = eligibility
+        assessment
       end
 
       private
 
-        def less_than_min_amount_awarded?(proposal, fund)
-          fund.min_amount_awarded_limited &&
-            proposal.total_costs < fund.min_amount_awarded
+        def eligibility
+          less_than_min_amount_awarded? || more_than_max_amount_awarded? ? 0 : 1
         end
 
-        def more_than_max_amount_awarded?(proposal, fund)
-          fund.max_amount_awarded_limited &&
-            proposal.total_costs > fund.max_amount_awarded
+        def min_amount_awarded_limited?
+          assessment.fund&.min_amount_awarded_limited?
+        end
+
+        def min_amount_awarded
+          assessment.fund&.min_amount_awarded
+        end
+
+        def max_amount_awarded_limited?
+          assessment.fund&.max_amount_awarded_limited?
+        end
+
+        def max_amount_awarded
+          assessment.fund&.max_amount_awarded
+        end
+
+        def total_costs
+          assessment.proposal&.total_costs
+        end
+
+        def less_than_min_amount_awarded?
+          min_amount_awarded_limited? && (total_costs < min_amount_awarded)
+        end
+
+        def more_than_max_amount_awarded?
+          max_amount_awarded_limited? && (total_costs > max_amount_awarded)
         end
     end
   end

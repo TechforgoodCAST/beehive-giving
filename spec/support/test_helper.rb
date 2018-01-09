@@ -1,5 +1,5 @@
 class TestHelper
-  include FactoryGirl::Syntax::Methods
+  include FactoryBot::Syntax::Methods
   include ShowMeTheCookies
   include WebMock::API
 
@@ -27,7 +27,7 @@ class TestHelper
   end
 
   def setup_funds(num: 1, save: true, open_data: false, opts: {}) # TODO: refactor
-    FactoryGirl.reload
+    FactoryBot.reload
     @funder = create(:funder)
     @funds = if open_data
                build_list(:fund_with_open_data, num, opts.merge(funder: @funder))
@@ -56,7 +56,7 @@ class TestHelper
   end
 
   def setup_fund_stubs(num: 1, save: true, opts: {})
-    FactoryGirl.reload
+    FactoryBot.reload
     @funder = create(:funder, name: 'Fund Stub Funder')
     @fund_stubs = build_list(:fundstub, num, opts.merge(funder: @funder))
     @fund_stubs.each_with_index do |fund, i|

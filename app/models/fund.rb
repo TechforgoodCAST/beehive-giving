@@ -10,6 +10,7 @@ class Fund < ApplicationRecord
 
   belongs_to :funder
 
+  has_many :assessments
   has_many :enquiries, dependent: :destroy
   has_many :requests, dependent: :destroy
 

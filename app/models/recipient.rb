@@ -7,6 +7,7 @@ class Recipient < ApplicationRecord
   accepts_nested_attributes_for :answers
 
   has_many :attempts
+  has_many :assessments
   has_many :countries, -> { distinct }, through: :proposals
   has_many :districts, -> { distinct }, through: :proposals
   has_many :proposals
@@ -74,7 +75,7 @@ class Recipient < ApplicationRecord
   end
 
   def subscribed?
-    subscription.active?
+    subscription&.active?
   end
 
   def update_funds_checked!(eligibility)
@@ -118,13 +119,11 @@ class Recipient < ApplicationRecord
   end
 
   def max_income
-    return income if income
-    INCOME_BANDS[income_band][3]
+    income || INCOME_BANDS[income_band][3]
   end
 
   def min_income
-    return income if income
-    INCOME_BANDS[income_band][2]
+    income || INCOME_BANDS[income_band][2]
   end
 
   private

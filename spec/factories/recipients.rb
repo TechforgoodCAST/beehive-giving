@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :legacy_recipient, class: Recipient do
     transient do
       n { rand(9999) }

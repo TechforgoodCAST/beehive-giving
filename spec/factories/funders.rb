@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :funder do
     transient do
       n { rand(9999) }

@@ -1,21 +1,20 @@
 module CheckEligibilityFactory
-  def self.new(proposal, funds)
+  def self.new
     Check::Each.new(
       [
         Check::Eligibility::Amount.new,
         Check::Eligibility::Location.new,
         Check::Eligibility::OrgIncome.new,
         Check::Eligibility::OrgType.new,
-        Check::Eligibility::Quiz.new(proposal, funds)
+        Check::Eligibility::Quiz.new
       ]
     )
   end
 
-  def self.stubs
+  def self.stubs # TODO: refactor
     Check::Each.new(
       [
-        Check::Eligibility::Location.new,
-        Check::Eligibility::Theme.new,
+        Check::Eligibility::Location.new
       ]
     )
   end

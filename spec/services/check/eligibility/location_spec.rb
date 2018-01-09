@@ -1,65 +1,91 @@
 require 'rails_helper'
 
 describe Check::Eligibility::Location do
-  before(:each) do
-    @app.seed_test_db.setup_funds(num: 4)
-        .create_recipient.create_registered_proposal
-    @db = @app.instances
-    @funds = Fund.all
-    @proposal = Proposal.last
-
-    @local = @funds[0]
-    @local.geo_area.update!(
-      countries: [@db[:uk]],
-      districts: [@db[:uk_districts].first]
-    )
-    @local.update!(
-      slug: 'blagrave',
-      geographic_scale_limited: true, national: false,
-    )
-
-    @anywhere = @funds[1]
-    @anywhere.geo_area.update!(
-      countries: [@db[:uk]],
-      districts: []
-    )
-    @anywhere.update!(
-      slug: 'esmee',
-      geographic_scale_limited: false, national: false,
-    )
-
-    @national = @funds[2]
-    @national.geo_area.update!(
-      countries: [@db[:uk]],
-      districts: []
-    )
-    @national.update!(
-      slug: 'ellerman',
-      geographic_scale_limited: true, national: true,
+  let(:assessment) do
+    build(
+      :assessment,
+      fund: build(
+        :fund,
+        geographic_scale_limited: geographic_scale_limited,
+        national: national,
+        geo_area: create(
+          :geo_area,
+          countries: countries,
+          districts: districts
+        )
+      ),
+      proposal: build(
+        :proposal,
+        affect_geo: affect_geo,
+        countries: proposal_countries,
+        districts: proposal_districts
+      )
     )
   end
+  let(:geographic_scale_limited) { false }
+  let(:national) { false }
+  let(:affect_geo) { 2 }
+  let(:countries) { [@country] }
+  let(:districts) { [@district] }
+  let(:proposal_countries) { countries }
+  let(:proposal_districts) { districts }
+  let(:eligibility) { assessment.eligibility_location }
 
-  it 'local Proposal' do
-    @proposal.update!(affect_geo: 0, districts: [@db[:uk_districts].first])
-    expect(subject.call(@proposal, @local)).to eq 'eligible' => true
-    expect(subject.call(@proposal, @national)).to eq 'eligible' => false
-    expect(subject.call(@proposal, @anywhere)).to eq 'eligible' => true
+  before do
+    @district = create(:district)
+    @country = @district.country
+    subject.call(assessment)
   end
 
-  it 'national Proposal' do
-    @proposal.update!(affect_geo: 2, districts: [])
-    expect(subject.call(@proposal, @local)).to eq 'eligible' => true
-    expect(subject.call(@proposal, @national)).to eq 'eligible' => true
-    expect(subject.call(@proposal, @anywhere)).to eq 'eligible' => true
+  context 'a Proposal from an unsupported country' do
+    let(:affect_geo) { 2 }
+    let(:proposal_countries) { [] }
+    it('is ineligible') { expect(eligibility).to eq(0) }
   end
 
-  it '#call countries_ineligible?' do
-    @local.geo_area.update!(countries: [@db[:kenya]], districts: [@db[:kenya_districts].first])
-    expect(subject.call(@proposal, @local)).to eq 'eligible' => false
+  context 'a local Proposal' do
+    let(:affect_geo) { 0 }
+
+    context 'to a local Fund' do
+      let(:geographic_scale_limited) { true }
+      it('is eligible') { expect(eligibility).to eq(1) }
+
+      context 'in a different area' do
+        let(:proposal_districts) { [] }
+        it('is ineligible') { expect(eligibility).to eq(0) }
+      end
+
+      context 'sharing some areas in common' do
+        let(:proposal_districts) { districts << create(:district) }
+        it('is eligible') { expect(eligibility).to eq(1) }
+      end
+    end
+
+    context 'to a national Fund' do
+      let(:geographic_scale_limited) { true }
+      let(:national) { true }
+      it('is ineligible') { expect(eligibility).to eq(0) }
+    end
+
+    context 'to an anywhere Fund' do
+      it('is eligible') { expect(eligibility).to eq(1) }
+    end
   end
 
-  it '#call districts_ineligible?' do
-    @anywhere.geographic_scale_limited = true
-    expect(subject.call(@proposal, @anywhere)).to eq 'eligible' => false
+  context 'a national Proposal' do
+    context 'to a local Fund' do
+      let(:geographic_scale_limited) { true }
+      it('is eligible') { expect(eligibility).to eq(1) }
+    end
+
+    context 'to a national Fund' do
+      let(:geographic_scale_limited) { true }
+      let(:national) { true }
+      it('is eligible') { expect(eligibility).to eq(1) }
+    end
+
+    context 'to an anywhere Fund' do
+      it('is eligible') { expect(eligibility).to eq(1) }
+    end
   end
 end

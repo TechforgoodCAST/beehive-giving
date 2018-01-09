@@ -1,12 +1,17 @@
 module Check
   module Base
-    def eligible(bool)
-      { 'eligible' => bool }
+    attr_reader :assessment
+
+    def call(assessment)
+      @assessment = assessment
+      validate(@assessment)
     end
 
-    def validate_call(proposal, fund)
-      raise 'Invalid Proposal' unless proposal.is_a? Proposal
-      raise 'Invalid Fund' unless fund.is_a? Fund
-    end
+    private
+
+      def validate(assessment)
+        raise ArgumentError, 'Invalid Assessment' unless
+          assessment.is_a?(Assessment)
+      end
   end
 end

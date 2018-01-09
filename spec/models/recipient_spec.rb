@@ -15,6 +15,8 @@ describe Recipient do
 
   it('has many Attempts') { assoc(:attempts, :has_many) }
 
+  it('has many Assessments') { assoc(:assessments, :has_many) }
+
   it('has many Countries') { assoc(:countries, :has_many, through: :proposals) }
 
   it('has many Districts') { assoc(:districts, :has_many, through: :proposals) }

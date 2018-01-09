@@ -4,19 +4,21 @@ class Proposal < ApplicationRecord
               :clear_age_groups_and_gender_unless_affect_people
   after_save :initial_recommendation
 
+  belongs_to :recipient
+
   has_many :answers, as: :category, dependent: :destroy
   accepts_nested_attributes_for :answers
 
-  belongs_to :recipient
+  has_many :assessments
   has_many :enquiries, dependent: :destroy
+  has_many :proposal_themes, dependent: :destroy
+  has_many :themes, through: :proposal_themes
+
   has_and_belongs_to_many :beneficiaries # TODO: deprecated
   has_and_belongs_to_many :age_groups
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
   has_and_belongs_to_many :implementations
-
-  has_many :proposal_themes, dependent: :destroy
-  has_many :themes, through: :proposal_themes
 
   TYPE_OF_SUPPORT = ['Only financial', 'Mostly financial',
                      'Equal financial and non-financial',
@@ -133,13 +135,20 @@ class Proposal < ApplicationRecord
   end
 
   def initial_recommendation
-    eligibility = CheckEligibilityFactory.new(self, Fund.active)
-    eligibility_stubs = CheckEligibilityFactory.stubs
-    suitability = CheckSuitabilityFactory.new
-    update_columns(
-      eligibility: eligibility_stubs.call_each(self, Fund.stubs).merge(eligibility.call_each(self, Fund.active)),
-      suitability: suitability.call_each_with_total(self, Fund.active)
-    )
+    # TODO: implement
+    # eligibility = CheckEligibilityFactory.new
+    # eligibility_stubs = CheckEligibilityFactory.stubs
+    # suitability = CheckSuitabilityFactory.new
+
+    # Assessment.import(eligibility.call_each(Fund.active, self))
+
+    # eligibility.update(Fund.active)
+    # eligibility.update(proposal)
+
+    # update_columns(
+    #   eligibility: eligibility_stubs.call_each(self, Fund.stubs),
+    #   suitability: suitability.call_each_with_total(self, Fund.active)
+    # )
   end
 
   def update_legacy_suitability

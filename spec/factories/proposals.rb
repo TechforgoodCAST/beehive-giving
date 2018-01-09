@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :initial_proposal, class: Proposal do
     recipient
     type_of_support       Proposal::TYPE_OF_SUPPORT.sample

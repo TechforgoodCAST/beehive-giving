@@ -1,31 +1,45 @@
 module Check
   module Eligibility
     class Quiz
-      include Check::Helpers
+      include Check::Base
 
-      def initialize(proposal, funds)
-        @answers = lookup_answers(proposal)
-        @restrictions = lookup_questions(funds, 'Restriction')
-      end
-
-      def call(_proposal, fund)
-        raise 'Invalid Fund' unless fund.is_a? Fund
-        comparison = (@answers.keys & @restrictions[fund.slug].to_a)
-        return unless comparison.size == @restrictions[fund.slug].to_a.size
-        {
-          'eligible' => eligible?(comparison),
-          'count_failing' => count_failing(comparison)
-        }
+      def call(assessment)
+        super
+        assessment.eligibility_quiz = eligibility
+        assessment.eligibility_quiz_failing = failing
+        assessment
       end
 
       private
 
-        def eligible?(comparison)
-          !@answers.slice(*comparison).values.include?(false)
+        def eligibility
+          return unless complete?
+          !answers.slice(*comparison).values.uniq.include?(false) ? 1 : 0
         end
 
-        def count_failing(comparison)
-          @answers.slice(*comparison).values.select { |i| i == false }.size
+        def failing
+          return unless complete?
+          answers.slice(*comparison).values.select { |i| i == false }.size
+        end
+
+        def restrictions
+          assessment.fund.restriction_ids
+        end
+
+        def answers
+          (pluck(:recipient) + pluck(:proposal)).to_h
+        end
+
+        def pluck(relation)
+          assessment.send(relation).answers.pluck(:criterion_id, :eligible)
+        end
+
+        def comparison
+          answers.keys & restrictions
+        end
+
+        def complete?
+          comparison.size == restrictions.size
         end
     end
   end

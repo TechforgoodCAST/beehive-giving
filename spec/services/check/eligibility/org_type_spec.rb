@@ -1,18 +1,20 @@
 require 'rails_helper'
 
 describe Check::Eligibility::OrgType do
-  before(:each) do
-    @app.seed_test_db.setup_funds.create_recipient.create_registered_proposal
-    @fund = Fund.last
-    @proposal = Proposal.last
+  let(:assessment) do
+    build(:assessment, recipient: build(:recipient, org_type: org_type))
+  end
+  let(:eligibility) { assessment.eligibility_org_type }
+
+  before { subject.call(assessment) }
+
+  context 'permitted org_type' do
+    let(:org_type) { 1 }
+    it('eligible') { expect(eligibility).to eq(1) }
   end
 
-  it '#call eligible' do
-    expect(subject.call(@proposal, @fund)).to eq 'eligible' => true
-  end
-
-  it '#call ineligible' do
-    @fund.permitted_org_types = []
-    expect(subject.call(@proposal, @fund)).to eq 'eligible' => false
+  context 'unpermitted org_type' do
+    let(:org_type) { 0 }
+    it('ineligible') { expect(eligibility).to eq(0) }
   end
 end

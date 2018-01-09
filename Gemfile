@@ -72,7 +72,7 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'capybara', '2.12.1'
   gem 'dotenv-rails'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'rspec-cells'
   gem 'rspec-rails', '3.5.2'
   gem 'selenium-webdriver'

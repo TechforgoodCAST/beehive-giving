@@ -1,79 +1,85 @@
 require 'rails_helper'
 
 describe Check::Eligibility::OrgIncome do
-  before(:each) do
-    @app.seed_test_db.setup_funds.create_recipient.create_registered_proposal
-    @fund = Fund.last
-    @proposal = Proposal.last
-    @proposal.recipient.income = 9_000
-    @proposal.recipient.income_band = 0
+  let(:assessment) do
+    build(
+      :assessment,
+      recipient: build(:recipient, income_band: income_band, income: income),
+      fund: build(
+        :fund,
+        min_org_income_limited: min_income,
+        max_org_income_limited: max_income
+      )
+    )
+  end
+  let(:income_band) { 1 }
+  let(:income) { nil }
+  let(:min_income) { true }
+  let(:max_income) { true }
+  let(:eligibility) { assessment.eligibility_org_income }
+
+  before { subject.call(assessment) }
+
+  context 'Recipient with income_band' do
+    context 'within limits' do
+      it('eligible') { expect(eligibility).to eq(1) }
+    end
+
+    context 'less than min. income awarded' do
+      let(:income_band) { 0 }
+      it('ineligible') { expect(eligibility).to eq(0) }
+
+      context 'no min. income awarded' do
+        let(:min_income) { false }
+        it('eligible') { expect(eligibility).to eq(1) }
+      end
+    end
+
+    context 'more than max. income awarded' do
+      let(:income_band) { 3 }
+      it('ineligible') { expect(eligibility).to eq(0) }
+
+      context 'no max. income awarded' do
+        let(:max_income) { false }
+        it('eligible') { expect(eligibility).to eq(1) }
+      end
+    end
   end
 
-  it '#call eligible' do
-    expect(subject.call(@proposal, @fund)).to eq 'eligible' => true
-  end
+  context 'Recipient with income' do
+    context 'income within limits' do
+      let(:income) { 50_000 }
+      it('eligible') { expect(eligibility).to eq(1) }
+    end
 
-  it '#call ineligible' do
-    @fund.min_org_income = 20_000
-    @fund.min_org_income_limited = true
-    expect(subject.call(@proposal, @fund)).to eq 'eligible' => false
-  end
+    context 'equal to min. income awarded' do
+      let(:income) { 10_000 }
+      it('eligible') { expect(eligibility).to eq(1) }
+    end
 
-  it 'no restrictions' do
-    @fund.min_org_income_limited = false
-    @fund.max_org_income_limited = false
-    expect(subject.call(@proposal, @fund)).to eq 'eligible' => true
-  end
+    context 'equal to max. income awarded' do
+      let(:income) { 250_000 }
+      it('eligible') { expect(eligibility).to eq(1) }
+    end
 
-  it 'between two values' do
-    @fund.min_org_income_limited = true
-    @fund.min_org_income = 5_000
-    @fund.max_org_income_limited = true
-    @fund.max_org_income = 15_000
-    expect(subject.call(@proposal, @fund)).to eq 'eligible' => true
-  end
+    context 'less than min. income awarded' do
+      let(:income) { 5_000 }
+      it('ineligible') { expect(eligibility).to eq(0) }
 
-  it 'outside two values' do
-    @fund.min_org_income_limited = true
-    @fund.min_org_income = 15_000
-    @fund.max_org_income_limited = true
-    @fund.max_org_income = 50_000
-    expect(subject.call(@proposal, @fund)).to eq 'eligible' => false
-  end
+      context 'no min. income awarded' do
+        let(:min_income) { false }
+        it('eligible') { expect(eligibility).to eq(1) }
+      end
+    end
 
-  it 'between two values based on band' do
-    @proposal.recipient.income = nil
-    @proposal.recipient.income_band = 1
-    @fund.min_org_income_limited = true
-    @fund.min_org_income = 5_000
-    @fund.max_org_income_limited = true
-    @fund.max_org_income = 15_000
-    expect(subject.call(@proposal, @fund)).to eq 'eligible' => true
-  end
+    context 'more than max. income awarded' do
+      let(:income) { 500_000 }
+      it('ineligible') { expect(eligibility).to eq(0) }
 
-  it 'on the edge of a band' do
-    @proposal.recipient.income = nil
-    @proposal.recipient.income_band = 3
-    @fund.max_org_income_limited = true
-    @fund.max_org_income = 1_000_000
-    expect(subject.call(@proposal, @fund)).to eq 'eligible' => false
-  end
-
-  it 'on the edge of a band minimum' do
-    @proposal.recipient.income = nil
-    @proposal.recipient.income_band = 3
-    @fund.min_org_income_limited = true
-    @fund.min_org_income = 10_000_000
-    expect(subject.call(@proposal, @fund)).to eq 'eligible' => false
-  end
-
-  it 'outside two values based on band' do
-    @proposal.recipient.income = nil
-    @proposal.recipient.income_band = 1
-    @fund.min_org_income_limited = true
-    @fund.min_org_income = 150_000
-    @fund.max_org_income_limited = true
-    @fund.max_org_income = 200_000
-    expect(subject.call(@proposal, @fund)).to eq 'eligible' => false
+      context 'no max. income awarded' do
+        let(:max_income) { false }
+        it('eligible') { expect(eligibility).to eq(1) }
+      end
+    end
   end
 end
