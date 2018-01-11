@@ -14,4 +14,15 @@ class AgeGroup < ApplicationRecord
 
   validates :label, :age_from, :age_to, presence: true
   validates :label, uniqueness: true
+
+  validate :inclusion_in_age_groups
+
+  private
+
+    def inclusion_in_age_groups
+      %i[label age_from age_to].each do |field|
+        next if AGE_GROUPS.pluck(field).include?(send(field))
+        errors.add(field, ":#{field} '#{send(field)}' not in AGE_GROUPS")
+      end
+    end
 end
