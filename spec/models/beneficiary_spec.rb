@@ -1,5 +1,6 @@
 require 'rails_helper'
 
+# TODO: deprecated
 describe Beneficiary do
   before(:each) do
     @app.seed_test_db
