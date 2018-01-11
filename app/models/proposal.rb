@@ -14,11 +14,11 @@ class Proposal < ApplicationRecord
   has_many :proposal_themes, dependent: :destroy
   has_many :themes, through: :proposal_themes
 
-  has_and_belongs_to_many :beneficiaries # TODO: deprecated
   has_and_belongs_to_many :age_groups
+  has_and_belongs_to_many :beneficiaries # TODO: deprecated
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
-  has_and_belongs_to_many :implementations
+  has_and_belongs_to_many :implementations # TODO: deprecated
 
   TYPE_OF_SUPPORT = ['Only financial', 'Mostly financial',
                      'Equal financial and non-financial',
@@ -151,8 +151,7 @@ class Proposal < ApplicationRecord
     # )
   end
 
-  def update_legacy_suitability
-    # TODO: refactor
+  def update_legacy_suitability # TODO: depreceted
     initial_recommendation unless
       suitability.key?(Fund.active.order(:updated_at).last&.slug)
   end

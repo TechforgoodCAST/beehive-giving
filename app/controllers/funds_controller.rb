@@ -40,7 +40,7 @@ class FundsController < ApplicationController
       end
     end
 
-    def update_legacy_suitability
+    def update_legacy_suitability # TODO: depreceted
       @proposal.update_legacy_suitability
     end
 

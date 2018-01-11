@@ -114,10 +114,6 @@ class Recipient < ApplicationRecord
     )
   end
 
-  def create_subscription
-    Subscription.create(recipient_id: id, version: 2) if subscription.nil?
-  end
-
   def max_income
     income || INCOME_BANDS[income_band][3]
   end
@@ -127,6 +123,10 @@ class Recipient < ApplicationRecord
   end
 
   private
+
+    def create_subscription
+      Subscription.create(recipient_id: id, version: 2) if subscription.nil?
+    end
 
     def unique_reveals
       self[:reveals] = self[:reveals].uniq

@@ -65,6 +65,8 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include TestHelpers
 
+  config.before(:suite) { TestHelper.new.seed_db }
+
   config.before(:each) do
     Geocoder.configure(lookup: :test)
     Geocoder::Lookup::Test.add_stub(

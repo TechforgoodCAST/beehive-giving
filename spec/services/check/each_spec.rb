@@ -4,21 +4,9 @@ describe Check::Each do
   let(:criteria) { [Check::Eligibility::OrgType.new] }
   let(:funds)    { Fund.active }
   let(:themes)   { build_list(:theme, 1) }
-  let(:proposal) do
-    build(
-      :proposal,
-      state: 'initial',
-      themes: themes,
-      age_groups: create_list(:age_group, 1),
-      countries: build_list(:country, 1),
-      districts: build_list(:district, 1)
-    )
-  end
   let(:assessment) do
     create(
       :assessment,
-      recipient: proposal.recipient,
-      proposal: proposal,
       fund: create_list(
         :fund, 2,
         themes: themes,
