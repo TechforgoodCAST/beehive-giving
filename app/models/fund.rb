@@ -22,7 +22,7 @@ class Fund < ApplicationRecord
   has_many :districts, through: :geo_area
 
   has_many :questions
-  accepts_nested_attributes_for :questions, :allow_destroy => true
+  accepts_nested_attributes_for :questions, allow_destroy: true
   has_many :restrictions, through: :questions, source: :criterion, source_type: 'Restriction'
   has_many :priorities, through: :questions, source: :criterion, source_type: 'Priority'
 
