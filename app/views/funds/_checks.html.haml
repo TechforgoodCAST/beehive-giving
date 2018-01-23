@@ -2,7 +2,7 @@
   %h2.mb20 Eligibility
 
   -# TODO: refactor
-  - if @proposal.eligible_status(@fund.slug) == -1
+  - if @assessment&.eligible_status == -1
     .mb20
       .pb20.shadow.rounded.border.flex.items-center.flex-wrap.border-soft-blue.bg-light-blue
         .pt20.px20.flex.items-center.mr-auto
@@ -11,8 +11,9 @@
         .pt20.px20
           = link_to 'Complete checks', '#eligibility-quiz', class: 'btn bg-blue white', 'data-turbolinks' => false
 
-  .mb40= cell(:eligibility, @proposal, fund: @fund).call(:analysis)
+  .mb40= cell(:results, @assessment).call(:eligibility)
 
+  -# TODO: refactor
   - if @fund.restrictions.exists?
     #eligibility-quiz= cell(:eligibility, @proposal, fund: @fund).call(:quiz)
 

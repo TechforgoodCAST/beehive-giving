@@ -16,7 +16,7 @@ class TestHelper # TODO: refactor
   end
 
   def seed_test_db
-    @age_groups      = AgeGroup.all
+    @age_groups      = AgeGroup.any? ? AgeGroup.all : seed_db
     @beneficiaries   = create_list(:beneficiary, Beneficiary::BENEFICIARIES.count)
     @all_ages        = @age_groups.first
     @countries       = create_list(:country, 2)
@@ -144,7 +144,7 @@ class TestHelper # TODO: refactor
     self
   end
 
-  def create_recipient_with_subscription_v1!
+  def create_recipient_with_subscription_v1! # TODO: deprecated
     create_recipient
     @recipient.subscription.update(version: 1)
     self

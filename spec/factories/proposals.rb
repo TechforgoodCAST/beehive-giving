@@ -14,7 +14,7 @@ FactoryBot.define do
 
     after(:build) do |proposal, _evaluator|
       proposal.age_groups = [AgeGroup.first || create(:age_group)]
-      proposal.themes = build_list(:theme, 1)
+      proposal.themes = build_list(:theme, 1) unless proposal.themes.any?
 
       unless proposal.countries.any? || proposal.districts.any?
         country = build(:country)

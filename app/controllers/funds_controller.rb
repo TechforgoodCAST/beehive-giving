@@ -5,6 +5,7 @@ class FundsController < ApplicationController
   def show
     @fund = Fund.includes(:funder).find_by_hashid(params[:id])
     authorize FundContext.new(@fund, @proposal)
+    @assessment = Assessment.find_by(fund: @fund, proposal: @proposal)
     render :stub if @fund.stub?
   end
 
@@ -15,6 +16,10 @@ class FundsController < ApplicationController
 
     @fund_stubs = @stub_query.order("RANDOM()").limit(5)
 
+    # TODO: refactor
+    @assessments = Assessment.includes(:fund, :proposal)
+                             .where(proposal: @proposal)
+                             .map { |a| [a.fund_id, a] }.to_h
   end
 
   def themed
@@ -28,6 +33,7 @@ class FundsController < ApplicationController
 
   def hidden
     @fund = Fund.includes(:funder).find_by_hashid(params[:id])
+    @assessment = @proposal.assessments.where(fund: @fund).first
   end
 
   private

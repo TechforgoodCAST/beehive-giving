@@ -66,6 +66,10 @@ class MicrositesController < ApplicationController
       params[:t] == @attempt.access_token
     @proposal = @attempt.proposal
     @funds = @funder.funds.includes(:geo_area).active.order_by(@proposal, '')
+
+    # TODO: refactor
+    @assessments = Assessment.where(fund: @funds, proposal: @proposal)
+                             .map { |a| [a.fund_id, a] }.to_h
   end
 
   private

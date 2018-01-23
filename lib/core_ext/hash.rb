@@ -1,4 +1,4 @@
-class Hash
+class Hash # TODO: deprecated
   def except_nested_key(key)
     copy = clone
     copy.each { |_, v| v.delete(key) if v.is_a? Hash }

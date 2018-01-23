@@ -2,7 +2,7 @@ module Progress
   class Apply < Base
     def initialize(*args)
       super
-      @status = @proposal.eligible_status(@fund.slug)
+      @status = @assessment&.eligible_status
     end
 
     def label

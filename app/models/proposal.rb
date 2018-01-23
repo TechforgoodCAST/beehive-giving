@@ -134,21 +134,11 @@ class Proposal < ApplicationRecord
     )
   end
 
-  def initial_recommendation
-    # TODO: implement
-    # eligibility = CheckEligibilityFactory.new
-    # eligibility_stubs = CheckEligibilityFactory.stubs
-    # suitability = CheckSuitabilityFactory.new
-
-    # Assessment.import(eligibility.call_each(Fund.active, self))
-
-    # eligibility.update(Fund.active)
-    # eligibility.update(proposal)
-
-    # update_columns(
-    #   eligibility: eligibility_stubs.call_each(self, Fund.stubs),
-    #   suitability: suitability.call_each_with_total(self, Fund.active)
-    # )
+  def initial_recommendation # TODO: deprecated
+    suitability = CheckSuitabilityFactory.new
+    update_column(
+      :suitability, suitability.call_each_with_total(self, Fund.active)
+    )
   end
 
   def update_legacy_suitability # TODO: depreceted

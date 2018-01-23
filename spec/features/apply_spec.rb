@@ -7,7 +7,7 @@ feature 'Apply' do
   before(:each) do
     @app.seed_test_db
         .setup_funds(num: 7, open_data: true)
-        .create_recipient_with_subscription_v1!
+        .create_recipient
         .with_user
         .create_registered_proposal
         .sign_in
@@ -22,6 +22,7 @@ feature 'Apply' do
           .check_eligibility
           .answer_priorities(@fund)
           .check_suitability
+    click_link 'Reveal'
     click_link 'Apply'
   end
 

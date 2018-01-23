@@ -22,8 +22,7 @@ class SuitabilityCell < Cell::ViewModel
   end
 
   def analysis
-    muted = model.eligible_status(options[:fund].slug) == -1 ? 'muted' : nil
-    render locals: { fund: options[:fund], status: status, criteria: criteria, muted: muted }
+    render locals: { fund: options[:fund], status: status, criteria: criteria }
   end
 
   def quiz

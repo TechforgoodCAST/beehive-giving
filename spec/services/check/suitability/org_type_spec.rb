@@ -9,7 +9,7 @@ describe Check::Suitability::OrgType do
   end
 
   it '#call suitable' do
-    expect(subject.call(@proposal, @fund)).to eq 'score' => 0.41500000000000004
+    expect(subject.call(@proposal, @fund)).to eq 'score' => 0.215
   end
 
   it '#call unsuitable' do

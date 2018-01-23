@@ -167,7 +167,7 @@ class Fund < ApplicationRecord
     markdown(desc, plain: plain)
   end
 
-  def amount_desc
+  def amount_desc # TODO: refactor & test
     return unless min_amount_awarded_limited || max_amount_awarded_limited
     opts = { precision: 0, unit: '£' }
     if !min_amount_awarded_limited || min_amount_awarded.zero?
@@ -179,7 +179,7 @@ class Fund < ApplicationRecord
     end
   end
 
-  def duration_desc
+  def duration_desc # TODO: refactor & test
     return unless min_duration_awarded_limited || max_duration_awarded_limited
     if !min_duration_awarded_limited || min_duration_awarded == 0
       "up to #{months_to_str(max_duration_awarded)}"
@@ -190,8 +190,8 @@ class Fund < ApplicationRecord
     end
   end
 
-  def org_income_desc
-    return unless min_org_income_limited || max_org_income_limited
+  def org_income_desc # TODO: refactor & test
+    return 'any' unless min_org_income_limited || max_org_income_limited
     opts = {precision: 0, unit: "£"}
     if !min_org_income_limited || min_org_income == 0
       "up to #{number_to_currency(max_org_income, opts)}"
@@ -218,7 +218,7 @@ class Fund < ApplicationRecord
     suitable_slugs = proposal.suitable_funds.pluck(0)
     ineligible_slugs = proposal.ineligible_funds.pluck(0)
     featured_slugs = active.where(featured: true).pluck(:slug)
-    featured_slugs = featured_slugs - ineligible_slugs
+    featured_slugs -= ineligible_slugs
     all_slugs = active.pluck(:slug)
     (featured_slugs + suitable_slugs + all_slugs).uniq - ineligible_slugs
   end

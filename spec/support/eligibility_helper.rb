@@ -2,7 +2,7 @@ class EligibilityHelper
   include Capybara::DSL
 
   def visit_first_fund
-    click_link 'a', class: 'fs22', match: :first
+    click_link 'Hidden fund', match: :first
     click_button 'Complete proposal', match: :first
     self
   end

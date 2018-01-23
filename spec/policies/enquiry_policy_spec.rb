@@ -24,7 +24,7 @@ describe EnquiryPolicy do
     )
   end
 
-  context 'v1' do
+  context 'v1' do # TODO: deprecated
     permissions :new?, :create? do
       context 'eligible' do
         let(:eligibility) do
@@ -60,13 +60,33 @@ describe EnquiryPolicy do
 
   context 'v2' do
     let(:version) { 2 }
+    let(:assessment) { create(:assessment, eligibility_quiz: eligibility) }
+    let(:fund) { assessment.fund }
+    let(:proposal) { assessment.proposal }
 
     permissions :new?, :create? do
       it 'denies access if no fund supplied' do
         is_expected.not_to permit(user, EnquiryContext.new(fund, proposal))
       end
 
-      context 'user subscribed' do
+      context 'incomplete' do
+        let(:eligibility) { nil }
+
+        it 'denies access' do
+          is_expected.not_to permit(user, EnquiryContext.new(fund, proposal))
+        end
+      end
+
+      context 'ineligible' do
+        let(:eligibility) { 0 }
+
+        it 'denies access' do
+          is_expected.not_to permit(user, EnquiryContext.new(fund, proposal))
+        end
+      end
+
+      context 'eligible and subscribed' do
+        let(:eligibility) { 1 }
         let(:subscribed) { true }
 
         it 'grants access' do
@@ -74,16 +94,8 @@ describe EnquiryPolicy do
         end
       end
 
-      context 'fund revealed' do
-        let(:reveals) { [fund.slug] }
-
-        it 'grants access' do
-          is_expected.to permit(user, EnquiryContext.new(fund, proposal))
-        end
-      end
-
-      context 'fund revealed and subscribed' do
-        let(:subscribed) { true }
+      context 'eligible and revealed' do
+        let(:eligibility) { 1 }
         let(:reveals) { [fund.slug] }
 
         it 'grants access' do

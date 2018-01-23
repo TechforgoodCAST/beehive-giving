@@ -21,6 +21,7 @@ class SignupProposalsController < ApplicationController
       @proposal = @recipient.proposals.new(proposal_params)
     end
     if @proposal.save
+      Assessment.analyse_and_update!(Fund.active, @proposal)
       @proposal.next_step!
       redirect_to proposal_funds_path(@proposal)
     else

@@ -1,65 +1,53 @@
 require 'rails_helper'
-require 'shared_context'
 
 describe ProgressCell do
-  include_context 'shared context'
-
   controller ApplicationController
 
-  subject { cell(:progress, proposal, fund: fund).call(:show) }
+  subject { cell(:progress, assessment).call(:show) }
+  let(:assessment) do
+    build(
+      :assessment,
+      proposal: build(:complete_proposal, id: 1, suitability: { 'fund' => {} }),
+      fund: build(:fund, id: 1, slug: 'fund')
+    )
+  end
 
-  context 'Proposal' do
-    it 'displays link' do
-      expect(subject).to have_link 'Change'
+  context 'current proposal' do
+    it('shows link') { expect(subject).to have_link('Change') }
+
+    it('shows total_costs') { expect(subject).to have_text('£10,000') }
+
+    it('shows title') { expect(subject).to have_text('Title') }
+
+    it 'hides unknown funding_type' do
+      expect(subject).not_to have_text("Don't")
     end
 
-    it 'displays total_costs' do
-      expect(subject).to have_text '£10,000'
+    context 'with funding_type' do
+      before { assessment.proposal.funding_type = 1 }
+      it('shows funding_type') { expect(subject).to have_text('Capital') }
     end
 
-    it 'hides funding_type if unknown' do
-      expect(subject).not_to have_text "Don't"
-    end
-
-    context 'knows funding_type' do
-      before { proposal.funding_type = 1 }
-
-      it 'displays funding_type' do
-        expect(subject).to have_text 'Capital'
-      end
-    end
-
-    it 'displays title' do
-      expect(subject).to have_text 'Title'
-    end
-
-    context 'not complete' do
-      before { proposal.state = nil }
-
-      it 'hides title' do
-        expect(subject).not_to have_text 'Title'
-      end
+    context 'incomplete' do
+      before { assessment.proposal.state = nil }
+      it('hides title') { expect(subject).not_to have_text('Title') }
     end
   end
 
-  it '#steps' do
-    expect(subject).to have_text 'Eligibility'
-    expect(subject).to have_text 'Suitability'
-    expect(subject).to have_text 'Apply'
+  it 'has #steps' do
+    expect(subject).to have_text('Eligibility')
+    expect(subject).to have_text('Suitability')
+    expect(subject).to have_text('Apply')
   end
 
   context 'fund stub' do
-    before { fund.state = 'stub' }
+    before { assessment.fund.state = 'stub' }
 
-    it '#steps' do
-      expect(subject).to have_text 'Request'
-      expect(subject).to have_text 'Eligibility'
-      expect(subject).to have_text 'Suitability'
-      expect(subject).to have_text 'Apply'
-    end
-
-    it 'eligibility and suitability missing' do
-      expect(subject).to have_text 'Missing', count: 2
+    it 'has #steps' do
+      expect(subject).to have_text('Request')
+      expect(subject).to have_text('Eligibility')
+      expect(subject).to have_text('Suitability')
+      expect(subject).to have_text('Apply')
     end
   end
 end

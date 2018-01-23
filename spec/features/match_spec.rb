@@ -233,7 +233,7 @@ feature 'Match' do
 
     helper.submit_proposal_form
     expect(current_path).to eq proposal_funds_path(Proposal.last)
-    expect(page).to have_css '.fs22', count: 3
+    expect(page).to have_text 'Hidden fund', count: 3
 
     click_link 'Hidden fund', match: :first
     expect(current_path)

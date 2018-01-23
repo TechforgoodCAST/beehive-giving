@@ -1,0 +1,15 @@
+-# TODO: refactor
+- opts = { assessment: @assessments.try(:[], fund.id) }
+.p20.border-top.border-silver
+  .flex.justify-between
+    .mx-auto.flex.items-center
+      .dot{ class: Progress::Eligibility.new(opts).indicator }
+      %h6.ml10 Eligibility
+    .slate ❯
+    .mx-auto.flex.items-center
+      .dot{ class: Progress::Suitability.new(opts).indicator }
+      %h6.ml10 Suitability
+    .slate ❯
+    .mx-auto.flex.items-center
+      .dot{ class: Progress::Apply.new(opts).indicator }
+      %h6.ml10 Apply

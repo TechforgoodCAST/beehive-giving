@@ -17,6 +17,7 @@ class ProposalsController < ApplicationController
       proposal_params.merge(state: 'registered')
     )
     if @proposal.save
+      Assessment.analyse_and_update!(Fund.active, @proposal)
       @proposal.next_step!
       redirect_to proposal_funds_path(@proposal)
     else
@@ -37,12 +38,12 @@ class ProposalsController < ApplicationController
     @proposal.state = 'transferred' if @proposal.initial?
     respond_to do |format|
       if @proposal.update_attributes(proposal_params)
+        Assessment.analyse_and_update!(Fund.active, @proposal)
+        @proposal.next_step! unless @proposal.complete?
+        flash[:notice] = 'Funding recommendations updated!'
+        fund = Fund.find_by_hashid(session.delete(:return_to))
         format.js do
-          @proposal.next_step! unless @proposal.complete?
-          flash[:notice] = 'Funding recommendations updated!'
-
           if session[:return_to]
-            fund = Fund.find_by_hashid(session.delete(:return_to))
             render js: "window.location.href = '#{proposal_fund_path(@proposal, fund)}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
@@ -53,11 +54,7 @@ class ProposalsController < ApplicationController
           end
         end
         format.html do
-          @proposal.next_step! unless @proposal.complete?
-          flash[:notice] = 'Funding recommendations updated!'
-
           if session[:return_to]
-            fund = Fund.find_by_hashid(session.delete(:return_to))
             redirect_to proposal_fund_path(@proposal, fund)
           else
             redirect_to proposal_funds_path(@proposal)

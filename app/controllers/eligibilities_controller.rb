@@ -14,7 +14,7 @@ class EligibilitiesController < ApplicationController
     if update_eligibility_params
       params[:mixpanel_eligibility_tracking] = true
       @recipient.update_funds_checked!(@proposal.eligibility)
-
+      Assessment.analyse_and_update!(Fund.active, @proposal) # TODO: refactor
       redirect_to proposal_fund_path(@proposal, @fund)
     end
   end

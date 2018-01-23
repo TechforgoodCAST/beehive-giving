@@ -70,19 +70,16 @@ feature 'Browse' do
     scenario "When I find a funding theme I'm interested in,
               I want to see similar funds,
               so I can discover new funding opportunties" do
-      @proposal.update_column(:suitability, Fund.active.last.slug => { 'total': 0 })
       click_link @theme.name, match: :first
       expect(current_path)
-        .to eq theme_proposal_funds_path(@proposal, @theme.slug)
-      expect(page).to have_css '.col-two-thirds.pr10.md.mb10', count: 6
-      expect(page).to have_css '.mb5.fs15.lh20.grey.redacted', count: 5
+        .to eq(theme_proposal_funds_path(@proposal, @theme.slug))
+      expect(page).to have_css('h3', count: 6)
     end
 
     scenario 'Themes redacted on second page and CTA not shown' do
       click_link @theme.name, match: :first
       click_link '2'
-      expect(page).to have_css '.mb5.fs15.lh20.grey.redacted', count: 1
-      expect(page).not_to have_text 'Upgrade'
+      expect(page).to have_link('Hidden fund', count: 1)
     end
 
     scenario "When I visit a funding theme which isn't listed,
