@@ -163,5 +163,17 @@ feature 'Microsite' do
         end
       end
     end
+
+    scenario 'must reset password before signing in' do
+      visit microsite_basics_path(@funder)
+      user.submit_basics_step.submit_eligibility_step.submit_pre_results
+
+      visit sign_in_path
+      fill_in :email, with: Attempt.last.recipient.users.last.email
+      fill_in :password, with: 'no password set'
+      click_button 'Sign in'
+
+      expect(current_path).to eq(new_password_reset_path)
+    end
   end
 end

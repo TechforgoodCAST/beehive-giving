@@ -7,6 +7,7 @@ class SessionsController < ApplicationController
 
   def create
     user = User.find_by(email: params[:email].downcase)
+    return redirect_to new_password_reset_path if user.password_digest.nil?
     if user && user.authenticate(params[:password])
       if params[:remember_me]
         cookies.permanent[:auth_token] = user.auth_token
