@@ -12,7 +12,11 @@ module Check
       private
 
         def eligibility
-          less_than_min_amount_awarded? || more_than_max_amount_awarded? ? 0 : 1
+          if less_than_min_amount_awarded? || more_than_max_amount_awarded?
+            INELIGIBLE
+          else
+            ELIGIBLE
+          end
         end
 
         def min_amount_awarded_limited?

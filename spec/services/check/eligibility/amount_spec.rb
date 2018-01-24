@@ -20,28 +20,28 @@ describe Check::Eligibility::Amount do
   before { subject.call(assessment) }
 
   context 'amount within limits' do
-    it('eligible') { expect(eligibility).to eq(1) }
+    it('eligible') { expect(eligibility).to eq(ELIGIBLE) }
   end
 
   context 'amount less than min. amount awarded' do
     let(:total_costs) { 500 }
-    it('ineligible') { expect(eligibility).to eq(0) }
+    it('ineligible') { expect(eligibility).to eq(INELIGIBLE) }
   end
 
   context 'no min. amount awarded' do
     let(:min_limited) { false }
     let(:total_costs) { 500 }
-    it('eligible') { expect(eligibility).to eq(1) }
+    it('eligible') { expect(eligibility).to eq(ELIGIBLE) }
   end
 
   context 'amount more than max. amount awarded' do
     let(:total_costs) { 50_000 }
-    it('ineligible') { expect(eligibility).to eq(0) }
+    it('ineligible') { expect(eligibility).to eq(INELIGIBLE) }
   end
 
   context 'no max. amount awarded' do
     let(:max_limited) { false }
     let(:total_costs) { 50_000 }
-    it('eligible') { expect(eligibility).to eq(1) }
+    it('eligible') { expect(eligibility).to eq(ELIGIBLE) }
   end
 end

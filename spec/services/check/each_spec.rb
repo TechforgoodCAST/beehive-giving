@@ -44,7 +44,7 @@ describe Check::Each do
     expect(subject.size).to eq(2)
   end
 
-  it 'only returns changed Assessments' do
+  it 'returns changed Assessments only' do
     assessment.update(eligibility_org_type: 1)
     expect(subject.size).to eq(1)
   end

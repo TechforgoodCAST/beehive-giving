@@ -10,11 +10,11 @@ describe Check::Eligibility::OrgType do
 
   context 'permitted org_type' do
     let(:org_type) { 1 }
-    it('eligible') { expect(eligibility).to eq(1) }
+    it('eligible') { expect(eligibility).to eq(ELIGIBLE) }
   end
 
   context 'unpermitted org_type' do
     let(:org_type) { 0 }
-    it('ineligible') { expect(eligibility).to eq(0) }
+    it('ineligible') { expect(eligibility).to eq(INELIGIBLE) }
   end
 end

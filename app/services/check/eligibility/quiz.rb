@@ -14,7 +14,11 @@ module Check
 
         def eligibility
           return unless complete?
-          !answers.slice(*comparison).values.uniq.include?(false) ? 1 : 0
+          if !answers.slice(*comparison).values.uniq.include?(false)
+            ELIGIBLE
+          else
+            INELIGIBLE
+          end
         end
 
         def failing

@@ -3,6 +3,11 @@ RECOMMENDATION_THRESHOLD = 1
 MAX_FREE_LIMIT = 3
 RECOMMENDATION_LIMIT = 6
 
+UNASSESSED = nil
+ELIGIBLE   = 1
+INCOMPLETE = 0
+INELIGIBLE = -1
+
 ORG_TYPES = [
   # Name for user, id, plural description
   ['Myself OR another individual', -1, 'individuals'],

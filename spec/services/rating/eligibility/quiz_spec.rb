@@ -15,7 +15,7 @@ describe Rating::Eligibility::Quiz do
 
   context 'ineligible' do
     let(:assessment) do
-      build(:assessment, eligibility_quiz: 0, eligibility_quiz_failing: 1)
+      build(:assessment, eligibility_quiz: INELIGIBLE, eligibility_quiz_failing: 1)
     end
 
     it_behaves_like 'ineligible'
@@ -28,7 +28,7 @@ describe Rating::Eligibility::Quiz do
   end
 
   context 'eligible' do
-    let(:assessment) { build(:assessment, eligibility_quiz: 1) }
+    let(:assessment) { build(:assessment, eligibility_quiz: ELIGIBLE) }
 
     it_behaves_like 'eligible'
 

@@ -12,10 +12,10 @@ module Check
       private
 
         def eligibility
-          return 0 if countries_ineligible?
-          return 0 if national_ineligible?
-          return 0 if local_ineligible?
-          1
+          return INELIGIBLE if countries_ineligible?
+          return INELIGIBLE if national_ineligible?
+          return INELIGIBLE if local_ineligible?
+          ELIGIBLE
         end
 
         def geographic_scale_limited?

@@ -10,11 +10,11 @@ describe Check::Eligibility::FundingType do
 
   context 'permitted funding_type' do
     let(:funding_type) { 1 }
-    it('eligible') { expect(eligibility).to eq(1) }
+    it('eligible') { expect(eligibility).to eq(ELIGIBLE) }
   end
 
   context 'unpermitted funding_type' do
     let(:funding_type) { 0 }
-    it('ineligible') { expect(eligibility).to eq(0) }
+    it('ineligible') { expect(eligibility).to eq(INELIGIBLE) }
   end
 end

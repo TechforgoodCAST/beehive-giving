@@ -30,18 +30,18 @@ describe Check::Eligibility::Quiz do
 
   context 'with incomplete answers' do
     let(:num) { 2 }
-    it('is nil') { expect(eligibility).to eq(nil) }
+    it('is nil') { expect(eligibility).to eq(UNASSESSED) }
     it('failing count') { expect(incomplete).to eq(nil) }
   end
 
   context 'with correct answers' do
-    it('is eligible') { expect(eligibility).to eq(1) }
+    it('is eligible') { expect(eligibility).to eq(ELIGIBLE) }
     it('none failing') { expect(incomplete).to eq(0) }
   end
 
   context 'with incorrect answers' do
     let(:eligible) { false }
-    it('is ineligible') { expect(eligibility).to eq(0) }
+    it('is ineligible') { expect(eligibility).to eq(INELIGIBLE) }
     it('some failing') { expect(incomplete).to eq(1) }
   end
 end

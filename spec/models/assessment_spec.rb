@@ -42,7 +42,7 @@ describe Assessment do
         eligibility_org_type
         eligibility_quiz
       ].each do |column|
-        expect(assessment.send(column)).to eq(1)
+        expect(assessment.send(column)).to eq(ELIGIBLE)
       end
       expect(assessment.eligibility_quiz_failing).to eq(0)
       expect(assessment.eligibility_funding_type).to eq(nil)
@@ -56,19 +56,28 @@ describe Assessment do
     it 'self.analyse_and_update! duplicate keys'
   end
 
-  context '#eligible_status' do
+  it '#eligibility_status unset before_validation' do
+    assessment = Assessment.new
+    expect(assessment.eligibility_status).to eq(nil)
+  end
+
+  context '#eligibility_status' do
     context 'incomplete' do
-      it { expect(subject.eligible_status).to eq(-1) }
+      it { expect(subject.eligibility_status).to eq(INCOMPLETE) }
     end
 
     context 'ineligible' do
       subject { build(:ineligible) }
-      it { expect(subject.eligible_status).to eq(0) }
+      it { expect(subject.eligibility_status).to eq(INELIGIBLE) }
     end
 
     context 'eligible' do
       subject { build(:eligible) }
-      it { expect(subject.eligible_status).to eq(1) }
+      it { expect(subject.eligibility_status).to eq(ELIGIBLE) }
     end
+    end
+
+  it '#attributes keys symbolized' do
+    subject.attributes.keys.each { |k| expect(k).to be_a(Symbol) }
   end
 end

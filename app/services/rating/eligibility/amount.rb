@@ -3,10 +3,6 @@ module Rating
     class Amount
       include Rating::Base
 
-      def message
-        { 0 => ineligible_message, 1 => eligible_message }[state]
-      end
-
       def title
         'Amount'
       end

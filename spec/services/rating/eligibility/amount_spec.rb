@@ -10,7 +10,7 @@ describe Rating::Eligibility::Amount do
   it_behaves_like 'incomplete'
 
   context 'ineligible' do
-    let(:assessment) { build(:assessment, eligibility_amount: 0) }
+    let(:assessment) { build(:assessment, eligibility_amount: INELIGIBLE) }
 
     it_behaves_like 'ineligible'
 
@@ -22,7 +22,7 @@ describe Rating::Eligibility::Amount do
   end
 
   context 'eligible' do
-    let(:assessment) { build(:assessment, eligibility_amount: 1) }
+    let(:assessment) { build(:assessment, eligibility_amount: ELIGIBLE) }
 
     it_behaves_like 'eligible'
 

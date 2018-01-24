@@ -4,6 +4,10 @@ FactoryBot.define do
     association :proposal, strategy: :build
     association :recipient, strategy: :build
 
+    after(:build) do |assessment, _evaluator|
+      assessment.valid?
+    end
+
     factory :eligible do
       eligibility_amount 1
       eligibility_location 1

@@ -2,7 +2,7 @@ module Progress
   class Apply < Base
     def initialize(*args)
       super
-      @status = @assessment&.eligible_status
+      @status = @assessment&.eligibility_status
     end
 
     def label
@@ -10,7 +10,7 @@ module Progress
     end
 
     def indicator
-      "#{@position} " << if @status == 1
+      "#{@position} " << if @status == ELIGIBLE
                            'bg-blue'
                          else
                            'bg-grey'
@@ -19,7 +19,7 @@ module Progress
 
     def message
       case @status
-      when 1
+      when ELIGIBLE
         link_to(
           'Apply ❯',
           url_helpers.apply_proposal_fund_path(@proposal, @fund),

@@ -14,11 +14,18 @@ class Assessment < ApplicationRecord
     eligibility_org_type
     eligibility_quiz
     eligibility_quiz_failing
+    eligibility_status
   ].freeze
 
   belongs_to :fund
   belongs_to :proposal
   belongs_to :recipient
+
+  validates :eligibility_status, inclusion: {
+    in: [INELIGIBLE, INCOMPLETE, ELIGIBLE]
+  }
+
+  before_validation :set_eligibility_status
 
   def self.analyse(funds, proposal)
     Check::Each.new(CHECKS).call_each(funds, proposal)
@@ -29,11 +36,20 @@ class Assessment < ApplicationRecord
     Assessment.import!(updates, on_duplicate_key_update: ELIGIBILITY_COLUMNS)
   end
 
-  def eligible_status # TODO: refactor
-    fields = ELIGIBILITY_COLUMNS.reject { |i| i == :eligibility_quiz_failing }
-    res = fields.map { |field| send(field) }.uniq
-    return 0 if res.any? { |f| f.try(:zero?) } # Ineligible
-    return 1 if res.all? { |status| status == 1 } # Eligible
-    -1 # Incomplete
+  def attributes
+    super.symbolize_keys
   end
+
+  private
+
+    def set_eligibility_status
+      self[:eligibility_status] = eligible_status
+    end
+
+    def eligible_status
+      columns = attributes.slice(*ELIGIBILITY_COLUMNS.slice(0, 5)).values
+      return INELIGIBLE if columns.any? { |c| c.try(:zero?) }
+      return ELIGIBLE if columns.all? { |c| c == 1 }
+      INCOMPLETE
+    end
 end

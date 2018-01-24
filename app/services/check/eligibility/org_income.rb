@@ -12,7 +12,7 @@ module Check
       private
 
         def eligibility
-          less_than_min_income? || more_than_max_income? ? 0 : 1
+          less_than_min_income? || more_than_max_income? ? INELIGIBLE : ELIGIBLE
         end
 
         def min_org_income_limited?

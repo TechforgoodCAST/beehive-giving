@@ -22,26 +22,26 @@ describe Check::Eligibility::OrgIncome do
 
   context 'Recipient with income_band' do
     context 'within limits' do
-      it('eligible') { expect(eligibility).to eq(1) }
+      it('eligible') { expect(eligibility).to eq(ELIGIBLE) }
     end
 
     context 'less than min. income awarded' do
       let(:income_band) { 0 }
-      it('ineligible') { expect(eligibility).to eq(0) }
+      it('ineligible') { expect(eligibility).to eq(INELIGIBLE) }
 
       context 'no min. income awarded' do
         let(:min_income) { false }
-        it('eligible') { expect(eligibility).to eq(1) }
+        it('eligible') { expect(eligibility).to eq(ELIGIBLE) }
       end
     end
 
     context 'more than max. income awarded' do
       let(:income_band) { 3 }
-      it('ineligible') { expect(eligibility).to eq(0) }
+      it('ineligible') { expect(eligibility).to eq(INELIGIBLE) }
 
       context 'no max. income awarded' do
         let(:max_income) { false }
-        it('eligible') { expect(eligibility).to eq(1) }
+        it('eligible') { expect(eligibility).to eq(ELIGIBLE) }
       end
     end
   end
@@ -49,36 +49,36 @@ describe Check::Eligibility::OrgIncome do
   context 'Recipient with income' do
     context 'income within limits' do
       let(:income) { 50_000 }
-      it('eligible') { expect(eligibility).to eq(1) }
+      it('eligible') { expect(eligibility).to eq(ELIGIBLE) }
     end
 
     context 'equal to min. income awarded' do
       let(:income) { 10_000 }
-      it('eligible') { expect(eligibility).to eq(1) }
+      it('eligible') { expect(eligibility).to eq(ELIGIBLE) }
     end
 
     context 'equal to max. income awarded' do
       let(:income) { 250_000 }
-      it('eligible') { expect(eligibility).to eq(1) }
+      it('eligible') { expect(eligibility).to eq(ELIGIBLE) }
     end
 
     context 'less than min. income awarded' do
       let(:income) { 5_000 }
-      it('ineligible') { expect(eligibility).to eq(0) }
+      it('ineligible') { expect(eligibility).to eq(INELIGIBLE) }
 
       context 'no min. income awarded' do
         let(:min_income) { false }
-        it('eligible') { expect(eligibility).to eq(1) }
+        it('eligible') { expect(eligibility).to eq(ELIGIBLE) }
       end
     end
 
     context 'more than max. income awarded' do
       let(:income) { 500_000 }
-      it('ineligible') { expect(eligibility).to eq(0) }
+      it('ineligible') { expect(eligibility).to eq(INELIGIBLE) }
 
       context 'no max. income awarded' do
         let(:max_income) { false }
-        it('eligible') { expect(eligibility).to eq(1) }
+        it('eligible') { expect(eligibility).to eq(ELIGIBLE) }
       end
     end
   end

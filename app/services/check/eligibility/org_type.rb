@@ -12,7 +12,7 @@ module Check
       private
 
         def eligibility
-          permitted_org_types.include?(org_type) ? 1 : 0
+          permitted_org_types.include?(org_type) ? ELIGIBLE : INELIGIBLE
         end
 
         def permitted_org_types

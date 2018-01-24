@@ -16,7 +16,9 @@ describe Rating::Base do
     expect { subject.colour }.to raise_error(NotImplementedError)
   end
 
-  it('#message') { expect(subject.message).to eq('-') }
+  it '#message' do
+    expect { subject.message }.to raise_error(NotImplementedError)
+  end
 
   it '#status' do
     expect { subject.status }.to raise_error(NotImplementedError)

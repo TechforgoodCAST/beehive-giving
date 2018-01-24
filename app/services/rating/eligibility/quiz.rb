@@ -4,15 +4,25 @@ module Rating
       include Rating::Base
 
       def colour
-        { nil => 'blue', 0 => 'red', 1 => 'green' }[state] || 'grey'
+        {
+          UNASSESSED => 'blue', INELIGIBLE => 'red', ELIGIBLE   => 'green'
+        }[state]
       end
 
       def message
-        { nil => '-', 0 => ineligible_message, 1 => eligible_message }[state]
+        {
+          UNASSESSED => '-',
+          INELIGIBLE => ineligible_message,
+          ELIGIBLE   => eligible_message
+        }[state]
       end
 
       def status
-        { nil => 'Incomplete', 0 => 'Ineligible', 1 => 'Eligible' }[state]
+        {
+          UNASSESSED => 'Incomplete',
+          INELIGIBLE => 'Ineligible',
+          ELIGIBLE   => 'Eligible'
+        }[state]
       end
 
       def title

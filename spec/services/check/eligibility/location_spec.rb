@@ -40,7 +40,7 @@ describe Check::Eligibility::Location do
   context 'a Proposal from an unsupported country' do
     let(:affect_geo) { 2 }
     let(:proposal_countries) { [] }
-    it('is ineligible') { expect(eligibility).to eq(0) }
+    it('is ineligible') { expect(eligibility).to eq(INELIGIBLE) }
   end
 
   context 'a local Proposal' do
@@ -48,44 +48,44 @@ describe Check::Eligibility::Location do
 
     context 'to a local Fund' do
       let(:geographic_scale_limited) { true }
-      it('is eligible') { expect(eligibility).to eq(1) }
+      it('is eligible') { expect(eligibility).to eq(ELIGIBLE) }
 
       context 'in a different area' do
         let(:proposal_districts) { [] }
-        it('is ineligible') { expect(eligibility).to eq(0) }
+        it('is ineligible') { expect(eligibility).to eq(INELIGIBLE) }
       end
 
       context 'sharing some areas in common' do
         let(:proposal_districts) { districts << create(:district) }
-        it('is eligible') { expect(eligibility).to eq(1) }
+        it('is eligible') { expect(eligibility).to eq(ELIGIBLE) }
       end
     end
 
     context 'to a national Fund' do
       let(:geographic_scale_limited) { true }
       let(:national) { true }
-      it('is ineligible') { expect(eligibility).to eq(0) }
+      it('is ineligible') { expect(eligibility).to eq(INELIGIBLE) }
     end
 
     context 'to an anywhere Fund' do
-      it('is eligible') { expect(eligibility).to eq(1) }
+      it('is eligible') { expect(eligibility).to eq(ELIGIBLE) }
     end
   end
 
   context 'a national Proposal' do
     context 'to a local Fund' do
       let(:geographic_scale_limited) { true }
-      it('is eligible') { expect(eligibility).to eq(1) }
+      it('is eligible') { expect(eligibility).to eq(ELIGIBLE) }
     end
 
     context 'to a national Fund' do
       let(:geographic_scale_limited) { true }
       let(:national) { true }
-      it('is eligible') { expect(eligibility).to eq(1) }
+      it('is eligible') { expect(eligibility).to eq(ELIGIBLE) }
     end
 
     context 'to an anywhere Fund' do
-      it('is eligible') { expect(eligibility).to eq(1) }
+      it('is eligible') { expect(eligibility).to eq(ELIGIBLE) }
     end
   end
 end

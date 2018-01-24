@@ -155,15 +155,15 @@ class Proposal < ApplicationRecord
     eligibility.select { |f, fund| fund.all_values_for('eligible').exclude?(false) }
   end
 
-  def eligible_funds
+  def eligible_funds # TODO: deprecated
     eligibility.select { |f, _| eligible_status(f) == 1 }
   end
 
-  def ineligible_funds
+  def ineligible_funds # TODO: deprecated
     eligibility.select { |f, _| eligible_status(f).zero? }
   end
 
-  def to_check_funds
+  def to_check_funds # TODO: deprecated
     eligibility.select { |f, _| eligible_status(f) == -1 }
   end
 
@@ -173,13 +173,13 @@ class Proposal < ApplicationRecord
       eligibility[fund_slug].all_values_for('eligible').exclude?(false)
   end
 
-  def eligible_status(fund_slug)
+  def eligible_status(fund_slug) # TODO: deprecated
     return 0 unless eligibility[fund_slug].all_values_for('eligible').exclude?(false)
     return -1 unless eligibility[fund_slug]&.key?('quiz') # check
     eligible?(fund_slug) ? 1 : 0 # eligible : ineligible
   end
 
-  def eligibility_as_text(fund_slug)
+  def eligibility_as_text(fund_slug) # TODO: deprecated
     {
       -1 => 'Check', 0 => 'Ineligible', 1 => 'Eligible'
     }[eligible_status(fund_slug)]

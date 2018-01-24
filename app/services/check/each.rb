@@ -16,7 +16,7 @@ module Check
       preload_funds(funds).each do |fund|
         assessment = assessments[fund.id] || build(fund, proposal, recipient)
         @criteria.each { |check| check.call(assessment) }
-        updates << assessment
+        updates << assessment if assessment.valid?
       end
 
       updates.select(&:changed?)

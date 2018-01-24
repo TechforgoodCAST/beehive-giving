@@ -7,15 +7,15 @@ module Rating
     end
 
     def colour
-      { 0 => 'red', 1 => 'green' }[state] || 'grey'
+      { INELIGIBLE => 'red', ELIGIBLE => 'green' }[state] || 'grey'
     end
 
     def message
-      '-'
+      { INELIGIBLE => ineligible_message, ELIGIBLE => eligible_message }[state]
     end
 
     def status
-      { 0 => 'Ineligible', 1 => 'Eligible' }[state] || '-'
+      { INELIGIBLE => 'Ineligible', ELIGIBLE => 'Eligible' }[state] || '-'
     end
 
     def title
@@ -29,6 +29,14 @@ module Rating
       end
 
     private
+
+      def ineligible_message
+        raise_not_implemented(__method__)
+      end
+
+      def eligible_message
+        raise_not_implemented(__method__)
+      end
 
       def raise_not_implemented(method)
         raise NotImplementedError,

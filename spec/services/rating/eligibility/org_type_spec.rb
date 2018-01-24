@@ -10,7 +10,7 @@ describe Rating::Eligibility::OrgType do
   it_behaves_like 'incomplete'
 
   context 'ineligible' do
-    let(:assessment) { build(:assessment, eligibility_org_type: 0) }
+    let(:assessment) { build(:assessment, eligibility_org_type: INELIGIBLE) }
 
     it_behaves_like 'ineligible'
 
@@ -21,7 +21,7 @@ describe Rating::Eligibility::OrgType do
   end
 
   context 'eligible' do
-    let(:assessment) { build(:assessment, eligibility_org_type: 1) }
+    let(:assessment) { build(:assessment, eligibility_org_type: ELIGIBLE) }
 
     it_behaves_like 'eligible'
 

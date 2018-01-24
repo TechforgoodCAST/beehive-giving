@@ -3,10 +3,6 @@ module Rating
     class Location
       include Rating::Base
 
-      def message
-        { 0 => ineligible_message, 1 => eligible_message }[state]
-      end
-
       def title
         'Location'
       end

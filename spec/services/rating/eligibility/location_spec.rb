@@ -10,7 +10,7 @@ describe Rating::Eligibility::Location do
   it_behaves_like 'incomplete'
 
   context 'ineligible' do
-    let(:assessment) { build(:assessment, eligibility_location: 0) }
+    let(:assessment) { build(:assessment, eligibility_location: INELIGIBLE) }
 
     it_behaves_like 'ineligible'
 
@@ -22,7 +22,7 @@ describe Rating::Eligibility::Location do
   end
 
   context 'eligible' do
-    let(:assessment) { build(:assessment, eligibility_location: 1) }
+    let(:assessment) { build(:assessment, eligibility_location: ELIGIBLE) }
 
     it_behaves_like 'eligible'
 

@@ -10,7 +10,7 @@ describe Rating::Eligibility::OrgIncome do
   it_behaves_like 'incomplete'
 
   context 'ineligible' do
-    let(:assessment) { build(:assessment, eligibility_org_income: 0) }
+    let(:assessment) { build(:assessment, eligibility_org_income: INELIGIBLE) }
 
     it_behaves_like 'ineligible'
 
@@ -21,7 +21,7 @@ describe Rating::Eligibility::OrgIncome do
   end
 
   context 'eligible' do
-    let(:assessment) { build(:assessment, eligibility_org_income: 1) }
+    let(:assessment) { build(:assessment, eligibility_org_income: ELIGIBLE) }
 
     it_behaves_like 'eligible'
 
