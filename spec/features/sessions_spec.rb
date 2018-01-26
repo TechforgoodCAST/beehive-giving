@@ -97,4 +97,12 @@ describe 'Ensure logged in' do
                   account_path
                 ])
   end
+
+  it 'cannot sign in with missing email' do
+    visit sign_in_path
+    fill_in :email, with: 'missing@email.com'
+    fill_in :password, with: '123123a'
+    click_button 'Sign in'
+    expect(current_path).to eq(new_password_reset_path)
+  end
 end
