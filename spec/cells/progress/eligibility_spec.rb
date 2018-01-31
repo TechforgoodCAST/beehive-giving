@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 describe Progress::Eligibility, type: :feature do
-  subject { Progress::Eligibility.new(assessment: assessment, position: 'bot') }
-  let(:assessment) { nil }
+  subject { Progress::Eligibility.new(status: status, position: 'bot') }
+  let(:status) { UNASSESSED }
 
   it('#label') { expect(subject.label).to eq('Eligibility') }
 
@@ -13,23 +13,21 @@ describe Progress::Eligibility, type: :feature do
   end
 
   context 'incomplete' do
-    let(:assessment) { build(:assessment) }
+    let(:status) { INCOMPLETE }
     it('indicator') { expect(subject.indicator).to eq('bg-blue bot') }
     it('message')   { expect(subject.message).to have_link('Complete') }
     it('highlight') { expect(subject.highlight).to eq('bg-light-blue') }
   end
 
   context 'ineligible' do
-    let(:assessment) { build(:ineligible) }
-
+    let(:status) { INELIGIBLE }
     it('indicator') { expect(subject.indicator).to eq('bg-red bot') }
     it('message')   { expect(subject.message).to have_link('Ineligible') }
     it('highlight') { expect(subject.highlight).to eq('bg-light-blue') }
   end
 
   context 'eligible' do
-    let(:assessment) { build(:eligible) }
-
+    let(:status) { ELIGIBLE }
     it('indicator') { expect(subject.indicator).to eq('bg-green bot') }
     it('message')   { expect(subject.message).to have_link('Eligible') }
     it('highlight') { expect(subject.highlight).to eq(nil) }

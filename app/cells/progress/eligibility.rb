@@ -1,12 +1,5 @@
 module Progress
   class Eligibility < Base
-    def initialize(*args)
-      super
-      return unless @assessment
-      return if @fund.stub?
-      @status = @assessment.eligibility_status
-    end
-
     def label
       'Eligibility'
     end

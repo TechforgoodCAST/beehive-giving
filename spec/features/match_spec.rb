@@ -237,6 +237,6 @@ feature 'Match' do
 
     click_link 'Hidden fund', match: :first
     expect(current_path)
-      .to eq hidden_proposal_fund_path(Proposal.last, Fund.third)
+      .to eq hidden_proposal_fund_path(Proposal.last, Fund.first)
   end
 end

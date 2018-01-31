@@ -78,16 +78,18 @@ class Fund < ApplicationRecord
     end
   end
 
-  def self.order_by(proposal, col)
-    case col
-    when 'name'
-      order 'funds.name'
-    else
-      ordered = order_slugs(proposal)
-      active.sort_by do |fund|
-        ordered.index(fund.slug) || ordered.size + 1
-      end
-    end
+  def self.order_by(proposal, col = nil)
+    join = "LEFT OUTER JOIN assessments
+              ON funds.id = assessments.fund_id
+             AND assessments.proposal_id = #{proposal.id}
+            LEFT OUTER JOIN proposals
+              ON assessments.proposal_id = proposals.id"
+
+    order = ['funds.featured DESC',
+             ('assessments.eligibility_status DESC' unless col == 'name'),
+             'funds.name']
+
+    Fund.active.joins(join).order(*order)
   end
 
   def self.eligibility(proposal, state)
@@ -168,7 +170,7 @@ class Fund < ApplicationRecord
   end
 
   def amount_desc # TODO: refactor & test
-    return unless min_amount_awarded_limited || max_amount_awarded_limited
+    return 'of any size' unless min_amount_awarded_limited || max_amount_awarded_limited
     opts = { precision: 0, unit: '£' }
     if !min_amount_awarded_limited || min_amount_awarded.zero?
       "up to #{number_to_currency(max_amount_awarded, opts)}"
@@ -213,15 +215,6 @@ class Fund < ApplicationRecord
 
   include FundJsonSetters
   include FundArraySetters
-
-  private_class_method def self.order_slugs(proposal)
-    suitable_slugs = proposal.suitable_funds.pluck(0)
-    ineligible_slugs = proposal.ineligible_funds.pluck(0)
-    featured_slugs = active.where(featured: true).pluck(:slug)
-    featured_slugs -= ineligible_slugs
-    all_slugs = active.pluck(:slug)
-    (featured_slugs + suitable_slugs + all_slugs).uniq - ineligible_slugs
-  end
 
   private
 

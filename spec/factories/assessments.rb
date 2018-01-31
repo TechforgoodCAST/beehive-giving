@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :assessment do
+  factory :assessment, aliases: [:incomplete] do
     association :fund, strategy: :build
     association :proposal, strategy: :build
     association :recipient, strategy: :build
@@ -9,13 +9,14 @@ FactoryBot.define do
     end
 
     factory :eligible do
-      eligibility_amount 1
-      eligibility_location 1
-      eligibility_org_income 1
-      eligibility_org_type 1
-      eligibility_quiz 1
+      eligibility_amount       ELIGIBLE
+      eligibility_funding_type ELIGIBLE
+      eligibility_location     ELIGIBLE
+      eligibility_org_income   ELIGIBLE
+      eligibility_org_type     ELIGIBLE
+      eligibility_quiz         ELIGIBLE
       factory :ineligible do
-        eligibility_location 0
+        eligibility_location INELIGIBLE
       end
     end
   end

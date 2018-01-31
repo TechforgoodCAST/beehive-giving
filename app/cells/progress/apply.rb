@@ -1,10 +1,5 @@
 module Progress
   class Apply < Base
-    def initialize(*args)
-      super
-      @status = @assessment&.eligibility_status
-    end
-
     def label
       'Apply'
     end

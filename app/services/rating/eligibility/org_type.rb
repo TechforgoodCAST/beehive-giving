@@ -27,7 +27,8 @@ module Rating
 
         def org_type
           return unless assessment
-          ORG_TYPES[assessment.recipient.org_type][2]
+          # TODO: refactor ORG_TYPES to avoid .drop(1)
+          ORG_TYPES.drop(1)[assessment.recipient.org_type][2]
         end
     end
   end

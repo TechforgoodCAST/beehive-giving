@@ -1,12 +1,18 @@
 class ProgressCell < Cell::ViewModel
   include ActionView::Helpers::NumberHelper
 
-  property :proposal
-
   private
 
     def fund
       model&.fund || OpenStruct.new(stub?: false)
+    end
+
+    def proposal
+      model&.proposal
+    end
+
+    def eligibility_status
+      model&.eligibility_status
     end
 
     def total_costs
@@ -30,7 +36,7 @@ class ProgressCell < Cell::ViewModel
     end
 
     def steps # TODO: refactor
-      opts = { assessment: model }
+      opts = { fund: fund, proposal: proposal, status: eligibility_status }
       if fund.stub?
         [
           ::Progress::Request.new(opts.merge(position: 'bot')),

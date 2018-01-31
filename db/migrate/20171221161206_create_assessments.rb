@@ -11,6 +11,9 @@ class CreateAssessments < ActiveRecord::Migration[5.1]
       t.integer :eligibility_org_type
       t.integer :eligibility_quiz
       t.integer :eligibility_quiz_failing
+      t.integer :eligibility_status, null: false
+
+      t.timestamps
     end
   end
 end

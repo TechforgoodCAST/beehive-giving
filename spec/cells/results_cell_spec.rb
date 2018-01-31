@@ -6,6 +6,7 @@ describe ResultsCell do
 
   context 'eligibility' do
     it { is_expected.to have_text('Amount') }
+    it { is_expected.to have_text('Type of funding') }
     it { is_expected.to have_text('Income') }
     it { is_expected.to have_text('Location') }
     it { is_expected.to have_text('Quiz') }

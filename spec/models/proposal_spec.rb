@@ -14,6 +14,7 @@ describe Proposal do
   it 'has many ProposalThemes' do
     assoc(:proposal_themes, :has_many, dependent: :destroy)
   end
+
   it('has many Themes') { assoc(:themes, :has_many, through: :proposal_themes) }
 
   it('HABTM AgeGroups') { assoc(:age_groups, :has_and_belongs_to_many) }

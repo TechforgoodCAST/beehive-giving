@@ -5,7 +5,7 @@ feature 'Browse' do
     @app.seed_test_db
         .setup_funds(num: 7, open_data: true)
         .setup_fund_stubs(num: 5)
-        .create_recipient_with_subscription_v1!
+        .create_recipient
         .with_user
         .create_registered_proposal
     @db = @app.instances
@@ -52,19 +52,11 @@ feature 'Browse' do
       expect(page).to have_text @fund_stubs.first.funder.name
     end
 
-    scenario "When I find a recommended fund I'm interested in,
-              I want to view more details,
-              so I can decide if I want to apply" do
-      expect(page).to_not have_text @unsuitable_fund.name
-      click_link @low_fund.name
-      expect(current_path).to eq proposal_fund_path(@proposal, @low_fund)
-    end
-
     scenario "When I visit a fund that doesn't exist,
               I want to be redirected to where I came from and see a message,
               so I avoid an error and understand what happened" do
       visit proposal_fund_path(@proposal, 'missing-fund')
-      expect(current_path).to eq account_upgrade_path(@recipient)
+      expect(current_path).to eq(proposal_funds_path(@proposal))
     end
 
     scenario "When I find a funding theme I'm interested in,
@@ -89,7 +81,7 @@ feature 'Browse' do
       # TODO: v2 flash notices #391
       # expect(page.all('body script', visible: false)[0].native.text)
       #   .to have_text 'Fund not found'
-      expect(current_path).to eq account_upgrade_path(@recipient)
+      expect(current_path).to eq(proposal_funds_path(@proposal))
 
       visit theme_proposal_funds_path(@proposal, 'missing')
       # TODO: v2 flash notices #391
@@ -104,18 +96,9 @@ feature 'Browse' do
       expect(current_path).to eq path
     end
 
-    scenario 'can only view proposal_fund_path for recommended funds ' \
-              'unless subscribed' do
-      click_link '2'
-      click_link 'Hidden fund'
-      expect(current_path).to eq account_upgrade_path(@recipient)
-
-      subscribe_and_visit proposal_fund_path(@proposal, Fund.active.first)
-    end
-
     context 'When I view fund a with open data' do
       before(:each) do
-        click_link @top_fund.name
+        click_link 'Hidden fund', match: :first
       end
 
       scenario 'I want to see which time period the analysis relates to,

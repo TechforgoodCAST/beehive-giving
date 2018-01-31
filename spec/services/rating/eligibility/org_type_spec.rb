@@ -15,7 +15,7 @@ describe Rating::Eligibility::OrgType do
     it_behaves_like 'ineligible'
 
     it '#message' do
-      msg = 'Does not award funds to <strong>registered companies</strong>.'
+      msg = 'Does not award funds to <strong>registered charities</strong>.'
       expect(subject.message).to eq(msg)
     end
   end
@@ -26,7 +26,7 @@ describe Rating::Eligibility::OrgType do
     it_behaves_like 'eligible'
 
     it '#message' do
-      msg = 'Awards funds to <strong>registered companies</strong>.'
+      msg = 'Awards funds to <strong>registered charities</strong>.'
       expect(subject.message).to eq(msg)
     end
   end

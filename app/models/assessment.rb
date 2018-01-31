@@ -1,6 +1,7 @@
 class Assessment < ApplicationRecord
   CHECKS = [
     Check::Eligibility::Amount.new,
+    Check::Eligibility::FundingType.new,
     Check::Eligibility::Location.new,
     Check::Eligibility::OrgIncome.new,
     Check::Eligibility::OrgType.new,
@@ -9,6 +10,7 @@ class Assessment < ApplicationRecord
 
   ELIGIBILITY_COLUMNS = %i[
     eligibility_amount
+    eligibility_funding_type
     eligibility_location
     eligibility_org_income
     eligibility_org_type
@@ -47,9 +49,9 @@ class Assessment < ApplicationRecord
     end
 
     def eligible_status
-      columns = attributes.slice(*ELIGIBILITY_COLUMNS.slice(0, 5)).values
-      return INELIGIBLE if columns.any? { |c| c.try(:zero?) }
-      return ELIGIBLE if columns.all? { |c| c == 1 }
+      columns = attributes.slice(*ELIGIBILITY_COLUMNS.slice(0..-3)).values
+      return INELIGIBLE if columns.any? { |c| c == INELIGIBLE }
+      return ELIGIBLE if columns.all? { |c| c == ELIGIBLE }
       INCOMPLETE
     end
 end

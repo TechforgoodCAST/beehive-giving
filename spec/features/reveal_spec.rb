@@ -12,7 +12,7 @@ feature 'RevealFunds' do
     @user = User.last
     @recipient = Recipient.last
     @proposal = Proposal.last
-    @fund = Fund.last
+    @fund = Fund.first
   end
 
   context 'v2 subscription' do

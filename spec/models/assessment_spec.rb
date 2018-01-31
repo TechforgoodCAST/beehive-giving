@@ -37,6 +37,7 @@ describe Assessment do
 
       %i[
         eligibility_amount
+        eligibility_funding_type
         eligibility_location
         eligibility_org_income
         eligibility_org_type
@@ -45,7 +46,7 @@ describe Assessment do
         expect(assessment.send(column)).to eq(ELIGIBLE)
       end
       expect(assessment.eligibility_quiz_failing).to eq(0)
-      expect(assessment.eligibility_funding_type).to eq(nil)
+      expect(assessment.eligibility_status).to eq(ELIGIBLE)
     end
 
     it 'self.analyse_and_update!' do

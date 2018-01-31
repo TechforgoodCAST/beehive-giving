@@ -12,7 +12,7 @@ feature 'Eligibility' do
         .create_registered_proposal
         .sign_in
     @db = @app.instances
-    @fund = Fund.last
+    @fund = Fund.first
     @proposal = @db[:registered_proposal]
     visit root_path
   end
@@ -162,11 +162,11 @@ feature 'Eligibility' do
     scenario "When I've answered some eligibility questions in another fund,
               I want previously answered questions to be prefilled,
               so I don't waste my time answering the same question twice" do
-      Fund.limit(5).destroy_all # leave two funds remaining
+      Fund.limit(5).order(id: :desc).destroy_all # leave two funds remaining
       helper.answer_recipient_restrictions(@fund)
             .answer_proposal_restrictions(@fund, eligible: false)
             .check_eligibility
-      visit proposal_fund_path(@proposal, Fund.first)
+      visit proposal_fund_path(@proposal, Fund.last)
 
       helper.check_eligibility
       # 3 questions previously answered should be checked

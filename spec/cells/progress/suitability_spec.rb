@@ -1,16 +1,15 @@
 require 'rails_helper'
 
 describe Progress::Suitability, type: :feature do
-  subject do
-    Progress::Suitability.new(assessment: assessment, position: 'top bot')
-  end
-  let(:assessment) do
-    build(
-      :assessment,
+  subject { Progress::Suitability.new(opts) }
+  let(:opts) {
+    {
+      fund: build(:fund, id: 1, slug: 'fund'),
       proposal: build(:proposal, id: 1, suitability: { 'fund' => suitability }),
-      fund: build(:fund, id: 1, slug: 'fund')
-    )
-  end
+      position: 'top bot'
+    }
+  }
+
   let(:suitability) { {} }
 
   it('#label') { expect(subject.label).to eq('Suitability') }

@@ -29,6 +29,15 @@ FactoryBot.define do
     max_org_income_limited true
     max_org_income 250_000
 
+    # TODO: refactor
+    factory :fund_simple, class: Fund do
+      restrictions_known false
+      priorities_known false
+      after(:build) do |fund, _evaluator|
+        fund.themes = build_list(:theme, 1) unless fund.themes.any?
+      end
+    end
+
     factory :fund_with_open_data, class: Fund do
       open_data true
       sources do

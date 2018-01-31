@@ -3,7 +3,7 @@ FactoryBot.define do
     transient do
       n { rand(9999) }
     end
-    org_type        ORG_TYPES[4][1] # Another type of organisation
+    org_type        ORG_TYPES[2][1] # A registered charity
     charity_number  { "1AB1C#{n}" }
     company_number  { "1AB1C#{n}" }
     name            'ACME'

@@ -2,11 +2,7 @@ module Progress
   class Suitability < Base
     def initialize(*args)
       super
-      return unless @assessment
-      return if @fund.stub?
-      @status = @proposal.suitability[@fund.slug]
-                         .all_values_for('score')
-                         .count { |s| s > 0.2 }
+      @status = suitability
     end
 
     def label
@@ -39,5 +35,14 @@ module Progress
     def highlight
       nil
     end
+
+    private
+
+      def suitability
+        return unless @proposal&.suitability.try(:[], @fund.slug)
+        @proposal.suitability[@fund.slug]
+                 .all_values_for('score')
+                 .count { |s| s > 0.2 }
+      end
   end
 end

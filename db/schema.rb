@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180124140603) do
+ActiveRecord::Schema.define(version: 20171221161206) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,13 +86,15 @@ ActiveRecord::Schema.define(version: 20180124140603) do
     t.bigint "proposal_id"
     t.bigint "recipient_id"
     t.integer "eligibility_amount"
+    t.integer "eligibility_funding_type"
     t.integer "eligibility_location"
     t.integer "eligibility_org_income"
     t.integer "eligibility_org_type"
     t.integer "eligibility_quiz"
     t.integer "eligibility_quiz_failing"
-    t.integer "eligibility_funding_type"
     t.integer "eligibility_status", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["fund_id"], name: "index_assessments_on_fund_id"
     t.index ["proposal_id"], name: "index_assessments_on_proposal_id"
     t.index ["recipient_id"], name: "index_assessments_on_recipient_id"

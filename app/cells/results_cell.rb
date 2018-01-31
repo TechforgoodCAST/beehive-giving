@@ -3,6 +3,7 @@ class ResultsCell < Cell::ViewModel
     opts = { assessment: model }
     ratings = [
       Rating::Eligibility::Amount.new(opts),
+      Rating::Eligibility::FundingType.new(opts),
       Rating::Eligibility::OrgIncome.new(opts),
       Rating::Eligibility::Location.new(opts),
       Rating::Eligibility::Quiz.new(opts),

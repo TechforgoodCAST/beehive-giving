@@ -1,6 +1,62 @@
 require 'rails_helper'
 
 describe Fund do
+  context 'self.order_by' do
+    let(:proposal) { build(:proposal) }
+
+    before(:each) do
+      default_order = %i[orphan eligible incomplete ineligible]
+      @funds = default_order.zip(create_list(:fund_simple, 4)).to_h
+      default_order.drop(1).each do |label|
+        create(label, fund: @funds[label], proposal: proposal)
+      end
+    end
+
+    subject { Fund.order_by(proposal) }
+
+    it 'no proposal'
+
+    it 'default order' do
+      expect(subject).to eq(@funds.values)
+    end
+
+    it 'only active funds' do
+      expect(subject.pluck(:state).uniq).to eq(['active'])
+    end
+
+    it 'deactivated fund' do
+      @funds[:eligible].update(state: 'inactive')
+      expect(subject.size).to eq(3)
+    end
+
+    it 'featured fund is ordered first if eligible' do
+      @funds[:incomplete].update(featured: true)
+      featured_order = [
+        @funds[:incomplete],
+        @funds[:orphan],
+        @funds[:eligible],
+        @funds[:ineligible]
+      ]
+      expect(subject).to eq(featured_order)
+    end
+
+    it 'ineligible featured fund'
+
+    context 'name' do
+      before { @funds[:ineligible].update(name: '0') }
+
+      it 'ASC' do
+        expect(Fund.order_by(proposal, 'name')[0]).to eq(@funds[:ineligible])
+      end
+
+      it 'featured fund first' do
+        @funds[:incomplete].update(featured: true)
+        expect(Fund.order_by(proposal, 'name')[0]).to eq(@funds[:incomplete])
+        expect(Fund.order_by(proposal, 'name')[1]).to eq(@funds[:ineligible])
+      end
+    end
+  end
+
   context 'single' do
     before(:each) do
       @app.seed_test_db
@@ -34,34 +90,6 @@ describe Fund do
       it 'self.active' do
         Fund.last.update state: 'inactive'
         expect(Fund.active.count).to eq 2
-      end
-    end
-
-    context 'self.order_by' do
-      before(:each) do
-        @proposal = build :proposal, suitability: {
-          Fund.second.slug => { 'total' => 1.0 },
-          Fund.first.slug => { 'total' => 0.5 }
-        }, eligibility: {
-          Fund.second.slug => { 'topic' => { 'eligible' => false } }
-        }
-      end
-
-      it 'default relevance orders ineligible last' do
-        expect(Fund.order_by(@proposal, 'DROP TABLE "FUNDS";').pluck(:id))
-          .to eq [Fund.first.id, Fund.third.id, Fund.second.id]
-      end
-
-      it 'featured fund is always ordered first' do
-        Fund.third.update featured: true
-        expect(Fund.order_by(@proposal, 'DROP TABLE "FUNDS";').pluck(:id))
-          .to eq [Fund.third.id, Fund.first.id, Fund.second.id]
-      end
-
-      it 'name' do
-        Fund.first.update name: 'z'
-        expect(Fund.order_by(@proposal, 'name').pluck(:name))
-          .to eq ['Awards for All 2', 'Awards for All 3', 'z']
       end
     end
 

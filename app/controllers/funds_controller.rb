@@ -1,6 +1,6 @@
 class FundsController < ApplicationController
   before_action :ensure_logged_in, :update_legacy_suitability, except: :sources
-  before_action :query, :stub_query, only: %i[index themed]
+  before_action :stub_query, only: %i[index themed]
 
   def show
     @fund = Fund.includes(:funder).find_by_hashid(params[:id])
@@ -10,25 +10,16 @@ class FundsController < ApplicationController
   end
 
   def index
-    query = @query.order_by(@proposal, params[:sort])
-    @fund_count = query.size
-    @funds = Kaminari.paginate_array(query).page(params[:page])
-
-    @fund_stubs = @stub_query.order("RANDOM()").limit(5)
-
-    # TODO: refactor
-    @assessments = Assessment.includes(:fund, :proposal)
-                             .where(proposal: @proposal)
-                             .map { |a| [a.fund_id, a] }.to_h
+    @funds = query.page(params[:page])
+    @fund_count = query.size # TODO: refactor
+    @fund_stubs = @stub_query.order('RANDOM()').limit(5) # TODO: refactor
   end
 
   def themed
-    @theme = Theme.find_by(slug: params[:theme]) if params[:theme].present?
-    query = @query.where(themes: { id: @theme })
-                  .order_by(@proposal, params[:sort])
-    @funds = Kaminari.paginate_array(query).page(params[:page])
-    @fund_count = query.size
-    redirect_to root_path, alert: 'Not found' if @funds.empty?
+    @theme = Theme.find_by(slug: params[:theme])
+    redirect_to root_path, alert: 'Not found' unless @theme
+    @funds = themed_query.page(params[:page])
+    @fund_count = themed_query.size # TODO: refactor
   end
 
   def hidden
@@ -40,6 +31,7 @@ class FundsController < ApplicationController
 
     def user_not_authorised
       if @current_user.subscription_version == 2
+        return redirect_to root_path if @fund.nil?
         redirect_to hidden_proposal_fund_path(@proposal, @fund)
       else
         redirect_to account_upgrade_path(@recipient)
@@ -51,10 +43,16 @@ class FundsController < ApplicationController
     end
 
     def query
-      @query = Fund.active
-                   .includes(:funder, :themes, :geo_area)
-                   .eligibility(@proposal, params[:eligibility])
-                   .duration(@proposal, params[:duration])
+      Fund.active
+          .includes(:funder, :themes, :geo_area)
+          .order_by(@proposal, params[:sort])
+          .eligibility(@proposal, params[:eligibility])
+          .duration(@proposal, params[:duration])
+          .select('funds.*', 'assessments.eligibility_status')
+    end
+
+    def themed_query
+      query.left_joins(:themes).where(themes: { id: @theme })
     end
 
     def stub_query

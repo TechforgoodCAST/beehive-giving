@@ -13,7 +13,7 @@ feature 'Apply' do
         .sign_in
     @db = @app.instances
     @proposal = @db[:registered_proposal]
-    @fund = @db[:funds].last
+    @fund = @db[:funds].first
     visit root_path
     helper.visit_first_fund
           .complete_proposal
