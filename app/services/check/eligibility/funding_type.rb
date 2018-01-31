@@ -12,6 +12,7 @@ module Check
       private
 
         def eligibility
+          return ELIGIBLE if funding_type.zero?
           permitted_costs.include?(funding_type) ? ELIGIBLE : INELIGIBLE
         end
 

@@ -14,7 +14,12 @@ describe Check::Eligibility::FundingType do
   end
 
   context 'unpermitted funding_type' do
-    let(:funding_type) { 0 }
+    let(:funding_type) { 3 }
     it('ineligible') { expect(eligibility).to eq(INELIGIBLE) }
+  end
+
+  context 'unknown funding_type' do
+    let(:funding_type) { 0 }
+    it('ineligible') { expect(eligibility).to eq(ELIGIBLE) }
   end
 end
