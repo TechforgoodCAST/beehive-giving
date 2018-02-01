@@ -1,8 +1,8 @@
 class FundsController < ApplicationController
   before_action :ensure_logged_in, :update_legacy_suitability, except: :sources
+  before_action :load_fund, only: %i[hidden show]
 
   def show
-    @fund = Fund.includes(:funder).find_by_hashid(params[:id])
     authorize FundContext.new(@fund, @proposal)
     @assessment = Assessment.find_by(fund: @fund, proposal: @proposal)
     render :stub if @fund.stub?
@@ -24,7 +24,7 @@ class FundsController < ApplicationController
   end
 
   def hidden
-    @fund = Fund.includes(:funder).find_by_hashid(params[:id])
+    return redirect_to root_path unless @fund
     @assessment = @proposal.assessments.where(fund: @fund).first
   end
 
@@ -56,5 +56,9 @@ class FundsController < ApplicationController
 
     def themed_query
       query.left_joins(:themes).where(themes: { id: @theme })
+    end
+
+    def load_fund
+      @fund = Fund.includes(:funder).active.find_by_hashid(params[:id])
     end
 end

@@ -46,6 +46,24 @@ feature 'Browse' do
       visit root_path
     end
 
+    context 'cannot visit inactive fund' do
+      before do
+        @fund = Fund.first
+        @fund.update(state: 'inactive')
+      end
+
+      it 'hidden' do
+        visit hidden_proposal_fund_path(@proposal, @fund)
+        expect(current_path).to eq(proposal_funds_path(@proposal))
+      end
+
+      it 'revealed' do
+        @proposal.recipient.update(reveals: [@fund.slug])
+        visit proposal_fund_path(@proposal, @fund)
+        expect(current_path).to eq(proposal_funds_path(@proposal))
+      end
+    end
+
     scenario "Fund stub selection shown on proposal fund page" do
       @proposal.update_column(:eligibility, @proposal.eligibility.merge( @fund_stubs.first.slug => {'location': true}) )
       visit proposal_funds_path(@proposal)
