@@ -1,6 +1,5 @@
 class FundsController < ApplicationController
   before_action :ensure_logged_in, :update_legacy_suitability, except: :sources
-  before_action :stub_query, only: %i[index themed]
 
   def show
     @fund = Fund.includes(:funder).find_by_hashid(params[:id])
@@ -11,8 +10,10 @@ class FundsController < ApplicationController
 
   def index
     @funds = query.page(params[:page])
-    @fund_count = query.size # TODO: refactor
-    @fund_stubs = @stub_query.order('RANDOM()').limit(5) # TODO: refactor
+    # TODO: refactor
+    @fund_count = query.size
+    @fund_stubs = Fund.stubs.includes(:funder).order('RANDOM()').limit(5)
+    # TODO: end
   end
 
   def themed
@@ -43,21 +44,17 @@ class FundsController < ApplicationController
     end
 
     def query
-      Fund.active
+      # TODO: refactor into class method?
+      Fund.join(@proposal)
           .includes(:funder, :themes, :geo_area)
-          .order_by(@proposal, params[:sort])
-          .eligibility(@proposal, params[:eligibility])
+          .order_by(params[:sort])
+          .eligibility(params[:eligibility])
           .duration(@proposal, params[:duration])
+          .active
           .select('funds.*', 'assessments.eligibility_status')
     end
 
     def themed_query
       query.left_joins(:themes).where(themes: { id: @theme })
-    end
-
-    def stub_query
-      @stub_query = Fund.stubs
-                        .includes(:funder)
-                        .eligibility(@proposal, 'eligible_noquiz')
     end
 end

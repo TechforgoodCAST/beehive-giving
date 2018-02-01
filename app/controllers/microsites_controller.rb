@@ -65,10 +65,18 @@ class MicrositesController < ApplicationController
     redirect_to microsite_basics_path(@funder) unless
       params[:t] == @attempt.access_token
     @proposal = @attempt.proposal
-    @funds = @funder.funds.includes(:geo_area).active.order_by(@proposal, '')
 
     # TODO: refactor
-    @assessments = Assessment.where(fund: @funds, proposal: @proposal)
+    @funds = Fund.join(@proposal)
+                 .includes(:geo_area)
+                 .order_by
+                 .active
+                 .where(funder: @funder)
+                 .select('funds.*', 'assessments.eligibility_status')
+
+    # TODO: refactor
+    @assessments = Assessment.includes(:fund, :proposal, :recipient)
+                             .where(fund: @funder.funds, proposal: @proposal)
                              .map { |a| [a.fund_id, a] }.to_h
   end
 

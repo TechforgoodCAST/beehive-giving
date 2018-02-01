@@ -78,33 +78,33 @@ class Fund < ApplicationRecord
     end
   end
 
-  def self.order_by(proposal, col = nil)
-    join = "LEFT OUTER JOIN assessments
-              ON funds.id = assessments.fund_id
-             AND assessments.proposal_id = #{proposal.id}
-            LEFT OUTER JOIN proposals
-              ON assessments.proposal_id = proposals.id"
-
-    order = ['funds.featured DESC',
-             ('assessments.eligibility_status DESC' unless col == 'name'),
-             'funds.name']
-
-    Fund.active.joins(join).order(*order)
+  def self.join(proposal = nil)
+    joins(
+      "LEFT OUTER JOIN assessments
+         ON funds.id = assessments.fund_id
+        AND assessments.proposal_id = #{proposal&.id || 'NULL'}
+       LEFT OUTER JOIN proposals
+         ON assessments.proposal_id = proposals.id"
+    )
   end
 
-  def self.eligibility(proposal, state)
-    case state
-    when 'eligible_noquiz'
-      where slug: proposal.eligible_noquiz.keys
-    when 'eligible'
-      where slug: proposal.eligible_funds.keys
-    when 'ineligible'
-      where slug: proposal.ineligible_funds.keys
-    when 'to_check'
-      where slug: proposal.to_check_funds.keys
-    else
-      all
-    end
+  def self.order_by(col = nil)
+    order = [
+      'funds.featured DESC',
+      ('assessments.eligibility_status DESC' unless col == 'name'),
+      'funds.name'
+    ]
+    order(*order)
+  end
+
+  def self.eligibility(state = nil)
+    eligibility = {
+      'eligible'   => ELIGIBLE,
+      'ineligible' => INELIGIBLE,
+      'to_check'   => [UNASSESSED, INCOMPLETE]
+    }[state]
+
+    eligibility ? where('assessments.eligibility_status': eligibility) : all
   end
 
   def self.duration(proposal, state)
