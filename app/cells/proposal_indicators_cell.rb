@@ -4,9 +4,9 @@ class ProposalIndicatorsCell < Cell::ViewModel
   def eligibility_progress_bar
     @counts = eligibility_counts
     @pcs = count_percentages(@counts)
-    bg_color = { -1 => 'bg-blue', 0 => 'bg-red', 1 => 'bg-green' }
-    names = { -1 => 'to check', 0 => 'ineligible', 1 => 'eligible' }
-    states = [0, 1, -1]
+    bg_color = { INELIGIBLE => 'bg-red', INCOMPLETE => 'bg-blue', ELIGIBLE => 'bg-green' }
+    names = { INELIGIBLE => 'ineligible', INCOMPLETE => 'to check', ELIGIBLE => 'eligible' }
+    states = [-1, 0, 1]
     render view: :progress_bar, locals: {bg_color: bg_color, names: names, states: states}
   end
 
@@ -35,7 +35,7 @@ class ProposalIndicatorsCell < Cell::ViewModel
 
   def funds_checked
     counts = eligibility_counts
-    render locals: {complete: counts[0] + counts[1]}
+    render locals: { complete: counts[INELIGIBLE] + counts[ELIGIBLE] }
   end
 
   private
@@ -47,11 +47,9 @@ class ProposalIndicatorsCell < Cell::ViewModel
     end
 
     def eligibility_counts
-      {
-        -1 => model.to_check_funds.count,
-        0 => model.ineligible_funds.count,
-        1 => model.eligible_funds.count
-      }
+      { INELIGIBLE => 0, INCOMPLETE => 0, ELIGIBLE => 0 }.merge(
+        model.assessments.group(:eligibility_status).size
+      )
     end
 
     def suitability_counts
