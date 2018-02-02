@@ -10,7 +10,7 @@ class Fund < ApplicationRecord
 
   belongs_to :funder
 
-  has_many :assessments
+  has_many :assessments, dependent: :destroy
   has_many :enquiries, dependent: :destroy
   has_many :requests, dependent: :destroy
 
@@ -80,11 +80,9 @@ class Fund < ApplicationRecord
 
   def self.join(proposal = nil)
     joins(
-      "LEFT OUTER JOIN assessments
-         ON funds.id = assessments.fund_id
-        AND assessments.proposal_id = #{proposal&.id || 'NULL'}
-       LEFT OUTER JOIN proposals
-         ON assessments.proposal_id = proposals.id"
+      'LEFT JOIN assessments ' \
+      'ON funds.id = assessments.fund_id ' \
+      "AND assessments.proposal_id = #{proposal&.id || 'NULL'}"
     )
   end
 

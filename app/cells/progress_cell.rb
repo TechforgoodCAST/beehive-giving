@@ -31,7 +31,7 @@ class ProgressCell < Cell::ViewModel
       if model
         [total_costs, funding_type, title].compact.join(' • ')
       else
-        link_to 'Conduct check!', '#'
+        '<span class="red">Assessment missing!</span>'
       end
     end
 

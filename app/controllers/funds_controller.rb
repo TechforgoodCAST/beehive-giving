@@ -9,6 +9,7 @@ class FundsController < ApplicationController
   end
 
   def index
+    update_analysis(query)
     @funds = query.page(params[:page])
     # TODO: refactor
     @fund_count = query.size
@@ -37,6 +38,12 @@ class FundsController < ApplicationController
       else
         redirect_to account_upgrade_path(@recipient)
       end
+    end
+
+    def update_analysis(funds)
+      unassessed = funds.where('assessments.eligibility_status IS NULL')
+      return if unassessed.empty?
+      Assessment.analyse_and_update!(unassessed, @proposal)
     end
 
     def update_legacy_suitability # TODO: depreceted

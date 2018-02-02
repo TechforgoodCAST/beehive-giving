@@ -53,7 +53,8 @@ module Check
           fund: %i[geo_area countries districts restrictions],
           proposal: %i[answers countries districts],
           recipient: %i[answers]
-        ).where(fund: funds, proposal: proposal).map { |a| [a.fund_id, a] }.to_h
+        ).where(fund: funds.pluck(:id), proposal: proposal)
+         .map { |a| [a.fund_id, a] }.to_h
       end
 
       def preload_recipient(proposal)
