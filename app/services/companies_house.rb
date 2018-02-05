@@ -11,12 +11,15 @@ class CompaniesHouse
     end
   end
 
+  # TODO: refactor
   def lookup(org)
     if @res
       data = @res['primaryTopic']
 
-      org.name                       = data['CompanyName'].titleize unless org.charity_number.present?
-      org.country                    = { 'United Kingdom' => 'GB' }[data['CountryOfOrigin']]
+      country = { 'United Kingdom' => 'GB' }[data['CountryOfOrigin']]
+
+      org.name = data['CompanyName'].titleize unless org.charity_number.present?
+      org.country = country if country
       org.postal_code                = data['RegAddress'].try(:[], 'Postcode') unless org.postal_code.present?
       org.company_name               = data['CompanyName'].titleize
       org.company_status             = data['CompanyStatus']
@@ -29,7 +32,7 @@ class CompaniesHouse
       org.company_sic                = data['SICCodes'].try(:[], 'SicText')
 
       org.registered_on = data['IncorporationDate'] || data['RegistrationDate']
-      org.operating_for = operating_for_value(org.registered_on)
+      org.operating_for = operating_for_value(org.registered_on) if org.registered_on
 
       if data['CompanyCategory'] == 'Community Interest Company'
         org.org_type = 5
