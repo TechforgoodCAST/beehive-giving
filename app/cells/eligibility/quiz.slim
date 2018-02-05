@@ -15,27 +15,23 @@ h3.mb10 Quiz
         .muted
 
           = cell(:quiz, fund, quiz_type: 'Restriction', proposal: model, f: f,
-                          groups: {'Proposal' => 'Is your funding proposal for?',
-                                      'Recipient' => 'Is your organisation?'}).call(:show_public)
+                          groups: { 'Recipient' => 'Is your organisation?',
+                                    'Proposal' => 'Is your funding proposal for?' }).call(:show_public)
 
       - else
 
-        - if model.ineligible_reasons(fund.slug).include? 'quiz'
-          .bg-red.rounded.shadow.fs14.p10.mb20.white
-            = cell(:eligibility_banner, model, fund: fund).call(:quiz)
-
         = f.hidden_field :return_to, :value => 'fund'
         = cell(:quiz, fund, quiz_type: 'Restriction', proposal: model, f: f,
-                          groups: {'Proposal' => 'Is your funding proposal for?',
-                                      'Recipient' => 'Is your organisation?'}).call(:show)
+                          groups: { 'Recipient' => 'Is your organisation?',
+                                    'Proposal' => 'Is your funding proposal for?' }).call(:show)
 
   - else
 
     = simple_form_for :check do |f|
 
       = cell(:quiz, fund, quiz_type: 'Restriction', proposal: model, f: f,
-                        groups: {'Proposal' => 'Is your funding proposal for?',
-                                    'Recipient' => 'Is your organisation?'}).call(:show_public)
+                        groups: { 'Recipient' => 'Is your organisation?',
+                                  'Proposal' => 'Is your funding proposal for?' }).call(:show_public)
 
   .bg-ice.rounded.shadow.fs14.p10.my20
     .bold.caps.mb10 Good to know

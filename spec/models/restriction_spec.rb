@@ -44,22 +44,6 @@ describe 'Restriction' do
       @db = @app.instances
     end
 
-    context 'for Proposal' do
-      before(:each) do
-        @app.subscribe_recipient
-            .create_registered_proposal
-            .create_complete_proposal
-        Proposal.all.each do |proposal|
-          create(:answer, criterion: @r2,
-                          category: proposal)
-        end
-      end
-
-      it 'has many eligibilities' do
-        expect(@r2.answers.count).to eq 2
-      end
-    end
-
     context 'for Recipient' do
       before(:each) do
         [@db[:recipient], create(:recipient)].each do |recipient|

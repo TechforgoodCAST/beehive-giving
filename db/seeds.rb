@@ -1,9 +1,9 @@
 # TODO: update
 if Rails.env.development?
-  require 'factory_girl_rails'
+  require 'factory_bot_rails'
   require 'webmock'
 
-  include FactoryGirl::Syntax::Methods
+  include FactoryBot::Syntax::Methods
   include WebMock::API
 
   WebMock.enable!

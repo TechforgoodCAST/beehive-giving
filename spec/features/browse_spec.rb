@@ -5,7 +5,7 @@ feature 'Browse' do
     @app.seed_test_db
         .setup_funds(num: 7, open_data: true)
         .setup_fund_stubs(num: 5)
-        .create_recipient_with_subscription_v1!
+        .create_recipient
         .with_user
         .create_registered_proposal
     @db = @app.instances
@@ -46,43 +46,50 @@ feature 'Browse' do
       visit root_path
     end
 
+    context 'cannot visit inactive fund' do
+      before do
+        @fund = Fund.first
+        @fund.update(state: 'inactive')
+      end
+
+      it 'hidden' do
+        visit hidden_proposal_fund_path(@proposal, @fund)
+        expect(current_path).to eq(proposal_funds_path(@proposal))
+      end
+
+      it 'revealed' do
+        @proposal.recipient.update(reveals: [@fund.slug])
+        visit proposal_fund_path(@proposal, @fund)
+        expect(current_path).to eq(proposal_funds_path(@proposal))
+      end
+    end
+
     scenario "Fund stub selection shown on proposal fund page" do
       @proposal.update_column(:eligibility, @proposal.eligibility.merge( @fund_stubs.first.slug => {'location': true}) )
       visit proposal_funds_path(@proposal)
       expect(page).to have_text @fund_stubs.first.funder.name
     end
 
-    scenario "When I find a recommended fund I'm interested in,
-              I want to view more details,
-              so I can decide if I want to apply" do
-      expect(page).to_not have_text @unsuitable_fund.name
-      click_link @low_fund.name
-      expect(current_path).to eq proposal_fund_path(@proposal, @low_fund)
-    end
-
     scenario "When I visit a fund that doesn't exist,
               I want to be redirected to where I came from and see a message,
               so I avoid an error and understand what happened" do
       visit proposal_fund_path(@proposal, 'missing-fund')
-      expect(current_path).to eq account_upgrade_path(@recipient)
+      expect(current_path).to eq(proposal_funds_path(@proposal))
     end
 
     scenario "When I find a funding theme I'm interested in,
               I want to see similar funds,
               so I can discover new funding opportunties" do
-      @proposal.update_column(:suitability, Fund.active.last.slug => { 'total': 0 })
       click_link @theme.name, match: :first
       expect(current_path)
-        .to eq theme_proposal_funds_path(@proposal, @theme.slug)
-      expect(page).to have_css '.col-two-thirds.pr10.md.mb10', count: 6
-      expect(page).to have_css '.mb5.fs15.lh20.grey.redacted', count: 5
+        .to eq(theme_proposal_funds_path(@proposal, @theme.slug))
+      expect(page).to have_css('h3', count: 6)
     end
 
     scenario 'Themes redacted on second page and CTA not shown' do
       click_link @theme.name, match: :first
       click_link '2'
-      expect(page).to have_css '.mb5.fs15.lh20.grey.redacted', count: 1
-      expect(page).not_to have_text 'Upgrade'
+      expect(page).to have_link('Hidden fund', count: 1)
     end
 
     scenario "When I visit a funding theme which isn't listed,
@@ -92,7 +99,7 @@ feature 'Browse' do
       # TODO: v2 flash notices #391
       # expect(page.all('body script', visible: false)[0].native.text)
       #   .to have_text 'Fund not found'
-      expect(current_path).to eq account_upgrade_path(@recipient)
+      expect(current_path).to eq(proposal_funds_path(@proposal))
 
       visit theme_proposal_funds_path(@proposal, 'missing')
       # TODO: v2 flash notices #391
@@ -107,18 +114,9 @@ feature 'Browse' do
       expect(current_path).to eq path
     end
 
-    scenario 'can only view proposal_fund_path for recommended funds ' \
-              'unless subscribed' do
-      click_link '2'
-      click_link 'Hidden fund'
-      expect(current_path).to eq account_upgrade_path(@recipient)
-
-      subscribe_and_visit proposal_fund_path(@proposal, Fund.active.first)
-    end
-
     context 'When I view fund a with open data' do
       before(:each) do
-        click_link @top_fund.name
+        click_link 'Hidden fund', match: :first
       end
 
       scenario 'I want to see which time period the analysis relates to,

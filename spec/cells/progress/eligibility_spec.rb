@@ -1,34 +1,35 @@
 require 'rails_helper'
-require 'shared_context'
 
 describe Progress::Eligibility, type: :feature do
-  include_context 'shared context'
+  subject { Progress::Eligibility.new(status: status, position: 'bot') }
+  let(:status) { UNASSESSED }
 
-  subject do
-    Progress::Eligibility.new(proposal: proposal, fund: fund, position: 'bot')
+  it('#label') { expect(subject.label).to eq('Eligibility') }
+
+  context 'no assessment' do
+    it('indicator') { expect(subject.indicator).to eq('bg-grey bot') }
+    it('message')   { expect(subject.message).to eq(nil) }
+    it('highlight') { expect(subject.highlight).to eq(nil) }
   end
 
-  it('#label') { expect(subject.label).to eq 'Eligibility' }
-
-  context 'unchecked' do
-    it('indicator') { expect(subject.indicator).to eq 'bg-blue bot' }
-    it('message')   { expect(subject.message).to have_link 'Complete' }
-    it('highlight') { expect(subject.highlight).to eq 'bg-light-blue' }
+  context 'incomplete' do
+    let(:status) { INCOMPLETE }
+    it('indicator') { expect(subject.indicator).to eq('bg-blue bot') }
+    it('message')   { expect(subject.message).to have_link('Complete') }
+    it('highlight') { expect(subject.highlight).to eq('bg-light-blue') }
   end
 
   context 'ineligible' do
-    let(:eligibility) { { quiz: { eligible: false } } }
-
-    it('indicator') { expect(subject.indicator).to eq 'bg-red bot' }
-    it('message')   { expect(subject.message).to have_link 'Ineligible' }
-    it('highlight') { expect(subject.highlight).to eq 'bg-light-blue' }
+    let(:status) { INELIGIBLE }
+    it('indicator') { expect(subject.indicator).to eq('bg-red bot') }
+    it('message')   { expect(subject.message).to have_link('Ineligible') }
+    it('highlight') { expect(subject.highlight).to eq('bg-light-blue') }
   end
 
   context 'eligible' do
-    let(:eligibility) { { quiz: { eligible: true } } }
-
-    it('indicator') { expect(subject.indicator).to eq 'bg-green bot' }
-    it('message')   { expect(subject.message).to have_link 'Eligible' }
-    it('highlight') { expect(subject.highlight).to eq nil }
+    let(:status) { ELIGIBLE }
+    it('indicator') { expect(subject.indicator).to eq('bg-green bot') }
+    it('message')   { expect(subject.message).to have_link('Eligible') }
+    it('highlight') { expect(subject.highlight).to eq(nil) }
   end
 end

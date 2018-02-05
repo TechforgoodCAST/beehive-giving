@@ -1,0 +1,21 @@
+.mb40.border.border-silver.rounded
+  .p20
+    .flex.justify-between
+      .block
+        %h3.mb5= link_to 'Hidden fund', proposal_fund_path(@proposal, fund)
+        .fs15.night
+          by
+          %span.grey.redacted= scramble_name fund.funder.name
+
+      - unless fund.eligibility_status
+        .block
+          .btn.fs15.slate.border-silver.disabled New
+
+  .p20.border-top.border-silver
+    %h6.bold.mb10= cell(:fund_insight, fund, proposal: @proposal).call(:summary)
+
+    .night= raw fund.description_redacted(plain: true).truncate_words(30, omission: "... #{link_to 'more', proposal_fund_path(@proposal, fund)}")
+
+    .truncate.mt10= cell(:fund_insight, fund, proposal: @proposal).call(:themes)
+
+  = render(partial: 'status', locals: { fund: fund })

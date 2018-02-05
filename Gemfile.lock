@@ -45,6 +45,8 @@ GEM
       activemodel (= 5.1.2)
       activesupport (= 5.1.2)
       arel (~> 8.0)
+    activerecord-import (0.21.0)
+      activerecord (>= 3.2)
     activesupport (5.1.2)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
@@ -130,10 +132,10 @@ GEM
       railties (>= 3.2, < 5.2)
     erubi (1.6.1)
     execjs (2.7.0)
-    factory_girl (4.8.0)
+    factory_bot (4.8.2)
       activesupport (>= 3.0.0)
-    factory_girl_rails (4.8.0)
-      factory_girl (~> 4.8.0)
+    factory_bot_rails (4.8.2)
+      factory_bot (~> 4.8.2)
       railties (>= 3.0.0)
     ffi (1.9.18)
     formtastic (3.1.5)
@@ -357,6 +359,8 @@ GEM
       unicode_utils (>= 1.2.2)
     spring (2.0.2)
       activesupport (>= 4.2)
+    spring-commands-rspec (1.0.4)
+      spring (>= 0.9.1)
     spring-watcher-listen (2.0.1)
       listen (>= 2.7, < 4.0)
       spring (>= 1.2, < 3.0)
@@ -421,6 +425,7 @@ PLATFORMS
 
 DEPENDENCIES
   activeadmin
+  activerecord-import
   bcrypt (~> 3.1.7)
   bullet
   byebug
@@ -435,7 +440,7 @@ DEPENDENCIES
   database_cleaner
   devise
   dotenv-rails
-  factory_girl_rails
+  factory_bot_rails
   geocoder
   gon
   groupdate
@@ -469,6 +474,7 @@ DEPENDENCIES
   simple_form
   sitemap_generator
   spring
+  spring-commands-rspec
   spring-watcher-listen (~> 2.0.0)
   stripe
   stripe-ruby-mock

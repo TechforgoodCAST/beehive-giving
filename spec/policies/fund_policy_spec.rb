@@ -57,17 +57,18 @@ describe FundPolicy do
 
   context 'v2' do
     let(:version) { 2 }
+    let(:context) { FundContext.new(fund, proposal) } # TODO: refactor
 
     permissions :show? do
       it 'denies access if no fund supplied' do
-        is_expected.not_to permit(user, fund)
+        is_expected.not_to permit(user, context)
       end
 
       context 'user subscribed' do
         let(:subscribed) { true }
 
         it 'grants access' do
-          is_expected.to permit(user, fund)
+          is_expected.to permit(user, context)
         end
       end
 
@@ -75,7 +76,7 @@ describe FundPolicy do
         let(:reveals) { [fund.slug] }
 
         it 'grants access' do
-          is_expected.to permit(user, fund)
+          is_expected.to permit(user, context)
         end
       end
 
@@ -84,13 +85,13 @@ describe FundPolicy do
         let(:reveals) { [fund.slug] }
 
         it 'grants access' do
-          is_expected.to permit(user, fund)
+          is_expected.to permit(user, context)
         end
       end
 
       context 'fund not revealed' do
         it 'denies access' do
-          is_expected.not_to permit(user, fund)
+          is_expected.not_to permit(user, context)
         end
       end
     end

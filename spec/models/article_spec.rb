@@ -1,43 +1,39 @@
 require 'rails_helper'
 
 describe Article do
-  before(:each) do
-    @articles = create_list(:article, 3)
-    @article = @articles.first
-  end
+  subject { build(:article) }
 
-  it 'is valid' do
-    expect(@article).to be_valid
-  end
+  it { is_expected.to be_valid }
 
   it 'requires title' do
-    @article.title = ''
-    expect(@article).not_to be_valid
+    subject.title = ''
+    expect(subject).not_to be_valid
   end
 
   it 'titleize title' do
-    @article.title = 'titleize'
-    expect(@article.title).to eq 'Titleize'
+    subject.title = 'titleize'
+    expect(subject.title).to eq('Titleize')
   end
 
   it 'requires slug' do
-    @article.slug = ''
-    expect(@article).not_to be_valid
+    subject.slug = ''
+    expect(subject).not_to be_valid
   end
 
   it 'slug is unique' do
-    @article.slug = @articles[1].slug
-    expect(@article).not_to be_valid
+    subject.save!
+    duplicate = build(:article, slug: subject.slug)
+    expect(duplicate).not_to be_valid
   end
 
   it 'requires body' do
-    @article.body = ''
-    expect(@article).not_to be_valid
+    subject.body = ''
+    expect(subject).not_to be_valid
   end
 
   it '#body_html returns html' do
     html = '<h2><strong><a href="http://www.beehivegiving.org" ' \
            "target=\"_blank\">www.beehivegiving.org</a></strong></h2>\n"
-    expect(@article.body_html).to eq html
+    expect(subject.body_html).to eq(html)
   end
 end

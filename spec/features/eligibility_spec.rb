@@ -7,12 +7,12 @@ feature 'Eligibility' do
   before(:each) do
     @app.seed_test_db
         .setup_funds(num: 7, open_data: true)
-        .create_recipient_with_subscription_v1!
+        .create_recipient
         .with_user
         .create_registered_proposal
         .sign_in
     @db = @app.instances
-    @fund = Fund.last
+    @fund = Fund.first
     @proposal = @db[:registered_proposal]
     visit root_path
   end
@@ -62,12 +62,7 @@ feature 'Eligibility' do
             eligiblity, I want to be told why I can't access them,
             so I understand what to do next" do
     visit apply_proposal_fund_path(@proposal, @fund)
-    expect(page).to have_text 'To complete eligibility for this fund you need to add some more information to your proposal'
-
-    click_button 'Complete proposal', match: :first
-    helper.complete_proposal.submit_proposal
-    visit apply_proposal_fund_path(@proposal, @fund)
-    expect(current_path).to eq proposal_fund_path(@proposal, @fund)
+    expect(current_path).to eq(account_upgrade_path(@proposal.recipient))
   end
 
   scenario 'When I select a restriction that is inverted,
@@ -108,14 +103,16 @@ feature 'Eligibility' do
               I want the check to be invalid,
               so I avoid accidently checking a fund' do
       helper.answer_proposal_restrictions(@fund).check_eligibility
-      expect(page).to have_text '3 of 5 questions answered.'
+      expect(page).to have_link('Complete this check')
+      # TODO: expect(page).to have_text('3 of 5 questions answered.')
     end
 
     scenario 'When I only submit answers to recipient restrictions,
               I want the check to be invalid,
               so I avoid accidently checking a fund' do
       helper.answer_recipient_restrictions(@fund).check_eligibility
-      expect(page).to have_text '2 of 5 questions answered.'
+      expect(page).to have_link('Complete this check')
+      # TODO: expect(page).to have_text '2 of 5 questions answered.'
     end
 
     scenario 'When I visit a fund without proposal restrictions,
@@ -127,28 +124,14 @@ feature 'Eligibility' do
       expect(page).to have_text 'Eligible'
     end
 
-    scenario 'When I try check eligibility for a recommended fund,
-              I want to see a list of all restrictions,
-              so I can check to see if any apply' do
-      expect(current_path)
-        .to eq proposal_fund_path(@proposal, @fund)
-      expect(page).to have_css '.restriction_question', count: 5
-      expect(page).to have_css '.restriction_recipient_question', count: 2
-      expect(page).to have_css '.restriction_proposal_question', count: 3
-    end
-
     scenario "When I run a check and I'm eligible,
               I want to see a link to apply for funding,
               so I can see further details about applying" do
       helper.answer_restrictions(@fund).check_eligibility
             .answer_priorities(@fund).check_suitability
-
+      click_link 'Reveal'
       click_link 'Apply ❯'
-      expect(current_path).to eq apply_proposal_fund_path(@proposal, @fund)
-
-      visit proposal_fund_path(@proposal, @fund)
-      click_link 'Apply ❯'
-      expect(current_path).to eq apply_proposal_fund_path(@proposal, @fund)
+      expect(current_path).to eq(apply_proposal_fund_path(@proposal, @fund))
     end
 
     scenario "When I run a check and I'm ineligible,
@@ -172,21 +155,22 @@ feature 'Eligibility' do
               I want associated funds to be checked, so
               I don't waste time checking funds with the same restrictions" do
       helper.answer_restrictions(@fund).check_eligibility
-      expect(Proposal.last.eligibility.all_values_for('quiz').length).to eq 4
+      quizzes_checked = Assessment.where.not(eligibility_quiz: nil).size
+      expect(quizzes_checked).to eq(4)
     end
 
     scenario "When I've answered some eligibility questions in another fund,
               I want previously answered questions to be prefilled,
               so I don't waste my time answering the same question twice" do
-      Fund.limit(5).destroy_all # leave two funds remaining
+      Fund.limit(5).order(id: :desc).destroy_all # leave two funds remaining
       helper.answer_recipient_restrictions(@fund)
             .answer_proposal_restrictions(@fund, eligible: false)
             .check_eligibility
-      visit proposal_fund_path(@proposal, Fund.first)
+      visit proposal_fund_path(@proposal, Fund.last)
 
       helper.check_eligibility
       # 3 questions previously answered should be checked
-      expect(page).to have_text '3 of 5 questions answered.'
+      # TODO: expect(page).to have_text '3 of 5 questions answered.'
       expect(page).to have_css '.quiz input[type=radio][checked=checked]', count: 3
     end
 
@@ -196,26 +180,9 @@ feature 'Eligibility' do
       helper.answer_recipient_restrictions(@fund)
             .answer_proposal_restrictions(@fund, eligible: false)
             .check_eligibility
+      click_link 'Reveal'
       visit apply_proposal_fund_path(@proposal, @fund)
-      expect(current_path)
-        .to eq proposal_fund_path(@proposal, @fund)
-    end
-
-    scenario 'When I try check eligiblity but have reached the max free limit,
-              I want to be able to upgrade,
-              so I can continue to check eligibilities' do
-      # check all (7) funds, 4 quiz eligible
-      helper.answer_restrictions(@fund).check_eligibility
-
-      # checked funds don't require upgrade
-      click_link 'Funds'
-      visit proposal_fund_path(@proposal, Fund.last)
-      expect(current_path)
-        .to eq proposal_fund_path(@proposal, Fund.last)
-
-      # funds over MAX_FREE_LIMIT require upgrade
-      visit proposal_fund_path(@proposal, Fund.first)
-      expect(current_path).to eq account_upgrade_path(@db[:recipient])
+      expect(current_path).to eq(account_upgrade_path(@proposal.recipient))
     end
   end
 end

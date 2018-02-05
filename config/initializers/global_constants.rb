@@ -3,6 +3,11 @@ RECOMMENDATION_THRESHOLD = 1
 MAX_FREE_LIMIT = 3
 RECOMMENDATION_LIMIT = 6
 
+UNASSESSED = nil
+ELIGIBLE   = 1
+INCOMPLETE = 0
+INELIGIBLE = -1
+
 ORG_TYPES = [
   # Name for user, id, plural description
   ['Myself OR another individual', -1, 'individuals'],
@@ -29,11 +34,11 @@ OPERATING_FOR = [
 ].freeze
 
 INCOME_BANDS = [
-  ['Less than £10k', 0, 0, 10_000],
-  ['£10k - £100k', 1, 10_000, 100_000],
-  ['£100k - £1m', 2, 100_000, 1_000_000],
+  ['Less than £10k', 0, 0, 9_999],
+  ['£10k - £99k', 1, 10_000, 99_999],
+  ['£100k - £999k', 2, 100_000, 999_999],
   ['£1m - £10m', 3, 1_000_000, 10_000_000],
-  ['£10m+', 4, 10_000_000, Float::INFINITY]
+  ['More than £10m', 4, 10_000_001, Float::INFINITY]
 ].freeze
 
 EMPLOYEES = [

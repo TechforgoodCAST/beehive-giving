@@ -17,7 +17,7 @@ class FundPolicy < ApplicationPolicy
     end
 
     def v2_show?
-      return false unless record
+      return false unless record.fund
       return true if record.featured || record.stub?
       return true if user.subscription_active?
       user.reveals.include?(record.slug)

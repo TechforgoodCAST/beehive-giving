@@ -3,28 +3,24 @@ require 'rails_helper'
 describe ProposalIndicatorsCell do
   controller ProposalsController
 
-  before(:each) do
-    @app.seed_test_db.setup_funds(num: 4)
-        .create_recipient.create_registered_proposal
-    @proposal = Proposal.last
-    @funds = Fund.all
+  subject do
+    cell(:proposal_indicators, proposal).call(:eligibility_progress_bar)
+  end
+
+  let(:proposal) { build(:proposal) }
+
+  before do
+    %i[eligible incomplete ineligible].each_with_index do |assessment, i|
+      create_list(assessment, (i + 1), proposal: proposal)
+    end
   end
 
   it 'progress bars are correct width' do
-    @proposal.update_column(
-      :eligibility, {
-        @funds[0].slug => { 'quiz' => { 'eligible' => true } },
-        @funds[1].slug => { 'quiz' => { 'eligible' => false } },
-        @funds[2].slug => { 'location' => { 'eligible' => true } },
-        @funds[3].slug => { 'quiz' => { 'eligible' => true } },
-      }
-    )
-    indicator = cell(:proposal_indicators, @proposal).call(:eligibility_progress_bar)
-    expect(indicator).to have_css ".bar", count: 3
-    titles = indicator.find_all(".bar").pluck('title')
-    expect(titles).to include '1 fund ineligible'
-    expect(titles).to include '2 funds eligible'
-    expect(titles).to include '1 fund to check'
+    expect(subject).to have_css('.bar', count: 3)
+    titles = subject.find_all('.bar').pluck('title')
+    expect(titles).to include('3 funds ineligible')
+    expect(titles).to include('2 funds to check')
+    expect(titles).to include('1 fund eligible')
   end
 
 end

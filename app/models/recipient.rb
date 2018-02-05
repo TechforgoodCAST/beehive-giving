@@ -3,22 +3,19 @@ class Recipient < ApplicationRecord
   include RegNoValidations
   include OrgTypeValidations
 
-  has_one :subscription, dependent: :destroy
-  has_many :users, as: :organisation, dependent: :destroy
-  has_many :attempts
-  has_many :proposals
-  has_many :requests
-  has_many :countries, -> { distinct }, through: :proposals
-  has_many :districts, -> { distinct }, through: :proposals
   has_many :answers, as: :category, dependent: :destroy
   accepts_nested_attributes_for :answers
 
+  has_many :attempts
+  has_many :assessments
+  has_many :countries, -> { distinct }, through: :proposals
+  has_many :districts, -> { distinct }, through: :proposals
+  has_many :proposals
+  has_many :requests
+  has_many :users, as: :organisation, dependent: :destroy
   has_many :recipient_funder_accesses # TODO: deprecated
 
-  geocoded_by :search_address
-  after_validation :geocode,
-                   if: :street_address_changed?,
-                   unless: ->(o) { o.country != 'GB' }
+  has_one  :subscription, dependent: :destroy
 
   validates :charity_number,
             uniqueness: { scope: :company_number },
@@ -26,22 +23,24 @@ class Recipient < ApplicationRecord
   validates :company_number,
             uniqueness: { scope: :charity_number },
             allow_blank: true
-
   validates :website, format: {
     with: URI.regexp(%w[http https]),
     message: 'enter a valid website address e.g. http://www.example.com'
   }, if: :website?
-
   validates :slug, uniqueness: true, presence: true
-
   validates :postal_code,
             presence: true,
             if: proc { |o| o.charity_name.present? || o.company_name.present? }
 
-  before_save :unique_reveals
   before_validation :set_slug, if: :should_set_slug?
   before_validation :clear_registration_numbers_if_unregistered
+  after_validation :geocode,
+                   if: :street_address_changed?,
+                   unless: ->(o) { o.country != 'GB' }
+  before_save :unique_reveals
   after_create :create_subscription
+
+  geocoded_by :search_address
 
   def name=(s)
     self[:name] = s.sub(s.first, s.first.upcase)
@@ -76,7 +75,7 @@ class Recipient < ApplicationRecord
   end
 
   def subscribed?
-    subscription.active?
+    subscription&.active?
   end
 
   def update_funds_checked!(eligibility)
@@ -115,21 +114,19 @@ class Recipient < ApplicationRecord
     )
   end
 
-  def create_subscription
-    Subscription.create(recipient_id: id, version: 2) if subscription.nil?
-  end
-
   def max_income
-    return income if income
-    INCOME_BANDS[income_band][3]
+    income || INCOME_BANDS[income_band][3]
   end
 
   def min_income
-    return income if income
-    INCOME_BANDS[income_band][2]
+    income || INCOME_BANDS[income_band][2]
   end
 
   private
+
+    def create_subscription
+      Subscription.create(recipient_id: id, version: 2) if subscription.nil?
+    end
 
     def unique_reveals
       self[:reveals] = self[:reveals].uniq

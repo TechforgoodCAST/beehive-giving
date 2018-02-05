@@ -1,6 +1,84 @@
 require 'rails_helper'
 
 describe Fund do
+  context 'self' do
+    let(:proposal) { build(:proposal) }
+
+    before(:each) do
+      default_order = %i[orphan eligible incomplete ineligible]
+      @funds = default_order.zip(create_list(:fund_simple, 4)).to_h
+      default_order.drop(1).each do |label|
+        create(label, fund: @funds[label], proposal: proposal)
+      end
+    end
+
+    context '#order_by' do
+      subject { Fund.join(proposal).order_by(col) }
+
+      let(:col) { nil }
+
+      it 'no proposal'
+      it 'only active funds'
+
+      context 'default order' do
+        it { is_expected.to contain_exactly(*@funds.values) }
+      end
+
+      it 'featured fund is ordered first if eligible' do
+        @funds[:incomplete].update(featured: true)
+        featured_order = [
+          @funds[:incomplete],
+          @funds[:orphan],
+          @funds[:eligible],
+          @funds[:ineligible]
+        ]
+        expect(subject).to eq(featured_order)
+      end
+
+      it 'ineligible featured fund'
+
+      context 'name' do
+        before { @funds[:ineligible].update(name: '0') }
+        let(:col) { 'name' }
+
+        it 'ASC' do
+          expect(subject[0]).to eq(@funds[:ineligible])
+        end
+
+        it 'featured fund first' do
+          @funds[:incomplete].update(featured: true)
+          expect(subject[0]).to eq(@funds[:incomplete])
+          expect(subject[1]).to eq(@funds[:ineligible])
+        end
+      end
+    end
+
+    context '#eligibility' do
+      subject { Fund.join(proposal).eligibility(eligibility) }
+
+      let(:eligibility) { nil }
+
+      context 'default all' do
+        it { is_expected.to contain_exactly(*@funds.values) }
+      end
+
+      context 'eligible' do
+        let(:eligibility) { 'eligible' }
+        it { is_expected.to contain_exactly(@funds[:eligible]) }
+      end
+
+      context 'ineligible' do
+        let(:eligibility) { 'ineligible' }
+        it { is_expected.to contain_exactly(@funds[:ineligible]) }
+      end
+
+      context 'to_check' do
+        let(:eligibility) { 'to_check' }
+        it { is_expected.to contain_exactly(@funds[:orphan], @funds[:incomplete]) }
+      end
+    end
+  end
+
   context 'single' do
     before(:each) do
       @app.seed_test_db
@@ -34,55 +112,6 @@ describe Fund do
       it 'self.active' do
         Fund.last.update state: 'inactive'
         expect(Fund.active.count).to eq 2
-      end
-    end
-
-    context 'self.order_by' do
-      before(:each) do
-        @proposal = build :proposal, suitability: {
-          Fund.second.slug => { 'total' => 1.0 },
-          Fund.first.slug => { 'total' => 0.5 }
-        }, eligibility: {
-          Fund.second.slug => { 'topic' => { 'eligible' => false } }
-        }
-      end
-
-      it 'default relevance orders ineligible last' do
-        expect(Fund.order_by(@proposal, 'DROP TABLE "FUNDS";').pluck(:id))
-          .to eq [Fund.first.id, Fund.third.id, Fund.second.id]
-      end
-
-      it 'featured fund is always ordered first' do
-        Fund.third.update featured: true
-        expect(Fund.order_by(@proposal, 'DROP TABLE "FUNDS";').pluck(:id))
-          .to eq [Fund.third.id, Fund.first.id, Fund.second.id]
-      end
-
-      it 'name' do
-        Fund.first.update name: 'z'
-        expect(Fund.order_by(@proposal, 'name').pluck(:name))
-          .to eq ['Awards for All 2', 'Awards for All 3', 'z']
-      end
-    end
-
-    context 'self.eligibility' do
-      before(:each) do
-        @eligibility = Fund.all.each_with_index.map do |fund, i|
-          [fund.slug, { 'quiz' => { 'eligible' => i.even? } }]
-        end.to_h
-        @proposal = build(:proposal, eligibility: @eligibility)
-      end
-
-      it 'default all' do
-        expect(Fund.eligibility(@proposal, 'DROP TABLE "FUNDS";').size).to eq 3
-      end
-
-      it 'eligible' do
-        expect(Fund.eligibility(@proposal, 'eligible').size).to eq 2
-      end
-
-      it 'ineligible' do
-        expect(Fund.eligibility(@proposal, 'ineligible').size).to eq 1
       end
     end
 

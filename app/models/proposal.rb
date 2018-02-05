@@ -4,19 +4,21 @@ class Proposal < ApplicationRecord
               :clear_age_groups_and_gender_unless_affect_people
   after_save :initial_recommendation
 
+  belongs_to :recipient
+
   has_many :answers, as: :category, dependent: :destroy
   accepts_nested_attributes_for :answers
 
-  belongs_to :recipient
+  has_many :assessments
   has_many :enquiries, dependent: :destroy
-  has_and_belongs_to_many :beneficiaries
-  has_and_belongs_to_many :age_groups
-  has_and_belongs_to_many :countries
-  has_and_belongs_to_many :districts
-  has_and_belongs_to_many :implementations
-
   has_many :proposal_themes, dependent: :destroy
   has_many :themes, through: :proposal_themes
+
+  has_and_belongs_to_many :age_groups
+  has_and_belongs_to_many :beneficiaries # TODO: deprecated
+  has_and_belongs_to_many :countries
+  has_and_belongs_to_many :districts
+  has_and_belongs_to_many :implementations # TODO: deprecated
 
   TYPE_OF_SUPPORT = ['Only financial', 'Mostly financial',
                      'Equal financial and non-financial',
@@ -132,18 +134,14 @@ class Proposal < ApplicationRecord
     )
   end
 
-  def initial_recommendation
-    eligibility = CheckEligibilityFactory.new(self, Fund.active)
-    eligibility_stubs = CheckEligibilityFactory.stubs
+  def initial_recommendation # TODO: deprecated
     suitability = CheckSuitabilityFactory.new
-    update_columns(
-      eligibility: eligibility_stubs.call_each(self, Fund.stubs).merge(eligibility.call_each(self, Fund.active)),
-      suitability: suitability.call_each_with_total(self, Fund.active)
+    update_column(
+      :suitability, suitability.call_each_with_total(self, Fund.active)
     )
   end
 
-  def update_legacy_suitability
-    # TODO: refactor
+  def update_legacy_suitability # TODO: depreceted
     initial_recommendation unless
       suitability.key?(Fund.active.order(:updated_at).last&.slug)
   end
@@ -157,15 +155,15 @@ class Proposal < ApplicationRecord
     eligibility.select { |f, fund| fund.all_values_for('eligible').exclude?(false) }
   end
 
-  def eligible_funds
+  def eligible_funds # TODO: deprecated
     eligibility.select { |f, _| eligible_status(f) == 1 }
   end
 
-  def ineligible_funds
+  def ineligible_funds # TODO: deprecated
     eligibility.select { |f, _| eligible_status(f).zero? }
   end
 
-  def to_check_funds
+  def to_check_funds # TODO: deprecated
     eligibility.select { |f, _| eligible_status(f) == -1 }
   end
 
@@ -175,13 +173,13 @@ class Proposal < ApplicationRecord
       eligibility[fund_slug].all_values_for('eligible').exclude?(false)
   end
 
-  def eligible_status(fund_slug)
+  def eligible_status(fund_slug) # TODO: deprecated
     return 0 unless eligibility[fund_slug].all_values_for('eligible').exclude?(false)
     return -1 unless eligibility[fund_slug]&.key?('quiz') # check
     eligible?(fund_slug) ? 1 : 0 # eligible : ineligible
   end
 
-  def eligibility_as_text(fund_slug)
+  def eligibility_as_text(fund_slug) # TODO: deprecated
     {
       -1 => 'Check', 0 => 'Ineligible', 1 => 'Eligible'
     }[eligible_status(fund_slug)]

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :district do
     country
     sequence(:name, (0..2).cycle) { |i| %w(Arun Ashfield Ashford)[i] }

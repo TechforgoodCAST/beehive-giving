@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :restriction do
     sequence(:details) { |n| "Random restriction #{n}" }
 

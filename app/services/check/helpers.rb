@@ -1,4 +1,4 @@
-module Check
+module Check # TODO: deprecated
   module Helpers
     private
 

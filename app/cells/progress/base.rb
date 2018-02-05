@@ -4,9 +4,10 @@ module Progress
     include ActionView::Helpers::UrlHelper
 
     def initialize(args = {})
+      @position = args[:position]
       @proposal = args[:proposal]
       @fund     = args[:fund]
-      @position = args[:position]
+      @status   = args[:status]
     end
 
     def label

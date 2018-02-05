@@ -23,11 +23,8 @@
     %img{ alt: "", height: "1", src: "//www.googleadservices.com/pagead/conversion/937505505/?label=8GqLCMWurGMQ4eWEvwM&amp;guid=ON&amp;script=0", style: "border-style:none;", width: "1" }
 
 %main
-  .maxw1080.mx-auto.px20.flex.flex-wrap
-    %aside.perc25.md.px20.mb40
-      = render partial: 'funds/card', locals: { fund: @fund }
-
-    %section.perc75.md.mb80.px20
+  .maxw1080.mx-auto.px40.mt40
+    %section.px20.md
       %section.mb30
         %h1
           Apply to
@@ -58,7 +55,7 @@
                   target: '_blank',
                   'data-uk-tooltip': "{pos:'top'}",
                   title: 'A new page will be opened with application details',
-                  class: 'button white bg-blue caps shadow mb40 right'
+                  class: 'button white bg-blue caps shadow mb80 right'
       - else
         .bg-ice.rounded.shadow.fs18.lh22.p10.mb20
           .bold.caps.mb10.fs15 Unsolicited applications
@@ -69,4 +66,4 @@
                   target: '_blank',
                   'data-uk-tooltip': "{pos:'top'}",
                   title: 'A new page will be opened with guidance',
-                  class: 'button white bg-blue caps shadow mb40 right'
+                  class: 'button white bg-blue caps shadow mb80 right'

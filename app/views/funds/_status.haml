@@ -1,0 +1,15 @@
+- status = fund.eligibility_status
+.p20.border-top.border-silver
+  .flex.justify-between
+    .mx-auto.flex.items-center
+      .dot{ class: Progress::Eligibility.new(status: status).indicator }
+      %h6.ml10 Eligibility
+    .slate ❯
+    .mx-auto.flex.items-center
+      -# TODO: refactor
+      .dot{ class: Progress::Suitability.new(fund: fund, proposal: @proposal).indicator }
+      %h6.ml10 Suitability
+    .slate ❯
+    .mx-auto.flex.items-center
+      .dot{ class: Progress::Apply.new(status: status).indicator }
+      %h6.ml10 Apply

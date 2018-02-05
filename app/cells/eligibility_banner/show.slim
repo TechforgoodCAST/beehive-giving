@@ -1,8 +1,0 @@
-- if model.eligible?(fund.slug)
-  .cta.wide.green
-    = render view: :eligible, locals: {fund: fund}
-
-- else
-  - model.ineligible_reasons(fund.slug).each do |r|
-    .cta.wide.red
-      = cell(:eligibility_banner, model, fund: fund).call(r.to_sym)

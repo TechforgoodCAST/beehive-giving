@@ -24,14 +24,14 @@
         = cell(:fund_insight, @fund, proposal: @proposal).call(:themes)
 
       %section.perc50.md
-        = cell(:progress, @proposal, fund: @fund)
+        = cell(:progress, @assessment)
 
     %section.px20.mb80.md
       .p20.bg-light-blue.border.border-blue.rounded
         %h2.mb20 About this fund
 
         %p.mb10
-          This fund is a "stub". This means we don't have all the information we would usually 
+          This fund is a "stub". This means we don't have all the information we would usually
           need to check your eligibility and suitability. We have selected it based on the theme
           and location of your proposal.
 
@@ -44,7 +44,7 @@
 
         %p.mb10
           The information we have here is generated from data from the Charity Commission for England
-          and Wales, used under the 
+          and Wales, used under the
           = succeed '.' do
             = link_to 'Open Government License', 'https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/', class: 'blue'
           More details are available on our

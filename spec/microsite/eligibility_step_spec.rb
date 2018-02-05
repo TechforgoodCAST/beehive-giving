@@ -162,10 +162,9 @@ describe EligibilityStep do
         expect(Recipient.last.name).to eq 'Charity name'
       end
 
-      it 'updates runs eligibility check and updates Proposal' do
+      it 'updates runs eligibility check' do
         subject.save
-        expect(subject.attempt.proposal.eligibility[Fund.first.slug])
-          .to have_key 'quiz'
+        expect(subject.attempt.proposal.assessments.size).to eq(1)
       end
 
       it '#save updates Attempt' do

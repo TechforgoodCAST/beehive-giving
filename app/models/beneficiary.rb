@@ -1,4 +1,4 @@
-class Beneficiary < ApplicationRecord
+class Beneficiary < ApplicationRecord # TODO: deprecated
   scope :people, -> { where(category: 'People') }
   scope :other,  -> { where(category: 'Other') }
 

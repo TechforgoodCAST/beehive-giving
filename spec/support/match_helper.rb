@@ -70,7 +70,7 @@ class MatchHelper
   def fill_organisation_form
     # TODO: test cases for other types of org
     within '#new_recipient' do
-      select '£100k - £1m'
+      select '£100k - £999k'
       select '1 - 5', from: 'recipient_employees'
       select '1 - 5', from: 'recipient_volunteers'
     end

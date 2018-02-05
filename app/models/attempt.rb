@@ -1,7 +1,7 @@
 class Attempt < ApplicationRecord
   belongs_to :funder
-  belongs_to :recipient
   belongs_to :proposal
+  belongs_to :recipient
 
-  validates :funder, :recipient, :proposal, :state, presence: true
+  validates :funder, :proposal, :recipient, :state, presence: true
 end

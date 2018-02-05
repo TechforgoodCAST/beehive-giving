@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :priority do
     sequence(:details) { |n| "Random priority #{n}" }
 

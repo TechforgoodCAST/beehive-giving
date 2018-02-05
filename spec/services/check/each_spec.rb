@@ -1,76 +1,51 @@
 require 'rails_helper'
 
 describe Check::Each do
-  before(:each) do
-    @app.seed_test_db.setup_funds(num: 2)
-        .create_recipient.create_registered_proposal
-    @proposal = Proposal.last
-    @funds = Fund.all
+  let(:criteria) { [Check::Eligibility::OrgType.new] }
+  let(:funds)    { Fund.active }
+  let(:themes)   { build_list(:theme, 1) }
+  let(:assessment) do
+    create(
+      :assessment,
+      fund: create_list(
+        :fund, 2,
+        themes: themes,
+        restrictions_known: false,
+        priorities_known: false
+      )[0]
+    )
   end
 
-  it '#call_each invalid' do
-    expect { subject.call_each }.to raise_error ArgumentError
+  before { assessment }
+
+  subject { Check::Each.new(criteria).call_each(funds, assessment.proposal) }
+
+  context 'missing criteria' do
+    let(:criteria) { nil }
+    it('raise error') { expect { subject }.to raise_error(ArgumentError) }
   end
 
-  context 'initialized' do
-    subject do
-      Check::Each.new(
-        [
-          Check::Eligibility::Amount.new,
-          Check::Eligibility::Location.new,
-          Check::Eligibility::OrgIncome.new,
-          Check::Eligibility::OrgType.new,
-          Check::Eligibility::Quiz.new(@proposal, @funds)
-        ]
-      )
+  context 'empty criteria' do
+    let(:criteria) { [] }
+    it('returns persisted Assessments') { expect(subject.size).to eq(1) }
+  end
+
+  it 'returns Array of one valid Assessment per Fund' do
+    expect(subject).to be_an(Array)
+    expect(subject.size).to eq(2)
+    subject.each do |assessment|
+      expect(assessment).to be_an(Assessment)
+      expect(assessment).to be_valid
     end
+  end
 
-    it '#call_each invalid Proposal' do
-      expect { subject.call_each({}, @funds) }.to raise_error 'Invalid Proposal'
-    end
+  it 'initializes new Assessments for new Funds' do
+    expect(Assessment.count).to eq(1)
+    expect(subject.size).to eq(2)
+  end
 
-    it '#call_each invalid Fund::ActiveRecord_Relation' do
-      expect { subject.call_each(@proposal, {}) }
-        .to raise_error 'Invalid collection of Funds'
-    end
-
-    it '#call_each response' do
-      Fund.first.restrictions.each do |r|
-        category = r.category == 'Proposal' ? @proposal : @proposal.recipient
-        create(:proposal_eligibility, category: category, criterion: r,
-                                      eligible: false)
-      end
-
-      response = {
-        'funder-awards-for-all-1' => {
-          'amount'     => { 'eligible' => true },
-          'location'   => { 'eligible' => true },
-          'org_income' => { 'eligible' => true },
-          'org_type'   => { 'eligible' => true },
-          'quiz'       => { 'eligible' => false, 'count_failing' => 5 }
-        },
-        'funder-awards-for-all-2' => {
-          'amount'     => { 'eligible' => true },
-          'location'   => { 'eligible' => true },
-          'org_income' => { 'eligible' => true },
-          'org_type'   => { 'eligible' => true }
-        }
-      }
-
-      expect(subject.call_each(@proposal, @funds)).to eq response
-    end
-
-    it '#call_each only returns funds that are passed in' do
-      @proposal.eligibility['rouge-fund'] = 'invalid'
-      expect(subject.call_each(@proposal, @funds)).not_to have_key 'rouge-fund'
-    end
-
-    it '#call_each only returns checks that are passed in' do
-      @proposal.eligibility = {
-        @funds[0].slug => { 'rouge-check' => 'invalid' }
-      }
-      expect(subject.call_each(@proposal, @funds)[@funds[0].slug])
-        .not_to have_key 'rouge-check'
-    end
+  it 'returns changed Assessments only' do
+    assessment.update(eligibility_org_type: 1)
+    expect(subject.size).to eq(1)
   end
 end

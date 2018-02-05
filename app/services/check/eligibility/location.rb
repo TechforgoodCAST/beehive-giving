@@ -3,28 +3,57 @@ module Check
     class Location
       include Check::Base
 
-      def call(proposal, fund)
-        validate_call proposal, fund
-        return eligible false if countries_ineligible? proposal, fund
-        return eligible true  if proposal.affect_geo == 2
-        return eligible false if national_ineligible? proposal, fund
-        return eligible false if districts_ineligible? proposal, fund
-        eligible true
+      def call(assessment)
+        super
+        assessment.eligibility_location = eligibility
+        assessment
       end
 
       private
 
-        def countries_ineligible?(proposal, fund)
-          (proposal.country_ids & fund.geo_area.countries.pluck(:id)).length.zero?
+        def eligibility
+          return INELIGIBLE if countries_ineligible?
+          return INELIGIBLE if national_ineligible?
+          return INELIGIBLE if local_ineligible?
+          ELIGIBLE
         end
 
-        def national_ineligible?(_proposal, fund)
-          fund.geographic_scale_limited && fund.national
+        def geographic_scale_limited?
+          assessment.fund.geographic_scale_limited?
         end
 
-        def districts_ineligible?(proposal, fund)
-          return false unless fund.geographic_scale_limited && !fund.national
-          (proposal.district_ids & fund.geo_area.districts.pluck(:id)).length.zero?
+        def national?
+          assessment.fund.national?
+        end
+
+        def proposal_national?
+          assessment.proposal.affect_geo == 2
+        end
+
+        def fund_geo_ids(geo)
+          assessment.fund.geo_area.send(geo.pluralize).pluck(:id)
+        end
+
+        def proposal_geo_ids(geo)
+          assessment.proposal.send("#{geo}_ids")
+        end
+
+        def ineligible?(geo)
+          (proposal_geo_ids(geo) & fund_geo_ids(geo)).empty?
+        end
+
+        def countries_ineligible?
+          ineligible?('country')
+        end
+
+        def national_ineligible?
+          return false if proposal_national?
+          geographic_scale_limited? && national?
+        end
+
+        def local_ineligible?
+          return false unless geographic_scale_limited? && !national?
+          ineligible?('district')
         end
     end
   end

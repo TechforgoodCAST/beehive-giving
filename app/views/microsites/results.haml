@@ -33,15 +33,16 @@
           .p20
             .flex.justify-between.items-center
               .flex.items-center
-                - opts = { proposal: @proposal, fund: fund }
-                .dot.mr20{ class: Progress::Eligibility.new(opts).indicator }
+                - status = fund.eligibility_status
+                .dot.mr20{ class: Progress::Eligibility.new(status: status).indicator }
                 %div
                   %h3.mb5= fund.name
                   .fs15.night
                     by
                     = @funder.name
+              -# TODO: refactor
               %div
-                - if @proposal.eligible_status(fund.slug).positive?
+                - if fund.eligibility_status == ELIGIBLE
                   = link_to 'Apply ❯', fund.application_link, target: '_blank', class: 'fs15 btn white bg-blue shadow bg-primary headline'
                 - else
                   = link_to 'More funds', new_password_reset_path, class: 'fs15 btn blue border border-blue border-primary primary'
@@ -50,4 +51,4 @@
             %h6.bold.mb10= cell(:fund_insight, fund, proposal: @proposal).call(:summary)
             .night= raw strip_tags(fund.description_html).truncate_words(30, omission: "... #{link_to 'more on Beehive', '/', class: 'primary'}")
 
-          .bg-ice= cell(:eligibility, @proposal, fund: fund).call(:analysis)
+          .bg-ice= cell(:results, @assessments[fund.id]).call(:eligibility)

@@ -1,29 +1,47 @@
 require 'rails_helper'
 
 describe Check::Eligibility::Quiz do
-  before(:each) do
-    @app.seed_test_db.setup_funds.create_recipient.create_registered_proposal
-    @proposal = Proposal.last
-    @fund = Fund.last
-    @fund.restrictions.each do |r|
-      category = r.category == 'Proposal' ? @proposal : @proposal.recipient
-      create(:proposal_eligibility, category: category, criterion: r)
-    end
-    @fund.save
+  let(:assessment) do
+    build(
+      :assessment,
+      fund: build(
+        :fund,
+        themes: build_list(:theme, 1),
+        restrictions: restrictions,
+        priorities_known: false
+      ),
+      recipient: create(
+        :recipient,
+        answers: [build(
+          :recipient_eligibility,
+          criterion: restrictions.first,
+          eligible: eligible
+        )]
+      )
+    )
+  end
+  let(:restrictions) { build_list(:restriction, num, category: 'Recipient') }
+  let(:num) { 1 }
+  let(:eligible) { true }
+  let(:eligibility) { assessment.eligibility_quiz }
+  let(:incomplete) { assessment.eligibility_quiz_failing }
+
+  before { subject.call(assessment) }
+
+  context 'with incomplete answers' do
+    let(:num) { 2 }
+    it('is nil') { expect(eligibility).to eq(UNASSESSED) }
+    it('failing count') { expect(incomplete).to eq(nil) }
   end
 
-  subject do
-    Check::Eligibility::Quiz.new(@proposal, Fund.active)
+  context 'with correct answers' do
+    it('is eligible') { expect(eligibility).to eq(ELIGIBLE) }
+    it('none failing') { expect(incomplete).to eq(0) }
   end
 
-  it '#call eligible' do
-    expect(subject.call(@proposal, @fund))
-      .to eq 'eligible' => true, 'count_failing' => 0
-  end
-
-  it '#call ineligible' do
-    Answer.update_all eligible: false
-    expect(subject.call(@proposal, @fund))
-      .to eq 'eligible' => false, 'count_failing' => 5
+  context 'with incorrect answers' do
+    let(:eligible) { false }
+    it('is ineligible') { expect(eligibility).to eq(INELIGIBLE) }
+    it('some failing') { expect(incomplete).to eq(1) }
   end
 end

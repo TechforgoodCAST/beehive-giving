@@ -11,6 +11,7 @@ require 'capybara/rspec'
 require 'capybara/poltergeist'
 require_relative './support/database_cleaner'
 require_relative './support/test_helper'
+require_relative './support/test_helpers'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -61,7 +62,10 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
-  config.include FactoryGirl::Syntax::Methods
+  config.include FactoryBot::Syntax::Methods
+  config.include TestHelpers
+
+  config.before(:suite) { TestHelper.new.seed_db }
 
   config.before(:each) do
     Geocoder.configure(lookup: :test)

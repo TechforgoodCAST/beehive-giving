@@ -1,6 +1,7 @@
 require 'rails_helper'
-require_relative '../support/match_helper'
 require_relative '../support/eligibility_helper'
+require_relative '../support/match_helper'
+require_relative '../support/subscriptions_helper'
 
 feature 'Proposal' do
   let(:match) { MatchHelper.new }

@@ -2,12 +2,12 @@ require 'rails_helper'
 
 describe FilterCell do
   before(:each) do
-    @filter = cell(:filter, sort: 'relevance', funding_duration: 12).call(:show)
+    @filter = cell(:filter, sort: 'eligibility', funding_duration: 12).call(:show)
   end
 
   it 'has correct options' do
     [
-      'Relevance',
+      'Eligibility',
       'Name',
       'All',
       'Eligible',
@@ -22,6 +22,6 @@ describe FilterCell do
   end
 
   it 'selected option' do
-    expect(@filter).to have_select('sort', selected: 'Relevance')
+    expect(@filter).to have_select('sort', selected: 'Eligibility')
   end
 end

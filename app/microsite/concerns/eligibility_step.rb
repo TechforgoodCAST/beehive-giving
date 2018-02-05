@@ -136,14 +136,8 @@ class EligibilityStep
         country_ids: (country_ids << Country.find_by(alpha2: country).id).uniq,
         district_ids: district_ids
       )
-      Proposal.skip_callback :save, :after, :initial_recommendation # TODO: refactor
-      proposal.save(validate: false)
-      Proposal.set_callback :save, :after, :initial_recommendation # TODO: refactor
-      funds = funder.funds.active
-      eligibility = CheckEligibilityFactory.new(proposal, funds)
-                                           .call_each(proposal, funds)
+      Assessment.analyse_and_update!(funder.funds.active, proposal)
       proposal.next_step!
-      proposal.update_column(:eligibility, eligibility)
     end
 
     def save_attempt!

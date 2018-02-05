@@ -10,6 +10,7 @@ class Fund < ApplicationRecord
 
   belongs_to :funder
 
+  has_many :assessments, dependent: :destroy
   has_many :enquiries, dependent: :destroy
   has_many :requests, dependent: :destroy
 
@@ -77,31 +78,31 @@ class Fund < ApplicationRecord
     end
   end
 
-  def self.order_by(proposal, col)
-    case col
-    when 'name'
-      order 'funds.name'
-    else
-      ordered = order_slugs(proposal)
-      active.sort_by do |fund|
-        ordered.index(fund.slug) || ordered.size + 1
-      end
-    end
+  def self.join(proposal = nil)
+    joins(
+      'LEFT JOIN assessments ' \
+      'ON funds.id = assessments.fund_id ' \
+      "AND assessments.proposal_id = #{proposal&.id || 'NULL'}"
+    )
   end
 
-  def self.eligibility(proposal, state)
-    case state
-    when 'eligible_noquiz'
-      where slug: proposal.eligible_noquiz.keys
-    when 'eligible'
-      where slug: proposal.eligible_funds.keys
-    when 'ineligible'
-      where slug: proposal.ineligible_funds.keys
-    when 'to_check'
-      where slug: proposal.to_check_funds.keys
-    else
-      all
-    end
+  def self.order_by(col = nil)
+    order = [
+      'funds.featured DESC',
+      ('assessments.eligibility_status DESC' unless col == 'name'),
+      'funds.name'
+    ]
+    order(*order)
+  end
+
+  def self.eligibility(state = nil)
+    eligibility = {
+      'eligible'   => ELIGIBLE,
+      'ineligible' => INELIGIBLE,
+      'to_check'   => [UNASSESSED, INCOMPLETE]
+    }[state]
+
+    eligibility ? where('assessments.eligibility_status': eligibility) : all
   end
 
   def self.duration(proposal, state)
@@ -166,8 +167,8 @@ class Fund < ApplicationRecord
     markdown(desc, plain: plain)
   end
 
-  def amount_desc
-    return unless min_amount_awarded_limited || max_amount_awarded_limited
+  def amount_desc # TODO: refactor & test
+    return 'of any size' unless min_amount_awarded_limited || max_amount_awarded_limited
     opts = { precision: 0, unit: '£' }
     if !min_amount_awarded_limited || min_amount_awarded.zero?
       "up to #{number_to_currency(max_amount_awarded, opts)}"
@@ -178,7 +179,7 @@ class Fund < ApplicationRecord
     end
   end
 
-  def duration_desc
+  def duration_desc # TODO: refactor & test
     return unless min_duration_awarded_limited || max_duration_awarded_limited
     if !min_duration_awarded_limited || min_duration_awarded == 0
       "up to #{months_to_str(max_duration_awarded)}"
@@ -189,8 +190,8 @@ class Fund < ApplicationRecord
     end
   end
 
-  def org_income_desc
-    return unless min_org_income_limited || max_org_income_limited
+  def org_income_desc # TODO: refactor & test
+    return 'any' unless min_org_income_limited || max_org_income_limited
     opts = {precision: 0, unit: "£"}
     if !min_org_income_limited || min_org_income == 0
       "up to #{number_to_currency(max_org_income, opts)}"
@@ -212,15 +213,6 @@ class Fund < ApplicationRecord
 
   include FundJsonSetters
   include FundArraySetters
-
-  private_class_method def self.order_slugs(proposal)
-    suitable_slugs = proposal.suitable_funds.pluck(0)
-    ineligible_slugs = proposal.ineligible_funds.pluck(0)
-    featured_slugs = active.where(featured: true).pluck(:slug)
-    featured_slugs = featured_slugs - ineligible_slugs
-    all_slugs = active.pluck(:slug)
-    (featured_slugs + suitable_slugs + all_slugs).uniq - ineligible_slugs
-  end
 
   private
 

@@ -1,5 +1,5 @@
-class TestHelper
-  include FactoryGirl::Syntax::Methods
+class TestHelper # TODO: refactor
+  include FactoryBot::Syntax::Methods
   include ShowMeTheCookies
   include WebMock::API
 
@@ -11,8 +11,12 @@ class TestHelper
   ENV['BEEHIVE_INSIGHT_TOKEN'] = 'username'
   ENV['BEEHIVE_INSIGHT_SECRET'] = 'password'
 
+  def seed_db
+    create_list(:age_group, AgeGroup::AGE_GROUPS.count)
+  end
+
   def seed_test_db
-    @age_groups      = create_list(:age_group, AgeGroup::AGE_GROUPS.count)
+    @age_groups      = AgeGroup.any? ? AgeGroup.all : seed_db
     @beneficiaries   = create_list(:beneficiary, Beneficiary::BENEFICIARIES.count)
     @all_ages        = @age_groups.first
     @countries       = create_list(:country, 2)
@@ -27,7 +31,7 @@ class TestHelper
   end
 
   def setup_funds(num: 1, save: true, open_data: false, opts: {}) # TODO: refactor
-    FactoryGirl.reload
+    FactoryBot.reload
     @funder = create(:funder)
     @funds = if open_data
                build_list(:fund_with_open_data, num, opts.merge(funder: @funder))
@@ -56,7 +60,7 @@ class TestHelper
   end
 
   def setup_fund_stubs(num: 1, save: true, opts: {})
-    FactoryGirl.reload
+    FactoryBot.reload
     @funder = create(:funder, name: 'Fund Stub Funder')
     @fund_stubs = build_list(:fundstub, num, opts.merge(funder: @funder))
     @fund_stubs.each_with_index do |fund, i|
@@ -140,7 +144,7 @@ class TestHelper
     self
   end
 
-  def create_recipient_with_subscription_v1!
+  def create_recipient_with_subscription_v1! # TODO: deprecated
     create_recipient
     @recipient.subscription.update(version: 1)
     self
@@ -172,11 +176,14 @@ class TestHelper
   end
 
   def build_initial_proposal
-    @initial_proposal = build(:initial_proposal, recipient: @recipient,
-                                                 countries: [@uk],
-                                                 districts: @uk_districts,
-                                                 age_groups: @age_groups,
-                                                 themes: @themes)
+    @initial_proposal = build(
+      :proposal,
+      recipient: @recipient,
+      countries: [@uk],
+      districts: @uk_districts,
+      age_groups: @age_groups,
+      themes: @themes
+    )
     self
   end
 
@@ -187,12 +194,15 @@ class TestHelper
   end
 
   def build_registered_proposal
-    @registered_proposal = build(:registered_proposal, recipient: @recipient,
-                                                       countries: [@uk],
-                                                       districts: @uk_districts,
-                                                       age_groups: @age_groups,
-                                                       implementations: @implementations,
-                                                       themes: @themes)
+    @registered_proposal = build(
+      :registered_proposal,
+      recipient: @recipient,
+      countries: [@uk],
+      districts: @uk_districts,
+      age_groups: @age_groups,
+      implementations: @implementations,
+      themes: @themes
+    )
     self
   end
 
@@ -203,12 +213,15 @@ class TestHelper
   end
 
   def build_complete_proposal
-    @complete_proposal = build(:proposal, recipient: @recipient,
-                                          countries: [@uk],
-                                          districts: @uk_districts,
-                                          age_groups: @age_groups,
-                                          implementations: @implementations,
-                                          themes: @themes)
+    @complete_proposal = build(
+      :complete_proposal,
+      recipient: @recipient,
+      countries: [@uk],
+      districts: @uk_districts,
+      age_groups: @age_groups,
+      implementations: @implementations,
+      themes: @themes
+    )
     self
   end
 

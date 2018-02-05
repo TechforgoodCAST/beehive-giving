@@ -1,32 +1,22 @@
-%article.mb30.flex.flex-wrap{:class => ("p10 border-thick border-blue rounded featured" if fund.featured)}
-  .col-two-thirds.pr10.md.mb10
-    - if policy(FundContext.new(fund, @proposal)).show?
-      .mb5
-        = link_to fund.title, proposal_fund_path(@proposal, fund), class: 'blue fs22 lh30 mr5'
-        - if fund.featured
-          %span.bg-blue.white.fs14.bold.rounded.py3.px5.inline-block
-            Featured
-      .mb5.fs15.lh20.night
-        = fund.subtitle
-      %p.fs14.lh18.mb5.truncate
-        = cell(:fund_insight, fund, proposal: @proposal).call(:themes)
-      %p.mb5.fs15.lh20
-        = raw strip_tags fund.description_html.truncate_words(30)
 
-    - else
-      .mb5
-        = link_to 'Hidden fund', proposal_fund_path(@proposal, fund), class: 'blue fs22 lh30 italic mr5'
+.mb40.border.border-silver.rounded.shadow
+  .p20
+    .flex.justify-between
+      .block
+        %h3.mb5= link_to fund.name, proposal_fund_path(@proposal, fund)
+        .fs15.night
+          by
+          = fund.funder.name
 
-        - if @current_user.subscription_version == 2
-          = link_to 'Reveal', reveals_path(fund: fund), method: :post, class: 'bg-blue white fs14 bold rounded py3 px5 inline-block'
+      - if fund.featured
+        .block
+          .btn.fs15.slate.border-silver.disabled Featured
 
-      .mb5.fs15.lh20.grey.redacted= scramble_name fund.funder.name
-      %p.fs14.lh18.mb5.truncate
-        = cell(:fund_insight, fund, proposal: @proposal).call(:themes)
-      %p.mb5.fs15.lh20= raw fund.description_redacted(plain: true).truncate_words(30)
+  .p20.border-top.border-silver
+    %h6.bold.mb10= cell(:fund_insight, fund, proposal: @proposal).call(:summary)
 
-    %p.fs12.lh18.mb5.slate
-      = cell(:fund_insight, fund, proposal: @proposal).call(:summary)
+    .night= raw strip_tags(fund.description_html).truncate_words(30, omission: "... #{link_to 'more', proposal_fund_path(@proposal, fund)}")
 
-  .col-one-third.border-left.pl10.border-silver.md.mb10.pt20
-    = render partial: 'actions', locals: { fund: fund }
+    .truncate.mt10= cell(:fund_insight, fund, proposal: @proposal).call(:themes)
+
+  = render(partial: 'status', locals: { fund: fund })

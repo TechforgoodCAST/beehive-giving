@@ -1,0 +1,12 @@
+.border.rounded.border-silver
+  - ratings.each_with_index do |rating, i|
+    .flex.flex-wrap.items-center.border-silver class=('border-top' unless i.zero?)
+      .perc33.md
+        .m20
+          .flex.items-center
+            .dot class="bg-#{rating.colour}"
+            h5.pl20.mr-auto = rating.title
+            h5 class="#{rating.colour}" = rating.status
+      .perc66.md
+        .m20
+          .fs15 = rating.message

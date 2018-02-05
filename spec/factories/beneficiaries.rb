@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :beneficiary do
     sequence(:label, (0..24).cycle) do |i|
       Beneficiary::BENEFICIARIES[i][:label]
