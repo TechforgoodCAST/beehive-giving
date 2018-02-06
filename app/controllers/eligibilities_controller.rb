@@ -15,6 +15,7 @@ class EligibilitiesController < ApplicationController
       params[:mixpanel_eligibility_tracking] = true
       @recipient.update_funds_checked!(@proposal.eligibility)
       Assessment.analyse_and_update!(Fund.active, @proposal) # TODO: refactor
+      track_quiz_completion(@fund)
       redirect_to proposal_fund_path(@proposal, @fund)
     end
   end
@@ -75,5 +76,17 @@ class EligibilitiesController < ApplicationController
         e.save
       end
       @proposal.save
+    end
+
+    def track_quiz_completion(fund)
+      tracker do |t|
+        t.google_analytics(
+          :send,
+          type: 'event',
+          category: 'eligibility-quiz',
+          action: 'submit-complete',
+          label: fund.slug
+        )
+      end
     end
 end

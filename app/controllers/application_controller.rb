@@ -36,6 +36,8 @@ class ApplicationController < ActionController::Base
       return unless cookies[:auth_token]
       @current_user ||= User.includes(:organisation)
                             .find_by(auth_token: cookies[:auth_token])
+      session[:user_id] = @current_user.id
+      @current_user
     end
 
     def load_recipient

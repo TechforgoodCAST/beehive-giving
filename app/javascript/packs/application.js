@@ -38,3 +38,11 @@ document.addEventListener('turbolinks:before-visit', (e) => {
     window.location = e.data.url
   }
 })
+
+// Utility
+window.trackOutboundLink = (url) => {
+  window.ga('send', 'event', 'outbound', 'click', url, {
+    'transport': 'beacon',
+    'hitCallback': () => { window.open(url) }
+  })
+}
