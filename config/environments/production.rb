@@ -102,7 +102,7 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   config.middleware.use(Rack::Tracker) do
-    handler GoogleAnalytics, {
+    handler :google_analytics, {
       tracker: 'UA-30021098-2',
       enhanced_link_attribution: true,
       user_id: ->(env) { env['rack.session']['user_id'] },

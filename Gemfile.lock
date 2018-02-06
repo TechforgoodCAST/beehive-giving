@@ -1,3 +1,13 @@
+GIT
+  remote: https://github.com/railslove/rack-tracker
+  revision: 5e9d176a2ea865353ef6f515920715f1e93bbeff
+  branch: master
+  specs:
+    rack-tracker (1.5.0)
+      activesupport (>= 3.0)
+      rack (>= 1.4)
+      tilt (>= 1.4)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -246,10 +256,6 @@ GEM
       rack (>= 0.9.1)
     rack-test (0.6.3)
       rack (>= 1.0)
-    rack-tracker (1.5.0)
-      activesupport (>= 3.0)
-      rack (>= 1.4)
-      tilt (>= 1.4)
     rails (5.1.2)
       actioncable (= 5.1.2)
       actionmailer (= 5.1.2)
@@ -464,7 +470,7 @@ DEPENDENCIES
   pry-rails
   puma (~> 3.7)
   pundit
-  rack-tracker
+  rack-tracker!
   rails (~> 5.1.2)
   rails_12factor
   redcarpet
