@@ -1,4 +1,21 @@
 module FundsHelper
+  def redact(fund, field, opts = {})
+    placeholder = '**hidden**'
+
+    tokens = fund.name.downcase.split + fund.funder.name.downcase.split
+    stop_words = %w[and the fund trust foundation grants charitable]
+    final_tokens = tokens - stop_words
+
+    regex = Regexp.new(final_tokens.join('\b|\b'), options: 'i')
+
+    with_placeholder = fund[field].gsub(regex, placeholder)
+
+    scramble = Array.new(rand(5..10)) { [*'a'..'z'].sample }.join
+
+    strip_and_trim(with_placeholder, opts)
+      .gsub(placeholder, "<span class='grey redacted'>#{scramble}</span>")
+  end
+
   def period(fund = @fund, date_format="%b %Y")
     return unless fund.open_data
     if fund.period_start.strftime(date_format) == fund.period_end.strftime(date_format)
@@ -48,4 +65,14 @@ module FundsHelper
          .collect { |c| { c['name'] => c['count'] } }
          .reduce({}, :merge)
   end
+
+  private
+
+    def strip_and_trim(str, opts = {})
+      if opts[:trim]
+        strip_tags(str).truncate_words(opts[:trim], omission: opts[:omission])
+      else
+        str
+      end
+    end
 end

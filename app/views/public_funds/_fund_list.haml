@@ -23,7 +23,7 @@
             .muted
               .mb5.blue.fs22.lh30.redacted= scramble_name fund.name
               .mb5.fs15.lh20.grey.redacted= scramble_name fund.funder.name
-              %p.mb5.fs15.lh20= raw fund.description_redacted(plain: true).truncate_words(30)
+              %p.mb5.fs15.lh20= raw redact(fund, :description, trim: 30)
 
           %p.fs14.lh18
             = cell(:fund_insight, fund).call(:themes)

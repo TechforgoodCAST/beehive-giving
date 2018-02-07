@@ -157,16 +157,6 @@ class Fund < ApplicationRecord
     markdown(description)
   end
 
-  def description_redacted(plain: false)
-    tokens = name.downcase.split + funder.name.downcase.split
-    stop_words = %w[and the fund trust foundation grants charitable]
-    final_tokens = tokens - stop_words
-    reg = Regexp.new(final_tokens.join('\b|\b'), options: 'i')
-    scramble = Array.new(rand(5..10)) { [*'a'..'z'].sample }.join
-    desc = description.gsub(reg, "<span class='grey redacted'>#{scramble}</span>")
-    markdown(desc, plain: plain)
-  end
-
   def amount_desc # TODO: refactor & test
     return 'of any size' unless min_amount_awarded_limited || max_amount_awarded_limited
     opts = { precision: 0, unit: '£' }

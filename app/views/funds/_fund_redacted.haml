@@ -14,7 +14,7 @@
   .p20.border-top.border-silver
     %h6.bold.mb10= cell(:fund_insight, fund, proposal: @proposal).call(:summary)
 
-    .night= raw fund.description_redacted(plain: true).truncate_words(30, omission: "... #{link_to 'more', proposal_fund_path(@proposal, fund)}")
+    .night= raw redact(fund, :description, trim: 30, omission: "... #{link_to 'more', proposal_fund_path(@proposal, fund)}")
 
     .truncate.mt10= cell(:fund_insight, fund, proposal: @proposal).call(:themes)
 
