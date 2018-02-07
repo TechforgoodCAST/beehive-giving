@@ -78,7 +78,7 @@ class Recipient < ApplicationRecord
     subscription&.active?
   end
 
-  def update_funds_checked!(eligibility)
+  def update_funds_checked!(eligibility) # TODO: remove & funds_checked
     update_column(:funds_checked, eligibility.count { |_, v| v.key? 'quiz' })
   end
 
