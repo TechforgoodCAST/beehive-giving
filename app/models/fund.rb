@@ -4,7 +4,6 @@ class Fund < ApplicationRecord
   scope :active, -> { where(state: 'active') }
   scope :stubs, -> { where(state: 'stub') }
   scope :recent, -> { order updated_at: :desc }
-  scope :version, -> { active.order(:updated_at).pluck(:updated_at).hash }
 
   STATES = %w[active inactive draft stub].freeze
 
@@ -76,6 +75,10 @@ class Fund < ApplicationRecord
     else
       super
     end
+  end
+
+  def self.version
+    XXhash.xxh32(active.order(:updated_at).pluck(:updated_at).join)
   end
 
   def self.join(proposal = nil)
