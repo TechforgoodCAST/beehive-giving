@@ -15,8 +15,8 @@ describe Fund do
     end
 
     it '#version' do
-      Fund.update_all(updated_at: Date.new(2018, 1, 1))
-      expect(Fund.version).to eq(-3875252393691411349)
+      Fund.update_all(updated_at: DateTime.new(2018, 1, 1).in_time_zone)
+      expect(Fund.version).to eq(-2684838205550011942)
     end
 
     context '#order_by' do

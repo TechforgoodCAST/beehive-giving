@@ -10,6 +10,9 @@ class ApplicationController < ActionController::Base
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :bad_token
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorised
+  rescue_from ActionController::UnknownFormat do
+    render 'errors/not_found', status: 404
+  end
 
   def logged_in?
     current_user != nil
