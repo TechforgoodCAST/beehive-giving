@@ -1,3 +1,5 @@
+# rubocop:disable Style/NumericLiterals
+
 require 'rails_helper'
 
 describe Fund do
@@ -10,6 +12,11 @@ describe Fund do
       default_order.drop(1).each do |label|
         create(label, fund: @funds[label], proposal: proposal)
       end
+    end
+
+    it '#version' do
+      Fund.update_all(updated_at: Date.new(2018, 1, 1))
+      expect(Fund.version).to eq(-3875252393691411349)
     end
 
     context '#order_by' do

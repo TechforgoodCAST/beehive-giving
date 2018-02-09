@@ -19,6 +19,24 @@ feature 'Eligibility' do
 
   scenario 'invalid recipient restriction affects all proposals'
 
+  # TODO: refactor
+  scenario 'missing assessments created' do
+    Assessment.last.destroy
+    visit root_path
+    expect(Assessment.count).to eq(7)
+  end
+
+  # TODO: refactor
+  scenario 'when fund criteria are updated assessments are also updated' do
+    old_fund_version = Fund.version
+    Fund.first.update(name: 'New name')
+    visit root_path
+    Assessment.all.each do |a|
+      expect(a.fund_version).not_to eq(old_fund_version)
+      expect(a.fund_version).to eq(Fund.version)
+    end
+  end
+
   scenario "When I check eligibility for the first time and need to update my
             proposal, I want to understand why I need to do it,
             so I feel I'm using my time in the best way" do

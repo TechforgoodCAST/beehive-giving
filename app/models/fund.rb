@@ -3,8 +3,8 @@ class Fund < ApplicationRecord
 
   scope :active, -> { where(state: 'active') }
   scope :stubs, -> { where(state: 'stub') }
-  scope :newer_than, ->(date) { where('updated_at > ?', date) }
   scope :recent, -> { order updated_at: :desc }
+  scope :version, -> { active.order(:updated_at).pluck(:updated_at).hash }
 
   STATES = %w[active inactive draft stub].freeze
 

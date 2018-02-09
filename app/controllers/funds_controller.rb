@@ -41,7 +41,10 @@ class FundsController < ApplicationController
     end
 
     def update_analysis(funds)
-      unassessed = funds.where('assessments.eligibility_status IS NULL')
+      unassessed = funds.where(
+        "assessments.fund_version != #{Fund.version} OR " \
+        'assessments.fund_version IS NULL'
+      )
       return if unassessed.empty?
       Assessment.analyse_and_update!(unassessed, @proposal)
     end

@@ -12,7 +12,8 @@ describe Check::Each do
         themes: themes,
         restrictions_known: false,
         priorities_known: false
-      )[0]
+      )[0],
+      fund_version: Fund.version
     )
   end
 
