@@ -11,7 +11,7 @@ class SignupController < ApplicationController
   end
 
   def create_user
-    @user = User.new(user_params)
+    @user = User.new(user_params.merge(terms_version: TERMS_VERSION))
     session[:org_type] = @user.org_type
     session[:charity_number] = @user.charity_number
     session[:company_number] = @user.company_number

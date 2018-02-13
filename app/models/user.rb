@@ -2,13 +2,13 @@ class User < ApplicationRecord
   extend SetterToInteger
   include RegNoValidations
 
+  attr_accessor :org_type, :charity_number, :company_number
+
   scope :recipient, -> { where organisation_type: 'Recipient' }
   scope :funder, -> { where organisation_type: 'Funder' }
 
   belongs_to :organisation, polymorphic: true, optional: true
   has_many :feedbacks
-
-  attr_accessor :org_type, :charity_number, :company_number
 
   validates :org_type, inclusion: {
     in: (ORG_TYPES.pluck(1) - [-1]), message: 'Please select a valid option'

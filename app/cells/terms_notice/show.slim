@@ -1,0 +1,6 @@
+.mb40.pb20.rounded.border.flex.items-center.justify-between.flex-wrap.border-soft-blue
+  .pt20.px20
+    h5.night We've added a 'Your rights' section to our privacy policy.
+  .pt20.px20.mx-auto
+    = link_to 'Agree', agree_path(model), method: :post, class: 'btn blue'
+    = link_to 'Review', privacy_path(anchor: 'your-rights'), class: 'btn bg-blue white', 'data-turbolinks' => false

@@ -1,6 +1,7 @@
 require 'rails_helper'
 require_relative '../support/match_helper'
 
+# TODO: refactor
 feature 'Match' do
   let(:helper) { MatchHelper.new }
 
@@ -215,6 +216,7 @@ feature 'Match' do
             so I feel I've found suitable funding opportunities" do
     Fund.last.update(max_org_income_limited: false)
     helper.submit_user_form!
+    expect(User.last.terms_version).to eq(TERMS_VERSION)
     expect(current_path).to eq new_signup_recipient_path
 
     {

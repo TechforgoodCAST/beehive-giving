@@ -53,6 +53,7 @@ Rails.application.routes.draw do
   match '/granted_access/(:unlock_token)', to: 'signup#granted_access', via: :get, as: 'granted_access'
 
   # Account
+  post  '/agree/:id',                to: 'users#agree', as: 'agree'
   get   '/account',                  to: 'users#edit', as: 'account'
   patch '/account',                  to: 'users#update'
   get   '/account/:id',              to: 'recipients#edit', as: 'account_organisation'

@@ -1,9 +1,5 @@
 = content_for :title, 'Funds'
 
-%header
-  = cell :v2_navbar, @current_user
-  = cell :breadcrumb, (@proposal ? 'Current proposal' : nil) => nil, 'Funds' => funds_path(@proposal)
-
 - if @proposal # TODO: refactor
   :javascript
     mixpanel.track('View Funds Page');
@@ -30,6 +26,10 @@
   %div{ style: "display:inline;" }
     %img{ alt: "", height: "1", src: "//www.googleadservices.com/pagead/conversion/937505505/?label=LPzOCKWprGMQ4eWEvwM&amp;guid=ON&amp;script=0", style: "border-style:none;", width: "1" }
 
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, (@proposal ? 'Current proposal' : nil) => nil, 'Funds' => funds_path(@proposal)
+
 %main
   %h1= params[:pid]
   .maxw1080.mx-auto.px20.flex.flex-wrap
@@ -37,6 +37,8 @@
       = render partial: 'sidebar'
 
     %section.perc75.md.mb80.px20
+      = cell(:terms_notice, @current_user)
+
       %h1.mb20 Funds
 
       .mb30
