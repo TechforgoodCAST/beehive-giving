@@ -2,7 +2,7 @@
 
 %header
   = cell :v2_navbar, @current_user
-  = cell :breadcrumb, (@proposal.title? ? @proposal.title : 'Current proposal').upcase_first => nil, 'Funds' => proposal_funds_path(@proposal), @fund.funder.name => nil, @fund.name => proposal_fund_path(@proposal, @fund), 'Apply' => apply_proposal_fund_path(@proposal, @fund)
+  = cell :breadcrumb, (@proposal.title? ? @proposal.title : 'Current proposal').upcase_first => nil, 'Funds' => funds_path(@proposal), @fund.funder.name => nil, @fund.name => fund_path(@fund, @proposal), 'Apply' => apply_path(@fund, @proposal)
 
 :javascript
   mixpanel.track("View Apply Page", {"Fund": "#{@fund.name}"});
@@ -36,7 +36,7 @@
       %section
         %p
           If you haven't already, be sure to explore our analysis of the
-          = link_to "#{@fund.short_name.strip}", proposal_fund_path(@proposal, @fund), class: 'blue'
+          = link_to "#{@fund.short_name.strip}", fund_path(@fund, @proposal), class: 'blue'
           fund, otherwise below are a few things to consider before you proceed.
 
       %hr.my40
@@ -50,7 +50,7 @@
 
       - if @fund.open_call?
         = link_to "Apply to #{@fund.title} ❯",
-                  apply_proposal_fund_path(@proposal, @fund),
+                  apply_path(@fund, @proposal),
                   method: :post,
                   target: '_blank',
                   'data-uk-tooltip': "{pos:'top'}",
@@ -61,7 +61,7 @@
           .bold.caps.mb10.fs15 Unsolicited applications
           Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
         = link_to "More information on #{@fund.name.strip}",
-                  apply_proposal_fund_path(@proposal, @fund),
+                  apply_path(@fund, @proposal),
                   method: :post,
                   target: '_blank',
                   'data-uk-tooltip': "{pos:'top'}",

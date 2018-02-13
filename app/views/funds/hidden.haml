@@ -2,11 +2,12 @@
 
 %header
   = cell :v2_navbar, @current_user
-  = cell :breadcrumb, (@proposal.title? ? @proposal.title : 'Current proposal').upcase_first => nil, 'Funds' => proposal_funds_path(@proposal), 'Hidden funder' => nil, 'Hidden fund' => proposal_fund_path(@proposal, @fund)
+  = cell(:breadcrumb, (@proposal ? 'Current proposal' : nil) => nil, 'Funds' => funds_path, 'Hidden funder' => nil, 'Hidden fund' => fund_path(@fund))
 
-:javascript
-  mixpanel.track('View Fund Page', { "Fund": "#{@fund.hashid}" });
-  mixpanel.identify("#{@current_user.id}");
+- if @proposal # TODO: refactor
+  :javascript
+    mixpanel.track('View Fund Page', { "Fund": "#{@fund.hashid}" });
+    mixpanel.identify("#{@current_user.id}");
 
 %main
   .maxw1080.mx-auto.px40.mt40

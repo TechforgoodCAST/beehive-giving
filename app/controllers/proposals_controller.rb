@@ -19,7 +19,7 @@ class ProposalsController < ApplicationController
     if @proposal.save
       Assessment.analyse_and_update!(Fund.active, @proposal)
       @proposal.next_step!
-      redirect_to proposal_funds_path(@proposal)
+      redirect_to funds_path(@proposal)
     else
       render :new
     end
@@ -44,20 +44,20 @@ class ProposalsController < ApplicationController
         fund = Fund.find_by_hashid(session.delete(:return_to))
         format.js do
           if session[:return_to]
-            render js: "window.location.href = '#{proposal_fund_path(@proposal, fund)}';
+            render js: "window.location.href = '#{fund_path(fund, @proposal)}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
           else
-            render js: "window.location.href = '#{proposal_funds_path(@proposal)}';
+            render js: "window.location.href = '#{funds_path(@proposal)}';
                         $('button[type=submit]').prop('disabled', true)
                         .removeAttr('data-disable-with');"
           end
         end
         format.html do
           if session[:return_to]
-            redirect_to proposal_fund_path(@proposal, fund)
+            redirect_to fund_path(fund, @proposal)
           else
-            redirect_to proposal_funds_path(@proposal)
+            redirect_to funds_path(@proposal)
           end
         end
       else

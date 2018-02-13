@@ -1,12 +1,13 @@
 = content_for :title, @fund.title
 
-:javascript
-  mixpanel.track('View Fund Page', { "Fund": "#{@fund.name}" });
-  mixpanel.identify("#{@current_user.id}");
+- if @proposal # TODO: refactor
+  :javascript
+    mixpanel.track('View Fund Page', { "Fund": "#{@fund.name}" });
+    mixpanel.identify("#{@current_user.id}");
 
 %header
   = cell :v2_navbar, @current_user
-  = cell :breadcrumb, (@proposal.title? ? @proposal.title : 'Current proposal').upcase_first => nil, 'Funds' => proposal_funds_path(@proposal), @fund.funder.name => proposal_fund_path(@proposal, @fund)
+  = cell :breadcrumb, (@proposal ? 'Current proposal' : nil) => nil, 'Funds' => funds_path(@proposal), @fund.funder.name => fund_path(@fund, @proposal)
 
 %main
   .maxw1080.mx-auto.px40.mt40

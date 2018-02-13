@@ -1,6 +1,7 @@
 class BreadcrumbCell < Cell::ViewModel
   def show
     return unless model.is_a?(Hash) && model.present?
+    model.delete_if { |k, _v| k.nil? }
     render
   end
 

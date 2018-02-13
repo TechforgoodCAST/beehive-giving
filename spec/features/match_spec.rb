@@ -213,6 +213,7 @@ feature 'Match' do
   scenario "When I complete my first funding proposal,
             I want to see a shortlist of the most relevant funds,
             so I feel I've found suitable funding opportunities" do
+    Fund.last.update(max_org_income_limited: false)
     helper.submit_user_form!
     expect(current_path).to eq new_signup_recipient_path
 
@@ -232,11 +233,10 @@ feature 'Match' do
     expect(current_path).to eq new_signup_proposal_path
 
     helper.submit_proposal_form
-    expect(current_path).to eq proposal_funds_path(Proposal.last)
+    expect(current_path).to eq funds_path(Proposal.last)
     expect(page).to have_text 'Hidden fund', count: 3
 
     click_link 'Hidden fund', match: :first
-    expect(current_path)
-      .to eq hidden_proposal_fund_path(Proposal.last, Fund.first)
+    expect(current_path).to eq hidden_path(Fund.last, Proposal.last)
   end
 end

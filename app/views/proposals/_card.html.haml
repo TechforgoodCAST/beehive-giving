@@ -12,7 +12,7 @@
       funds checked
   - if proposal.complete?
     .fs20.mb40
-      = link_to proposal.title.truncate_words(3), proposal_funds_path(proposal), class: 'black'
+      = link_to proposal.title.truncate_words(3), funds_path(proposal), class: 'black'
   .fs15.mb20
     = number_to_currency(proposal.total_costs, unit: "£", precision: 0)
     &middot;
@@ -37,7 +37,7 @@
     = link_to 'Change', proposals_path, class: 'blue px10'
     = link_to 'New', new_proposal_path, class: 'blue px10'
   - elsif proposal.registered? || proposal.complete?
-    = link_to 'Funds', proposal_funds_path(proposal), class: 'red px15'
+    = link_to 'Funds', funds_path(proposal), class: 'red px15'
     = link_to 'Edit', edit_proposal_path(proposal), class: 'blue px15'
   - else
     = link_to 'Complete', edit_signup_proposal_path(proposal), class: 'blue px15'

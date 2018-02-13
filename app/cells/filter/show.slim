@@ -10,4 +10,4 @@ form#filter.flex.flex-wrap
 
   .md.inline-block
     | Grant duration:
-    = select 'duration', [["all", "All"], ["proposal", "Your proposal (#{@options[:funding_duration]} months)"], ["up-to-2y", "Up to 2 years"], ["2y-plus", "More than 2 years"]]
+    = select 'duration', [["all", "All"], proposal_duration, ["up-to-2y", "Up to 2 years"], ["2y-plus", "More than 2 years"]].compact

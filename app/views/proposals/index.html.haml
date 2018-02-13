@@ -27,6 +27,7 @@
             = render partial: 'proposals/card', locals: { proposal: proposal, context: 'proposal' }
 
       .mb20.md
+        -# TODO: refactor
         - if @proposal.complete?
           - if @recipient.subscribed?
             = link_to "+ New proposal", new_proposal_path, class: 'button-wide bg-green white fs16 caps'

@@ -41,7 +41,7 @@ feature 'Apply' do
     expect(@proposal.enquiries.last.approach_funder_count).to eq 1
     expect(current_url).to eq @fund.application_link
 
-    visit apply_proposal_fund_path(@proposal, @fund)
+    visit apply_path(@fund, @proposal)
     click_link "Apply to #{@fund.title}"
     expect(@proposal.enquiries.last.approach_funder_count).to eq 2
   end

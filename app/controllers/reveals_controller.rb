@@ -6,7 +6,7 @@ class RevealsController < ApplicationController
     fund = Fund.find_by_hashid(params[:fund])
     @recipient.reveals << fund.slug
     @recipient.save
-    redirect_to proposal_fund_path(@proposal, params[:fund])
+    redirect_to fund_path(fund, @proposal)
   end
 
   private

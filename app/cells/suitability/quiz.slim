@@ -3,7 +3,7 @@ h4.mb10
 
 .uk-form.uk-form-stacked.uk-clearfix
   - if model.present?
-    = simple_form_for :check, url: eligibility_proposal_fund_path(model, fund), method: :patch do |f|
+    = simple_form_for :check, url: eligibility_path(fund, model), method: :patch do |f|
 
       - if model.recipient.incomplete_first_proposal?
 

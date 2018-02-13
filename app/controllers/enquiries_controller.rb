@@ -23,10 +23,6 @@ class EnquiriesController < ApplicationController
     end
 
     def user_not_authorised
-      if @current_user.subscription_version == 2
-        redirect_to account_upgrade_path(@recipient)
-      else
-        redirect_to proposal_fund_path(@proposal, @fund)
-      end
+      redirect_to account_upgrade_path(@recipient)
     end
 end

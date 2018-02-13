@@ -2,22 +2,18 @@
 
 %header
   = cell :v2_navbar, @current_user
-  = cell :breadcrumb, 'Funds' => proposal_funds_path(@proposal), @theme.name => theme_proposal_funds_path(@proposal, @theme)
+  = cell :breadcrumb, (@proposal ? 'Current proposal' : nil) => nil, 'Funds' => funds_path(@proposal), @theme.name => theme_path(@theme, @proposal)
 
 %main
   .maxw1080.mx-auto.px20.flex.flex-wrap
     %aside.perc25.md.px20.mb40.to-end-md
-      .border.rounded.mb20.border-blue
-        .px10.py10.bg-blue
-          .fs15.lh20.caps.bold.white
-            Current Proposal
-        = render partial: 'proposals/card', locals: { proposal: @proposal, context: 'fund' }
+      = render partial: 'sidebar'
 
     %section.perc75.md.mb80.px20
       %h1.mb20=@theme.name
 
       .mb30
-        = cell :filter, params, funding_duration: @proposal.funding_duration
+        = cell :filter, params, funding_duration: @proposal&.funding_duration
         %small.slate
           = pluralize(@fund_count, 'fund')
           found

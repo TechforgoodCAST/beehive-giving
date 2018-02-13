@@ -1,31 +1,10 @@
 Rails.application.routes.draw do
-  resources :articles, only: [:index, :show]
-  resources :password_resets, except: [:show, :index, :destroy]
+  resources :articles, only: %i[index show]
+  resources :feedback, except: %i[show index destroy] # TODO: remove
+  resources :password_resets, except: %i[show index destroy]
+  resources :proposals, except: %i[show destroy]
   resources :reveals, only: :create
   resources :requests, only: :create
-
-  get '/funds', to: 'public_funds#index', as: 'public_funds'
-  get '/funds/:id', to: 'public_funds#show', as: 'public_fund'
-  get '/funds/theme/:theme', to: 'public_funds#themed', as: 'public_funds_theme'
-
-  resources :proposals, except: %i[show destroy] do
-    resources :funds, only: %i[show index] do
-      collection do
-        get '/theme/:theme', to: 'funds#themed', as: 'theme'
-      end
-      member do
-        patch :eligibility, to: 'eligibilities#create'
-        get   :apply,       to: 'enquiries#new'
-        post  :apply,       to: 'enquiries#create'
-        get   :hidden,      to: 'funds#hidden'
-      end
-    end
-  end
-
-  get '/proposals/:id/funds?eligibility=eligible', to: 'funds#index', as: 'eligible_proposal_funds'
-  get '/proposals/:id/funds?eligibility=ineligible', to: 'funds#index', as: 'ineligible_proposal_funds'
-
-  resources :feedback, except: %i[show index destroy]
 
   # Errors
   match '/404', to: 'errors#not_found', via: :all
@@ -82,6 +61,19 @@ Rails.application.routes.draw do
   get   '/account/:id/subscription/upgrade',   to: 'charges#new', as: 'account_upgrade'
   post  '/account/:id/subscription/upgrade',   to: 'charges#create'
   get   '/account/:id/subscription/thank-you', to: 'charges#thank_you', as: 'thank_you'
+
+  # Funds
+  get '/funds/(:proposal_id)',        to: 'funds#index',  as: 'funds'
+  get '/fund/:id/(:proposal_id)',     to: 'funds#show',   as: 'fund'
+  get '/h/fund/:id/(:proposal_id)',   to: 'funds#hidden', as: 'hidden'
+  get '/:theme/funds/(:proposal_id)', to: 'funds#themed', as: 'theme'
+
+  # Eligibilities
+  patch '/fund/:id/:proposal_id/eligibility', to: 'eligibilities#create', as: 'eligibility'
+
+  # Enquiries
+  get  '/fund/:id/:proposal_id/apply', to: 'enquiries#new', as: 'apply'
+  post '/fund/:id/:proposal_id/apply', to: 'enquiries#create'
 
   # Microsite
   get  '/check/:slug',                   to: 'microsites#basics', as: 'microsite_basics'

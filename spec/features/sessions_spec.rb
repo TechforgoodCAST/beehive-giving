@@ -37,7 +37,7 @@ describe 'Ensure logged in' do
 
   it 'enquiries' do
     expect_path([
-                  apply_proposal_fund_path(@proposal, @fund)
+                  apply_path(@fund, @proposal)
                 ])
   end
 
@@ -45,16 +45,6 @@ describe 'Ensure logged in' do
     expect_path([
                   new_feedback_path,
                   edit_feedback_path(create(:feedback, user: @user))
-                ])
-  end
-
-  it 'funds' do
-    expect_path([
-                  proposal_funds_path(@proposal),
-                  eligible_proposal_funds_path(@proposal),
-                  ineligible_proposal_funds_path(@proposal),
-                  theme_proposal_funds_path(@proposal, @theme.slug),
-                  proposal_fund_path(@proposal, @fund)
                 ])
   end
 

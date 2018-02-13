@@ -53,7 +53,7 @@ class ApplicationController < ActionController::Base
       @proposal = if params[:proposal_id]
                     @recipient.proposals.find_by(id: params[:proposal_id])
                   else
-                    @recipient.proposals.last
+                    @recipient.proposals.last # TODO: remove
                   end
     end
 
@@ -99,10 +99,10 @@ class ApplicationController < ActionController::Base
       return edit_signup_recipient_path(@recipient) unless @recipient.valid? # NOTE: legacy
       return new_signup_proposal_path unless @proposal
       return new_signup_proposal_path if @proposal.initial? # NOTE: legacy
-      proposal_funds_path(@proposal)
+      funds_path(@proposal)
     end
 
     def ensure_not_signed_up
-      redirect_to proposal_funds_path(@proposal) if signed_up?
+      redirect_to funds_path(@proposal) if signed_up?
     end
 end
