@@ -5,15 +5,13 @@ describe FilterCell do
   let(:filter) do
     cell(
       :filter,
-      { sort: 'eligibility' },
+      { eligibility: 'eligible' },
       funding_duration: funding_duration
     ).call(:show)
   end
 
   it 'has correct options' do
     [
-      'Eligibility',
-      'Name',
       'All',
       'Eligible',
       'Ineligible',
@@ -35,6 +33,6 @@ describe FilterCell do
   end
 
   it 'selected option' do
-    expect(filter).to have_select('sort', selected: 'Eligibility')
+    expect(filter).to have_select('eligibility', selected: 'Eligible')
   end
 end

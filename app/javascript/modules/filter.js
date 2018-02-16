@@ -1,23 +1,30 @@
 export default class Filter {
-  init (form) {
-    this._filterOnChange(form)
+  init (cls) {
+    this._filterOnChange(cls)
   }
 
-  _filterOnChange (form) {
-    const $form = document.getElementById(form)
-    if (!$form) return
+  _filterOnChange (cls) {
     const self = this
-    $form.addEventListener('change', function (e) {
-      e.preventDefault()
-      if (window.Turbolinks) {
-        window.Turbolinks.visit(self._parseInputs(this))
-      } else {
-        window.location = self._parseInputs(this)
+    document.addEventListener('change', function (e) {
+      const $form = e.target.form
+      if ($form.classList.contains(cls.substring(1))) {
+        e.preventDefault()
+        if (window.Turbolinks) {
+          window.Turbolinks.visit(self._combinedQueryString(cls))
+        } else {
+          window.location = self._combinedQueryString(cls)
+        }
       }
     })
   }
 
   _parseInputs (form) {
-    return '?' + [...form.elements].map((el) => `${el.id}=${el.value}`).join('&')
+    return [...form.elements].map((el) => `${el.id}=${el.value}`).join('&')
+  }
+
+  _combinedQueryString (cls) {
+    return '?' + [
+      ...document.querySelectorAll(cls)
+    ].map(f => this._parseInputs(f)).join('&')
   }
 }

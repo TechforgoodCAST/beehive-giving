@@ -1,28 +1,15 @@
--# TODO: refactor
-- if @proposal
-  .border.rounded.mb20.border-blue
-    .px10.py10.bg-blue
-      .fs15.lh20.caps.bold.white
-        Current Proposal
-    = render partial: 'proposals/card', locals: { proposal: @proposal, context: 'fund' }
-- else
-  .bg-mint.white.px10.py15.rounded-top
-    %h3 Check your eligibility and suitability for funds in seconds.
-  %a.button-wide.button-bottom.white.bg-olive.caps.shadow{ href: root_path } Sign up
-
 - if @fund_stubs.present?
-  .mt40
-    %h2.mb20.fs18
-      Other potential leads
-    .fs12.lh16.mb20.slate
-      %p.mb10
-        These are funds without the full set of data that
-        Beehive uses to check eligibility and suitability.
-      %p.mb10
-        They have been selected at random.
-      %p
-        Follow the links below to request more information about these funds.
-    %ul
-      - @fund_stubs.each do |f|
-        %li.mb20.fs14.lh16
-          = link_to f.funder.name, fund_path(f, @proposal), class: 'blue'
+  %h2.mb20.fs18
+    Other potential leads
+  .fs12.lh16.mb20.slate
+    %p.mb10
+      These are funds without the full set of data that
+      Beehive uses to check eligibility and suitability.
+    %p.mb10
+      They have been selected at random.
+    %p
+      Follow the links below to request more information about these funds.
+  %ul
+    - @fund_stubs.each do |f|
+      %li.mb20.fs14.lh16
+        = link_to f.funder.name, fund_path(f, @proposal), class: 'blue'

@@ -52,14 +52,8 @@ feature 'Proposal' do
 
     scenario 'When I create my first proposal,
               I want to see options to change it or create a new one' do
-      [
-        funds_path(@proposal)
-      ].each do |path|
-        visit path
-        expect(page).to have_link(nil, href: edit_proposal_path(@proposal))
-        expect(page).to have_link 'Change'
-        expect(page).to have_link 'New'
-      end
+      visit funds_path(@proposal)
+      expect(page).to have_link 'Change'
     end
 
     scenario 'clicking new proposal requires initial proposal to be complete and
@@ -69,6 +63,7 @@ feature 'Proposal' do
       stripe = StripeMock.create_test_helper
       visit root_path
 
+      click_link 'Change'
       click_link 'New'
 
       # expect first to be completed
@@ -80,6 +75,7 @@ feature 'Proposal' do
       expect(current_path).to eq funds_path(@proposal)
 
       # expect upgrade prompt
+      click_link 'Change'
       click_link 'New'
       expect(current_path).to eq account_upgrade_path(@recipient)
 
@@ -91,7 +87,8 @@ feature 'Proposal' do
 
       # can create multiple proposals
       click_link 'Continue'
-      expect(current_path).to eq funds_path(@proposal)
+      click_link 'New'
+      expect(current_path).to eq new_proposal_path
 
       StripeMock.stop
     end
