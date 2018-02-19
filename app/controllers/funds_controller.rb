@@ -11,14 +11,12 @@ class FundsController < ApplicationController
   def index
     update_analysis(query) if @proposal
     @funds = query.page(params[:page])
-    @fund_count = query.size # TODO: refactor
   end
 
   def themed
     @theme = Theme.find_by(slug: params[:theme])
     redirect_to funds_path(@proposal), alert: 'Not found' unless @theme
     @funds = themed_query.page(params[:page])
-    @fund_count = themed_query.size # TODO: refactor
   end
 
   def hidden

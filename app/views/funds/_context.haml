@@ -1,0 +1,10 @@
+%section.perc50.md.px20.mb40
+  .rounded.border.border-mist
+    = cell(:current_proposal, @proposal)
+%section.perc50.md.px20.mb40
+  .rounded.border.border-mist
+    .p20
+      .flex.justify-between.mb10
+        %h5.bold Filter by
+        = link_to 'Clear all filters', funds_path(@proposal), class: 'fs15'
+      = cell(:filter, params, funding_duration: @proposal&.funding_duration)
