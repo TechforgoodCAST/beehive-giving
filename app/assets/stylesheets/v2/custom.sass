@@ -117,9 +117,7 @@ article.featured
 
 .filter
   select
-    appearance: none
-    -webkit-appearance: none
-    -moz-appearance: none
+    +prefix(appearance, none, webkit moz)
     border: none
     outline: none
     font-size: 15px
@@ -313,7 +311,7 @@ article.featured
 
 .pills > h4, .pills > h6
   padding: 0 map-get($scales, 5)
-.pills a
+.pills a, .pills label
   display: block
   width: 100%
   padding: map-get($scales, 3) map-get($scales, 5)
@@ -332,3 +330,57 @@ article.featured
     font-weight: bold
     &:hover
       border-color: map-get($colors, 'blue')
+
+// Accordion
+// =========================================================================
+
+.accordion
+  position: relative
+  margin-bottom: map-get($scales, 5)
+  width: 100%
+  overflow: hidden
+
+  input
+    position: absolute
+    visibility: hidden
+    z-index: -1
+
+    &:checked + label, &:checked + label:hover
+      background: map-get($colors, 'blue')
+      color: map-get($colors, 'white') !important
+      border-color: map-get($colors, 'blue')
+
+    &:checked ~ .accordion-content
+      max-height: 30em
+
+    &[type=checkbox] + label::after
+      content: '›'
+      transform: rotate(90deg)
+    &[type=checkbox]:checked + label::after
+      transform-origin: 1px
+      transform: rotate(270deg)
+
+  label
+    position: relative
+    display: block
+    padding: map-get($scales, 3) map-get($scales, 5)
+    padding-right: 19px !important
+    color: map-get($colors, slate) !important
+    cursor: pointer
+    font-size: map-get($scales, 15)
+    border-radius: $base-radius
+    line-height: 20px
+
+    &:after
+      position: absolute
+      right: 0
+      top: 50%
+      display: block
+      margin: 1px 7px
+      line-height: 0
+      +prefix(transition, all .40s, webkit o)
+
+  .accordion-content
+    max-height: 0
+    overflow: hidden
+    +prefix(transition, max-height .40s, webkit o)
