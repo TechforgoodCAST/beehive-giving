@@ -1,15 +1,10 @@
-- if @fund_stubs.present?
-  %h2.mb20.fs18
-    Other potential leads
-  .fs12.lh16.mb20.slate
-    %p.mb10
-      These are funds without the full set of data that
-      Beehive uses to check eligibility and suitability.
-    %p.mb10
-      They have been selected at random.
-    %p
-      Follow the links below to request more information about these funds.
-  %ul
-    - @fund_stubs.each do |f|
-      %li.mb20.fs14.lh16
-        = link_to f.funder.name, fund_path(f, @proposal), class: 'blue'
+.pills
+  %h4.bold.mb15 Shortcuts
+
+  .mb15= link_to 'All funds', funds_path(@proposal), class: ('selected' unless params['eligibility'])
+
+  %h6.bold.slate.mb10 Eligibility
+
+  = link_to 'Incomplete', funds_path(@proposal, eligibility: 'to_check'), class: selected('to_check', params)
+  = link_to 'Eligible', funds_path(@proposal, eligibility: 'eligible'), class: selected('eligible', params)
+  = link_to 'Ineligible', funds_path(@proposal, eligibility: 'ineligible'), class: selected('ineligible', params)

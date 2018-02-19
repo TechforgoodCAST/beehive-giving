@@ -11,10 +11,7 @@ class FundsController < ApplicationController
   def index
     update_analysis(query) if @proposal
     @funds = query.page(params[:page])
-    # TODO: refactor
-    @fund_count = query.size
-    @fund_stubs = Fund.stubs.includes(:funder).order('RANDOM()').limit(5)
-    # TODO: end
+    @fund_count = query.size # TODO: refactor
   end
 
   def themed

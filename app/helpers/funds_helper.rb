@@ -1,4 +1,8 @@
 module FundsHelper
+  def selected(value, params = {})
+    params['eligibility'] == value ? 'selected' : nil
+  end
+
   def redact(fund, field, opts = {})
     placeholder = '**hidden**'
 

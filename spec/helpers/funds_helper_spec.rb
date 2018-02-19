@@ -16,6 +16,26 @@ describe FundsHelper do
   end
   let(:field) { :description }
 
+  context '#selected' do
+    let(:selected) { subject.selected(value, 'eligibility' => value) }
+    let(:value) { 'all' }
+
+    context 'incomplete' do
+      let(:value) { 'to_check' }
+      it { expect(selected).to eq('selected') }
+    end
+
+    context 'incomplete' do
+      let(:value) { 'eligible' }
+      it { expect(selected).to eq('selected') }
+    end
+
+    context 'incomplete' do
+      let(:value) { 'ineligible' }
+      it { expect(selected).to eq('selected') }
+    end
+  end
+
   context '#redact' do
     it 'fund name' do
       expect(subject.redact(fund, field)).not_to have_text('Name')

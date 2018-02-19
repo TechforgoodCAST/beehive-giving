@@ -24,7 +24,7 @@
       - @proposals.each do |proposal|
         .mb20.md
           .border.rounded.border-silver.proposal
-            = render partial: 'proposals/card', locals: { proposal: proposal, context: 'proposal' }
+            = render partial: 'card', locals: { proposal: proposal, context: 'proposal' }
 
       .mb20.md
         -# TODO: refactor

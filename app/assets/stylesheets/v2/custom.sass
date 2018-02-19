@@ -307,3 +307,28 @@ article.featured
     bottom: 16px
   &.bot:after
     top: 16px
+
+// Sidebar
+// =========================================================================
+
+.pills > h4, .pills > h6
+  padding: 0 map-get($scales, 5)
+.pills a
+  display: block
+  width: 100%
+  padding: map-get($scales, 3) map-get($scales, 5)
+  margin-bottom: map-get($scales, 5)
+  color: map-get($colors, night)
+  border: 1px solid rgba(0, 0, 0, 0)
+  border-radius: $base-radius
+  font-size: map-get($scales, 15)
+  &:hover
+    background: map-get($colors, light-blue)
+    border-color: map-get($colors, pale-blue)
+    opacity: 1
+  &.selected
+    background: map-get($colors, 'blue')
+    color: map-get($colors, 'white')
+    font-weight: bold
+    &:hover
+      border-color: map-get($colors, 'blue')

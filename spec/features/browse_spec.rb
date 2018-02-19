@@ -64,11 +64,7 @@ feature 'Browse' do
       end
     end
 
-    scenario "Fund stub selection shown on proposal fund page" do
-      @proposal.update_column(:eligibility, @proposal.eligibility.merge( @fund_stubs.first.slug => {'location': true}) )
-      visit funds_path(@proposal)
-      expect(page).to have_text @fund_stubs.first.funder.name
-    end
+    scenario 'fund stub selection shown on proposal fund page'
 
     scenario "When I visit a fund that doesn't exist,
               I want to be redirected to where I came from and see a message,
