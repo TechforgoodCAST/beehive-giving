@@ -3,7 +3,6 @@ class Fund < ApplicationRecord
 
   scope :active, -> { where(state: 'active') }
   scope :stubs, -> { where(state: 'stub') }
-  scope :newer_than, ->(date) { where('updated_at > ?', date) }
   scope :recent, -> { order updated_at: :desc }
 
   STATES = %w[active inactive draft stub].freeze
@@ -76,6 +75,10 @@ class Fund < ApplicationRecord
     else
       super
     end
+  end
+
+  def self.version
+    XXhash.xxh32(active.order(:updated_at).pluck(:updated_at).join)
   end
 
   def self.join(proposal = nil)
@@ -155,16 +158,6 @@ class Fund < ApplicationRecord
 
   def description_html
     markdown(description)
-  end
-
-  def description_redacted(plain: false)
-    tokens = name.downcase.split + funder.name.downcase.split
-    stop_words = %w[and the fund trust foundation grants charitable]
-    final_tokens = tokens - stop_words
-    reg = Regexp.new(final_tokens.join('\b|\b'), options: 'i')
-    scramble = Array.new(rand(5..10)) { [*'a'..'z'].sample }.join
-    desc = description.gsub(reg, "<span class='grey redacted'>#{scramble}</span>")
-    markdown(desc, plain: plain)
   end
 
   def amount_desc # TODO: refactor & test

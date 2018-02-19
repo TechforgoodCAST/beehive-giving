@@ -9,13 +9,9 @@
   border-radius: 9999px
 .rounded
   overflow: hidden
-  border-radius: $base-radius
-  -moz-border-radius: $base-radius
-  -webkit-border-radius: $base-radius
+  +prefix(border-radius, $base-radius, webkit moz)
 .rounded-top
-  border-radius: $base-radius $base-radius 0 0
-  -moz-border-radius: $base-radius $base-radius 0 0
-  -webkit-border-radius: $base-radius $base-radius 0 0
+  +prefix(border-radius, $base-radius $base-radius 0 0, webkit moz)
 
 @each $side in border, border-top, border-right, border-bottom, border-left
   .#{$side}

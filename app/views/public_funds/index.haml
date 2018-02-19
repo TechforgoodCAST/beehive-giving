@@ -1,7 +1,0 @@
-= content_for :title, 'Funds preview'
-
-%header
-  = cell :v2_navbar, @current_user
-  = cell :breadcrumb, 'Funds' => public_funds_path
-
-= render partial: 'fund_list', locals: { name: 'Funds', funds_to_show: 3 }

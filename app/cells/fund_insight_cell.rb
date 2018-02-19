@@ -31,8 +31,12 @@ class FundInsightCell < Cell::ViewModel
 
   def themes
     model.themes.map do |theme|
-      link_to(theme.name, theme_path(theme), class: "tag #{theme.classes}")
-    end.join
+      link_to(
+        theme.name,
+        theme_path(theme, options[:proposal]),
+        class: "tag #{theme.classes}"
+      )
+    end.join('<span class="night"> • </span>')
   end
 
   def summary
@@ -87,14 +91,6 @@ class FundInsightCell < Cell::ViewModel
 
     def title_name
       funder.funds.size > 1 ? [name, funder.name] : [funder.name, name]
-    end
-
-    def theme_path(theme)
-      if options[:proposal]
-        theme_proposal_funds_path(options[:proposal], theme)
-      else
-        public_funds_theme_path(theme)
-      end
     end
 
     def grant_types_message

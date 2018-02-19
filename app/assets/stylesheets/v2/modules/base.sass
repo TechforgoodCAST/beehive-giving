@@ -13,6 +13,11 @@ $base-border-width: 1px !default
 // Mixins
 // =========================================================================
 
+=prefix($prop, $val, $prefixes: ())
+  @each $prefix in $prefixes
+    #{'-' + $prefix + '-' + $prop}: $val
+    #{$prop}: $val
+
 =responsive($prop, $val, $sm-perc-change: 1, $md-perc-change: 1)
   #{$prop}: $val
   @media all and (max-width: 46.875em)

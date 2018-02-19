@@ -2,11 +2,12 @@
 
 %header
   = cell :v2_navbar, @current_user
-  = cell :breadcrumb, (@proposal.title? ? @proposal.title : 'Current proposal').upcase_first => nil, 'Funds' => proposal_funds_path(@proposal), 'Hidden funder' => nil, 'Hidden fund' => proposal_fund_path(@proposal, @fund)
+  = cell(:breadcrumb, (@proposal ? 'Current proposal' : nil) => nil, 'Funds' => funds_path, 'Hidden funder' => nil, 'Hidden fund' => fund_path(@fund))
 
-:javascript
-  mixpanel.track('View Fund Page', { "Fund": "#{@fund.hashid}" });
-  mixpanel.identify("#{@current_user.id}");
+- if @proposal # TODO: refactor
+  :javascript
+    mixpanel.track('View Fund Page', { "Fund": "#{@fund.hashid}" });
+    mixpanel.identify("#{@current_user.id}");
 
 %main
   .maxw1080.mx-auto.px40.mt40
@@ -20,7 +21,7 @@
           by
           %span.redacted.grey= scramble_name(@fund.funder.name)
 
-        .mb30.fs18.night.lh25= raw @fund.description_redacted(plain: true).truncate_words(30)
+        .mb30.fs18.night.lh25= raw redact(@fund, :description, trim: 30)
 
         %hr
         %h6.my20.slate= cell(:fund_insight, @fund, proposal: @proposal).call(:summary)
@@ -35,7 +36,7 @@
       %h2.mb20 Summary
 
       .mb20.markdown
-        = raw @fund.description_redacted
+        = raw redact(@fund, :description)
 
       - if @fund.period_end.present? && @fund.period_end > 3.years.ago
         .mt30.night

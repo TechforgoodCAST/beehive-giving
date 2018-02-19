@@ -22,7 +22,7 @@ feature 'Browse' do
     fill_in :email, with: @db[:user].email
     fill_in :password, with: @db[:user].password
     click_button 'Sign in'
-    expect(current_path).to eq proposal_funds_path(@proposal)
+    expect(current_path).to eq funds_path(@proposal)
   end
 
   scenario 'When I browse the site,
@@ -53,36 +53,31 @@ feature 'Browse' do
       end
 
       it 'hidden' do
-        visit hidden_proposal_fund_path(@proposal, @fund)
-        expect(current_path).to eq(proposal_funds_path(@proposal))
+        visit hidden_path(@fund, @proposal)
+        expect(current_path).to eq(funds_path(@proposal))
       end
 
       it 'revealed' do
         @proposal.recipient.update(reveals: [@fund.slug])
-        visit proposal_fund_path(@proposal, @fund)
-        expect(current_path).to eq(proposal_funds_path(@proposal))
+        visit fund_path(@fund, @proposal)
+        expect(current_path).to eq(funds_path(@proposal))
       end
     end
 
-    scenario "Fund stub selection shown on proposal fund page" do
-      @proposal.update_column(:eligibility, @proposal.eligibility.merge( @fund_stubs.first.slug => {'location': true}) )
-      visit proposal_funds_path(@proposal)
-      expect(page).to have_text @fund_stubs.first.funder.name
-    end
+    scenario 'fund stub selection shown on proposal fund page'
 
     scenario "When I visit a fund that doesn't exist,
               I want to be redirected to where I came from and see a message,
               so I avoid an error and understand what happened" do
-      visit proposal_fund_path(@proposal, 'missing-fund')
-      expect(current_path).to eq(proposal_funds_path(@proposal))
+      visit fund_path('missing-fund', @proposal)
+      expect(current_path).to eq(funds_path(@proposal))
     end
 
     scenario "When I find a funding theme I'm interested in,
               I want to see similar funds,
               so I can discover new funding opportunties" do
       click_link @theme.name, match: :first
-      expect(current_path)
-        .to eq(theme_proposal_funds_path(@proposal, @theme.slug))
+      expect(current_path).to eq(theme_path(@theme.slug, @proposal))
       expect(page).to have_css('h3', count: 6)
     end
 
@@ -95,17 +90,17 @@ feature 'Browse' do
     scenario "When I visit a funding theme which isn't listed,
               I want to see a message and be directed to safety,
               so I can continue my search" do
-      visit theme_proposal_funds_path(@proposal, '')
+      visit theme_path('missing', @proposal)
       # TODO: v2 flash notices #391
       # expect(page.all('body script', visible: false)[0].native.text)
       #   .to have_text 'Fund not found'
-      expect(current_path).to eq(proposal_funds_path(@proposal))
+      expect(current_path).to eq(funds_path(@proposal))
 
-      visit theme_proposal_funds_path(@proposal, 'missing')
+      visit theme_path('missing', @proposal)
       # TODO: v2 flash notices #391
       # expect(page.all('body script', visible: false)[0].native.text)
       #   .to have_text 'Not found'
-      expect(current_path).to eq proposal_funds_path(@proposal)
+      expect(current_path).to eq funds_path(@proposal)
     end
 
     def subscribe_and_visit(path)

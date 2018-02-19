@@ -55,6 +55,7 @@ gem 'sitemap_generator'
 gem 'stripe'
 gem 'uikit-sass-rails'
 gem 'workflow'
+gem 'xxhash'
 
 # Admin
 gem 'activeadmin'

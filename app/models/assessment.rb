@@ -8,16 +8,15 @@ class Assessment < ApplicationRecord
     Check::Eligibility::Quiz.new
   ].freeze
 
-  ELIGIBILITY_COLUMNS = %i[
-    eligibility_amount
-    eligibility_funding_type
-    eligibility_location
-    eligibility_org_income
-    eligibility_org_type
-    eligibility_quiz
+  ELIGIBILITY_STATUS_COLUMNS = CHECKS.map do |check|
+    "eligibility_#{check.class.name.demodulize.underscore}".to_sym
+  end.freeze
+
+  PERMITTED_COLUMNS = (ELIGIBILITY_STATUS_COLUMNS + %i[
     eligibility_quiz_failing
     eligibility_status
-  ].freeze
+    fund_version
+  ]).freeze
 
   belongs_to :fund
   belongs_to :proposal
@@ -35,7 +34,7 @@ class Assessment < ApplicationRecord
 
   def self.analyse_and_update!(funds, proposal)
     updates = analyse(funds, proposal)
-    Assessment.import!(updates, on_duplicate_key_update: ELIGIBILITY_COLUMNS)
+    Assessment.import!(updates, on_duplicate_key_update: PERMITTED_COLUMNS)
   end
 
   def attributes
@@ -49,7 +48,7 @@ class Assessment < ApplicationRecord
     end
 
     def eligible_status
-      columns = attributes.slice(*ELIGIBILITY_COLUMNS.slice(0..-3)).values
+      columns = attributes.slice(*ELIGIBILITY_STATUS_COLUMNS).values
       return INELIGIBLE if columns.any? { |c| c == INELIGIBLE }
       return ELIGIBLE if columns.all? { |c| c == ELIGIBLE }
       INCOMPLETE

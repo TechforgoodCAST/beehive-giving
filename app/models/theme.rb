@@ -1,6 +1,9 @@
 class Theme < ApplicationRecord
+  scope :primary, -> { where('parent_id IS NULL') }
+
   belongs_to :parent, class_name: 'Theme', optional: true
 
+  has_many :themes, foreign_key: 'parent_id'
   has_many :fund_themes, dependent: :destroy
   has_many :funds, through: :fund_themes
 

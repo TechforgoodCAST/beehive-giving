@@ -1,7 +1,4 @@
 ul
   - themes.each do |theme|
     li.mb10
-      - if proposal.present?
-        = link_to theme.name, theme_proposal_funds_path(proposal, theme), class: 'slate'
-      - else
-        = link_to theme.name, public_funds_theme_path(theme), class: 'slate'
+      = link_to theme.name, theme_path(theme, proposal), class: 'slate'

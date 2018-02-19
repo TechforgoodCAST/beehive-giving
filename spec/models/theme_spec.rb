@@ -5,6 +5,8 @@ describe Theme do
 
   it('belongs to parent Theme') { assoc(:parent, :belongs_to) }
 
+  it('has many to parent Themes') { assoc(:themes, :has_many) }
+
   it 'has many FundThemes' do
     assoc(:fund_themes, :has_many, dependent: :destroy)
   end
@@ -16,6 +18,11 @@ describe Theme do
   it 'parent is Theme' do
     subject.parent = build(:theme)
     is_expected.to be_valid
+  end
+
+  it 'self.primary' do
+    subject.save!
+    expect(Theme.primary.size).to eq(1)
   end
 
   it '#name is unique' do

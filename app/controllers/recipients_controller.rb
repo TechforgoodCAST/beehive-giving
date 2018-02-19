@@ -3,6 +3,7 @@ class RecipientsController < ApplicationController
 
   def edit
     @recipient = Recipient.find_by(slug: params[:id])
+    redirect_to root_path unless @recipient
   end
 
   def update

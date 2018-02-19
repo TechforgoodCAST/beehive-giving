@@ -16,7 +16,7 @@ class EligibilitiesController < ApplicationController
       @recipient.update_funds_checked!(@proposal.eligibility)
       Assessment.analyse_and_update!(Fund.active, @proposal) # TODO: refactor
       track_quiz_completion(@fund)
-      redirect_to proposal_fund_path(@proposal, @fund)
+      redirect_to fund_path(@fund, @proposal)
     end
   end
 

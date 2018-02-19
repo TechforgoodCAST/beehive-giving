@@ -18,7 +18,7 @@ feature 'RevealFunds' do
   context 'v2 subscription' do
     before(:each) do
       Subscription.last.update(version: 2)
-      visit proposal_fund_path(@proposal, @fund)
+      visit fund_path(@fund, @proposal)
     end
 
     scenario 'reveal button hidden once revealed' do
@@ -29,14 +29,14 @@ feature 'RevealFunds' do
 
     scenario 'Featured fund does not need to be revealed' do
       @fund.update(featured: true)
-      visit proposal_fund_path(@proposal, @fund)
+      visit fund_path(@fund, @proposal)
       expect(page).not_to have_link('Reveal')
     end
 
     context 'limit reached' do
       before(:each) do
         @recipient.update(reveals: [1, 2, 3])
-        visit proposal_fund_path(@proposal, @fund)
+        visit fund_path(@fund, @proposal)
       end
 
       scenario 'cant reveal fund after reaching limit' do
@@ -45,9 +45,9 @@ feature 'RevealFunds' do
       end
 
       scenario 'can browse redacted fund after reaching limit' do
-        visit proposal_funds_path(@proposal)
+        visit funds_path(@proposal)
         click_link('Hidden fund', match: :first)
-        expect(current_path).to eq(hidden_proposal_fund_path(@proposal, @fund))
+        expect(current_path).to eq(hidden_path(@fund, @proposal))
       end
 
       scenario 'can check eligibility after reaching limit' do
@@ -61,19 +61,19 @@ feature 'RevealFunds' do
       scenario 'can apply once revealed' do
         create(:eligible, fund: @fund, proposal: @proposal)
 
-        visit apply_proposal_fund_path(@proposal, @fund)
+        visit apply_path(@fund, @proposal)
         expect(current_path).to eq(account_upgrade_path(@recipient))
 
         @recipient.update(reveals: [@fund.slug])
-        visit apply_proposal_fund_path(@proposal, @fund)
-        expect(current_path).to eq(apply_proposal_fund_path(@proposal, @fund))
+        visit apply_path(@fund, @proposal)
+        expect(current_path).to eq(apply_path(@fund, @proposal))
       end
 
       scenario 'can apply once subscribed' do
         create(:eligible, fund: @fund, proposal: @proposal)
         @recipient.subscribe!
-        visit apply_proposal_fund_path(@proposal, @fund)
-        expect(current_path).to eq(apply_proposal_fund_path(@proposal, @fund))
+        visit apply_path(@fund, @proposal)
+        expect(current_path).to eq(apply_path(@fund, @proposal))
       end
     end
   end

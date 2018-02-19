@@ -7,6 +7,7 @@ module Check
     end
 
     def call_each(funds, proposal)
+      fund_version = Fund.version
       updates = []
 
       assessments = persisted_assessments(funds, proposal)
@@ -16,6 +17,7 @@ module Check
       preload_funds(funds).each do |fund|
         assessment = assessments[fund.id] || build(fund, proposal, recipient)
         @criteria.each { |check| check.call(assessment) }
+        assessment.fund_version = fund_version
         updates << assessment if assessment.valid?
       end
 

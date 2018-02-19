@@ -19,6 +19,33 @@ describe Assessment do
   end
 
   context do
+    let(:eligibility) do
+      %i[
+        eligibility_amount
+        eligibility_funding_type
+        eligibility_location
+        eligibility_org_income
+        eligibility_org_type
+        eligibility_quiz
+      ]
+    end
+
+    it 'ELIGIBILITY_STATUS_COLUMNS correct' do
+      expect(Assessment::ELIGIBILITY_STATUS_COLUMNS).to match_array(eligibility)
+    end
+
+    it 'PERMITTED_COLUMNS correct' do
+      misc = %i[
+        eligibility_quiz_failing
+        eligibility_status
+        fund_version
+      ]
+      permitted = eligibility + misc
+      expect(Assessment::PERMITTED_COLUMNS).to match_array(permitted)
+    end
+  end
+
+  context do
     let(:proposal) { create(:proposal) }
 
     before do
@@ -76,7 +103,7 @@ describe Assessment do
       subject { build(:eligible) }
       it { expect(subject.eligibility_status).to eq(ELIGIBLE) }
     end
-    end
+  end
 
   it '#attributes keys symbolized' do
     subject.attributes.keys.each { |k| expect(k).to be_a(Symbol) }

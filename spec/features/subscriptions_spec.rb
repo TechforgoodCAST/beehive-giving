@@ -175,7 +175,7 @@ feature 'Subscriptions' do
       scenario 'remaining free checks hidden' do
         @app.setup_funds
         @db[:complete_proposal].save!
-        visit proposal_fund_path(@db[:complete_proposal], Fund.first)
+        visit fund_path(Fund.first, @db[:complete_proposal])
         expect(page).not_to have_button 'Check eligibility (3 left)'
       end
     end

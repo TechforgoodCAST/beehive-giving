@@ -1,7 +1,0 @@
-= content_for :title, "#{@theme.name} Funds preview"
-
-%header
-  = cell :v2_navbar, @current_user
-  = cell :breadcrumb, {'Funds' => public_funds_path, @theme.name.truncate_words(4) => nil}
-
-= render partial: 'fund_list', locals: { name: @theme.name, funds_to_show: 1 }

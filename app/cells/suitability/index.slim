@@ -7,4 +7,4 @@
     =< status[:status]
 - if status[:message]
   .mb5 = status[:message]
-= link_to status[:link_text], proposal_fund_path(model, fund), class: 'blue'
+= link_to status[:link_text], fund_path(fund, model), class: 'blue'

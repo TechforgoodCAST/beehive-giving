@@ -3,66 +3,52 @@ require 'shared/reg_no_validations'
 require 'shared/setter_to_integer'
 
 describe User do
-  before(:each) do
-    @app.create_recipient.with_user
-    @db = @app.instances
-    @user = @db[:user]
-    @recipient = @db[:recipient]
-  end
+  subject { build(:user) }
 
-  include_examples 'reg no validations' do
-    subject { @user }
-  end
+  include_examples 'reg no validations'
 
   include_examples 'setter to integer' do
     let(:attributes) { [:org_type] }
   end
 
-  it 'belongs to Recipient' do
-    expect(@user.organisation).to eq @recipient
-    expect(@user.organisation_type).to eq 'Recipient'
+  it('belongs to Organisation') do
+    assoc(:organisation, :belongs_to, polymorphic: true, optional: true)
   end
 
-  it 'belongs to Funder' do
-    funder = create(:funder)
-    @user.update(organisation: funder)
-    expect(@user.organisation).to eq funder
-    expect(@user.organisation_type).to eq 'Funder'
+  it('has many Feedbacks') { assoc(:feedbacks, :has_many) }
+
+  it { is_expected.to be_valid }
+
+  context 'email' do
+    it 'unique' do
+      subject.save
+      expect(build(:user, email: subject.email)).not_to be_valid
+    end
+
+    it 'downcase' do
+      subject.send(:email=, 'UPCASE@email.com')
+      expect(subject.email).to eq('upcase@email.com')
+    end
   end
 
-  it 'has many feedbacks' do
-    2.times { create(:feedback, user: @user) }
-    expect(@user.feedbacks.count).to eq 2
-  end
+  context 'name' do
+    it 'invalid' do
+      %i[first_name last_name].each do |col|
+        subject.send("#{col}=", ':Name!')
+        expect(subject).not_to be_valid
+      end
+    end
 
-  it 'email is unique' do
-    expect(build(:user, email: @user.email))
-  end
-
-  it 'a valid user' do
-    expect(@user).to be_valid
-  end
-
-  it 'invalid name' do
-    expect(build(:user, first_name: ':Name!')).not_to be_valid
-    expect(build(:user, last_name: ':Name!')).not_to be_valid
-  end
-
-  it 'capitalize name and strip whitespace' do
-    @user.first_name = ' john '
-    @user.save!
-    expect(@user.first_name).to eq 'John'
-  end
-
-  it 'email is downcased' do
-    @user.email = 'UPCASE@email.com'
-    @user.save!
-    expect(@user.email).to eq 'upcase@email.com'
+    it 'capitalize name and strip whitespace' do
+      %i[first_name last_name].each do |col|
+        subject.send("#{col}=", ' john ')
+        expect(subject[col]).to eq('John')
+      end
+    end
   end
 
   it 'org_type converted to integer' do
-    @user.org_type = '0'
-    @user.save!
-    expect(@user.org_type).to eq 0
+    subject.send(:org_type=, '0')
+    expect(subject.org_type).to eq(0)
   end
 end

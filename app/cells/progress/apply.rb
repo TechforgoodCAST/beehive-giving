@@ -17,7 +17,7 @@ module Progress
       when ELIGIBLE
         link_to(
           'Apply ❯',
-          url_helpers.apply_proposal_fund_path(@proposal, @fund),
+          url_helpers.apply_path(@fund, @proposal),
           class: 'fs15 btn white bg-blue shadow'
         )
       else

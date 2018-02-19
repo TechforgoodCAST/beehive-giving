@@ -19,36 +19,22 @@ feature 'Eligibility' do
 
   scenario 'invalid recipient restriction affects all proposals'
 
-  scenario 'When I have previous eligibility checks,
-            I want to see a message explaining new changes,
-            so I understand what happend to my previous work' do
-    def assert(present: true)
-      copy = 'Last time you used Beehive you conducted 1 eligibility check'
-      [
-        proposal_funds_path(@proposal),
-        eligible_proposal_funds_path(@proposal),
-        ineligible_proposal_funds_path(@proposal)
-      ].each do |path|
-        visit path
-        if present
-          expect(page).to have_text copy
-        else
-          expect(page).not_to have_text copy
-        end
-      end
+  # TODO: refactor
+  scenario 'missing assessments created' do
+    Assessment.last.destroy
+    visit root_path
+    expect(Assessment.count).to eq(7)
+  end
+
+  # TODO: refactor
+  scenario 'when fund criteria are updated assessments are also updated' do
+    old_fund_version = Fund.version
+    Fund.first.update(name: 'New name')
+    visit root_path
+    Assessment.all.each do |a|
+      expect(a.fund_version).not_to eq(old_fund_version)
+      expect(a.fund_version).to eq(Fund.version)
     end
-
-    assert(present: false)
-
-    RecipientFunderAccess.create(
-      recipient: @db[:recipient], funder_id: Funder.first.id
-    )
-    Recipient.joins(:recipient_funder_accesses)
-             .group(:recipient_id).count.each do |k, v|
-      Recipient.find(k).update_column(:funds_checked, v)
-    end
-
-    assert
   end
 
   scenario "When I check eligibility for the first time and need to update my
@@ -61,7 +47,7 @@ feature 'Eligibility' do
   scenario "When I'm try to access application details before checking
             eligiblity, I want to be told why I can't access them,
             so I understand what to do next" do
-    visit apply_proposal_fund_path(@proposal, @fund)
+    visit apply_path(@fund, @proposal)
     expect(current_path).to eq(account_upgrade_path(@proposal.recipient))
   end
 
@@ -131,7 +117,7 @@ feature 'Eligibility' do
             .answer_priorities(@fund).check_suitability
       click_link 'Reveal'
       click_link 'Apply ❯'
-      expect(current_path).to eq(apply_proposal_fund_path(@proposal, @fund))
+      expect(current_path).to eq(apply_path(@fund, @proposal))
     end
 
     scenario "When I run a check and I'm ineligible,
@@ -166,7 +152,7 @@ feature 'Eligibility' do
       helper.answer_recipient_restrictions(@fund)
             .answer_proposal_restrictions(@fund, eligible: false)
             .check_eligibility
-      visit proposal_fund_path(@proposal, Fund.last)
+      visit fund_path(Fund.last, @proposal)
 
       helper.check_eligibility
       # 3 questions previously answered should be checked
@@ -181,7 +167,7 @@ feature 'Eligibility' do
             .answer_proposal_restrictions(@fund, eligible: false)
             .check_eligibility
       click_link 'Reveal'
-      visit apply_proposal_fund_path(@proposal, @fund)
+      visit apply_path(@fund, @proposal)
       expect(current_path).to eq(account_upgrade_path(@proposal.recipient))
     end
   end

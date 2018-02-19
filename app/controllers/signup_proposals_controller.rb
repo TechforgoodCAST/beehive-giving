@@ -23,7 +23,7 @@ class SignupProposalsController < ApplicationController
     if @proposal.save
       Assessment.analyse_and_update!(Fund.active, @proposal)
       @proposal.next_step!
-      redirect_to proposal_funds_path(@proposal)
+      redirect_to funds_path(@proposal)
     else
       render :new
     end
@@ -45,9 +45,9 @@ class SignupProposalsController < ApplicationController
 
     def return_to_path
       if session[:return_to]
-        proposal_fund_path(@proposal, session.delete(:return_to))
+        fund_path(session.delete(:return_to), @proposal)
       else
-        proposal_funds_path(@proposal)
+        funds_path(@proposal)
       end
     end
 

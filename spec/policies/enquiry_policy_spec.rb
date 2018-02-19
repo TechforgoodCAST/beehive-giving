@@ -4,110 +4,44 @@ require 'pundit/rspec'
 describe EnquiryPolicy do
   subject { described_class }
 
-  let(:version) { 1 }
-
   let(:subscribed) { false }
-  let(:eligibility) { {} }
-  let(:suitability) { {} }
-
-  let(:fund) { Fund.new(slug: 'fund', state: 'active') }
-  let(:proposal) do
-    Proposal.new(eligibility: eligibility, suitability: suitability)
-  end
   let(:reveals) { [] }
   let(:user) do
-    instance_double(
-      User,
-      subscription_active?: subscribed,
-      subscription_version: version,
-      reveals: reveals
-    )
+    instance_double(User, subscription_active?: subscribed, reveals: reveals)
   end
 
-  context 'v1' do # TODO: deprecated
-    permissions :new?, :create? do
-      context 'eligible' do
-        let(:eligibility) do
-          { fund.slug => { 'quiz' => { 'eligible' => true } } }
-        end
+  let(:eligibility) { ELIGIBLE }
+  let(:assessment) { create(:eligible, eligibility_quiz: eligibility) }
+  let(:context) { EnquiryContext.new(assessment.fund, assessment.proposal) }
 
-        it 'fund not recommended denies access' do
-          is_expected.not_to permit(user, EnquiryContext.new(fund, proposal))
-        end
+  permissions :new?, :create? do
+    it 'denies access if no fund supplied' do
+      is_expected.not_to permit(user, context)
+    end
 
-        context 'fund recommended' do
-          let(:suitability) { { fund.slug => { 'total' => 1 } } }
+    context 'incomplete' do
+      let(:eligibility) { INCOMPLETE }
+      it { is_expected.not_to permit(user, context) }
+    end
 
-          it 'grants access' do
-            is_expected.to permit(user, EnquiryContext.new(fund, proposal))
-          end
-        end
-      end
+    context 'ineligible' do
+      let(:eligibility) { INELIGIBLE }
+      it { is_expected.not_to permit(user, context) }
+    end
 
-      it 'ineligible denies access' do
-        is_expected.not_to permit(user, EnquiryContext.new(fund, proposal))
-      end
+    context 'eligible and subscribed' do
+      let(:subscribed) { true }
+      it { is_expected.to permit(user, context) }
+    end
 
-      context 'user subscribed' do
-        let(:subscribed) { true }
+    context 'eligible and revealed' do
+      let(:reveals) { [assessment.fund.slug] }
+      it { is_expected.to permit(user, context) }
+    end
 
-        it 'grants access' do
-          is_expected.to permit(user, EnquiryContext.new(fund, proposal))
-        end
-      end
+    context 'fund not revealed' do
+      it { is_expected.not_to permit(user, context) }
     end
   end
 
-  context 'v2' do
-    let(:version) { 2 }
-    let(:assessment) { create(:assessment, eligibility_quiz: eligibility) }
-    let(:fund) { assessment.fund }
-    let(:proposal) { assessment.proposal }
-
-    permissions :new?, :create? do
-      it 'denies access if no fund supplied' do
-        is_expected.not_to permit(user, EnquiryContext.new(fund, proposal))
-      end
-
-      context 'incomplete' do
-        let(:eligibility) { nil }
-
-        it 'denies access' do
-          is_expected.not_to permit(user, EnquiryContext.new(fund, proposal))
-        end
-      end
-
-      context 'ineligible' do
-        let(:eligibility) { 0 }
-
-        it 'denies access' do
-          is_expected.not_to permit(user, EnquiryContext.new(fund, proposal))
-        end
-      end
-
-      context 'eligible and subscribed' do
-        let(:eligibility) { 1 }
-        let(:subscribed) { true }
-
-        it 'grants access' do
-          is_expected.to permit(user, EnquiryContext.new(fund, proposal))
-        end
-      end
-
-      context 'eligible and revealed' do
-        let(:eligibility) { 1 }
-        let(:reveals) { [fund.slug] }
-
-        it 'grants access' do
-          is_expected.to permit(user, EnquiryContext.new(fund, proposal))
-        end
-      end
-
-      context 'fund not revealed' do
-        it 'denies access' do
-          is_expected.not_to permit(user, EnquiryContext.new(fund, proposal))
-        end
-      end
-    end
-  end
 end

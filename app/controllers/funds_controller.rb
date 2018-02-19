@@ -1,5 +1,5 @@
 class FundsController < ApplicationController
-  before_action :ensure_logged_in, :update_legacy_suitability, except: :sources
+  before_action :update_legacy_suitability, except: :sources
   before_action :load_fund, only: %i[hidden show]
 
   def show
@@ -9,45 +9,39 @@ class FundsController < ApplicationController
   end
 
   def index
-    update_analysis(query)
+    update_analysis(query) if @proposal
     @funds = query.page(params[:page])
-    # TODO: refactor
-    @fund_count = query.size
-    @fund_stubs = Fund.stubs.includes(:funder).order('RANDOM()').limit(5)
-    # TODO: end
   end
 
   def themed
     @theme = Theme.find_by(slug: params[:theme])
-    redirect_to root_path, alert: 'Not found' unless @theme
+    redirect_to funds_path(@proposal), alert: 'Not found' unless @theme
     @funds = themed_query.page(params[:page])
-    @fund_count = themed_query.size # TODO: refactor
   end
 
   def hidden
     return redirect_to root_path unless @fund
-    @assessment = @proposal.assessments.where(fund: @fund).first
+    @assessment = @proposal.assessments.where(fund: @fund).first if @proposal
   end
 
   private
 
     def user_not_authorised
-      if @current_user.subscription_version == 2
-        return redirect_to root_path if @fund.nil?
-        redirect_to hidden_proposal_fund_path(@proposal, @fund)
-      else
-        redirect_to account_upgrade_path(@recipient)
-      end
+      return redirect_to funds_path(@proposal) if @fund.nil?
+      redirect_to hidden_path(@fund, @proposal)
     end
 
     def update_analysis(funds)
-      unassessed = funds.where('assessments.eligibility_status IS NULL')
+      unassessed = funds.where(
+        "assessments.fund_version != #{Fund.version} OR " \
+        'assessments.fund_version IS NULL'
+      )
       return if unassessed.empty?
       Assessment.analyse_and_update!(unassessed, @proposal)
     end
 
     def update_legacy_suitability # TODO: depreceted
-      @proposal.update_legacy_suitability
+      @proposal&.update_legacy_suitability
     end
 
     def query
@@ -66,6 +60,8 @@ class FundsController < ApplicationController
     end
 
     def load_fund
-      @fund = Fund.includes(:funder).active.find_by_hashid(params[:id])
+      @fund = Fund.includes(:funder)
+                  .where("state = 'active' OR state = 'stub'")
+                  .find_by_hashid(params[:id])
     end
 end
