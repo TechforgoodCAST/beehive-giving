@@ -36,7 +36,7 @@ class FundInsightCell < Cell::ViewModel
         theme_path(theme, options[:proposal]),
         class: "tag #{theme.classes}"
       )
-    end.join
+    end.join('<span class="night"> • </span>')
   end
 
   def summary

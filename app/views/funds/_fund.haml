@@ -1,22 +1,22 @@
 
 .mb40.border.border-silver.rounded.shadow
-  .p20
-    .flex.justify-between
-      .block
-        %h3.mb5= link_to fund.name, fund_path(fund, @proposal)
-        .fs15.night
-          by
-          = fund.funder.name
-
+  .p20.bg-ice
+    .flex.items-center.mb5
       - if fund.featured
-        .block
-          .btn.fs15.slate.border-silver.disabled Featured
+        .mr10
+          .btn.btn-sm.fs15.slate.border-silver.disabled Featured
+
+      %h3= link_to fund.name, fund_path(fund, @proposal)
+
+    .fs15.night
+      by
+      = fund.funder.name
 
   .p20.border-top.border-silver
     %h6.bold.mb10= cell(:fund_insight, fund, proposal: @proposal).call(:summary)
 
-    .night= raw strip_tags(fund.description_html).truncate_words(30, omission: "... #{link_to 'more', fund_path(fund, @proposal)}")
+    .night= raw strip_tags(fund.description_html).truncate_words(30, omission: "... #{link_to 'more', fund_path(fund, @proposal), class: 'bold'}")
 
-    .truncate.mt10= cell(:fund_insight, fund, proposal: @proposal).call(:themes)
+    .truncate.mt12= cell(:fund_insight, fund, proposal: @proposal).call(:themes)
 
   = render(partial: 'status', locals: { fund: fund })
