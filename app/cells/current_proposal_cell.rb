@@ -2,16 +2,21 @@ class CurrentProposalCell < Cell::ViewModel
   include ActionView::Helpers::NumberHelper
 
   private
+
+    def title
+      if model
+        model.complete? ? model.title.truncate_words(3) : 'Current proposal'
+      else
+        'No proposal'
+      end
+    end
+
     def total_costs
       number_to_currency(model&.total_costs, unit: '£', precision: 0)
     end
 
     def funding_type
       { 1 => 'Capital', 2 => 'Revenue' }[model.funding_type]
-    end
-
-    def title
-      model.title.truncate_words(3) if model.complete?
     end
 
     def incompelte
@@ -26,7 +31,10 @@ class CurrentProposalCell < Cell::ViewModel
       if model
         [total_costs, funding_type, title, incompelte].compact.join(' • ')
       else
-        '<span class="red">Assessment missing!</span>'
+        link_to('Sign in', sign_in_path, class: 'bold') +
+          ' or ' +
+          link_to('create an account', root_path, class: 'bold') +
+          ' to check eligibility & suitability.'
       end
     end
 end

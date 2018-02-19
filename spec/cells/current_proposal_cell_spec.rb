@@ -10,7 +10,11 @@ describe CurrentProposalCell do
 
   context 'no proposal' do
     let(:proposal) { nil }
-    it { is_expected.to have_text('Assessment missing!') }
+    it { is_expected.to have_text('No proposal') }
+    it { is_expected.to have_link('Sign in') }
+    it { is_expected.to have_link('create an account') }
+    it { is_expected.not_to have_link('Change') }
+    it { is_expected.to have_css('.bg-light-yellow') }
   end
 
   it('total_costs') { expect(subject).to have_text('£10,000') }
