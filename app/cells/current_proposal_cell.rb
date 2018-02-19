@@ -24,12 +24,12 @@ class CurrentProposalCell < Cell::ViewModel
         model.assessments.group(:eligibility_status).size
       )[INCOMPLETE]
       str = pluralize(incomplete, 'fund') + ' unchecked'
-      link_to(str, funds_path(model, { eligibility: 'to_check' }))
+      link_to(str, funds_path(model, eligibility: 'to_check'))
     end
 
     def proposal_summary
       if model
-        [total_costs, funding_type, title, incompelte].compact.join(' • ')
+        [total_costs, funding_type, incompelte].compact.join(' • ')
       else
         link_to('Sign in', sign_in_path, class: 'bold') +
           ' or ' +
