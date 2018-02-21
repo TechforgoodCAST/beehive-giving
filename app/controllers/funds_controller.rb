@@ -11,12 +11,14 @@ class FundsController < ApplicationController
   def index
     update_analysis(query) if @proposal
     @funds = query.page(params[:page])
+    load_stubs(@funds)
   end
 
   def themed
     @theme = Theme.find_by(slug: params[:theme])
     redirect_to funds_path(@proposal), alert: 'Not found' unless @theme
     @funds = themed_query.page(params[:page])
+    load_stubs(@funds)
   end
 
   def hidden
@@ -63,5 +65,10 @@ class FundsController < ApplicationController
       @fund = Fund.includes(:funder)
                   .where("state = 'active' OR state = 'stub'")
                   .find_by_hashid(params[:id])
+    end
+
+    def load_stubs(funds)
+      @fund_stubs = Fund.stubs.includes(:funder).order('RANDOM()').limit(5) if
+        funds.empty?
     end
 end
