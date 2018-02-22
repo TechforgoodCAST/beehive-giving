@@ -92,6 +92,7 @@ class Fund < ApplicationRecord
   def self.order_by(col = nil)
     order = [
       'funds.featured DESC',
+      'assessments.revealed',
       ('assessments.eligibility_status DESC' unless col == 'name'),
       'funds.name'
     ]
@@ -129,11 +130,7 @@ class Fund < ApplicationRecord
   end
 
   def self.revealed(state)
-    if state == 'true'
-      where('assessments.revealed': state)
-    else
-      where('assessments.revealed IS NULL')
-    end
+    state.to_s == 'true' ? where('assessments.revealed': state) : all
   end
 
   def to_param

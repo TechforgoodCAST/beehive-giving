@@ -44,6 +44,8 @@ describe Fund do
 
       it 'ineligible featured fund'
 
+      it 'revealed funds ordered first in each eligibility state'
+
       context 'name' do
         before { @funds[:ineligible].update(name: '0') }
         let(:col) { 'name' }
@@ -82,6 +84,23 @@ describe Fund do
       context 'to_check' do
         let(:eligibility) { 'to_check' }
         it { is_expected.to contain_exactly(@funds[:orphan], @funds[:incomplete]) }
+      end
+    end
+
+    context '#revealed' do
+      subject { Fund.join(proposal).revealed(revealed) }
+
+      let(:revealed) { nil }
+
+      context 'default all' do
+        it { is_expected.to contain_exactly(*@funds.values) }
+      end
+
+      context 'revealed' do
+        before { Assessment.last.update(revealed: true) }
+        let(:revealed) { true }
+
+        it { is_expected.to contain_exactly(@funds[:ineligible]) }
       end
     end
   end
