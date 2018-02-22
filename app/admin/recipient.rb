@@ -17,7 +17,6 @@ ActiveAdmin.register Recipient do
   filter :registered
   filter :founded_on
   filter :created_at
-  filter :recipient_funder_accesses_count, label: 'Unlocks'
 
   index do
     selectable_column

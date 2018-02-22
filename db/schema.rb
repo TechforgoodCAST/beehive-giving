@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180221165129) do
+ActiveRecord::Schema.define(version: 20180222164524) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -390,13 +390,6 @@ ActiveRecord::Schema.define(version: 20180221165129) do
     t.index ["fund_id"], name: "index_questions_on_fund_id"
   end
 
-  create_table "recipient_funder_accesses", id: :serial, force: :cascade do |t|
-    t.integer "recipient_id"
-    t.integer "funder_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "recipients", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
     t.string "contact_number", limit: 255
@@ -417,7 +410,6 @@ ActiveRecord::Schema.define(version: 20180221165129) do
     t.boolean "active_on_beehive"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "recipient_funder_accesses_count"
     t.integer "org_type"
     t.float "latitude"
     t.float "longitude"
