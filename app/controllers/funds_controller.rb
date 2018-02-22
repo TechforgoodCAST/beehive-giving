@@ -53,6 +53,7 @@ class FundsController < ApplicationController
           .order_by(params[:sort])
           .eligibility(params[:eligibility])
           .duration(@proposal, params[:duration])
+          .revealed(params[:revealed])
           .active
           .select('funds.*', 'assessments.eligibility_status')
     end

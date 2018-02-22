@@ -128,6 +128,14 @@ class Fund < ApplicationRecord
     end
   end
 
+  def self.revealed(state)
+    if state == 'true'
+      where('assessments.revealed': state)
+    else
+      where('assessments.revealed IS NULL')
+    end
+  end
+
   def to_param
     hashid
   end

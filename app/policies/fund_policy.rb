@@ -1,5 +1,5 @@
 class FundPolicy < ApplicationPolicy
-  def show?
+  def show? # TODO: refactor
     return false unless record.fund
     return true if record.featured || record.stub?
     return false unless record.proposal
