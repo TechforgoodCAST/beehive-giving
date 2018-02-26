@@ -24,7 +24,7 @@ class CurrentProposalCell < Cell::ViewModel
         model.assessments.group(:eligibility_status).size
       )[INCOMPLETE]
       str = pluralize(incomplete, 'fund') + ' unchecked'
-      link_to(str, funds_path(model, eligibility: 'to_check'))
+      link_to(str, funds_path(model, eligibility: 'to-check'))
     end
 
     def proposal_summary

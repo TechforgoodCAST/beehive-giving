@@ -1,9 +1,5 @@
-form.filter.fs15.flex.flex-wrap
-
-  .md.inline-block.mr10
-    | Eligibility:
-    = select 'eligibility', %w[all eligible ineligible to_check]
-
-  .md.inline-block
-    | Grant duration:
-    = select 'duration', [["all", "All"], proposal_duration, ["up-to-2y", "Up to 2 years"], ["2y-plus", "More than 2 years"]].compact
+.p20
+  .flex.justify-between.mb10
+    h5.bold Filter by
+    = clear_filters
+  .fs15 = active_filters

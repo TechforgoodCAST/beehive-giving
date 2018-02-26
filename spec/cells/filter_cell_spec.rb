@@ -1,38 +1,35 @@
 require 'rails_helper'
 
 describe FilterCell do
-  let(:funding_duration) { 12 }
-  let(:filter) do
-    cell(
-      :filter,
-      { eligibility: 'eligible' },
-      funding_duration: funding_duration
-    ).call(:show)
+  controller ApplicationController
+
+  subject { filter }
+
+  let(:filter) { cell(:filter, params, proposal: proposal).call(:show) }
+  let(:params) { ActionController::Parameters.new }
+  let(:proposal) { nil }
+
+  context 'no active filters' do
+    it { is_expected.to have_text('Add filter') }
+    it { is_expected.not_to have_link('Clear all filters') }
   end
 
-  it 'has correct options' do
-    [
-      'All',
-      'Eligible',
-      'Ineligible',
-      'To check',
-      'Your proposal',
-      'Up to 2 years',
-      'More than 2 years'
-    ].each do |option|
-      expect(filter).to have_text(option)
+  context 'unpermitted params' do
+    let(:params) { ActionController::Parameters.new(unpermitted: 'param') }
+    it { is_expected.to have_text('Add filter') }
+  end
+
+  context 'active filters' do
+    let(:params) do
+      ActionController::Parameters.new(eligibility: 'eligible', duration: 'all')
     end
-  end
 
-  context 'funding_duration missing' do
-    let(:funding_duration) { nil }
+    it { is_expected.to have_link('Clear all filters', href: '/funds') }
+    it { is_expected.to have_text('duration:all, eligibility:eligible') }
 
-    it 'hides proposal duration option' do
-      expect(filter).not_to have_text('Your proposal')
+    context 'with proposal' do
+      let(:proposal) { build(:proposal, id: 1) }
+      it { is_expected.to have_link('Clear all filters', href: '/funds/1') }
     end
-  end
-
-  it 'selected option' do
-    expect(filter).to have_select('eligibility', selected: 'Eligible')
   end
 end

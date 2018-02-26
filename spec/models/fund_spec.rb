@@ -81,8 +81,8 @@ describe Fund do
         it { is_expected.to contain_exactly(@funds[:ineligible]) }
       end
 
-      context 'to_check' do
-        let(:eligibility) { 'to_check' }
+      context 'to-check' do
+        let(:eligibility) { 'to-check' }
         it { is_expected.to contain_exactly(@funds[:orphan], @funds[:incomplete]) }
       end
     end

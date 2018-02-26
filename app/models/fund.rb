@@ -103,7 +103,7 @@ class Fund < ApplicationRecord
     eligibility = {
       'eligible'   => ELIGIBLE,
       'ineligible' => INELIGIBLE,
-      'to_check'   => [UNASSESSED, INCOMPLETE]
+      'to-check'   => [UNASSESSED, INCOMPLETE]
     }[state]
 
     eligibility ? where('assessments.eligibility_status': eligibility) : all

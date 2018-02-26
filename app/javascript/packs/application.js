@@ -8,14 +8,11 @@
 // layout file, like app/views/layouts/application.html.erb
 
 import 'babel-polyfill'
-import Filter from '../modules/filter'
 import Select from '../modules/select'
 
-const filter = new Filter()
 const select = new Select()
 
 document.addEventListener('turbolinks:load', () => {
-  filter.init('.filter')
   select.orgType(['user', 'basics_step', 'eligibility_step'])
 
   const eligibilityStepOpts = {

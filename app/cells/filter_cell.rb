@@ -1,27 +1,22 @@
-include ERB::Util
-
 class FilterCell < Cell::ViewModel
   def show
+    @proposal = options[:proposal]
     render
   end
 
   private
 
-    def selected?(id, value)
-      model[id.to_sym] == value
+    def filter_params
+      model.permit(:duration, :eligibility)
     end
 
-    def select(id, options)
-      tag.select id: id do
-        options.map do |opt|
-          opt = [opt, opt.humanize.capitalize] unless opt.is_a?(Array)
-          tag.option(opt[1], value: url_encode(opt[0]), selected: selected?(id, opt[0]))
-        end.reduce(:+)
-      end
+    def clear_filters
+      return if filter_params.empty?
+      link_to('Clear all filters', funds_path(@proposal), class: 'fs15')
     end
 
-    def proposal_duration
-      ['proposal', "Your proposal (#{options[:funding_duration]} months)"] if
-        options[:funding_duration]
+    def active_filters
+      return '<a class="blue bold">Add filter</a>' if filter_params.empty?
+      filter_params.to_h.map { |k, v| "#{k}:#{v}" }.join(', ')
     end
 end
