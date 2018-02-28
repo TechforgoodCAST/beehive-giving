@@ -115,7 +115,7 @@ article.featured
   .copy
     text-align: left
 
-.filter
+#sort-form
   select
     +prefix(appearance, none, webkit moz)
     border: none
@@ -383,3 +383,21 @@ article.featured
     max-height: 0
     overflow: hidden
     +prefix(transition, max-height .40s, webkit o)
+
+// Dialog
+// =========================================================================
+
+// native
+dialog::backdrop
+  background-color: rgba(0, 0, 0, 0.8) !important
+// polyfill
+dialog + .backdrop
+  background-color: rgba(0, 0, 0, 0.8) !important
+
+dialog
+  min-width: 320px
+  padding: 0 !important
+
+.js-open-modal
+  height: 100vh
+  overflow: hidden

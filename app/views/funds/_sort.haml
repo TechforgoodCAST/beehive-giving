@@ -1,7 +1,7 @@
 .flex.justify-between.mb40
   .night.truncate.pr30= page_entries_info @funds
 
-  %form.filter.flex
+  %form#sort-form.flex
     Sort:
     %select#sort
       %option{ value: 'eligibility' } Eligibility

@@ -1,5 +1,22 @@
 .p20
   .flex.justify-between.mb10
     h5.bold Filter by
-    = clear_filters
-  .fs15 = active_filters
+    .fs15 = clear_filters
+  .fs15.lh20 = active_filters
+
+dialog.rounded.shadow.border.border-silver
+  .p20.bg-ice.flex.justify-between.items-center
+    h4.bold Filter funds by
+    a.js-close-modal Close
+
+  = form_tag(query_path, method: :get, enforce_utf8: false) do
+    .p20.border-top.border-silver
+      .mb15
+        h6.bold.slate.mb5 Eligibility
+        = select 'eligibility', %w[all eligible ineligible to-check]
+      h6.bold.slate.mb5 Funding Duration
+      = select 'duration', [["all", "All"], proposal_duration, ["up-to-2y", "Up to 2 years"], ["2y-plus", "More than 2 years"]].compact
+
+    .p20.border-top.border-silver.center.bg-ice
+      = submit_tag 'Filter', name: nil, class: 'white btn bg-blue'
+      = link_to 'Reset', funds_path(@proposal), class: 'btn blue bg-white border-blue ml10'
