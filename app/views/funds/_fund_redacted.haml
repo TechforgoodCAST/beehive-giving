@@ -1,6 +1,6 @@
 .mb40.border.border-silver.rounded.shadow
   .p20.bg-ice
-    %h3.mb5= link_to 'Hidden fund', fund_path(fund, @proposal)
+    %h3.mb5= link_to fund.pretty_name, fund_path(fund, @proposal)
     .fs15.night
       Actual fund identity hidden
       -# TODO: %a • Why?

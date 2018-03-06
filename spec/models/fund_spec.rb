@@ -149,6 +149,26 @@ describe Fund do
     end
   end
 
+  context do
+    subject { build(:fund) }
+
+    let(:hidden) { 'Hidden fund' }
+
+    it '#pretty_name default' do
+      expect(subject.pretty_name).to eq(hidden)
+    end
+
+    it '#pretty_name if empty string' do
+      subject.pretty_name = ''
+      expect(subject.pretty_name).to eq(hidden)
+    end
+
+    it '#pretty_name if present' do
+      subject.pretty_name = 'Pretty name'
+      expect(subject.pretty_name).to eq('Pretty name')
+    end
+  end
+
   context 'single' do
     before(:each) do
       @app.seed_test_db

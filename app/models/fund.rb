@@ -126,6 +126,10 @@ class Fund < ApplicationRecord
     hashid
   end
 
+  def pretty_name
+    super.blank? ? 'Hidden fund' : super
+  end
+
   def short_name
     name.sub(' Fund', '')
   end

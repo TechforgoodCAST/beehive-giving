@@ -17,6 +17,7 @@ ActiveAdmin.register Fund do
                 :max_duration_awarded_limited, :max_duration_awarded,
                 :min_org_income_limited, :min_org_income,
                 :max_org_income_limited, :max_org_income,
+                :pretty_name,
                 country_ids: [], district_ids: [], theme_ids: [],
                 tags: [], permitted_costs: [], permitted_org_types: [],
                 questions_attributes: [:id, :group, :criterion, :criterion_id, :criterion_type, :_destroy]
@@ -67,6 +68,7 @@ ActiveAdmin.register Fund do
         link_to fund.funder.name, [:admin, fund.funder]
       end
       row :name
+      row :pretty_name
       row :description do fund.description_html.html_safe end
       row :open_call
       row :featured
@@ -157,6 +159,7 @@ ActiveAdmin.register Fund do
       f.input :slug
       f.input :funder, input_html: { class: 'chosen-select' }
       f.input :name
+      f.input :pretty_name
       f.input :description
       f.input :open_call
       f.input :featured
