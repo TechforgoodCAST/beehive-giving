@@ -169,6 +169,8 @@ feature 'Browse' do
 
         scenario 'I want to see the sources of open data,
                   so I can further my research' do
+          @recipient.update!(reveals: [@top_fund.slug])
+          visit fund_path(@top_fund, @proposal)
           expect(page).to have_link('License', href: 'https://creativecommons.org/licenses/by/4.0/')
           expect(page).to have_link('Source', href: 'http://www.example.com')
         end
