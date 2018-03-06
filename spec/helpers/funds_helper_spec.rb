@@ -1,5 +1,4 @@
 require 'rails_helper'
-include ActionView::Helpers::SanitizeHelper
 
 describe FundsHelper do
   subject { Class.new.include(FundsHelper).new }

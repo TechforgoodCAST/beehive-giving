@@ -51,8 +51,9 @@ class FundsController < ApplicationController
       Fund.join(@proposal)
           .includes(:funder, :themes, :geo_area)
           .order_by(params[:sort])
+          .country(params[:country])
           .eligibility(params[:eligibility])
-          .duration(@proposal, params[:duration])
+          .funding_type(params[:type])
           .revealed(params[:revealed])
           .active
           .select('funds.*', 'assessments.eligibility_status')

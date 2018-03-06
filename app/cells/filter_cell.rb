@@ -1,4 +1,4 @@
-include ERB::Util
+include ActionView::Helpers::FormOptionsHelper
 
 class FilterCell < Cell::ViewModel
   def show
@@ -9,26 +9,28 @@ class FilterCell < Cell::ViewModel
 
   private
 
-    def selected?(id, value)
-      model[id.to_sym] == value
+    def country_options
+      options_from_collection_for_select(
+        Country.order(priority: :desc).all, :alpha2, :name, model[:country]
+      )
     end
 
-    def select(id, options)
-      tag.select id: id, name: id, class: 'input' do
-        options.map do |opt|
-          opt = [opt, opt.gsub('-', ' ').capitalize] unless opt.is_a?(Array)
-          tag.option(opt[1], value: url_encode(opt[0]), selected: selected?(id, opt[0]))
-        end.reduce(:+)
-      end
+    def eligibility_options
+      options_for_select(
+        opts(['All', 'Eligible', 'Ineligible', 'To check']), model[:eligibility]
+      )
     end
 
-    def proposal_duration
-      ['proposal', "Your proposal (#{options[:funding_duration]} months)"] if
-        options[:funding_duration]
+    def funding_type_options
+      options_for_select(opts(%w[All Capital Revenue]), model[:type])
+    end
+
+    def opts(arr)
+      arr.map { |opt| [opt, opt.parameterize] }.to_h
     end
 
     def filter_params
-      model.permit(:duration, :eligibility)
+      model.permit(:country, :eligibility, :type)
     end
 
     def clear_filters

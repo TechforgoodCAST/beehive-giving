@@ -1,3 +1,5 @@
+include ActionView::Helpers::SanitizeHelper
+
 module FundsHelper
   def selected(value, params = {})
     params['eligibility'] == value ? 'selected' : nil

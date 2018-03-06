@@ -13,9 +13,12 @@ dialog.rounded.shadow.border.border-silver
     .p20.border-top.border-silver
       .mb15
         h6.bold.slate.mb5 Eligibility
-        = select 'eligibility', %w[all eligible ineligible to-check]
-      h6.bold.slate.mb5 Funding Duration
-      = select 'duration', [["all", "All"], proposal_duration, ["up-to-2y", "Up to 2 years"], ["2y-plus", "More than 2 years"]].compact
+        = select_tag :eligibility, eligibility_options, class: 'input'
+      .mb15
+        h6.bold.slate.mb5 Funding Type
+        = select_tag :type, funding_type_options, class: 'input'
+      h6.bold.slate.mb5 Country
+      = select_tag :country, country_options, class: 'input', prompt: 'All'
 
     .p20.border-top.border-silver.center.bg-ice
       = submit_tag 'Filter', name: nil, class: 'white btn bg-blue'

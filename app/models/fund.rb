@@ -99,6 +99,10 @@ class Fund < ApplicationRecord
     order(*order)
   end
 
+  def self.country(state = nil)
+    state.blank? ? all : joins(:countries).where('countries.alpha2': state)
+  end
+
   def self.eligibility(state = nil)
     eligibility = {
       'eligible'   => ELIGIBLE,
@@ -109,24 +113,9 @@ class Fund < ApplicationRecord
     eligibility ? where('assessments.eligibility_status': eligibility) : all
   end
 
-  def self.duration(proposal, state)
-    case state
-    when 'up-to-2y'
-      where '
-        min_duration_awarded <= 24 OR
-        (max_duration_awarded IS NOT NULL AND min_duration_awarded IS NULL)
-      '
-    when '2y-plus'
-      where 'max_duration_awarded > 24'
-    when 'proposal'
-      where '
-        (min_duration_awarded iS NOT NULL OR max_duration_awarded IS NOT NULL) AND
-        (min_duration_awarded <= :proposal OR min_duration_awarded IS NULL) AND
-        (max_duration_awarded >= :proposal OR max_duration_awarded IS NULL)
-      ', proposal: proposal.funding_duration
-    else
-      all
-    end
+  def self.funding_type(state = nil)
+    type = { 'capital' => 1, 'revenue' => 2 }[state]
+    type ? where("permitted_costs @> '[#{type}]'") : all
   end
 
   def self.revealed(state)
