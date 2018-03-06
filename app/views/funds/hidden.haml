@@ -41,7 +41,7 @@
       - if @fund.period_end.present? && @fund.period_end > 3.years.ago
         .mt30.night
           .fs14.mb10
-            = cell(:fund_insight, @fund).call(:data_source)
+            Analysis powered by open data
           .mb20
             %strong= period(@fund)
 
