@@ -36,7 +36,7 @@
       %h2.mb20 Summary
 
       .mb20.markdown
-        = raw redact(@fund, :description)
+        = raw redact(@fund, :description_html)
 
       - if @fund.period_end.present? && @fund.period_end > 3.years.ago
         .mt30.night
