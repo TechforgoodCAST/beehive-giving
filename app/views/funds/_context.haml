@@ -3,4 +3,4 @@
     = cell(:current_proposal, @proposal)
 %section.perc50.md.px20.mb40
   .rounded.border.border-mist
-    = cell(:filter, params, funding_duration: @proposal&.funding_duration, proposal: @proposal, url: request.original_url)
+    = cell(:filter, params, proposal: @proposal, url: request.original_url)
