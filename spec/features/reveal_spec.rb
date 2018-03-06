@@ -1,6 +1,7 @@
 require 'rails_helper'
 require_relative '../support/eligibility_helper'
 
+# TODO: refactor
 feature 'RevealFunds' do
   before(:each) do
     @app.seed_test_db
@@ -22,6 +23,8 @@ feature 'RevealFunds' do
     end
 
     scenario 'reveal button hidden once revealed' do
+      visit funds_path(@proposal)
+      visit fund_path(@fund, @proposal)
       click_link('Reveal')
       expect(page).not_to have_link('Reveal')
       expect(@user.reveals.size).to eq(1)

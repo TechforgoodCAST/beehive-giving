@@ -1,11 +1,13 @@
 .pills.mb35
   %h4.bold.mb15 Shortcuts
 
-  .mb15= link_to 'All funds', funds_path(@proposal)
+  = link_to 'All funds', funds_path(@proposal)
+  - unless @current_user&.subscription_active?
+    .mb15= link_to 'Revealed', funds_path(@proposal, revealed: true)
 
   %h6.bold.slate.mb10 Eligibility
 
-  = link_to 'Incomplete', funds_path(@proposal, eligibility: 'to_check'), class: selected('to_check', params)
+  = link_to 'Incomplete', funds_path(@proposal, eligibility: 'to-check'), class: selected('to-check', params)
   = link_to 'Eligible', funds_path(@proposal, eligibility: 'eligible'), class: selected('eligible', params)
   = link_to 'Ineligible', funds_path(@proposal, eligibility: 'ineligible'), class: selected('ineligible', params)
 

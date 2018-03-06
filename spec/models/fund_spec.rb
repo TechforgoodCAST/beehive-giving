@@ -44,6 +44,8 @@ describe Fund do
 
       it 'ineligible featured fund'
 
+      it 'revealed funds ordered first in each eligibility state'
+
       context 'name' do
         before { @funds[:ineligible].update(name: '0') }
         let(:col) { 'name' }
@@ -56,6 +58,29 @@ describe Fund do
           @funds[:incomplete].update(featured: true)
           expect(subject[0]).to eq(@funds[:incomplete])
           expect(subject[1]).to eq(@funds[:ineligible])
+        end
+      end
+    end
+
+    context '#funding_type' do
+      subject { Fund.join(proposal).funding_type(funding_type) }
+      let(:funding_type) { nil }
+
+      context 'default all' do
+        it { is_expected.to contain_exactly(*@funds.values) }
+      end
+
+      context do
+        before { @funds[:eligible].update_column(:permitted_costs, []) }
+
+        context 'capital' do
+          let(:funding_type) { 'capital' }
+          it { expect(subject.size).to eq(3) }
+        end
+
+        context 'revenue' do
+          let(:funding_type) { 'revenue' }
+          it { expect(subject.size).to eq(3) }
         end
       end
     end
@@ -79,9 +104,47 @@ describe Fund do
         it { is_expected.to contain_exactly(@funds[:ineligible]) }
       end
 
-      context 'to_check' do
-        let(:eligibility) { 'to_check' }
-        it { is_expected.to contain_exactly(@funds[:orphan], @funds[:incomplete]) }
+      context 'to-check' do
+        let(:eligibility) { 'to-check' }
+        let(:funds) { [@funds[:orphan], @funds[:incomplete]] }
+        it { is_expected.to contain_exactly(*funds) }
+      end
+    end
+
+    context '#country' do
+      subject { Fund.join(proposal).country(country) }
+
+      let(:country) { nil }
+
+      context 'default all' do
+        it { is_expected.to contain_exactly(*@funds.values) }
+      end
+
+      context 'alpha2' do
+        before do
+          @funds[:eligible].update(
+            geo_area: create(:geo_area, countries: [Country.last])
+          )
+        end
+        let(:country) { Country.last.alpha2 }
+        it { expect(subject.size).to eq(1) }
+      end
+    end
+
+    context '#revealed' do
+      subject { Fund.join(proposal).revealed(revealed) }
+
+      let(:revealed) { nil }
+
+      context 'default all' do
+        it { is_expected.to contain_exactly(*@funds.values) }
+      end
+
+      context 'revealed' do
+        before { Assessment.last.update(revealed: true) }
+        let(:revealed) { true }
+
+        it { is_expected.to contain_exactly(@funds[:ineligible]) }
       end
     end
   end
@@ -119,50 +182,6 @@ describe Fund do
       it 'self.active' do
         Fund.last.update state: 'inactive'
         expect(Fund.active.count).to eq 2
-      end
-    end
-
-    context 'self.duration' do
-      before(:each) do
-        Fund.first.update(min_duration_awarded: 6, max_duration_awarded: 36)
-        Fund.second.update(min_duration_awarded: 12)
-        @proposal = build(:proposal, funding_duration: 12)
-      end
-
-      it 'up-to-2y' do
-        expect(Fund.duration(@proposal, 'up-to-2y').size).to eq 2
-      end
-
-      it '2y-plus' do
-        expect(Fund.duration(@proposal, '2y-plus').size).to eq 1
-      end
-
-      it 'proposal min only' do
-        expect(Fund.duration(@proposal, 'proposal').size).to eq 2
-      end
-
-      it 'proposal max only' do
-        Fund.second.update(min_duration_awarded: nil, max_duration_awarded: 12)
-        expect(Fund.duration(@proposal, 'proposal').size).to eq 2
-      end
-
-      it 'proposal exact' do
-        Fund.second.update(min_duration_awarded: 12, max_duration_awarded: 12)
-        expect(Fund.duration(@proposal, 'proposal').size).to eq 2
-      end
-
-      it 'proposal over' do
-        Fund.second.update(min_duration_awarded: 3, max_duration_awarded: 9)
-        expect(Fund.duration(@proposal, 'proposal').size).to eq 1
-      end
-
-      it 'proposal under' do
-        Fund.second.update(min_duration_awarded: 18, max_duration_awarded: 24)
-        expect(Fund.duration(@proposal, 'proposal').size).to eq 1
-      end
-
-      it 'all' do
-        expect(Fund.duration(@proposal, 'all').size).to eq 3
       end
     end
 

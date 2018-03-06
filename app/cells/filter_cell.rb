@@ -1,27 +1,55 @@
-include ERB::Util
+include ActionView::Helpers::FormOptionsHelper
 
 class FilterCell < Cell::ViewModel
   def show
+    @proposal = options[:proposal]
+    @url = options[:url]
     render
   end
 
   private
 
-    def selected?(id, value)
-      model[id.to_sym] == value
+    def country_options
+      options_from_collection_for_select(
+        Country.order(priority: :desc).all, :alpha2, :name, model[:country]
+      )
     end
 
-    def select(id, options)
-      tag.select id: id do
-        options.map do |opt|
-          opt = [opt, opt.humanize.capitalize] unless opt.is_a?(Array)
-          tag.option(opt[1], value: url_encode(opt[0]), selected: selected?(id, opt[0]))
-        end.reduce(:+)
+    def eligibility_options
+      options_for_select(
+        opts(['All', 'Eligible', 'Ineligible', 'To check']), model[:eligibility]
+      )
+    end
+
+    def funding_type_options
+      options_for_select(opts(%w[All Capital Revenue]), model[:type])
+    end
+
+    def opts(arr)
+      arr.map { |opt| [opt, opt.parameterize] }.to_h
+    end
+
+    def filter_params
+      model.permit(:country, :eligibility, :type)
+    end
+
+    def clear_filters
+      if filter_params.empty?
+        '<a class="blue js-show-modal">Add filter</a>'
+      else
+        [
+          '<a class="blue js-show-modal">Edit</a>',
+          link_to('Clear filters', funds_path(@proposal))
+        ].join(' • ')
       end
     end
 
-    def proposal_duration
-      ['proposal', "Your proposal (#{options[:funding_duration]} months)"] if
-        options[:funding_duration]
+    def active_filters
+      return 'None' if filter_params.empty?
+      filter_params.to_h.map { |k, v| "#{k}:#{v}" }.join(', ')
+    end
+
+    def query_path
+      @url || funds_path(@proposal)
     end
 end

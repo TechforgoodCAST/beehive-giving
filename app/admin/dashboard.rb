@@ -24,8 +24,6 @@ ActiveAdmin.register_page 'Dashboard' do
 
         span class: 'blank_slate' do
           h3 'Non-profits'
-          h5 'Unlocks'
-          h1 number_with_delimiter RecipientFunderAccess.all.count
           h5 'Quiz answers'
           h1 number_with_delimiter Answer.all.count
         end

@@ -13,7 +13,6 @@ class Recipient < ApplicationRecord
   has_many :proposals
   has_many :requests
   has_many :users, as: :organisation, dependent: :destroy
-  has_many :recipient_funder_accesses # TODO: deprecated
 
   has_one  :subscription, dependent: :destroy
 

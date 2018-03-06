@@ -8,14 +8,18 @@
 // layout file, like app/views/layouts/application.html.erb
 
 import 'babel-polyfill'
-import Filter from '../modules/filter'
+import Dialog from '../modules/dialog'
 import Select from '../modules/select'
+import Sort from '../modules/sort'
 
-const filter = new Filter()
+const dialog = new Dialog()
 const select = new Select()
+const sort = new Sort()
 
 document.addEventListener('turbolinks:load', () => {
-  filter.init('.filter')
+  dialog.init()
+  sort.init('sort-form')
+
   select.orgType(['user', 'basics_step', 'eligibility_step'])
 
   const eligibilityStepOpts = {
