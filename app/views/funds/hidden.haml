@@ -1,4 +1,4 @@
-= content_for :title, "Hidden Fund [#{@fund.hashid}]"
+= content_for :title, "#{@fund.pretty_name} [#{@fund.hashid}]"
 
 %header
   = cell :v2_navbar, @current_user
@@ -14,12 +14,8 @@
 
     .flex.flex-wrap.mb40
       %section.perc50.md.mb40.px20
-        = link_to 'Reveal Fund Identity', reveals_path(assessment: @assessment), method: :post, class: 'button white bg-blue caps shadow mb20'
-
-        %h1.mb10.italic Hidden Fund
-        .mb30
-          by
-          %span.redacted.grey= scramble_name(@fund.funder.name)
+        %h1.mb10= @fund.pretty_name
+        .mb30 Actual fund identity hidden
 
         .mb30.fs18.night.lh25= raw redact(@fund, :description, trim: 30)
 

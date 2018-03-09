@@ -122,6 +122,17 @@ class Fund < ApplicationRecord
     state.to_s == 'true' ? where('assessments.revealed': state) : all
   end
 
+  def assessment
+    return unless respond_to?(:assessment_id)
+    OpenStruct.new(
+      id: assessment_id,
+      fund_id: hashid,
+      proposal_id: proposal_id,
+      eligibility_status: eligibility_status,
+      revealed: revealed
+    )
+  end
+
   def to_param
     hashid
   end

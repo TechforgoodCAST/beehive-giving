@@ -26,7 +26,8 @@ class ProgressCell < Cell::ViewModel
         [
           ::Progress::Eligibility.new(opts.merge(position: 'bot')),
           ::Progress::Suitability.new(opts.merge(position: 'top bot')),
-          ::Progress::Apply.new(opts.merge(position: 'top'))
+          ::Progress::Reveal.new(assessment: model, position: 'top bot'),
+          ::Progress::Apply.new(assessment: model, position: 'top')
         ]
       end
     end

@@ -56,7 +56,13 @@ class FundsController < ApplicationController
           .funding_type(params[:type])
           .revealed(params[:revealed])
           .active
-          .select('funds.*', 'assessments.eligibility_status')
+          .select(
+            'funds.*',
+            'assessments.id AS assessment_id',
+            'assessments.proposal_id',
+            'assessments.eligibility_status',
+            'assessments.revealed'
+          )
     end
 
     def themed_query

@@ -50,4 +50,22 @@ describe ProgressCell do
       expect(subject).to have_text('Apply')
     end
   end
+
+  context 'revealed' do
+    it 'has #steps' do
+      expect(subject).not_to have_text('Reveal')
+    end
+  end
+
+  context 'subscribed' do
+    it 'has #steps' do
+      expect(subject).not_to have_text('Reveal')
+    end
+  end
+
+  context 'featured' do
+    it 'has #steps' do
+      expect(subject).not_to have_text('Reveal')
+    end
+  end
 end

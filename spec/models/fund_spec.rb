@@ -167,6 +167,26 @@ describe Fund do
       subject.pretty_name = 'Pretty name'
       expect(subject.pretty_name).to eq('Pretty name')
     end
+
+    it '#assessment missing' do
+      expect(subject.assessment).to eq(nil)
+    end
+
+    it '#assessment' do
+      assessment = create(:assessment, fund: create(:fund_simple))
+      funds = Fund.join(assessment.proposal).select(
+        'funds.*', 'assessments.*', 'assessments.id AS assessment_id'
+      )
+      result = OpenStruct.new(
+        id: assessment.id,
+        fund_id: assessment.fund.hashid,
+        proposal_id: assessment.proposal_id,
+        eligibility_status: assessment.eligibility_status,
+        revealed: nil
+      )
+
+      expect(funds.first.assessment).to eq(result)
+    end
   end
 
   context 'single' do

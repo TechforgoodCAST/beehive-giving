@@ -5,19 +5,18 @@ module Progress
     end
 
     def indicator
-      "#{@position} " << if @status == ELIGIBLE
-                           'bg-blue'
-                         else
-                           'bg-grey'
-                         end
+      @position.to_s << if eligibility_status == ELIGIBLE
+                          ' bg-blue'
+                        else
+                          ' bg-grey'
+                        end
     end
 
     def message
-      case @status
-      when ELIGIBLE
+      if eligible_and_revealed?
         link_to(
           'Apply ❯',
-          url_helpers.apply_path(@fund, @proposal),
+          url_helpers.apply_path(fund_hashid, proposal_id),
           class: 'fs15 btn white bg-blue shadow'
         )
       else
@@ -26,7 +25,21 @@ module Progress
     end
 
     def highlight
-      'bg-light-blue' if @status == 1
+      'bg-light-blue' if eligible_and_revealed?
     end
+
+    private
+
+      def fund_hashid
+        HASHID.encode(@assessment.fund_id)
+      end
+
+      def proposal_id
+        @assessment.proposal_id
+      end
+
+      def eligible_and_revealed?
+        eligibility_status == ELIGIBLE && revealed
+      end
   end
 end

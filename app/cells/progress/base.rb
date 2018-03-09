@@ -4,10 +4,12 @@ module Progress
     include ActionView::Helpers::UrlHelper
 
     def initialize(args = {})
-      @position = args[:position]
-      @proposal = args[:proposal]
-      @fund     = args[:fund]
-      @status   = args[:status]
+      @assessment = args[:assessment]
+      @position   = args[:position]
+
+      @status   = args[:status] # TODO: remove
+      @proposal = args[:proposal] # TODO: remove
+      @fund     = args[:fund] # TODO: remove
     end
 
     def label
@@ -24,6 +26,14 @@ module Progress
 
     def highlight
       raise_not_implemented(__method__)
+    end
+
+    def eligibility_status
+      @assessment&.eligibility_status
+    end
+
+    def revealed
+      @assessment&.revealed
     end
 
     private
