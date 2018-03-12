@@ -25,7 +25,7 @@ feature 'RevealFunds' do
     scenario 'reveal button hidden once revealed' do
       visit funds_path(@proposal)
       visit fund_path(@fund, @proposal)
-      click_link('Reveal')
+      click_link('Reveal', match: :first)
       expect(page).not_to have_link('Reveal')
       expect(@user.reveals.size).to eq(1)
     end
@@ -43,7 +43,7 @@ feature 'RevealFunds' do
       end
 
       scenario 'cant reveal fund after reaching limit' do
-        click_link('Reveal')
+        click_link('Reveal', match: :first)
         expect(current_path).to eq(account_upgrade_path(@recipient))
       end
 

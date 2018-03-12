@@ -1,5 +1,7 @@
 class Fund < ApplicationRecord
   include ActionView::Helpers::NumberHelper
+  include FundJsonSetters
+  include FundArraySetters
 
   scope :active, -> { where(state: 'active') }
   scope :stubs, -> { where(state: 'stub') }
@@ -68,17 +70,23 @@ class Fund < ApplicationRecord
   before_validation :check_beehive_data,
                     if: proc { |o| o.skip_beehive_data.to_i.zero? }
 
-  def save(*args)
-    if state =~ /draft|stub/ && FundStub.new(fund: self).valid?
-      set_slug unless slug
-      super(validate: false)
-    else
-      super
-    end
+  def self.country(state = nil)
+    state.blank? ? all : joins(:countries).where('countries.alpha2': state)
   end
 
-  def self.version
-    XXhash.xxh32(active.order(:updated_at).pluck(:updated_at).join)
+  def self.eligibility(state = nil)
+    eligibility = {
+      'eligible'   => ELIGIBLE,
+      'ineligible' => INELIGIBLE,
+      'to-check'   => [UNASSESSED, INCOMPLETE]
+    }[state]
+
+    eligibility ? where('assessments.eligibility_status': eligibility) : all
+  end
+
+  def self.funding_type(state = nil)
+    type = { 'capital' => 1, 'revenue' => 2 }[state]
+    type ? where("permitted_costs @> '[#{type}]'") : all
   end
 
   def self.join(proposal = nil)
@@ -99,74 +107,22 @@ class Fund < ApplicationRecord
     order(*order)
   end
 
-  def self.country(state = nil)
-    state.blank? ? all : joins(:countries).where('countries.alpha2': state)
-  end
-
-  def self.eligibility(state = nil)
-    eligibility = {
-      'eligible'   => ELIGIBLE,
-      'ineligible' => INELIGIBLE,
-      'to-check'   => [UNASSESSED, INCOMPLETE]
-    }[state]
-
-    eligibility ? where('assessments.eligibility_status': eligibility) : all
-  end
-
-  def self.funding_type(state = nil)
-    type = { 'capital' => 1, 'revenue' => 2 }[state]
-    type ? where("permitted_costs @> '[#{type}]'") : all
-  end
-
   def self.revealed(state)
     state.to_s == 'true' ? where('assessments.revealed': state) : all
   end
 
-  def assessment
-    return unless respond_to?(:assessment_id)
-    OpenStruct.new(
-      id: assessment_id,
-      fund_id: hashid,
-      proposal_id: proposal_id,
-      eligibility_status: eligibility_status,
-      revealed: revealed
+  def self.select_view_columns
+    select(
+      'funds.*',
+      'assessments.id AS assessment_id',
+      'assessments.proposal_id',
+      'assessments.eligibility_status',
+      'assessments.revealed'
     )
   end
 
-  def to_param
-    hashid
-  end
-
-  def pretty_name
-    super.blank? ? 'Hidden fund' : super
-  end
-
-  def short_name
-    name.sub(' Fund', '')
-  end
-
-  def title
-    funder.funds.size > 1 ? name : funder.name
-  end
-
-  def subtitle
-    funder.funds.size > 1 ? funder.name : name
-  end
-
-  def tags?
-    tags.count.positive?
-  end
-
-  def stub?
-    %w[stub draft].include? state
-  end
-
-  def key_criteria_html
-    markdown(key_criteria)
-  end
-
-  def description_html
-    markdown(description)
+  def self.version
+    XXhash.xxh32(active.order(:updated_at).pluck(:updated_at).join)
   end
 
   def amount_desc # TODO: refactor & test
@@ -181,6 +137,21 @@ class Fund < ApplicationRecord
     end
   end
 
+  def assessment
+    return unless respond_to?(:assessment_id)
+    OpenStruct.new(
+      id: assessment_id,
+      fund_id: hashid,
+      proposal_id: proposal_id,
+      eligibility_status: eligibility_status,
+      revealed: revealed
+    )
+  end
+
+  def description_html
+    markdown(description)
+  end
+
   def duration_desc # TODO: refactor & test
     return unless min_duration_awarded_limited || max_duration_awarded_limited
     if !min_duration_awarded_limited || min_duration_awarded == 0
@@ -190,6 +161,10 @@ class Fund < ApplicationRecord
     else
       "between #{months_to_str(min_duration_awarded)} and #{months_to_str(max_duration_awarded)}"
     end
+  end
+
+  def key_criteria_html
+    markdown(key_criteria)
   end
 
   def org_income_desc # TODO: refactor & test
@@ -204,6 +179,10 @@ class Fund < ApplicationRecord
     end
   end
 
+  def pretty_name
+    super.blank? ? 'Hidden fund' : super
+  end
+
   def question_groups(question_type)
     case question_type
     when 'Restriction'
@@ -213,38 +192,40 @@ class Fund < ApplicationRecord
     end
   end
 
-  include FundJsonSetters
-  include FundArraySetters
+  def save(*args)
+    if state =~ /draft|stub/ && FundStub.new(fund: self).valid?
+      set_slug unless slug
+      super(validate: false)
+    else
+      super
+    end
+  end
+
+  def short_name
+    name.sub(' Fund', '')
+  end
+
+  def stub?
+    %w[stub draft].include? state
+  end
+
+  def subtitle
+    funder.funds.size > 1 ? funder.name : name
+  end
+
+  def tags?
+    tags.count.positive?
+  end
+
+  def title
+    funder.funds.size > 1 ? name : funder.name
+  end
+
+  def to_param
+    hashid
+  end
 
   private
-
-    def set_slug
-      self[:slug] = "#{funder.slug}-#{name.parameterize}" if funder
-    end
-
-    def period_end_in_past
-      return unless period_end
-      errors.add(:period_end, 'Period end must be in the past') if
-        period_end > Time.zone.today
-    end
-
-    def period_start_before_period_end
-      return unless period_start && period_end
-      errors.add(:period_start, 'Period start must be before period end') if
-        period_start > period_end
-    end
-
-    def months_to_str(months)
-      if months == 12
-        '1 year'
-      elsif months < 24
-        "#{months} months"
-      elsif (months % 12).zero?
-        "#{months / 12} years"
-      else
-        "#{months_to_str(months - (months % 12))} and #{months % 12} months"
-      end
-    end
 
     def check_beehive_data # TODO: refactor as service
       return unless open_data && slug
@@ -274,13 +255,32 @@ class Fund < ApplicationRecord
       assign_attributes(resp.slice(*resp_attributes)) if slug == resp['fund_slug']
     end
 
-    def validate_sources # TODO: refactor DRY
-      sources.try(:each) do |k, v|
-        errors.add(:sources, "Invalid URL - key: #{k}") if
-          k !~ %r{https?://}
-        errors.add(:sources, "Invalid URL - value: #{v}") if
-          v !~ %r{https?://}
+    def months_to_str(months)
+      if months == 12
+        '1 year'
+      elsif months < 24
+        "#{months} months"
+      elsif (months % 12).zero?
+        "#{months / 12} years"
+      else
+        "#{months_to_str(months - (months % 12))} and #{months % 12} months"
       end
+    end
+
+    def period_end_in_past
+      return unless period_end
+      errors.add(:period_end, 'Period end must be in the past') if
+        period_end > Time.zone.today
+    end
+
+    def period_start_before_period_end
+      return unless period_start && period_end
+      errors.add(:period_start, 'Period start must be before period end') if
+        period_start > period_end
+    end
+
+    def set_slug
+      self[:slug] = "#{funder.slug}-#{name.parameterize}" if funder
     end
 
     def validate_districts
@@ -298,6 +298,15 @@ class Fund < ApplicationRecord
           errors.add(:districts, "for #{country.name} not selected") if
             (district_ids & country.district_ids).count.zero?
         end
+      end
+    end
+
+    def validate_sources # TODO: refactor DRY
+      sources.try(:each) do |k, v|
+        errors.add(:sources, "Invalid URL - key: #{k}") if
+          k !~ %r{https?://}
+        errors.add(:sources, "Invalid URL - value: #{v}") if
+          v !~ %r{https?://}
       end
     end
 end

@@ -2,6 +2,7 @@
 
 require 'rails_helper'
 
+# TODO: refactor
 describe Fund do
   context 'self' do
     let(:proposal) { build(:proposal) }
@@ -14,9 +15,73 @@ describe Fund do
       end
     end
 
-    it '#version' do
-      Fund.update_all(updated_at: DateTime.new(2018, 1, 1).in_time_zone)
-      expect(Fund.version).to eq(269159070)
+    context '#country' do
+      subject { Fund.join(proposal).country(country) }
+
+      let(:country) { nil }
+
+      context 'default all' do
+        it { is_expected.to contain_exactly(*@funds.values) }
+      end
+
+      context 'alpha2' do
+        before do
+          @funds[:eligible].update(
+            geo_area: create(:geo_area, countries: [Country.last])
+          )
+        end
+        let(:country) { Country.last.alpha2 }
+        it { expect(subject.size).to eq(1) }
+      end
+    end
+
+    context '#eligibility' do
+      subject { Fund.join(proposal).eligibility(eligibility) }
+
+      let(:eligibility) { nil }
+
+      context 'default all' do
+        it { is_expected.to contain_exactly(*@funds.values) }
+      end
+
+      context 'eligible' do
+        let(:eligibility) { 'eligible' }
+        it { is_expected.to contain_exactly(@funds[:eligible]) }
+      end
+
+      context 'ineligible' do
+        let(:eligibility) { 'ineligible' }
+        it { is_expected.to contain_exactly(@funds[:ineligible]) }
+      end
+
+      context 'to-check' do
+        let(:eligibility) { 'to-check' }
+        let(:funds) { [@funds[:orphan], @funds[:incomplete]] }
+        it { is_expected.to contain_exactly(*funds) }
+      end
+    end
+
+    context '#funding_type' do
+      subject { Fund.join(proposal).funding_type(funding_type) }
+      let(:funding_type) { nil }
+
+      context 'default all' do
+        it { is_expected.to contain_exactly(*@funds.values) }
+      end
+
+      context do
+        before { @funds[:eligible].update_column(:permitted_costs, []) }
+
+        context 'capital' do
+          let(:funding_type) { 'capital' }
+          it { expect(subject.size).to eq(3) }
+        end
+
+        context 'revenue' do
+          let(:funding_type) { 'revenue' }
+          it { expect(subject.size).to eq(3) }
+        end
+      end
     end
 
     context '#order_by' do
@@ -62,75 +127,6 @@ describe Fund do
       end
     end
 
-    context '#funding_type' do
-      subject { Fund.join(proposal).funding_type(funding_type) }
-      let(:funding_type) { nil }
-
-      context 'default all' do
-        it { is_expected.to contain_exactly(*@funds.values) }
-      end
-
-      context do
-        before { @funds[:eligible].update_column(:permitted_costs, []) }
-
-        context 'capital' do
-          let(:funding_type) { 'capital' }
-          it { expect(subject.size).to eq(3) }
-        end
-
-        context 'revenue' do
-          let(:funding_type) { 'revenue' }
-          it { expect(subject.size).to eq(3) }
-        end
-      end
-    end
-
-    context '#eligibility' do
-      subject { Fund.join(proposal).eligibility(eligibility) }
-
-      let(:eligibility) { nil }
-
-      context 'default all' do
-        it { is_expected.to contain_exactly(*@funds.values) }
-      end
-
-      context 'eligible' do
-        let(:eligibility) { 'eligible' }
-        it { is_expected.to contain_exactly(@funds[:eligible]) }
-      end
-
-      context 'ineligible' do
-        let(:eligibility) { 'ineligible' }
-        it { is_expected.to contain_exactly(@funds[:ineligible]) }
-      end
-
-      context 'to-check' do
-        let(:eligibility) { 'to-check' }
-        let(:funds) { [@funds[:orphan], @funds[:incomplete]] }
-        it { is_expected.to contain_exactly(*funds) }
-      end
-    end
-
-    context '#country' do
-      subject { Fund.join(proposal).country(country) }
-
-      let(:country) { nil }
-
-      context 'default all' do
-        it { is_expected.to contain_exactly(*@funds.values) }
-      end
-
-      context 'alpha2' do
-        before do
-          @funds[:eligible].update(
-            geo_area: create(:geo_area, countries: [Country.last])
-          )
-        end
-        let(:country) { Country.last.alpha2 }
-        it { expect(subject.size).to eq(1) }
-      end
-    end
-
     context '#revealed' do
       subject { Fund.join(proposal).revealed(revealed) }
 
@@ -146,6 +142,20 @@ describe Fund do
 
         it { is_expected.to contain_exactly(@funds[:ineligible]) }
       end
+    end
+
+    context '#select_view_columns' do
+      subject { Fund.join(proposal).select_view_columns.first }
+
+      it { is_expected.to respond_to(:assessment_id) }
+      it { is_expected.to respond_to(:proposal_id) }
+      it { is_expected.to respond_to(:eligibility_status) }
+      it { is_expected.to respond_to(:revealed) }
+    end
+
+    it '#version' do
+      Fund.update_all(updated_at: DateTime.new(2018, 1, 1).in_time_zone)
+      expect(Fund.version).to eq(269159070)
     end
   end
 
@@ -174,9 +184,7 @@ describe Fund do
 
     it '#assessment' do
       assessment = create(:assessment, fund: create(:fund_simple))
-      funds = Fund.join(assessment.proposal).select(
-        'funds.*', 'assessments.*', 'assessments.id AS assessment_id'
-      )
+      funds = Fund.join(assessment.proposal).select_view_columns
       result = OpenStruct.new(
         id: assessment.id,
         fund_id: assessment.fund.hashid,
