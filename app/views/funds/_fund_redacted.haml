@@ -3,7 +3,8 @@
     %h3.mb5= link_to fund.pretty_name, fund_path(fund, @proposal)
     .fs15.night
       Actual fund identity hidden
-      -# TODO: %a • Why?
+      •
+      %span.blue.tooltip{ 'aria-label' => "You can view this funds suitability report for FREE, but you'll need to reveal it's true identity in order to apply - you get 3 'reveals' for free, and can upgrade to see every fund." } Why?
 
   .p20.border-top.border-silver
     %h6.bold.mb10= cell(:fund_insight, fund, proposal: @proposal).call(:summary)
