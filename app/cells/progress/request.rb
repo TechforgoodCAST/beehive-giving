@@ -1,27 +1,27 @@
 module Progress
   class Request < Base
-    def initialize(*args)
-      super
+    def highlight
+      'bg-light-blue' if assessment&.proposal
+    end
+
+    def indicator
+      assessment&.proposal ? 'bg-blue' : 'bg-grey'
     end
 
     def label
       'Update fund details'
     end
 
-    def indicator
-      "bg-blue #{@position}"
-    end
-
     def message
-      if @proposal.recipient.requests.find_by(fund_id: @fund.id)
-        tag.a('Requested', class: 'btn fs15 slate border-silver disabled')
+      if assessment&.proposal
+        if assessment.proposal.recipient.requests.find_by(fund: assessment.fund)
+          tag.a('Requested', class: 'btn fs15 slate border-silver disabled')
+        else
+          link_to('Request', url_helpers.requests_path(fund: assessment.fund), method: :post, class: 'fs15 btn white bg-blue shadow')
+        end
       else
-        link_to('Request', url_helpers.requests_path(fund: @fund), method: :post, class: 'fs15 btn white bg-blue shadow')
+        tag.a('Request', class: 'btn fs15 slate border-silver disabled')
       end
-    end
-
-    def highlight
-      'bg-light-blue'
     end
   end
 end

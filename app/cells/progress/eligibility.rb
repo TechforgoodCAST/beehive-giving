@@ -1,7 +1,8 @@
 module Progress
   class Eligibility < Base
-    def label
-      'Eligibility'
+    def highlight
+      return if eligibility_status.nil?
+      'bg-light-blue' unless eligibility_status == ELIGIBLE
     end
 
     def indicator
@@ -10,11 +11,15 @@ module Progress
         INELIGIBLE => 'bg-red',
         INCOMPLETE => 'bg-blue',
         ELIGIBLE   => 'bg-green'
-      }[@status] + " #{@position}"
+      }[eligibility_status]
+    end
+
+    def label
+      'Eligibility'
     end
 
     def message
-      case @status
+      case eligibility_status
       when INELIGIBLE
         link_to('Ineligible', '#eligibility', link_opts.merge(class: 'red'))
       when INCOMPLETE
@@ -26,11 +31,6 @@ module Progress
       when ELIGIBLE
         link_to('Eligible', '#eligibility', link_opts.merge(class: 'green'))
       end
-    end
-
-    def highlight
-      return if @status.nil?
-      'bg-light-blue' unless @status == 1
     end
   end
 end

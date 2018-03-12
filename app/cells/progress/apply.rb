@@ -1,15 +1,15 @@
 module Progress
   class Apply < Base
-    def label
-      'Apply'
+    def highlight
+      'bg-light-blue' if eligible_and_revealed?
     end
 
     def indicator
-      @position.to_s << if eligibility_status == ELIGIBLE
-                          ' bg-blue'
-                        else
-                          ' bg-grey'
-                        end
+      eligibility_status == ELIGIBLE ? 'bg-blue' : 'bg-grey'
+    end
+
+    def label
+      'Apply'
     end
 
     def message
@@ -24,22 +24,18 @@ module Progress
       end
     end
 
-    def highlight
-      'bg-light-blue' if eligible_and_revealed?
-    end
-
     private
-
-      def fund_hashid
-        HASHID.encode(@assessment.fund_id)
-      end
-
-      def proposal_id
-        @assessment.proposal_id
-      end
 
       def eligible_and_revealed?
         eligibility_status == ELIGIBLE && revealed
+      end
+
+      def fund_hashid
+        HASHID.encode(assessment.fund_id)
+      end
+
+      def proposal_id
+        assessment.proposal_id
       end
   end
 end

@@ -5,23 +5,19 @@ module Progress
     end
 
     def indicator
-      @position.to_s << if eligible_and_hidden?
-                          ' bg-blue'
-                        else
-                          ' bg-grey'
-                        end
+      eligible_and_hidden? ? 'bg-blue' : 'bg-grey'
     end
 
     def message
       if revealed
         disabled_button('Revealed')
-      elsif eligibility_status == ELIGIBLE || INELIGIBLE
+      elsif eligibility_status.nil?
+        disabled_button('Reveal')
+      else
         classes = {
           ELIGIBLE => 'white bg-blue shadow', INELIGIBLE => 'blue border-blue'
         }
         button('Reveal', classes: classes[eligibility_status])
-      else
-        disabled_button('Reveal')
       end
     end
 
@@ -34,7 +30,7 @@ module Progress
       def button(text, opts = {})
         link_to(
           text,
-          url_helpers.reveals_path(assessment: @assessment),
+          url_helpers.reveals_path(assessment: assessment),
           class: "fs15 btn #{opts[:classes]}",
           method: :post
         )

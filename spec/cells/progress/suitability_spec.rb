@@ -5,8 +5,7 @@ describe Progress::Suitability, type: :feature do
   let(:opts) {
     {
       fund: build(:fund, id: 1, slug: 'fund'),
-      proposal: build(:proposal, id: 1, suitability: { 'fund' => suitability }),
-      position: 'top bot'
+      proposal: build(:proposal, id: 1, suitability: { 'fund' => suitability })
     }
   }
 
@@ -15,14 +14,14 @@ describe Progress::Suitability, type: :feature do
   it('#label') { expect(subject.label).to eq('Suitability') }
 
   context 'poor' do
-    it('indicator') { expect(subject.indicator).to eq('top bot bg-red') }
+    it('indicator') { expect(subject.indicator).to eq('bg-red') }
     it('message')   { expect(subject.message).to have_link('Poor') }
   end
 
   context 'neutral' do
     let(:suitability) { { fund: { a: { score: 1 }, b: { score: 1 } } } }
 
-    it('indicator') { expect(subject.indicator).to eq('top bot bg-yellow') }
+    it('indicator') { expect(subject.indicator).to eq('bg-yellow') }
     it('message')   { expect(subject.message).to have_link('Review') }
   end
 
@@ -39,7 +38,7 @@ describe Progress::Suitability, type: :feature do
       }
     end
 
-    it('indicator') { expect(subject.indicator).to eq('top bot bg-green') }
+    it('indicator') { expect(subject.indicator).to eq('bg-green') }
     it('message')   { expect(subject.message).to have_link('Good') }
   end
 end

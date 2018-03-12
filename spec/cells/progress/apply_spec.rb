@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 RSpec.shared_examples 'apply_default' do
-  it('indicator') { expect(subject.indicator).to eq 'top bg-grey' }
+  it('indicator') { expect(subject.indicator).to eq 'bg-grey' }
   it('message')   { expect(subject.message).to have_text 'Apply' }
   it('highlight') { expect(subject.highlight).to eq nil }
 end
 
 describe Progress::Apply, type: :feature do
-  subject { Progress::Apply.new(assessment: assessment, position: 'top') }
+  subject { Progress::Apply.new(assessment: assessment) }
   let(:assessment) { nil }
 
   it('#label') { expect(subject.label).to eq('Apply') }
@@ -30,7 +30,7 @@ describe Progress::Apply, type: :feature do
     let(:assessment) do
       OpenStruct.new(eligibility_status: ELIGIBLE, fund_id: 1, proposal_id: 1)
     end
-    it('indicator') { expect(subject.indicator).to eq('top bg-blue') }
+    it('indicator') { expect(subject.indicator).to eq('bg-blue') }
     it('message')   { expect(subject.message).not_to have_link('Apply') }
     it('highlight') { expect(subject.highlight).to eq(nil) }
   end
@@ -41,7 +41,7 @@ describe Progress::Apply, type: :feature do
         eligibility_status: ELIGIBLE, fund_id: 1, proposal_id: 1, revealed: true
       )
     end
-    it('indicator') { expect(subject.indicator).to eq('top bg-blue') }
+    it('indicator') { expect(subject.indicator).to eq('bg-blue') }
     it('message')   { expect(subject.message).to have_link('Apply') }
     it('highlight') { expect(subject.highlight).to eq('bg-light-blue') }
   end

@@ -1,13 +1,13 @@
 require 'rails_helper'
 
 RSpec.shared_examples 'reveal_default' do
-  it('indicator') { expect(subject.indicator).to eq('top bot bg-grey') }
+  it('indicator') { expect(subject.indicator).to eq('bg-grey') }
   it('message')   { expect(subject.message).to have_text('Reveal') }
   it('highlight') { expect(subject.highlight).to eq(nil) }
 end
 
 describe Progress::Reveal, type: :feature do
-  subject { Progress::Reveal.new(assessment: assessment, position: 'top bot') }
+  subject { Progress::Reveal.new(assessment: assessment) }
   let(:assessment) { nil }
 
   it('#label') { expect(subject.label).to eq('Reveal fund identity') }
@@ -31,7 +31,7 @@ describe Progress::Reveal, type: :feature do
 
   context 'eligible fund hidden' do
     let(:assessment) { OpenStruct.new(eligibility_status: ELIGIBLE) }
-    it('indicator') { expect(subject.indicator).to eq('top bot bg-blue') }
+    it('indicator') { expect(subject.indicator).to eq('bg-blue') }
     it('message') do
       expect(subject.message).to have_link('Reveal', class: 'white bg-blue')
     end
