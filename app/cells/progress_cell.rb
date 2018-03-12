@@ -36,7 +36,7 @@ class ProgressCell < Cell::ViewModel
 
       if fund.stub?
         sections.slice(:request, :eligibility, :suitability, :apply).values
-      elsif fund.featured? || model&.revealed?
+      elsif options[:subscribed] || fund.featured? || model&.revealed?
         sections.slice(:eligibility, :suitability, :apply).values
       else
         sections.slice(:eligibility, :suitability, :reveal, :apply).values

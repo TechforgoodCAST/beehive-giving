@@ -16,7 +16,7 @@ end
 describe ProgressCell do
   controller ApplicationController
 
-  subject { cell(:progress, assessment).call(:show) }
+  subject { cell(:progress, assessment, options).call(:show) }
   let(:assessment) do
     build(
       :assessment,
@@ -24,6 +24,7 @@ describe ProgressCell do
       fund: build(:fund, id: 1, slug: 'fund')
     )
   end
+  let(:options) { {} }
 
   context 'current proposal' do
     it('shows link') { expect(subject).to have_link('Change') }
@@ -79,6 +80,7 @@ describe ProgressCell do
   end
 
   context 'subscribed' do
+    let(:options) { { subscribed: true } }
     it_behaves_like 'steps_default'
   end
 
