@@ -27,11 +27,11 @@ class ProgressCell < Cell::ViewModel
       opts = { fund: fund, proposal: proposal, status: eligibility_status }
 
       sections = {
-        request:     ::Progress::Request.new(assessment: model),
-        eligibility: ::Progress::Eligibility.new(assessment: model),
-        suitability: ::Progress::Suitability.new(opts),
-        reveal:      ::Progress::Reveal.new(assessment: model),
-        apply:       ::Progress::Apply.new(assessment: model)
+        request:     Progress::Request.new(assessment: model),
+        eligibility: Progress::Eligibility.new(assessment: model),
+        suitability: Progress::Suitability.new(opts),
+        reveal:      Progress::Reveal.new(assessment: model),
+        apply:       Progress::Apply.new(assessment: model)
       }
 
       if fund.stub?
