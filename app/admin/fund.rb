@@ -62,27 +62,34 @@ ActiveAdmin.register Fund do
   config.sort_order = 'updated_at_desc'
 
   show do
-    attributes_table do
-      row :slug
-      row :funder do |fund|
-        link_to fund.funder.name, [:admin, fund.funder]
+    tabs do
+      tab :summary do
+        attributes_table do
+          row :funder do |fund|
+            link_to fund.funder.name, [:admin, fund.funder]
+          end
+          row :name
+          row :state
+          row :description do fund.description_html.html_safe end
+          row :application_link do
+            "<a href=\"#{fund.application_link}\">#{fund.application_link}</a>".html_safe
+          end
+          row :key_criteria do fund.key_criteria_html.html_safe end
+          row :themes do
+            fund.themes.each.map do |t|
+              "<span class='status_tag'>#{t.name}</span>"
+            end.join(" \&bull; ").html_safe
+          end
+        end
       end
-      row :name
-      row :pretty_name
-      row :description do fund.description_html.html_safe end
-      row :open_call
-      row :featured
-      row :state
-      row :currency
-      row :application_link do
-        "<a href=\"#{fund.application_link}\">#{fund.application_link}</a>".html_safe
-      end
-      row :key_criteria do fund.key_criteria_html.html_safe end
-      row :tags do
-        fund.tags.each.map{|r| "<span class=\"status_tag\">#{r}</span>"}.join(" ").html_safe
-      end
-      row :themes do
-        fund.themes.each.map{|t| "<span class=\"status_tag\">#{t.name}</span>"}.join(" ").html_safe
+      tab :admin do
+        attributes_table do
+          row :slug
+          row :pretty_name
+          row :open_call
+          row :featured
+          row :currency
+        end
       end
     end
 
@@ -111,16 +118,23 @@ ActiveAdmin.register Fund do
 
         attributes_table do
           row :restrictions_known
-          row :priorities_known
-          row :questions do
-            fund.questions.group_by{ |q| q.criterion_type }.each.map do |r, qs|
-              questions = qs.each.map do |q|
-                c = q.criterion
-                "<li>#{c.details}#{(" [INVERT]" if c.invert)}</li>"
-              end.join("")
-              "<strong>#{r.pluralize(qs.size)}</strong><ul>#{questions}</ul>"
-            end.join("").html_safe
+          row :restrictions do
+            labels = {
+              'Recipient' => 'Is your organisation...',
+              'Proposal' => 'Is your funding proposal for...'
+            }
+            invert = { true => 'Must', false => 'Must not' }
+
+            fund.restrictions.group_by { |r| [r.category, r.invert] }.map do |k, v|
+              li = v.map { |r| "<li>#{r.details}</li>" }.join
+              "
+                <i>#{invert[k[1]]}</i><br/>
+                <strong>#{labels[k[0]]}</strong>
+                <ul>#{li}</ul>
+              "
+            end.join.html_safe
           end
+          row :priorities_known
         end
       end
 
