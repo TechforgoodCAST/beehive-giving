@@ -24,14 +24,15 @@ class ProgressCell < Cell::ViewModel
     end
 
     def steps # TODO: refactor
-      opts = { fund: fund, proposal: proposal, status: eligibility_status }
+      old_opts = { fund: fund, proposal: proposal, status: eligibility_status }
+      opts = { assessment: model, featured: fund.featured? }
 
       sections = {
-        request:     Progress::Request.new(assessment: model),
-        eligibility: Progress::Eligibility.new(assessment: model),
-        suitability: Progress::Suitability.new(opts),
-        reveal:      Progress::Reveal.new(assessment: model),
-        apply:       Progress::Apply.new(assessment: model)
+        request:     Progress::Request.new(opts),
+        eligibility: Progress::Eligibility.new(opts),
+        suitability: Progress::Suitability.new(old_opts),
+        reveal:      Progress::Reveal.new(opts),
+        apply:       Progress::Apply.new(opts)
       }
 
       if fund.stub?

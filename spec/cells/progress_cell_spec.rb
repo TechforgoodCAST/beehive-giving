@@ -87,5 +87,10 @@ describe ProgressCell do
   context 'featured' do
     before { assessment.fund.featured = true }
     it_behaves_like 'steps_default'
+
+    context 'eligible' do
+      before { assessment.eligibility_status = ELIGIBLE }
+      it { is_expected.to have_link('Apply') }
+    end
   end
 end

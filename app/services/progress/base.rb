@@ -7,6 +7,7 @@ module Progress
 
     def initialize(args = {})
       @assessment = args[:assessment]
+      @featured   = args[:featured]
 
       @status   = args[:status] # TODO: remove
       @proposal = args[:proposal] # TODO: remove
@@ -34,7 +35,7 @@ module Progress
     end
 
     def revealed
-      assessment&.revealed
+      @featured || assessment&.revealed
     end
 
     private
