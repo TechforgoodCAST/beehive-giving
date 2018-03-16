@@ -207,13 +207,13 @@ feature 'Proposal' do
               so I can understand the context of my results' do
       proposal1 = @app.instances[:complete_proposal]
       visit proposals_path
-      click_link 'Funds', match: :first
+      click_link('Funds', href: funds_path(proposal1))
       expect(current_path).to eq funds_path(proposal1)
 
       @app.create_registered_proposal
       proposal2 = @app.instances[:registered_proposal]
       visit proposals_path
-      click_link 'Funds', match: :first
+      click_link('Funds', href: funds_path(proposal2))
       expect(current_path).to eq funds_path(proposal2)
     end
   end
