@@ -19,6 +19,9 @@ describe Progress::Reveal, type: :feature do
   context 'incomplete' do
     let(:assessment) { OpenStruct.new(eligibility_status: INCOMPLETE) }
     it_behaves_like 'reveal_default'
+    it 'message' do
+      expect(subject.message).to have_link('Reveal', class: 'blue border-blue')
+    end
   end
 
   context 'ineligible' do

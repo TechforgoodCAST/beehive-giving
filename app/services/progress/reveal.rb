@@ -14,10 +14,7 @@ module Progress
       elsif eligibility_status.nil?
         disabled_button('Reveal')
       else
-        classes = {
-          ELIGIBLE => 'white bg-blue shadow', INELIGIBLE => 'blue border-blue'
-        }
-        button('Reveal', classes: classes[eligibility_status])
+        button('Reveal', classes: classes(eligibility_status))
       end
     end
 
@@ -36,6 +33,14 @@ module Progress
         )
         msg = "#{revealed_count} of #{MAX_FREE_LIMIT} free used"
         "<span class='tooltip tooltip-left' aria-label='#{msg}'>#{link}</span>"
+      end
+
+      def classes(key)
+        {
+          ELIGIBLE => 'white bg-blue shadow',
+          INELIGIBLE => 'blue border-blue',
+          INCOMPLETE => 'blue border-blue'
+        }[key]
       end
 
       def disabled_button(text)
