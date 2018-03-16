@@ -45,4 +45,14 @@ describe Progress::Reveal, type: :feature do
     it_behaves_like 'reveal_default'
     it('message') { expect(subject.message).to have_text('Revealed') }
   end
+
+  context 'displays current usage' do
+    let(:assessment) do
+      OpenStruct.new(
+        eligibility_status: INCOMPLETE,
+        recipient: build(:recipient, reveals: [1])
+      )
+    end
+    it { expect(subject.message).to include("aria-label='1 of 3 free used") }
+  end
 end

@@ -28,12 +28,14 @@ module Progress
     private
 
       def button(text, opts = {})
-        link_to(
+        link = link_to(
           text,
           url_helpers.reveals_path(assessment: assessment),
           class: "fs15 btn #{opts[:classes]}",
           method: :post
         )
+        msg = "#{revealed_count} of #{MAX_FREE_LIMIT} free used"
+        "<span class='tooltip tooltip-left' aria-label='#{msg}'>#{link}</span>"
       end
 
       def disabled_button(text)
@@ -42,6 +44,10 @@ module Progress
 
       def eligible_and_hidden?
         eligibility_status == ELIGIBLE && !revealed
+      end
+
+      def revealed_count
+        assessment&.recipient ? assessment.recipient.reveals.size : '?'
       end
   end
 end
