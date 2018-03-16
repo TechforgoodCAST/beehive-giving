@@ -10,7 +10,7 @@ describe CurrentProposalCell do
 
   context 'no proposal' do
     let(:proposal) { nil }
-    it { is_expected.to have_text('No proposal') }
+    it { is_expected.to have_text('No proposal to check') }
     it { is_expected.to have_link('Sign in') }
     it { is_expected.to have_link('create an account') }
     it { is_expected.not_to have_link('Change') }

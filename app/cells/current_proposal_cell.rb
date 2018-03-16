@@ -7,7 +7,7 @@ class CurrentProposalCell < Cell::ViewModel
       if model
         model.complete? ? model.title.truncate_words(3) : 'Current proposal'
       else
-        'No proposal'
+        'No proposal to check'
       end
     end
 

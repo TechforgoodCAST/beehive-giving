@@ -13,7 +13,7 @@ describe FundsHelper do
       description: "A description #{fund_name} #{funder_name}"
     )
   end
-  let(:field) { :description }
+  let(:method) { :description }
 
   context '#selected' do
     let(:selected) { subject.selected(value, 'eligibility' => value) }
@@ -37,25 +37,29 @@ describe FundsHelper do
 
   context '#redact' do
     it 'fund name' do
-      expect(subject.redact(fund, field)).not_to have_text('Name')
+      expect(subject.redact(fund, method)).not_to have_text('Name')
     end
 
     it 'funder name' do
-      expect(subject.redact(fund, field)).not_to have_text('Super')
+      expect(subject.redact(fund, method)).not_to have_text('Super')
     end
 
     it 'trims' do
-      str = subject.redact(fund, field, trim: 5)
+      str = subject.redact(fund, method, trim: 5)
       expect(str).not_to have_text('Foundation')
     end
 
     it 'omission' do
-      str = subject.redact(fund, field, trim: 5, omission: 'more')
+      str = subject.redact(fund, method, trim: 5, omission: 'more')
       expect(str).to have_text('more')
     end
 
     it 'does not split tags' do
-      expect(subject.redact(fund, field, trim: 3)).to have_selector('span')
+      expect(subject.redact(fund, method, trim: 3)).to have_selector('span')
+    end
+
+    it 'accepts different methods' do
+      expect(subject.redact(fund, :description_html)).to have_selector('p')
     end
   end
 end

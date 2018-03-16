@@ -57,7 +57,7 @@
                       = a.label :eligible_true, 'Yes'
                       = a.radio_button :eligible, :false
                       = a.label :eligible_false, 'No'
-                  %label.mx20= a.object.criterion.details
+                  %label.mx20= raw(a.object.criterion.details)
 
           %fieldset
             - if @recipient.errors.added?(:name, :blank)
@@ -89,7 +89,7 @@
                       = a.label "eligible_#{a.object.criterion.invert}", 'Yes'
                       = a.radio_button :eligible, !a.object.criterion.invert
                       = a.label "eligible_#{!a.object.criterion.invert}", 'No'
-                  %label.mx20= a.object.criterion.details
+                  %label.mx20= raw(a.object.criterion.details)
 
           = cell(:proposal_form, @attempt.proposal, f: f).call(:location_microsite)
 

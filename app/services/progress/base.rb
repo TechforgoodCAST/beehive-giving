@@ -3,14 +3,22 @@ module Progress
     include ActionView::Helpers::TagHelper
     include ActionView::Helpers::UrlHelper
 
+    attr_accessor :assessment
+
     def initialize(args = {})
-      @position = args[:position]
-      @proposal = args[:proposal]
-      @fund     = args[:fund]
-      @status   = args[:status]
+      @assessment = args[:assessment]
+      @featured   = args[:featured]
+
+      @status   = args[:status] # TODO: remove
+      @proposal = args[:proposal] # TODO: remove
+      @fund     = args[:fund] # TODO: remove
     end
 
-    def label
+    def eligibility_status
+      assessment&.eligibility_status
+    end
+
+    def highlight
       raise_not_implemented(__method__)
     end
 
@@ -18,15 +26,23 @@ module Progress
       raise_not_implemented(__method__)
     end
 
+    def label
+      raise_not_implemented(__method__)
+    end
+
     def message
       raise_not_implemented(__method__)
     end
 
-    def highlight
-      raise_not_implemented(__method__)
+    def revealed
+      @featured || assessment&.revealed
     end
 
     private
+
+      def link_opts
+        { 'data-turbolinks' => false }
+      end
 
       def raise_not_implemented(method)
         raise NotImplementedError,
@@ -35,10 +51,6 @@ module Progress
 
       def url_helpers
         Rails.application.routes.url_helpers
-      end
-
-      def link_opts
-        { 'data-turbolinks' => false }
       end
   end
 end

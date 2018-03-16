@@ -22,7 +22,7 @@ feature 'Apply' do
           .check_eligibility
           .answer_priorities(@fund)
           .check_suitability
-    click_link 'Reveal'
+    click_link 'Reveal', match: :first
     click_link 'Apply'
   end
 

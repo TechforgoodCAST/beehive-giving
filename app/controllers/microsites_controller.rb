@@ -72,7 +72,7 @@ class MicrositesController < ApplicationController
                  .order_by
                  .active
                  .where(funder: @funder)
-                 .select('funds.*', 'assessments.eligibility_status')
+                 .select_view_columns
 
     # TODO: refactor
     @assessments = Assessment.includes(:fund, :proposal, :recipient)

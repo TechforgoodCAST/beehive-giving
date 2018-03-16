@@ -115,7 +115,7 @@ feature 'Eligibility' do
               so I can see further details about applying" do
       helper.answer_restrictions(@fund).check_eligibility
             .answer_priorities(@fund).check_suitability
-      click_link 'Reveal'
+      click_link 'Reveal', match: :first
       click_link 'Apply ❯'
       expect(current_path).to eq(apply_path(@fund, @proposal))
     end
@@ -166,7 +166,7 @@ feature 'Eligibility' do
       helper.answer_recipient_restrictions(@fund)
             .answer_proposal_restrictions(@fund, eligible: false)
             .check_eligibility
-      click_link 'Reveal'
+      click_link 'Reveal', match: :first
       visit apply_path(@fund, @proposal)
       expect(current_path).to eq(account_upgrade_path(@proposal.recipient))
     end

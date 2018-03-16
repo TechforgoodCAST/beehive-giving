@@ -5,7 +5,7 @@ module FundsHelper
     params['eligibility'] == value ? 'selected' : nil
   end
 
-  def redact(fund, field, opts = {})
+  def redact(fund, method, opts = {})
     placeholder = '**hidden**'
 
     tokens = fund.name.downcase.split + fund.funder.name.downcase.split
@@ -14,7 +14,7 @@ module FundsHelper
 
     regex = Regexp.new(final_tokens.join('\b|\b'), options: 'i')
 
-    with_placeholder = fund[field].gsub(regex, placeholder)
+    with_placeholder = fund.send(method).gsub(regex, placeholder)
 
     scramble = Array.new(rand(5..10)) { [*'a'..'z'].sample }.join
 

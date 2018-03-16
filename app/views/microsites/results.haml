@@ -33,8 +33,7 @@
           .p20
             .flex.justify-between.items-center
               .flex.items-center
-                - status = fund.eligibility_status
-                .dot.mr20{ class: Progress::Eligibility.new(status: status).indicator }
+                .dot.mr20{ class: Progress::Eligibility.new(assessment: fund.assessment).indicator }
                 %div
                   %h3.mb5= fund.name
                   .fs15.night

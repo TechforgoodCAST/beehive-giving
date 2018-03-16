@@ -1,6 +1,7 @@
 class FundsController < ApplicationController
   before_action :update_legacy_suitability, except: :sources
   before_action :load_fund, only: %i[hidden show]
+  before_action :stub_assessment, only: %i[hidden show]
 
   def show
     authorize FundContext.new(@fund, @proposal)
@@ -56,7 +57,7 @@ class FundsController < ApplicationController
           .funding_type(params[:type])
           .revealed(params[:revealed])
           .active
-          .select('funds.*', 'assessments.eligibility_status')
+          .select_view_columns
     end
 
     def themed_query
@@ -72,5 +73,9 @@ class FundsController < ApplicationController
     def load_stubs(funds)
       @fund_stubs = Fund.stubs.includes(:funder).order('RANDOM()').limit(5) if
         funds.empty?
+    end
+
+    def stub_assessment
+      @stub_assessment = OpenStruct.new(fund: @fund, proposal: @proposal)
     end
 end

@@ -10,15 +10,15 @@ module Progress
     end
 
     def indicator
-      "#{@position} " << if @status.nil?
-                           'bg-grey'
-                         elsif @status == 5
-                           'bg-green'
-                         elsif @status >= 2
-                           'bg-yellow'
-                         else
-                           'bg-red'
-                         end
+      if @status.nil?
+        'bg-grey'
+      elsif @status == 5
+        'bg-green'
+      elsif @status >= 2
+        'bg-yellow'
+      else
+        'bg-red'
+      end
     end
 
     def message
