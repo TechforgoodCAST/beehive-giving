@@ -152,6 +152,10 @@ class Fund < ApplicationRecord
     markdown(description)
   end
 
+  def description_plain
+    markdown(description, plain: true)
+  end
+
   def duration_desc # TODO: refactor & test
     return unless min_duration_awarded_limited || max_duration_awarded_limited
     if !min_duration_awarded_limited || min_duration_awarded == 0
