@@ -58,8 +58,9 @@
         = cell(:fund_insight, @fund).call(:duration)
         = cell(:fund_insight, @fund).call(:grant_count)
         = cell(:fund_insight, @fund).call(:award_months)
-        %li
-          = link_to 'Reveal', reveals_path(assessment: @assessment), method: :post, class: 'bold blue'
-          this fund to see recent grants
+        - if @assessment
+          %li
+            = link_to 'Reveal', reveals_path(assessment: @assessment), method: :post, class: 'bold blue'
+            this fund to see recent grants
 
     = render partial: 'checks'

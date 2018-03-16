@@ -43,8 +43,7 @@ feature 'RevealFunds' do
       end
 
       scenario 'cant reveal fund after reaching limit' do
-        click_link('Reveal', match: :first)
-        expect(current_path).to eq(account_upgrade_path(@recipient))
+        expect(page).not_to have_link('Reveal')
       end
 
       scenario 'can browse redacted fund after reaching limit' do
