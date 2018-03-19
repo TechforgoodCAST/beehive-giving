@@ -3,7 +3,11 @@
     .p20.bg-ice
       %h3.mb15 Can't find the fund you’re looking for?
       .night
-        = mail_to 'support@beehivegiving.org', 'Email', subject: 'Request Fund Update'
+        Try
+        = succeed '.' do
+          = link_to('clearing filters', funds_path(@proposal))
+        Alternatively,
+        = mail_to 'support@beehivegiving.org', 'email', subject: 'Request Fund Update'
         us the name of the fund you’d like added, or follow the links below to request an incomplete fund to be updated.
     - @fund_stubs.each do |stub|
       %h6.p20.border-top.border-silver= link_to stub.funder.name, fund_path(stub, @proposal)
