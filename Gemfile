@@ -35,14 +35,14 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'activerecord-import'
 gem 'cells-rails'
-gem 'cells-slim'
+gem 'cells-slim' # TODO: remove
 gem 'chartkick'
 gem 'chosen-rails'
 gem 'country_select'
 gem 'geocoder'
-gem 'gon'
+gem 'gon' # TODO: remove
 gem 'groupdate'
-gem 'hamlit' # TODO: replace with gem 'slim'
+gem 'hamlit'
 gem 'hashids'
 gem 'httparty'
 gem 'kaminari'
@@ -53,7 +53,7 @@ gem 'redcarpet'
 gem 'simple_form'
 gem 'sitemap_generator'
 gem 'stripe'
-gem 'uikit-sass-rails'
+gem 'uikit-sass-rails' # TODO: remove
 gem 'workflow'
 gem 'xxhash'
 
@@ -63,6 +63,7 @@ gem 'devise'
 
 # Monitoring & metrics
 gem 'intercom-rails'
+gem 'mixpanel-ruby'
 gem 'rollbar'
 group :production do
   gem 'rails_12factor'

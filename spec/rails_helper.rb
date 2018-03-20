@@ -80,5 +80,6 @@ RSpec.configure do |config|
       .stub_beneficiaries_endpoint
       .stub_amounts_endpoint
       .stub_durations_endpoint
+      .stub_mixpanel
   end
 end
