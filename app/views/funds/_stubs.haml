@@ -5,7 +5,7 @@
       .night
         Try
         = succeed '.' do
-          = link_to('clearing filters', funds_path(@proposal))
+          = link_to('clearing filters', (request.path || funds_path(@proposal)))
         Alternatively,
         = mail_to 'support@beehivegiving.org', 'email', subject: 'Request Fund Update'
         us the name of the fund you’d like added, or follow the links below to request an incomplete fund to be updated.
