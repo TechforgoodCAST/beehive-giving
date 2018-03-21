@@ -5,14 +5,16 @@ describe FilterCell do
 
   subject { filter }
 
-  let(:filter) { cell(:filter, params, proposal: proposal).call(:show) }
+  let(:filter) { cell(:filter, params, opts).call(:show) }
   let(:params) { ActionController::Parameters.new }
+  let(:opts) { { proposal: proposal, request_path: request_path } }
   let(:proposal) { nil }
+  let(:request_path) { nil }
 
   context 'no active filters' do
     it { is_expected.to have_text('Add filter') }
     it { is_expected.to have_text('None') }
-    it { is_expected.not_to have_link('Clear all filters') }
+    it { is_expected.not_to have_link('Clear filters') }
   end
 
   context 'unpermitted params' do
@@ -24,8 +26,18 @@ describe FilterCell do
     let(:params) { ActionController::Parameters.new(eligibility: 'eligible') }
 
     it { is_expected.to have_text('Edit') }
-    it { is_expected.to have_link('Clear filters', href: '/funds') }
     it { is_expected.to have_text('eligibility:eligible') }
+
+    context 'clear filters' do
+      context 'default path' do
+        it { is_expected.to have_link('Clear filters', href: '/funds') }
+      end
+
+      context 'request_path' do
+        let(:request_path) { '/request/path' }
+        it { is_expected.to have_link('Clear filters', href: '/request/path') }
+      end
+    end
 
     context 'with proposal' do
       let(:proposal) { build(:proposal, id: 1) }

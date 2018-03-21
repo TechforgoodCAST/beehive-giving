@@ -3,7 +3,7 @@ include ActionView::Helpers::FormOptionsHelper
 class FilterCell < Cell::ViewModel
   def show
     @proposal = options[:proposal]
-    @url = options[:url]
+    @request_path = options[:request_path]
     render
   end
 
@@ -39,7 +39,7 @@ class FilterCell < Cell::ViewModel
       else
         [
           '<a class="blue js-show-modal">Edit</a>',
-          link_to('Clear filters', funds_path(@proposal))
+          link_to('Clear filters', query_path)
         ].join(' • ')
       end
     end
@@ -50,6 +50,6 @@ class FilterCell < Cell::ViewModel
     end
 
     def query_path
-      @url || funds_path(@proposal)
+      @request_path || funds_path(@proposal)
     end
 end

@@ -7,9 +7,9 @@
 
   %h6.bold.slate.mb10 Eligibility
 
-  = link_to 'Incomplete', funds_path(@proposal, eligibility: 'to-check'), class: selected('to-check', params)
-  = link_to 'Eligible', funds_path(@proposal, eligibility: 'eligible'), class: selected('eligible', params)
-  = link_to 'Ineligible', funds_path(@proposal, eligibility: 'ineligible'), class: selected('ineligible', params)
+  = link_to 'Incomplete', funds_path(@proposal, eligibility: 'to-check')
+  = link_to 'Eligible', funds_path(@proposal, eligibility: 'eligible')
+  = link_to 'Ineligible', funds_path(@proposal, eligibility: 'ineligible')
 
 .pills
   %h4.bold.mb15 Categories

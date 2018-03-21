@@ -60,24 +60,6 @@ feature 'Browse' do
         visit root_path
       end
 
-      # TODO: sidebar_spec?
-      context do
-        scenario 'can filter revealed funds' do
-          @recipient.update(reveals: [@top_fund.slug])
-          Assessment.last.update(revealed: true)
-          visit funds_path(@proposal, revealed: true)
-
-          expect(page).to have_text('Awards for All', count: 1)
-        end
-
-        scenario 'hidden if subscribed' do
-          @recipient.subscribe!
-          visit funds_path(@proposal)
-
-          expect(page).not_to have_text('Revealed')
-        end
-      end
-
       context 'cannot visit inactive fund' do
         before do
           @fund = Fund.first

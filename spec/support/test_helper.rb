@@ -132,6 +132,12 @@ class TestHelper # TODO: refactor
     self
   end
 
+  def stub_mixpanel
+    stub_request(:any, 'https://api.mixpanel.com/track')
+    stub_request(:any, "https://api.mixpanel.com/engage")
+    self
+  end
+
   def create_admin(opts = {})
     create(:admin_user, opts)
     self

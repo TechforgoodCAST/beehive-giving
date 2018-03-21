@@ -1,7 +1,9 @@
 class Fund < ApplicationRecord
+  extend Funds::FilterSort
+
   include ActionView::Helpers::NumberHelper
-  include FundJsonSetters
-  include FundArraySetters
+  include Funds::JsonSetters
+  include Funds::ArraySetters
 
   scope :active, -> { where(state: 'active') }
   scope :stubs, -> { where(state: 'stub') }
@@ -69,57 +71,6 @@ class Fund < ApplicationRecord
   before_validation :set_slug, unless: :slug
   before_validation :check_beehive_data,
                     if: proc { |o| o.skip_beehive_data.to_i.zero? }
-
-  def self.country(state = nil)
-    state.blank? ? all : joins(:countries).where('countries.alpha2': state)
-  end
-
-  def self.eligibility(state = nil)
-    eligibility = {
-      'eligible'   => ELIGIBLE,
-      'ineligible' => INELIGIBLE,
-      'to-check'   => [UNASSESSED, INCOMPLETE]
-    }[state]
-
-    eligibility ? where('assessments.eligibility_status': eligibility) : all
-  end
-
-  def self.funding_type(state = nil)
-    type = { 'capital' => 1, 'revenue' => 2 }[state]
-    type ? where("permitted_costs @> '[#{type}]'") : all
-  end
-
-  def self.join(proposal = nil)
-    joins(
-      'LEFT JOIN assessments ' \
-      'ON funds.id = assessments.fund_id ' \
-      "AND assessments.proposal_id = #{proposal&.id || 'NULL'}"
-    )
-  end
-
-  def self.order_by(col = nil)
-    order = [
-      'funds.featured DESC',
-      'assessments.revealed',
-      ('assessments.eligibility_status DESC' unless col == 'name'),
-      'funds.name'
-    ]
-    order(*order)
-  end
-
-  def self.revealed(state)
-    state.to_s == 'true' ? where('assessments.revealed': state) : all
-  end
-
-  def self.select_view_columns
-    select(
-      'funds.*',
-      'assessments.id AS assessment_id',
-      'assessments.proposal_id',
-      'assessments.eligibility_status',
-      'assessments.revealed'
-    )
-  end
 
   def self.version
     XXhash.xxh32(active.order(:updated_at).pluck(:updated_at).join)

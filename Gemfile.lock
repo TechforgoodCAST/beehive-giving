@@ -221,6 +221,7 @@ GEM
     mime-types-data (3.2016.0521)
     mini_portile2 (2.3.0)
     minitest (5.10.3)
+    mixpanel-ruby (2.2.0)
     money (6.9.0)
       i18n (>= 0.6.4, < 0.9)
     multi_json (1.12.1)
@@ -464,6 +465,7 @@ DEPENDENCIES
   kaminari
   listen (>= 3.0.5, < 3.2)
   meta_request
+  mixpanel-ruby
   nokogiri
   pg (~> 0.18)
   poltergeist
