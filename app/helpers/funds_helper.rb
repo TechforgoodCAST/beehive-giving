@@ -1,10 +1,6 @@
 include ActionView::Helpers::SanitizeHelper
 
 module FundsHelper
-  def selected(value, params = {})
-    params['eligibility'] == value ? 'selected' : nil
-  end
-
   def redact(fund, method, opts = {})
     placeholder = '**hidden**'
 
