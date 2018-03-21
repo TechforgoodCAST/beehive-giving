@@ -10,15 +10,20 @@ class FundsController < ApplicationController
   end
 
   def index
-    update_analysis(query) if @proposal
+    query = Fund.filter_sort(@proposal, params)
     @funds = query.page(params[:page])
+    update_analysis(query) if @proposal
     load_stubs(@funds)
   end
 
   def themed
     @theme = Theme.find_by(slug: params[:theme])
     redirect_to funds_path(@proposal), alert: 'Not found' unless @theme
-    @funds = themed_query.page(params[:page])
+
+    query = Fund.filter_sort(@proposal, params)
+                .left_joins(:themes).where(themes: { id: @theme })
+
+    @funds = query.page(params[:page])
     load_stubs(@funds)
   end
 
@@ -45,23 +50,6 @@ class FundsController < ApplicationController
 
     def update_legacy_suitability # TODO: depreceted
       @proposal&.update_legacy_suitability
-    end
-
-    def query
-      # TODO: refactor into class method?
-      Fund.join(@proposal)
-          .includes(:funder, :themes, :geo_area)
-          .order_by(params[:sort])
-          .country(params[:country])
-          .eligibility(params[:eligibility])
-          .funding_type(params[:type])
-          .revealed(params[:revealed])
-          .active
-          .select_view_columns
-    end
-
-    def themed_query
-      query.left_joins(:themes).where(themes: { id: @theme })
     end
 
     def load_fund
