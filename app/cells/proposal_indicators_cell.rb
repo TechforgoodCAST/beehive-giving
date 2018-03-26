@@ -34,8 +34,7 @@ class ProposalIndicatorsCell < Cell::ViewModel
   end
 
   def funds_checked
-    counts = eligibility_counts
-    render locals: { complete: counts[INELIGIBLE] + counts[ELIGIBLE] }
+    model.assessments.where("eligibility_status != #{INCOMPLETE}").size
   end
 
   private

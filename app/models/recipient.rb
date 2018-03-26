@@ -77,10 +77,6 @@ class Recipient < ApplicationRecord
     subscription&.active?
   end
 
-  def update_funds_checked!(eligibility) # TODO: remove & funds_checked
-    update_column(:funds_checked, eligibility.count { |_, v| v.key? 'quiz' })
-  end
-
   def transferred? # TODO: refactor
     proposals.where(state: 'transferred').count.positive?
   end

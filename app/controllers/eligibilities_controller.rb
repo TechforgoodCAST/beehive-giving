@@ -9,11 +9,8 @@ class EligibilitiesController < ApplicationController
       return redirect_to edit_signup_proposal_path(@proposal)
     end
 
-    authorize EligibilityContext.new(@fund, @proposal)
-
     if update_eligibility_params
       params[:mixpanel_eligibility_tracking] = true
-      @recipient.update_funds_checked!(@proposal.eligibility)
       Assessment.analyse_and_update!(Fund.active, @proposal) # TODO: refactor
       track_quiz_completion(@fund)
       redirect_to fund_path(@fund, @proposal)

@@ -45,12 +45,6 @@ ActiveAdmin.register_page 'Dashboard' do
         end
 
         span class: 'blank_slate' do
-          h3 'Funders'
-          h5 'funds_checked'
-          h1 number_with_delimiter Recipient.sum(:funds_checked)
-        end
-
-        span class: 'blank_slate' do
           h3 'Funds'
           h5 'Active'
           h1 Fund.active.count
@@ -81,13 +75,14 @@ ActiveAdmin.register_page 'Dashboard' do
       Recipient.joins(:users).group_by_month('users.created_at', last: 12).count
     end
 
-    def unlock_count(count)
-      Recipient.where(funds_checked: count)
-               .group_by_week(:created_at, week_start: :mon, last: 12).count
+    def unlock_by_month
+      Recipient.where('funds_checked > ?', 0).group_by_month(:created_at, last: 12).count
     end
 
-    def unlock_by_month
-      Recipient.all.where('funds_checked > ?', 0).group_by_month(:created_at, last: 12).count
+    def complete_by_month
+      Assessment.where('eligibility_status != ?', INCOMPLETE)
+                .group_by_month(:created_at, last: 12)
+                .distinct.count(:proposal_id)
     end
 
     def proposal_count(state)
@@ -171,30 +166,6 @@ ActiveAdmin.register_page 'Dashboard' do
               end
             end
           end
-          tr do
-            td '1 Funder unlock'
-            unlock_count(1).each_with_index do |count, i|
-              td percentage(count, i) if count[1].positive?
-            end
-          end
-          tr do
-            td '2 Funder unlocks'
-            unlock_count(2).each_with_index do |count, i|
-              td percentage(count, i) if count[1].positive?
-            end
-          end
-          tr do
-            td '3 Funder unlocks'
-            unlock_count(3).each_with_index do |count, i|
-              td percentage(count, i) if count[1].positive?
-            end
-          end
-          tr do
-            td 'Feedback'
-            feedback_count.each_with_index do |count, i|
-              td count[1].positive? ? percentage(count, i) : '-'
-            end
-          end
         end
       end
     end
@@ -226,6 +197,10 @@ ActiveAdmin.register_page 'Dashboard' do
           tr do
             td 'Eligibility checks'
             unlock_by_month.each { |i| td i[1] }
+          end
+          tr do
+            td 'Complete checks'
+            complete_by_month.each { |i| td i[1] }
           end
           tr do
             td 'Feedback'
