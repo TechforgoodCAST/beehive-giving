@@ -33,6 +33,15 @@ describe PreResultsStep do
       subject.email = 'email@example.com'
       subject.agree_to_terms = true
       subject.save
+      @user = User.last
+    end
+
+    it 'sets User#email' do
+      expect(@user.email).to eq(subject.email)
+    end
+
+    it 'sets User#agree_to_terms' do
+      expect(@user.agree_to_terms).to eq(subject.agree_to_terms)
     end
 
     it 'creates User' do
@@ -47,7 +56,7 @@ describe PreResultsStep do
       let(:recipient) { create(:recipient) }
 
       it 'associates User' do
-        expect(User.last.organisation).to eq recipient
+        expect(@user.organisation).to eq(recipient)
       end
     end
   end
