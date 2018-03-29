@@ -64,7 +64,7 @@ ActiveAdmin.register Fund do
   show do
     tabs do
       tab :summary do
-        attributes_table do
+        attributes_table title: 'Summary' do
           row :funder do |fund|
             link_to fund.funder.name, [:admin, fund.funder]
           end
@@ -94,47 +94,76 @@ ActiveAdmin.register Fund do
     end
 
     tabs do
-      tab :restrictions do
-        attributes_table do
-          row :permitted_costs do
-            fund.permitted_costs.each.map{|t| "<li>#{FUNDING_TYPES[t][0]}</li>"}.join("").html_safe
+      tab :eligibilty do
+        attributes_table title: 'Eligibility' do
+          attributes_table title: 'Amount' do
+            row :min_amount_awarded_limited
+            row :min_amount_awarded
+            row :max_amount_awarded_limited
+            row :max_amount_awarded
           end
-          row :permitted_org_types do
-            fund.permitted_org_types.each.map{|t| "<li>#{ORG_TYPES[t+1][0]}</li>"}.join("").html_safe
+
+          attributes_table title: 'Duration' do
+            row :min_duration_awarded_limited
+            row :min_duration_awarded
+            row :max_duration_awarded_limited
+            row :max_duration_awarded
           end
-          row :min_amount_awarded_limited
-          row :min_amount_awarded
-          row :max_amount_awarded_limited
-          row :max_amount_awarded
-          row :min_duration_awarded_limited
-          row :min_duration_awarded
-          row :max_duration_awarded_limited
-          row :max_duration_awarded
-          row :min_org_income_limited
-          row :min_org_income
-          row :max_org_income_limited
-          row :max_org_income
+
+          attributes_table title: 'Income' do
+            row :min_org_income_limited
+            row :min_org_income
+            row :max_org_income_limited
+            row :max_org_income
+          end
+
+          attributes_table title: 'Location' do
+            row 'Work must take place in', &:geo_area
+            row 'Work is limited to specific areas', &:geographic_scale_limited
+            row 'Work must have a national footprint', &:national
+          end
+
+          if fund.restrictions_known?
+            attributes_table title: 'Quiz' do
+              row :restrictions_known
+              row :restrictions do
+                labels = {
+                  'Recipient' => 'Is your organisation...',
+                  'Proposal' => 'Is your funding proposal for...'
+                }
+                invert = { true => 'Must', false => 'Must not' }
+
+                fund.restrictions.group_by { |r| [r.category, r.invert] }.map do |k, v|
+                  li = v.map { |r| "<li>#{r.details}</li>" }.join
+                  "
+                    <i>#{invert[k[1]]}</i><br/>
+                    <strong>#{labels[k[0]]}</strong>
+                    <ul>#{li}</ul>
+                  "
+                end.join.html_safe
+              end
+            end
+          end
+
+          attributes_table title: 'Recipient' do
+            row :permitted_org_types do
+              fund.permitted_org_types.each.map{|t| "<li>#{ORG_TYPES[t+1][0]}</li>"}.join("").html_safe
+            end
+          end
+
+          attributes_table title: 'Type of funding' do
+            row :permitted_costs do
+              fund.permitted_costs.each.map{|t| "<li>#{FUNDING_TYPES[t][0]}</li>"}.join("").html_safe
+            end
+          end
         end
+      end
 
-        attributes_table do
-          row :restrictions_known
-          row :restrictions do
-            labels = {
-              'Recipient' => 'Is your organisation...',
-              'Proposal' => 'Is your funding proposal for...'
-            }
-            invert = { true => 'Must', false => 'Must not' }
-
-            fund.restrictions.group_by { |r| [r.category, r.invert] }.map do |k, v|
-              li = v.map { |r| "<li>#{r.details}</li>" }.join
-              "
-                <i>#{invert[k[1]]}</i><br/>
-                <strong>#{labels[k[0]]}</strong>
-                <ul>#{li}</ul>
-              "
-            end.join.html_safe
+      tab :suitability do
+        attributes_table title: 'Suitability' do
+          attributes_table title: 'Quiz' do
+            row :priorities_known
           end
-          row :priorities_known
         end
       end
 
@@ -155,14 +184,6 @@ ActiveAdmin.register Fund do
             row :grant_examples
             row :country_distribution
           end
-        end
-      end
-
-      tab :geography do
-        attributes_table do
-          row :geo_area
-          row :geographic_scale_limited
-          row :national
         end
       end
     end
