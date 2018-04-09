@@ -26,7 +26,7 @@ module Progress
         link_to(
           'Complete this check',
           '#eligibility-quiz',
-          link_opts.merge(class: 'fs15 btn white bg-blue shadow')
+          link_opts.merge(class: 'fs15 btn-sm white bg-blue shadow')
         )
       when ELIGIBLE
         link_to('Eligible', '#eligibility', link_opts.merge(class: 'green'))

@@ -1,0 +1,55 @@
+// Config
+// =========================================================================
+
+@import '../modules/base'
+
+// =========================================================================
+
+.choices
+  margin: 7px 0 0 !important
+
+.choices[data-type*="select-multiple"],
+.choices[data-type*="text"]
+  .choices__button
+    border-left: 1px solid map-get($colors, soft-blue) !important
+    background-image: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjEiIGhlaWdodD0iMjEiIHZpZXdCb3g9IjAgMCAyMSAyMSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSIjNUFBMEZGIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGQ9Ik0yLjU5Mi4wNDRsMTguMzY0IDE4LjM2NC0yLjU0OCAyLjU0OEwuMDQ0IDIuNTkyeiIvPjxwYXRoIGQ9Ik0wIDE4LjM2NEwxOC4zNjQgMGwyLjU0OCAyLjU0OEwyLjU0OCAyMC45MTJ6Ii8+PC9nPjwvc3ZnPg==) !important
+
+.choices__inner
+  border: 2px solid map-get($colors, mist)!important
+  border-radius: 3px !important
+  min-height: 40px !important
+  background-color: map-get($colors, 'white') !important
+  padding: 5px 7px 0 7px !important
+  .is-focused &,
+  .is-open &
+    border-color: map-get($colors, 'blue') !important
+  .is-open &
+    border-radius: 3px 3px 0 0 !important
+  .is-flipped.is-open &
+    border-radius: 0 0 3px 3px !important
+
+.choices__list--multiple
+  .choices__item
+    border-radius: 5px !important
+    background-color: map-get($colors, light-blue) !important
+    border: 1px solid map-get($colors, pale-blue) !important
+    color: map-get($colors, 'blue') !important
+    font-weight: 700 !important
+    line-height: 16px
+    margin-right: 5px !important
+    margin-bottom: 5px !important
+
+.choices__list--dropdown
+  border: 2px solid map-get($colors, 'blue') !important
+  .choices__item
+    word-break: keep-all
+  .choices__item--selectable
+    &.is-highlighted
+      background-color: map-get($colors, light-blue) !important
+
+.choices__input
+  background-color: white !important
+  margin-bottom: 0 !important
+
+.field_with_errors .choices__inner
+  border-color: map-get($colors, 'red') !important

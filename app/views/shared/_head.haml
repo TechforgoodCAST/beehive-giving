@@ -1,12 +1,11 @@
 %head
-  %meta{ :content => "width=device-width, initial-scale=1", :name => "viewport" }
   %title= content_for?(:title) ? "#{yield(:title)} | Beehive" : 'Beehive'
   = csrf_meta_tags
-  = stylesheet_link_tag v2_stylesheet + 'application', media: 'all', 'data-turbolinks-track' => 'reload'
-  = javascript_include_tag 'application', 'data-turbolinks-track' => 'reload'
-  = javascript_include_tag params[:controller], 'data-turbolinks-track' => 'reload'
-  = javascript_pack_tag 'application'
-  = Gon::Base.render_data
+  %meta{ content: 'width=device-width, initial-scale=1', name: 'viewport' }
+
+  = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
+  = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  = javascript_pack_tag 'application', 'data-turbolinks-track': 'reload'
 
   - if Rails.env.production?
     -# Google Optimize

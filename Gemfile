@@ -17,10 +17,6 @@ gem 'webpacker'
 # See https://github.com/rails/execjs#readme for more supported runtimes
 # gem 'therubyracer', platforms: :ruby
 
-# Use CoffeeScript for .coffee assets and views
-gem 'coffee-rails', '~> 4.2'
-# Use jquery as the JavaScript library
-gem 'jquery-rails'
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
@@ -37,10 +33,8 @@ gem 'activerecord-import'
 gem 'cells-rails'
 gem 'cells-slim' # TODO: remove
 gem 'chartkick'
-gem 'chosen-rails'
 gem 'country_select'
 gem 'geocoder'
-gem 'gon' # TODO: remove
 gem 'groupdate'
 gem 'hamlit'
 gem 'hashids'
@@ -53,7 +47,6 @@ gem 'redcarpet'
 gem 'simple_form'
 gem 'sitemap_generator'
 gem 'stripe'
-gem 'uikit-sass-rails' # TODO: remove
 gem 'workflow'
 gem 'xxhash'
 

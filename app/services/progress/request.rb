@@ -15,12 +15,12 @@ module Progress
     def message
       if assessment&.proposal
         if assessment.proposal.recipient.requests.find_by(fund: assessment.fund)
-          tag.a('Requested', class: 'btn fs15 slate border-silver disabled')
+          tag.a('Requested', class: 'btn-sm fs15 slate border-silver disabled')
         else
-          link_to('Request', url_helpers.requests_path(fund: assessment.fund), method: :post, class: 'fs15 btn white bg-blue shadow')
+          link_to('Request', url_helpers.requests_path(fund: assessment.fund), method: :post, class: 'fs15 btn-sm white bg-blue shadow')
         end
       else
-        tag.a('Request', class: 'btn fs15 slate border-silver disabled')
+        tag.a('Request', class: 'btn-sm fs15 slate border-silver disabled')
       end
     end
   end

@@ -63,19 +63,19 @@
           .label.mb10.bold Features
           = render 'accounts/premium_features'
 
-    %section.perc66.md.mb80.px20.fs14
+    %section.perc66.md.mb80.px20
       - unless @notice
         .mb20.fit.bg-blue.caps.white.bold.rounded.p15
           Please 'reveal' the fund or upgrade to access this feature.
-      %h2.mb40 Upgrade
-      %p.lh22.mb40.fs16
+      %h2.mb15 Upgrade
+      %p.mb30
         By completing the form you will be charged
         %strong= number_to_currency(@payment.plan_cost, unit: '£', precision: 0)
         for one years access to a
         %strong Pro
         plan.
 
-      %h3.mb40 Payment details
+      %h4.bold.mb20 Payment details
       = form_tag account_upgrade_path(@recipient), id: 'payment-form', class: 'uk-form form' do
         %noscript
           .p20.red.border-red
@@ -88,41 +88,28 @@
           - if params[:card_errors]
             .p20.red.border-red= params[:card_errors]
 
-        .mb40
-          .label.mb10.bold Card number
+        .mb20
+          .label Card number
           %input.input#card-number{ "data-stripe": "number", size: "24", type: "text", placeholder: '4242 4242 4242 4242' }
-          .payment-card
 
-        .mb40
-          .label.mb10.bold Expiration
+        .mb20
+          .label Expiration
           .flex
             .col.maxw200.mr10
               %input.input#expiry-month{ "data-stripe": "exp_month", size: "10", type: "text", placeholder: 'MM' }
             .col.maxw200
               %input.input#expiry-year{ "data-stripe": "exp_year", size: "10", type: "text", placeholder: 'YY' }
 
-        .mb40
-          .label.mb10.bold CVC
+        .mb20
+          .label CVC
           %input.input.maxw200#cvc{ "data-stripe": "cvc", size: "10", type: "text", placeholder: '123' }
 
-        -# .mb40
-        -#   .label.mb10.bold Cardholder Name
-        -#   %input.input#cardholder-name{ "data-stripe": "name", size: "24", type: "text" }
-
-        -# .mb40
-        -#   .label.mb10.bold Billing Address
-        -#   %input.input#address-line1{ "data-stripe": "address_line1", size: "24", type: "text" }
-
-        -# .mb40
-        -#   .label.mb10.bold Postal Code
-        -#   %input.input#address-zip{ "data-stripe": "address_zip", size: "24", type: "text", placeholder: '123 ABC' }
-
-        .mb40
-          .label.mb10.bold Discount coupon
+        .mb20
+          .label Discount coupon
           %input.input#coupon{ name: "coupon", size: "24", type: "text", placeholder: 'Optional' }
 
-        .mb10
-          %button.button.bg-green.white.caps{ type: "submit" } Pay securely
+        .mb15
+          %button.btn.bg-green.white.shadow{ type: "submit" } Pay securely
 
         = link_to image_tag('powered-by-stripe.svg', width: 120), 'https://stripe.com/', target: '_blank'
 

@@ -37,15 +37,25 @@ Rails.application.routes.draw do
   root 'signup#user'
   post '/', to: 'signup#create_user'
 
+  # TODO: refactor
   get   '/basics',       to: 'signup_recipients#new', as: 'new_signup_recipient'
   post  '/basics',       to: 'signup_recipients#create'
   get   '/basics/(:id)', to: 'signup_recipients#edit', as: 'edit_signup_recipient'
   patch '/basics/(:id)', to: 'signup_recipients#update'
 
+  # TODO: refactor
   get   '/proposal',       to: 'signup_proposals#new', as: 'new_signup_proposal'
   post  '/proposal',       to: 'signup_proposals#create'
   get   '/proposal/(:id)', to: 'signup_proposals#edit', as: 'edit_signup_proposal'
   patch '/proposal/(:id)', to: 'signup_proposals#update'
+
+  namespace :signup do
+    get  '/basics', to: 'basics#new', as: 'basics'
+    post '/basics', to: 'basics#create'
+
+    get  '/suitability', to: 'suitability#new', as: 'suitability'
+    post '/suitability', to: 'suitability#create'
+  end
 
   # User authorisation for organisational access
   match '/unauthorised', to: 'signup#unauthorised', via: :get, as: 'unauthorised'

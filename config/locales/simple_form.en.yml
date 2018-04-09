@@ -13,12 +13,13 @@ en:
 
     labels:
       defaults:
-        password_confirmation: 'Confirm password'
         funding_type: 'What type of grant funding are you seeking?'
-        total_costs: 'How much funding are you seeking?'
         org_type: 'Who will be receiving the funding?'
+        country: 'In which country is the funding recipient based?'
+        themes: 'Select the funding themes which best describe your project'
+        password_confirmation: 'Confirm password'
+        total_costs: 'How much funding are you seeking?'
         name: 'Organisation or project name'
-        country: 'Where is your organisation or project based?'
         income_band: 'What is the annual income of your organisation or project?'
         operating_for: 'How long has your organisation or project been operating for?'
         employees: 'How many employees does your organisation or project have?'
@@ -48,13 +49,13 @@ en:
       defaults:
         funding_duration: 'e.g. 12'
         total_costs: 'e.g. 1234'
+        charity_number: 'Charity number'
+        company_number: 'Company number'
       password_reset:
         email: 'someone@example.com'
       user:
         first_name: 'First name'
         last_name: 'Last name'
-        charity_number: 'Charity number'
-        company_number: 'Company number'
         email: 'Email'
         password: 'Password'
         password_confirmation: 'Confirm password'
@@ -85,3 +86,7 @@ en:
         implementations_other: 'Please specify'
       pre_results_step:
         email: 'e.g. email@example.com'
+
+    hints:
+      defaults:
+        themes: 'Proposals with fewer than 5 themes get the best results.'

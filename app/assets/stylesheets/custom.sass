@@ -1,0 +1,428 @@
+@import modules/base
+
+// TODO: deprecated
+#banner
+  background: #005d7f
+
+.bread, .crumb
+  display: inline-block
+  vertical-align: middle
+.bread
+  max-width: 140px
+  @media screen and (max-width: 46.875rem)
+    max-width: 125px
+  @media screen and (max-width: 25rem)
+    max-width: 120px
+@media screen and (max-width: 46.875rem)
+  .bread, .crumb
+    display: none
+  .bread:nth-last-child(7)
+    visibility: hidden
+    position: relative
+    width: 10px
+    &:after
+      visibility: visible
+      position: absolute
+      top: 2px
+      content: '...'
+  .bread:nth-last-child(-n+5),
+  .crumb:nth-last-child(-n+5),
+  .bread:nth-last-child(7),
+  .crumb:nth-last-child(6)
+    display: inline-block
+@media screen and (max-width: 25rem)
+  .bread, .crumb
+    display: none !important
+  .bread:nth-last-child(5)
+    visibility: hidden
+    position: relative
+    width: 10px
+    &:after
+      visibility: visible
+      position: absolute
+      top: 2px
+      content: '...'
+  .bread:nth-last-child(-n+3),
+  .crumb:nth-last-child(-n+3),
+  .bread:nth-last-child(5),
+  .crumb:nth-last-child(4)
+    display: inline-block !important
+
+.dot, .dot-lg
+  padding: 0 5px
+  display: inline-block
+  border-radius: 9999px
+  overflow: hidden
+  transition: all .24s ease-in-out
+  &:hover
+    max-width: 150px
+    opacity: 1
+
+.dot
+  height: 16px
+  line-height: 16px
+  max-width: 16px
+  min-width: 16px
+  text-indent: 16px
+
+.dot-lg
+  height: 22px
+  line-height: 22px
+  max-width: 22px
+  min-width: 22px
+  text-indent: 22px
+
+@each $var, $val in $scales
+  .dot-#{$var}
+    height: $val
+    line-height: $val
+    max-width: $val
+    min-width: $val
+    text-indent: $val
+
+.progress
+  height: 100%
+  overflow: hidden
+
+.progress .bar
+  height: 100%
+  display: inline-block
+
+article.featured
+  margin-left: -10px
+  margin-right: -10px
+
+// TODO: deprecated
+.feature
+  background: image-url('features-sprite.png') no-repeat
+  width: 420px
+  height: 210px
+  margin: 0 auto
+  background-size: 420px 630px
+  &.one
+    background-position: center top
+  &.two
+    background-position: center -210px
+  &.three
+    background-position: center -420px
+
+.feature-card
+  display: inline-block
+  width: 270px
+  .image
+    background: image-url('feature-card.png') no-repeat
+    height: 200px
+  .copy
+    text-align: left
+
+#sort-form
+  select
+    +prefix(appearance, none, webkit moz)
+    border: none
+    outline: none
+    font-size: 15px
+    color: map-get($colors, 'blue')
+    background: none
+    max-width: 80px
+    margin: 0 5px
+    &:hover
+      cursor: pointer
+
+#header-offset
+  min-height: 43.75rem
+
+#hex
+  width: 100%
+  height: 838px
+  background: image-url('hex-bg.svg') no-repeat
+  background-size: 2438px 838px
+  background-position: calc(50% + 240px)
+  position: absolute
+  top: 0
+  z-index: -1
+
+#hex-footer
+  width: 100%
+  height: 375px
+  background: image-url('hex-footer.svg') no-repeat
+  background-size: 2438px 375px
+  background-position: center
+  position: absolute
+  z-index: -1
+
+#logo-hex
+  background: image-url('footer-hex.svg') no-repeat
+  width: 32px
+  height: 30px
+
+#navbar-logo
+  width: 106px
+  height: 20px
+  background: image-url('logo.svg') no-repeat
+  background-size: 106px 20px
+  margin-right: auto
+  text-indent: 100%
+  white-space: nowrap
+  overflow: hidden
+  &.blue
+    background: image-url('blue-logo.svg') no-repeat
+    @media screen and (max-width: 25rem)
+      background: image-url('blue-logo-hex.svg') no-repeat
+  @media screen and (max-width: 25rem)
+    width: 24px
+    height: 20px
+    background: image-url('logo-hex.svg') no-repeat
+    background-size: 24px 20px
+
+.pagination a
+  color: map-get($colors, 'blue')
+
+@font-face
+  font-family: 'Redacted'
+  src: font-url('redacted-script-bold.eot') format('eot'), font-url('redacted-script-bold.woff2') format('woff2'), font-url('redacted-script-bold.woff') format('woff'), font-url('redacted-script-bold.otf') format('opentype'), font-url('redacted-script-bold.svg#filename') format('svg')
+.redacted
+  font-family: 'Redacted' !important
+
+#supporter
+  background: image-url('supporters-logos-sprites.png') no-repeat
+  background-size: 200px 1500px
+  width: 200px
+  height: 120px
+  &.cast
+    background-position: center -15px
+  &.big-lottery-fund
+    background-position: center -165px
+  &.three-sixty-giving
+    background-position: center -315px
+  &.outlandish
+    background-position: center -465px
+  &.indigo-trust
+    background-position: center -615px
+  &.forward-foundation
+    background-position: center -765px
+  &.neon
+    background-position: center -915px
+  &.forward-partners
+    background-position: center -1065px
+  &.forward3d
+    background-position: center -1215px
+  &.datakind-uk
+    background-position: center -1365px
+
+=scale($w, $h, $scale: 1)
+  background-size: ($w * $scale) ($h * $scale)
+  min-width: ($w * $scale) / 2
+  height: ($h * $scale)
+
+#team
+  background: image-url('team-sprites.png') no-repeat
+  background-size: 320px 142px
+  min-width: 160px
+  height: 142px
+  @media screen and (max-width: 25rem)
+    +scale(320px, 142px, $scale: .6)
+  &.david
+    background-position: left top
+  &.suraj
+    background-position: right top
+
+@media screen and (min-width: 46.875rem)
+  .dashboard-columns > div
+    width: 24%
+    margin-right: 1%
+
+  .dashboard-columns > div:nth-of-type(4n)
+    margin-right: 0
+
+
+// Markdown
+// =========================================================================
+
+.markdown
+  h1, h2, h3, h4, h5, h6, p, ul, ol
+    margin-bottom: 20px
+  h1, h2, h3, h4
+    font-weight: 300
+  a
+    color: map-get($colors, 'blue')
+  ul
+    list-style: disc
+  ul, ol
+    padding-left: 30px
+
+// Quiz
+// =========================================================================
+
+.quiz
+  .input_wrapper
+    white-space: nowrap
+
+  input[type='radio']
+    position: absolute !important
+    height: 1px
+    width: 1px
+    overflow: hidden
+    clip: rect(1px, 1px, 1px, 1px)
+
+  input[type='radio'] + label
+    display: inline-block
+    min-width: 52px
+    padding: 6px 12px
+    margin-right: 5px
+    border-radius: $base-radius
+    cursor: pointer
+    text-align: center
+
+  input[type='radio']:checked + label
+    color: map-get($colors, 'white')
+    background: map-get($colors, 'blue')
+
+  input[type=radio]:not(:checked) + label
+    color: map-get($colors, 'blue')
+
+// Progress
+// =========================================================================
+
+.progress-item
+  overflow: hidden
+  +responsive(min-height, 3.938rem, .85, .9)
+
+.indicator
+  position: relative
+  background: map-get($colors, 'grey')
+  width: 16px
+  height: 16px
+  border-radius: 9999px
+  &.top:before, &.bot:after
+    content: ''
+    position: absolute
+    background: map-get($colors, 'silver')
+    width: 6px
+    height: 100vh
+    left: 5px
+  &.top:before
+    bottom: 16px
+  &.bot:after
+    top: 16px
+
+// Sidebar
+// =========================================================================
+
+.pills > h4, .pills > h6
+  padding: 0 map-get($scales, 5)
+.pills a, .pills label
+  display: block
+  width: 100%
+  padding: map-get($scales, 3) map-get($scales, 5)
+  margin-bottom: map-get($scales, 5)
+  color: map-get($colors, night)
+  border: 1px solid rgba(0, 0, 0, 0)
+  border-radius: $base-radius
+  font-size: map-get($scales, 15)
+  &:hover
+    background: map-get($colors, light-blue)
+    border-color: map-get($colors, pale-blue)
+    opacity: 1
+  &.selected
+    background: map-get($colors, 'blue')
+    color: map-get($colors, 'white')
+    font-weight: bold
+    &:hover
+      border-color: map-get($colors, 'blue')
+
+// Accordion
+// =========================================================================
+
+.accordion
+  position: relative
+  margin-bottom: map-get($scales, 5)
+  width: 100%
+  overflow: hidden
+
+  input
+    position: absolute
+    visibility: hidden
+    z-index: -1
+
+    &:checked + label, &:checked + label:hover
+      background: map-get($colors, 'blue')
+      color: map-get($colors, 'white') !important
+      border-color: map-get($colors, 'blue')
+
+    &:checked ~ .accordion-content
+      max-height: 30em
+
+    &[type=checkbox] + label::after
+      content: '›'
+      transform: rotate(90deg)
+    &[type=checkbox]:checked + label::after
+      transform-origin: 1px
+      transform: rotate(270deg)
+
+  label
+    position: relative
+    display: block
+    padding: map-get($scales, 3) map-get($scales, 5)
+    padding-right: 19px !important
+    color: map-get($colors, slate) !important
+    cursor: pointer
+    font-size: map-get($scales, 15)
+    border-radius: $base-radius
+    line-height: 20px
+
+    &:after
+      position: absolute
+      right: 0
+      top: 50%
+      display: block
+      margin: 1px 7px
+      line-height: 0
+      +prefix(transition, all .40s, webkit o)
+
+  .accordion-content
+    max-height: 0
+    overflow: hidden
+    +prefix(transition, max-height .40s, webkit o)
+
+// Dialog
+// =========================================================================
+
+// native
+dialog::backdrop
+  background-color: rgba(0, 0, 0, 0.8) !important
+// polyfill
+dialog + .backdrop
+  background-color: rgba(0, 0, 0, 0.8) !important
+
+dialog
+  min-width: 320px
+  padding: 0 !important
+
+.js-open-modal
+  height: 100vh
+  overflow: hidden
+
+// Stripe
+// =========================================================================
+
+.payment-card
+  display: inline-block
+  position: absolute
+  background: image-url('beehive-card-logos.svg') no-repeat
+  background-size: 64px 200px
+  width: 64px
+  height: 40px
+  margin: 0 3px
+  background-position: 0 40px
+  &.unkown
+    background-position: 0 40px
+  &.visa
+    background-position: 0 0
+  &.mastercard
+    background-position: 0 -40px
+  &.american-express
+    background-position: 0 -80px
+  &.diners-club
+    background-position: 0 -120px
+  &.jcb
+    background-position: 0 -160px

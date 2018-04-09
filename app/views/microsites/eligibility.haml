@@ -1,14 +1,5 @@
 = content_for :title, "Eligibility - Should you apply to #{@funder.name}?"
 
--# TODO: refactor
-= stylesheet_link_tag 'proposals'
-= stylesheet_link_tag 'chosen'
-= stylesheet_link_tag 'overrides/chosen_overrides'
-= javascript_include_tag 'proposals'
-= javascript_include_tag 'chosen-jquery'
-= javascript_include_tag 'chosen'
-= javascript_include_tag 'jquery.tree-multiselect.min'
-
 %main
   %section.bg-ice.bg-primary
     .maxw1080.mx-auto.p20.mb40
@@ -95,3 +86,6 @@
 
         %fieldset.border-top.border-silver.p20
           = f.button :button, 'Next ❯', class: 'button white bg-olive caps truncate bg-primary headline', data: { disable_with: 'Saving...' }
+
+= stylesheet_pack_tag 'choices', 'data-turbolinks-track': 'reload'
+= javascript_pack_tag 'choices', 'data-turbolinks-track': 'reload'

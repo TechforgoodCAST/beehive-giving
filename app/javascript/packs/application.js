@@ -20,7 +20,7 @@ document.addEventListener('turbolinks:load', () => {
   dialog.init()
   sort.init('sort-form')
 
-  select.orgType(['user', 'basics_step', 'eligibility_step'])
+  select.orgType(['signup_basics', 'basics_step', 'eligibility_step'])
 
   const eligibilityStepOpts = {
     '0': ['districts'],

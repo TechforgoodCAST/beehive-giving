@@ -1,0 +1,62 @@
+// Config
+// =========================================================================
+
+$base-bg-color: #FFF !default
+$base-color: #2C3134 !default
+$base-size: 16px !default
+$base-radius: 5px !default
+$base-border-width: 1px !default
+
+@import colors
+@import scales
+
+// Mixins
+// =========================================================================
+
+=prefix($prop, $val, $prefixes: ())
+  @each $prefix in $prefixes
+    #{'-' + $prefix + '-' + $prop}: $val
+    #{$prop}: $val
+
+=responsive($prop, $val, $sm-perc-change: 1, $md-perc-change: 1)
+  #{$prop}: $val
+  @media all and (max-width: 46.875em)
+    #{$prop}: $val * $md-perc-change
+  @media all and (max-width: 25rem)
+    #{$prop}: $val * $sm-perc-change
+
+// =========================================================================
+
+html
+  background-color: $base-bg-color
+  color: $base-color
+  +responsive(font-size, $base-size, .95)
+  -moz-osx-font-smoothing: grayscale
+  -webkit-font-smoothing: antialiased
+  min-width: 300px
+  overflow-x: hidden
+  overflow-y: auto
+  text-rendering: optimizeLegibility
+
+body
+  display: flex
+  min-height: 100vh
+  flex-direction: column
+
+main
+  flex: 1
+
+a, button
+  color: map-get($colors, 'blue')
+  text-decoration: none
+  transition: opacity .2s
+  &:hover
+    opacity: .6
+    cursor: pointer
+  &.disabled
+    pointer-events: none
+    cursor: default
+    color: map-get($colors, slate) !important
+
+hr
+  border: solid 1px map-get($colors, 'silver')

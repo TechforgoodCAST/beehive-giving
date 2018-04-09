@@ -1,10 +1,6 @@
 = content_for :title, 'Edit Organisation'
 
-= javascript_include_tag 'chosen-jquery'
-= javascript_include_tag 'chosen'
-= stylesheet_link_tag 'chosen'
-= stylesheet_link_tag 'overrides/chosen_overrides'
-
+-# TODO: refactor
 :javascript
   mixpanel.track("View Edit Organisation Page");
   mixpanel.identify("#{@current_user.id}");
@@ -26,7 +22,7 @@
       %h2.mb20 Organisation
       %h4 Update your organisation or project's details.
 
-    %section.perc75.md.mb80.px20.fs14
+    %section.perc75.md.mb80.px20
       = simple_form_for @recipient, url: account_organisation_path(@recipient) do |f|
 
         = cell(:recipient_form, @recipient, f: f)

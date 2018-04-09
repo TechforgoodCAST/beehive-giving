@@ -1,4 +1,6 @@
 class BasicsStep
+  extend SetterToInteger
+
   include ActiveModel::Model
   include RegNoValidations
   include OrgTypeValidations
@@ -7,17 +9,11 @@ class BasicsStep
   attr_accessor :charity_number, :company_number, :funder_id, :funding_type,
                 :org_type, :total_costs, :country
 
-  def funding_type=(str)
-    @funding_type = str.blank? ? str : str.to_i
-  end
-
-  def org_type=(str)
-    @org_type = str.blank? ? str : str.to_i
-  end
-
   validates :funder_id, presence: true
   validates :funding_type, inclusion: { in: FUNDING_TYPES.pluck(1) }
   validates :total_costs, numericality: { greater_than: 0 }
+
+  to_integer :org_type, :funding_type
 
   def save
     if valid?

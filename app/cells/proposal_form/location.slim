@@ -31,6 +31,6 @@
   .uk-width-1-1.uk-margin-top.countries class=hidden(multiple_countries)
     .label Please select the countries your proposed work will affect
     / TODO: refactor
-    = f.association :countries, collection: Country.order('priority DESC'), input_html: { class: 'country_field chosen-select large' }
+    = f.association :countries, collection: Country.order('priority DESC'), input_html: { class: 'country_field choices-select large' }
 
 hr.thick

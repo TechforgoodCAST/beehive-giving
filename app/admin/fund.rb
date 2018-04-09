@@ -53,7 +53,7 @@ ActiveAdmin.register Fund do
     actions
   end
 
-  filter :funder, input_html: { class: 'chosen-select' }
+  filter :funder, input_html: { class: 'choices-select' }
   filter :slug
   filter :state, as: :select
   filter :featured
@@ -192,7 +192,7 @@ ActiveAdmin.register Fund do
   form do |f|
     f.inputs 'Basics' do
       f.input :slug
-      f.input :funder, input_html: { class: 'chosen-select' }
+      f.input :funder, input_html: { class: 'choices-select' }
       f.input :name
       f.input :pretty_name
       f.input :description
@@ -203,18 +203,18 @@ ActiveAdmin.register Fund do
       f.input :application_link
       f.input :key_criteria
       f.input :tags, as: :select, collection: Fund.pluck(:tags).flatten.uniq,
-                     input_html: { multiple: true, class: 'chosen-select' }
+                     input_html: { multiple: true, class: 'choices-select' }
       f.input :themes, collection: Theme.pluck(:name, :id),
-                       input_html: { multiple: true, class: 'chosen-select' }
+                       input_html: { multiple: true, class: 'choices-select' }
     end
 
     tabs do
       tab :restrictions do
         f.inputs 'Restrictions' do
           f.input :permitted_costs, as: :select, collection: FUNDING_TYPES,
-                           input_html: { multiple: true, class: 'chosen-select' }
+                           input_html: { multiple: true, class: 'choices-select' }
           f.input :permitted_org_types, as: :select, collection: ORG_TYPES.map{|o| [o[0], o[1]] },
-                               input_html: { multiple: true, class: 'chosen-select' }
+                               input_html: { multiple: true, class: 'choices-select' }
           f.input :min_amount_awarded_limited
           f.input :min_amount_awarded
           f.input :max_amount_awarded_limited
@@ -230,7 +230,7 @@ ActiveAdmin.register Fund do
         end
 
         inputs 'Geography' do
-          f.input :geo_area, input_html: { class: 'chosen-select' }
+          f.input :geo_area, input_html: { class: 'choices-select' }
           f.input :geographic_scale_limited
           f.input :national
         end
@@ -242,7 +242,7 @@ ActiveAdmin.register Fund do
             q.input :group
             q.input :criterion_type, as: :select, collection: %W[Restriction Priority]
             q.input :criterion, collection: Criterion.pluck(:details, :invert, :id, :type).map { |r| ["#{r[3]}: #{r[0]}#{(" [INVERT]" if r[1])}", r[2]] },
-                                input_html: { class: 'chosen-select' }
+                                input_html: { class: 'choices-select' }
             q.actions
           end
         end

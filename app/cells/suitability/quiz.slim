@@ -11,8 +11,7 @@ h4.mb10
           .bold.caps.mb10.fs15 Incomplete proposal
           | To complete suitability for this fund you need to add some more information to your proposal.
           .mt10
-            = f.button :button, "Complete proposal",
-                              class: 'button white bg-blue caps shadow'
+            = f.button :button, 'Complete proposal', class: 'white bg-blue shadow'
         .muted
 
           = cell(:quiz, fund, quiz_type: 'Priority', proposal: model, f: f).call(:show_public)

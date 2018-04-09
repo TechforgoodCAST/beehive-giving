@@ -1,3 +1,4 @@
+// TODO: refactor
 (function() {
 
   function stripeResponseHandler(status, response) {
