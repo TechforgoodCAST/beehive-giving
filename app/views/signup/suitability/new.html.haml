@@ -1,0 +1,80 @@
+%main.bg-rich-blue
+  .mx-auto.px20
+
+    %header.maxw480.mx-auto.center
+      = link_to 'Beehive', root_path, id: 'navbar-logo', alt: 'Beehive logo', class: 'mx-auto mt25 mb40 flex'
+
+      %h1.white.mb15
+        -# TODO: refactor
+        %strong.underline= @count
+        grant funds found
+
+      %p.white.mb30.mx-auto Get a free suitability report for each fund, and avoid wasting time trawling though pages of confusing funding guidance.
+
+    %section.maxw480.mx-auto.mb20.bg-white.rounded.shadow
+      .bg-ice.p20.rounded-top
+        %h4.bold 2 of 2: Suitability checking
+
+      .p20.night
+        = simple_form_for @form, url: signup_suitability_path(@basics.attributes) do |f|
+          %h5.bold.mb20 Funding recipient
+
+          = f.simple_fields_for @form.recipient do |r|
+            .mb20= r.input :name
+            -# TODO: show/hide
+            .mb20= r.input :street_address
+
+            .flex.flex-wrap.justify-between
+              .perc48.mb20= r.input :income_band, collection: INCOME_BANDS
+              .perc48.mb20= r.input :operating_for, collection: OPERATING_FOR
+              .perc48.mb20= r.input :employees, collection: EMPLOYEES
+              .perc48.mb20= r.input :volunteers, collection: EMPLOYEES
+
+            .mb30= r.input :website
+
+          %h5.bold.mb20 Funding proposal
+
+          = f.simple_fields_for @form.proposal do |p|
+            .mb20= p.input :total_costs, as: :currency
+            .mb20= p.input :funding_duration
+            .mb20= p.input :title
+            .mb20= p.input :tagline, as: :text, input_html: { rows: 2 }
+
+            .mb15= p.input :affect_geo, collection: Proposal::AFFECT_GEO
+
+            .mb30
+              -# TODO: refactor
+              %blockquote.border-mist= p.association :districts, collection: Country.find_by(alpha2: params[:country]).districts, input_html: { multiple: true, class: 'choices-select' }
+
+              %blockquote.border-mist= p.association :countries, priority: ['GB'], include_blank: true, input_html: { multiple: true, class: 'choices-select' }
+
+              %blockquote.border-mist.signup_suitability_recipient_country
+                .heading.mb5
+                  Your work will affect all of
+                  -# TODO: refactor
+                  %strong= Country.find_by(alpha2: params[:country]).name
+                .fs14 To change country select ‘Across many countries’ above.
+
+            %h5.bold.mb20 User account
+
+            = f.simple_fields_for @form.user do |u|
+              .flex.justify-between
+                .perc48.mb20= u.input :first_name
+                .perc48.mb20= u.input :last_name
+              .mb20= u.input :email
+              .mb30= u.input :password
+
+              %h5.bold.mb20 Consent
+
+              .mb20= u.input :agree_to_terms, label: false, inline_label: "I accept the #{link_to('terms of service', terms_path, target: '_blank')} and #{link_to('privacy policy', privacy_path, target: '_blank')}".html_safe
+              .mb20= p.input :private, as: :radio_buttons
+              -# TODO: .mb20= u.input :marketing_consent, as: :radio_buttons
+
+          = f.submit 'Check suitability', class: 'btn-wide bg-rich-blue white shadow'
+
+    .fs15.white.center.mb40.pb20
+      Already have an account?
+      = link_to 'Sign in', sign_in_path, class: 'white bold underline'
+
+= stylesheet_pack_tag 'choices', 'data-turbolinks-track': 'reload'
+= javascript_pack_tag 'choices', 'data-turbolinks-track': 'reload'

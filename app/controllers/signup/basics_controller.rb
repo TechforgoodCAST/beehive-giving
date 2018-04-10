@@ -22,7 +22,7 @@ module Signup
         params.require(:signup_basics).permit(
           :charity_number, :company_number, :country, :funding_type,
           :org_type, themes: []
-        )
+        ).reject { |_, v| v.blank? }
       end
   end
 end

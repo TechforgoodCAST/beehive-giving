@@ -1,6 +1,7 @@
 require 'rails_helper'
-require 'shared/reg_no_validations'
 require 'shared/org_type_validations'
+require 'shared/reg_no_validations'
+require 'shared/setter_to_integer'
 
 describe Signup::Basics do
   subject do
@@ -20,6 +21,9 @@ describe Signup::Basics do
 
   include_examples 'org_type validations'
   include_examples 'reg no validations'
+  include_examples 'setter to integer' do
+    let(:attributes) { %i[funding_type org_type] }
+  end
 
   it { is_expected.to be_valid }
 
@@ -29,17 +33,18 @@ describe Signup::Basics do
 
   it('#themes required') { expect_invalid(:themes, ['']) }
 
-  it 'attributes cast to integer' do
-    %i[funding_type org_type].each do |a|
-      subject.send("#{a}=", '1')
-      expect(subject.send(a)).to be_an(Integer)
-    end
+  it '#proposal returns correct attributes' do
+    keys = %i[funding_type themes]
+    expect(subject.proposal).to include(*keys)
   end
 
-  it 'attributes not cast to integer' do
-    %i[funding_type org_type].each do |a|
-      subject.send("#{a}=", nil)
-      expect(subject.send(a)).to eq(nil)
-    end
+  it '#recipient returns correct attributes' do
+    keys = %i[charity_number company_number country org_type]
+    expect(subject.recipient).to include(*keys)
+  end
+
+  it '#attributes returns all attributes' do
+    keys = subject.proposal.merge(subject.recipient)
+    expect(subject.attributes).to include(keys)
   end
 end

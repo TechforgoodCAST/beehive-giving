@@ -29,8 +29,18 @@ document.addEventListener('turbolinks:load', () => {
     '3': ['eligibility_step_country_ids']
   }
   select.init('eligibility_step_affect_geo', eligibilityStepOpts)
+
+  // TODO: refactor
+  const affectGeoOpts = {
+    '0': ['signup_suitability_proposal_districts'],
+    '1': ['signup_suitability_proposal_districts'],
+    '2': ['signup_suitability_recipient_country'],
+    '3': ['signup_suitability_proposal_countries']
+  }
+  select.init('signup_suitability_proposal_affect_geo', affectGeoOpts)
 })
 
+// TODO: remove
 document.addEventListener('ajax:success', () => {
   select.orgType('user')
 })

@@ -1,5 +1,6 @@
 class EligibilityStep
   extend SetterToInteger
+
   include ActiveModel::Model
   include RecipientValidations
   include RegNoValidations

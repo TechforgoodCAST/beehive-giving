@@ -19,6 +19,22 @@ module Signup
 
     to_integer :org_type, :funding_type
 
+    def proposal
+      %i[
+        funding_type themes
+      ].map { |a| [a, send(a)] }.to_h
+    end
+
+    def recipient
+      %i[
+        charity_number company_number country org_type
+      ].map { |a| [a, send(a)] }.to_h
+    end
+
+    def attributes
+      proposal.merge(recipient)
+    end
+
     private
 
       def validate_themes
