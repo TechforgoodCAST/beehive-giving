@@ -17,7 +17,7 @@ describe Proposal do
 
   it('has many Themes') { assoc(:themes, :has_many, through: :proposal_themes) }
 
-  it('HABTM AgeGroups') { assoc(:age_groups, :has_and_belongs_to_many) }
+  it('HABTM AgeGroups') { assoc(:age_groups, :has_and_belongs_to_many) } # TODO: deprecated
 
   it('HABTM Beneficiaries') { assoc(:beneficiaries, :has_and_belongs_to_many) } # TODO: deprecated
 
@@ -48,42 +48,6 @@ describe Proposal do
         expect(subject.state).to eq(to)
       end
     end
-  end
-
-  it 'clears age_groups and gender unless affect_people' do
-    expect(subject.age_groups.size).to eq(1)
-    expect(subject.gender).to eq('Female')
-
-    subject.affect_people = false
-    subject.save!
-
-    expect(subject.age_groups.size).to eq 0
-    expect(subject.gender).to eq nil
-  end
-
-  it 'requires gender if affect_people' do
-    subject.gender = nil
-    expect(subject).to_not be_valid
-  end
-
-  it 'requires age_groups if affect_people' do
-    subject.age_groups = []
-    expect(subject).to_not be_valid
-  end
-
-  it 'does not require gender and age_groups if affect_other' do
-    subject.affect_people = false
-    subject.affect_other = true
-    subject.gender = nil
-    subject.age_groups = []
-    expect(subject).to be_valid
-  end
-
-  it 'selects all age groups if first AgeGroup selected' do
-    expect(subject.age_groups.first.label).to eq('All ages')
-    expect(subject.age_groups.size).to eq(1)
-    subject.save!
-    expect(subject.age_groups.size).to eq(8)
   end
 
   it 'does not require districts if affect_geo at country level' do

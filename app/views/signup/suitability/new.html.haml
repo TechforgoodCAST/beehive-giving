@@ -35,7 +35,8 @@
           %h5.bold.mb20 Funding proposal
 
           = f.simple_fields_for @form.proposal do |p|
-            .mb20= p.input :total_costs, as: :currency
+            .mb15= p.input :total_costs, as: :currency
+            %blockquote.border-mist.mb20.ml15= p.input :all_funding_required, as: :radio_buttons
             .mb20= p.input :funding_duration
             .mb20= p.input :title
             .mb20= p.input :tagline, as: :text, input_html: { rows: 2 }

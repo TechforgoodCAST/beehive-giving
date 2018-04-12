@@ -10,12 +10,19 @@ module Signup
       @params = params
       load_recipient
       @proposal = @recipient.proposals.new(basics_proposal)
-      @user = User.new(@params[:user])
+      @user = @recipient.users.new(@params[:user])
     end
 
     def save
-      # TODO: refactor
-      ![recipient.valid?, proposal.valid?, user.valid?].include?(false)
+      ActiveRecord::Base.transaction do
+        recipient.save!
+        proposal.save!
+        user.save!
+      end
+      true
+    rescue ActiveRecord::RecordInvalid => e
+      errors.add(:base, e.message)
+      false
     end
 
     private
@@ -41,7 +48,7 @@ module Signup
 
       def validate(obj)
         return if obj.respond_to?(:valid?) && obj.valid?
-        raise ArgumentError, "#{obj} is not a valid Signup::Basics object"
+        raise(ArgumentError, 'Invalid Signup::Basics object')
       end
   end
 end

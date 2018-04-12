@@ -1,18 +1,9 @@
 class User < ApplicationRecord
-  extend SetterToInteger
-  include RegNoValidations
-
-  attr_accessor :org_type, :charity_number, :company_number
-
   scope :recipient, -> { where organisation_type: 'Recipient' }
   scope :funder, -> { where organisation_type: 'Funder' }
 
   belongs_to :organisation, polymorphic: true, optional: true
   has_many :feedbacks
-
-  validates :org_type, inclusion: {
-    in: (ORG_TYPES.pluck(1) - [-1]), message: 'Please select a valid option'
-  }, on: :create
 
   # TODO: add validations for association
   validates :first_name, :last_name, :email, :agree_to_terms,
@@ -35,8 +26,6 @@ class User < ApplicationRecord
             format: { with: /\A(?=.*\d)(?=.*[a-zA-Z]).{6,25}\z/,
                       message: 'Must include 6 characters with 1 number' },
             on: %i[create update]
-
-  to_integer :org_type
 
   before_create { generate_token(:auth_token) }
 

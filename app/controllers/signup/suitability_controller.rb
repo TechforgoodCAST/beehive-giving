@@ -36,8 +36,8 @@ module Signup
             :operating_for, :org_type, :street_address, :volunteers, :website
           ],
           proposal: [
-            :affect_geo, :funding_duration, :private, :tagline, :title,
-            :total_costs, district_ids: [], country_ids: []
+            :affect_geo, :all_funding_required, :funding_duration, :private,
+            :tagline, :title, :total_costs, district_ids: [], country_ids: []
           ],
           user: [
             :agree_to_terms, :email, :first_name, :last_name, :password

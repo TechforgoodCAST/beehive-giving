@@ -58,16 +58,6 @@ describe BasicsStep do
   end
 
   context '#save' do
-    before(:each) do
-      Proposal.skip_callback :save, :save_all_age_groups_if_all_ages
-      Proposal.skip_callback :save, :clear_age_groups_and_gender_unless_affect_people
-    end
-
-    after(:each) do
-      Proposal.set_callback :save, :save_all_age_groups_if_all_ages
-      Proposal.set_callback :save, :clear_age_groups_and_gender_unless_affect_people
-    end
-
     it 'creates Recipient' do
       expect(Recipient.count).to eq 0
       subject.save

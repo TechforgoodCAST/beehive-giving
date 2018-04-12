@@ -1,15 +1,7 @@
 require 'rails_helper'
-require 'shared/reg_no_validations'
-require 'shared/setter_to_integer'
 
 describe User do
   subject { build(:user) }
-
-  include_examples 'reg no validations'
-
-  include_examples 'setter to integer' do
-    let(:attributes) { [:org_type] }
-  end
 
   it('belongs to Organisation') do
     assoc(:organisation, :belongs_to, polymorphic: true, optional: true)
@@ -45,10 +37,5 @@ describe User do
         expect(subject[col]).to eq('John')
       end
     end
-  end
-
-  it 'org_type converted to integer' do
-    subject.send(:org_type=, '0')
-    expect(subject.org_type).to eq(0)
   end
 end

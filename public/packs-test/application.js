@@ -2883,7 +2883,7 @@ document.addEventListener('turbolinks:load', function () {
   dialog.init();
   sort.init('sort-form');
 
-  select.orgType(['user', 'basics_step', 'eligibility_step']);
+  select.orgType(['signup_basics', 'basics_step', 'eligibility_step']);
 
   var eligibilityStepOpts = {
     '0': ['districts'],
@@ -2892,8 +2892,18 @@ document.addEventListener('turbolinks:load', function () {
     '3': ['eligibility_step_country_ids']
   };
   select.init('eligibility_step_affect_geo', eligibilityStepOpts);
+
+  // TODO: refactor
+  var affectGeoOpts = {
+    '0': ['signup_suitability_proposal_districts'],
+    '1': ['signup_suitability_proposal_districts'],
+    '2': ['signup_suitability_recipient_country'],
+    '3': ['signup_suitability_proposal_countries']
+  };
+  select.init('signup_suitability_proposal_affect_geo', affectGeoOpts);
 });
 
+// TODO: remove
 document.addEventListener('ajax:success', function () {
   select.orgType('user');
 });

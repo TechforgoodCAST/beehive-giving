@@ -1,7 +1,5 @@
 class Proposal < ApplicationRecord
   before_validation :clear_districts_if_country_wide
-  before_save :save_all_age_groups_if_all_ages,
-              :clear_age_groups_and_gender_unless_affect_people
   after_save :initial_recommendation
 
   belongs_to :recipient
@@ -14,16 +12,12 @@ class Proposal < ApplicationRecord
   has_many :proposal_themes, dependent: :destroy
   has_many :themes, through: :proposal_themes
 
-  has_and_belongs_to_many :age_groups
+  has_and_belongs_to_many :age_groups # TODO: deprecated
   has_and_belongs_to_many :beneficiaries # TODO: deprecated
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
   has_and_belongs_to_many :implementations # TODO: deprecated
 
-  TYPE_OF_SUPPORT = ['Only financial', 'Mostly financial',
-                     'Equal financial and non-financial',
-                     'Mostly non-financial', 'Only non-financial'].freeze
-  GENDERS = ['All genders', 'Female', 'Male', 'Transgender', 'Other'].freeze
   AFFECT_GEO = [
     ['One or more local areas', 0],
     ['One or more regions', 1],
@@ -56,8 +50,6 @@ class Proposal < ApplicationRecord
 
   # Requirements
   validates :recipient, :funding_duration, :themes, presence: true
-  validates :type_of_support, inclusion: { in: TYPE_OF_SUPPORT,
-                                           message: 'please select an option' }
   validates :funding_type, inclusion: { in: FUNDING_TYPES.pluck(1),
                                         message: 'please select an option' }
   validates :funding_duration,
@@ -70,17 +62,6 @@ class Proposal < ApplicationRecord
             inclusion: { message: 'please select an option', in: [true, false] }
   validates :all_funding_required,
             inclusion: { message: 'please select an option', in: [true, false] }
-
-  # Beneficiaries
-  validates :affect_people,
-            inclusion: { in: [true, false], message: 'please select an option' }
-  validates :gender, :age_groups,
-            presence: { message: 'Please select an option' },
-            if: :affect_people?
-  validates :gender,
-            inclusion: { in: GENDERS, message: 'please select an option' },
-            if: :affect_people?
-  # TODO: ensure fields cleared unless :affect_people?
 
   # Location
   validates :affect_geo, inclusion: { in: 0..3,
@@ -111,23 +92,12 @@ class Proposal < ApplicationRecord
 
   validate :recipient_subscribed, on: :create
 
-  def self.order_by(col)
-    case col
-    when 'name'
-      order :title
-    when 'amount'
-      order total_costs: :desc
-    else
-      order created_at: :desc
-    end
-  end
-
   def recipient_subscribed
     return if recipient.subscribed? || recipient.proposals.count.zero?
     errors.add(:title, 'Upgrade subscription to create multiple proposals')
   end
 
-  def beehive_insight_durations
+  def beehive_insight_durations # TODO: depreceted
     @beehive_insight_durations ||= call_beehive_insight(
       ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'],
       duration: funding_duration
@@ -146,11 +116,11 @@ class Proposal < ApplicationRecord
       suitability.key?(Fund.active.order(:updated_at).last&.slug)
   end
 
-  def suitable_funds
+  def suitable_funds # TODO: depreceted
     suitability.sort_by { |fund| fund[1]['total'] }.reverse
   end
 
-  def eligible_noquiz
+  def eligible_noquiz # TODO: depreceted
     # Same as eligible_funds except doesn't check for the quiz
     eligibility.select { |f, fund| fund.all_values_for('eligible').exclude?(false) }
   end
@@ -167,7 +137,7 @@ class Proposal < ApplicationRecord
     eligibility.select { |f, _| eligible_status(f) == -1 }
   end
 
-  def eligible?(fund_slug)
+  def eligible?(fund_slug) # TODO: depreceted
     return nil unless eligibility[fund_slug]
     eligibility[fund_slug].dig('quiz', 'eligible') &&
       eligibility[fund_slug].all_values_for('eligible').exclude?(false)
@@ -185,16 +155,16 @@ class Proposal < ApplicationRecord
     }[eligible_status(fund_slug)]
   end
 
-  def ineligible_reasons(fund_slug)
+  def ineligible_reasons(fund_slug) # TODO: depreceted
     return [] if eligible?(fund_slug)
     eligibility[fund_slug].select { |_r, e| e['eligible'] == false }.keys
   end
 
-  def ineligible_fund_ids # TODO: refactor
+  def ineligible_fund_ids # TODO: depreceted
     Fund.where(slug: ineligible_funds.keys).pluck(:id)
   end
 
-  def suitable?(fund_slug, scale = 1)
+  def suitable?(fund_slug, scale = 1) # TODO: depreceted
     score = suitability[fund_slug]&.dig('total')
     return -1 if score.nil?
     scale = score > 1 ? score.ceil : 1
@@ -207,16 +177,11 @@ class Proposal < ApplicationRecord
     end
   end
 
-  def suitable_status(fund_slug)
+  def suitable_status(fund_slug) # TODO: depreceted
     suitable?(fund_slug)
   end
 
   private
-
-    def save_all_age_groups_if_all_ages
-      return unless age_group_ids.include?(AgeGroup.first.id)
-      self.age_group_ids = AgeGroup.pluck(:id)
-    end
 
     def prevent_second_proposal_until_first_is_complete
       return unless recipient.proposals.count == 1 &&
@@ -232,13 +197,7 @@ class Proposal < ApplicationRecord
       self.districts = [] if affect_geo > 1
     end
 
-    def clear_age_groups_and_gender_unless_affect_people
-      return if affect_people?
-      self.age_groups = []
-      self.gender = nil
-    end
-
-    def call_beehive_insight(endpoint, data)
+    def call_beehive_insight(endpoint, data) # TODO: depreceted
       options = {
         body: { data: data }.to_json,
         headers: {
