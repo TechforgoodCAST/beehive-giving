@@ -1,14 +1,6 @@
 = content_for :title, 'Improve Proposal'
 
-= stylesheet_link_tag 'chosen'
-= stylesheet_link_tag 'overrides/chosen_overrides'
-
-= javascript_include_tag 'chosen-jquery'
-= javascript_include_tag 'chosen'
-= javascript_include_tag 'jquery.tree-multiselect.min'
-
-= javascript_include_tag 'proposals'
-
+-# TODO: refactor
 :javascript
   mixpanel.track("View Proposal #{@proposal.state.capitalize} Page");
   mixpanel.identify('#{@current_user.id}');

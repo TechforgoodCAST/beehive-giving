@@ -1,11 +1,5 @@
 = content_for :title, "Basics #{@recipient.name}"
 
-= javascript_include_tag 'chosen-jquery'
-= javascript_include_tag 'chosen'
-= stylesheet_link_tag 'chosen'
-= stylesheet_link_tag 'overrides/chosen_overrides'
-= javascript_include_tag 'signup'
-
 = render partial: 'signup/subnav', locals: { current_step: 0 }
 
 .uk-container.uk-container-center.uk-margin-large
