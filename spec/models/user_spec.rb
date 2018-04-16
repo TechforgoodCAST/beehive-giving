@@ -38,4 +38,26 @@ describe User do
       end
     end
   end
+
+  context '#funder?' do
+    it 'fundraiser' do
+      expect(subject.funder?).to eq(false)
+    end
+
+    it 'funder' do
+      subject.organisation_type = 'Funder'
+      expect(subject.funder?).to eq(true)
+    end
+  end
+
+  context '#legacy' do
+    it('incomplete') do
+      expect(subject.legacy?).to eq(true)
+    end
+
+    it('registered') do
+      subject.organisation = build(:recipient, proposals: [build(:proposal)])
+      expect(subject.legacy?).to eq(false)
+    end
+  end
 end

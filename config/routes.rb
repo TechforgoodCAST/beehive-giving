@@ -20,6 +20,8 @@ Rails.application.routes.draw do
   get '/tour',    to: redirect('/')
   get '/welcome', to: redirect('/')
   get '/files/Data&ResearchLead.pdf', to: redirect('410')
+  get 'account-suspended', to: 'legacy#funder',     as: 'legacy_funder'
+  get 'account-outdated',  to: 'legacy#fundraiser', as: 'legacy_fundraiser'
 
   # Sessions
   get  '/logout',  to: 'sessions#destroy'
@@ -34,8 +36,8 @@ Rails.application.routes.draw do
   get '/for-funders',  to: 'pages#forfunders', as: 'for_funders'
 
   # Sign up
-  root 'signup#user'
-  post '/', to: 'signup#create_user'
+  root 'signup/basics#new'
+  post '/', to: 'signup/basics#create'
 
   # TODO: refactor
   get   '/basics',       to: 'signup_recipients#new', as: 'new_signup_recipient'
@@ -50,8 +52,8 @@ Rails.application.routes.draw do
   patch '/proposal/(:id)', to: 'signup_proposals#update'
 
   namespace :signup do
-    get  '/basics', to: 'basics#new', as: 'basics'
-    post '/basics', to: 'basics#create'
+    # get  '/basics', to: 'basics#new', as: 'basics'
+    # post '/basics', to: 'basics#create'
 
     get  '/suitability', to: 'suitability#new', as: 'suitability'
     post '/suitability', to: 'suitability#create'

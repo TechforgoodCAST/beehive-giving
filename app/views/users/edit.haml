@@ -21,7 +21,7 @@
       %h2.mb20 Profile
       %h4 Update your personal account details.
 
-    %section.perc75.md.mb80.px20.fs14
+    %section.perc75.md.mb80.px20
       = simple_form_for @current_user, url: account_path do |f|
 
         = cell(:user_form, @current_user, f: f)

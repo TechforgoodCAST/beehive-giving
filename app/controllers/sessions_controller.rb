@@ -1,8 +1,11 @@
 class SessionsController < ApplicationController
   layout 'fullscreen'
 
+  before_action :legacy_funder, :legacy_fundraiser, only: :destroy
+  before_action :catch_unauthorised, only: :destroy
+
   def new
-    redirect_to start_path if logged_in?
+    redirect_to funds_path(@proposal) if logged_in?
   end
 
   def create
@@ -18,7 +21,7 @@ class SessionsController < ApplicationController
       if session[:original_url]
         redirect_to session.delete(:original_url)
       else
-        redirect_to start_path, notice: 'Signed in!'
+        redirect_to funds_path(@proposal), notice: 'Signed in!'
       end
     else
       flash[:error] = 'Incorrect email/password combination, please try again.'
@@ -32,6 +35,12 @@ class SessionsController < ApplicationController
   end
 
   private
+
+    def legacy_funder; end
+
+    def legacy_fundraiser; end
+
+    def catch_unauthorised; end
 
     def sign_in_metrics
       current_user.increment!(:sign_in_count)

@@ -6,34 +6,39 @@
 %header#header-offset
   #hex
 
-  .pb30.mb80
+  .pb30.mb40
     = cell(:v2_navbar, @current_user, type: 'white')
 
   .maxw1080.mx-auto
     .m40.flex.flex-wrap
-      .perc66.md
+      .perc50.md
         .fs14.white.mb40
           .bg-darken-blue.circle.shadow.inline-block.py5.pr14.pl5.truncate
             .fs12.bg-green.caps.bold.circle.inline-block.py3.px5 LIVE
             Over 100+ charitable funds offering grants
-        %h1.fs40.white.mb30.pt20
-          Get connected to the right funders
-        %p.fs20.white.mb30
-          Free, personal grant funding advice & eligibility checking
+        %h1.white.mb20.pt20
+          Save time and
+          %br avoid wasted effort
+        %h4.white.mb40
+          Get a free suitability check of
+          %strong= link_to '100+ funds', funds_path, class: 'white underline'
+          before applying
 
-        %blockquote.white.col-three-quarters.mb30.md
-          I have been fundraising for 20 years and even though it is still in development this tool is long over-due and is brilliant!
+        %blockquote.white.perc66.mb30.md.heading
+          The option to click on a few additional questions to rule [funders] in or out was a HUGE bonus for me – it saved me trawling through myriad websites to ascertain whether or not our project was eligible for funding.
           .mt10.heading.bold
-            Catherine,
-            = link_to 'Bright Ideas Trust', 'http://www.brightideastrust.com/', target: '_blank', class: 'yellow'
+            Karen,
+            = link_to "Erb's Palsy Group", 'http://www.erbspalsygroup.co.uk/', target: '_blank', class: 'yellow'
 
         .mb40
           = link_to 'http://www.thirdsectorexcellenceawards.com/finalists/beehive/', target: '_blank' do
             = image_tag 'third-sector-awards-finalist-logo.svg', width: 150, class: 'bg-ice rounded shadow mb40'
 
-      .perc33.md
-        .bg-white.p15.rounded.shadow
-          = render partial: 'users/form'
+      .perc50.md
+        = render partial: 'signup/basics/form'
+        .fs15.center.mb40.pb20
+          Already have an account?
+          = link_to 'Sign in', sign_in_path, class: 'bold'
 
 %main
   %section.maxw1080.mx-auto
@@ -102,12 +107,12 @@
       .flex.flex-wrap.mx40
         .perc66.md.p40
           %blockquote.border-black
-            The option to click on a few additional questions to rule [funders] in or out was a HUGE bonus for me – it saved me trawling through myriad websites to ascertain whether or not our project was eligible for funding.
+            I have been fundraising for 20 years and even though it is still in development this tool is long over-due and is brilliant!
             .mt10.heading.bold
-              Karen,
-              = link_to "Erb's Palsy Group", 'http://www.erbspalsygroup.co.uk/', target: '_blank'
+              Catherine,
+              = link_to 'Bright Ideas Trust', 'http://www.brightideastrust.com/', target: '_blank'
         .perc33.md.p40.center
-          %h2.bold 12,500+
+          %h2.bold 17,000+
           projects matched
           %br/
           with funders

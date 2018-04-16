@@ -6,7 +6,7 @@
 
       %h1.white.mb15
         -# TODO: refactor
-        %strong.underline= @count
+        -# %strong.underline= @count
         grant funds found
 
       %p.white.mb30.mx-auto Get a free suitability report for each fund, and avoid wasting time trawling though pages of confusing funding guidance.
@@ -44,16 +44,14 @@
             .mb15= p.input :affect_geo, collection: Proposal::AFFECT_GEO
 
             .mb30
-              -# TODO: refactor
-              %blockquote.border-mist= p.association :districts, collection: Country.find_by(alpha2: params[:country]).districts, input_html: { multiple: true, class: 'choices-select' }
+              %blockquote.border-mist= p.association :districts, collection: @form.country.districts, input_html: { multiple: true, class: 'choices-select' }
 
               %blockquote.border-mist= p.association :countries, priority: ['GB'], include_blank: true, input_html: { multiple: true, class: 'choices-select' }
 
               %blockquote.border-mist.signup_suitability_recipient_country
                 .heading.mb5
                   Your work will affect all of
-                  -# TODO: refactor
-                  %strong= Country.find_by(alpha2: params[:country]).name
+                  %strong= @form.country.name
                 .fs14 To change country select ‘Across many countries’ above.
 
             %h5.bold.mb20 User account

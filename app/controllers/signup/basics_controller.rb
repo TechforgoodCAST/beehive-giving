@@ -1,9 +1,12 @@
 module Signup
   class BasicsController < ApplicationController
-    layout 'fullscreen'
-
     def new
-      @form = Signup::Basics.new
+      if logged_in?
+        redirect_to funds_path(@proposal)
+      else
+        @form = Signup::Basics.new
+        render 'pages/home'
+      end
     end
 
     def create
@@ -12,7 +15,7 @@ module Signup
       if @form.valid?
         redirect_to signup_suitability_path(form_params)
       else
-        render :new
+        render 'pages/home'
       end
     end
 

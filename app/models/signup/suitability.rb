@@ -10,7 +10,12 @@ module Signup
       @params = params
       load_recipient
       @proposal = @recipient.proposals.new(basics_proposal)
-      @user = @recipient.users.new(@params[:user])
+      @user = @recipient.users.new(user_params)
+    end
+
+    def country
+      @country ||= Country.includes(:districts)
+                          .find_by(alpha2: basics_recipient[:country])
     end
 
     def save
@@ -25,14 +30,23 @@ module Signup
       false
     end
 
+    def recipient_registered
+      if user.valid? && recipient.persisted?
+        user.save
+        user.lock_access_to_organisation(recipient)
+        true
+      else
+        false
+      end
+    end
+
     private
 
       def basics_proposal
-        # TODO: refactor
         basics.proposal.merge(@params[:proposal] || {})
               .tap do |h|
                 h[:themes] = Theme.where(id: h[:themes])
-                h[:countries] = Country.where(alpha2: basics_recipient[:country])
+                h[:countries] = [country] if country
               end
       end
 
@@ -49,6 +63,10 @@ module Signup
       def validate(obj)
         return if obj.respond_to?(:valid?) && obj.valid?
         raise(ArgumentError, 'Invalid Signup::Basics object')
+      end
+
+      def user_params
+        (@params[:user] || {}).merge(terms_version: TERMS_VERSION)
       end
   end
 end

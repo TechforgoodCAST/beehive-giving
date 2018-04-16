@@ -6,7 +6,8 @@ class ApplicationController < ActionController::Base
   helper_method :logged_in?
 
   before_action :load_recipient, :load_last_proposal, unless: :error?
-  before_action :ensure_signed_up
+  before_action :legacy_funder, :legacy_fundraiser, if: :logged_in?
+  before_action :catch_unauthorised, if: :logged_in?
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :bad_token
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorised
@@ -57,29 +58,9 @@ class ApplicationController < ActionController::Base
                   end
     end
 
-    def funder? # NOTE: legacy support
-      current_user.organisation.is_a? Funder
-    end
-
     def ensure_logged_in
       session[:original_url] = request.original_url
       return redirect_to sign_in_path, alert: 'Please sign in' unless logged_in?
-    end
-
-    def ensure_signed_up
-      return unless logged_in?
-      return if public_controller?
-      return redirect_funder if funder? # NOTE: legacy support
-      redirect start_path unless signed_up?
-    end
-
-    def public_controller?
-      params[:controller] =~ /admin|articles|pages|sessions|microsites/
-    end
-
-    def signed_up?
-      current_user.authorised? &&
-        (@proposal && !@proposal.initial?) # NOTE: legacy support
     end
 
     def redirect(path, opts = {})
@@ -87,22 +68,15 @@ class ApplicationController < ActionController::Base
       redirect_to path, opts unless request.path == path
     end
 
-    def redirect_funder # NOTE: legacy support
-      cookies.delete(:auth_token)
-      redirect sign_in_path, alert: 'Your funders account has been suspended ' \
-      'please contact support for more details.'
+    def legacy_funder
+      redirect_to legacy_funder_path if current_user.funder?
     end
 
-    def start_path
-      return unauthorised_path unless current_user.authorised?
-      return new_signup_recipient_path unless @recipient
-      return edit_signup_recipient_path(@recipient) unless @recipient.valid? # NOTE: legacy
-      return new_signup_proposal_path unless @proposal
-      return new_signup_proposal_path if @proposal.initial? # NOTE: legacy
-      funds_path(@proposal)
+    def legacy_fundraiser
+      redirect_to legacy_fundraiser_path if current_user.legacy?
     end
 
-    def ensure_not_signed_up
-      redirect_to funds_path(@proposal) if signed_up?
+    def catch_unauthorised
+      redirect_to unauthorised_path unless current_user.authorised?
     end
 end

@@ -47,6 +47,15 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
+  def funder?
+    organisation_type == 'Funder'
+  end
+
+  def legacy?
+    !(organisation.present? && organisation.proposals.any?)
+  end
+
+  # TODO: refactor/spec
   def lock_access_to_organisation(organisation)
     generate_token(:unlock_token)
     self.authorised = false
@@ -55,6 +64,7 @@ class User < ApplicationRecord
     organisation.send_authorisation_email(self)
   end
 
+  # TODO: refactor/spec
   def unlock
     update_attribute(:authorised, true)
     UserMailer.notify_unlock(self).deliver_now

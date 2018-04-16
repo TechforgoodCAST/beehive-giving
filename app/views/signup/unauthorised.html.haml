@@ -1,3 +1,4 @@
+-# TODO: new style
 = content_for :title, 'Waiting for access'
 
 :javascript
@@ -13,3 +14,7 @@
       If you think you are receiving this message in error, please contact
       = succeed '.' do
         = link_to 'support', 'mailto:support@beehivegiving.org'
+
+%span
+  = link_to 'Sign out', logout_path
+  to access the rest of the site as normal.

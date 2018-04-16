@@ -50,6 +50,23 @@ describe Signup::Suitability do
           end
 
           it { expect(subject.recipient.persisted?).to eq(true) }
+          it { expect(subject.recipient_registered).to eq(false) }
+
+          context 'with valid User' do
+            let(:params) do
+              {
+                user: {
+                  agree_to_terms: true,
+                  email: 'j.doe@example.com',
+                  first_name: 'J',
+                  last_name: 'Doe',
+                  password: 'Pa55word'
+                }
+              }
+            end
+            before { create(:admin_user) }
+            it { expect(subject.recipient_registered).to eq(true) }
+          end
         end
       end
     end
@@ -87,16 +104,20 @@ describe Signup::Suitability do
     end
 
     context 'User' do
-      let(:params) { { user: { first_name: 'John' } } }
+      let(:params) { { user: { first_name: 'J' } } }
 
       it { expect(subject.user).to be_an(User) }
 
       it 'with form params' do
-        expect(subject.user.first_name).to eq('John')
+        expect(subject.user.first_name).to eq('J')
       end
 
       it 'belonging to Recipient' do
         expect(subject.recipient.users).to include(subject.user)
+      end
+
+      it '#terms_version set' do
+        expect(subject.user.terms_version).to eq(TERMS_VERSION)
       end
     end
   end
@@ -148,5 +169,9 @@ describe Signup::Suitability do
       it { expect(subject.proposal).to be_persisted }
       it { expect(subject.user).to be_persisted }
     end
+
+    it { expect(subject.country).to be_a(Country) }
   end
+
+  it { expect(subject.country).to be(nil) }
 end
