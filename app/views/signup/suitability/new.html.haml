@@ -37,7 +37,7 @@
           = f.simple_fields_for @form.proposal do |p|
             .mb15= p.input :total_costs, as: :currency
             %blockquote.border-mist.mb20.ml15= p.input :all_funding_required, as: :radio_buttons
-            .mb20= p.input :funding_duration
+            .mb20= p.input :funding_duration, input_html: { max: 120 }
             .mb20= p.input :title
             .mb20= p.input :tagline, as: :text, input_html: { rows: 2 }
 

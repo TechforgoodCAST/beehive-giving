@@ -29,6 +29,18 @@ describe Proposal do
 
   it { is_expected.to be_valid }
 
+  it '#funding_duration must at least 1' do
+    subject.funding_duration = 0
+    subject.valid?
+    expect_error(:funding_duration, 'must be greater than or equal to 1')
+  end
+
+  it '#funding_duration must be less than 120' do
+    subject.funding_duration = 121
+    subject.valid?
+    expect_error(:funding_duration, 'must be less than or equal to 120')
+  end
+
   context '#state' do
     it 'defaults to initial' do
       expect(subject.state).to eq('initial')

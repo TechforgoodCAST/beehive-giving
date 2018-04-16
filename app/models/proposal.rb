@@ -52,8 +52,11 @@ class Proposal < ApplicationRecord
   validates :recipient, :funding_duration, :themes, presence: true
   validates :funding_type, inclusion: { in: FUNDING_TYPES.pluck(1),
                                         message: 'please select an option' }
-  validates :funding_duration,
-            numericality: { only_integer: true, greater_than_or_equal_to: 1 }
+  validates :funding_duration, numericality: {
+              only_integer: true,
+              greater_than_or_equal_to: 1,
+              less_than_or_equal_to: 120
+            }
   validates :total_costs, numericality: {
     greater_than_or_equal_to: 0,
     message: 'please enter the amount of funding you are seeking'
