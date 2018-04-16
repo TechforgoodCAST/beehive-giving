@@ -69,7 +69,7 @@
               .mb20= p.input :private, as: :radio_buttons
               -# TODO: .mb20= u.input :marketing_consent, as: :radio_buttons
 
-          = f.submit 'Check suitability', class: 'btn-wide bg-rich-blue white shadow'
+          = f.submit 'Check suitability', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Checking...' }
 
     .fs15.white.center.mb40.pb20
       Already have an account?
