@@ -6,8 +6,12 @@ class User < ApplicationRecord
   has_many :feedbacks
 
   # TODO: add validations for association
-  validates :first_name, :last_name, :email, :agree_to_terms,
-            :organisation_type, presence: true, on: :create
+  validates :first_name, :last_name, :email, :organisation_type,
+            presence: true, on: :create
+
+  validates :agree_to_terms, presence: {
+    message: 'you must accept terms to continue'
+  }
 
   validates :first_name, :last_name, format: {
     with: /\A(([a-z]+)*(-)*)+\z/i, message: 'Only a-z and -'
