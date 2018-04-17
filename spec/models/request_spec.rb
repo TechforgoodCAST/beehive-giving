@@ -1,40 +1,28 @@
 require 'rails_helper'
 
-describe 'Request' do
-  before(:each) do
-    @app.seed_test_db
-        .setup_funds(num: 2, open_data: true)
-        .create_recipient
-        .create_complete_proposal
-    @db = @app.instances
-    @proposal = @db[:complete_proposal]
-    @recipient = @db[:recipient]
-    @fund = @db[:funds].first
-    @request = create(:request, recipient: @recipient, fund: @fund)
+describe Request do
+  subject { build(:request) }
+
+  it('belongs to Recipient') { assoc(:recipient, :belongs_to) }
+
+  it('belongs to Fund') { assoc(:fund, :belongs_to) }
+
+  it { is_expected.to be_valid }
+
+  it '#recipient required' do
+    subject.recipient = nil
+    expect(subject).not_to be_valid
   end
 
-  it 'belongs to recipient' do
-    expect(@request.recipient).to eq @recipient
+  it '#fund required' do
+    subject.fund = nil
+    expect(subject).not_to be_valid
   end
 
-  it 'belongs to fund' do
-    expect(@request.fund).to eq @fund
-  end
-
-  it 'is valid' do
-    expect(@request).to be_valid
-  end
-
-  it 'is invalid' do
-    @request.fund = nil
-    expect(@request).not_to be_valid
-  end
-
-  it 'is unique to recipient and fund' do
-    duplicate = build(:request, recipient: @recipient, fund: @fund)
-    expect(duplicate).not_to be_valid
-
-    unique = build(:request, recipient: @recipient, fund: @db[:funds].last)
-    expect(unique).to be_valid
+  it 'must be unique to recipient and fund' do
+    subject.save!
+    duplicate = subject.dup
+    duplicate.valid?
+    expect_error(:fund, 'only one request per fund / recipient', duplicate)
   end
 end

@@ -5,7 +5,7 @@ module TestHelpers
     opts.each { |k, v| expect(association.options[k]).to eq v }
   end
 
-  def expect_error(key, msg)
-    expect(subject.errors[key]).to contain_exactly(msg)
+  def expect_error(key, msg, sub = subject)
+    expect(sub.errors[key]).to include(msg)
   end
 end
