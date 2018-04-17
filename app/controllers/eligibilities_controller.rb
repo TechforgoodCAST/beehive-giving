@@ -4,14 +4,10 @@ class EligibilitiesController < ApplicationController
                 :load_questions, :load_answers
 
   def create
-    if @recipient.incomplete_first_proposal?
-      session[:return_to] = @fund.hashid
-      return redirect_to edit_signup_proposal_path(@proposal)
-    end
-
+    # TODO: refactor see microsite EligibilityStep
     if update_eligibility_params
       params[:mixpanel_eligibility_tracking] = true
-      Assessment.analyse_and_update!(Fund.active, @proposal) # TODO: refactor
+      Assessment.analyse_and_update!(Fund.active, @proposal)
       track_quiz_completion(@fund)
       redirect_to fund_path(@fund, @proposal)
     end

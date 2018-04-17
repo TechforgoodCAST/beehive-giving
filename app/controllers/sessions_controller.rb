@@ -8,7 +8,7 @@ class SessionsController < ApplicationController
     redirect_to funds_path(@proposal) if logged_in?
   end
 
-  def create
+  def create # TODO: refactor
     user = User.find_by(email: params[:email].downcase)
     return redirect_to new_password_reset_path if user&.password_digest.nil?
     if user && user.authenticate(params[:password])
@@ -21,6 +21,8 @@ class SessionsController < ApplicationController
       if session[:original_url]
         redirect_to session.delete(:original_url)
       else
+        load_recipient
+        load_last_proposal
         redirect_to funds_path(@proposal), notice: 'Signed in!'
       end
     else

@@ -23,6 +23,9 @@
 
     %section.perc75.md.mb80.px20
       = simple_form_for @current_user, url: account_path do |f|
-
-        = cell(:user_form, @current_user, f: f)
-        = cell(:submit_form, @current_user, f: f, button_text: 'Update', disable_with_text: 'Saving')
+        .mb20= f.input :first_name
+        .mb20= f.input :last_name
+        .mb20= f.input :email
+        .mb20= f.input :password
+        .mb20= f.input :password_confirmation
+        = f.submit 'Update', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Saving...' }

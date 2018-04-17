@@ -28,12 +28,9 @@
 
       .mb20.md
         -# TODO: refactor
-        - if @proposal.complete?
-          - if @recipient.subscribed?
-            = link_to 'New proposal', new_proposal_path, class: 'btn-wide bg-green white'
-          - else
-            %div.mb30
-              Upgrade to add new proposals
-            = link_to 'New proposal', account_upgrade_path(@recipient), class: 'btn-wide bg-green white'
+        - if @recipient.subscribed?
+          = link_to 'New proposal', new_proposal_path, class: 'btn-wide bg-green white'
         - else
-          = link_to 'New proposal', edit_signup_proposal_path(@proposal), class: 'btn-wide bg-green white'
+          %div.mb30
+            Upgrade to add new proposals
+          = link_to 'New proposal', account_upgrade_path(@recipient), class: 'btn-wide bg-green white'

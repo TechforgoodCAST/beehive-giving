@@ -25,5 +25,20 @@
     %section.perc75.md.mb80.px20
       = simple_form_for @recipient, url: account_organisation_path(@recipient) do |f|
 
-        = cell(:recipient_form, @recipient, f: f)
-        = cell(:submit_form, @recipient, f: f, button_text: 'Update', disable_with_text: 'Saving')
+        .mb20= f.input :name
+
+        .mb20= f.input :country, priority: ['GB'], include_blank: true
+
+        .mb20= f.input :street_address
+
+        .mb20= f.input :operating_for, as: :select, collection: OPERATING_FOR
+
+        .mb20= f.input :income_band, as: :select, collection: INCOME_BANDS
+
+        .mb20= f.input :employees, as: :select, collection: EMPLOYEES
+
+        .mb20= f.input :volunteers, as: :select, collection: EMPLOYEES
+
+        .mb20= f.input :website, as: :url
+
+        = f.submit 'Update', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Saving...' }

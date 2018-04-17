@@ -37,13 +37,6 @@ feature 'Eligibility' do
     end
   end
 
-  scenario "When I check eligibility for the first time and need to update my
-            proposal, I want to understand why I need to do it,
-            so I feel I'm using my time in the best way" do
-    helper.visit_first_fund
-    expect(page).to have_text 'Complete your funding proposal to access '
-  end
-
   scenario "When I'm try to access application details before checking
             eligiblity, I want to be told why I can't access them,
             so I understand what to do next" do

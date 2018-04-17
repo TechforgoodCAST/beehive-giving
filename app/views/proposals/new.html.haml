@@ -1,15 +1,5 @@
 = content_for :title, 'New Proposal'
 
--# TODO: refactor
-:javascript
-  mixpanel.track("View Proposal #{@proposal.state.capitalize} Page");
-  mixpanel.identify('#{@current_user.id}');
-  mixpanel.people.set({
-    'Proposal State': '#{@proposal.state}'
-  });
-
-= render partial: 'subnav'
-
 .uk-container.uk-container-center.uk-margin-large
 
   %h2 What are you seeking funding for?
@@ -17,16 +7,4 @@
 
   .uk-width-large-4-5.uk-container-center.uk-margin-large-top
 
-    = simple_form_for @proposal do |f|
-
-      = cell(:proposal_form, @proposal, f: f).call(:summary)
-      = cell(:proposal_form, @proposal, f: f).call(:requirements)
-      = cell(:proposal_form, @proposal, f: f).call(:beneficiaries)
-      = cell(:proposal_form, @proposal, f: f).call(:location)
-      = cell(:proposal_form, @proposal, f: f).call(:activities)
-      = cell(:proposal_form, @proposal, f: f).call(:outcomes)
-      = cell(:proposal_form, @proposal, f: f).call(:themes)
-      = cell(:proposal_form, @proposal, f: f).call(:privacy)
-
-      .uk-width-medium-1-1.uk-margin-top
-        = cell(:submit_form, @proposal, f: f, button_text: 'Save and recommend funders', disable_with_text: "That wasn't so bad...")
+    -# TODO: form

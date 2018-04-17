@@ -11,8 +11,9 @@ class SignupController < ApplicationController
     @user = User.find_by(unlock_token: params[:unlock_token])
   end
 
-  # def unauthorised # TODO: refactor into UnauthorisedController
-  # end
+  def unauthorised # TODO: refactor into UnauthorisedController
+    # TODO: redirect to funds once authorised
+  end
 
   private
 
