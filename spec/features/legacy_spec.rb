@@ -23,4 +23,17 @@ feature 'Legacy' do
   scenario 'fundraiser without proposal' do
     expect(current_path).to eq(legacy_fundraiser_path)
   end
+
+  scenario 'fundraiser with basics proposal' do
+    expect(current_path).to eq(edit_proposal_path(proposal))
+  end
+
+  scenario 'fundraiser with invalid proposal' do
+    expect(current_path).to eq(edit_proposal_path(proposal))
+  end
+
+  scenario 'fundraiser with incomplete proposal' do
+    expect(current_path).to eq(funds_path(proposal))
+    expect(page).to have_text('Update proposal')
+  end
 end

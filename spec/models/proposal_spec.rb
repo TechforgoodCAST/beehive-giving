@@ -43,20 +43,18 @@ describe Proposal do
 
   context '#state' do
     it 'defaults to initial' do
-      expect(subject.state).to eq('initial')
+      expect(subject.state).to eq('complete')
     end
 
     it 'transitions' do
       subject.save!
       {
-        'basics'      => 'initial',
-        'initial'     => 'registered',
-        'transferred' => 'registered',
-        'registered'  => 'complete',
-        'complete'    => 'complete'
+        'basics'     => 'complete',
+        'invalid'    => 'complete',
+        'incomplete' => 'complete',
       }.each do |from, to|
         subject.state = from
-        subject.next_step!
+        subject.complete!
         expect(subject.state).to eq(to)
       end
     end
@@ -80,69 +78,6 @@ describe Proposal do
     subject.affect_geo = 2
     subject.save
     expect(subject.district_ids.size).to eq(0)
-  end
-
-  context 'registered' do
-    subject { build(:registered_proposal) }
-
-    it { is_expected.to be_valid }
-
-    it('#state') { expect(subject.state).to eq('registered') }
-
-    it 'cannot create second proposal until first proposal complete' do
-      subject.save!
-      proposal = build(:proposal, recipient: subject.recipient)
-      expect(proposal).not_to be_valid
-
-      error = proposal.errors.messages[:proposal][0]
-      msg = 'Please complete your first proposal before creating a second.'
-      expect(error).to eq(msg)
-    end
-  end
-
-  context 'complete' do
-    subject { build(:complete_proposal) }
-
-    it { is_expected.to be_valid }
-
-    it('#state') { expect(subject.state).to eq('complete') }
-
-    context 'multiple' do
-      let(:duplicate) do
-        build(
-          :registered_proposal,
-          recipient: subject.recipient,
-          title: subject.title
-        )
-      end
-
-      before do
-        subject.save!
-        expect(duplicate).not_to be_valid
-      end
-
-      it 'title unique to recipient' do
-        error = duplicate.errors.messages[:title][0]
-        msg = 'each proposal must have a unique title'
-        expect(error).to eq(msg)
-      end
-
-      # TODO: deprecated
-      it 'subscription required to create multiple proposals' do
-        error = duplicate.errors.messages[:title][1]
-        msg = 'Upgrade subscription to create multiple proposals'
-        expect(error).to eq(msg)
-      end
-
-      # TODO: deprecated
-      it 'can create multiple proposals once first proposal complete ' \
-         'and subscribed' do
-        subject.recipient.create_subscription!
-        subject.recipient.subscription.update(active: true)
-        duplicate.title = 'unique'
-        expect(duplicate).to be_valid
-      end
-    end
   end
 
   context 'methods' do

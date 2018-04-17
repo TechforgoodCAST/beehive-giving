@@ -12,10 +12,11 @@ class Proposal < ApplicationRecord
   has_many :proposal_themes, dependent: :destroy
   has_many :themes, through: :proposal_themes
 
-  has_and_belongs_to_many :age_groups # TODO: deprecated
-  has_and_belongs_to_many :beneficiaries # TODO: deprecated
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
+
+  has_and_belongs_to_many :age_groups # TODO: deprecated
+  has_and_belongs_to_many :beneficiaries # TODO: deprecated
   has_and_belongs_to_many :implementations # TODO: deprecated
 
   AFFECT_GEO = [
@@ -25,75 +26,62 @@ class Proposal < ApplicationRecord
     ['Across many countries', 3]
   ].freeze
 
-  include Workflow
-  workflow_column :state
-  workflow do
-    state :basics do
-      event :next_step, transitions_to: :initial
-    end
-    state :initial do
-      event :next_step, transitions_to: :registered
-    end
-    state :transferred do
-      event :next_step, transitions_to: :registered
-    end
-    state :registered do
-      event :next_step, transitions_to: :complete
-    end
-    state :complete do
-      event :next_step, transitions_to: :complete
-    end
-  end
+  validates :affect_geo, inclusion: {
+    in: 0..3, message: 'please select an option'
+  }
 
-  validate :prevent_second_proposal_until_first_is_complete,
-           if: :initial?, on: :create
+  validates :all_funding_required, :private, inclusion: {
+    message: 'please select an option', in: [true, false]
+  }
 
-  # Requirements
-  validates :recipient, :funding_duration, :themes, presence: true
-  validates :funding_type, inclusion: { in: FUNDING_TYPES.pluck(1),
-                                        message: 'please select an option' }
-  validates :funding_duration, numericality: {
-              only_integer: true,
-              greater_than_or_equal_to: 1,
-              less_than_or_equal_to: 120
-            }
+  validates :countries, :recipient, :themes, presence: true
+
+  validates :districts, presence: true, if: proc {
+    affect_geo.present? && affect_geo < 2
+  }
+
+  validates :funding_duration, presence: true, numericality: {
+    only_integer: true,
+    greater_than_or_equal_to: 1,
+    less_than_or_equal_to: 120
+  }
+
+  validates :funding_type, inclusion: {
+    in: FUNDING_TYPES.pluck(1), message: 'please select an option'
+  }
+
+  validates :tagline, :title, presence: true, length: {
+    maximum: 280, message: 'please use 280 characters or less'
+  }
+
+  validates :title, uniqueness: {
+    scope: :recipient_id,
+    message: 'each proposal must have a unique title'
+  }
+
   validates :total_costs, numericality: {
     greater_than_or_equal_to: 0,
     message: 'please enter the amount of funding you are seeking'
   }
-  validates :total_costs_estimated,
-            inclusion: { message: 'please select an option', in: [true, false] }
-  validates :all_funding_required,
-            inclusion: { message: 'please select an option', in: [true, false] }
-
-  # Location
-  validates :affect_geo, inclusion: { in: 0..3,
-                                      message: 'please select an option' }
-  validates :countries, presence: true
-  validates :districts,
-            presence: true,
-            if: proc { affect_geo.present? && affect_geo < 2 }
-
-  # Privacy
-  validates :private, inclusion: { in: [true, false],
-                                   message: 'please select an option' }
-
-  # Registered
-  validates :title, uniqueness: {
-    scope: :recipient_id,
-    message: 'each proposal must have a unique title'
-  }, if: proc { registered? || complete? }
-  validates :title, :tagline, :outcome1, presence: true, length: {
-    maximum: 280, message: 'please use 280 characters or less'
-  }, if: proc { registered? || complete? }
-  validates :implementations, presence: true,
-                              unless: :implementations_other_required,
-                              if: proc { registered? || complete? }
-  validates :implementations_other,
-            presence: { message: "please uncheck 'Other' or specify details" },
-            if: :implementations_other_required
 
   validate :recipient_subscribed, on: :create
+
+  include Workflow
+  workflow_column :state
+  workflow do
+    state :basics do
+      event :complete, transitions_to: :complete
+    end
+    state :invalid do
+      event :complete, transitions_to: :complete
+    end
+    state :incomplete do
+      event :complete, transitions_to: :complete
+    end
+    state :complete do
+      event :complete, transitions_to: :complete
+    end
+  end
 
   def recipient_subscribed
     return if recipient.subscribed? || recipient.proposals.count.zero?
@@ -185,15 +173,6 @@ class Proposal < ApplicationRecord
   end
 
   private
-
-    def prevent_second_proposal_until_first_is_complete
-      return unless recipient.proposals.count == 1 &&
-                    recipient.proposals.where(state: 'complete').count < 1
-      errors.add(
-        :proposal,
-        'Please complete your first proposal before creating a second.'
-      )
-    end
 
     def clear_districts_if_country_wide
       return if affect_geo.nil?
