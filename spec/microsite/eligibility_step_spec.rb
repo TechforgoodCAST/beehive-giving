@@ -120,10 +120,7 @@ describe EligibilityStep do
 
     context '#save' do
       let(:attempt) do
-        @app.seed_test_db
-            .create_recipient
-            .create_registered_proposal
-            .setup_funds
+        @app.seed_test_db.create_recipient.create_proposal.setup_funds
 
         Attempt.create!(
           recipient: Recipient.last,
