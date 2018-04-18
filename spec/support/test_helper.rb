@@ -187,7 +187,6 @@ class TestHelper # TODO: refactor
       recipient: @recipient,
       countries: [@uk],
       districts: @uk_districts,
-      age_groups: @age_groups,
       themes: @themes
     )
     self
@@ -196,44 +195,6 @@ class TestHelper # TODO: refactor
   def create_proposal
     build_proposal
     @proposal.save
-    self
-  end
-
-  def build_registered_proposal
-    @registered_proposal = build(
-      :registered_proposal,
-      recipient: @recipient,
-      countries: [@uk],
-      districts: @uk_districts,
-      age_groups: @age_groups,
-      implementations: @implementations,
-      themes: @themes
-    )
-    self
-  end
-
-  def create_registered_proposal
-    build_registered_proposal
-    @registered_proposal.save
-    self
-  end
-
-  def build_complete_proposal
-    @complete_proposal = build(
-      :complete_proposal,
-      recipient: @recipient,
-      countries: [@uk],
-      districts: @uk_districts,
-      age_groups: @age_groups,
-      implementations: @implementations,
-      themes: @themes
-    )
-    self
-  end
-
-  def create_complete_proposal
-    build_complete_proposal
-    @complete_proposal.save
     self
   end
 
@@ -257,8 +218,6 @@ class TestHelper # TODO: refactor
       recipient: @recipient,
       user: @user,
       proposal: @proposal,
-      registered_proposal: @registered_proposal,
-      complete_proposal: @complete_proposal,
       themes: @themes
     }
     if @funds

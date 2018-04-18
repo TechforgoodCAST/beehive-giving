@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Check::Suitability::Quiz do
   before(:each) do
-    @app.seed_test_db.setup_funds.create_recipient.create_registered_proposal
+    @app.seed_test_db.setup_funds.create_recipient.create_proposal
     @proposal = Proposal.last
     @fund = Fund.last
     @fund.priorities.each do |p|

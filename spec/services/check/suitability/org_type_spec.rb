@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Check::Suitability::OrgType do
   before(:each) do
     @app.seed_test_db.setup_funds(open_data: true)
-        .create_recipient.create_registered_proposal
+        .create_recipient.create_proposal
     @fund = Fund.last
     @proposal = Proposal.last
   end

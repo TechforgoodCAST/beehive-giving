@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe Check::Suitability::Theme do
   before(:each) do
-    @app.seed_test_db.setup_funds.create_recipient.create_registered_proposal
+    @app.seed_test_db.setup_funds.create_recipient.create_proposal
     @fund = Fund.last
     @proposal = Proposal.last
     @t1 = Theme.first
