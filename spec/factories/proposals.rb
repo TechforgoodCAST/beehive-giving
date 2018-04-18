@@ -19,5 +19,11 @@ FactoryBot.define do
         proposal.districts = [build(:district, country: country)]
       end
     end
+
+    factory :incomplete_proposal, class: Proposal do
+      state 'incomplete'
+      tagline nil
+      title nil
+    end
   end
 end
