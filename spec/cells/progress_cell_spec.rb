@@ -20,7 +20,7 @@ describe ProgressCell do
   let(:assessment) do
     build(
       :assessment,
-      proposal: build(:complete_proposal, id: 1, suitability: { 'fund' => {} }),
+      proposal: build(:proposal, id: 1, suitability: { 'fund' => {} }),
       fund: build(:fund, id: 1, slug: 'fund')
     )
   end
