@@ -4,8 +4,9 @@ describe FundInsightCell do
   controller ApplicationController
 
   before(:each) do
+    # TODO: refactor
     @app.seed_test_db.setup_funds(num: 2, open_data: true)
-        .create_recipient.create_registered_proposal
+        .create_recipient.create_proposal
     @db = @app.instances
     @fund = Fund.first
     @proposal = Proposal.first

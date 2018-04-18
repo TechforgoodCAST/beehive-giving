@@ -181,8 +181,8 @@ class TestHelper # TODO: refactor
     self
   end
 
-  def build_initial_proposal
-    @initial_proposal = build(
+  def build_proposal
+    @proposal = build(
       :proposal,
       recipient: @recipient,
       countries: [@uk],
@@ -193,9 +193,9 @@ class TestHelper # TODO: refactor
     self
   end
 
-  def create_initial_proposal
-    build_initial_proposal
-    @initial_proposal.save
+  def create_proposal
+    build_proposal
+    @proposal.save
     self
   end
 
@@ -256,7 +256,7 @@ class TestHelper # TODO: refactor
       implementations: @implementations,
       recipient: @recipient,
       user: @user,
-      initial_proposal: @initial_proposal,
+      proposal: @proposal,
       registered_proposal: @registered_proposal,
       complete_proposal: @complete_proposal,
       themes: @themes

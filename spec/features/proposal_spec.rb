@@ -221,7 +221,7 @@ feature 'Proposal' do
   scenario 'When I have an initial proposal,
             I want to be redirected and notified,
             so I can update my proposal' do
-    @app.create_initial_proposal
+    @app.create_proposal
     proposal = Proposal.last
     visit funds_path(proposal)
     expect(current_path).to eq new_signup_proposal_path
@@ -232,7 +232,7 @@ feature 'Proposal' do
             I want to update my details,
             so I can continue to update my transferred proposal' do
     match.stub_charity_commission.stub_companies_house
-    @app.create_initial_proposal
+    @app.create_proposal
     recipient = build(:legacy_recipient, org_type: 4)
     recipient.set_slug
     recipient.save(validate: false)
