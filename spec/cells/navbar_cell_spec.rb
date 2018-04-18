@@ -16,7 +16,7 @@ describe NavbarCell do
   end
 
   it 'signed up can see nav' do
-    @app.seed_test_db.create_recipient.with_user.create_registered_proposal
+    @app.seed_test_db.create_recipient.with_user.create_proposal
     registered = cell(:navbar, @app.instances[:user]).call(:show)
     expect(registered).to have_css '.logo'
     expect(registered).not_to have_link 'Sign in'
