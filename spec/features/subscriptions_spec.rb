@@ -13,7 +13,7 @@ feature 'Subscriptions' do
       @app.seed_test_db
           .create_recipient
           .with_user
-          .create_complete_proposal
+          .create_proposal
           .sign_in
       @db = @app.instances
     end
@@ -174,8 +174,8 @@ feature 'Subscriptions' do
 
       scenario 'remaining free checks hidden' do
         @app.setup_funds
-        @db[:complete_proposal].save!
-        visit fund_path(Fund.first, @db[:complete_proposal])
+        @db[:proposal].save!
+        visit fund_path(Fund.first, @db[:proposal])
         expect(page).not_to have_button 'Check eligibility (3 left)'
       end
     end

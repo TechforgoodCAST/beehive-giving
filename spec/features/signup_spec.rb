@@ -53,4 +53,15 @@ feature 'Signup' do
 
     expect(Assessment.count).to eq(1)
   end
+
+  scenario 'individual sees notice with link', js: true do
+    visit root_path
+    select 'Myself OR another individual'
+    expect(page).to have_text('IMPORTANT:')
+
+    within '.individual_notice' do
+      click_link 'FAQ'
+    end
+    expect(current_path).to eq faq_path
+  end
 end

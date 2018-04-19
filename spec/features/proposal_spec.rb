@@ -46,7 +46,7 @@ feature 'Proposal' do
 
   context 'registered' do
     before(:each) do
-      @app.create_registered_proposal
+      @app.create_proposal
       @proposal = @app.instances[:registered_proposal]
     end
 
@@ -102,7 +102,7 @@ feature 'Proposal' do
               I want to be redirected,
               so I avoid an error" do
       @recipient.subscribe!
-      @app.create_complete_proposal
+      @app.create_proposal
       unauthorised_proposal = @app.instances[:complete_proposal]
       unauthorised_proposal.update(recipient: create(:recipient))
 
@@ -155,7 +155,7 @@ feature 'Proposal' do
 
   context 'complete' do
     before(:each) do
-      @app.create_complete_proposal
+      @app.create_proposal
       @proposal = @app.instances[:complete_proposal]
     end
 
@@ -180,7 +180,7 @@ feature 'Proposal' do
     before(:each) do
       @match_helper = MatchHelper.new
       @eligibility_helper = EligibilityHelper.new
-      @app.create_complete_proposal
+      @app.create_proposal
       @recipient.subscribe!
       visit root_path
     end
@@ -210,7 +210,7 @@ feature 'Proposal' do
       click_link('Funds', href: funds_path(proposal1))
       expect(current_path).to eq funds_path(proposal1)
 
-      @app.create_registered_proposal
+      @app.create_proposal
       proposal2 = @app.instances[:registered_proposal]
       visit proposals_path
       click_link('Funds', href: funds_path(proposal2))

@@ -9,11 +9,11 @@ feature 'Eligibility' do
         .setup_funds(num: 7, open_data: true)
         .create_recipient
         .with_user
-        .create_registered_proposal
+        .create_proposal
         .sign_in
     @db = @app.instances
     @fund = Fund.first
-    @proposal = @db[:registered_proposal]
+    @proposal = @db[:proposal]
     visit root_path
   end
 
@@ -48,7 +48,7 @@ feature 'Eligibility' do
             I want it to be recorded as eligible,
             so I recieve an accurate check' do
     @fund.restrictions.first.update(invert: true)
-    helper.visit_first_fund.complete_proposal.submit_proposal
+    helper.visit_first_fund
     within "label[for=check_question_#{@fund.restrictions.first.id}" \
            '_true]' do
       expect(page).to have_text 'Yes'
@@ -58,9 +58,7 @@ feature 'Eligibility' do
   end
 
   context 'complete proposal' do
-    before(:each) do
-      helper.visit_first_fund.complete_proposal.submit_proposal
-    end
+    before(:each) { helper.visit_first_fund }
 
     scenario "When I only answer recipient restrictions,
               I want them to be saved,

@@ -20,7 +20,6 @@ module Signup
       if @form.save
         cookies[:auth_token] = @form.user.auth_token
         mixpanel_identify(@form.user, request)
-        @form.proposal.next_step! # TODO: refactor
         Assessment.analyse_and_update!(Fund.active, @form.proposal)
         redirect_to funds_path(@form.proposal)
       else

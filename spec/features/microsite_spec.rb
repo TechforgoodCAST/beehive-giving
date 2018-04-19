@@ -121,7 +121,7 @@ feature 'Microsite' do
         Country.destroy_all
         @app.seed_test_db
             .create_recipient
-            .create_registered_proposal
+            .create_proposal
             .setup_funds
 
         Attempt.create!(

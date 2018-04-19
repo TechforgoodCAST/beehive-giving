@@ -14,22 +14,25 @@ class User < ApplicationRecord
   }
 
   validates :first_name, :last_name, format: {
-    with: /\A(([a-z]+)*(-)*)+\z/i, message: 'Only a-z and -'
+    with: /\A(([a-z]+)*(-)*)+\z/i, message: 'only a-z and -'
   }, on: :create
 
-  validates :email,
-            format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i,
-                      message: 'Please enter a valid email' }, on: :create
-  validates :email,
-            uniqueness: { message: "Please 'sign in' using the link above" },
-            on: :create
+  validates :email, format: {
+    with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i,
+    message: 'please enter a valid email'
+  }, on: :create
+
+  validates :email, uniqueness: {
+    message: "please 'sign in' using the link above"
+  }, on: :create
 
   validates :password, presence: true, length: { within: 6..25 },
                        on: %i[create update]
-  validates :password,
-            format: { with: /\A(?=.*\d)(?=.*[a-zA-Z]).{6,25}\z/,
-                      message: 'Must include 6 characters with 1 number' },
-            on: %i[create update]
+
+  validates :password, format: {
+    with: /\A(?=.*\d)(?=.*[a-zA-Z]).{6,25}\z/,
+    message: 'must include 6 characters with 1 number'
+  }, on: %i[create update]
 
   before_create { generate_token(:auth_token) }
 

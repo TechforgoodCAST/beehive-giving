@@ -20,8 +20,11 @@ Rails.application.routes.draw do
   get '/tour',    to: redirect('/')
   get '/welcome', to: redirect('/')
   get '/files/Data&ResearchLead.pdf', to: redirect('410')
-  get 'account-suspended', to: 'legacy#funder',     as: 'legacy_funder'
-  get 'account-outdated',  to: 'legacy#fundraiser', as: 'legacy_fundraiser'
+  get '/account-suspended', to: 'legacy#funder',     as: 'legacy_funder'
+  get '/account-outdated',  to: 'legacy#fundraiser', as: 'legacy_fundraiser'
+  get '/preview/:tag', to: redirect { |params, _request|
+    "/#{params[:tag]}/funds"
+  }
 
   # Sessions
   get  '/logout',  to: 'sessions#destroy'
@@ -32,7 +35,6 @@ Rails.application.routes.draw do
   get '/faq',          to: 'pages#faq',     as: 'faq'
   get '/privacy',      to: 'pages#privacy', as: 'privacy'
   get '/terms',        to: 'pages#terms',   as: 'terms'
-  get '/preview/:tag', to: 'pages#preview', as: 'preview'
   get '/for-funders',  to: 'pages#forfunders', as: 'for_funders'
 
   # Sign up

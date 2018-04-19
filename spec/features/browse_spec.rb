@@ -21,10 +21,10 @@ feature 'Browse' do
           .setup_fund_stubs(num: 5)
           .create_recipient
           .with_user
-          .create_registered_proposal
+          .create_proposal
       @db = @app.instances
       @fund_stubs = @app.instances[:fund_stubs]
-      @proposal = @db[:registered_proposal]
+      @proposal = @db[:proposal]
       @theme = @db[:themes].first
       @themes = @db[:themes]
       visit sign_in_path
