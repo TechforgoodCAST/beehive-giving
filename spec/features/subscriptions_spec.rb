@@ -107,6 +107,11 @@ feature 'Subscriptions' do
           end
         end
       end
+
+      scenario 'cannot visit thank_you_path if unsubscribed' do
+        visit thank_you_path(@db[:recipient])
+        expect(current_path).to eq(account_subscription_path(@db[:recipient]))
+      end
     end
 
     context 'active' do

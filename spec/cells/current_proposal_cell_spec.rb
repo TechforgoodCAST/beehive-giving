@@ -17,6 +17,9 @@ describe CurrentProposalCell do
     it { is_expected.to have_css('.bg-light-yellow') }
   end
 
+  it 'proposal not belonging to account'
+  # TODO: is_expected.to have_text('No proposal selected')
+
   it('total_costs') { expect(subject).to have_text('£10,000') }
 
   it('funding_type') { expect(subject).to have_text('Capital') }

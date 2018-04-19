@@ -27,10 +27,4 @@
             = render partial: 'card', locals: { proposal: proposal, context: 'proposal' }
 
       .mb20.md
-        -# TODO: refactor
-        - if @recipient.subscribed?
-          = link_to 'New proposal', new_proposal_path, class: 'btn-wide bg-green white'
-        - else
-          %div.mb30
-            Upgrade to add new proposals
-          = link_to 'New proposal', account_upgrade_path(@recipient), class: 'btn-wide bg-green white'
+        = link_to 'New proposal', new_proposal_path, class: 'btn-wide bg-green white'

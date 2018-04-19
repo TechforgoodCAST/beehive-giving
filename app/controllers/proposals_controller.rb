@@ -1,6 +1,6 @@
 class ProposalsController < ApplicationController
   before_action :ensure_logged_in
-  before_action :load_proposal, only: [:edit, :update] # TODO: refactor
+  before_action :load_proposal, only: %i[edit update]
 
   def new
     return redirect_to edit_signup_proposal_path(@proposal) unless
@@ -69,11 +69,12 @@ class ProposalsController < ApplicationController
 
   private
 
-    def user_not_authorised
-      redirect_to account_upgrade_path(@recipient)
+    def load_proposal
+      @proposal = @recipient.proposals.find_by(id: params[:id])
+      redirect_to proposals_path unless @proposal
     end
 
-    def load_proposal # TODO: refactor
-      @proposal = @recipient.proposals.find(params[:id])
+    def user_not_authorised
+      redirect_to account_upgrade_path(@recipient)
     end
 end
