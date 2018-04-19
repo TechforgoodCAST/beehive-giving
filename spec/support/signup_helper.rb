@@ -5,7 +5,7 @@ class SignupHelper
     select 'Capital funding'
     select 'An unregistered organisation OR project'
     select 'United Kingdom', match: :first
-    select 'Theme1'
+    select Theme.last.name
     click_button 'Find suitable funds'
     self
   end

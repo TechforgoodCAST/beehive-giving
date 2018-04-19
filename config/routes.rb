@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   resources :reveals, only: :create
   resources :requests, only: :create
 
+  get '/proposals/:id', to: 'proposals#edit'
+
   # Errors
   match '/404', to: 'errors#not_found', via: :all
   match '/410', to: 'errors#gone', via: :all

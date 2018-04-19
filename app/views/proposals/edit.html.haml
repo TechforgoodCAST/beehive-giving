@@ -16,4 +16,10 @@
       %h4 Update details of your funding request.
 
     %section.perc75.md.mb80.px20
+
+      - if @proposal.basics? || @proposal.invalid? || @proposal.incomplete?
+        .individual_notice.mb20.p15.heading.red.rounded.border.border-pale-red.bg-light-red
+          %strong IMPORTANT:
+          You need to complete this proposal before continuing to use the site.
+
       = render partial: 'form', locals: { submit_text: 'Update proposal' }

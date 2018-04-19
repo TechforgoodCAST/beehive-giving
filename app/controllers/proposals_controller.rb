@@ -1,4 +1,8 @@
 class ProposalsController < ApplicationController
+  before_action :registration_incomplete, except: %i[edit update]
+  before_action :registration_invalid, except: %i[edit update]
+  before_action :registration_microsite, except: %i[edit update]
+
   before_action :ensure_logged_in
   before_action :load_country, except: :index
   before_action :load_proposal, only: %i[edit update]
@@ -21,7 +25,7 @@ class ProposalsController < ApplicationController
   end
 
   def index
-    @proposals = @recipient.proposals
+    @proposals = @recipient.proposals.where.not(state: 'basics')
   end
 
   def edit
@@ -32,6 +36,7 @@ class ProposalsController < ApplicationController
   def update
     if @proposal.update(proposal_params)
       Assessment.analyse_and_update!(Fund.active, @proposal)
+      @proposal.complete!
 
       if session[:return_to]
         fund = Fund.find_by_hashid(session.delete(:return_to))

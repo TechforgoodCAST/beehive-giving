@@ -18,7 +18,6 @@ feature 'Proposal' do
   end
 
   scenario 'can create multiple once subscribed' do
-    recipient.update(country: proposal.countries.first.alpha2)
     recipient.reload
     recipient.subscribe!
 

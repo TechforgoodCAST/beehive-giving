@@ -1,9 +1,6 @@
 class SessionsController < ApplicationController
   layout 'fullscreen'
 
-  before_action :legacy_funder, :legacy_fundraiser, only: :destroy
-  before_action :catch_unauthorised, only: :destroy
-
   def new
     redirect_to funds_path(@proposal) if logged_in?
   end
@@ -38,11 +35,17 @@ class SessionsController < ApplicationController
 
   private
 
+    def catch_unauthorised; end
+
     def legacy_funder; end
 
     def legacy_fundraiser; end
 
-    def catch_unauthorised; end
+    def registration_incomplete; end
+
+    def registration_invalid; end
+
+    def registration_microsite; end
 
     def sign_in_metrics
       current_user.increment!(:sign_in_count)

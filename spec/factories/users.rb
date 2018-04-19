@@ -8,7 +8,10 @@ FactoryBot.define do
 
     factory :registered_user, class: User do
       after(:build) do |user, _evaluator|
-        user.organisation = build(:recipient, proposals: [build(:proposal)])
+        proposal = build(:proposal)
+        alpha2 = proposal.countries.last.alpha2
+        recipient = build(:recipient, country: alpha2, proposals: [proposal])
+        user.organisation = recipient
       end
     end
   end
