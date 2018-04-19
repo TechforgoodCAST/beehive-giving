@@ -31,7 +31,7 @@
             .bold.caps.mb10 Why do we need this?
             Your email address will be used to send you a secure link to your results.
 
-          = f.input :agree_to_terms, as: :boolean, label: false, input_html: { checked: true }, inline_label: "Accept #{link_to('terms of service', terms_path, target: '_blank', class: 'primary')} and #{link_to('privacy policy', privacy_path, target: '_blank', class: 'primary')}".html_safe
+          = f.input :agree_to_terms, as: :boolean, label: false, inline_label: "Accept #{link_to('terms of service', terms_path, target: '_blank', class: 'primary')} and #{link_to('privacy policy', privacy_path, target: '_blank', class: 'primary')}".html_safe
 
         %fieldset.border-top.border-silver.p20
-          = f.button :button, 'Next ❯', class: 'button white bg-olive caps truncate bg-primary headline', data: { disable_with: 'Saving...' }
+          = f.button :button, 'Next ❯', class: 'button white bg-olive truncate bg-primary headline', data: { disable_with: 'Saving...' }

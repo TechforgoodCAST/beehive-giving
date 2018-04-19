@@ -57,8 +57,8 @@ feature 'Microsite' do
 
     scenario 'signed in' do
       @app.with_user.sign_in
-      visit microsite_basics_path @funder
-      expect(current_path).to eq microsite_basics_path(@funder)
+      visit microsite_basics_path(@funder)
+      expect(current_path).to eq(legacy_fundraiser_path)
     end
 
     scenario 'existing recipient' do
