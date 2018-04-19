@@ -1,10 +1,19 @@
 = content_for :title, 'Edit Proposal'
 
-.uk-container.uk-container-center.uk-margin-large
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'Proposals' => proposals_path, @proposal.id => edit_proposal_path(@proposal)
 
-  %h2 Funding proposal
-  %h4 Update your funding proposal to update your funding recommendations.
+%main
+  .maxw1080.mx-auto.px20
+    %section.md.mb20.px20
+      %h1.mb20 Dashboard
+    = render partial: 'accounts/subnav'
 
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top
+  .maxw1080.mx-auto.px20.flex.flex-wrap
+    %aside.perc25.md.px20.mb40
+      %h2.mb20 Edit Proposal
+      %h4 Update details of your funding request.
 
-    -# TODO: form
+    %section.perc75.md.mb80.px20
+      = render partial: 'form', locals: { submit_text: 'Update proposal' }

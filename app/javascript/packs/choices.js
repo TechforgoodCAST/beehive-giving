@@ -2,8 +2,11 @@ import Choices from 'choices.js'
 import 'choices.js/assets/styles/css/choices.min.css'
 
 document.addEventListener('turbolinks:load', () => {
-  return new Choices('.choices-select', {
-    removeItemButton: true,
-    itemSelectText: 'Select'
-  })
+  const selector = '.choices-select'
+  if (document.querySelector(selector)) {
+    return new Choices(selector, {
+      removeItemButton: true,
+      itemSelectText: 'Select'
+    })
+  }
 })

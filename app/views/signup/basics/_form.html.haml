@@ -20,6 +20,3 @@
       .mb20= f.input :country, priority: ['GB'], include_blank: true
       .mb20= f.input :themes, collection: Theme.all, input_html: { multiple: true, class: 'choices-select' }
       = f.submit 'Find suitable funds', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Finding...' }
-
-  = stylesheet_pack_tag 'choices', 'data-turbolinks-track': 'reload'
-  = javascript_pack_tag 'choices', 'data-turbolinks-track': 'reload'

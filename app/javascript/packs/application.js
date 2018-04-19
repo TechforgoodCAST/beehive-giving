@@ -38,6 +38,15 @@ document.addEventListener('turbolinks:load', () => {
     '3': ['signup_suitability_proposal_countries']
   }
   select.init('signup_suitability_proposal_affect_geo', affectGeoOpts)
+
+  // TODO: refactor
+  const proposalOpts = {
+    '0': ['proposal_districts'],
+    '1': ['proposal_districts'],
+    '2': ['recipient_country'],
+    '3': ['proposal_countries']
+  }
+  select.init('proposal_affect_geo', proposalOpts)
 })
 
 // TODO: remove

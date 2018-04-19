@@ -1,15 +1,10 @@
 .px10.py15
-  - unless proposal.complete?
-    .mb20.caps
-      %span.fs35
-        = cell(:proposal_indicators, proposal).call(:percent_complete)
-      %span
-        complete
-  .mb20.caps
+  .mb10.caps
     %span.fs35
       = cell(:proposal_indicators, proposal).call(:funds_checked)
     %span
       funds checked
+  .mb20= cell(:current_proposal, proposal).send(:call, :incomplete)
   - if proposal.complete?
     .fs20.mb40
       = link_to proposal.title.truncate_words(3), funds_path(proposal), class: 'black'

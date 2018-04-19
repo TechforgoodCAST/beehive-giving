@@ -1,10 +1,19 @@
 = content_for :title, 'New Proposal'
 
-.uk-container.uk-container-center.uk-margin-large
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'Proposals' => proposals_path, 'New Proposal' => nil
 
-  %h2 What are you seeking funding for?
-  %h4 Beehive will use this to provide recommendations of suitable funds.
+%main
+  .maxw1080.mx-auto.px20
+    %section.md.mb20.px20
+      %h1.mb20 Dashboard
+    = render partial: 'accounts/subnav'
 
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top
+  .maxw1080.mx-auto.px20.flex.flex-wrap
+    %aside.perc25.md.px20.mb40
+      %h2.mb20 New Proposal
+      %h4 Check the suitability of a new funding request.
 
-    -# TODO: form
+    %section.perc75.md.mb80.px20
+      = render partial: 'form', locals: { submit_text: 'Check proposal' }

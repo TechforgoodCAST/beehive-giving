@@ -1,24 +1,19 @@
 class ProposalsController < ApplicationController
   before_action :ensure_logged_in
+  before_action :load_country, except: :index
   before_action :load_proposal, only: %i[edit update]
 
   def new
-    return redirect_to edit_signup_proposal_path(@proposal) unless
-      @proposal.complete?
-
     authorize Proposal
-    @proposal = @recipient.proposals.new(
-      countries: [Country.find_by(alpha2: @recipient.country)]
-    )
+    @proposal = @recipient.proposals.new(countries: [@country])
   end
 
   def create
-    @proposal = @recipient.proposals.new(
-      proposal_params.merge(state: 'registered')
-    )
+    authorize Proposal
+    @proposal = @recipient.proposals.new(proposal_params)
+
     if @proposal.save
       Assessment.analyse_and_update!(Fund.active, @proposal)
-      @proposal.next_step!
       redirect_to funds_path(@proposal)
     else
       render :new
@@ -35,43 +30,37 @@ class ProposalsController < ApplicationController
   end
 
   def update
-    @proposal.state = 'transferred' if @proposal.initial?
-    respond_to do |format|
-      if @proposal.update_attributes(proposal_params)
-        Assessment.analyse_and_update!(Fund.active, @proposal)
-        @proposal.next_step! unless @proposal.complete?
-        flash[:notice] = 'Funding recommendations updated!'
+    if @proposal.update(proposal_params)
+      Assessment.analyse_and_update!(Fund.active, @proposal)
+
+      if session[:return_to]
         fund = Fund.find_by_hashid(session.delete(:return_to))
-        format.js do
-          if session[:return_to]
-            render js: "window.location.href = '#{fund_path(fund, @proposal)}';
-                        $('button[type=submit]').prop('disabled', true)
-                        .removeAttr('data-disable-with');"
-          else
-            render js: "window.location.href = '#{funds_path(@proposal)}';
-                        $('button[type=submit]').prop('disabled', true)
-                        .removeAttr('data-disable-with');"
-          end
-        end
-        format.html do
-          if session[:return_to]
-            redirect_to fund_path(fund, @proposal)
-          else
-            redirect_to funds_path(@proposal)
-          end
-        end
+        redirect_to fund_path(fund, @proposal)
       else
-        format.js
-        format.html { render :edit }
+        redirect_to proposals_path
       end
+    else
+      render :edit
     end
   end
 
   private
 
+    def load_country
+      @country = Country.find_by(alpha2: @recipient.country)
+    end
+
     def load_proposal
       @proposal = @recipient.proposals.find_by(id: params[:id])
       redirect_to proposals_path unless @proposal
+    end
+
+    def proposal_params
+      params.require(:proposal).permit(
+        :affect_geo, :all_funding_required, :funding_duration, :funding_type,
+        :private, :tagline, :title, :total_costs,
+        district_ids: [], country_ids: [], theme_ids: []
+      )
     end
 
     def user_not_authorised
