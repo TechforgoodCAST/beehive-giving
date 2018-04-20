@@ -13,4 +13,13 @@ class RecipientsController < ApplicationController
       render :edit
     end
   end
+
+  private
+
+    def recipient_params
+      params.require(:recipient).permit(
+        :charity_number, :company_number, :country, :employees, :income_band,
+        :name, :operating_for, :org_type, :street_address, :volunteers, :website
+      )
+    end
 end

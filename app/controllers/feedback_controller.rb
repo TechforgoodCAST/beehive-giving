@@ -42,6 +42,13 @@ class FeedbackController < ApplicationController
 
   private
 
+    def feedback_params
+      params.require(:feedback).permit(
+        :application_frequency, :grant_frequency, :informs_decision,
+        :marketing_frequency, :most_useful, :nps, :other, :suitable, :taken_away
+      )
+    end
+
     def redirect_to_funder
       @redirect_to_funder = session[:redirect_to_funder]
     end

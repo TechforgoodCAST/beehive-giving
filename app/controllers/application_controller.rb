@@ -26,8 +26,6 @@ class ApplicationController < ActionController::Base
 
   private
 
-    include StrongParameters
-
     def bad_token
       redirect_to '/logout', warning: 'Please sign in'
     end
