@@ -62,10 +62,7 @@
           %label.label.mb10.bold.lh16 Features
           = render 'accounts/premium_features'
 
-    %section.perc66.md.mb80.px20.fs14
-
-      %h1.fs40.p50 Thank you!
-      .p50.fs40.lh120
-        You have successfully subscribed
-
-      = link_to 'Continue', session.delete(:return_to) || account_subscription_path(@recipient), class: 'button bg-green caps white'
+    %section.perc66.md.mb80.px20
+      %h1.mt20.mb10 Thank you!
+      .fs18.lh25.slate.mb30 You have successfully subscribed.
+      = link_to 'Continue', session.delete(:return_to) || account_subscription_path(@recipient), class: 'btn bg-green white'

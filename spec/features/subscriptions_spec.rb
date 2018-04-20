@@ -56,7 +56,7 @@ feature 'Subscriptions' do
     scenario 'invalid coupon' do
       visit account_upgrade_path(@db[:recipient])
       helper.pay_by_card(stripe, coupon: 'invalid')
-      expect(page).to have_text 'Invalid coupon'
+      expect(page).to have_text('Invalid discount coupon, please try again.')
     end
 
     context 'inactive' do
