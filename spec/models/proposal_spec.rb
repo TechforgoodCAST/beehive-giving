@@ -73,11 +73,26 @@ describe Proposal do
   end
 
   it '#clear_districts_if_country_wide' do
+    subject.save!
     expect(subject.district_ids.size).to eq(1)
     expect(subject.affect_geo).to eq(1)
+
     subject.affect_geo = 2
-    subject.save
+    subject.save!
     expect(subject.district_ids.size).to eq(0)
+  end
+
+  it '#recipient_country_unless_multinational' do
+    subject.save!
+    original_countries = [subject.countries[0]]
+    subject.countries << build(:country)
+    expect(subject.country_ids.size).to eq(2)
+    expect(subject.countries).not_to eq(original_countries)
+
+    subject.affect_geo = 2
+    subject.save!
+    expect(subject.country_ids.size).to eq(1)
+    expect(subject.countries).to eq(original_countries)
   end
 
   context 'methods' do

@@ -1,6 +1,8 @@
 class Proposal < ApplicationRecord
-  before_validation :clear_districts_if_country_wide
-  after_save :initial_recommendation
+  before_validation :clear_districts_if_country_wide,
+                    :recipient_country_unless_multinational,
+                    if: :affect_geo
+  after_save :initial_recommendation # TODO: deprecated
 
   belongs_to :recipient
 
@@ -175,8 +177,11 @@ class Proposal < ApplicationRecord
   private
 
     def clear_districts_if_country_wide
-      return if affect_geo.nil?
       self.districts = [] if affect_geo > 1
+    end
+
+    def recipient_country_unless_multinational
+      self.countries = [countries.first] if affect_geo < 3
     end
 
     def call_beehive_insight(endpoint, data) # TODO: depreceted

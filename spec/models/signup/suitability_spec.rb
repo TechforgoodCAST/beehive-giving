@@ -101,6 +101,12 @@ describe Signup::Suitability do
           expect(subject.proposal.themes.first).to be_a(Theme)
         end
       end
+
+      context 'multiple countries' do
+        let(:countries) { create_list(:country, 2) }
+        let(:params) { { proposal: { country_ids: countries.pluck(:id) } } }
+        it { expect(subject.proposal.countries.size).to eq(2) }
+      end
     end
 
     context 'User' do

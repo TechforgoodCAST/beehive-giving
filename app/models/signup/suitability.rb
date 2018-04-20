@@ -46,7 +46,8 @@ module Signup
         basics.proposal.merge(@params[:proposal] || {})
               .tap do |h|
                 h[:themes] = Theme.where(id: h[:themes])
-                h[:countries] = [country] if country
+                countries = @params[:proposal].try(:[], :country_ids)
+                h[:country_ids] = countries || ([country.id] if country)
               end
       end
 
