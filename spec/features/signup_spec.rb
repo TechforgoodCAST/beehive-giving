@@ -41,6 +41,16 @@ feature 'Signup' do
       visit signup_suitability_path(params)
       expect(current_path).to eq(funds_path(Proposal.last))
     end
+
+    scenario 'opting into funder verification sets Proposal#private false' do
+      user.complete_signup_suitability_form
+      expect(Proposal.last.private).to eq(false)
+    end
+
+    scenario 'opting out of funder verification sets Proposal#private true' do
+      user.complete_signup_suitability_form(private: 'No')
+      expect(Proposal.last.private).to eq(true)
+    end
   end
 
   scenario 'triggers assessments' do

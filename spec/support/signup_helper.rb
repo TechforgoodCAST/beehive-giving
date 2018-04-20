@@ -10,10 +10,10 @@ class SignupHelper
     self
   end
 
-  def complete_signup_suitability_form
+  def complete_signup_suitability_form(params = {})
     complete_signup_suitability_recipient
     complete_signup_suitability_proposal
-    complete_signup_suitability_user
+    complete_signup_suitability_user(params)
     click_button 'Check suitability'
     self
   end
@@ -38,13 +38,15 @@ class SignupHelper
     self
   end
 
-  def complete_signup_suitability_user
+  def complete_signup_suitability_user(params = {})
     fill_in :signup_suitability_user_first_name, with: 'J'
     fill_in :signup_suitability_user_last_name, with: 'Doe'
     fill_in :signup_suitability_user_email, with: 'j.doe@example.com'
     fill_in :signup_suitability_user_password, with: 'Pa55word'
     check :signup_suitability_user_agree_to_terms
-    choose :signup_suitability_proposal_private_true
+    within '.signup_suitability_proposal_private' do
+      choose params[:private] || 'Yes'
+    end
     self
   end
 end
