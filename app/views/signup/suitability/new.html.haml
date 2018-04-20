@@ -21,8 +21,9 @@
 
           = f.simple_fields_for @form.recipient do |r|
             .mb20= r.input :name
-            -# TODO: show/hide
-            .mb20= r.input :street_address
+
+            - if @form.recipient.postal_code.blank?
+              .mb20= r.input :street_address
 
             .flex.flex-wrap.justify-between
               .perc48.mb20= r.input :income_band, collection: INCOME_BANDS

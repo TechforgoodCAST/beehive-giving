@@ -1,4 +1,5 @@
 require 'rails_helper'
+require_relative '../support/match_helper'
 require_relative '../support/signup_helper'
 
 feature 'Signup' do
@@ -13,11 +14,14 @@ feature 'Signup' do
   end
 
   context do
+    let(:opts) { {} }
+
     before(:each) do
+      MatchHelper.new.stub_charity_commission.stub_companies_house
       create(:theme, id: 1, name: 'Theme1')
       create(:country, districts: [create(:district)])
       visit root_path
-      user.complete_signup_basics_form
+      user.complete_signup_basics_form(opts)
     end
 
     # TODO: js variant
@@ -50,6 +54,17 @@ feature 'Signup' do
     scenario 'opting out of funder verification sets Proposal#private true' do
       user.complete_signup_suitability_form(private: 'No')
       expect(Proposal.last.private).to eq(true)
+    end
+
+    scenario 'street address shown' do
+      expect(page).to have_text('Street address')
+    end
+
+    context 'street address hidden' do
+      let(:opts) do
+        { org_type: 'A registered charity', charity_number: '1161998' }
+      end
+      scenario { expect(page).not_to have_text('Street address') }
     end
   end
 

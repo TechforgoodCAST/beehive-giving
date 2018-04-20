@@ -1,9 +1,10 @@
 class SignupHelper
   include Capybara::DSL
 
-  def complete_signup_basics_form
+  def complete_signup_basics_form(params = {})
     select 'Capital funding'
-    select 'An unregistered organisation OR project'
+    select params[:org_type] || 'An unregistered organisation OR project'
+    fill_in :signup_basics_charity_number, with: params[:charity_number]
     select 'United Kingdom', match: :first
     select Theme.last.name
     click_button 'Find suitable funds'
