@@ -24,7 +24,8 @@ describe User do
       subject.save!
       duplicate = subject.dup
       duplicate.valid?
-      expect_error(:email, "please 'sign in' using the link above", duplicate)
+      msg = "email already registered, please 'sign in' using the link below"
+      expect_error(:email, msg, duplicate)
     end
 
     it 'invalid' do

@@ -23,7 +23,7 @@ class User < ApplicationRecord
   }, on: :create
 
   validates :email, uniqueness: {
-    message: "please 'sign in' using the link above"
+    message: "email already registered, please 'sign in' using the link below"
   }, on: :create
 
   validates :password, presence: true, length: { within: 6..25 },
