@@ -1,37 +1,8 @@
 h3.mb10 Quiz
 
-.uk-form.uk-form-stacked.uk-clearfix
-  - if model.present?
-    = simple_form_for :check, url: eligibility_path(fund, model), method: :patch do |f|
+= simple_form_for :check, form_opts do |f|
+  = cell(:quiz, @fund, cell_opts(f)).call(version)
 
-      - if model.recipient.incomplete_first_proposal?
-
-        .bg-ice.rounded.shadow.fs18.lh22.p10.mb20
-          .bold.caps.mb10.fs15 Incomplete proposal
-          | To complete eligibility for this fund you need to add some more information to your proposal.
-          .mt10
-            = f.button :button, 'Complete proposal', class: 'white bg-blue shadow'
-        .muted
-
-          = cell(:quiz, fund, quiz_type: 'Restriction', proposal: model, f: f,
-                          groups: { 'Recipient' => 'Is your organisation?',
-                                    'Proposal' => 'Is your funding proposal for?' }).call(:show_public)
-
-      - else
-
-        = f.hidden_field :return_to, :value => 'fund'
-        = cell(:quiz, fund, quiz_type: 'Restriction', proposal: model, f: f,
-                          groups: { 'Recipient' => 'Is your organisation?',
-                                    'Proposal' => 'Is your funding proposal for?' }).call(:show)
-
-  - else
-
-    = simple_form_for :check do |f|
-
-      = cell(:quiz, fund, quiz_type: 'Restriction', proposal: model, f: f,
-                        groups: { 'Recipient' => 'Is your organisation?',
-                                  'Proposal' => 'Is your funding proposal for?' }).call(:show_public)
-
-  .bg-ice.rounded.shadow.fs14.p10.my20
-    .bold.caps.mb10 Good to know
-    | Eligibility checks for location, the amount you are seeking and other factors have been done automatically.
+.bg-ice.rounded.shadow.fs14.p10.my20
+  .bold.caps.mb10 Good to know
+  | Eligibility checks for location, the amount you are seeking and other factors have been done automatically.

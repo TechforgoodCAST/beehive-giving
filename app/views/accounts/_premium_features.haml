@@ -1,6 +1,6 @@
--# TODO: remove .uk-margin-remove @ v2
+-# TODO: remove subscription check
 - if @current_user&.subscription_version == 1
-  %ul.list.pl20.uk-margin-remove
+  %ul.list.pl20
     %li
       %strong Unlimited
       funding proposals analysed
@@ -23,7 +23,7 @@
   Pro includes everything in Free
   = succeed ':' do
     %strong plus
-  %ul.list.pl20.uk-margin-remove
+  %ul.list.pl20
     %li
       Reveal the identity of
       %strong unlimited

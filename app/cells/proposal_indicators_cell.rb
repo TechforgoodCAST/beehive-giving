@@ -1,3 +1,4 @@
+# TODO: refactor
 class ProposalIndicatorsCell < Cell::ViewModel
   include ActionView::Helpers::NumberHelper
 

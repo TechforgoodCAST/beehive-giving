@@ -27,5 +27,6 @@
 
   .mb40= cell(:suitability, @proposal, fund: @fund).call(:analysis)
 
+  -# TODO: refactor
   - if @fund.priorities.exists?
     #suitability-quiz= cell(:suitability, @proposal, fund: @fund).call(:quiz)

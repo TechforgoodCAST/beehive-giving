@@ -1,4 +1,6 @@
 class SignupController < ApplicationController
+  layout 'fullscreen', only: :granted_access
+
   def grant_access # TODO: refactor into UnauthorisedController
     @user = User.find_by(unlock_token: params[:unlock_token])
     @user.unlock

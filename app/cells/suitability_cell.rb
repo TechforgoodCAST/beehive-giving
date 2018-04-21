@@ -13,14 +13,6 @@ class SuitabilityCell < Cell::ViewModel
     'national'  => 'Supports <strong>national</strong> proposals.'
   }.freeze
 
-  def card
-    render locals: { fund: options[:fund], status: status, criteria: criteria }
-  end
-
-  def index
-    render locals: { fund: options[:fund], status: status, criteria: criteria }
-  end
-
   def analysis
     render locals: { fund: options[:fund], status: status, criteria: criteria }
   end
