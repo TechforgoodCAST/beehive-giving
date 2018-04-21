@@ -15,11 +15,18 @@ feature 'Signup' do
 
   context do
     let(:opts) { {} }
+    let(:with_fund) { false }
 
     before(:each) do
       MatchHelper.new.stub_charity_commission.stub_companies_house
-      create(:theme, id: 1, name: 'Theme1')
-      create(:country, districts: [create(:district)])
+      theme = create(:theme, id: 1, name: 'Theme1')
+      @country = create(:country, districts: [create(:district)])
+      if with_fund
+        create(
+          :fund_simple,themes: [theme], geo_area: build(:geo_area,
+          countries: [@country])
+        )
+      end
       visit root_path
       user.complete_signup_basics_form(opts)
     end
@@ -65,6 +72,19 @@ feature 'Signup' do
         { org_type: 'A registered charity', charity_number: '1161998' }
       end
       scenario { expect(page).not_to have_text('Street address') }
+    end
+
+    scenario('fund count hidden') { expect(page).to have_text('Poor result?') }
+
+    context 'fund count shown' do
+      let(:with_fund) { true }
+      let(:opts) do
+        {
+          org_type: 'A registered charity', charity_number: '1161998',
+          country: @country.name
+        }
+      end
+      scenario { expect(page).to have_text('1 grant fund found') }
     end
   end
 

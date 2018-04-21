@@ -1,3 +1,5 @@
+= content_for :title, "#{pluralize(@fund_count, 'grant fund')} found "
+
 %main.bg-rich-blue
   .mx-auto.px20
 
@@ -5,9 +7,14 @@
       = link_to 'Beehive', root_path, id: 'navbar-logo', alt: 'Beehive logo', class: 'mx-auto mt25 mb40 flex'
 
       %h1.white.mb15
-        -# TODO: refactor
-        -# %strong.underline= @count
-        grant funds found
+        %strong.underline= @fund_count
+        = 'grant fund'.pluralize(@fund_count)
+        found
+
+      - if @fund_count <= 5
+        .fs14.white.mb30
+          Poor result?
+          = link_to 'Try another search', :back, class: 'white bold underline'
 
       %p.white.mb30.mx-auto Get a free suitability report for each fund, and avoid wasting time trawling though pages of confusing funding guidance.
 

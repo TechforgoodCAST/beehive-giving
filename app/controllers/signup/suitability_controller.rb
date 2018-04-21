@@ -5,6 +5,7 @@ module Signup
     layout 'fullscreen'
 
     before_action :load_basics
+    before_action :fund_count, if: proc { @basics.valid? }
 
     def new
       return redirect_to funds_path(@proposal) if logged_in?
@@ -50,6 +51,24 @@ module Signup
             :agree_to_terms, :email, :first_name, :last_name, :password
           ]
         )
+      end
+
+      def fund_count
+        @fund_count ||= query
+      end
+
+      def query
+        funding_type = {
+          '0' => [1, 2], '1' => [1], '2' => [2], '3' => [3]
+        }[params[:funding_type]]
+
+        Fund.includes(:countries, :themes)
+            .country(params[:country])
+            .where("permitted_costs @> '#{funding_type}'")
+            .where("permitted_org_types @> '[#{params[:org_type]}]'")
+            .where('themes.id': params[:themes])
+            .active
+            .size
       end
 
       def load_basics

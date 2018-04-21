@@ -5,7 +5,7 @@ class SignupHelper
     select 'Capital funding'
     select params[:org_type] || 'An unregistered organisation OR project'
     fill_in :signup_basics_charity_number, with: params[:charity_number]
-    select 'United Kingdom', match: :first
+    select (params[:country] || 'United Kingdom'), match: :first
     select Theme.last.name
     click_button 'Find suitable funds'
     self
