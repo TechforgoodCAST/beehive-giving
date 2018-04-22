@@ -67,6 +67,14 @@ describe User do
     end
   end
 
+  context '#marketing_consent' do
+    it 'in list' do
+      subject.marketing_consent = nil
+      subject.valid?
+      expect_error(:marketing_consent, 'please select an option')
+    end
+  end
+
   context '#name' do
     it 'invalid' do
       %i[first_name last_name].each do |col|

@@ -23,8 +23,9 @@ feature 'Signup' do
       @country = create(:country, districts: [create(:district)])
       if with_fund
         create(
-          :fund_simple,themes: [theme], geo_area: build(:geo_area,
-          countries: [@country])
+          :fund_simple,
+          themes: [theme],
+          geo_area: build(:geo_area, countries: [@country])
         )
       end
       visit root_path
@@ -85,6 +86,16 @@ feature 'Signup' do
         }
       end
       scenario { expect(page).to have_text('1 grant fund found') }
+    end
+
+    scenario 'give marketing consent' do
+      user.complete_signup_suitability_form
+      expect(User.last.marketing_consent).to eq(true)
+    end
+
+    scenario 'deny marketing consent' do
+      user.complete_signup_suitability_form(marketing_consent: 'No')
+      expect(User.last.marketing_consent).to eq(false)
     end
   end
 

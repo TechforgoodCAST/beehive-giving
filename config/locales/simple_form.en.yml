@@ -20,6 +20,10 @@ en:
         password_confirmation: 'Confirm password'
         total_costs: 'How much funding are you seeking?'
 
+      user:
+        marketing_consent: 'Email me with occasional updates when new funds or features
+are added'
+
       signup_suitability:
         recipient:
           employees: 'No. of employees'
@@ -99,4 +103,5 @@ en:
           name: 'This could be the name of your organisation or project.'
 
       user:
+        marketing_consent: 'You can opt out at any time.'
         password: 'At least 6 characters long with 1 number.'

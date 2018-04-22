@@ -1,10 +1,11 @@
 FactoryBot.define do
   factory :user do
+    agree_to_terms true
+    sequence(:email) { |n| "email#{n}@organisation.org" }
     first_name 'John'
     last_name 'Doe'
-    sequence(:email) { |n| "email#{n}@organisation.org" }
+    marketing_consent true
     password 'password123'
-    agree_to_terms true
 
     factory :registered_user, class: User do
       after(:build) do |user, _evaluator|

@@ -48,7 +48,8 @@ module Signup
             :tagline, :title, :total_costs, district_ids: [], country_ids: []
           ],
           user: [
-            :agree_to_terms, :email, :first_name, :last_name, :password
+            :agree_to_terms, :email, :first_name, :last_name,
+            :marketing_consent, :password
           ]
         )
       end

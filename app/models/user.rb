@@ -34,6 +34,10 @@ class User < ApplicationRecord
     message: 'must include 6 characters with 1 number'
   }, on: %i[create update]
 
+  validates :marketing_consent, inclusion: {
+    message: 'please select an option', in: [true, false]
+  }
+
   before_create { generate_token(:auth_token) }
 
   has_secure_password

@@ -60,6 +60,7 @@ describe Signup::Suitability do
                   email: 'j.doe@example.com',
                   first_name: 'J',
                   last_name: 'Doe',
+                  marketing_consent: true,
                   password: 'Pa55word'
                 }
               }
@@ -162,6 +163,7 @@ describe Signup::Suitability do
           email: 'j.doe@example.com',
           first_name: 'J',
           last_name: 'Doe',
+          marketing_consent: true,
           password: 'Pa55word'
         }
       }
