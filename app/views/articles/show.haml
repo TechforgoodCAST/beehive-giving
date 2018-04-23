@@ -1,7 +1,7 @@
 = content_for :title, @article.title
 
 %header
-  = cell :v2_navbar, @current_user
+  = cell :navbar, @current_user
   = cell :breadcrumb, 'Research' => articles_path, @article.title => article_path(@article)
 
 %main

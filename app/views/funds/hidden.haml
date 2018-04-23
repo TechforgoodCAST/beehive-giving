@@ -8,7 +8,7 @@
 
 
 %header
-  = cell :v2_navbar, @current_user
+  = cell :navbar, @current_user
   = cell(:breadcrumb, (@proposal ? 'Current proposal' : nil) => nil, 'Funds' => funds_path, 'Hidden funder' => nil, 'Hidden fund' => fund_path(@fund))
 
 %main

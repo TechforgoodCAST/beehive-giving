@@ -1,4 +1,4 @@
-class V2NavbarCell < Cell::ViewModel
+class NavbarCell < Cell::ViewModel
   def show
     render locals: { type: type }
   end
