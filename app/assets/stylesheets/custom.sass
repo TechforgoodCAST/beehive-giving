@@ -1,9 +1,5 @@
 @import modules/base
 
-// TODO: deprecated
-#banner
-  background: #005d7f
-
 .bread, .crumb
   display: inline-block
   vertical-align: middle
@@ -91,20 +87,6 @@
 article.featured
   margin-left: -10px
   margin-right: -10px
-
-// TODO: deprecated
-.feature
-  background: image-url('features-sprite.png') no-repeat
-  width: 420px
-  height: 210px
-  margin: 0 auto
-  background-size: 420px 630px
-  &.one
-    background-position: center top
-  &.two
-    background-position: center -210px
-  &.three
-    background-position: center -420px
 
 .feature-card
   display: inline-block
@@ -213,18 +195,6 @@ article.featured
   background-size: ($w * $scale) ($h * $scale)
   min-width: ($w * $scale) / 2
   height: ($h * $scale)
-
-#team
-  background: image-url('team-sprites.png') no-repeat
-  background-size: 320px 142px
-  min-width: 160px
-  height: 142px
-  @media screen and (max-width: 25rem)
-    +scale(320px, 142px, $scale: .6)
-  &.david
-    background-position: left top
-  &.suraj
-    background-position: right top
 
 @media screen and (min-width: 46.875rem)
   .dashboard-columns > div
@@ -401,28 +371,3 @@ dialog
 .js-open-modal
   height: 100vh
   overflow: hidden
-
-// Stripe
-// =========================================================================
-
-.payment-card
-  display: inline-block
-  position: absolute
-  background: image-url('beehive-card-logos.svg') no-repeat
-  background-size: 64px 200px
-  width: 64px
-  height: 40px
-  margin: 0 3px
-  background-position: 0 40px
-  &.unkown
-    background-position: 0 40px
-  &.visa
-    background-position: 0 0
-  &.mastercard
-    background-position: 0 -40px
-  &.american-express
-    background-position: 0 -80px
-  &.diners-club
-    background-position: 0 -120px
-  &.jcb
-    background-position: 0 -160px

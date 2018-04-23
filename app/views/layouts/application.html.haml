@@ -1,5 +1,5 @@
 !!!
-%html
+%html{ lang: 'en' }
   = render 'shared/head'
 
   %body#top
@@ -26,8 +26,8 @@
         .flex.flex-wrap.items-center.slate
           .f1.minw250.mx40.py40
             .flex.items-center
-              %a{ href: root_path, alt: 'Beehive logo' }
-                #logo-hex
+              %a{ href: root_path }
+                #logo-hex{ alt: 'Beehive logo' }
               .fs12.ml5 Intelligently connecting non-profits with funders
           .f1.minw250.mx40.pt40
             .flex.fs14.flex-wrap
