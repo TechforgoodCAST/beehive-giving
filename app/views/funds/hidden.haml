@@ -1,13 +1,15 @@
 = content_for :title, "#{@fund.pretty_name} [#{@fund.hashid}]"
 
-%header
-  = cell :v2_navbar, @current_user
-  = cell(:breadcrumb, (@proposal ? 'Current proposal' : nil) => nil, 'Funds' => funds_path, 'Hidden funder' => nil, 'Hidden fund' => fund_path(@fund))
-
-- if @proposal # TODO: refactor
+-# TODO: refactor
+- if @proposal && allow_performance_cookies?
   :javascript
     mixpanel.track('View Fund Page', { "Fund": "#{@fund.hashid}" });
     mixpanel.identify("#{@current_user.id}");
+
+
+%header
+  = cell :v2_navbar, @current_user
+  = cell(:breadcrumb, (@proposal ? 'Current proposal' : nil) => nil, 'Funds' => funds_path, 'Hidden funder' => nil, 'Hidden fund' => fund_path(@fund))
 
 %main
   .maxw1080.mx-auto.px40.mt40

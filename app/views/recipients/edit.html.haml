@@ -1,10 +1,5 @@
 = content_for :title, 'Edit Organisation'
 
--# TODO: refactor
-:javascript
-  mixpanel.track("View Edit Organisation Page");
-  mixpanel.identify("#{@current_user.id}");
-
 %header
   = cell :v2_navbar, @current_user
   = cell :breadcrumb, 'Organisation' => account_organisation_path(@recipient)

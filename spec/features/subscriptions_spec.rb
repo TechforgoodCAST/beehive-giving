@@ -28,7 +28,7 @@ feature 'Subscriptions' do
       visit proposals_path
       click_link 'New proposal'
       helper.pay_by_card(stripe)
-      click_link 'Continue'
+      within('section.perc66.md.mb80.px20') { click_link 'Continue' }
       expect(current_path).to eq proposals_path
     end
 
@@ -133,7 +133,7 @@ feature 'Subscriptions' do
       end
 
       scenario 'shows expiry date' do
-        click_link 'Continue'
+        within('section.perc66.md.mb80.px20') { click_link 'Continue' }
         expect(page).to have_text 'Pro plan which expires on ' +
                                   1.year.since.strftime('%-d %b %Y')
       end

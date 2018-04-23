@@ -1,8 +1,5 @@
 = content_for :title, 'Privacy'
 
-:javascript
-  mixpanel.track("View Privacy Page");
-
 %header
   = cell :v2_navbar, @current_user
   = cell :breadcrumb, 'Privacy' => privacy_path
@@ -66,9 +63,43 @@
       = link_to('#cookies', data: { turbolinks: false }) do
         %h3.py20#cookies Cookies
 
-      %p.mb20 We use cookies to ensure that we give you the best experience on our website. A cookie is a small amount of data, which often includes an anonymous unique identifier, that is sent to your browser from a web site and stored on your computer's hard drive.
+      %p.mb20
+        We use cookies to give you the best experience on our website. In addition to strictly neccesary cookies, third party cookies may track your use of Beehive. If you continue without changing your settings (below), we'll assume that you are happy to receive all cookies.
+        = link_to 'More about cookies', 'https://cookiesandyou.com/', target: '_blank'
 
-      %p Cookies are required to use the Beehive service. We use cookies to record current session information. If you continue without changing your browser settings, we'll assume that you are happy to receive all cookies on the Beehive website.
+      %h4 Strictly Necessary Cookies
+      .my15
+        .dot.bg-green
+        On (Required)
+      %p.mb20 These cookies are essential in order to enable you to move around the website and use its features. Without these cookies services you have asked for cannot be provided.
+
+      %h4 Functional Cookies
+      .my15
+        - if allow_functional_cookies?
+          .dot.bg-green
+          On
+          = surround '(', ')' do
+            = link_to 'Turn Off', update_cookies_path(functional_cookies: false)
+        - else
+          .dot.bg-red
+          Off
+          = surround '(', ')' do
+            = link_to 'Turn On', update_cookies_path(functional_cookies: true)
+      %p.mb20 These cookies allow the website to remember choices you make and provide enhanced functionality and personal features. Without these cookies some parts of the site may not work correctly.
+
+      %h4 Performance Cookies
+      .my15
+        - if allow_performance_cookies?
+          .dot.bg-green
+          On
+          = surround '(', ')' do
+            = link_to 'Turn Off', update_cookies_path(performance_cookies: false)
+        - else
+          .dot.bg-red
+          Off
+          = surround '(', ')' do
+            = link_to 'Turn On', update_cookies_path(performance_cookies: true)
+      %p These cookies help to improve the performance of Beehive. For example, they collect information about which pages visitors go to most often and help us to provide a better user experience.
 
       = link_to('#data-storage', data: { turbolinks: false }) do
         %h3.py20#data-storage Data Storage

@@ -1,8 +1,5 @@
 = content_for :title, 'Your funding proposals'
 
-:javascript
-  mixpanel.track('View Proposals Index Page');
-
 %header
   = cell :v2_navbar, @current_user
   = cell :breadcrumb, 'Proposals' => proposals_path

@@ -1,25 +1,27 @@
 = content_for :title, 'Thank you'
 
-:javascript
-  mixpanel.track("View Thank you Page");
-  mixpanel.identify("#{@current_user.id}");
+-# TODO: refactor
+- if allow_performance_cookies?
+  :javascript
+    mixpanel.track("View Thank you Page");
+    mixpanel.identify("#{@current_user.id}");
 
-/ Google Code for Pay Conversion Page
-:javascript
-  /* <![CDATA[ */
-  var google_conversion_id = 937505505;
-  var google_conversion_language = "en";
-  var google_conversion_format = "3";
-  var google_conversion_color = "ffffff";
-  var google_conversion_label = "X50XCO3-_G8Q4eWEvwM";
-  var google_conversion_value = "#{@payment.plan_cost}";
-  var google_conversion_currency = "GBP";
-  var google_remarketing_only = false;
-  /* ]]> */
-%script{ src: "//www.googleadservices.com/pagead/conversion.js", type: "text/javascript" }
-%noscript
-  %div{ style: "display:inline;" }
-    %img{ alt: "", height: "1", src: "//www.googleadservices.com/pagead/conversion/937505505/?value=50.00&currency_code=GBP&label=X50XCO3-_G8Q4eWEvwM&guid=ON&script=0", style: "border-style:none;", width: "1" }
+  / Google Code for Pay Conversion Page
+  :javascript
+    /* <![CDATA[ */
+    var google_conversion_id = 937505505;
+    var google_conversion_language = "en";
+    var google_conversion_format = "3";
+    var google_conversion_color = "ffffff";
+    var google_conversion_label = "X50XCO3-_G8Q4eWEvwM";
+    var google_conversion_value = "#{@payment.plan_cost}";
+    var google_conversion_currency = "GBP";
+    var google_remarketing_only = false;
+    /* ]]> */
+  %script{ src: "//www.googleadservices.com/pagead/conversion.js", type: "text/javascript" }
+  %noscript
+    %div{ style: "display:inline;" }
+      %img{ alt: "", height: "1", src: "//www.googleadservices.com/pagead/conversion/937505505/?value=50.00&currency_code=GBP&label=X50XCO3-_G8Q4eWEvwM&guid=ON&script=0", style: "border-style:none;", width: "1" }
 
 
 %header

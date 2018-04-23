@@ -1,26 +1,29 @@
 = content_for :title, "Apply to #{@fund.title}, #{@fund.subtitle}"
 
+-# TODO: refactor
+- if allow_performance_cookies?
+  :javascript
+    mixpanel.track("View Apply Page", {"Fund": "#{@fund.name}"});
+
+  / Google Code for View funder apply page
+  :javascript
+    /* <![CDATA[ */
+    var google_conversion_id = 937505505;
+    var google_conversion_language = "en";
+    var google_conversion_format = "3";
+    var google_conversion_color = "ffffff";
+    var google_conversion_label = "8GqLCMWurGMQ4eWEvwM";
+    var google_remarketing_only = false;
+    /* ]]> */
+  %script{ src: "//www.googleadservices.com/pagead/conversion.js", type: "text/javascript" }
+  %noscript
+    %div{ style: "display:inline;" }
+      %img{ alt: "", height: "1", src: "//www.googleadservices.com/pagead/conversion/937505505/?label=8GqLCMWurGMQ4eWEvwM&amp;guid=ON&amp;script=0", style: "border-style:none;", width: "1" }
+
+
 %header
   = cell :v2_navbar, @current_user
   = cell :breadcrumb, (@proposal.title? ? @proposal.title : 'Current proposal').upcase_first => nil, 'Funds' => funds_path(@proposal), @fund.funder.name => nil, @fund.name => fund_path(@fund, @proposal), 'Apply' => apply_path(@fund, @proposal)
-
-:javascript
-  mixpanel.track("View Apply Page", {"Fund": "#{@fund.name}"});
-
-/ Google Code for View funder apply page
-:javascript
-  /* <![CDATA[ */
-  var google_conversion_id = 937505505;
-  var google_conversion_language = "en";
-  var google_conversion_format = "3";
-  var google_conversion_color = "ffffff";
-  var google_conversion_label = "8GqLCMWurGMQ4eWEvwM";
-  var google_remarketing_only = false;
-  /* ]]> */
-%script{ src: "//www.googleadservices.com/pagead/conversion.js", type: "text/javascript" }
-%noscript
-  %div{ style: "display:inline;" }
-    %img{ alt: "", height: "1", src: "//www.googleadservices.com/pagead/conversion/937505505/?label=8GqLCMWurGMQ4eWEvwM&amp;guid=ON&amp;script=0", style: "border-style:none;", width: "1" }
 
 %main
   .maxw1080.mx-auto.px40.mt40

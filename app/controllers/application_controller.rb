@@ -14,6 +14,8 @@ class ApplicationController < ActionController::Base
   before_action :registration_invalid, if: :logged_in?
   before_action :registration_microsite, if: :logged_in?
 
+  skip_after_action :intercom_rails_auto_include
+
   rescue_from ActionController::InvalidAuthenticityToken, with: :bad_token
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorised
   rescue_from ActionController::UnknownFormat do

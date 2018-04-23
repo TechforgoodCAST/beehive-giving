@@ -1,9 +1,5 @@
 = content_for :title, 'Edit Profile'
 
-:javascript
-  mixpanel.track("View Edit Profile Page");
-  mixpanel.identify("#{@current_user.id}");
-
 %header
   = cell :v2_navbar, @current_user
   = cell :breadcrumb, 'Account' => account_path

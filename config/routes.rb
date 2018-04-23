@@ -6,8 +6,6 @@ Rails.application.routes.draw do
   resources :reveals, only: :create
   resources :requests, only: :create
 
-  get '/proposals/:id', to: 'proposals#edit'
-
   # Errors
   match '/404', to: 'errors#not_found', via: :all
   match '/410', to: 'errors#gone', via: :all
@@ -68,6 +66,8 @@ Rails.application.routes.draw do
   post  '/account/:id/subscription/upgrade',   to: 'charges#create'
   get   '/account/:id/subscription/thank-you', to: 'charges#thank_you', as: 'thank_you'
 
+  get '/proposals/:id', to: 'proposals#edit'
+
   # Funds
   get '/funds/(:proposal_id)',        to: 'funds#index',  as: 'funds'
   get '/fund/:id/(:proposal_id)',     to: 'funds#show',   as: 'fund'
@@ -93,4 +93,7 @@ Rails.application.routes.draw do
   # Webhooks
   post '/webhooks/invoice-payment-succeeded',     to: 'webhooks#invoice_payment_succeeded'
   post '/webhooks/customer-subscription-deleted', to: 'webhooks#customer_subscription_deleted'
+
+  # Misc.
+  get '/cookies/update', to: 'cookies#update', as: 'update_cookies'
 end
