@@ -20,7 +20,10 @@ class PreResultsStep
 
     def save_user!
       user = User.where(email: email).first_or_initialize
-      user.organisation = attempt&.recipient
+      user.assign_attributes(
+        agree_to_terms: agree_to_terms,
+        organisation: attempt&.recipient
+      )
       user.save(validate: false)
     end
 

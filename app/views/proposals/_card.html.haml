@@ -1,15 +1,10 @@
 .px10.py15
-  - unless proposal.complete?
-    .mb20.caps
-      %span.fs35
-        = cell(:proposal_indicators, proposal).call(:percent_complete)
-      %span
-        complete
-  .mb20.caps
+  .mb10.caps
     %span.fs35
       = cell(:proposal_indicators, proposal).call(:funds_checked)
     %span
       funds checked
+  .mb20= cell(:current_proposal, proposal).send(:call, :incomplete)
   - if proposal.complete?
     .fs20.mb40
       = link_to proposal.title.truncate_words(3), funds_path(proposal), class: 'black'
@@ -32,12 +27,5 @@
       = cell(:proposal_indicators, proposal).call(:suitability_progress_bar)
 
 .fs14.center.py15.border-top.border-silver
-  - if context == 'fund'
-    = link_to 'Edit', edit_proposal_path(proposal), class: 'px10'
-    = link_to 'Change', proposals_path, class: 'px10'
-    = link_to 'New', new_proposal_path, class: 'px10'
-  - elsif proposal.registered? || proposal.complete?
-    = link_to 'Funds', funds_path(proposal), class: 'px15'
-    = link_to 'Edit', edit_proposal_path(proposal), class: 'px15'
-  - else
-    = link_to 'Complete', edit_signup_proposal_path(proposal), class: 'px15'
+  = link_to 'Funds', funds_path(proposal), class: 'px15'
+  = link_to 'Edit', edit_proposal_path(proposal), class: 'px15'

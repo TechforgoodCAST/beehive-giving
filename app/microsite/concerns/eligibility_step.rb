@@ -1,5 +1,6 @@
 class EligibilityStep
   extend SetterToInteger
+
   include ActiveModel::Model
   include RecipientValidations
   include RegNoValidations
@@ -137,7 +138,6 @@ class EligibilityStep
         district_ids: district_ids
       )
       Assessment.analyse_and_update!(funder.funds.active, proposal)
-      proposal.next_step!
     end
 
     def save_attempt!

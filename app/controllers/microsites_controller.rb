@@ -26,6 +26,8 @@ class MicrositesController < ApplicationController
     @recipient = @attempt.recipient
     @recipient.valid?
 
+    @country = Country.find_by(alpha2: @recipient.country)
+
     @microsite = Microsite.new(EligibilityStep.new(@recipient.attributes.slice(*recipient_attrs).merge(attempt: @attempt)))
 
     @recipient_answers = @microsite.step.answers_for('Recipient')
@@ -35,6 +37,8 @@ class MicrositesController < ApplicationController
   def check_eligibility # TODO: refactor
     @recipient = @attempt.recipient
     @recipient.valid?
+
+    @country = Country.find_by(alpha2: @recipient.country)
 
     @microsite = Microsite.new(EligibilityStep.new(@recipient.attributes.slice(*recipient_attrs).merge(attempt: @attempt).merge(eligibility_params)))
     @recipient_answers = @microsite.step.answers_for('Recipient')

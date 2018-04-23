@@ -17,7 +17,7 @@ describe Proposal do
 
   it('has many Themes') { assoc(:themes, :has_many, through: :proposal_themes) }
 
-  it('HABTM AgeGroups') { assoc(:age_groups, :has_and_belongs_to_many) }
+  it('HABTM AgeGroups') { assoc(:age_groups, :has_and_belongs_to_many) } # TODO: deprecated
 
   it('HABTM Beneficiaries') { assoc(:beneficiaries, :has_and_belongs_to_many) } # TODO: deprecated
 
@@ -29,61 +29,35 @@ describe Proposal do
 
   it { is_expected.to be_valid }
 
+  it '#funding_duration must at least 1' do
+    subject.funding_duration = 0
+    subject.valid?
+    expect_error(:funding_duration, 'must be greater than or equal to 1')
+  end
+
+  it '#funding_duration must be less than 120' do
+    subject.funding_duration = 121
+    subject.valid?
+    expect_error(:funding_duration, 'must be less than or equal to 120')
+  end
+
   context '#state' do
     it 'defaults to initial' do
-      expect(subject.state).to eq('initial')
+      expect(subject.state).to eq('complete')
     end
 
     it 'transitions' do
       subject.save!
       {
-        'basics'      => 'initial',
-        'initial'     => 'registered',
-        'transferred' => 'registered',
-        'registered'  => 'complete',
-        'complete'    => 'complete'
+        'basics'     => 'complete',
+        'invalid'    => 'complete',
+        'incomplete' => 'complete',
       }.each do |from, to|
         subject.state = from
-        subject.next_step!
+        subject.complete!
         expect(subject.state).to eq(to)
       end
     end
-  end
-
-  it 'clears age_groups and gender unless affect_people' do
-    expect(subject.age_groups.size).to eq(1)
-    expect(subject.gender).to eq('Female')
-
-    subject.affect_people = false
-    subject.save!
-
-    expect(subject.age_groups.size).to eq 0
-    expect(subject.gender).to eq nil
-  end
-
-  it 'requires gender if affect_people' do
-    subject.gender = nil
-    expect(subject).to_not be_valid
-  end
-
-  it 'requires age_groups if affect_people' do
-    subject.age_groups = []
-    expect(subject).to_not be_valid
-  end
-
-  it 'does not require gender and age_groups if affect_other' do
-    subject.affect_people = false
-    subject.affect_other = true
-    subject.gender = nil
-    subject.age_groups = []
-    expect(subject).to be_valid
-  end
-
-  it 'selects all age groups if first AgeGroup selected' do
-    expect(subject.age_groups.first.label).to eq('All ages')
-    expect(subject.age_groups.size).to eq(1)
-    subject.save!
-    expect(subject.age_groups.size).to eq(8)
   end
 
   it 'does not require districts if affect_geo at country level' do
@@ -99,74 +73,26 @@ describe Proposal do
   end
 
   it '#clear_districts_if_country_wide' do
+    subject.save!
     expect(subject.district_ids.size).to eq(1)
     expect(subject.affect_geo).to eq(1)
+
     subject.affect_geo = 2
-    subject.save
+    subject.save!
     expect(subject.district_ids.size).to eq(0)
   end
 
-  context 'registered' do
-    subject { build(:registered_proposal) }
+  it '#recipient_country_unless_multinational' do
+    subject.save!
+    original_countries = [subject.countries[0]]
+    subject.countries << build(:country)
+    expect(subject.country_ids.size).to eq(2)
+    expect(subject.countries).not_to eq(original_countries)
 
-    it { is_expected.to be_valid }
-
-    it('#state') { expect(subject.state).to eq('registered') }
-
-    it 'cannot create second proposal until first proposal complete' do
-      subject.save!
-      proposal = build(:proposal, recipient: subject.recipient)
-      expect(proposal).not_to be_valid
-
-      error = proposal.errors.messages[:proposal][0]
-      msg = 'Please complete your first proposal before creating a second.'
-      expect(error).to eq(msg)
-    end
-  end
-
-  context 'complete' do
-    subject { build(:complete_proposal) }
-
-    it { is_expected.to be_valid }
-
-    it('#state') { expect(subject.state).to eq('complete') }
-
-    context 'multiple' do
-      let(:duplicate) do
-        build(
-          :registered_proposal,
-          recipient: subject.recipient,
-          title: subject.title
-        )
-      end
-
-      before do
-        subject.save!
-        expect(duplicate).not_to be_valid
-      end
-
-      it 'title unique to recipient' do
-        error = duplicate.errors.messages[:title][0]
-        msg = 'each proposal must have a unique title'
-        expect(error).to eq(msg)
-      end
-
-      # TODO: deprecated
-      it 'subscription required to create multiple proposals' do
-        error = duplicate.errors.messages[:title][1]
-        msg = 'Upgrade subscription to create multiple proposals'
-        expect(error).to eq(msg)
-      end
-
-      # TODO: deprecated
-      it 'can create multiple proposals once first proposal complete ' \
-         'and subscribed' do
-        subject.recipient.create_subscription!
-        subject.recipient.subscription.update(active: true)
-        duplicate.title = 'unique'
-        expect(duplicate).to be_valid
-      end
-    end
+    subject.affect_geo = 2
+    subject.save!
+    expect(subject.country_ids.size).to eq(1)
+    expect(subject.countries).to eq(original_countries)
   end
 
   context 'methods' do

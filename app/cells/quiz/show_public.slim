@@ -6,4 +6,4 @@
         = render view: :question, locals: {q: q, f: f, e: nil, disabled: true}
 
 .my40
-  .button.white.bg-blue.caps.shadow = options[:quiz_type] == 'Restriction' ? 'Check eligibility' : 'Check suitability'
+  .btn.white.bg-blue.shadow = options[:quiz_type] == 'Restriction' ? 'Check eligibility' : 'Check suitability'

@@ -1,40 +1,25 @@
 = content_for :title, 'Edit Proposal'
 
-= stylesheet_link_tag 'chosen'
-= stylesheet_link_tag 'overrides/chosen_overrides'
-= javascript_include_tag 'chosen-jquery'
-= javascript_include_tag 'chosen'
-= javascript_include_tag 'jquery.tree-multiselect.min'
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'Proposals' => proposals_path, @proposal.id => edit_proposal_path(@proposal)
 
-:javascript
-  mixpanel.track("View Proposal #{@proposal.state.capitalize} Page");
-  mixpanel.identify('#{@current_user.id}');
-  mixpanel.people.set({
-    'Proposal State': '#{@proposal.state}'
-  });
+%main
+  .maxw1080.mx-auto.px20
+    %section.md.mb20.px20
+      %h1.mb20 Dashboard
+    = render partial: 'accounts/subnav'
 
-= render partial: 'subnav'
+  .maxw1080.mx-auto.px20.flex.flex-wrap
+    %aside.perc25.md.px20.mb40
+      %h2.mb20 Edit Proposal
+      %h4 Update details of your funding request.
 
-.uk-container.uk-container-center.uk-margin-large
+    %section.perc75.md.mb80.px20
 
-  %h2 Funding proposal
-  %h4 Update your funding proposal to update your funding recommendations.
+      - if @proposal.basics? || @proposal.invalid? || @proposal.incomplete?
+        .individual_notice.mb20.p15.heading.red.rounded.border.border-pale-red.bg-light-red
+          %strong IMPORTANT:
+          You need to complete this proposal before continuing to use the site.
 
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top
-
-    = simple_form_for @proposal do |f|
-
-      = cell(:proposal_form, @proposal, f: f).call(:summary)
-      = cell(:proposal_form, @proposal, f: f).call(:requirements)
-      = cell(:proposal_form, @proposal, f: f).call(:beneficiaries)
-      = cell(:proposal_form, @proposal, f: f).call(:location)
-      = cell(:proposal_form, @proposal, f: f).call(:activities)
-      = cell(:proposal_form, @proposal, f: f).call(:outcomes)
-      = cell(:proposal_form, @proposal, f: f).call(:themes)
-      = cell(:proposal_form, @proposal, f: f).call(:privacy)
-
-      .uk-width-medium-1-1
-        - if session[:return_to]
-          = f.button :button, 'Update and check eligibility', class: 'uk-button uk-button-primary uk-margin-top uk-button-large uk-width-medium-1-2 uk-float-right', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> That wasn't so bad...</span>"}
-        - else
-          = f.button :button, 'Update and review recommendations', class: 'uk-button uk-button-primary uk-margin-top uk-button-large uk-width-medium-1-2 uk-float-right', data: {disable_with: "<i style='color: #fff;' class='uk-icon uk-icon-circle-o-notch uk-icon-spin'></i><span style='color: #fff;'> That wasn't so bad...</span>"}
+      = render partial: 'form', locals: { submit_text: 'Update proposal' }

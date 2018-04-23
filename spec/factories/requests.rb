@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :request do
-    recipient
-    fund
+    association :recipient, strategy: :build
+    association :fund, strategy: :build
   end
 end

@@ -1,29 +1,10 @@
 h4.mb10
   | Additional questions
 
-.uk-form.uk-form-stacked.uk-clearfix
-  - if model.present?
-    = simple_form_for :check, url: eligibility_path(fund, model), method: :patch do |f|
+- if model.present?
+  = simple_form_for :check, url: eligibility_path(fund, model), method: :patch do |f|
+      = cell(:quiz, fund, quiz_type: 'Priority', proposal: model, f: f).call(:show)
 
-      - if model.recipient.incomplete_first_proposal?
-
-        .bg-ice.rounded.shadow.fs18.lh22.p10.mb20
-          .bold.caps.mb10.fs15 Incomplete proposal
-          | To complete suitability for this fund you need to add some more information to your proposal.
-          .mt10
-            = f.button :button, "Complete proposal",
-                              class: 'button white bg-blue caps shadow'
-        .muted
-
-          = cell(:quiz, fund, quiz_type: 'Priority', proposal: model, f: f).call(:show_public)
-
-      - else
-
-        = f.hidden_field :return_to, :value => 'fund'
-        = cell(:quiz, fund, quiz_type: 'Priority', proposal: model, f: f).call(:show)
-
-  - else
-
-    = simple_form_for :check do |f|
-
-      = cell(:quiz, fund, quiz_type: 'Priority', proposal: model, f: f).call(:show_public)
+- else
+  = simple_form_for :check do |f|
+    = cell(:quiz, fund, quiz_type: 'Priority', proposal: model, f: f).call(:show_public)

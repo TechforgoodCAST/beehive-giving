@@ -9,11 +9,11 @@ feature 'Eligibility' do
         .setup_funds(num: 7, open_data: true)
         .create_recipient
         .with_user
-        .create_registered_proposal
+        .create_proposal
         .sign_in
     @db = @app.instances
     @fund = Fund.first
-    @proposal = @db[:registered_proposal]
+    @proposal = @db[:proposal]
     visit root_path
   end
 
@@ -37,13 +37,6 @@ feature 'Eligibility' do
     end
   end
 
-  scenario "When I check eligibility for the first time and need to update my
-            proposal, I want to understand why I need to do it,
-            so I feel I'm using my time in the best way" do
-    helper.visit_first_fund
-    expect(page).to have_text 'Complete your funding proposal to access '
-  end
-
   scenario "When I'm try to access application details before checking
             eligiblity, I want to be told why I can't access them,
             so I understand what to do next" do
@@ -55,7 +48,7 @@ feature 'Eligibility' do
             I want it to be recorded as eligible,
             so I recieve an accurate check' do
     @fund.restrictions.first.update(invert: true)
-    helper.visit_first_fund.complete_proposal.submit_proposal
+    helper.visit_first_fund
     within "label[for=check_question_#{@fund.restrictions.first.id}" \
            '_true]' do
       expect(page).to have_text 'Yes'
@@ -65,9 +58,7 @@ feature 'Eligibility' do
   end
 
   context 'complete proposal' do
-    before(:each) do
-      helper.visit_first_fund.complete_proposal.submit_proposal
-    end
+    before(:each) { helper.visit_first_fund }
 
     scenario "When I only answer recipient restrictions,
               I want them to be saved,

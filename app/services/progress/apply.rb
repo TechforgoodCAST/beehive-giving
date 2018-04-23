@@ -17,10 +17,10 @@ module Progress
         link_to(
           'Apply ❯',
           url_helpers.apply_path(fund_hashid, proposal_id),
-          class: 'fs15 btn white bg-blue shadow'
+          class: 'fs15 btn-sm white bg-blue shadow'
         )
       else
-        tag.a('Apply ❯', class: 'btn fs15 slate border-silver disabled')
+        tag.a('Apply ❯', class: 'btn-sm fs15 slate border-silver disabled')
       end
     end
 

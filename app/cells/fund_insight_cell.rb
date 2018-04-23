@@ -25,10 +25,6 @@ class FundInsightCell < Cell::ViewModel
     end
   end
 
-  def title
-    render locals: { proposal: options[:proposal] }
-  end
-
   def themes
     model.themes.map do |theme|
       link_to(
@@ -88,10 +84,6 @@ class FundInsightCell < Cell::ViewModel
   end
 
   private
-
-    def title_name
-      funder.funds.size > 1 ? [name, funder.name] : [funder.name, name]
-    end
 
     def grant_types_message
       costs = model.permitted_costs.reject(&:zero?)

@@ -4,8 +4,9 @@ describe FundInsightCell do
   controller ApplicationController
 
   before(:each) do
+    # TODO: refactor
     @app.seed_test_db.setup_funds(num: 2, open_data: true)
-        .create_recipient.create_registered_proposal
+        .create_recipient.create_proposal
     @db = @app.instances
     @fund = Fund.first
     @proposal = Proposal.first
@@ -52,19 +53,6 @@ describe FundInsightCell do
       card = cell(:fund_insight, @fund).call(:grant_examples)
       expect(card).not_to have_content 'Recent grants include'
       expect(card).not_to have_content 'Example of a recent grant'
-    end
-  end
-
-  context '#title' do
-    it 'Funder.name as title when funder has one fund' do
-      insight = cell(:fund_insight, @fund, proposal: @proposal).call(:title)
-      expect(insight).to have_link 'Awards for All 1'
-      expect(insight).to have_content 'Funder'
-
-      Fund.last.destroy
-      insight = cell(:fund_insight, @fund, proposal: @proposal).call(:title)
-      expect(insight).to have_link 'Funder'
-      expect(insight).to have_content 'Awards for All 1'
     end
   end
 

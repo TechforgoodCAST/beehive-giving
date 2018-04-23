@@ -1,15 +1,7 @@
 require 'rails_helper'
-require 'shared/reg_no_validations'
-require 'shared/setter_to_integer'
 
 describe User do
   subject { build(:user) }
-
-  include_examples 'reg no validations'
-
-  include_examples 'setter to integer' do
-    let(:attributes) { [:org_type] }
-  end
 
   it('belongs to Organisation') do
     assoc(:organisation, :belongs_to, polymorphic: true, optional: true)
@@ -19,19 +11,71 @@ describe User do
 
   it { is_expected.to be_valid }
 
-  context 'email' do
-    it 'unique' do
-      subject.save
-      expect(build(:user, email: subject.email)).not_to be_valid
+  context '#agree_to_terms' do
+    it 'invalid' do
+      subject.agree_to_terms = false
+      subject.valid?
+      expect_error(:agree_to_terms, 'you must accept terms to continue')
+    end
+  end
+
+  context '#email' do
+    it 'existing' do
+      subject.save!
+      duplicate = subject.dup
+      duplicate.valid?
+      msg = "email already registered, please 'sign in' using the link below"
+      expect_error(:email, msg, duplicate)
+    end
+
+    it 'invalid' do
+      subject.email = 'email[at]email.com'
+      subject.valid?
+      expect_error(:email, 'please enter a valid email')
     end
 
     it 'downcase' do
       subject.send(:email=, 'UPCASE@email.com')
       expect(subject.email).to eq('upcase@email.com')
     end
+
+    it 'unique' do
+      subject.save
+      expect(build(:user, email: subject.email)).not_to be_valid
+    end
   end
 
-  context 'name' do
+  context '#funder?' do
+    it 'fundraiser' do
+      expect(subject.funder?).to eq(false)
+    end
+
+    it 'funder' do
+      subject.organisation_type = 'Funder'
+      expect(subject.funder?).to eq(true)
+    end
+  end
+
+  context '#legacy' do
+    it('incomplete') do
+      expect(subject.legacy?).to eq(true)
+    end
+
+    it('registered') do
+      subject.organisation = build(:recipient, proposals: [build(:proposal)])
+      expect(subject.legacy?).to eq(false)
+    end
+  end
+
+  context '#marketing_consent' do
+    it 'in list' do
+      subject.marketing_consent = nil
+      subject.valid?
+      expect_error(:marketing_consent, 'please select an option')
+    end
+  end
+
+  context '#name' do
     it 'invalid' do
       %i[first_name last_name].each do |col|
         subject.send("#{col}=", ':Name!')
@@ -47,8 +91,11 @@ describe User do
     end
   end
 
-  it 'org_type converted to integer' do
-    subject.send(:org_type=, '0')
-    expect(subject.org_type).to eq(0)
+  context '#password' do
+    it 'invalid' do
+      subject.password = 'invaid_password'
+      subject.valid?
+      expect_error(:password, 'must include 6 characters with 1 number')
+    end
   end
 end

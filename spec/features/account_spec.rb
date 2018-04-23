@@ -9,7 +9,7 @@ feature 'Account' do
       @app.seed_test_db
           .create_recipient
           .with_user
-          .create_registered_proposal
+          .create_proposal
           .sign_in
       @db = @app.instances
       visit root_path
@@ -47,7 +47,7 @@ feature 'Account' do
       fill_in :email, with: 'updates.user@email.com'
       fill_in :password, with: 'newPa55word'
       click_button 'Sign in'
-      expect(current_path).to eq funds_path(@db[:registered_proposal])
+      expect(current_path).to eq funds_path(@db[:proposal])
     end
 
     scenario 'password update optional when updating user profile'

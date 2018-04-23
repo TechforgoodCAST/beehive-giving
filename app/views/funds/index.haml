@@ -1,30 +1,26 @@
 = content_for :title, 'Funds'
 
-- if @proposal # TODO: refactor
+-# TODO: refactor
+- if @proposal && allow_performance_cookies?
   :javascript
     mixpanel.track('View Funds Page');
     mixpanel.identify("#{@current_user.id}");
-    mixpanel.people.set({
-      'Fund Unlocks': "#{@recipient.funds_checked}",
-    });
 
-    ga("send", "event", "Eligibility", "Eligible", "#{@proposal.eligible_funds.count}");
-    ga("send", "event", "Eligibility", "Ineligible", "#{@proposal.ineligible_funds.count}");
+  / Google Code for View recommended funds
+  :javascript
+    /* <![CDATA[ */
+    var google_conversion_id = 937505505;
+    var google_conversion_language = "en";
+    var google_conversion_format = "3";
+    var google_conversion_color = "ffffff";
+    var google_conversion_label = "LPzOCKWprGMQ4eWEvwM";
+    var google_remarketing_only = false;
+    /* ]]> */
+  %script{ src: "//www.googleadservices.com/pagead/conversion.js", type: "text/javascript" }
+  %noscript
+    %div{ style: "display:inline;" }
+      %img{ alt: "", height: "1", src: "//www.googleadservices.com/pagead/conversion/937505505/?label=LPzOCKWprGMQ4eWEvwM&amp;guid=ON&amp;script=0", style: "border-style:none;", width: "1" }
 
-/ Google Code for View recommended funds
-:javascript
-  /* <![CDATA[ */
-  var google_conversion_id = 937505505;
-  var google_conversion_language = "en";
-  var google_conversion_format = "3";
-  var google_conversion_color = "ffffff";
-  var google_conversion_label = "LPzOCKWprGMQ4eWEvwM";
-  var google_remarketing_only = false;
-  /* ]]> */
-%script{ src: "//www.googleadservices.com/pagead/conversion.js", type: "text/javascript" }
-%noscript
-  %div{ style: "display:inline;" }
-    %img{ alt: "", height: "1", src: "//www.googleadservices.com/pagead/conversion/937505505/?label=LPzOCKWprGMQ4eWEvwM&amp;guid=ON&amp;script=0", style: "border-style:none;", width: "1" }
 
 %header
   = cell :v2_navbar, @current_user

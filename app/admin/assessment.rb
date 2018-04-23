@@ -5,7 +5,7 @@ ActiveAdmin.register Assessment do
     actions
   end
 
-  filter :fund, input_html: { class: 'chosen-select' }
+  filter :fund, input_html: { class: 'choices-select' }
 
   ratings = {
     UNASSESSED => 'unassessed',

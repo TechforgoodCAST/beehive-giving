@@ -20,7 +20,7 @@ document.addEventListener('turbolinks:load', () => {
   dialog.init()
   sort.init('sort-form')
 
-  select.orgType(['user', 'basics_step', 'eligibility_step'])
+  select.orgType(['signup_basics', 'basics_step', 'eligibility_step'])
 
   const eligibilityStepOpts = {
     '0': ['districts'],
@@ -29,8 +29,27 @@ document.addEventListener('turbolinks:load', () => {
     '3': ['eligibility_step_country_ids']
   }
   select.init('eligibility_step_affect_geo', eligibilityStepOpts)
+
+  // TODO: refactor
+  const affectGeoOpts = {
+    '0': ['signup_suitability_proposal_districts'],
+    '1': ['signup_suitability_proposal_districts'],
+    '2': ['signup_suitability_recipient_country'],
+    '3': ['signup_suitability_proposal_countries']
+  }
+  select.init('signup_suitability_proposal_affect_geo', affectGeoOpts)
+
+  // TODO: refactor
+  const proposalOpts = {
+    '0': ['proposal_districts'],
+    '1': ['proposal_districts'],
+    '2': ['recipient_country'],
+    '3': ['proposal_countries']
+  }
+  select.init('proposal_affect_geo', proposalOpts)
 })
 
+// TODO: remove
 document.addEventListener('ajax:success', () => {
   select.orgType('user')
 })

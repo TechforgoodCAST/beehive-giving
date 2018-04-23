@@ -181,59 +181,20 @@ class TestHelper # TODO: refactor
     self
   end
 
-  def build_initial_proposal
-    @initial_proposal = build(
+  def build_proposal
+    @proposal = build(
       :proposal,
       recipient: @recipient,
       countries: [@uk],
       districts: @uk_districts,
-      age_groups: @age_groups,
       themes: @themes
     )
     self
   end
 
-  def create_initial_proposal
-    build_initial_proposal
-    @initial_proposal.save
-    self
-  end
-
-  def build_registered_proposal
-    @registered_proposal = build(
-      :registered_proposal,
-      recipient: @recipient,
-      countries: [@uk],
-      districts: @uk_districts,
-      age_groups: @age_groups,
-      implementations: @implementations,
-      themes: @themes
-    )
-    self
-  end
-
-  def create_registered_proposal
-    build_registered_proposal
-    @registered_proposal.save
-    self
-  end
-
-  def build_complete_proposal
-    @complete_proposal = build(
-      :complete_proposal,
-      recipient: @recipient,
-      countries: [@uk],
-      districts: @uk_districts,
-      age_groups: @age_groups,
-      implementations: @implementations,
-      themes: @themes
-    )
-    self
-  end
-
-  def create_complete_proposal
-    build_complete_proposal
-    @complete_proposal.save
+  def create_proposal
+    build_proposal
+    @proposal.save
     self
   end
 
@@ -256,9 +217,7 @@ class TestHelper # TODO: refactor
       implementations: @implementations,
       recipient: @recipient,
       user: @user,
-      initial_proposal: @initial_proposal,
-      registered_proposal: @registered_proposal,
-      complete_proposal: @complete_proposal,
+      proposal: @proposal,
       themes: @themes
     }
     if @funds

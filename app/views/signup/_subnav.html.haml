@@ -1,7 +1,0 @@
-.subnav{'data-uk-sticky' => ''}
-  .uk-container.uk-container-center
-    %ol.progress
-      %li.progress-item.is-completed{"data-uk-tooltip" => "{pos:'bottom'}", :title => "Sign up"}
-      - %w[Basics Proposal].each_with_index do |step, i|
-        %li.progress-item{"data-uk-tooltip" => "{pos:'bottom'}", :title => step, :class => progress_step_helper(i, current_step)}
-      %li.progress-item.destination Funders!

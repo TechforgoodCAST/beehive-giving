@@ -1,14 +1,5 @@
 = content_for :title, "Eligibility - Should you apply to #{@funder.name}?"
 
--# TODO: refactor
-= stylesheet_link_tag 'proposals'
-= stylesheet_link_tag 'chosen'
-= stylesheet_link_tag 'overrides/chosen_overrides'
-= javascript_include_tag 'proposals'
-= javascript_include_tag 'chosen-jquery'
-= javascript_include_tag 'chosen'
-= javascript_include_tag 'jquery.tree-multiselect.min'
-
 %main
   %section.bg-ice.bg-primary
     .maxw1080.mx-auto.p20.mb40
@@ -43,7 +34,7 @@
 
         %section.border-top.border-silver.p20
           %h3.mb20.slate Your organisation
-          %strong.block.mb20 Are you seeking funding for?
+          .label.mb20 Are you seeking funding for?
 
           -# TODO: DRY
           .mb0
@@ -75,7 +66,7 @@
 
         %section.border-top.border-silver.p20
           %h3.mb20.slate Your proposal
-          %strong.block.mb20 Are you seeking funding for?
+          .label.mb20 Are you seeking funding for?
 
           -# TODO: DRY
           .mb20
@@ -91,7 +82,26 @@
                       = a.label "eligible_#{!a.object.criterion.invert}", 'No'
                   %label.mx20= raw(a.object.criterion.details)
 
-          = cell(:proposal_form, @attempt.proposal, f: f).call(:location_microsite)
+          = f.input :affect_geo, collection: Proposal::AFFECT_GEO
+
+          .mx20.districts
+            .mt20.mb10
+              %strong.block Please select all of the areas your proposed work will affect
+              %small.night You can expand each region to select individual areas, or check the box next to a regions name to select all the areas. The more specific you are the better your results will be.
+
+            = f.input :district_ids, as: :select, collection: @country.districts, label: false, input_html: { multiple: true, class: 'choices-select' }
+
+          .mt20.mx20.recipient_country
+            .block
+              Your work will affect all of the
+              = succeed '.' do
+                %strong= @country.name
+            %small.night
+              To change country plese select
+              %strong 'Across many countries'
+              above.
+
+          .mt20.mx20= f.input :country_ids, collection: Country.order('priority DESC'), include_blank: true, input_html: { multiple: true, class: 'choices-select' }
 
         %fieldset.border-top.border-silver.p20
-          = f.button :button, 'Next ❯', class: 'button white bg-olive caps truncate bg-primary headline', data: { disable_with: 'Saving...' }
+          = f.button :button, 'Next ❯', class: 'button white bg-olive truncate bg-primary headline', data: { disable_with: 'Saving...' }

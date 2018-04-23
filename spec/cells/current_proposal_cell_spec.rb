@@ -17,6 +17,9 @@ describe CurrentProposalCell do
     it { is_expected.to have_css('.bg-light-yellow') }
   end
 
+  it 'proposal not belonging to account'
+  # TODO: is_expected.to have_text('No proposal selected')
+
   it('total_costs') { expect(subject).to have_text('£10,000') }
 
   it('funding_type') { expect(subject).to have_text('Capital') }
@@ -26,12 +29,14 @@ describe CurrentProposalCell do
     expect(subject).not_to have_text('Capital')
   end
 
-  context 'title' do
-    let(:proposal) { build(:complete_proposal) }
+  context 'complete proposal' do
     it { is_expected.to have_text('Title') }
   end
 
-  it('no title') { expect(subject).not_to have_text('Title') }
+  context 'incomplete proposal' do
+    let(:proposal) { build(:incomplete_proposal) }
+    it { expect(subject).to have_text('Current proposal') }
+  end
 
   it('incomplete count') { expect(subject).to have_text('1 fund unchecked') }
 end

@@ -13,4 +13,13 @@ class UsersController < ApplicationController
     @current_user.update_column(:terms_version, TERMS_VERSION)
     redirect_back(fallback_location: funds_path(@proposal))
   end
+
+  private
+
+    def user_params
+      params.require(:user).permit(
+        :agree_to_terms, :email, :first_name, :last_name, :password,
+        :password_confirmation
+      )
+    end
 end

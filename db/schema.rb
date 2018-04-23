@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180306173936) do
+ActiveRecord::Schema.define(version: 20180422155410) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -364,7 +364,7 @@ ActiveRecord::Schema.define(version: 20180306173936) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "type_of_support"
-    t.string "state", default: "initial"
+    t.string "state", default: "complete"
     t.boolean "affect_people"
     t.boolean "affect_other"
     t.integer "affect_geo"
@@ -502,6 +502,7 @@ ActiveRecord::Schema.define(version: 20180306173936) do
     t.boolean "authorised", default: true
     t.string "unlock_token"
     t.date "terms_version"
+    t.boolean "marketing_consent"
     t.index ["organisation_id"], name: "index_users_on_organisation_id"
     t.index ["organisation_type"], name: "index_users_on_organisation_type"
   end

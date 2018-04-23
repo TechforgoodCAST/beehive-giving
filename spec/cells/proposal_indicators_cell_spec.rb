@@ -22,5 +22,4 @@ describe ProposalIndicatorsCell do
     expect(titles).to include('2 funds to check')
     expect(titles).to include('1 fund eligible')
   end
-
 end

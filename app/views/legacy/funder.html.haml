@@ -1,0 +1,13 @@
+= content_for :title, 'Account suspended'
+
+%header
+  = link_to 'Beehive', root_path, id: 'navbar-logo', alt: 'Beehive logo', class: 'mx-auto mt25 flex blue'
+
+%main.flex.justify-center.items-center
+  %section.maxw790.my80.mx40.center
+    %h1.mb20 Account suspended
+
+    .fs18.lh25.slate.mb40 Your funders account has been suspended please contact support for more details.
+
+    = mail_to 'support@beehivegiving.org', 'Contact support', subject: 'Account suspended', class: 'btn white bg-blue mb10', target: '_blank'
+    = link_to 'Sign out', logout_path, class: 'btn blue bg-white border-blue mb10'

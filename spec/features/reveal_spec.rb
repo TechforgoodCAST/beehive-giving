@@ -8,7 +8,7 @@ feature 'RevealFunds' do
         .setup_funds(num: 7, open_data: true)
         .create_recipient
         .with_user
-        .create_complete_proposal
+        .create_proposal
         .sign_in
     @user = User.last
     @recipient = Recipient.last

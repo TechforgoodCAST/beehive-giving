@@ -17,7 +17,7 @@
         = form_tag sign_in_path, method: 'post', class: '', id: 'sign-in' do
           = text_field_tag :email, nil, placeholder: 'Email', type: 'email', class: 'input mb10'
           = password_field_tag :password, nil, placeholder: 'Password', type: 'password', class: 'input mb10'
-          = button_tag 'Sign in', class: 'button-wide white bg-olive caps truncate mb10'
+          = button_tag 'Sign in', class: 'btn-wide white bg-olive truncate mb10'
           %label.gray.mb20
             = check_box_tag :remember_me, 1, params[:remember_me]
             Remember me

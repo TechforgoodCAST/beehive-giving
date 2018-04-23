@@ -8,7 +8,7 @@ describe QuizCell do
 
   # before(:each) do
   #   @app.seed_test_db.setup_funds(num: 3)
-  #       .create_recipient.create_registered_proposal
+  #       .create_recipient.create_proposal
   #   @fund = Fund.active.first
   #   @proposal = Proposal.last
   # end

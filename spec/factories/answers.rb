@@ -1,25 +1,12 @@
 FactoryBot.define do
-  factory :answer do
+  # TODO: refactor aliases
+  factory :answer, aliases: [:proposal_eligibility, :proposal_suitability] do
     eligible true
-
-    factory :proposal_eligibility, class: Answer do
-      category { |e| e.association(:proposal) }
-      criterion { |e| e.association(:criterion) }
-    end
+    association :category, factory: :proposal
+    association :criterion, factory: :restriction
 
     factory :recipient_eligibility, class: Answer do
-      category { |e| e.association(:recipient) }
-      criterion { |e| e.association(:criterion) }
-    end
-
-    factory :proposal_suitability, class: Answer do
-      category { |e| e.association(:proposal) }
-      criterion { |e| e.association(:criterion) }
-    end
-
-    factory :recipient_suitability, class: Answer do
-      category { |e| e.association(:recipient) }
-      criterion { |e| e.association(:criterion) }
+      association :category, factory: :recipient
     end
   end
 end

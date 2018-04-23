@@ -1,8 +1,5 @@
 = content_for :title, 'Terms of Service'
 
-:javascript
-  mixpanel.track("View Terms Page");
-
 %header
   = cell :v2_navbar, @current_user
   = cell :breadcrumb, 'Terms' => terms_path

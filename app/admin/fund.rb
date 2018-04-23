@@ -53,7 +53,7 @@ ActiveAdmin.register Fund do
     actions
   end
 
-  filter :funder, input_html: { class: 'chosen-select' }
+  filter :funder, input_html: { class: 'choices-select' }
   filter :slug
   filter :state, as: :select
   filter :featured
@@ -64,7 +64,7 @@ ActiveAdmin.register Fund do
   show do
     tabs do
       tab :summary do
-        attributes_table do
+        attributes_table title: 'Summary' do
           row :funder do |fund|
             link_to fund.funder.name, [:admin, fund.funder]
           end
@@ -94,47 +94,76 @@ ActiveAdmin.register Fund do
     end
 
     tabs do
-      tab :restrictions do
-        attributes_table do
-          row :permitted_costs do
-            fund.permitted_costs.each.map{|t| "<li>#{FUNDING_TYPES[t][0]}</li>"}.join("").html_safe
+      tab :eligibilty do
+        attributes_table title: 'Eligibility' do
+          attributes_table title: 'Amount' do
+            row :min_amount_awarded_limited
+            row :min_amount_awarded
+            row :max_amount_awarded_limited
+            row :max_amount_awarded
           end
-          row :permitted_org_types do
-            fund.permitted_org_types.each.map{|t| "<li>#{ORG_TYPES[t+1][0]}</li>"}.join("").html_safe
+
+          attributes_table title: 'Duration' do
+            row :min_duration_awarded_limited
+            row :min_duration_awarded
+            row :max_duration_awarded_limited
+            row :max_duration_awarded
           end
-          row :min_amount_awarded_limited
-          row :min_amount_awarded
-          row :max_amount_awarded_limited
-          row :max_amount_awarded
-          row :min_duration_awarded_limited
-          row :min_duration_awarded
-          row :max_duration_awarded_limited
-          row :max_duration_awarded
-          row :min_org_income_limited
-          row :min_org_income
-          row :max_org_income_limited
-          row :max_org_income
+
+          attributes_table title: 'Income' do
+            row :min_org_income_limited
+            row :min_org_income
+            row :max_org_income_limited
+            row :max_org_income
+          end
+
+          attributes_table title: 'Location' do
+            row 'Work must take place in', &:geo_area
+            row 'Work is limited to specific areas', &:geographic_scale_limited
+            row 'Work must have a national footprint', &:national
+          end
+
+          if fund.restrictions_known?
+            attributes_table title: 'Quiz' do
+              row :restrictions_known
+              row :restrictions do
+                labels = {
+                  'Recipient' => 'Is your organisation...',
+                  'Proposal' => 'Is your funding proposal for...'
+                }
+                invert = { true => 'Must', false => 'Must not' }
+
+                fund.restrictions.group_by { |r| [r.category, r.invert] }.map do |k, v|
+                  li = v.map { |r| "<li>#{r.details}</li>" }.join
+                  "
+                    <i>#{invert[k[1]]}</i><br/>
+                    <strong>#{labels[k[0]]}</strong>
+                    <ul>#{li}</ul>
+                  "
+                end.join.html_safe
+              end
+            end
+          end
+
+          attributes_table title: 'Recipient' do
+            row :permitted_org_types do
+              fund.permitted_org_types.each.map{|t| "<li>#{ORG_TYPES[t+1][0]}</li>"}.join("").html_safe
+            end
+          end
+
+          attributes_table title: 'Type of funding' do
+            row :permitted_costs do
+              fund.permitted_costs.each.map{|t| "<li>#{FUNDING_TYPES[t][0]}</li>"}.join("").html_safe
+            end
+          end
         end
+      end
 
-        attributes_table do
-          row :restrictions_known
-          row :restrictions do
-            labels = {
-              'Recipient' => 'Is your organisation...',
-              'Proposal' => 'Is your funding proposal for...'
-            }
-            invert = { true => 'Must', false => 'Must not' }
-
-            fund.restrictions.group_by { |r| [r.category, r.invert] }.map do |k, v|
-              li = v.map { |r| "<li>#{r.details}</li>" }.join
-              "
-                <i>#{invert[k[1]]}</i><br/>
-                <strong>#{labels[k[0]]}</strong>
-                <ul>#{li}</ul>
-              "
-            end.join.html_safe
+      tab :suitability do
+        attributes_table title: 'Suitability' do
+          attributes_table title: 'Quiz' do
+            row :priorities_known
           end
-          row :priorities_known
         end
       end
 
@@ -157,21 +186,13 @@ ActiveAdmin.register Fund do
           end
         end
       end
-
-      tab :geography do
-        attributes_table do
-          row :geo_area
-          row :geographic_scale_limited
-          row :national
-        end
-      end
     end
   end
 
   form do |f|
     f.inputs 'Basics' do
       f.input :slug
-      f.input :funder, input_html: { class: 'chosen-select' }
+      f.input :funder, input_html: { class: 'choices-select' }
       f.input :name
       f.input :pretty_name
       f.input :description
@@ -182,18 +203,18 @@ ActiveAdmin.register Fund do
       f.input :application_link
       f.input :key_criteria
       f.input :tags, as: :select, collection: Fund.pluck(:tags).flatten.uniq,
-                     input_html: { multiple: true, class: 'chosen-select' }
+                     input_html: { multiple: true, class: 'choices-select' }
       f.input :themes, collection: Theme.pluck(:name, :id),
-                       input_html: { multiple: true, class: 'chosen-select' }
+                       input_html: { multiple: true, class: 'choices-select' }
     end
 
     tabs do
       tab :restrictions do
         f.inputs 'Restrictions' do
           f.input :permitted_costs, as: :select, collection: FUNDING_TYPES,
-                           input_html: { multiple: true, class: 'chosen-select' }
+                           input_html: { multiple: true, class: 'choices-select' }
           f.input :permitted_org_types, as: :select, collection: ORG_TYPES.map{|o| [o[0], o[1]] },
-                               input_html: { multiple: true, class: 'chosen-select' }
+                               input_html: { multiple: true, class: 'choices-select' }
           f.input :min_amount_awarded_limited
           f.input :min_amount_awarded
           f.input :max_amount_awarded_limited
@@ -209,7 +230,7 @@ ActiveAdmin.register Fund do
         end
 
         inputs 'Geography' do
-          f.input :geo_area, input_html: { class: 'chosen-select' }
+          f.input :geo_area, input_html: { class: 'choices-select' }
           f.input :geographic_scale_limited
           f.input :national
         end
@@ -221,7 +242,7 @@ ActiveAdmin.register Fund do
             q.input :group
             q.input :criterion_type, as: :select, collection: %W[Restriction Priority]
             q.input :criterion, collection: Criterion.pluck(:details, :invert, :id, :type).map { |r| ["#{r[3]}: #{r[0]}#{(" [INVERT]" if r[1])}", r[2]] },
-                                input_html: { class: 'chosen-select' }
+                                input_html: { class: 'choices-select' }
             q.actions
           end
         end

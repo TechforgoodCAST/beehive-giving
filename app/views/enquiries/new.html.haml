@@ -1,26 +1,29 @@
 = content_for :title, "Apply to #{@fund.title}, #{@fund.subtitle}"
 
+-# TODO: refactor
+- if allow_performance_cookies?
+  :javascript
+    mixpanel.track("View Apply Page", {"Fund": "#{@fund.name}"});
+
+  / Google Code for View funder apply page
+  :javascript
+    /* <![CDATA[ */
+    var google_conversion_id = 937505505;
+    var google_conversion_language = "en";
+    var google_conversion_format = "3";
+    var google_conversion_color = "ffffff";
+    var google_conversion_label = "8GqLCMWurGMQ4eWEvwM";
+    var google_remarketing_only = false;
+    /* ]]> */
+  %script{ src: "//www.googleadservices.com/pagead/conversion.js", type: "text/javascript" }
+  %noscript
+    %div{ style: "display:inline;" }
+      %img{ alt: "", height: "1", src: "//www.googleadservices.com/pagead/conversion/937505505/?label=8GqLCMWurGMQ4eWEvwM&amp;guid=ON&amp;script=0", style: "border-style:none;", width: "1" }
+
+
 %header
   = cell :v2_navbar, @current_user
   = cell :breadcrumb, (@proposal.title? ? @proposal.title : 'Current proposal').upcase_first => nil, 'Funds' => funds_path(@proposal), @fund.funder.name => nil, @fund.name => fund_path(@fund, @proposal), 'Apply' => apply_path(@fund, @proposal)
-
-:javascript
-  mixpanel.track("View Apply Page", {"Fund": "#{@fund.name}"});
-
-/ Google Code for View funder apply page
-:javascript
-  /* <![CDATA[ */
-  var google_conversion_id = 937505505;
-  var google_conversion_language = "en";
-  var google_conversion_format = "3";
-  var google_conversion_color = "ffffff";
-  var google_conversion_label = "8GqLCMWurGMQ4eWEvwM";
-  var google_remarketing_only = false;
-  /* ]]> */
-%script{ src: "//www.googleadservices.com/pagead/conversion.js", type: "text/javascript" }
-%noscript
-  %div{ style: "display:inline;" }
-    %img{ alt: "", height: "1", src: "//www.googleadservices.com/pagead/conversion/937505505/?label=8GqLCMWurGMQ4eWEvwM&amp;guid=ON&amp;script=0", style: "border-style:none;", width: "1" }
 
 %main
   .maxw1080.mx-auto.px40.mt40
@@ -48,22 +51,21 @@
         .mb20.markdown
           = raw(@fund.key_criteria_html)
 
-      - if @fund.open_call?
-        = link_to "Apply to #{@fund.title} ❯",
-                  apply_path(@fund, @proposal),
-                  method: :post,
-                  target: '_blank',
-                  'data-uk-tooltip': "{pos:'top'}",
-                  title: 'A new page will be opened with application details',
-                  class: 'button white bg-blue caps shadow mb80 right'
-      - else
-        .bg-ice.rounded.shadow.fs18.lh22.p10.mb20
-          .bold.caps.mb10.fs15 Unsolicited applications
-          Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
-        = link_to "More information on #{@fund.name.strip}",
-                  apply_path(@fund, @proposal),
-                  method: :post,
-                  target: '_blank',
-                  'data-uk-tooltip': "{pos:'top'}",
-                  title: 'A new page will be opened with guidance',
-                  class: 'button white bg-blue caps shadow mb80 right'
+      .mb80
+        - if @fund.open_call?
+          %span.tooltip{ 'aria-label' => 'A new page will be opened with application details' }
+            = link_to "Apply to #{@fund.title} ❯",
+                      apply_path(@fund, @proposal),
+                      method: :post,
+                      target: '_blank',
+                      class: 'btn white bg-blue shadow'
+        - else
+          .bg-ice.rounded.shadow.fs18.lh22.p10.mb20
+            .bold.caps.mb10.fs15 Unsolicited applications
+            Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
+          %span.tooltip{ 'aria-label' => 'A new page will be opened with guidance' }
+            = link_to "More information on #{@fund.name.strip}",
+                      apply_path(@fund, @proposal),
+                      method: :post,
+                      target: '_blank',
+                      class: 'btn white bg-blue shadow'

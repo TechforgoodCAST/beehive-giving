@@ -19,7 +19,7 @@ class CurrentProposalCell < Cell::ViewModel
       { 1 => 'Capital', 2 => 'Revenue' }[model.funding_type]
     end
 
-    def incompelte
+    def incomplete
       incomplete = { INELIGIBLE => 0, INCOMPLETE => 0, ELIGIBLE => 0 }.merge(
         model.assessments.group(:eligibility_status).size
       )[INCOMPLETE]
@@ -29,7 +29,7 @@ class CurrentProposalCell < Cell::ViewModel
 
     def proposal_summary
       if model
-        [total_costs, funding_type, incompelte].compact.join(' • ')
+        [total_costs, funding_type, incomplete].compact.join(' • ')
       else
         link_to('Sign in', sign_in_path, class: 'bold') +
           ' or ' +

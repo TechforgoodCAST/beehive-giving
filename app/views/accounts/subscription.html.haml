@@ -1,12 +1,15 @@
 = content_for :title, 'Subscription'
 
-:javascript
-  mixpanel.track("View Subscription Page");
-  mixpanel.identify("#{@current_user.id}");
-
-- if @recipient.income_band < 4
+-# TODO: refactor
+- if allow_performance_cookies?
   :javascript
-    ga("send", "event", "accounts#subscription", "view", "Plan Cost: #{@payment.plan_cost}");
+    mixpanel.track("View Subscription Page");
+    mixpanel.identify("#{@current_user.id}");
+
+  - if @recipient.income_band < 4
+    :javascript
+      ga("send", "event", "accounts#subscription", "view", "Plan Cost: #{@payment.plan_cost}");
+
 
 %header
   = cell :v2_navbar, @current_user
@@ -73,4 +76,4 @@
           .py10
             = render 'premium_features'
           - unless @subscription.active?
-            = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'button-wide bg-green white'
+            = link_to 'Upgrade', account_upgrade_path(@recipient), class: 'btn bg-green white'

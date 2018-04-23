@@ -3,14 +3,13 @@ class ChargesController < ApplicationController
 
   def new
     session[:return_to] = request.referer
-    @notice = true if request.referer == account_subscription_url(@recipient)
   end
 
   def create
     if @payment.process!(params[:stripeToken], current_user, params[:coupon])
       redirect_to thank_you_path(@recipient)
     else
-      params[:card_errors] = 'Invalid coupon'
+      params[:card_errors] = 'Invalid discount coupon, please try again.'
       render :new
     end
   rescue Stripe::CardError => e

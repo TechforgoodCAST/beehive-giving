@@ -1,0 +1,22 @@
+%section.maxw480.mx-auto.mb20.bg-white.rounded.shadow
+  .bg-ice.p20.rounded-top
+    %h4.bold 1 of 2: Basics
+  .p20
+    = simple_form_for @form, url: root_path do |f|
+      .mb20= f.input :funding_type, collection: FUNDING_TYPES
+
+      .mb20
+        .mb15= f.input :org_type, collection: ORG_TYPES
+
+        .individual_notice.mb20.p15.heading.red.rounded.border.border-pale-red.bg-light-red
+          %strong IMPORTANT:
+          None of the funders on Beehive provide grants for individuals. See our
+          = link_to 'FAQ', faq_path(anchor: 'individual'), class: 'bold red underline'
+          for more details.
+
+        %blockquote.border-mist= f.input :charity_number, label: false
+        %blockquote.border-mist= f.input :company_number, label: false
+
+      .mb20= f.input :country, priority: ['GB'], include_blank: true
+      .mb20= f.input :themes, collection: Theme.all, input_html: { multiple: true, class: 'choices-select' }
+      = f.submit 'Find suitable funds', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Finding...' }

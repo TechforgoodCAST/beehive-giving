@@ -29,9 +29,9 @@
         = simple_form_for @microsite.step, url: microsite_basics_path do |f|
           %fieldset.border-top.border-silver.p20
             = f.hidden_field :funder_id, value: @funder.id
-            .mb40= f.input :funding_type, collection: FUNDING_TYPES
-            .mb40= f.input :total_costs, as: :currency
-            .mb20= f.input :org_type, collection: ORG_TYPES
+            .mb20= f.input :funding_type, collection: FUNDING_TYPES
+            .mb20= f.input :total_costs, as: :currency
+            .mb15= f.input :org_type, collection: ORG_TYPES
 
             -# TODO: refactor
             .individual_notice.fs14.p10.my15.white.bg-red.rounded
@@ -40,11 +40,11 @@
               = link_to 'FAQ', faq_path(anchor: 'individual'), class: 'bold white'
               for more details.
 
-            .mb40.mx20
-              = f.input :charity_number, wrapper_html: { class: 'mt20' }
-              = f.input :company_number, wrapper_html: { class: 'mt20' }
+            .mb20.mx20
+              = f.input :charity_number, wrapper_html: { class: 'mt15' }
+              = f.input :company_number, wrapper_html: { class: 'mt15' }
 
             = f.input :country, include_blank: true, priority: ['United Kingdom']
 
           %fieldset.border-top.border-silver.p20
-            = f.button :button, 'Next ❯', class: 'button white bg-olive caps truncate bg-primary headline', data: { disable_with: 'Saving...' }
+            = f.button :button, 'Next ❯', class: 'button white bg-olive truncate bg-primary headline', data: { disable_with: 'Saving...' }

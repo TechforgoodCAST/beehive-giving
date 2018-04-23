@@ -28,7 +28,7 @@ module Progress
         link = link_to(
           text,
           url_helpers.reveals_path(assessment: assessment),
-          class: "fs15 btn #{opts[:classes]}",
+          class: "fs15 btn-sm #{opts[:classes]}",
           method: :post
         )
         msg = "#{revealed_count} of #{MAX_FREE_LIMIT} free used"
@@ -44,7 +44,7 @@ module Progress
       end
 
       def disabled_button(text)
-        tag.a(text, class: 'btn fs15 slate border-silver disabled')
+        tag.a(text, class: 'btn-sm fs15 slate border-silver disabled')
       end
 
       def eligible_and_hidden?

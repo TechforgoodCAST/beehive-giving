@@ -8,13 +8,6 @@ feature 'Microsite' do
 
   before(:each) do
     helper.stub_charity_commission '123456'
-    Proposal.skip_callback :save, :save_all_age_groups_if_all_ages
-    Proposal.skip_callback :save, :clear_age_groups_and_gender_unless_affect_people
-  end
-
-  after(:each) do
-    Proposal.set_callback :save, :save_all_age_groups_if_all_ages
-    Proposal.set_callback :save, :clear_age_groups_and_gender_unless_affect_people
   end
 
   scenario 'invalid route parameters' do
@@ -64,8 +57,8 @@ feature 'Microsite' do
 
     scenario 'signed in' do
       @app.with_user.sign_in
-      visit microsite_basics_path @funder
-      expect(current_path).to eq microsite_basics_path(@funder)
+      visit microsite_basics_path(@funder)
+      expect(current_path).to eq(legacy_fundraiser_path)
     end
 
     scenario 'existing recipient' do
@@ -128,7 +121,7 @@ feature 'Microsite' do
         Country.destroy_all
         @app.seed_test_db
             .create_recipient
-            .create_registered_proposal
+            .create_proposal
             .setup_funds
 
         Attempt.create!(

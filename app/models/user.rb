@@ -1,42 +1,42 @@
 class User < ApplicationRecord
-  extend SetterToInteger
-  include RegNoValidations
-
-  attr_accessor :org_type, :charity_number, :company_number
-
   scope :recipient, -> { where organisation_type: 'Recipient' }
   scope :funder, -> { where organisation_type: 'Funder' }
 
   belongs_to :organisation, polymorphic: true, optional: true
   has_many :feedbacks
 
-  validates :org_type, inclusion: {
-    in: (ORG_TYPES.pluck(1) - [-1]), message: 'Please select a valid option'
-  }, on: :create
-
   # TODO: add validations for association
-  validates :first_name, :last_name, :email, :agree_to_terms,
-            :organisation_type, presence: true, on: :create
+  validates :first_name, :last_name, :email, :organisation_type,
+            presence: true, on: :create
+
+  validates :agree_to_terms, presence: {
+    message: 'you must accept terms to continue'
+  }
 
   validates :first_name, :last_name, format: {
-    with: /\A(([a-z]+)*(-)*)+\z/i, message: 'Only a-z and -'
+    with: /\A(([a-z]+)*(-)*)+\z/i, message: 'only a-z and -'
   }, on: :create
 
-  validates :email,
-            format: { with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i,
-                      message: 'Please enter a valid email' }, on: :create
-  validates :email,
-            uniqueness: { message: "Please 'sign in' using the link above" },
-            on: :create
+  validates :email, format: {
+    with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i,
+    message: 'please enter a valid email'
+  }, on: :create
+
+  validates :email, uniqueness: {
+    message: "email already registered, please 'sign in' using the link below"
+  }, on: :create
 
   validates :password, presence: true, length: { within: 6..25 },
                        on: %i[create update]
-  validates :password,
-            format: { with: /\A(?=.*\d)(?=.*[a-zA-Z]).{6,25}\z/,
-                      message: 'Must include 6 characters with 1 number' },
-            on: %i[create update]
 
-  to_integer :org_type
+  validates :password, format: {
+    with: /\A(?=.*\d)(?=.*[a-zA-Z]).{6,25}\z/,
+    message: 'must include 6 characters with 1 number'
+  }, on: %i[create update]
+
+  validates :marketing_consent, inclusion: {
+    message: 'please select an option', in: [true, false]
+  }
 
   before_create { generate_token(:auth_token) }
 
@@ -58,6 +58,15 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
+  def funder?
+    organisation_type == 'Funder'
+  end
+
+  def legacy?
+    !(organisation.present? && organisation.proposals.any?)
+  end
+
+  # TODO: refactor/spec
   def lock_access_to_organisation(organisation)
     generate_token(:unlock_token)
     self.authorised = false
@@ -66,6 +75,7 @@ class User < ApplicationRecord
     organisation.send_authorisation_email(self)
   end
 
+  # TODO: refactor/spec
   def unlock
     update_attribute(:authorised, true)
     UserMailer.notify_unlock(self).deliver_now

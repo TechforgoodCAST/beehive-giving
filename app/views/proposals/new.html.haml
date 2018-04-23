@@ -1,38 +1,19 @@
 = content_for :title, 'New Proposal'
 
-= stylesheet_link_tag 'chosen'
-= stylesheet_link_tag 'overrides/chosen_overrides'
+%header
+  = cell :v2_navbar, @current_user
+  = cell :breadcrumb, 'Proposals' => proposals_path, 'New Proposal' => nil
 
-= javascript_include_tag 'chosen-jquery'
-= javascript_include_tag 'chosen'
-= javascript_include_tag 'jquery.tree-multiselect.min'
+%main
+  .maxw1080.mx-auto.px20
+    %section.md.mb20.px20
+      %h1.mb20 Dashboard
+    = render partial: 'accounts/subnav'
 
-:javascript
-  mixpanel.track("View Proposal #{@proposal.state.capitalize} Page");
-  mixpanel.identify('#{@current_user.id}');
-  mixpanel.people.set({
-    'Proposal State': '#{@proposal.state}'
-  });
+  .maxw1080.mx-auto.px20.flex.flex-wrap
+    %aside.perc25.md.px20.mb40
+      %h2.mb20 New Proposal
+      %h4 Check the suitability of a new funding request.
 
-= render partial: 'subnav'
-
-.uk-container.uk-container-center.uk-margin-large
-
-  %h2 What are you seeking funding for?
-  %h4 Beehive will use this to provide recommendations of suitable funds.
-
-  .uk-width-large-4-5.uk-container-center.uk-margin-large-top
-
-    = simple_form_for @proposal do |f|
-
-      = cell(:proposal_form, @proposal, f: f).call(:summary)
-      = cell(:proposal_form, @proposal, f: f).call(:requirements)
-      = cell(:proposal_form, @proposal, f: f).call(:beneficiaries)
-      = cell(:proposal_form, @proposal, f: f).call(:location)
-      = cell(:proposal_form, @proposal, f: f).call(:activities)
-      = cell(:proposal_form, @proposal, f: f).call(:outcomes)
-      = cell(:proposal_form, @proposal, f: f).call(:themes)
-      = cell(:proposal_form, @proposal, f: f).call(:privacy)
-
-      .uk-width-medium-1-1.uk-margin-top
-        = cell(:submit_form, @proposal, f: f, button_text: 'Save and recommend funders', disable_with_text: "That wasn't so bad...")
+    %section.perc75.md.mb80.px20
+      = render partial: 'form', locals: { submit_text: 'Check proposal' }

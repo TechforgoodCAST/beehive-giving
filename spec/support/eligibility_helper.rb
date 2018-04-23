@@ -3,20 +3,6 @@ class EligibilityHelper
 
   def visit_first_fund
     click_link 'Hidden fund', match: :first
-    click_button 'Complete proposal', match: :first
-    self
-  end
-
-  def complete_proposal
-    fill_in :proposal_title, with: 'Office refurbishment'
-    fill_in :proposal_tagline, with: 'Funding to improve the office.'
-    check "proposal_implementation_ids_#{Implementation.first.id}"
-    fill_in :proposal_outcome1, with: 'Improved employee satisfaction.'
-    self
-  end
-
-  def submit_proposal
-    click_button 'Update and check eligibility'
     self
   end
 

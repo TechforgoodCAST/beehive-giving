@@ -7,7 +7,7 @@ class AccountHelper
   end
 
   def request_reset(email: @user.email)
-    click_link 'Sign in'
+    click_link 'Sign in', match: :first
     click_link 'Forgot Password?'
     fill_in :password_reset_email, with: email
     click_button 'Reset password'

@@ -1,8 +1,5 @@
 = content_for :title, 'Beehive for Funders'
 
-:javascript
-  mixpanel.track("View Beehive for Funders Page");
-
 %header
   = cell :v2_navbar, @current_user
   = cell :breadcrumb, 'Beehive for Funders' => for_funders_path

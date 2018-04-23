@@ -2,8 +2,8 @@ class MatchHelper
   include Capybara::DSL
   include WebMock::API
 
+  # TODO: refactor into stand alone helper class
   def stub_charity_commission(number = '1161998')
-    # TODO: refactor
     stub_request(:get, 'http://beta.charitycommission.gov.uk/charity-details/?regid=&subid=0')
       .to_return(status: 200, body: [])
 
@@ -13,6 +13,7 @@ class MatchHelper
     self
   end
 
+  # TODO: refactor into stand alone helper class
   def stub_companies_house(
     file: 'companies_house_full_stub.json',
     number: '09544506',

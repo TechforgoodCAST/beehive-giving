@@ -101,4 +101,6 @@ describe Recipient do
       expect(subject.slug).to eq 'acme'
     end
   end
+
+  it 'methods e.g. #scrape_org, #find_with_reg_nos, etc.'
 end

@@ -44,9 +44,9 @@ SimpleForm.setup do |config|
     b.optional :readonly
 
     ## Inputs
-    b.use :label, class: 'label block bold mb10'
-    b.use :input, class: :input
+    b.use :label, class: :label
     b.use :hint,  wrap_with: { tag: :span, class: :hint }
+    b.use :input, class: :input
     b.use :error, wrap_with: { tag: :span, class: :error }
 
     ## full_messages_for

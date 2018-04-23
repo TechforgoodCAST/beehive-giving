@@ -13,29 +13,38 @@ en:
 
     labels:
       defaults:
-        password_confirmation: 'Confirm password'
         funding_type: 'What type of grant funding are you seeking?'
-        total_costs: 'How much funding are you seeking?'
         org_type: 'Who will be receiving the funding?'
-        name: 'Organisation or project name'
-        country: 'Where is your organisation or project based?'
-        income_band: 'What is the annual income of your organisation or project?'
-        operating_for: 'How long has your organisation or project been operating for?'
-        employees: 'How many employees does your organisation or project have?'
-        volunteers: 'How many volunteers does your organisation or project have?'
-      recipient:
-        website: "Your organisation or project's website"
+        country: 'In which country is the funding recipient based?'
+        themes: 'Select the funding themes which best describe your project'
+        password_confirmation: 'Confirm password'
+        total_costs: 'How much funding are you seeking?'
+
+      user:
+        marketing_consent: 'Email me with occasional updates when new funds or features
+are added'
+
+      signup_suitability:
+        recipient:
+          employees: 'No. of employees'
+          income_band: 'Annual income'
+          volunteers: 'No. of volunteers'
+          website: 'Website (optional)'
+
       proposal:
         title: 'Proposal title'
         tagline: 'Describe your proposed work in a sentence or two'
         type_of_support: 'What type of support are you seeking?'
-        funding_duration: 'How long do you require funding for?'
+        funding_duration: 'How many months do you require funding for?'
         all_funding_required: 'Is this all of the funding required for the proposed work?'
         affect_people: 'Will your proposed work affect people?'
         gender: 'Which genders?'
         age_groups: 'Which age groups?'
         affect_geo: 'Where will your proposed work affect?'
         implementations: 'What will you proposed work provide?'
+        countries: 'Which countries?'
+        districts: 'Which areas will your proposed work affect?'
+        private: 'Include my request in funder verification'
       basics_step:
         country: 'In which country is the funding recipient based?'
       eligibility_step:
@@ -47,17 +56,11 @@ en:
     placeholders:
       defaults:
         funding_duration: 'e.g. 12'
-        total_costs: 'e.g. 1234'
-      password_reset:
-        email: 'someone@example.com'
-      user:
-        first_name: 'First name'
-        last_name: 'Last name'
+        total_costs: 'e.g. 10000'
         charity_number: 'Charity number'
         company_number: 'Company number'
-        email: 'Email'
-        password: 'Password'
-        password_confirmation: 'Confirm password'
+      password_reset:
+        email: 'someone@example.com'
       recipient:
         street_address: 'e.g. 123 New street'
         website: 'Optional'
@@ -76,7 +79,6 @@ en:
         other: "We're commited to delivering a service which is useful for non-profits, and we'd love feedback good or bad."
       proposal:
         title: "e.g. 'Improving careers for disabled workers'"
-        tagline: "e.g. 'Funding the salary of a project development worker to increase opportunities for 45 employees with disabilities to experience and sustain work in mainstream settings.'"
         outcome1: "Outcome 1 - e.g. '45 disabled employees will experience and sustain work in mainstream settings.'"
         outcome2: 'Outcome 2 - optional'
         outcome3: 'Outcome 3 - optional'
@@ -85,3 +87,21 @@ en:
         implementations_other: 'Please specify'
       pre_results_step:
         email: 'e.g. email@example.com'
+
+    hints:
+      defaults:
+        themes: 'Proposals with fewer than 5 themes get the best results.'
+
+      proposal:
+        countries: 'Type the name of a country (e.g. Kenya) to get started.'
+        districts: 'Type the name of a place (e.g. England) to get started.'
+        private: 'We work with funders to verify our suitability assessments. By selecting ‘Yes’, some details of your request may be shared with funders for verification purposes. No personal data is shared.'
+        title: 'This could be the name of your project, or a few words describing your proposal.'
+
+      signup_suitability:
+        recipient:
+          name: 'This could be the name of your organisation or project.'
+
+      user:
+        marketing_consent: 'You can opt out at any time.'
+        password: 'At least 6 characters long with 1 number.'

@@ -161,8 +161,8 @@ ActiveAdmin.setup do |config|
   #   config.register_stylesheet 'my_stylesheet.css'
   #
   # You can provide an options hash for more control, which is passed along to stylesheet_link_tag():
-  #   config.register_stylesheet 'my_print_stylesheet.css', media: :print
-  #
+  config.register_stylesheet 'active_admin_print.css', media: :print
+
   # To load a javascript file:
   #   config.register_javascript 'my_javascript.js'
 
@@ -230,4 +230,14 @@ ActiveAdmin.setup do |config|
   # You can enable or disable them for all resources here.
   #
   # config.filters = true
+end
+
+# Include Webpacker assets
+ActiveAdmin::Views::Pages::Base.class_eval do
+  alias_method :original_build_active_admin_head, :build_active_admin_head
+
+  def build_active_admin_head(*args, &block)
+    original_build_active_admin_head(*args, &block)
+    within @head do render '/admin/head' end
+  end
 end

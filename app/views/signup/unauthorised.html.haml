@@ -1,15 +1,21 @@
 = content_for :title, 'Waiting for access'
 
-:javascript
-  mixpanel.track('View Waiting for Access Page');
+%header
+  = link_to 'Beehive', root_path, id: 'navbar-logo', alt: 'Beehive logo', class: 'mx-auto mt25 flex blue'
 
-.uk-container.uk-container-center.uk-margin-large-top.uk-margin-large-bottom
-  .uk-width-1-2.uk-container-center
-    %h2 Waiting for access
-    %h4
-      %strong You have tried to register an organisation that is already in our database.
-    %p An email has been sent to the organisation's original registrant or the site administrator to grant access.
-    %p
+%main.flex.justify-center.items-center
+  %section.perc50.md.my80.mx40.center
+    %h1.mb20 Waiting for access
+
+    .fs18.lh25.slate You have tried to register a funding recipient that already has an account.
+
+    %hr.my40
+
+    %p.mb20 An email has been sent to the funding recipient or the site administrator to approve your access.
+
+    %p.mb20
       If you think you are receiving this message in error, please contact
       = succeed '.' do
         = link_to 'support', 'mailto:support@beehivegiving.org'
+
+    = link_to 'Sign out', logout_path, class: 'btn blue mb10'

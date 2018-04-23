@@ -13,7 +13,7 @@ feature 'Subscriptions' do
       @app.seed_test_db
           .create_recipient
           .with_user
-          .create_complete_proposal
+          .create_proposal
           .sign_in
       @db = @app.instances
     end
@@ -28,7 +28,7 @@ feature 'Subscriptions' do
       visit proposals_path
       click_link 'New proposal'
       helper.pay_by_card(stripe)
-      click_link 'Continue'
+      within('section.perc66.md.mb80.px20') { click_link 'Continue' }
       expect(current_path).to eq proposals_path
     end
 
@@ -56,7 +56,7 @@ feature 'Subscriptions' do
     scenario 'invalid coupon' do
       visit account_upgrade_path(@db[:recipient])
       helper.pay_by_card(stripe, coupon: 'invalid')
-      expect(page).to have_text 'Invalid coupon'
+      expect(page).to have_text('Invalid discount coupon, please try again.')
     end
 
     context 'inactive' do
@@ -107,6 +107,11 @@ feature 'Subscriptions' do
           end
         end
       end
+
+      scenario 'cannot visit thank_you_path if unsubscribed' do
+        visit thank_you_path(@db[:recipient])
+        expect(current_path).to eq(account_subscription_path(@db[:recipient]))
+      end
     end
 
     context 'active' do
@@ -128,7 +133,7 @@ feature 'Subscriptions' do
       end
 
       scenario 'shows expiry date' do
-        click_link 'Continue'
+        within('section.perc66.md.mb80.px20') { click_link 'Continue' }
         expect(page).to have_text 'Pro plan which expires on ' +
                                   1.year.since.strftime('%-d %b %Y')
       end
@@ -174,8 +179,8 @@ feature 'Subscriptions' do
 
       scenario 'remaining free checks hidden' do
         @app.setup_funds
-        @db[:complete_proposal].save!
-        visit fund_path(Fund.first, @db[:complete_proposal])
+        @db[:proposal].save!
+        visit fund_path(Fund.first, @db[:proposal])
         expect(page).not_to have_button 'Check eligibility (3 left)'
       end
     end

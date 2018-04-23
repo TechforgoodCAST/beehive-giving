@@ -1,8 +1,5 @@
 = content_for :title, 'Your funding proposals'
 
-:javascript
-  mixpanel.track('View Proposals Index Page');
-
 %header
   = cell :v2_navbar, @current_user
   = cell :breadcrumb, 'Proposals' => proposals_path
@@ -27,13 +24,4 @@
             = render partial: 'card', locals: { proposal: proposal, context: 'proposal' }
 
       .mb20.md
-        -# TODO: refactor
-        - if @proposal.complete?
-          - if @recipient.subscribed?
-            = link_to "+ New proposal", new_proposal_path, class: 'button-wide bg-green white fs16 caps'
-          - else
-            %div.mb30
-              Upgrade to add new proposals
-            = link_to '+ New proposal', account_upgrade_path(@recipient), class: 'button-wide bg-green white fs16 caps'
-        - else
-          = link_to '+ New proposal', edit_signup_proposal_path(@proposal), class: 'button-wide bg-green white fs16 caps'
+        = link_to 'New proposal', new_proposal_path, class: 'btn-wide bg-green white'

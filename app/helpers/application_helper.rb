@@ -1,37 +1,9 @@
 module ApplicationHelper
-  def scramble_name(name)
-    name.chars.map { |c| c.sub(/\w/, ('a'..'z').to_a.sample) }.join.capitalize
+  def allow_functional_cookies?
+    session[:functional_cookies].to_s != 'false'
   end
 
-  def v2_stylesheet # TODO: remove @ v2
-    v2_layout? ? 'v2/' : ''
-  end
-
-  def v2_layout? # TODO: remove @ v2
-    permitted = {
-      accounts: %i[subscription],
-      articles: %i[index show],
-      charges: %i[new thank_you],
-      eligibilities: %i[new],
-      enquiries: %i[new],
-      errors: %i[not_found gone internal_server_error],
-      feedback: %i[edit new create],
-      funds: %i[index themed show hidden],
-      pages: %i[about faq forfunders privacy terms], # preview?
-      password_resets: %i[new create edit update],
-      proposals: %i[index], # edit new update
-      public_funds: %i[index show themed],
-      recipients: %i[edit update],
-      sessions: %i[new],
-      signup: %i[user create_user], # funder, granted_access, unauthorised
-      # signup_proposals: %i[edit new],
-      # signup_recipients: %i[edit new],
-      users: %i[edit update],
-      microsites: %i[basics check_basics eligibility check_eligibility pre_results check_pre_results results]
-    }
-    controller = params[:controller].to_sym
-    action = params[:action].to_sym
-
-    permitted.key?(controller) && permitted[controller].include?(action)
+  def allow_performance_cookies?
+    session[:performance_cookies].to_s != 'false'
   end
 end

@@ -1,2 +1,0 @@
-class MainNavCell < NavbarCell
-end

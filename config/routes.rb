@@ -20,6 +20,12 @@ Rails.application.routes.draw do
   get '/tour',    to: redirect('/')
   get '/welcome', to: redirect('/')
   get '/files/Data&ResearchLead.pdf', to: redirect('410')
+  get '/account-suspended',    to: 'legacy#funder',     as: 'legacy_funder'
+  get '/account-outdated',     to: 'legacy#fundraiser', as: 'legacy_fundraiser'
+  get '/account-outdated/:id', to: 'legacy#reset',      as: 'legacy_reset'
+  get '/preview/:tag', to: redirect { |params, _request|
+    "/#{params[:tag]}/funds"
+  }
 
   # Sessions
   get  '/logout',  to: 'sessions#destroy'
@@ -30,22 +36,19 @@ Rails.application.routes.draw do
   get '/faq',          to: 'pages#faq',     as: 'faq'
   get '/privacy',      to: 'pages#privacy', as: 'privacy'
   get '/terms',        to: 'pages#terms',   as: 'terms'
-  get '/preview/:tag', to: 'pages#preview', as: 'preview'
   get '/for-funders',  to: 'pages#forfunders', as: 'for_funders'
 
   # Sign up
-  root 'signup#user'
-  post '/', to: 'signup#create_user'
+  root 'signup/basics#new'
+  post '/', to: 'signup/basics#create'
 
-  get   '/basics',       to: 'signup_recipients#new', as: 'new_signup_recipient'
-  post  '/basics',       to: 'signup_recipients#create'
-  get   '/basics/(:id)', to: 'signup_recipients#edit', as: 'edit_signup_recipient'
-  patch '/basics/(:id)', to: 'signup_recipients#update'
+  namespace :signup do
+    # get  '/basics', to: 'basics#new', as: 'basics'
+    # post '/basics', to: 'basics#create'
 
-  get   '/proposal',       to: 'signup_proposals#new', as: 'new_signup_proposal'
-  post  '/proposal',       to: 'signup_proposals#create'
-  get   '/proposal/(:id)', to: 'signup_proposals#edit', as: 'edit_signup_proposal'
-  patch '/proposal/(:id)', to: 'signup_proposals#update'
+    get  '/suitability', to: 'suitability#new', as: 'suitability'
+    post '/suitability', to: 'suitability#create'
+  end
 
   # User authorisation for organisational access
   match '/unauthorised', to: 'signup#unauthorised', via: :get, as: 'unauthorised'
@@ -62,6 +65,8 @@ Rails.application.routes.draw do
   get   '/account/:id/subscription/upgrade',   to: 'charges#new', as: 'account_upgrade'
   post  '/account/:id/subscription/upgrade',   to: 'charges#create'
   get   '/account/:id/subscription/thank-you', to: 'charges#thank_you', as: 'thank_you'
+
+  get '/proposals/:id', to: 'proposals#edit'
 
   # Funds
   get '/funds/(:proposal_id)',        to: 'funds#index',  as: 'funds'
@@ -88,4 +93,7 @@ Rails.application.routes.draw do
   # Webhooks
   post '/webhooks/invoice-payment-succeeded',     to: 'webhooks#invoice_payment_succeeded'
   post '/webhooks/customer-subscription-deleted', to: 'webhooks#customer_subscription_deleted'
+
+  # Misc.
+  get '/cookies/update', to: 'cookies#update', as: 'update_cookies'
 end

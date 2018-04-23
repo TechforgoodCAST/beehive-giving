@@ -1,8 +1,8 @@
 class Proposal < ApplicationRecord
-  before_validation :clear_districts_if_country_wide
-  before_save :save_all_age_groups_if_all_ages,
-              :clear_age_groups_and_gender_unless_affect_people
-  after_save :initial_recommendation
+  before_validation :clear_districts_if_country_wide,
+                    :recipient_country_unless_multinational,
+                    if: :affect_geo
+  after_save :initial_recommendation # TODO: deprecated
 
   belongs_to :recipient
 
@@ -14,16 +14,13 @@ class Proposal < ApplicationRecord
   has_many :proposal_themes, dependent: :destroy
   has_many :themes, through: :proposal_themes
 
-  has_and_belongs_to_many :age_groups
-  has_and_belongs_to_many :beneficiaries # TODO: deprecated
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
+
+  has_and_belongs_to_many :age_groups # TODO: deprecated
+  has_and_belongs_to_many :beneficiaries # TODO: deprecated
   has_and_belongs_to_many :implementations # TODO: deprecated
 
-  TYPE_OF_SUPPORT = ['Only financial', 'Mostly financial',
-                     'Equal financial and non-financial',
-                     'Mostly non-financial', 'Only non-financial'].freeze
-  GENDERS = ['All genders', 'Female', 'Male', 'Transgender', 'Other'].freeze
   AFFECT_GEO = [
     ['One or more local areas', 0],
     ['One or more regions', 1],
@@ -31,94 +28,60 @@ class Proposal < ApplicationRecord
     ['Across many countries', 3]
   ].freeze
 
-  include Workflow
-  workflow_column :state
-  workflow do
-    state :basics do
-      event :next_step, transitions_to: :initial
-    end
-    state :initial do
-      event :next_step, transitions_to: :registered
-    end
-    state :transferred do
-      event :next_step, transitions_to: :registered
-    end
-    state :registered do
-      event :next_step, transitions_to: :complete
-    end
-    state :complete do
-      event :next_step, transitions_to: :complete
-    end
-  end
+  validates :affect_geo, inclusion: {
+    in: 0..3, message: 'please select an option'
+  }
 
-  validate :prevent_second_proposal_until_first_is_complete,
-           if: :initial?, on: :create
+  validates :all_funding_required, :private, inclusion: {
+    message: 'please select an option', in: [true, false]
+  }
 
-  # Requirements
-  validates :recipient, :funding_duration, :themes, presence: true
-  validates :type_of_support, inclusion: { in: TYPE_OF_SUPPORT,
-                                           message: 'please select an option' }
-  validates :funding_type, inclusion: { in: FUNDING_TYPES.pluck(1),
-                                        message: 'please select an option' }
-  validates :funding_duration,
-            numericality: { only_integer: true, greater_than_or_equal_to: 1 }
+  validates :countries, :recipient, :themes, presence: true
+
+  validates :districts, presence: true, if: proc {
+    affect_geo.present? && affect_geo < 2
+  }
+
+  validates :funding_duration, presence: true, numericality: {
+    only_integer: true,
+    greater_than_or_equal_to: 1,
+    less_than_or_equal_to: 120
+  }
+
+  validates :funding_type, inclusion: {
+    in: FUNDING_TYPES.pluck(1), message: 'please select an option'
+  }
+
+  validates :tagline, :title, presence: true, length: {
+    maximum: 280, message: 'please use 280 characters or less'
+  }
+
+  validates :title, uniqueness: {
+    scope: :recipient_id,
+    message: 'each proposal must have a unique title'
+  }
+
   validates :total_costs, numericality: {
     greater_than_or_equal_to: 0,
     message: 'please enter the amount of funding you are seeking'
   }
-  validates :total_costs_estimated,
-            inclusion: { message: 'please select an option', in: [true, false] }
-  validates :all_funding_required,
-            inclusion: { message: 'please select an option', in: [true, false] }
-
-  # Beneficiaries
-  validates :affect_people,
-            inclusion: { in: [true, false], message: 'please select an option' }
-  validates :gender, :age_groups,
-            presence: { message: 'Please select an option' },
-            if: :affect_people?
-  validates :gender,
-            inclusion: { in: GENDERS, message: 'please select an option' },
-            if: :affect_people?
-  # TODO: ensure fields cleared unless :affect_people?
-
-  # Location
-  validates :affect_geo, inclusion: { in: 0..3,
-                                      message: 'please select an option' }
-  validates :countries, presence: true
-  validates :districts,
-            presence: true,
-            if: proc { affect_geo.present? && affect_geo < 2 }
-
-  # Privacy
-  validates :private, inclusion: { in: [true, false],
-                                   message: 'please select an option' }
-
-  # Registered
-  validates :title, uniqueness: {
-    scope: :recipient_id,
-    message: 'each proposal must have a unique title'
-  }, if: proc { registered? || complete? }
-  validates :title, :tagline, :outcome1, presence: true, length: {
-    maximum: 280, message: 'please use 280 characters or less'
-  }, if: proc { registered? || complete? }
-  validates :implementations, presence: true,
-                              unless: :implementations_other_required,
-                              if: proc { registered? || complete? }
-  validates :implementations_other,
-            presence: { message: "please uncheck 'Other' or specify details" },
-            if: :implementations_other_required
 
   validate :recipient_subscribed, on: :create
 
-  def self.order_by(col)
-    case col
-    when 'name'
-      order :title
-    when 'amount'
-      order total_costs: :desc
-    else
-      order created_at: :desc
+  include Workflow
+  workflow_column :state
+  workflow do
+    state :basics do
+      event :complete, transitions_to: :complete
+    end
+    state :invalid do
+      event :complete, transitions_to: :complete
+    end
+    state :incomplete do
+      event :complete, transitions_to: :complete
+    end
+    state :complete do
+      event :complete, transitions_to: :complete
     end
   end
 
@@ -127,7 +90,7 @@ class Proposal < ApplicationRecord
     errors.add(:title, 'Upgrade subscription to create multiple proposals')
   end
 
-  def beehive_insight_durations
+  def beehive_insight_durations # TODO: depreceted
     @beehive_insight_durations ||= call_beehive_insight(
       ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'],
       duration: funding_duration
@@ -146,11 +109,11 @@ class Proposal < ApplicationRecord
       suitability.key?(Fund.active.order(:updated_at).last&.slug)
   end
 
-  def suitable_funds
+  def suitable_funds # TODO: depreceted
     suitability.sort_by { |fund| fund[1]['total'] }.reverse
   end
 
-  def eligible_noquiz
+  def eligible_noquiz # TODO: depreceted
     # Same as eligible_funds except doesn't check for the quiz
     eligibility.select { |f, fund| fund.all_values_for('eligible').exclude?(false) }
   end
@@ -167,7 +130,7 @@ class Proposal < ApplicationRecord
     eligibility.select { |f, _| eligible_status(f) == -1 }
   end
 
-  def eligible?(fund_slug)
+  def eligible?(fund_slug) # TODO: depreceted
     return nil unless eligibility[fund_slug]
     eligibility[fund_slug].dig('quiz', 'eligible') &&
       eligibility[fund_slug].all_values_for('eligible').exclude?(false)
@@ -185,16 +148,16 @@ class Proposal < ApplicationRecord
     }[eligible_status(fund_slug)]
   end
 
-  def ineligible_reasons(fund_slug)
+  def ineligible_reasons(fund_slug) # TODO: depreceted
     return [] if eligible?(fund_slug)
     eligibility[fund_slug].select { |_r, e| e['eligible'] == false }.keys
   end
 
-  def ineligible_fund_ids # TODO: refactor
+  def ineligible_fund_ids # TODO: depreceted
     Fund.where(slug: ineligible_funds.keys).pluck(:id)
   end
 
-  def suitable?(fund_slug, scale = 1)
+  def suitable?(fund_slug, scale = 1) # TODO: depreceted
     score = suitability[fund_slug]&.dig('total')
     return -1 if score.nil?
     scale = score > 1 ? score.ceil : 1
@@ -207,38 +170,21 @@ class Proposal < ApplicationRecord
     end
   end
 
-  def suitable_status(fund_slug)
+  def suitable_status(fund_slug) # TODO: depreceted
     suitable?(fund_slug)
   end
 
   private
 
-    def save_all_age_groups_if_all_ages
-      return unless age_group_ids.include?(AgeGroup.first.id)
-      self.age_group_ids = AgeGroup.pluck(:id)
-    end
-
-    def prevent_second_proposal_until_first_is_complete
-      return unless recipient.proposals.count == 1 &&
-                    recipient.proposals.where(state: 'complete').count < 1
-      errors.add(
-        :proposal,
-        'Please complete your first proposal before creating a second.'
-      )
-    end
-
     def clear_districts_if_country_wide
-      return if affect_geo.nil?
       self.districts = [] if affect_geo > 1
     end
 
-    def clear_age_groups_and_gender_unless_affect_people
-      return if affect_people?
-      self.age_groups = []
-      self.gender = nil
+    def recipient_country_unless_multinational
+      self.countries = [countries.first] if affect_geo < 3
     end
 
-    def call_beehive_insight(endpoint, data)
+    def call_beehive_insight(endpoint, data) # TODO: depreceted
       options = {
         body: { data: data }.to_json,
         headers: {

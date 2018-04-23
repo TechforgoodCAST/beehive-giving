@@ -17,6 +17,6 @@ class Criterion < ApplicationRecord
   end
 
   def form_input_id
-    return "question_#{id}"
+    "question_#{id}"
   end
 end

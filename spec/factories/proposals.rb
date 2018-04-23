@@ -1,19 +1,16 @@
 FactoryBot.define do
   factory :proposal do
+    affect_geo  1 # One or more regions
+    all_funding_required true
+    funding_duration 12
+    funding_type 1 # Capital
+    private false
     recipient
-    type_of_support       Proposal::TYPE_OF_SUPPORT.sample
-    funding_duration      12
-    funding_type          1 # Capital
-    total_costs           10_000
-    total_costs_estimated false
-    all_funding_required  true
-    affect_people         true
-    gender                Proposal::GENDERS[1]
-    affect_geo            1 # One or more regions
-    private               false
+    tagline 'Description'
+    title 'Title'
+    total_costs 10_000
 
     after(:build) do |proposal, _evaluator|
-      proposal.age_groups = [AgeGroup.first || create(:age_group)]
       proposal.themes = build_list(:theme, 1) unless proposal.themes.any?
 
       unless proposal.countries.any? || proposal.districts.any?
@@ -23,20 +20,10 @@ FactoryBot.define do
       end
     end
 
-    factory :registered_proposal do
-      state            'registered'
-      sequence(:title) { |n| "Title#{n}" }
-      tagline          'Tagline'
-      outcome1         'Outcome 1'
-
-      # TODO: deprecated
-      after(:build) do |proposal, _evaluator|
-        proposal.implementations = create_list(:implementation, 1)
-      end
-
-      factory :complete_proposal do
-        state 'complete'
-      end
+    factory :incomplete_proposal, class: Proposal do
+      state 'incomplete'
+      tagline nil
+      title nil
     end
   end
 end

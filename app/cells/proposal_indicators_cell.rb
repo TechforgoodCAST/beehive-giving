@@ -1,3 +1,4 @@
+# TODO: refactor
 class ProposalIndicatorsCell < Cell::ViewModel
   include ActionView::Helpers::NumberHelper
 
@@ -19,23 +20,8 @@ class ProposalIndicatorsCell < Cell::ViewModel
     render view: :progress_bar, locals: {bg_color: bg_color, names: names, states: states}
   end
 
-  def percent_complete
-    case model.state
-    when 'initial'
-      complete = 0.25
-    when 'transferred'
-      complete = 0.5
-    when 'registered'
-      complete = 0.75
-    when 'complete'
-      complete = 1
-    end
-    render locals: {complete: complete}
-  end
-
   def funds_checked
-    counts = eligibility_counts
-    render locals: { complete: counts[INELIGIBLE] + counts[ELIGIBLE] }
+    model.assessments.where("eligibility_status != #{INCOMPLETE}").size
   end
 
   private

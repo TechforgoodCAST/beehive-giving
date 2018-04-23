@@ -6,7 +6,15 @@ class ApplicationController < ActionController::Base
   helper_method :logged_in?
 
   before_action :load_recipient, :load_last_proposal, unless: :error?
-  before_action :ensure_signed_up
+
+  before_action :catch_unauthorised, if: :logged_in?
+  before_action :legacy_funder, if: :logged_in?
+  before_action :legacy_fundraiser, if: :logged_in?
+  before_action :registration_incomplete, if: :logged_in?
+  before_action :registration_invalid, if: :logged_in?
+  before_action :registration_microsite, if: :logged_in?
+
+  skip_after_action :intercom_rails_auto_include
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :bad_token
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorised
@@ -20,19 +28,12 @@ class ApplicationController < ActionController::Base
 
   private
 
-    include StrongParameters
-
-    def error?
-      params[:controller] == 'errors'
-    end
-
     def bad_token
       redirect_to '/logout', warning: 'Please sign in'
     end
 
-    def user_not_authorised
-      flash[:alert] = "Sorry, you don't have access to that"
-      redirect_back(fallback_location: root_path)
+    def catch_unauthorised
+      redirect_to unauthorised_path unless current_user.authorised?
     end
 
     def current_user
@@ -43,9 +44,22 @@ class ApplicationController < ActionController::Base
       @current_user
     end
 
-    def load_recipient
-      return unless logged_in? && current_user.organisation.is_a?(Recipient)
-      @recipient = current_user.organisation
+    def ensure_logged_in
+      return if logged_in?
+      session[:original_url] = request.original_url
+      return redirect_to sign_in_path, alert: 'Please sign in'
+    end
+
+    def error?
+      params[:controller] == 'errors'
+    end
+
+    def legacy_funder
+      redirect_to legacy_funder_path if current_user.funder?
+    end
+
+    def legacy_fundraiser
+      redirect_to legacy_fundraiser_path if current_user.legacy?
     end
 
     def load_last_proposal
@@ -53,33 +67,18 @@ class ApplicationController < ActionController::Base
       @proposal = if params[:proposal_id]
                     @recipient.proposals.find_by(id: params[:proposal_id])
                   else
-                    @recipient.proposals.last # TODO: remove
+                     # TODO: remove/refactor
+                    if current_user.first_name.nil?
+                      @recipient.proposals.last
+                    else
+                      @recipient.proposals.where.not(state: 'basics').last
+                    end
                   end
     end
 
-    def funder? # NOTE: legacy support
-      current_user.organisation.is_a? Funder
-    end
-
-    def ensure_logged_in
-      session[:original_url] = request.original_url
-      return redirect_to sign_in_path, alert: 'Please sign in' unless logged_in?
-    end
-
-    def ensure_signed_up
-      return unless logged_in?
-      return if public_controller?
-      return redirect_funder if funder? # NOTE: legacy support
-      redirect start_path unless signed_up?
-    end
-
-    def public_controller?
-      params[:controller] =~ /admin|articles|pages|sessions|microsites/
-    end
-
-    def signed_up?
-      current_user.authorised? &&
-        (@proposal && !@proposal.initial?) # NOTE: legacy support
+    def load_recipient
+      return unless logged_in? && current_user.organisation.is_a?(Recipient)
+      @recipient = current_user.organisation
     end
 
     def redirect(path, opts = {})
@@ -87,22 +86,21 @@ class ApplicationController < ActionController::Base
       redirect_to path, opts unless request.path == path
     end
 
-    def redirect_funder # NOTE: legacy support
-      cookies.delete(:auth_token)
-      redirect sign_in_path, alert: 'Your funders account has been suspended ' \
-      'please contact support for more details.'
+    def registration_incomplete
+      redirect(edit_proposal_path(@proposal)) if @proposal&.incomplete?
     end
 
-    def start_path
-      return unauthorised_path unless current_user.authorised?
-      return new_signup_recipient_path unless @recipient
-      return edit_signup_recipient_path(@recipient) unless @recipient.valid? # NOTE: legacy
-      return new_signup_proposal_path unless @proposal
-      return new_signup_proposal_path if @proposal.initial? # NOTE: legacy
-      funds_path(@proposal)
+    def registration_invalid
+      redirect(edit_proposal_path(@proposal)) if @proposal&.invalid?
     end
 
-    def ensure_not_signed_up
-      redirect_to funds_path(@proposal) if signed_up?
+    def registration_microsite
+      redirect(edit_proposal_path(@proposal)) if
+        current_user&.first_name.nil? && @proposal&.basics?
+    end
+
+    def user_not_authorised
+      flash[:alert] = "Sorry, you don't have access to that"
+      redirect_back(fallback_location: root_path)
     end
 end

@@ -3,7 +3,7 @@ require 'rails_helper'
 describe Check::Suitability::Location do
   before(:each) do
     @app.seed_test_db.setup_funds(num: 4)
-        .create_recipient.create_registered_proposal
+        .create_recipient.create_proposal
     @funds = Fund.active.all
     @proposal = Proposal.last
     @db = @app.instances

@@ -4,8 +4,8 @@ ActiveAdmin.register GeoArea do
                 country_ids: [], district_ids: [],
                 fund_ids: []
 
-  filter :districts, input_html: { class: 'chosen-select' }
-  filter :countries, input_html: { class: 'chosen-select' }
+  filter :districts, input_html: { class: 'choices-select' }
+  filter :countries, input_html: { class: 'choices-select' }
   filter :name
   filter :short_name
 
@@ -47,13 +47,13 @@ ActiveAdmin.register GeoArea do
       f.input :short_name
       f.input :countries, collection: Country.pluck(:name, :id),
                           input_html: { multiple: true,
-                                        class: 'chosen-select' }
+                                        class: 'choices-select' }
       f.input :districts, collection: District.pluck(:name, :id),
                           input_html: { multiple: true,
-                                        class: 'chosen-select' }
+                                        class: 'choices-select' }
       f.input :funds, collection: Fund.pluck(:slug, :id),
                           input_html: { multiple: true,
-                                        class: 'chosen-select' }
+                                        class: 'choices-select' }
     end
     f.actions
   end
