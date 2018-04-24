@@ -14,8 +14,9 @@ class AccountHelper
     self
   end
 
-  def set_new_password
+  def set_new_password(legacy: false)
     @user.reload
+    @user.update_column(:marketing_consent, nil) if legacy
     visit "password_resets/#{@user.password_reset_token}/edit"
     fill_in :password_reset_password, with: 'password1'
     fill_in :password_reset_password_confirmation, with: 'password1'
