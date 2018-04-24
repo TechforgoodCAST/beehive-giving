@@ -1,5 +1,8 @@
 %head
-  %title= content_for?(:title) ? "#{yield(:title)} | Beehive" : 'Beehive'
+  - if current_page?('/')
+    %title Beehive - Grant funding suitability checker
+  - else
+    %title= content_for?(:title) ? "#{yield(:title)} | Beehive" : 'Beehive'
   = csrf_meta_tags
   %meta{ content: 'width=device-width, initial-scale=1', name: 'viewport' }
 
