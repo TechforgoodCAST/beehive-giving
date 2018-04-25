@@ -102,6 +102,11 @@ feature 'Account' do
       expect(current_path).to eq sign_in_path
     end
 
+    scenario 'user without marketing_consent requests password reset' do
+      helper.request_reset.set_new_password(legacy: true)
+      expect(current_path).to eq(sign_in_path)
+    end
+
     scenario 'When I click an expired reset password link,
               I want to see a message explaining the situation,
               so I understand what to do next' do

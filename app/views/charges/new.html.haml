@@ -27,7 +27,7 @@
 
 
 %header
-  = cell :v2_navbar, @current_user
+  = cell :navbar, @current_user
   = cell :breadcrumb, 'Subscription' => account_subscription_path(@recipient)
 
 %main
@@ -120,7 +120,7 @@
         .mb15
           %button.btn.bg-green.white.shadow{ type: "submit" } Pay securely
 
-        = link_to image_tag('powered-by-stripe.svg', width: 120), 'https://stripe.com/', target: '_blank'
+        = link_to image_tag('powered-by-stripe.svg', width: 120, alt: 'Powered by Stripe'), 'https://stripe.com/', target: '_blank'
 
         :javascript
           Stripe.setPublishableKey("#{Rails.configuration.stripe[:publishable_key]}");

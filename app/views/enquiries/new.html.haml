@@ -22,7 +22,7 @@
 
 
 %header
-  = cell :v2_navbar, @current_user
+  = cell :navbar, @current_user
   = cell :breadcrumb, (@proposal.title? ? @proposal.title : 'Current proposal').upcase_first => nil, 'Funds' => funds_path(@proposal), @fund.funder.name => nil, @fund.name => fund_path(@fund, @proposal), 'Apply' => apply_path(@fund, @proposal)
 
 %main

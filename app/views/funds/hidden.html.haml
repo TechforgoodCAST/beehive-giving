@@ -1,27 +1,28 @@
-= content_for :title, @fund.title
+= content_for :title, "#{@fund.pretty_name} [#{@fund.hashid}]"
 
 -# TODO: refactor
 - if @proposal && allow_performance_cookies?
   :javascript
-    mixpanel.track('View Fund Page', { "Fund": "#{@fund.name}" });
+    mixpanel.track('View Fund Page', { "Fund": "#{@fund.hashid}" });
     mixpanel.identify("#{@current_user.id}");
 
 
 %header
-  = cell :v2_navbar, @current_user
-  = cell :breadcrumb, (@proposal ? 'Current proposal' : nil) => nil, 'Funds' => funds_path(@proposal), @fund.funder.name => nil, @fund.name => fund_path(@fund, @proposal)
+  = cell :navbar, @current_user
+  = cell(:breadcrumb, (@proposal ? 'Current proposal' : nil) => nil, 'Funds' => funds_path, 'Hidden funder' => nil, 'Hidden fund' => fund_path(@fund))
 
 %main
   .maxw1080.mx-auto.px40.mt40
 
     .flex.flex-wrap.mb40
       %section.perc50.md.mb40.px20
-        %h1.mb10= @fund.name
-        .mb30.night
-          by
-          = @fund.funder.name
+        %h1.mb10= @fund.pretty_name
+        .mb30
+          Actual fund identity hidden
+          •
+          %span.blue.tooltip{ 'aria-label' => "You can view this funds suitability report for FREE, but you'll need to reveal it's true identity in order to apply - you get 3 'reveals' for free, and can upgrade to see every fund." } Why?
 
-        .mb30.fs18.night.lh25= raw strip_tags @fund.description_html.truncate_words(30)
+        .mb30.fs18.night.lh25= raw redact(@fund, :description_plain, trim: 30)
 
         %hr
         %h6.my20.slate= cell(:fund_insight, @fund, proposal: @proposal).call(:summary)
@@ -36,12 +37,14 @@
       %h2.mb20 Summary
 
       .mb20.markdown
-        = raw @fund.description_html
+        = raw redact(@fund, :description_html)
 
       - if @fund.period_end.present? && @fund.period_end > 3.years.ago
         .mt30.night
           .fs14.mb10
-            = cell(:fund_insight, @fund).call(:data_source)
+            Analysis powered by open data
+            •
+            = link_to 'Source', 'http://www.threesixtygiving.org/data/data-registry/', target: '_blank'
           .mb20
             %strong= period(@fund)
 
@@ -57,6 +60,9 @@
         = cell(:fund_insight, @fund).call(:duration)
         = cell(:fund_insight, @fund).call(:grant_count)
         = cell(:fund_insight, @fund).call(:award_months)
-        = cell(:fund_insight, @fund).call(:grant_examples)
+        - if @assessment
+          %li
+            = link_to 'Reveal', reveals_path(assessment: @assessment), method: :post, class: 'bold blue'
+            this fund to see recent grants
 
     = render partial: 'checks'

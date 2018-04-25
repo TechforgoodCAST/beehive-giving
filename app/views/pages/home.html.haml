@@ -1,10 +1,8 @@
-= content_for :title, 'Beehive - Intelligently connecting non-profits with funders'
-
 %header#header-offset
   #hex
 
   .pb30.mb40
-    = cell(:v2_navbar, @current_user, type: 'white')
+    = cell(:navbar, @current_user, type: 'white')
 
   .maxw1080.mx-auto
     .m40.flex.flex-wrap
@@ -29,7 +27,7 @@
 
         .mb40
           = link_to 'http://www.thirdsectorexcellenceawards.com/finalists/beehive/', target: '_blank' do
-            = image_tag 'third-sector-awards-finalist-logo.svg', width: 150, class: 'bg-ice rounded shadow mb40'
+            = image_tag 'third-sector-awards-finalist-logo.svg', width: 150, class: 'bg-ice rounded shadow mb40', alt: 'Third Sector Awards Finalist 2017'
 
       .perc50.md
         = render partial: 'signup/basics/form'

@@ -36,7 +36,7 @@ class User < ApplicationRecord
 
   validates :marketing_consent, inclusion: {
     message: 'please select an option', in: [true, false]
-  }
+  }, on: :create
 
   before_create { generate_token(:auth_token) }
 

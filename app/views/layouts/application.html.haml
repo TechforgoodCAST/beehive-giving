@@ -1,5 +1,5 @@
 !!!
-%html
+%html{ lang: 'en' }
   = render 'shared/head'
 
   %body#top
@@ -9,7 +9,7 @@
         %iframe{:height => "0", :src => "https://www.googletagmanager.com/ns.html?id=GTM-W3BQHWD", :style => "display:none;visibility:hidden", :width => "0"}
 
     - if !session[:read_cookies_notice]
-      .fs14.lh18.white.bg-night.pt20.px20.flex.items-center.justify-between.flex-wrap{ style: 'position: fixed; bottom: 0;' }
+      .fs14.lh18.white.bg-night.pt20.px20.flex.items-center.justify-between.flex-wrap{ style: 'position: fixed; bottom: 0; z-index: 9999;' }
         .mb20.md.f1
           We use cookies to give you the best experience on our website. In addition to strictly neccesary cookies, third party cookies may track your use of Beehive. If you continue without changing your settings, we'll assume that you are happy to receive all cookies.
           = link_to 'More about cookies', 'https://cookiesandyou.com/', class: 'white bold underline', target: '_blank'
@@ -26,8 +26,8 @@
         .flex.flex-wrap.items-center.slate
           .f1.minw250.mx40.py40
             .flex.items-center
-              %a{ href: root_path, alt: 'Beehive logo' }
-                #logo-hex
+              %a{ href: root_path }
+                #logo-hex{ alt: 'Beehive logo' }
               .fs12.ml5 Intelligently connecting non-profits with funders
           .f1.minw250.mx40.pt40
             .flex.fs14.flex-wrap

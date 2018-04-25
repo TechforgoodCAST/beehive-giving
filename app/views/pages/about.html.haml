@@ -1,7 +1,7 @@
 = content_for :title, 'About'
 
 %header
-  = cell :v2_navbar, @current_user
+  = cell :navbar, @current_user
   = cell :breadcrumb, 'About' => about_path
 
 %main
@@ -17,66 +17,50 @@
         .fs12.bg-green.caps.bold.circle.inline-block.py3.px5 DID YOU KNOW?
         We’re a tech for good project incubated by a charity
 
-  %section.maxw1080.mx-auto.pt40.px40
-    %h2.center.mb20 The problem
-
-    .flex.flex-wrap.center
-      .perc50.md.px40.mb40
-        %h3.yellow.mb20 For fundraisers
-        .night Finding and making sense of funding opportunities is time consuming and confusing - it’s difficult to know if you’re eligible or a good fit, let alone how best to tailor your request.
-      .perc50.md.px40.mb40.divider
-        %h3.blue.mb20 For funders
-        .night Funders recieve many more applications than they can support, most of which are ineligible or a poor fit - wasting valuable resources for both the funder and applicant.
-
   %section.bg-ice.px40
     .maxw1080.mx-auto.pt40
-      %h2.center.mb40 Our solution
+      %h2.center.mb20 The problem
 
-      .flex.flex-wrap.night
+      .flex.flex-wrap.center
         .perc50.md.px40.mb40
-          .mb25
-            %h4 Beehive is a web based tool that checks and matches your funding proposals with eligible and appropriate funders.
-          .mb25
-            %strong Check
-            %p We prevent wasted effort by semi-automatically checking eligibility criteria are met before you apply.
-          .mb25
-            %strong Match
-            %p We compare thousands of grants to make it easy to be quickly matched to the right funder.
-          %strong Inform
-          %p We surface useful insights based on a funder's giving behaviour to inform your funding proposals.
-
-        .perc50.md.px40.mb40.center
-          .feature-card
-            .image
-            .copy.bg-mint.px12.pb14.shadow.white.italic We use open data and smart technology to bring together valuable information and insights to guide your fundraising in minutes not hours.
+          %h3.dark-yellow.mb20 For fundraisers
+          .night Finding and making sense of funding opportunities is time consuming and confusing - it’s difficult to know if you’re eligible or a good fit, let alone how best to tailor your request.
+        .perc50.md.px40.mb40.divider
+          %h3.blue.mb20 For funders
+          .night Funders recieve many more applications than they can support, most of which are ineligible or a poor fit - wasting valuable resources for both the funder and applicant.
 
   %section.maxw1080.mx-auto.pt40.px40
-    %h2.center.mx40.mb20 The difference we want to make
+    %h2.center.mb40 Our solution
 
-    .flex.flex-wrap.center
+    .flex.flex-wrap.night
       .perc50.md.px40.mb40
-        %h3.yellow.mb20 For fundraisers
-        .night Fundraisers no longer submit ineligible or unsuitable applications and have a better understanding of the funders they approach.
-      .perc50.md.px40.mb40.divider
-        %h3.blue.mb20 For funders
-        .night Funders spend less time dealing with unsuitable applications, and have tools to make the most of their funding data.
+        .mb25
+          %h4 Beehive is a web based tool that checks and matches your funding proposals with eligible and appropriate funders.
+        .mb25
+          %strong Check
+          %p We prevent wasted effort by semi-automatically checking eligibility criteria are met before you apply.
+        .mb25
+          %strong Match
+          %p We compare thousands of grants to make it easy to be quickly matched to the right funder.
+        %strong Inform
+        %p We surface useful insights based on a funder's giving behaviour to inform your funding proposals.
+
+      .perc50.md.px40.pb20.mb40.center
+        .feature-card
+          .image
+          .copy.bg-mint.px12.pb14.shadow.white.italic We use open data and smart technology to bring together valuable information and insights to guide your fundraising in minutes not hours.
 
   %section.bg-ice.px40
     .maxw1080.mx-auto.pt40
-      %h2.center.mb40 Team
-      .flex.flex-wrap.night
-        .perc50.md.px40.mb40.flex.items-center.justify-center
-          #team.david.mr20
-          .maxw200
-            %h4 David Kane
-            -# TODO: add description
-            -# %p.fs14.lh18 Lorem ipsum dolor sit amet, consectetur adipisicing.
-        .perc50.md.px40.mb40.flex.items-center.justify-center
-          #team.suraj.mr20
-          .maxw200
-            %h4 Suraj Vadgama
-            -# TODO: add description
-            -# %p.fs14.lh18 Lorem ipsum dolor sit amet, consectetur ad
+      %h2.center.mx40.mb20 The difference we want to make
+
+      .flex.flex-wrap.center
+        .perc50.md.px40.mb40
+          %h3.dark-yellow.mb20 For fundraisers
+          .night Fundraisers no longer submit ineligible or unsuitable applications and have a better understanding of the funders they approach.
+        .perc50.md.px40.mb40.divider
+          %h3.blue.mb20 For funders
+          .night Funders spend less time dealing with unsuitable applications, and have tools to make the most of their funding data.
 
   %section.maxw1080.mx-auto.pt40
     .mx40
