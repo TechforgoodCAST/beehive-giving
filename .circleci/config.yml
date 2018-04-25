@@ -22,14 +22,16 @@ jobs:
       # Restore bundle cache
       - type: cache-restore
         keys:
-          - gem-cache-{{ checksum "Gemfile.lock" }}
-          - gem-cache-
+          - gem-cache-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
+          - gem-cache-{{ .Branch }}
+          - gem-cache
 
       # Restore yarn cache
       - type: cache-restore
         keys:
-          - yarn-cache-{{ checksum "yarn.lock" }}
-          - yarn-cache-
+          - yarn-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
+          - yarn-cache-{{ .Branch }}
+          - yarn-cache
 
       - run:
           name: Bundle Install
