@@ -43,13 +43,13 @@ jobs:
 
       # Store bundle cache
       - type: cache-save
-        key: gem-cache-{{ checksum "Gemfile.lock" }}
+        key: gem-cache-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
         paths:
           - vendor/bundle
 
       # Store yarn cache
       - type: cache-save
-        key: yarn-cache-{{ checksum "yarn.lock" }}
+        key: yarn-cache-{{ .Branch }}-{{ checksum "yarn.lock" }}
         paths:
           - node_modules
 
