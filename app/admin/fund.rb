@@ -84,6 +84,7 @@ ActiveAdmin.register Fund do
       end
       tab :admin do
         attributes_table do
+          row :id
           row :slug
           row :pretty_name
           row :open_call
