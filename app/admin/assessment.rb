@@ -1,4 +1,12 @@
 ActiveAdmin.register Assessment do
+  actions :index, :show
+
+  controller do
+    def scoped_collection
+      super.includes(:fund, :proposal)
+    end
+  end
+
   ratings = {
     UNASSESSED => 'unassessed',
     ELIGIBLE   => 'eligible',
@@ -10,6 +18,8 @@ ActiveAdmin.register Assessment do
     column :id
     column :fund
     column :proposal_id
+    column(:proposal_title) { |a| a.proposal.title }
+    column(:proposal_tagline) { |a| a.proposal.tagline }
     actions
   end
 
