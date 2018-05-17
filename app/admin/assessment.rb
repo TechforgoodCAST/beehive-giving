@@ -16,6 +16,8 @@ ActiveAdmin.register Assessment do
   filter :fund_id
   filter :proposal_id
   filter :eligibility_status
+  filter :proposal_themes_name, as: :string
+  filter :proposal_tagline, as: :string
 
   show do
     attributes_table title: 'Fund' do
