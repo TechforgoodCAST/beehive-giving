@@ -1,4 +1,6 @@
 class LegacyController < ApplicationController
+  before_action :ensure_logged_in
+
   def reset
     user = User.find_by(id: params[:id])
     return unless user&.legacy?

@@ -6,6 +6,10 @@
   = csrf_meta_tags
   %meta{ content: 'width=device-width, initial-scale=1', name: 'viewport' }
 
+  %meta{ property: 'og:title', content: 'Beehive - Grant funding suitability checker' }
+  %meta{ property: 'og:description', content: 'Save time and avoid wasted effort with a free suitability check of 120+ funds before applying' }
+  %meta{ property: 'og:image', content: asset_url('logo-social-1200x630.png') }
+
   - if !allow_functional_cookies?
     :javascript
       window['ga-disable-UA-30021098-2'] = true;

@@ -26,6 +26,10 @@ ActiveAdmin.register Fund do
     def find_resource
       scoped_collection.find_by_hashid(params[:id])
     end
+
+    def scoped_collection
+      super.includes(:funder, :geo_area)
+    end
   end
 
   scope("Full funds", default: true) { |scope| scope.where(state: ["inactive", "active"]) }
@@ -84,6 +88,7 @@ ActiveAdmin.register Fund do
       end
       tab :admin do
         attributes_table do
+          row :id
           row :slug
           row :pretty_name
           row :open_call

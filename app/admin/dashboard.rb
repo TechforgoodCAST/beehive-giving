@@ -1,3 +1,4 @@
+# TODO: refactor
 ActiveAdmin.register_page 'Dashboard' do
   menu priority: 1, label: proc { I18n.t('active_admin.dashboard') }
 
@@ -80,9 +81,9 @@ ActiveAdmin.register_page 'Dashboard' do
     end
 
     def complete_by_month
-      Assessment.where('eligibility_status != ?', INCOMPLETE)
+      Assessment.where.not(eligibility_status: [INCOMPLETE, UNASSESSED])
                 .group_by_month(:created_at, last: 12)
-                .distinct.count(:proposal_id)
+                .distinct.count(:recipient_id)
     end
 
     def proposal_count(state)
@@ -90,9 +91,14 @@ ActiveAdmin.register_page 'Dashboard' do
               .group_by_week(:created_at, week_start: :mon, last: 12).count
     end
 
+    def recipient_at_least_one_reveal
+      Assessment.where(revealed: true)
+        .group_by_week(:created_at, week_start: :mon, last: 12)
+        .distinct.count(:recipient_id)
+    end
+
     def proposal_count_by_month
-      Proposal.where(state: %w[registered complete])
-              .group_by_month(:created_at, last: 12, format: '%b %Y').count
+      Proposal.group_by_month(:created_at, last: 12, format: '%b %Y').count
     end
 
     def feedback_count
@@ -103,12 +109,18 @@ ActiveAdmin.register_page 'Dashboard' do
       Feedback.group_by_month(:created_at, last: 12).count
     end
 
+    def iter(hash)
+      hash.each_with_index do |(_date, count), i|
+        count.positive? ? td(percentage(count, i)) : td('-')
+      end
+    end
+
     def percentage(count, i)
       percent = number_to_percentage(
-        (count[1].to_d / user_count.to_a[i][1].to_d) * 100,
+        (count.to_d / user_count.to_a[i][1].to_d) * 100,
         precision: 0
       )
-      "#{count[1]} (#{percent})"
+      "#{count} (#{percent})"
     end
 
     div style: 'float:left;
@@ -129,42 +141,31 @@ ActiveAdmin.register_page 'Dashboard' do
           end
           tr do
             td 'Register non-profit'
-            recipient_count.each_with_index do |count, i|
-              td percentage(count, i) if count[1].positive?
-            end
+            iter recipient_count
           end
           tr do
             td 'Proposals'
-            proposal_count(%w[initial registered complete])
-              .each_with_index do |count, i|
-                td percentage(count, i) if count[1].positive?
-              end
+            iter Proposal.group_by_week(:created_at, week_start: :mon, last: 12).count
           end
           tr do
-            td 'Inital proposal'
-            proposal_count('initial').each_with_index do |count, i|
-              td percentage(count, i) if count[1].positive?
-            end
+            td 'Basics proposal'
+            iter proposal_count('basics')
           end
           tr do
-            td 'Registered proposal'
-            proposal_count('registered').each_with_index do |count, i|
-              if count[1].positive?
-                td percentage(count, i)
-              else
-                td '-'
-              end
-            end
+            td 'Incomplete proposal'
+            iter proposal_count('incomplete')
+          end
+          tr do
+            td 'Invalid proposal'
+            iter proposal_count('invalid')
           end
           tr do
             td 'Complete proposal'
-            proposal_count('complete').each_with_index do |count, i|
-              if count[1].positive?
-                td percentage(count, i)
-              else
-                td '-'
-              end
-            end
+            iter proposal_count('complete')
+          end
+          tr do
+            td 'Recipient at least one reveal'
+            iter recipient_at_least_one_reveal
           end
         end
       end
@@ -199,7 +200,7 @@ ActiveAdmin.register_page 'Dashboard' do
             unlock_by_month.each { |i| td i[1] }
           end
           tr do
-            td 'Complete checks'
+            td 'Recipient creating at least one complete Assessment'
             complete_by_month.each { |i| td i[1] }
           end
           tr do

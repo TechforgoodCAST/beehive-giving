@@ -26,6 +26,6 @@
         %strong= @country.name
       .fs14 To change country select ‘Across many countries’ above.
 
-  .mb30= f.input :private, as: :radio_buttons
+  .mb30= f.input :private, as: :radio_buttons, collection: [['Yes', false], ['No', true]]
 
   = f.submit (submit_text || 'Save'), class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Checking suitability...' }
