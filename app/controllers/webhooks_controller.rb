@@ -10,15 +10,13 @@ class WebhooksController < ApplicationController
   end
 
   def customer_subscription_deleted
-    Subscription.find_by(stripe_user_id: @customer.id)
-                .update(active: false, percent_off: 0)
+    subscription = Subscription.find_by(stripe_user_id: @customer.id)
+    subscription.update(active: false, percent_off: 0)
+    subscription.recipient.users.each do |user|
+      SubscriptionMailer.deactivated(user).deliver_now
+    end
   rescue NoMethodError
     nil
-  end
-
-  def subscription_expired
-    # TODO: deactivate Beehive::Subscription at_period_end
-    # TODO: send reminder emails
   end
 
   private
