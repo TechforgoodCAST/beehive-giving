@@ -157,11 +157,11 @@ feature 'Subscriptions' do
 
       scenario 'webhook customer-subscription-deleted', type: :request do
         Subscription.last.update(percent_off: 10)
+        status = helper.stripe_subscription(@db[:recipient]).status
 
-        expect(Subscription.last.active).to eq true
-        expect(Subscription.last.percent_off).to eq 10
-        expect(helper.stripe_subscription(@db[:recipient]).status)
-          .to eq 'active'
+        expect(Subscription.last.active).to eq(true)
+        expect(Subscription.last.percent_off).to eq(10)
+        expect(status).to eq('active')
 
         event = StripeMock.mock_webhook_event(
           'customer.subscription.deleted',
@@ -172,16 +172,13 @@ feature 'Subscriptions' do
              params: event.to_json,
              headers: { 'Content-Type': 'application/json' }
 
-        expect(Subscription.last.active).to eq false
-        expect(Subscription.last.percent_off).to eq 0
-        expect(event.data.object.status).to eq 'canceled'
-      end
+        expect(Subscription.last.active).to eq(false)
+        expect(Subscription.last.percent_off).to eq(0)
+        expect(event.data.object.status).to eq('canceled')
 
-      scenario 'remaining free checks hidden' do
-        @app.setup_funds
-        @db[:proposal].save!
-        visit fund_path(Fund.first, @db[:proposal])
-        expect(page).not_to have_button 'Check eligibility (3 left)'
+        deliveries = ActionMailer::Base.deliveries
+        expect(deliveries.size).to eq(1)
+        expect(deliveries.last.subject).to eq('Subscription Expired - Beehive')
       end
     end
   end
