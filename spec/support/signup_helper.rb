@@ -48,6 +48,9 @@ class SignupHelper
     within '.signup_suitability_proposal_private' do
       choose params.fetch(:private, 'Yes')
     end
+    within '.signup_suitability_proposal_public_consent' do
+      choose params.fetch(:public_consent, 'Yes')
+    end
     within '.signup_suitability_user_marketing_consent' do
       choose params.fetch(:marketing_consent, 'Yes')
     end

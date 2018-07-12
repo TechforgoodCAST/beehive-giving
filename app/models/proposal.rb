@@ -32,7 +32,7 @@ class Proposal < ApplicationRecord
     in: 0..3, message: 'please select an option'
   }
 
-  validates :all_funding_required, :private, inclusion: {
+  validates :all_funding_required, :private, :public_consent, inclusion: {
     message: 'please select an option', in: [true, false]
   }
 

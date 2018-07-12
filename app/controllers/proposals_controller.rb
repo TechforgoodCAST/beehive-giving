@@ -63,7 +63,7 @@ class ProposalsController < ApplicationController
     def proposal_params
       params.require(:proposal).permit(
         :affect_geo, :all_funding_required, :funding_duration, :funding_type,
-        :private, :tagline, :title, :total_costs,
+        :private, :public_consent, :tagline, :title, :total_costs,
         district_ids: [], country_ids: [], theme_ids: []
       )
     end

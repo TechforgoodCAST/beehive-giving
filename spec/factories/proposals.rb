@@ -9,6 +9,7 @@ FactoryBot.define do
     tagline 'Description'
     title 'Title'
     total_costs 10_000
+    public_consent true
 
     after(:build) do |proposal, _evaluator|
       proposal.themes = build_list(:theme, 1) unless proposal.themes.any?

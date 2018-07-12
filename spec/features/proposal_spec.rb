@@ -65,6 +65,7 @@ feature 'Proposal' do
     fill_in :proposal_funding_duration, with: 12
     select Theme.last.name
     select 'An entire country'
+    choose :proposal_public_consent_true
     choose :proposal_private_true
   end
 end
