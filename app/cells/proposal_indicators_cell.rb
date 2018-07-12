@@ -11,15 +11,6 @@ class ProposalIndicatorsCell < Cell::ViewModel
     render view: :progress_bar, locals: {bg_color: bg_color, names: names, states: states}
   end
 
-  def suitability_progress_bar
-    @counts = suitability_counts
-    @pcs = count_percentages(@counts)
-    bg_color = { 0 => 'bg-red', 1 => 'bg-yellow', 2 => 'bg-green', -1 => 'bg-blue' }
-    names = { 0 => 'unsuitable', 1 => 'fair suitability', 2 => 'suitable', -1 => 'to check' }
-    states = [-1, 0, 1, 2]
-    render view: :progress_bar, locals: {bg_color: bg_color, names: names, states: states}
-  end
-
   def funds_checked
     model.assessments.where("eligibility_status != #{INCOMPLETE}").size
   end
@@ -36,14 +27,5 @@ class ProposalIndicatorsCell < Cell::ViewModel
       { INELIGIBLE => 0, INCOMPLETE => 0, ELIGIBLE => 0 }.merge(
         model.assessments.group(:eligibility_status).size
       )
-    end
-
-    def suitability_counts
-      {
-        -1 => model.suitability.count{ |k, s| s.fetch('total') == nil },
-        0 => model.suitability.count{ |k, s| s.fetch('total') < 0.2 },
-        1 => model.suitability.count{ |k, s| s.fetch('total').between?(0.2, 0.5) },
-        2 => model.suitability.count{ |k, s| s.fetch('total') > 0.5 },
-      }
     end
 end
