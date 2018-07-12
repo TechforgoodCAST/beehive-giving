@@ -67,7 +67,6 @@ class EligibilityHelper
 
   def remove_restrictions(fund, category)
     fund.restrictions.where(category: category).destroy_all
-    fund.skip_beehive_data = 1
     fund.save!
     self
   end

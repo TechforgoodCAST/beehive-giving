@@ -3,14 +3,6 @@ class TestHelper # TODO: refactor
   include ShowMeTheCookies
   include WebMock::API
 
-  ENV['BEEHIVE_DATA_TOKEN'] = 'token'
-  ENV['BEEHIVE_DATA_FUND_SUMMARY_ENDPOINT'] = 'http://localhost/v1/integrations/fund_summary'
-  ENV['BEEHIVE_INSIGHT_ENDPOINT'] = 'http://localhost/beneficiaries'
-  ENV['BEEHIVE_INSIGHT_AMOUNTS_ENDPOINT'] = 'http://localhost/check_amount'
-  ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'] = 'http://localhost/check_duration'
-  ENV['BEEHIVE_INSIGHT_TOKEN'] = 'username'
-  ENV['BEEHIVE_INSIGHT_SECRET'] = 'password'
-
   def seed_db
     create_list(:age_group, AgeGroup::AGE_GROUPS.count)
   end
@@ -45,8 +37,6 @@ class TestHelper # TODO: refactor
     proposal_priorities = create_list(:priority, 5)
     @priorities = recipient_priorities + proposal_priorities
     @funds.each_with_index do |fund, i|
-      stub_fund_summary_endpoint(fund.instance_eval { set_slug })
-
       fund.themes = @themes
 
       fund.geo_area = create(:geo_area, countries: @countries, districts: (fund.geographic_scale_limited ? @uk_districts + @kenya_districts : []))
@@ -64,7 +54,6 @@ class TestHelper # TODO: refactor
     @funder = create(:funder, name: 'Fund Stub Funder')
     @fund_stubs = build_list(:fundstub, num, opts.merge(funder: @funder))
     @fund_stubs.each_with_index do |fund, i|
-      stub_fund_summary_endpoint(fund.instance_eval { set_slug })
       fund.themes = @themes
       fund.geo_area = GeoArea.first
       fund.save if save
@@ -84,52 +73,6 @@ class TestHelper # TODO: refactor
 
     funds = create_list :fund, num, opts
     funds.each{|f| f.questions.where(criterion_type: "Priority").update(group: "test_group")}
-  end
-
-  def stub_beehive_insight(endpoint, data)
-    body = {}
-    # TODO: match records in seeds
-    7.times { |i| body["funder-awards-for-all-#{i + 1}"] = (i + 1).to_f / 10 }
-    stub_request(:post, endpoint).with(
-      body: { data: data }.to_json,
-      headers: {
-        'Content-Type' => 'application/json',
-        'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN']
-      }
-    ).to_return(
-      status: 200,
-      body: body.to_json
-    )
-    self
-  end
-
-  def stub_beneficiaries_endpoint
-    data = Beneficiary::BENEFICIARIES.map { |i| [i[:sort], 0] }.to_h
-    stub_beehive_insight(ENV['BEEHIVE_INSIGHT_ENDPOINT'], data)
-    self
-  end
-
-  def stub_amounts_endpoint(data = 10_000.0)
-    stub_beehive_insight(
-      ENV['BEEHIVE_INSIGHT_AMOUNTS_ENDPOINT'],
-      amount: data
-    )
-    self
-  end
-
-  def stub_durations_endpoint(data = 12)
-    stub_beehive_insight(
-      ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'],
-      duration: data
-    )
-    self
-  end
-
-  def stub_fund_summary_endpoint(fund_slug)
-    stub_request(:get, ENV['BEEHIVE_DATA_FUND_SUMMARY_ENDPOINT'] + fund_slug)
-      .with(headers: { 'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN'] })
-      .to_return(status: 200, body: '', headers: {})
-    self
   end
 
   def stub_mixpanel
