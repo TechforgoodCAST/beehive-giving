@@ -260,7 +260,7 @@ class Recipient < ApplicationRecord
     def income_select(income)
       self.income = income
       self.income_band = INCOME_BANDS.find do |band|
-        income >= band[2] && income < band[3]
+        income >= band[2] && income <= band[3]
       end[1]
     end
 
