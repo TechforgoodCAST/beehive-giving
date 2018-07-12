@@ -4,6 +4,7 @@ class SignupController < ApplicationController
   def grant_access # TODO: refactor into UnauthorisedController
     @user = User.find_by(unlock_token: params[:unlock_token])
     @user.unlock
+    UserMailer.notify_unlock(@user).deliver_now
     redirect_to granted_access_path(@user.unlock_token)
   end
 
