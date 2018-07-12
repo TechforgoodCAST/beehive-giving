@@ -5,6 +5,7 @@ ActiveAdmin.register User do
                 :marketing_consent, :organisation_id, :organisation_type,
                 :password, :password_confirmation
 
+  controller do
     def scoped_collection
       User.includes(:organisation)
     end
