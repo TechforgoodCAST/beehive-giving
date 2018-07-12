@@ -83,6 +83,7 @@
 
               .mb20= u.input :agree_to_terms, label: false, inline_label: "I accept the #{link_to('terms of service', terms_path, target: '_blank')} and #{link_to('privacy policy', privacy_path, target: '_blank')}".html_safe
               .mb20= p.input :private, as: :radio_buttons, collection: [['Yes', false], ['No', true]]
+              .mb20= p.input :public_consent, as: :radio_buttons
               .mb20= u.input :marketing_consent, as: :radio_buttons
 
           = f.submit 'Check suitability', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Checking...' }

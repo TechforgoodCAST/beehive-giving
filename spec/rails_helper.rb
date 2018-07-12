@@ -76,10 +76,6 @@ RSpec.configure do |config|
       'London Road, GB', [{ latitude: 1, longitude: 1 }]
     )
     @app = TestHelper.new
-    @app
-      .stub_beneficiaries_endpoint
-      .stub_amounts_endpoint
-      .stub_durations_endpoint
-      .stub_mixpanel
+    @app.stub_mixpanel
   end
 end

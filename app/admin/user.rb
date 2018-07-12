@@ -1,9 +1,9 @@
 ActiveAdmin.register User do
   config.per_page = 10
 
-  permit_params :first_name, :last_name, :org_type, :agree_to_terms,
-                :email, :password, :password_confirmation, :organisation_id,
-                :organisation_type
+  permit_params :agree_to_terms, :email, :first_name, :last_name,
+                :marketing_consent, :organisation_id, :organisation_type,
+                :password, :password_confirmation
 
   controller do
     def scoped_collection
@@ -47,15 +47,16 @@ ActiveAdmin.register User do
 
   form do |f|
     f.inputs 'User Details' do
+      f.semantic_errors *f.object.errors.keys
       f.input :organisation_id
       f.input :organisation_type, as: :select, collection: %w[Recipient Funder]
-      f.input :org_type, as: :select, collection: ORG_TYPES.map{|o| [o[0], o[1]] }
       f.input :first_name
       f.input :last_name
       f.input :email
       f.input :password
       f.input :password_confirmation
       f.input :agree_to_terms
+      f.input :marketing_consent
     end
     f.actions
   end

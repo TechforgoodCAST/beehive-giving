@@ -45,7 +45,8 @@ module Signup
           ],
           proposal: [
             :affect_geo, :all_funding_required, :funding_duration, :private,
-            :tagline, :title, :total_costs, district_ids: [], country_ids: []
+            :public_consent, :tagline, :title, :total_costs,
+            district_ids: [], country_ids: []
           ],
           user: [
             :agree_to_terms, :email, :first_name, :last_name,

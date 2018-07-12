@@ -32,7 +32,7 @@ class Proposal < ApplicationRecord
     in: 0..3, message: 'please select an option'
   }
 
-  validates :all_funding_required, :private, inclusion: {
+  validates :all_funding_required, :private, :public_consent, inclusion: {
     message: 'please select an option', in: [true, false]
   }
 
@@ -88,13 +88,6 @@ class Proposal < ApplicationRecord
   def recipient_subscribed
     return if recipient.subscribed? || recipient.proposals.count.zero?
     errors.add(:title, 'Upgrade subscription to create multiple proposals')
-  end
-
-  def beehive_insight_durations # TODO: depreceted
-    @beehive_insight_durations ||= call_beehive_insight(
-      ENV['BEEHIVE_INSIGHT_DURATIONS_ENDPOINT'],
-      duration: funding_duration
-    )
   end
 
   def initial_recommendation # TODO: deprecated
@@ -182,17 +175,5 @@ class Proposal < ApplicationRecord
 
     def recipient_country_unless_multinational
       self.countries = [countries.first] if affect_geo < 3
-    end
-
-    def call_beehive_insight(endpoint, data) # TODO: depreceted
-      options = {
-        body: { data: data }.to_json,
-        headers: {
-          'Content-Type' => 'application/json',
-          'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN']
-        }
-      }
-      resp = HTTParty.post(endpoint, options)
-      JSON.parse(resp.body).to_h
     end
 end

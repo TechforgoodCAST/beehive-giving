@@ -156,7 +156,8 @@ describe Signup::Suitability do
           private: false,
           tagline: 'Desciption of project.',
           title: 'Project Name',
-          total_costs: 10_000
+          total_costs: 10_000,
+          public_consent: true
         },
         user: {
           agree_to_terms: true,

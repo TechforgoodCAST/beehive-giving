@@ -66,11 +66,7 @@ class Fund < ApplicationRecord
   validate :validate_sources, :validate_districts
   validate :period_start_before_period_end, :period_end_in_past, if: :open_data?
 
-  attr_accessor :skip_beehive_data
-
   before_validation :set_slug, unless: :slug
-  before_validation :check_beehive_data,
-                    if: proc { |o| o.skip_beehive_data.to_i.zero? }
 
   def self.version
     XXhash.xxh32(active.order(:updated_at).pluck(:updated_at).join)
@@ -181,34 +177,6 @@ class Fund < ApplicationRecord
   end
 
   private
-
-    def check_beehive_data # TODO: refactor as service
-      return unless open_data && slug
-      options = {
-        headers: {
-          'Authorization' => 'Token token=' + ENV['BEEHIVE_DATA_TOKEN']
-        }
-      }
-      resp = HTTParty.get(
-        ENV['BEEHIVE_DATA_FUND_SUMMARY_ENDPOINT'] + slug, options
-      )
-      # attributes we're looking for in the response
-      resp_attributes = %w(
-        amount_awarded_distribution
-        award_month_distribution
-        org_type_distribution
-        income_distribution
-        country_distribution
-        sources
-        grant_count
-        period_end
-        period_start
-        beneficiary_distribution
-        grant_examples
-        amount_awarded_sum
-      )
-      assign_attributes(resp.slice(*resp_attributes)) if slug == resp['fund_slug']
-    end
 
     def months_to_str(months)
       if months == 12

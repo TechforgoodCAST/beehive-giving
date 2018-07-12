@@ -4,7 +4,7 @@ ActiveAdmin.register Fund do
   permit_params :funder_id, :name, :description, :open_call,
                 :state, :currency, :application_link, :key_criteria,
                 :restrictions_known, :priorities_known,
-                :featured, :skip_beehive_data, :open_data,
+                :featured, :open_data,
                 :period_start, :period_end, :grant_count, :amount_awarded_sum,
                 :amount_awarded_distribution, :award_month_distribution,
                 :country_distribution, :sources, :national,
@@ -277,10 +277,6 @@ ActiveAdmin.register Fund do
           f.input :country_distribution
         end
       end
-    end
-
-    f.inputs 'Options' do
-      f.input :skip_beehive_data, as: :boolean
     end
 
     f.actions
