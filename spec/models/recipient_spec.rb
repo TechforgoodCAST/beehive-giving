@@ -66,7 +66,11 @@ describe Recipient do
     end
   end
 
-  it 'invalid website' do
+  it '#category_name' do
+    expect(subject.category_name).to eq('A charitable organisation')
+  end
+
+  it 'invalid #website' do
     subject.website = 'www.example.com'
     expect(subject).not_to be_valid
   end

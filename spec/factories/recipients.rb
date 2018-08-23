@@ -12,7 +12,7 @@ FactoryBot.define do
     end
 
     factory :recipient do
-      category_code  301 # A registered charity
+      category_code  301 # A charitable organisation
       charity_number '098765'
       company_number '012345'
       description    'Charity registered in England & Wales'

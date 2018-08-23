@@ -394,6 +394,7 @@ GEM
     xpath (3.1.0)
       nokogiri (~> 1.8)
     xxhash (0.4.0)
+    yard (0.9.16)
 
 PLATFORMS
   ruby
@@ -457,6 +458,7 @@ DEPENDENCIES
   webpacker
   workflow
   xxhash
+  yard
 
 RUBY VERSION
    ruby 2.4.4p296

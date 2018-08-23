@@ -90,6 +90,7 @@ group :development do
   gem 'pry'
   gem 'pry-rails'
   gem 'rubocop', require: false
+  gem 'yard'
 end
 
 group :test do

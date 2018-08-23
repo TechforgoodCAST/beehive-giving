@@ -23,6 +23,9 @@
 yarn-debug.log*
 .yarn-integrity
 
+.yardoc
+/doc
+
 # Misc.
 .env
 *.dump

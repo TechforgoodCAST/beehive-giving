@@ -60,8 +60,11 @@ class Recipient < ApplicationRecord
     self[:company_number] = s&.strip
   end
 
+  # Lookup category name from {CATEGORY} using #category_code.
+  #
+  # @return [String] the name of the category.
   def category_name
-    Recipient::CATEGORY.values.reduce({}, :merge)[category_code]
+    CATEGORY.values.reduce({}, :merge)[category_code]
   end
 
   def max_income # TODO: review
