@@ -1,7 +1,13 @@
 class Funder < ApplicationRecord
+  include CriteriaFor
+
   has_many :attempts
   has_many :funds
+
+  # TODO: test
   has_many :restrictions, through: :funds
+  has_many :priorities, through: :funds
+
   has_many :users, as: :organisation, dependent: :destroy
 
   validates :name, :slug, presence: true

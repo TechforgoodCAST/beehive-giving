@@ -5,6 +5,8 @@ class User < ApplicationRecord
   belongs_to :organisation, polymorphic: true, optional: true
   has_many :feedbacks
 
+  has_many :recipients
+
   # TODO: add validations for association
   validates :first_name, :last_name, :email, :organisation_type,
             presence: true, on: :create

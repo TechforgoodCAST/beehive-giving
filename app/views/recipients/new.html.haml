@@ -1,0 +1,32 @@
+%div{ style: 'max-width: 690px; margin: 40px auto;' }
+
+  %h1.mb40
+    New
+    = @collection.class.to_s.downcase
+    report for
+    = @collection.name
+
+  = simple_form_for @recipient, url: new_recipient_path do |f|
+    .mb15= f.input :category_code, as: :grouped_select, collection: Recipient::CATEGORY, group_method: :last, label_method: :last, value_method: :first
+
+    .mb30
+      .mb10= f.input :description, required: true
+      .mb10= f.input :name, required: true
+      .flex.flex-wrap.justify-between
+        .perc48.mb10= f.input :income_band, required: true, collection: INCOME_BANDS
+        .perc48.mb10= f.input :operating_for, required: true, collection: OPERATING_FOR
+      .flex.flex-wrap.justify-between
+        .perc48.mb10= f.input :charity_number
+        .perc48.mb10= f.input :company_number
+      = f.input :website
+
+    .mb30
+      .mb10= f.association :country, include_blank: true, input_html: { class: 'cs' }
+      = f.association :district, collection: [[@district&.name, @district&.id]], wrapper_html: { class: 'hide' }
+
+    = f.simple_fields_for :answers do |a|
+      = a.hidden_field :criterion_id, value: a.object.criterion.id
+      = a.input :eligible, as: :radio_buttons, label: false
+      %label.mx20= raw(a.object.criterion.details)
+
+    = f.submit 'Next', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Finding...' }

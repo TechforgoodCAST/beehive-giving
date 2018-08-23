@@ -3,8 +3,21 @@ Rails.application.routes.draw do
   resources :feedback, except: %i[show index destroy] # TODO: remove
   resources :password_resets, except: %i[show index destroy]
   resources :proposals, except: %i[show destroy]
-  resources :reveals, only: :create
-  resources :requests, only: :create
+  resources :reveals, only: :create # TODO: remove
+  resources :requests, only: :create # TODO: remove
+
+  ## v3 ##
+
+  namespace :api do
+    namespace :v1 do
+      get '/districts/:country_id', to: 'districts#index', as: 'districts'
+    end
+  end
+
+  get  '/check/:slug', to: 'recipients#new', as: 'new_recipient'
+  post '/check/:slug', to: 'recipients#create'
+
+  ## end ##
 
   # Errors
   match '/404', to: 'errors#not_found', via: :all

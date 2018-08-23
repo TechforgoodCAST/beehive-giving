@@ -6,24 +6,6 @@ export default class Select {
     this._selectOnChange(select, opts)
   }
 
-  orgType (array) {
-    if (array instanceof Array) {
-      for (const prefix of array) {
-        const select = `${prefix}_org_type`
-        const opts = {
-          '-1': ['individual_notice'],
-          '1': [`${prefix}_charity_number`],
-          '2': [`${prefix}_company_number`],
-          '3': [`${prefix}_charity_number`, `${prefix}_company_number`],
-          '5': [`${prefix}_company_number`]
-        }
-        this.init(select, opts)
-      }
-    } else {
-      throw new Error("Please supply array of prefixes e.g. ['user']")
-    }
-  }
-
   _hideOpts (select, opts) {
     const $select = document.getElementById(select)
     if (!$select) return

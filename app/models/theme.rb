@@ -1,4 +1,6 @@
 class Theme < ApplicationRecord
+  include CriteriaFor
+
   scope :primary, -> { where('parent_id IS NULL') }
 
   belongs_to :parent, class_name: 'Theme', optional: true
@@ -6,6 +8,10 @@ class Theme < ApplicationRecord
   has_many :themes, foreign_key: 'parent_id'
   has_many :fund_themes, dependent: :destroy
   has_many :funds, through: :fund_themes
+
+  # TODO: test
+  has_many :restrictions, through: :funds
+  has_many :priorities, through: :funds
 
   validates :name, :slug, uniqueness: true
   validates :classes, presence: true

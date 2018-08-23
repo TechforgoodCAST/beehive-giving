@@ -1,17 +1,17 @@
 en:
   simple_form:
-    "yes": 'Yes'
-    "no": 'No'
     required:
-      text: ''
-      mark: ''
-      # You can uncomment the line below if you need to overwrite the whole required html.
-      # When using html, text and mark won't be used.
-      # html: '<abbr title="required">*</abbr>'
+      html: '<strong>*</strong>'
     error_notification:
       default_message: "Please review the problems below:"
 
     labels:
+      recipient:
+        category_code: 'Who will be receiving the funding or support?'
+        description: 'Type of incorporation'
+        name: 'Organisation name'
+        district: 'In which area?'
+
       defaults:
         # Proposal
         affect_geo: 'Where will your proposed work affect?'
@@ -32,7 +32,6 @@ en:
         income_band: 'Annual income'
         org_type: 'Who will be receiving the funding?'
         volunteers: 'No. of volunteers'
-        website: 'Website (optional)'
         # User
         password_confirmation: 'Confirm password'
         marketing_consent: 'Email me with occasional updates when new funds or features are added'
@@ -48,9 +47,6 @@ en:
         funding_duration: 'e.g. 12'
         title: "e.g. 'Improving careers for disabled workers'"
         total_costs: 'e.g. 10000'
-        # Recipient
-        charity_number: 'Charity number'
-        company_number: 'Company number'
         street_address: 'e.g. 123 New Street'
       password_reset:
         email: 'someone@example.com'
@@ -58,6 +54,11 @@ en:
         email: 'e.g. email@example.com'
 
     hints:
+      recipient:
+        charity_number: 'If applicable'
+        company_number: 'If applicable'
+        description: 'Please be as specific as possible, for example: Charity registered in England & Wales; Charitable Incorportated Organisation (CIO); Community Interest Company (CIC); Company Limited by Guarantee (CLG); Co-operative; etc.'
+
       defaults:
         # Proposal
         countries: 'Type the name of a country (e.g. Kenya) to get started.'
@@ -66,8 +67,6 @@ en:
         themes: 'Proposals with fewer than 5 themes get the best results.'
         title: 'This could be the name of your project, or a few words describing your proposal.'
         public_consent: 'Have non-personal details about your funding request such as the amount, description and eligibility reasons included in a publicly viewable directory of recent funding searches that others can browse and learn from.'
-        # Recipient
-        name: 'This could be the name of your organisation or project.'
         # User
         marketing_consent: 'You can opt out at any time.'
         password: 'At least 6 characters long with 1 number.'

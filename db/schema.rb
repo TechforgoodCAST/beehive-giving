@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180712122951) do
+ActiveRecord::Schema.define(version: 20180821140542) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -400,7 +400,7 @@ ActiveRecord::Schema.define(version: 20180712122951) do
     t.string "city", limit: 255
     t.string "region", limit: 255
     t.string "postal_code", limit: 255
-    t.string "country", limit: 255
+    t.string "country_alpha2", limit: 255
     t.string "charity_number", limit: 255
     t.string "company_number", limit: 255
     t.string "slug", limit: 255
@@ -446,7 +446,15 @@ ActiveRecord::Schema.define(version: 20180712122951) do
     t.integer "funds_checked", default: 0, null: false
     t.integer "income"
     t.jsonb "reveals", default: [], null: false
+    t.integer "category_code"
+    t.string "description"
+    t.bigint "user_id"
+    t.bigint "district_id"
+    t.bigint "country_id"
+    t.index ["country_id"], name: "index_recipients_on_country_id"
+    t.index ["district_id"], name: "index_recipients_on_district_id"
     t.index ["slug"], name: "index_recipients_on_slug", unique: true
+    t.index ["user_id"], name: "index_recipients_on_user_id"
   end
 
   create_table "requests", force: :cascade do |t|

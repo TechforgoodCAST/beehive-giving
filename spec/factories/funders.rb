@@ -1,10 +1,13 @@
 FactoryBot.define do
   factory :funder do
-    transient do
-      n { rand(9999) }
-    end
     name 'Funder'
     website 'http://www.funder.org'
     active true
+
+    factory :funder_with_funds, class: Funder do
+      after(:create) do |funder, _evaluator|
+        funder.funds = create_list(:fund_simple, 2)
+      end
+    end
   end
 end

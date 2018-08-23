@@ -7,6 +7,7 @@ ELIGIBLE   = 1
 INCOMPLETE = 0
 INELIGIBLE = -1
 
+# TODO: remove
 ORG_TYPES = [
   # Name for user, id, plural description
   ['Myself OR another individual', -1, 'individuals'],
@@ -25,6 +26,7 @@ FUNDING_TYPES = [
   ['Other', 3]
 ].freeze
 
+# TODO: review/move
 OPERATING_FOR = [
   ['Yet to start', 0],
   ['Less than 12 months', 1],
@@ -32,6 +34,7 @@ OPERATING_FOR = [
   ['4 years or more', 3]
 ].freeze
 
+# TODO: review/move
 INCOME_BANDS = [
   ['Less than £10k', 0, 0, 9_999],
   ['£10k - £99k', 1, 10_000, 99_999],
@@ -40,6 +43,7 @@ INCOME_BANDS = [
   ['More than £10m', 4, 10_000_001, Float::INFINITY]
 ].freeze
 
+# TODO: remove
 EMPLOYEES = [
   ['None', 0, 0, 0],
   ['1 - 5', 1, 1, 5],

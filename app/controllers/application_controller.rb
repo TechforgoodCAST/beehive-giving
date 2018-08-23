@@ -9,7 +9,6 @@ class ApplicationController < ActionController::Base
 
   before_action :catch_unauthorised, if: :logged_in?
   before_action :legacy_funder, if: :logged_in?
-  before_action :legacy_fundraiser, if: :logged_in?
   before_action :registration_incomplete, if: :logged_in?
   before_action :registration_invalid, if: :logged_in?
   before_action :registration_microsite, if: :logged_in?
@@ -58,9 +57,7 @@ class ApplicationController < ActionController::Base
       redirect_to legacy_funder_path if current_user.funder?
     end
 
-    def legacy_fundraiser
-      redirect_to legacy_fundraiser_path if current_user.legacy?
-    end
+    # TODO: def legacy_fundraiser
 
     def load_last_proposal
       return unless @recipient

@@ -20,40 +20,37 @@ document.addEventListener('turbolinks:load', () => {
   dialog.init()
   sort.init('sort-form')
 
-  select.orgType(['signup_basics', 'basics_step', 'eligibility_step'])
+  const unincorporatedFields = [
+    'recipient_name',
+    'recipient_income_band',
+    'recipient_operating_for',
+    'recipient_website'
+  ]
 
-  const eligibilityStepOpts = {
-    '0': ['districts'],
-    '1': ['districts'],
-    '2': ['recipient_country'],
-    '3': ['eligibility_step_country_ids']
-  }
-  select.init('eligibility_step_affect_geo', eligibilityStepOpts)
+  const incorporatedFields = [
+    'recipient_description',
+    'recipient_name',
+    'recipient_charity_number',
+    'recipient_company_number',
+    'recipient_income_band',
+    'recipient_operating_for',
+    'recipient_website'
+  ]
 
-  // TODO: refactor
-  const affectGeoOpts = {
-    '0': ['signup_suitability_proposal_districts'],
-    '1': ['signup_suitability_proposal_districts'],
-    '2': ['signup_suitability_recipient_country'],
-    '3': ['signup_suitability_proposal_countries']
+  const recipientOpts = {
+    102: incorporatedFields,
+    201: unincorporatedFields,
+    202: unincorporatedFields,
+    203: unincorporatedFields,
+    301: incorporatedFields,
+    302: incorporatedFields,
+    303: incorporatedFields
   }
-  select.init('signup_suitability_proposal_affect_geo', affectGeoOpts)
 
-  // TODO: refactor
-  const proposalOpts = {
-    '0': ['proposal_districts'],
-    '1': ['proposal_districts'],
-    '2': ['recipient_country'],
-    '3': ['proposal_countries']
-  }
-  select.init('proposal_affect_geo', proposalOpts)
+  select.init('recipient_category_code', recipientOpts)
 })
 
-// TODO: remove
-document.addEventListener('ajax:success', () => {
-  select.orgType('user')
-})
-
+// TODO: review
 // Prevent turbolinks on funds#show and funds#hidden for Google Optimize
 document.addEventListener('turbolinks:before-visit', (e) => {
   if (/\/proposals\/[0-9]+\/funds\/[^theme]|\/hidden/.test(e.data.url)) {
