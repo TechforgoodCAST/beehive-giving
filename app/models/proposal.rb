@@ -1,179 +1,144 @@
 class Proposal < ApplicationRecord
-  before_validation :clear_districts_if_country_wide,
-                    :recipient_country_unless_multinational,
-                    if: :affect_geo
-  after_save :initial_recommendation # TODO: deprecated
+  GEOGRAPHIC_SCALES = {
+    local: 'One or more local areas',
+    regional: 'One or more regions',
+    national: 'An entire country',
+    international: 'Across many countries'
+  }.with_indifferent_access.freeze
+
+  SUPPORT_TYPES = {
+    'Grant funding' => {
+      201 => 'Capital',
+      202 => 'Revenue - Core',
+      203 => 'Revenue - Project'
+    },
+    'Other' => {
+      101 => 'Other'
+    }
+  }.freeze
 
   belongs_to :recipient
-
-  has_many :answers, as: :category, dependent: :destroy
-  accepts_nested_attributes_for :answers
+  belongs_to :user
 
   has_many :assessments
   has_many :enquiries, dependent: :destroy
+
   has_many :proposal_themes, dependent: :destroy
   has_many :themes, through: :proposal_themes
 
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
 
-  has_and_belongs_to_many :age_groups # TODO: deprecated
-  has_and_belongs_to_many :beneficiaries # TODO: deprecated
-  has_and_belongs_to_many :implementations # TODO: deprecated
+  has_many :answers, as: :category, dependent: :destroy
+  accepts_nested_attributes_for :answers
 
-  AFFECT_GEO = [
-    ['One or more local areas', 0],
-    ['One or more regions', 1],
-    ['An entire country', 2],
-    ['Across many countries', 3]
-  ].freeze
+  validates_associated :answers, :user
 
-  validates :affect_geo, inclusion: {
-    in: 0..3, message: 'please select an option'
-  }
+  validates :description, :category_code, :title, presence: true
 
-  validates :all_funding_required, :private, :public_consent, inclusion: {
-    message: 'please select an option', in: [true, false]
-  }
-
-  validates :countries, :recipient, :themes, presence: true
-
-  validates :districts, presence: true, if: proc {
-    affect_geo.present? && affect_geo < 2
-  }
-
-  validates :funding_duration, presence: true, numericality: {
-    only_integer: true,
-    greater_than_or_equal_to: 1,
-    less_than_or_equal_to: 120
-  }
-
-  validates :funding_type, inclusion: {
-    in: FUNDING_TYPES.pluck(1), message: 'please select an option'
-  }
-
-  validates :tagline, :title, presence: true, length: {
+  validates :title, length: {
     maximum: 280, message: 'please use 280 characters or less'
   }
 
-  validates :title, uniqueness: {
-    scope: :recipient_id,
-    message: 'each proposal must have a unique title'
+  validates :themes, length: {
+    minimum: 1, maximum: 5, message: 'please select 1 - 5 themes'
   }
 
-  validates :total_costs, numericality: {
-    greater_than_or_equal_to: 0,
-    message: 'please enter the amount of funding you are seeking'
+  validates :category_code, inclusion: {
+    in: SUPPORT_TYPES.values.map(&:keys).flatten,
+    message: 'please select an option'
   }
 
-  validate :recipient_subscribed, on: :create
-
-  include Workflow
-  workflow_column :state
-  workflow do
-    state :basics do
-      event :complete, transitions_to: :complete
-    end
-    state :invalid do
-      event :complete, transitions_to: :complete
-    end
-    state :incomplete do
-      event :complete, transitions_to: :complete
-    end
-    state :complete do
-      event :complete, transitions_to: :complete
-    end
+  with_options if: :other_support? do
+    validates :support_details, presence: true
   end
 
-  def recipient_subscribed
-    return if recipient.subscribed? || recipient.proposals.count.zero?
-    errors.add(:title, 'Upgrade subscription to create multiple proposals')
+  with_options if: :seeking_funding? do
+    validates :min_amount, :max_amount, :min_duration, :max_duration,
+              presence: true, numericality: { only_integer: true }
+
+    validates :min_amount, numericality: { greater_than: 0 }
+    validates :max_amount, numericality: {
+      greater_than_or_equal_to: :min_amount
+    }, if: :min_amount
+
+    validates :min_duration, numericality: {
+      greater_than: 0,
+      less_than_or_equal_to: 120
+    }
+    validates :max_duration, numericality: {
+      greater_than_or_equal_to: :min_duration,
+      less_than_or_equal_to: 120
+    }, if: :min_duration
   end
 
-  def initial_recommendation # TODO: deprecated
-    suitability = CheckSuitabilityFactory.new
-    update_column(
-      :suitability, suitability.call_each_with_total(self, Fund.active)
-    )
+  validates :geographic_scale, inclusion: {
+    in: GEOGRAPHIC_SCALES.keys, message: 'please select an option'
+  }
+
+  with_options if: :local? do
+    validates :countries, length: {
+      minimum: 1, maximum: 1, message: 'please select a country'
+    }
+    validates :districts, length: {
+      minimum: 1, message: 'please select districts'
+    }
   end
 
-  def update_legacy_suitability # TODO: depreceted
-    initial_recommendation unless
-      suitability.key?(Fund.active.order(:updated_at).last&.slug)
+  with_options if: :national? do
+    validates :countries, length: {
+      minimum: 1, maximum: 1, message: 'please select a country'
+    }
+    validates :districts, length: {
+      maximum: 0, message: 'please deselect all districts'
+    }
   end
 
-  def suitable_funds # TODO: depreceted
-    suitability.sort_by { |fund| fund[1]['total'] }.reverse
+  with_options if: :international? do
+    validates :countries, length: {
+      minimum: 1, message: 'please select countries'
+    }
+    validates :districts, length: {
+      maximum: 0, message: 'please deselect all districts'
+    }
   end
 
-  def eligible_noquiz # TODO: depreceted
-    # Same as eligible_funds except doesn't check for the quiz
-    eligibility.select { |f, fund| fund.all_values_for('eligible').exclude?(false) }
+  before_validation :clear_districts_if_country_wide
+
+  before_create do
+    self[:access_token] = SecureRandom.urlsafe_base64
   end
 
-  def eligible_funds # TODO: deprecated
-    eligibility.select { |f, _| eligible_status(f) == 1 }
-  end
-
-  def ineligible_funds # TODO: deprecated
-    eligibility.select { |f, _| eligible_status(f).zero? }
-  end
-
-  def to_check_funds # TODO: deprecated
-    eligibility.select { |f, _| eligible_status(f) == -1 }
-  end
-
-  def eligible?(fund_slug) # TODO: depreceted
-    return nil unless eligibility[fund_slug]
-    eligibility[fund_slug].dig('quiz', 'eligible') &&
-      eligibility[fund_slug].all_values_for('eligible').exclude?(false)
-  end
-
-  def eligible_status(fund_slug) # TODO: deprecated
-    return 0 unless eligibility[fund_slug].all_values_for('eligible').exclude?(false)
-    return -1 unless eligibility[fund_slug]&.key?('quiz') # check
-    eligible?(fund_slug) ? 1 : 0 # eligible : ineligible
-  end
-
-  def eligibility_as_text(fund_slug) # TODO: deprecated
-    {
-      -1 => 'Check', 0 => 'Ineligible', 1 => 'Eligible'
-    }[eligible_status(fund_slug)]
-  end
-
-  def ineligible_reasons(fund_slug) # TODO: depreceted
-    return [] if eligible?(fund_slug)
-    eligibility[fund_slug].select { |_r, e| e['eligible'] == false }.keys
-  end
-
-  def ineligible_fund_ids # TODO: depreceted
-    Fund.where(slug: ineligible_funds.keys).pluck(:id)
-  end
-
-  def suitable?(fund_slug, scale = 1) # TODO: depreceted
-    score = suitability[fund_slug]&.dig('total')
-    return -1 if score.nil?
-    scale = score > 1 ? score.ceil : 1
-    [
-      [0.2, 0], # unsuitable
-      [0.5, 1], # fair suitability
-      [1.0, 2], # suitable
-    ].each do |v|
-      return v[1] if score <= (v[0] * scale)
-    end
-  end
-
-  def suitable_status(fund_slug) # TODO: depreceted
-    suitable?(fund_slug)
+  # Lookup category name from {SUPPORT_TYPES} using #category_code.
+  #
+  # @return [String] the name of the category.
+  def category_name
+    SUPPORT_TYPES.values.reduce({}, :merge)[category_code]
   end
 
   private
 
     def clear_districts_if_country_wide
-      self.districts = [] if affect_geo > 1
+      self.districts = [] if national? || international?
     end
 
-    def recipient_country_unless_multinational
-      self.countries = [countries.first] if affect_geo < 3
+    def international?
+      geographic_scale == 'international'
+    end
+
+    def local?
+      %w[local regional].include?(geographic_scale)
+    end
+
+    def national?
+      geographic_scale == 'national'
+    end
+
+    def other_support?
+      category_code&.between?(101, 199)
+    end
+
+    def seeking_funding?
+      category_code&.between?(201, 299)
     end
 end

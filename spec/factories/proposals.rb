@@ -1,30 +1,27 @@
 FactoryBot.define do
   factory :proposal do
-    affect_geo  1 # One or more regions
-    all_funding_required true
-    funding_duration 12
-    funding_type 1 # Capital
-    private false
-    recipient
-    tagline 'Description'
-    title 'Title'
-    total_costs 10_000
-    public_consent true
+    association :recipient, factory: :recipient, strategy: :build
+    association :user, factory: :user, strategy: :build
+    category_code 202 # Revenue - Core
+    description 'A new roof for our community center.'
+    geographic_scale 'local'
+    max_amount 250_000
+    max_duration 36
+    min_amount 10_000
+    min_duration 3
+    title 'Community space'
 
     after(:build) do |proposal, _evaluator|
-      proposal.themes = build_list(:theme, 1) unless proposal.themes.any?
-
-      unless proposal.countries.any? || proposal.districts.any?
-        country = build(:country)
-        proposal.countries = [country]
-        proposal.districts = [build(:district, country: country)]
-      end
-    end
-
-    factory :incomplete_proposal, class: Proposal do
-      state 'incomplete'
-      tagline nil
-      title nil
+      proposal.themes = build_list(:theme, 1)
+      country = build(:country)
+      proposal.countries = [country]
+      proposal.districts = build_list(:district, 1, country: country)
+      restriction = build(:restriction, category: 'Proposal')
+      priority = build(:priority, category: 'Proposal')
+      proposal.answers = [
+        build(:answer, category: proposal, criterion: restriction),
+        build(:answer, category: proposal, criterion: priority)
+      ]
     end
   end
 end

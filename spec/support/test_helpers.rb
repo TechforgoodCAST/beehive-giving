@@ -8,4 +8,10 @@ module TestHelpers
   def expect_error(key, msg, sub = subject)
     expect(sub.errors[key]).to include(msg)
   end
+
+  def invalid_attribute(model, attribute, value = nil)
+    obj = build(model)
+    obj.send("#{attribute}=", value)
+    expect(obj).not_to be_valid
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180821140542) do
+ActiveRecord::Schema.define(version: 20180828142557) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -338,7 +338,7 @@ ActiveRecord::Schema.define(version: 20180821140542) do
   create_table "proposals", id: :serial, force: :cascade do |t|
     t.integer "recipient_id"
     t.string "title"
-    t.string "tagline"
+    t.string "description"
     t.string "gender"
     t.string "outcome1"
     t.string "outcome2"
@@ -349,12 +349,12 @@ ActiveRecord::Schema.define(version: 20180821140542) do
     t.integer "min_age"
     t.integer "max_age"
     t.integer "beneficiaries_count"
-    t.integer "funding_duration"
+    t.integer "min_duration"
     t.float "activity_costs"
     t.float "people_costs"
     t.float "capital_costs"
     t.float "other_costs"
-    t.float "total_costs"
+    t.integer "min_amount"
     t.boolean "activity_costs_estimated", default: false
     t.boolean "people_costs_estimated", default: false
     t.boolean "capital_costs_estimated", default: false
@@ -369,16 +369,25 @@ ActiveRecord::Schema.define(version: 20180821140542) do
     t.boolean "affect_other"
     t.integer "affect_geo"
     t.boolean "total_costs_estimated", default: false
-    t.boolean "private"
+    t.boolean "permit_funder_verification"
     t.boolean "implementations_other_required"
     t.string "implementations_other"
     t.jsonb "recommended_funds", default: []
     t.jsonb "eligibility", default: {}, null: false
     t.jsonb "suitability", default: {}, null: false
-    t.integer "funding_type"
+    t.integer "category_code"
     t.boolean "public_consent"
+    t.string "support_details"
+    t.integer "max_amount"
+    t.integer "max_duration"
+    t.string "geographic_scale"
+    t.bigint "user_id"
+    t.string "access_token"
+    t.boolean "legacy"
+    t.datetime "private"
     t.index ["recipient_id"], name: "index_proposals_on_recipient_id"
     t.index ["state"], name: "index_proposals_on_state"
+    t.index ["user_id"], name: "index_proposals_on_user_id"
   end
 
   create_table "questions", id: :serial, force: :cascade do |t|
@@ -529,4 +538,5 @@ ActiveRecord::Schema.define(version: 20180821140542) do
   add_foreign_key "funds", "geo_areas"
   add_foreign_key "proposal_themes", "proposals"
   add_foreign_key "proposal_themes", "themes"
+  add_foreign_key "proposals", "users"
 end

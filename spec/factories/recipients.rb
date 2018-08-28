@@ -7,7 +7,8 @@ FactoryBot.define do
       recipient.country = country
       recipient.district = build(:district, country: country)
       recipient.answers = Array.new(2) do
-        build(:recipient_answer, eligible: true)
+        restriction = build(:restriction, category: 'Recipient')
+        build(:answer, category: recipient, criterion: restriction)
       end
     end
 

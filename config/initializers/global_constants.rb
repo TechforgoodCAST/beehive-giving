@@ -19,6 +19,7 @@ ORG_TYPES = [
   ['Community Interest Company', 5, 'Community Interest Companies']
 ].freeze
 
+# TODO: review/move
 FUNDING_TYPES = [
   ["Don't know", 0],
   ['Capital funding - purchase and refurbishment of equipment, and buildings', 1],

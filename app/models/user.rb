@@ -53,7 +53,7 @@ class User < ApplicationRecord
   end
 
   def email=(s)
-    self[:email] = s.downcase
+    self[:email] = s&.downcase
   end
 
   def full_name

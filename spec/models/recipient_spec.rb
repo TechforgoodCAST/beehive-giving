@@ -26,7 +26,7 @@ describe Recipient do
         country
         district
       ].each do |attribute|
-        invalid_recipient_attribute(attribute)
+        invalid_attribute(:recipient, attribute)
       end
     end
   end
@@ -52,7 +52,7 @@ describe Recipient do
         name
         operating_for
       ].each do |attribute|
-        invalid_recipient_attribute(attribute)
+        invalid_attribute(:recipient, attribute)
       end
     end
 
@@ -61,9 +61,15 @@ describe Recipient do
         operating_for
         income_band
       ].each do |attribute|
-        invalid_recipient_attribute(attribute, -100)
+        invalid_attribute(:recipient, attribute, -100)
       end
     end
+  end
+
+  it '#category_code in list' do
+    subject.category_code = -1
+    subject.valid?
+    expect_error(:category_code, 'please select an option')
   end
 
   it '#category_name' do
@@ -89,10 +95,4 @@ describe Recipient do
     subject.answers.first.eligible = nil
     expect(subject).not_to be_valid
   end
-end
-
-def invalid_recipient_attribute(attribute, value = nil)
-  recipient = build(:recipient)
-  recipient.send("#{attribute}=", value)
-  expect(recipient).not_to be_valid
 end

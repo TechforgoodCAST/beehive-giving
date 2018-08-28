@@ -31,6 +31,11 @@ class Recipient < ApplicationRecord
 
   validates :category_code, :country, :district, presence: true
 
+  validates :category_code, inclusion: {
+    in: CATEGORY.values.map(&:keys).flatten,
+    message: 'please select an option'
+  }
+
   with_options if: :incorporated? do
     validates :description, presence: true
   end
