@@ -1,4 +1,6 @@
 class Proposal < ApplicationRecord
+  include GenerateToken
+
   GEOGRAPHIC_SCALES = {
     local: 'One or more local areas',
     regional: 'One or more regions',
@@ -34,7 +36,8 @@ class Proposal < ApplicationRecord
 
   validates_associated :answers, :user
 
-  validates :description, :category_code, :title, presence: true
+  validates :description, :category_code, :public_consent, :title,
+            presence: true
 
   validates :title, length: {
     maximum: 280, message: 'please use 280 characters or less'
@@ -105,9 +108,7 @@ class Proposal < ApplicationRecord
 
   before_validation :clear_districts_if_country_wide
 
-  before_create do
-    self[:access_token] = SecureRandom.urlsafe_base64
-  end
+  before_create { generate_token(:access_token) }
 
   # Lookup category name from {SUPPORT_TYPES} using #category_code.
   #

@@ -9,6 +9,7 @@ FactoryBot.define do
     max_duration 36
     min_amount 10_000
     min_duration 3
+    public_consent true
     title 'Community space'
 
     after(:build) do |proposal, _evaluator|

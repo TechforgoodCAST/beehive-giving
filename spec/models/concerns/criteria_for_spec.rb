@@ -1,11 +1,5 @@
 require 'rails_helper'
 
-def expect_criteria(criteria, category, type)
-  criteria.each do |criterion|
-    expect(criterion).to have_attributes(category: category, type: type)
-  end
-end
-
 describe CriteriaFor do
   before do
     %w[Recipient Proposal].each do |category|
@@ -44,5 +38,11 @@ describe CriteriaFor do
   it 'returns proposal priorities' do
     criteria = subject.criteria_for(:proposal, :priorities)
     expect_criteria(criteria, 'Proposal', 'Priority')
+  end
+end
+
+def expect_criteria(criteria, category, type)
+  criteria.each do |criterion|
+    expect(criterion).to have_attributes(category: category, type: type)
   end
 end

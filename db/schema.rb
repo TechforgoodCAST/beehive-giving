@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180828142557) do
+ActiveRecord::Schema.define(version: 20180828160538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -521,6 +521,7 @@ ActiveRecord::Schema.define(version: 20180828142557) do
     t.string "unlock_token"
     t.date "terms_version"
     t.boolean "marketing_consent"
+    t.datetime "terms_agreed"
     t.index ["organisation_id"], name: "index_users_on_organisation_id"
     t.index ["organisation_type"], name: "index_users_on_organisation_type"
   end
