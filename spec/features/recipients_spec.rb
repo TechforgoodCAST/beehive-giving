@@ -3,8 +3,7 @@ require 'rails_helper'
 feature 'Recipients' do
   include ShowMeTheCookies
 
-  # TODO: before(:all)?
-  before do
+  before(:each) do
     create(:district)
     @funder = create(:funder_with_funds)
     @theme = Theme.first
@@ -12,7 +11,10 @@ feature 'Recipients' do
 
   let(:recipient) { Recipient.last }
 
-  scenario 'missing collection'
+  scenario 'missing collection' do
+    visit new_recipient_path('missing')
+    expect(page).to have_text('Not found')
+  end
 
   context 'funder collection' do
     let(:collection) { @funder }
