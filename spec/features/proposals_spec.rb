@@ -34,7 +34,7 @@ feature 'Proposals' do
     choose_answers(from: 0, to: 7)
     fill_in_user_fields
     check(:proposal_public_consent)
-    click_button('Next')
+    click_button('Get suitability report')
 
     expect(current_path).to eq(new_charge_path(Proposal.last))
   end
@@ -49,7 +49,7 @@ feature 'Proposals' do
     choose_answers(from: 0, to: 7)
     fill_in_user_fields
     check(:proposal_public_consent)
-    click_button('Next')
+    click_button('Get suitability report')
 
     expect(current_path).to eq(new_charge_path(Proposal.last))
   end
@@ -67,7 +67,7 @@ feature 'Proposals' do
     choose_answers(from: 0, to: 7)
     fill_in_user_fields
     check(:proposal_public_consent)
-    click_button('Next')
+    click_button('Get suitability report')
 
     expect(Proposal.last.countries).to contain_exactly(@country)
     expect(Proposal.last.districts).to eq(@districts)
@@ -86,7 +86,7 @@ feature 'Proposals' do
     choose_answers(from: 0, to: 7)
     fill_in_user_fields
     check(:proposal_public_consent)
-    click_button('Next')
+    click_button('Get suitability report')
 
     expect(Proposal.last.countries).to contain_exactly(@country)
     expect(Proposal.last.districts).to eq(@districts)
@@ -104,7 +104,7 @@ feature 'Proposals' do
     choose_answers(from: 0, to: 7)
     fill_in_user_fields
     check(:proposal_public_consent)
-    click_button('Next')
+    click_button('Get suitability report')
 
     expect(Proposal.last.countries).to contain_exactly(@country)
   end
@@ -122,7 +122,7 @@ feature 'Proposals' do
     choose_answers(from: 0, to: 7)
     fill_in_user_fields
     check(:proposal_public_consent)
-    click_button('Next')
+    click_button('Get suitability report')
 
     expect(Proposal.last.countries.size).to eq(2)
   end

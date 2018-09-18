@@ -24,7 +24,7 @@ Rails.application.routes.draw do
   post '/reports/:proposal_id/upgrade', to: 'charges#create'
   # TODO: thank you page?
 
-  # get '/reports/:proposal_id', to: 'reports#show', as: 'report'
+  get '/reports/:proposal_id', to: 'reports#show', as: 'report'
   # get '/reports', to: 'reports#index', as: 'reports'
 
   ## v3 end ##
@@ -85,9 +85,6 @@ Rails.application.routes.draw do
   get   '/account/:id',              to: 'recipients#edit', as: 'account_organisation'
   patch '/account/:id',              to: 'recipients#update'
   get   '/account/:id/subscription', to: 'accounts#subscription', as: 'account_subscription'
-  get   '/account/:id/subscription/upgrade',   to: 'charges#new', as: 'account_upgrade'
-  post  '/account/:id/subscription/upgrade',   to: 'charges#create'
-  get   '/account/:id/subscription/thank-you', to: 'charges#thank_you', as: 'thank_you'
 
   get '/proposals/:id', to: 'proposals#edit'
 
@@ -112,10 +109,6 @@ Rails.application.routes.draw do
   get  '/check/:slug/pre-results/(:id)', to: 'microsites#pre_results', as: 'microsite_pre_results'
   post '/check/:slug/pre-results/:id',   to: 'microsites#check_pre_results'
   get  '/check/:slug/results/:id',       to: 'microsites#results', as: 'microsite_results'
-
-  # Webhooks
-  post '/webhooks/invoice-payment-succeeded',     to: 'webhooks#invoice_payment_succeeded'
-  post '/webhooks/customer-subscription-deleted', to: 'webhooks#customer_subscription_deleted'
 
   # Misc.
   get '/cookies/update', to: 'cookies#update', as: 'update_cookies'

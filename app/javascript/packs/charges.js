@@ -1,42 +1,46 @@
-document.addEventListener('turbolinks:load', () => {
-  (function (w, d, id) {
-    const FORM = d.getElementById(id)
+document.addEventListener("turbolinks:load", function () {
 
-    function init () {
-      FORM.addEventListener('submit', processForm, false)
-    }
+    (function (d, id) {
+        const FORM = d.getElementById(id);
 
-    function processForm (e) {
-      e.preventDefault()
+        function init() {
+            FORM.addEventListener("submit", processForm, false);
+        }
 
-      const requiredFields = {
-        number: d.getElementById('card-number').value,
-        cvc: d.getElementById('cvc').value,
-        exp_month: d.getElementById('expiry-month').value,
-        exp_year: d.getElementById('expiry-year').value
-      }
+        function processForm(e) {
+            e.preventDefault();
 
-      Stripe.card.createToken(requiredFields, stripeResponseHandler)
-    }
+            const requiredFields = {
+                number: d.getElementById("card-number").value,
+                cvc: d.getElementById("cvc").value,
+                exp_month: d.getElementById("expiry-month").value,
+                exp_year: d.getElementById("expiry-year").value
+            };
 
-    function stripeResponseHandler (status, response) {
-      const btn = d.querySelector('button[type="submit"')
-      const msg = d.querySelector('.payment-errors')
+            Stripe.card.createToken(requiredFields, stripeResponseHandler);
+        }
 
-      if (response.error) {
-        btn.disabled = false
-        btn.classList.remove('disabled')
-        msg.classList.remove('hide')
-        msg.textContent = response.error.message
-      } else {
-        btn.disabled = true
-        btn.classList.add('disabled')
-        msg.classList.add('hide')
-        d.getElementById('stripeToken').value = response.id
-        FORM.submit()
-      }
-    }
+        function stripeResponseHandler(_status, response) {
+            const btn = d.querySelector("button[type='submit'");
+            const msg = d.querySelector(".payment-errors");
 
-    return (FORM ? init() : null)
-  }(window, document, 'payment-form'))
-}, false)
+            if (response.error) {
+                btn.disabled = false;
+                btn.classList.remove("disabled");
+                btn.innerText = "Purchase private report";
+                msg.classList.remove("hide");
+                msg.textContent = response.error.message;
+            } else {
+                btn.innerText = "Processing...";
+                btn.disabled = true;
+                btn.classList.add("disabled");
+                msg.classList.add("hide");
+                d.getElementById("stripeToken").value = response.id;
+                FORM.submit();
+            }
+        }
+
+        return (FORM ? init() : null);
+    }(document, "payment-form"));
+
+}, false);
