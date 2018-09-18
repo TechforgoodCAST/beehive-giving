@@ -25,7 +25,7 @@ Rails.application.routes.draw do
   # TODO: thank you page?
 
   get '/reports/:proposal_id', to: 'reports#show', as: 'report'
-  # get '/reports', to: 'reports#index', as: 'reports'
+  get '/reports', to: 'reports#index', as: 'reports'
 
   ## v3 end ##
 

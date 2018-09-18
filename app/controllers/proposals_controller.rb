@@ -28,6 +28,7 @@ class ProposalsController < ApplicationController
     @proposal.collection = @collection
 
     if @proposal.save
+      ReportMailer.notify(@proposal).deliver_now
       redirect_to new_charge_path(@proposal)
     else
       @districts = District.where(country_id: form_params[:country])

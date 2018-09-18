@@ -41,15 +41,7 @@ feature 'Proposals' do
 
   scenario 'create funding proposal', js: true do
     visit new_proposal_path(collection, @recipient)
-
-    fill_in_summary
-    fill_in_funding_details
-    select('An entire country')
-    select_country
-    choose_answers(from: 0, to: 7)
-    fill_in_user_fields
-    check(:proposal_public_consent)
-    click_button('Get suitability report')
+    valid_funding_request
 
     expect(current_path).to eq(new_charge_path(Proposal.last))
   end
@@ -127,6 +119,18 @@ feature 'Proposals' do
     expect(Proposal.last.countries.size).to eq(2)
   end
 
+  scenario 'creation triggers email', js: true do
+    ActionMailer::Base.deliveries = []
+    visit new_proposal_path(collection, @recipient)
+    valid_funding_request
+
+    proposal = Proposal.last
+    subject = "Funder report ##{proposal.id} for #{collection.name} [Beehive]"
+
+    expect(ActionMailer::Base.deliveries.size).to eq(1)
+    expect(ActionMailer::Base.deliveries.last.subject).to eq(subject)
+  end
+
   scenario 'creates new user'
 
   scenario 'assignes to existing user'
@@ -138,8 +142,6 @@ feature 'Proposals' do
   scenario 'priority labels inverted'
 
   scenario 'creates assessments'
-
-  scenario 'sends email'
 end
 
 def choose_answers(from: 0, to: 0)
@@ -199,4 +201,15 @@ def select_districts
     find('#choices-proposal_district_ids-item-choice-2').click
     find('.hint').click
   end
+end
+
+def valid_funding_request
+  fill_in_summary
+  fill_in_funding_details
+  select('An entire country')
+  select_country
+  choose_answers(from: 0, to: 7)
+  fill_in_user_fields
+  check(:proposal_public_consent)
+  click_button('Get suitability report')
 end
