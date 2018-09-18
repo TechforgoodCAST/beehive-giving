@@ -12,7 +12,9 @@ Prerequisites: [Ruby](https://www.ruby-lang.org), [Bundler](https://bundler.io/)
    ```
    STRIPE_SECRET_KEY=<secret_key>
    STRIPE_PUBLISHABLE_KEY=<publishable_key>
-   STRIPE_PLANS=<name>:<amount>,<name>:<amount>
+   <!-- TODO: document stripe env vars -->
+   STRIPE_FEE_OPPORTUNITY_SEEKER=80
+   STRIPE_AMOUNT_OPPORTUNITY_SEEKER=1999
    ```
 5. `rails s` and `bin/webpack-dev-server` to start local development servers
 
