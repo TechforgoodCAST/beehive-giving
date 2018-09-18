@@ -21,11 +21,13 @@ class User < ApplicationRecord
     in: [true, false], message: 'please select an option'
   }
 
-  validates :password, presence: true, confirmation: true, length: { in: 6..35 }
+  validates :password, presence: true, confirmation: true, length: {
+    in: 6..35
+  }, on: :update
   validates :password, format: {
     with: /\A(?=.*\d)(?=.*[a-zA-Z]).{6,25}\z/,
     message: 'must include 6 characters with 1 number'
-  }
+  }, on: :update
 
   validates :password_confirmation, presence: true, on: :update
 
@@ -33,27 +35,36 @@ class User < ApplicationRecord
     message: 'you must accept terms to continue'
   }
 
-  def email=(s)
-    self[:email] = s&.downcase
+  def email=(str)
+    self[:email] = str&.downcase
   end
 
-  def first_name=(s)
-    self[:first_name] = s&.strip&.capitalize
+  def first_name=(str)
+    self[:first_name] = str&.strip&.capitalize
   end
 
   def full_name
     "#{first_name} #{last_name}"
   end
 
-  def last_name=(s)
-    self[:last_name] = s&.strip&.capitalize
+  def last_name=(str)
+    self[:last_name] = str&.strip&.capitalize
   end
 
-  def terms_agreed=(bool)
+  def terms_agreed
+    self[:terms_agreed].is_a?(Time)
+  end
+
+  def terms_agreed=(value)
+    bool = ActiveModel::Type::Boolean.new.cast(value)
     self[:terms_agreed] = bool.is_a?(TrueClass) ? Time.zone.now : nil
+  end
+
+  def terms_agreed_time
+    self[:terms_agreed]
   end
 
   before_create { generate_token(:auth_token) }
 
-  has_secure_password
+  has_secure_password validations: false
 end

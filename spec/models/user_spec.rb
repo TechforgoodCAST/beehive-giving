@@ -52,12 +52,6 @@ describe User do
     expect_error(:marketing_consent, 'please select an option')
   end
 
-  it 'invalid #password' do
-    subject.password = 'invaid_password'
-    subject.valid?
-    expect_error(:password, 'must include 6 characters with 1 number')
-  end
-
   it 'invalid #terms_agreed' do
     subject.terms_agreed = false
     subject.valid?
@@ -71,24 +65,44 @@ describe User do
       first_name
       last_name
       marketing_consent
-      password
       terms_agreed
     ].each do |attribute|
       invalid_attribute(:user, attribute)
     end
   end
 
-  context '#terms_agreed=' do
-    it 'invalid arguments return nil' do
-      [false, 1, 'true', nil].each do |value|
+  context '#terms_agreed and #terms_agreed=' do
+    it 'truthy values set Time' do
+      subject.terms_agreed = true
+      [true, 'true', 1].each do |value|
         subject.terms_agreed = value
-        expect(subject.terms_agreed).to eq(nil)
+        expect(subject.terms_agreed).to eq(true)
+        expect(subject.terms_agreed_time).to be_a(Time)
       end
     end
 
-    it 'TrueClass sets DateTime' do
-      subject.terms_agreed = true
-      expect(subject.terms_agreed).to be_a(Time)
+    it 'falsy values do not set Time' do
+      [false, 0, nil].each do |value|
+        subject.terms_agreed = value
+        expect(subject.terms_agreed).to eq(false)
+        expect(subject.terms_agreed_time).to eq(nil)
+      end
+    end
+  end
+
+  context 'on update' do
+    before { subject.save! }
+
+    it 'password fields required' do
+      subject.valid?
+      expect_error(:password, "can't be blank")
+      expect_error(:password_confirmation, "can't be blank")
+    end
+
+    it 'invalid #password' do
+      subject.password = 'invaid_password'
+      subject.valid?
+      expect_error(:password, 'must include 6 characters with 1 number')
     end
   end
 end

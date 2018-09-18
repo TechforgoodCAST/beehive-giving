@@ -1,19 +1,82 @@
-= content_for :title, 'New Proposal'
+-# TODO: name page
+-# = content_for :title, 'New Proposal'
 
-%header
-  = cell :navbar, @current_user
-  = cell :breadcrumb, 'Proposals' => proposals_path, 'New Proposal' => nil
+%div{ style: 'max-width: 690px; margin: 40px auto;' }
 
-%main
-  .maxw1080.mx-auto.px20
-    %section.md.mb20.px20
-      %h1.mb20 Dashboard
-    = render partial: 'accounts/subnav'
+  %h1.mb40
+    New
+    = @collection.class.to_s.downcase
+    report for
+    = @collection.name
 
-  .maxw1080.mx-auto.px20.flex.flex-wrap
-    %aside.perc25.md.px20.mb40
-      %h2.mb20 New Proposal
-      %h4 Check the suitability of a new funding request.
+  = simple_form_for @proposal, url: new_proposal_path(@collection, @recipient) do |f|
+    .mb20= f.input :title
 
-    %section.perc75.md.mb80.px20
-      = render partial: 'form', locals: { submit_text: 'Check proposal' }
+    .mb20= f.input :description, as: :text, input_html: { rows: 2 }
+
+    .mb20= f.association :themes, required: true, collection: Theme.all, input_html: { multiple: true, class: 'choices-select' }
+
+    .mb15= f.input :category_code, as: :grouped_select, collection: Proposal::CATEGORIES, group_method: :last, label_method: :last, value_method: :first
+
+    .seeking-funding
+      %blockquote.border-mist.mb15
+        = f.label :min_amount, required: true
+        = f.hint :min_amount
+        .flex.flex-wrap.justify-between.items-center
+          .perc48= f.input :min_amount, as: :currency, label: false, hint: false
+          %span -
+          .perc48= f.input :max_amount, label: false, hint: false
+
+      %blockquote.border-mist.mb15
+        = f.label :min_duration, required: true
+        = f.hint :min_duration
+        .flex.flex-wrap.justify-between.items-center
+          .perc48= f.input :min_duration, label: false, hint: false
+          %span -
+          .perc48= f.input :max_duration, label: false, hint: false
+
+    -# TODO: change label
+    %blockquote.border-mist.mb20= f.input :support_details
+
+    .mb15= f.input :geographic_scale, required: true, collection: Proposal::GEOGRAPHIC_SCALES, label_method: :last, value_method: :first
+
+    %blockquote.border-mist.mb15= f.input :country_id, required: true, collection: Country.all, input_html: { class: 'choices-select' }
+
+    %blockquote.border-mist.mb15= f.association :districts, collection: @districts, input_html: { multiple: true }
+
+    %blockquote.border-mist.mb15= f.association :countries, include_blank: true, input_html: { class: 'choices-select' }
+
+    Restrictions
+    %ol
+      - @proposal.answers.each do |answer|
+        - if answer.criterion.type == 'Restriction'
+          = f.simple_fields_for :answers, answer do |a|
+            = a.hidden_field :criterion_id, value: a.object.criterion.id
+            = a.input :eligible, as: :radio_buttons, label: false, collection: a.object.criterion.radio_button_values
+            %li
+              %label.mx20= raw(a.object.criterion.details)
+
+    Priorities
+    %ol
+      - @proposal.answers.each do |answer|
+        - if answer.criterion.type == 'Priority'
+          = f.simple_fields_for :answers, answer do |a|
+            = a.hidden_field :criterion_id, value: a.object.criterion.id
+            = a.input :eligible, as: :radio_buttons, label: false, collection: a.object.criterion.radio_button_values
+            %li
+              %label.mx20= raw(a.object.criterion.details)
+
+    = f.simple_fields_for :user do |u|
+      = u.input :first_name
+      = u.input :last_name
+      = u.input :email
+      = u.input :email_confirmation
+      = u.input :terms_agreed, as: :boolean, label: false, inline_label: "I accept the #{link_to('terms of service', terms_path, target: '_blank')} and #{link_to('privacy policy', privacy_path, target: '_blank')}".html_safe
+      = u.input :marketing_consent, as: :radio_buttons
+
+    = f.label :public_consent
+    = f.hint :public_consent
+
+    = f.input :public_consent, as: :boolean, label: false, inline_label: 'I understand', hint: false
+
+    = f.submit 'Get suitability report', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Checking...' }

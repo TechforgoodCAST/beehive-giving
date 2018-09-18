@@ -1,74 +1,68 @@
 class ProposalsController < ApplicationController
-  before_action :registration_incomplete, except: %i[edit update]
-  before_action :registration_invalid, except: %i[edit update]
-  before_action :registration_microsite, except: %i[edit update]
+  layout 'fullscreen'
 
-  before_action :ensure_logged_in
-  before_action :load_country, except: :index
-  before_action :load_proposal, only: %i[edit update]
+  # TODO: refactor helper?
+  before_action :load_collection
+
+  before_action :ensure_collection # TODO: refactor
 
   def new
-    authorize Proposal
-    @proposal = @recipient.proposals.new(countries: [@country])
-  end
+    @recipient = Recipient.find_by_hashid(params[:hashid])
 
-  def create
-    authorize Proposal
-    @proposal = @recipient.proposals.new(proposal_params)
+    return redirect_to root_path if @recipient.proposal # TODO: refactor
 
-    if @proposal.save
-      Assessment.analyse_and_update!(Fund.active, @proposal)
-      redirect_to funds_path(@proposal)
-    else
-      render :new
+    @proposal = @recipient.build_proposal
+    @proposal.user = current_user || User.new
+
+    @proposal.answers = criteria.map do |c|
+      Answer.new(category: @proposal, criterion: c)
     end
   end
 
-  def index
-    @proposals = @recipient.proposals.where.not(state: 'basics')
-  end
+  def create
+    @recipient = Recipient.find_by_hashid(params[:hashid])
 
-  def edit
-    return unless request.referer
-    session.delete(:return_to) if request.referer.ends_with?('/proposals')
-  end
+    return redirect_to root_path if @recipient.proposal # TODO: refactor
 
-  def update
-    if @proposal.update(proposal_params)
-      Assessment.analyse_and_update!(Fund.active, @proposal)
-      @proposal.complete!
+    @proposal = @recipient.build_proposal(form_params)
+    @proposal.collection = @collection
 
-      if session[:return_to]
-        fund = Fund.find_by_hashid(session.delete(:return_to))
-        redirect_to fund_path(fund, @proposal)
-      else
-        redirect_to proposals_path
-      end
+    if @proposal.save
+      redirect_to new_charge_path(@proposal)
     else
-      render :edit
+      @districts = District.where(country_id: form_params[:country])
+      render :new
     end
   end
 
   private
 
-    def load_country
-      @country = Country.find_by(alpha2: @recipient.country)
+    def criteria
+      @collection.criteria.where(category: 'Proposal')
+                 .where('type = ? OR type = ?', 'Restriction', 'Priority')
     end
 
-    def load_proposal
-      @proposal = @recipient.proposals.find_by(id: params[:id])
-      redirect_to proposals_path unless @proposal
+    def ensure_collection
+      return if @collection
+      redirect_back(fallback_location: root_path)
     end
 
-    def proposal_params
+    def form_params
       params.require(:proposal).permit(
-        :affect_geo, :all_funding_required, :funding_duration, :funding_type,
-        :private, :public_consent, :tagline, :title, :total_costs,
-        district_ids: [], country_ids: [], theme_ids: []
+        :category_code, :country_id, :description, :geographic_scale, :max_amount,
+        :max_duration, :min_amount, :min_duration, :public_consent,
+        :support_details, :title, country_ids: [], district_ids: [],
+        theme_ids: [], answers_attributes: %i[eligible criterion_id],
+        user_attributes: %i[
+          email email_confirmation first_name last_name marketing_consent
+          terms_agreed
+        ]
       )
     end
 
-    def user_not_authorised
-      redirect_to account_upgrade_path(@recipient)
+    def load_collection
+      # TODO: .includes(funds: :questions)
+      @collection = Funder.find_by(slug: params[:slug]) ||
+                    Theme.find_by(slug: params[:slug])
     end
 end

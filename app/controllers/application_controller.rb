@@ -5,10 +5,6 @@ class ApplicationController < ActionController::Base
 
   helper_method :logged_in?
 
-  before_action :load_recipient, :load_last_proposal, unless: :error?
-
-  before_action :catch_unauthorised, if: :logged_in?
-  before_action :legacy_funder, if: :logged_in?
   before_action :registration_incomplete, if: :logged_in?
   before_action :registration_invalid, if: :logged_in?
   before_action :registration_microsite, if: :logged_in?
@@ -31,14 +27,9 @@ class ApplicationController < ActionController::Base
       redirect_to '/logout', warning: 'Please sign in'
     end
 
-    def catch_unauthorised
-      redirect_to unauthorised_path unless current_user.authorised?
-    end
-
     def current_user
       return unless cookies[:auth_token]
-      @current_user ||= User.includes(:organisation)
-                            .find_by(auth_token: cookies[:auth_token])
+      @current_user ||= User.find_by(auth_token: cookies[:auth_token])
       session[:user_id] = @current_user.id
       @current_user
     end
@@ -49,34 +40,7 @@ class ApplicationController < ActionController::Base
       return redirect_to sign_in_path, alert: 'Please sign in'
     end
 
-    def error?
-      params[:controller] == 'errors'
-    end
-
-    def legacy_funder
-      redirect_to legacy_funder_path if current_user.funder?
-    end
-
     # TODO: def legacy_fundraiser
-
-    def load_last_proposal
-      return unless @recipient
-      @proposal = if params[:proposal_id]
-                    @recipient.proposals.find_by(id: params[:proposal_id])
-                  else
-                     # TODO: remove/refactor
-                    if current_user.first_name.nil?
-                      @recipient.proposals.last
-                    else
-                      @recipient.proposals.where.not(state: 'basics').last
-                    end
-                  end
-    end
-
-    def load_recipient
-      return unless logged_in? && current_user.organisation.is_a?(Recipient)
-      @recipient = current_user.organisation
-    end
 
     def redirect(path, opts = {})
       return unless path

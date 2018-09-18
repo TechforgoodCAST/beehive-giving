@@ -1,12 +1,12 @@
+# TODO: refactor
 Rails.application.routes.draw do
   resources :articles, only: %i[index show]
   resources :feedback, except: %i[show index destroy] # TODO: remove
   resources :password_resets, except: %i[show index destroy]
-  resources :proposals, except: %i[show destroy]
   resources :reveals, only: :create # TODO: remove
   resources :requests, only: :create # TODO: remove
 
-  ## v3 ##
+  ## v3 start ##
 
   namespace :api do
     namespace :v1 do
@@ -17,7 +17,17 @@ Rails.application.routes.draw do
   get  '/check/:slug', to: 'recipients#new', as: 'new_recipient'
   post '/check/:slug', to: 'recipients#create'
 
-  ## end ##
+  get  '/check/:slug/proposal/:hashid', to: 'proposals#new', as: 'new_proposal'
+  post '/check/:slug/proposal/:hashid', to: 'proposals#create'
+
+  get  '/reports/:proposal_id/upgrade', to: 'charges#new', as: 'new_charge'
+  post '/reports/:proposal_id/upgrade', to: 'charges#create'
+  # TODO: thank you page?
+
+  # get '/reports/:proposal_id', to: 'reports#show', as: 'report'
+  # get '/reports', to: 'reports#index', as: 'reports'
+
+  ## v3 end ##
 
   # Errors
   match '/404', to: 'errors#not_found', via: :all

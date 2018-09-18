@@ -8,7 +8,6 @@ FactoryBot.define do
     first_name 'John'
     last_name 'Doe'
     marketing_consent true
-    password 'password123'
     terms_agreed true
   end
 end

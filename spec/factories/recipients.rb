@@ -6,10 +6,6 @@ FactoryBot.define do
       country = build(:country)
       recipient.country = country
       recipient.district = build(:district, country: country)
-      recipient.answers = Array.new(2) do
-        restriction = build(:restriction, category: 'Recipient')
-        build(:answer, category: recipient, criterion: restriction)
-      end
     end
 
     factory :recipient do

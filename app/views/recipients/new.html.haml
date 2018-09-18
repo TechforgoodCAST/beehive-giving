@@ -7,7 +7,7 @@
     = @collection.name
 
   = simple_form_for @recipient, url: new_recipient_path do |f|
-    .mb15= f.input :category_code, as: :grouped_select, collection: Recipient::CATEGORY, group_method: :last, label_method: :last, value_method: :first
+    .mb15= f.input :category_code, as: :grouped_select, collection: Recipient::CATEGORIES, group_method: :last, label_method: :last, value_method: :first
 
     .mb30
       .mb10= f.input :description, required: true
@@ -21,12 +21,12 @@
       = f.input :website
 
     .mb30
-      .mb10= f.association :country, include_blank: true, input_html: { class: 'cs' }
-      = f.association :district, collection: [[@district&.name, @district&.id]], wrapper_html: { class: 'hide' }
+      .mb10= f.association :country, include_blank: true, input_html: { class: 'choices-select' }
+      %blockquote.border-mist.mb15.hide= f.association :district, collection: [[@district&.name, @district&.id]]
 
     = f.simple_fields_for :answers do |a|
       = a.hidden_field :criterion_id, value: a.object.criterion.id
-      = a.input :eligible, as: :radio_buttons, label: false
+      = a.input :eligible, as: :radio_buttons, label: false, collection: a.object.criterion.radio_button_values
       %label.mx20= raw(a.object.criterion.details)
 
     = f.submit 'Next', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Finding...' }

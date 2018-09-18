@@ -92,7 +92,8 @@ describe Recipient do
   end
 
   it 'validates answers' do
-    subject.answers.first.eligible = nil
-    expect(subject).not_to be_valid
+    subject.answers << build(:answer)
+    subject.valid?
+    expect_error(:answers, 'is invalid')
   end
 end

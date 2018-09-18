@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180828160538) do
+ActiveRecord::Schema.define(version: 20180829143749) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -385,6 +385,10 @@ ActiveRecord::Schema.define(version: 20180828160538) do
     t.string "access_token"
     t.boolean "legacy"
     t.datetime "private"
+    t.bigint "collection_id"
+    t.string "collection_type"
+    t.index ["collection_id"], name: "index_proposals_on_collection_id"
+    t.index ["collection_type"], name: "index_proposals_on_collection_type"
     t.index ["recipient_id"], name: "index_proposals_on_recipient_id"
     t.index ["state"], name: "index_proposals_on_state"
     t.index ["user_id"], name: "index_proposals_on_user_id"

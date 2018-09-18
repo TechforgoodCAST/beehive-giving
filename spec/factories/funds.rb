@@ -1,3 +1,4 @@
+# TODO: refactor
 FactoryBot.define do
   factory :fund do
     association :geo_area, strategy: :build
@@ -35,6 +36,9 @@ FactoryBot.define do
       priorities_known false
       after(:build) do |fund, _evaluator|
         fund.themes = build_list(:theme, 1) unless fund.themes.any?
+        fund.restrictions << build_list(:restriction, 2, category: 'Recipient')
+        fund.restrictions << build_list(:restriction, 2)
+        fund.priorities = build_list(:priority, 2)
       end
     end
 

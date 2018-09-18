@@ -168,12 +168,14 @@ describe Proposal do
 
   it 'validates answers' do
     subject.answers.first.eligible = nil
-    expect(subject).not_to be_valid
+    subject.valid?
+    expect_error(:answers, 'is invalid')
   end
 
   it 'validates user' do
     subject.user.email = nil
-    expect(subject).not_to be_valid
+    subject.valid?
+    expect_error(:user, 'is invalid')
   end
 
   it '#access_token set before create' do
@@ -185,4 +187,10 @@ describe Proposal do
   it '#category_name' do
     expect(subject.category_name).to eq('Revenue - Core')
   end
+
+  scenario '#country set'
+
+  scenario 'countries & districts properly cleared & last selection takes precedence'
+
+  scenario 'districts only for country allowed'
 end

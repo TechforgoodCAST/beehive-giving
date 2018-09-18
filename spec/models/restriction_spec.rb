@@ -62,11 +62,13 @@ describe 'Restriction' do
     expect(@r1.invert).to eq false
   end
 
+  # TODO: refactor to criterion_spec
   it 'invert false returns correct radio_buttons' do
     expect(Restriction.radio_buttons(@r1.invert))
       .to eq [['Yes', false], ['No', true]]
   end
 
+  # TODO: refactor to criterion_spec
   it 'invert true returns correct radio_buttons' do
     @r1.update(invert: true)
     expect(Restriction.radio_buttons(@r1.invert))

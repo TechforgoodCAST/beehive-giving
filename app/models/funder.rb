@@ -1,12 +1,12 @@
 class Funder < ApplicationRecord
-  include CriteriaFor
-
   has_many :attempts
   has_many :funds
+  has_many :proposals, as: :collection # TODO: test
 
   # TODO: test
-  has_many :restrictions, through: :funds
-  has_many :priorities, through: :funds
+  has_many :criteria, -> { distinct }, through: :funds
+  has_many :priorities, -> { distinct }, through: :funds
+  has_many :restrictions, -> { distinct }, through: :funds
 
   has_many :users, as: :organisation, dependent: :destroy
 

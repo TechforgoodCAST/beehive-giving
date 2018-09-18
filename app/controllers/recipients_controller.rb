@@ -19,7 +19,7 @@ class RecipientsController < ApplicationController
     @recipient.user = current_user
 
     if @recipient.save
-      redirect_to new_proposal_path(@recipient)
+      redirect_to new_proposal_path(@collection, @recipient)
     else
       @district = District.find_by(id: form_params[:district_id])
       render :new
@@ -29,7 +29,7 @@ class RecipientsController < ApplicationController
   private
 
     def criteria
-      @collection.criteria_for(:recipient, :restrictions)
+      @collection.restrictions.where(category: 'Recipient')
     end
 
     def form_params

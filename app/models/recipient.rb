@@ -1,5 +1,5 @@
 class Recipient < ApplicationRecord
-  CATEGORY = {
+  CATEGORIES = {
     'Unincorporated' => {
       201 => 'A community or voluntary group',
       202 => 'An unincorporated association',
@@ -32,7 +32,7 @@ class Recipient < ApplicationRecord
   validates :category_code, :country, :district, presence: true
 
   validates :category_code, inclusion: {
-    in: CATEGORY.values.map(&:keys).flatten,
+    in: CATEGORIES.values.map(&:keys).flatten,
     message: 'please select an option'
   }
 
@@ -65,11 +65,16 @@ class Recipient < ApplicationRecord
     self[:company_number] = s&.strip
   end
 
-  # Lookup category name from {CATEGORY} using #category_code.
+  def to_param
+    hashid
+  end
+
+  # TODO: to concern
+  # Lookup category name from {CATEGORIES} using #category_code.
   #
   # @return [String] the name of the category.
   def category_name
-    CATEGORY.values.reduce({}, :merge)[category_code]
+    CATEGORIES.values.reduce({}, :merge)[category_code]
   end
 
   def max_income # TODO: review

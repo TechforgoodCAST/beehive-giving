@@ -1,9 +1,10 @@
 FactoryBot.define do
   factory :proposal do
+    association :collection, factory: :funder, strategy: :build
     association :recipient, factory: :recipient, strategy: :build
     association :user, factory: :user, strategy: :build
     category_code 202 # Revenue - Core
-    description 'A new roof for our community center.'
+    description 'A new roof for our community centre.'
     geographic_scale 'local'
     max_amount 250_000
     max_duration 36

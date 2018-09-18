@@ -1,14 +1,9 @@
 class Proposal < ApplicationRecord
   include GenerateToken
 
-  GEOGRAPHIC_SCALES = {
-    local: 'One or more local areas',
-    regional: 'One or more regions',
-    national: 'An entire country',
-    international: 'Across many countries'
-  }.with_indifferent_access.freeze
+  attr_accessor :country_id
 
-  SUPPORT_TYPES = {
+  CATEGORIES = {
     'Grant funding' => {
       201 => 'Capital',
       202 => 'Revenue - Core',
@@ -19,6 +14,14 @@ class Proposal < ApplicationRecord
     }
   }.freeze
 
+  GEOGRAPHIC_SCALES = {
+    local: 'One or more local areas',
+    regional: 'One or more regions',
+    national: 'An entire country',
+    international: 'Across many countries'
+  }.with_indifferent_access.freeze
+
+  belongs_to :collection, polymorphic: true
   belongs_to :recipient
   belongs_to :user
 
@@ -31,9 +34,9 @@ class Proposal < ApplicationRecord
   has_and_belongs_to_many :countries
   has_and_belongs_to_many :districts
 
-  has_many :answers, as: :category, dependent: :destroy
-  accepts_nested_attributes_for :answers
-
+  # TODO: is inverse_of required if rails updated?
+  has_many :answers, as: :category, dependent: :destroy, inverse_of: :category
+  accepts_nested_attributes_for :answers, :user
   validates_associated :answers, :user
 
   validates :description, :category_code, :public_consent, :title,
@@ -48,7 +51,7 @@ class Proposal < ApplicationRecord
   }
 
   validates :category_code, inclusion: {
-    in: SUPPORT_TYPES.values.map(&:keys).flatten,
+    in: CATEGORIES.values.map(&:keys).flatten,
     message: 'please select an option'
   }
 
@@ -79,7 +82,7 @@ class Proposal < ApplicationRecord
     in: GEOGRAPHIC_SCALES.keys, message: 'please select an option'
   }
 
-  with_options if: :local? do
+  with_options if: :local_or_regional? do
     validates :countries, length: {
       minimum: 1, maximum: 1, message: 'please select a country'
     }
@@ -106,15 +109,16 @@ class Proposal < ApplicationRecord
     }
   end
 
-  before_validation :clear_districts_if_country_wide
+  before_validation :clear_districts_if_country_wide, :country_to_countries
 
   before_create { generate_token(:access_token) }
 
-  # Lookup category name from {SUPPORT_TYPES} using #category_code.
+  # TODO: to concern
+  # Lookup category name from {CATEGORIES} using #category_code.
   #
   # @return [String] the name of the category.
   def category_name
-    SUPPORT_TYPES.values.reduce({}, :merge)[category_code]
+    CATEGORIES.values.reduce({}, :merge)[category_code]
   end
 
   private
@@ -123,11 +127,17 @@ class Proposal < ApplicationRecord
       self.districts = [] if national? || international?
     end
 
+    def country_to_countries
+      return unless country_id
+
+      self.country_ids = [country_id] unless international?
+    end
+
     def international?
       geographic_scale == 'international'
     end
 
-    def local?
+    def local_or_regional?
       %w[local regional].include?(geographic_scale)
     end
 

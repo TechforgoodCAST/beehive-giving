@@ -1,3 +1,4 @@
+# TODO: refactor
 en:
   simple_form:
     required:
@@ -6,6 +7,19 @@ en:
       default_message: "Please review the problems below:"
 
     labels:
+      proposal:
+        category_code: 'What type of funding or support are you seeking?'
+        country_id: 'In which country?'
+        countries: 'In which countries? *'
+        districts: 'And, in which areas? *'
+        description: 'Describe your proposed work in a sentence or two'
+        geographic_scale: 'Where will your proposed work affect?'
+        min_amount: 'How much funding are you seeking?'
+        min_duration: 'How many months do you require funding for?'
+        public_consent: 'Confirmation'
+        themes: 'Select up to 5 themes which best describe your proposed work'
+        title: 'Proposal title'
+
       recipient:
         category_code: 'Who will be receiving the funding or support?'
         description: 'Type of incorporation'
@@ -13,25 +27,6 @@ en:
         district: 'In which area?'
 
       defaults:
-        # Proposal
-        affect_geo: 'Where will your proposed work affect?'
-        all_funding_required: 'Is this all of the funding required for the proposed work?'
-        countries: 'Which countries?'
-        districts: 'Which areas will your proposed work affect?'
-        funding_duration: 'How many months do you require funding for?'
-        funding_type: 'What type of grant funding are you seeking?'
-        private: 'Include my request in funder verification'
-        tagline: 'Describe your proposed work in a sentence or two'
-        themes: 'Select the funding themes which best describe your project'
-        title: 'Proposal title'
-        total_costs: 'How much funding are you seeking?'
-        public_consent: 'Include my request in the proposals directory'
-        # Recipient
-        country: 'In which country is the funding recipient based?'
-        employees: 'No. of employees'
-        income_band: 'Annual income'
-        org_type: 'Who will be receiving the funding?'
-        volunteers: 'No. of volunteers'
         # User
         password_confirmation: 'Confirm password'
         marketing_consent: 'Email me with occasional updates when new funds or features are added'
@@ -42,31 +37,31 @@ en:
         email: 'Add an active email address to see your results...'
 
     placeholders:
-      defaults:
-        # Proposal
-        funding_duration: 'e.g. 12'
-        title: "e.g. 'Improving careers for disabled workers'"
-        total_costs: 'e.g. 10000'
-        street_address: 'e.g. 123 New Street'
       password_reset:
         email: 'someone@example.com'
       pre_results_step:
         email: 'e.g. email@example.com'
+      proposal:
+        min_amount: 'From'
+        max_amount: 'To'
+        title: "e.g. 'Improving careers for disabled workers'"
 
     hints:
+      proposal:
+        country_id: 'Type the name of the country (e.g. United Kingdom) to get started.'
+        countries: 'Type the name of the country (e.g. United Kingdom) to get started.'
+        districts: 'Type the name of the place (e.g. Birmingham) to get started.'
+        min_amount: 'If you have an exact amount in mind then use the same figure in both boxes.'
+        min_duration: 'If you have an exact duration in mind then use the same figure in both boxes.'
+        public_consent: 'By clicking ‘Get suitability report’ non-personal details about my request will be added to a publically viewable directory that anyone can browse, comment on and download under a Creative Commons Attribution 4.0 International (CC BY 4.0) license. I can opt to remove my report from the public directory at any time by making it private for a small fee (details to follow).'
+        title: 'This could be the name of your project, or a few words describing your proposal.'
+
       recipient:
         charity_number: 'If applicable'
         company_number: 'If applicable'
         description: 'Please be as specific as possible, for example: Charity registered in England & Wales; Charitable Incorportated Organisation (CIO); Community Interest Company (CIC); Company Limited by Guarantee (CLG); Co-operative; etc.'
 
       defaults:
-        # Proposal
-        countries: 'Type the name of a country (e.g. Kenya) to get started.'
-        districts: 'Type the name of a place (e.g. England) to get started.'
-        private: 'We work with funders to verify our suitability assessments. By selecting ‘Yes’, some details of your request may be shared with funders for verification purposes. No personal data is shared.'
-        themes: 'Proposals with fewer than 5 themes get the best results.'
-        title: 'This could be the name of your project, or a few words describing your proposal.'
-        public_consent: 'Have non-personal details about your funding request such as the amount, description and eligibility reasons included in a publicly viewable directory of recent funding searches that others can browse and learn from.'
         # User
         marketing_consent: 'You can opt out at any time.'
         password: 'At least 6 characters long with 1 number.'
