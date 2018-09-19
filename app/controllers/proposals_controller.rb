@@ -1,16 +1,9 @@
 class ProposalsController < ApplicationController
   layout 'fullscreen'
 
-  # TODO: refactor helper?
-  before_action :load_collection
-
-  before_action :ensure_collection # TODO: refactor
+  before_action :load_collection, :load_recipient, :authenticate
 
   def new
-    @recipient = Recipient.find_by_hashid(params[:hashid])
-
-    return redirect_to root_path if @recipient.proposal # TODO: refactor
-
     @proposal = @recipient.build_proposal
     @proposal.user = current_user || User.new
 
@@ -20,10 +13,6 @@ class ProposalsController < ApplicationController
   end
 
   def create
-    @recipient = Recipient.find_by_hashid(params[:hashid])
-
-    return redirect_to root_path if @recipient.proposal # TODO: refactor
-
     @proposal = @recipient.build_proposal(form_params)
     @proposal.collection = @collection
 
@@ -38,32 +27,43 @@ class ProposalsController < ApplicationController
 
   private
 
+    def authenticate
+      authorize @recipient, policy_class: ProposalPolicy
+    end
+
     def criteria
       @collection.criteria.where(category: 'Proposal')
                  .where('type = ? OR type = ?', 'Restriction', 'Priority')
     end
 
-    def ensure_collection
-      return if @collection
-      redirect_back(fallback_location: root_path)
-    end
-
     def form_params
       params.require(:proposal).permit(
-        :category_code, :country_id, :description, :geographic_scale, :max_amount,
-        :max_duration, :min_amount, :min_duration, :public_consent,
-        :support_details, :title, country_ids: [], district_ids: [],
-        theme_ids: [], answers_attributes: %i[eligible criterion_id],
+        :category_code, :country_id, :description, :geographic_scale,
+        :max_amount, :max_duration, :min_amount, :min_duration, :public_consent,
+        :support_details, :title, nested_attributes,
+        country_ids: [], district_ids: [], theme_ids: []
+      )
+    end
+
+    def nested_attributes
+      {
+        answers_attributes: %i[eligible criterion_id],
         user_attributes: %i[
           email email_confirmation first_name last_name marketing_consent
           terms_agreed
         ]
-      )
+      }
     end
 
-    def load_collection
-      # TODO: .includes(funds: :questions)
-      @collection = Funder.find_by(slug: params[:slug]) ||
-                    Theme.find_by(slug: params[:slug])
+    def load_recipient
+      @recipient = Recipient.find_by_hashid(params[:hashid])
+    end
+
+    def user_not_authorised
+      if @recipient&.proposal
+        redirect_to report_path(@recipient.proposal)
+      else
+        render 'errors/not_found', status: 404
+      end
     end
 end

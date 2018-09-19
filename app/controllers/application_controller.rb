@@ -34,6 +34,13 @@ class ApplicationController < ActionController::Base
       @current_user
     end
 
+    def load_collection
+      @collection = Funder.find_by(slug: params[:slug]) ||
+                    Theme.find_by(slug: params[:slug])
+
+      render('errors/not_found', status: 404) if @collection.nil?
+    end
+
     def ensure_logged_in
       return if logged_in?
       session[:original_url] = request.original_url

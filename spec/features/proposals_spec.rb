@@ -13,14 +13,6 @@ feature 'Proposals' do
 
   let(:collection) { @funder }
 
-  scenario 'missing collection'
-
-  scenario 'associated to collection'
-
-  scenario 'missing recipient'
-
-  scenario 'existing proposal associated to recipient'
-
   scenario 'create other support proposal', js: true do
     visit new_proposal_path(collection, @recipient)
 
@@ -131,7 +123,35 @@ feature 'Proposals' do
     expect(ActionMailer::Base.deliveries.last.subject).to eq(subject)
   end
 
-  scenario 'creates new user'
+  scenario 'missing collection' do
+    visit new_proposal_path('missing', 'missing')
+    expect(page).to have_text('Not found')
+  end
+
+  scenario 'associated to collection', js: true do
+    visit new_proposal_path(collection, @recipient)
+    valid_funding_request
+
+    expect(Proposal.last.collection).to eq(collection)
+  end
+
+  scenario 'missing recipient' do
+    visit new_proposal_path(collection, 'missing')
+    expect(page).to have_text('Not found')
+  end
+
+  scenario 'existing proposal associated to recipient' do
+    create(:proposal, recipient: @recipient)
+    visit new_proposal_path(collection, @recipient)
+    expect(current_path).to eq(report_path(@recipient.proposal))
+  end
+
+  scenario 'creates new user', js: true do
+    visit new_proposal_path(collection, @recipient)
+    valid_funding_request
+
+    expect(User.count).to eq(1)
+  end
 
   scenario 'assignes to existing user'
 

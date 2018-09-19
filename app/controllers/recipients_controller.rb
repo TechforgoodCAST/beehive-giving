@@ -39,11 +39,4 @@ class RecipientsController < ApplicationController
         :website, answers_attributes: %i[eligible criterion_id]
       )
     end
-
-    def load_collection
-      @collection = Funder.find_by(slug: params[:slug]) ||
-                    Theme.find_by(slug: params[:slug])
-
-      render('errors/not_found', status: 404) if @collection.nil?
-    end
 end
