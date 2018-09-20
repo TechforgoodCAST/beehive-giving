@@ -112,15 +112,6 @@ Rails.application.routes.draw do
   get  '/fund/:id/:proposal_id/apply', to: 'enquiries#new', as: 'apply'
   post '/fund/:id/:proposal_id/apply', to: 'enquiries#create'
 
-  # Microsite
-  get  '/check/:slug',                   to: 'microsites#basics', as: 'microsite_basics'
-  post '/check/:slug',                   to: 'microsites#check_basics'
-  get  '/check/:slug/eligibility/(:id)', to: 'microsites#eligibility', as: 'microsite_eligibility'
-  post '/check/:slug/eligibility/:id',   to: 'microsites#check_eligibility'
-  get  '/check/:slug/pre-results/(:id)', to: 'microsites#pre_results', as: 'microsite_pre_results'
-  post '/check/:slug/pre-results/:id',   to: 'microsites#check_pre_results'
-  get  '/check/:slug/results/:id',       to: 'microsites#results', as: 'microsite_results'
-
   # Misc.
   get '/cookies/update', to: 'cookies#update', as: 'update_cookies'
 end

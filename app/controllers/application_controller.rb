@@ -7,7 +7,6 @@ class ApplicationController < ActionController::Base
 
   before_action :registration_incomplete, if: :logged_in?
   before_action :registration_invalid, if: :logged_in?
-  before_action :registration_microsite, if: :logged_in?
 
   skip_after_action :intercom_rails_auto_include
 
@@ -64,11 +63,6 @@ class ApplicationController < ActionController::Base
 
     def registration_invalid
       redirect(edit_proposal_path(@proposal)) if @proposal&.invalid?
-    end
-
-    def registration_microsite
-      redirect(edit_proposal_path(@proposal)) if
-        current_user&.first_name.nil? && @proposal&.basics?
     end
 
     def user_not_authorised

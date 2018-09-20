@@ -45,8 +45,6 @@ class SessionsController < ApplicationController
 
     def registration_invalid; end
 
-    def registration_microsite; end
-
     def sign_in_metrics
       current_user.increment!(:sign_in_count)
       current_user.update_attribute(:last_seen, Time.zone.now)
