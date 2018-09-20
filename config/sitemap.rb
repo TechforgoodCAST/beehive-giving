@@ -25,6 +25,7 @@ SitemapGenerator::Sitemap.create do
   #     add article_path(article), :lastmod => article.updated_at
   #   end
 
+  # TODO: refactor
   # Pages
   add about_path
   add faq_path
