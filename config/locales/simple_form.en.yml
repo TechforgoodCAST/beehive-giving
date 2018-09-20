@@ -1,10 +1,9 @@
-# TODO: refactor
 en:
   simple_form:
     required:
       html: '<strong>*</strong>'
     error_notification:
-      default_message: "Please review the problems below:"
+      default_message: 'Please review the problems below:'
 
     labels:
       proposal:
@@ -19,32 +18,11 @@ en:
         public_consent: 'Confirmation'
         themes: 'Select up to 5 themes which best describe your proposed work'
         title: 'Proposal title'
-
       recipient:
         category_code: 'Who will be receiving the funding or support?'
         description: 'Type of incorporation'
         name: 'Organisation name'
         district: 'In which area?'
-
-      defaults:
-        # User
-        password_confirmation: 'Confirm password'
-        marketing_consent: 'Email me with occasional updates when new funds or features are added'
-
-      eligibility_step:
-        country_ids: 'Please select the countries your proposed work will affect'
-      pre_results_step:
-        email: 'Add an active email address to see your results...'
-
-    placeholders:
-      password_reset:
-        email: 'someone@example.com'
-      pre_results_step:
-        email: 'e.g. email@example.com'
-      proposal:
-        min_amount: 'From'
-        max_amount: 'To'
-        title: "e.g. 'Improving careers for disabled workers'"
 
     hints:
       proposal:
@@ -55,13 +33,13 @@ en:
         min_duration: 'If you have an exact duration in mind then use the same figure in both boxes.'
         public_consent: 'By clicking ‘Get suitability report’ non-personal details about my request will be added to a publically viewable directory that anyone can browse, comment on and download under a Creative Commons Attribution 4.0 International (CC BY 4.0) license. I can opt to remove my report from the public directory at any time by making it private for a small fee (details to follow).'
         title: 'This could be the name of your project, or a few words describing your proposal.'
-
       recipient:
         charity_number: 'If applicable'
         company_number: 'If applicable'
         description: 'Please be as specific as possible, for example: Charity registered in England & Wales; Charitable Incorportated Organisation (CIO); Community Interest Company (CIC); Company Limited by Guarantee (CLG); Co-operative; etc.'
 
-      defaults:
-        # User
-        marketing_consent: 'You can opt out at any time.'
-        password: 'At least 6 characters long with 1 number.'
+    placeholders:
+      proposal:
+        min_amount: 'From'
+        max_amount: 'To'
+        title: "e.g. 'Improving careers for disabled workers'"
