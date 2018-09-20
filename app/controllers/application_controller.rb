@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
 
     def current_user
       return unless cookies[:auth_token]
-      @current_user ||= User.find_by(auth_token: cookies[:auth_token])
+      @current_user ||= User.find_by(auth_token: cookies.encrypted[:auth_token])
       session[:user_id] = @current_user.id
       @current_user
     end
@@ -39,6 +39,10 @@ class ApplicationController < ActionController::Base
                     Theme.find_by(slug: params[:slug])
 
       render('errors/not_found', status: 404) if @collection.nil?
+    end
+
+    def redirect_if_logged_in
+      redirect_to reports_path if logged_in?
     end
 
     def ensure_logged_in

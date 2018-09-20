@@ -1,3 +1,4 @@
+# TODO: refactor
 class UserMailer < ApplicationMailer
   def welcome_email(user)
     @user = user
@@ -6,7 +7,7 @@ class UserMailer < ApplicationMailer
 
   def password_reset(user)
     @user = user
-    mail(to: @user.email, subject: 'Reset your password - Beehive')
+    mail(to: @user.email, subject: 'Reset your password [Beehive]')
   end
 
   def request_access(organisation, user)

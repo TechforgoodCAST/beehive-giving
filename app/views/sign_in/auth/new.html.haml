@@ -1,0 +1,13 @@
+= content_for :title, 'Sign in'
+
+%div{ style: 'max-width: 690px; margin: 40px auto;' }
+  %h4
+    Hi
+    = @user.first_name
+
+  = simple_form_for @form, url: sign_in_auth_path do |f|
+    = f.input :password, autofocus: true
+    = f.input :remember_me, as: :boolean
+    = f.submit 'Sign in', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Signing in...' }
+
+  = link_to 'Forgot password?', sign_in_reset_path

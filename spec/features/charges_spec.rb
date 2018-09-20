@@ -12,6 +12,7 @@ feature 'Charges' do
 
   scenario 'proposal missing' do
     visit new_charge_path('missing')
+    expect(page.status_code).to eq(404)
     expect(page).to have_text('Not found')
   end
 
@@ -53,13 +54,13 @@ feature 'Charges' do
       end
     end
   end
-end
 
-def pay_by_card(stripe)
-  fill_in('card-number', with: '4242 4242 4242 4242')
-  fill_in('expiry-month', with: '01')
-  fill_in('expiry-year', with: Time.zone.today.year + 1)
-  fill_in('cvc', with: '123')
-  find('#stripeToken', visible: false).set(stripe.generate_card_token)
-  click_on('Purchase private report')
+  def pay_by_card(stripe)
+    fill_in('card-number', with: '4242 4242 4242 4242')
+    fill_in('expiry-month', with: '01')
+    fill_in('expiry-year', with: Time.zone.today.year + 1)
+    fill_in('cvc', with: '123')
+    find('#stripeToken', visible: false).set(stripe.generate_card_token)
+    click_on('Purchase private report')
+  end
 end

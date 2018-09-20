@@ -1,17 +1,14 @@
 class User < ApplicationRecord
+  include EmailFormatValidations
   include GenerateToken
 
-  attr_accessor :email_confirmation, :password_confirmation
+  has_secure_password validations: false
 
   has_many :proposals
   has_many :recipients
 
-  validates :email, presence: true, confirmation: true
+  validates :email, confirmation: true
   validates :email, uniqueness: { message: 'email already registered' }
-  validates :email, format: {
-    with: /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i,
-    message: 'please enter a valid email'
-  }
 
   validates :email_confirmation, presence: true, on: :create
 
@@ -21,19 +18,25 @@ class User < ApplicationRecord
     in: [true, false], message: 'please select an option'
   }
 
-  validates :password, presence: true, confirmation: true, length: {
-    in: 6..35
-  }, on: :update
-  validates :password, format: {
-    with: /\A(?=.*\d)(?=.*[a-zA-Z]).{6,25}\z/,
-    message: 'must include 6 characters with 1 number'
-  }, on: :update
+  validates :password, confirmation: true, length: {
+    minimum: 6,
+    maximum: ActiveModel::SecurePassword::MAX_PASSWORD_LENGTH_ALLOWED
+  }, format: {
+    with: /\A(?=.*\d)(?=.*[a-zA-Z]).*\z/,
+    message: 'must contain at least one number'
+  }, allow_blank: true
 
-  validates :password_confirmation, presence: true, on: :update
+  validates :password, presence: true, on: :update,
+                       if: ->(u) { u.password_digest.blank? }
+
+  validates :password_confirmation, presence: true,
+                                    if: ->(u) { u.password.present? }
 
   validates :terms_agreed, presence: {
     message: 'you must accept terms to continue'
   }
+
+  before_create { generate_token(:auth_token) }
 
   def email=(str)
     self[:email] = str&.downcase
@@ -63,8 +66,4 @@ class User < ApplicationRecord
   def terms_agreed_time
     self[:terms_agreed]
   end
-
-  before_create { generate_token(:auth_token) }
-
-  has_secure_password validations: false
 end

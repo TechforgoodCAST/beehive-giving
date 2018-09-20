@@ -28,12 +28,6 @@ describe User do
       expect(subject.email).to eq('upcase@email.com')
     end
 
-    it 'invalid' do
-      subject.email = 'email[at]email.com'
-      subject.valid?
-      expect_error(:email, 'please enter a valid email')
-    end
-
     it 'unique' do
       subject.save!
       duplicate = subject.dup
@@ -96,13 +90,24 @@ describe User do
     it 'password fields required' do
       subject.valid?
       expect_error(:password, "can't be blank")
+    end
+
+    it 'password confirmation' do
+      subject.password = '123123a'
+      subject.valid?
       expect_error(:password_confirmation, "can't be blank")
     end
 
     it 'invalid #password' do
       subject.password = 'invaid_password'
       subject.valid?
-      expect_error(:password, 'must include 6 characters with 1 number')
+      expect_error(:password, 'must contain at least one number')
+    end
+
+    it 'password length' do
+      subject.password = 'sh0rt'
+      subject.valid?
+      expect_error(:password, 'is too short (minimum is 6 characters)')
     end
   end
 end

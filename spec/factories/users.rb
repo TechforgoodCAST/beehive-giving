@@ -9,5 +9,10 @@ FactoryBot.define do
     last_name 'Doe'
     marketing_consent true
     terms_agreed true
+
+    factory :user_with_password, class: User do
+      password '123123a'
+      password_confirmation '123123a'
+    end
   end
 end

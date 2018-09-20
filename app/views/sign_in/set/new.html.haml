@@ -1,0 +1,10 @@
+= content_for :title, 'Set a password'
+
+%div{ style: 'max-width: 690px; margin: 40px auto;' }
+  = simple_form_for @form, url: sign_in_set_path do |f|
+    -# TODO: helper
+    = @user.email.gsub(/(?<=.{2})(.*)@/, '...@')
+
+    = f.input :password, autofocus: true
+    = f.input :password_confirmation
+    = f.submit 'Continue', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Setting...' }

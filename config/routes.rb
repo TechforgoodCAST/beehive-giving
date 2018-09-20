@@ -2,7 +2,7 @@
 Rails.application.routes.draw do
   resources :articles, only: %i[index show]
   resources :feedback, except: %i[show index destroy] # TODO: remove
-  resources :password_resets, except: %i[show index destroy]
+  # resources :password_resets, except: %i[show index destroy] # TODO: remove
   resources :reveals, only: :create # TODO: remove
   resources :requests, only: :create # TODO: remove
 
@@ -27,6 +27,22 @@ Rails.application.routes.draw do
   get '/reports/:proposal_id', to: 'reports#show', as: 'report'
   get '/reports', to: 'reports#index', as: 'reports'
 
+  namespace :sign_in, path: 'sign-in' do
+    get  '/', to: 'lookup#new', as: 'lookup'
+    post '/', to: 'lookup#create'
+
+    get  '/auth', to: 'auth#new', as: 'auth'
+    post '/auth', to: 'auth#create'
+
+    get  '/reset', to: 'reset#new', as: 'reset'
+    post '/reset', to: 'reset#create'
+
+    get  '/set/:token', to: 'set#new', as: 'set'
+    post '/set/:token', to: 'set#create'
+  end
+
+  get '/sign-out',  to: 'sign_in/auth#destroy', as: 'sign_out'
+
   ## v3 end ##
 
   # Errors
@@ -49,11 +65,6 @@ Rails.application.routes.draw do
   get '/preview/:tag', to: redirect { |params, _request|
     "/#{params[:tag]}/funds"
   }
-
-  # Sessions
-  get  '/logout',  to: 'sessions#destroy'
-  get  '/sign-in', to: 'sessions#new', as: 'sign_in'
-  post '/sign-in', to: 'sessions#create'
 
   # Pages
   get '/faq',          to: 'pages#faq',     as: 'faq'

@@ -10,11 +10,15 @@ require 'rspec/rails'
 # Add additional requires below this line. Rails is not loaded until this point!
 require 'capybara/rspec'
 require 'webmock/rspec'
+
 require_relative 'support/database_cleaner'
-require_relative 'support/adapters/selenium_chrome_headless'
-require_relative 'support/test_helper' # TODO: refactor
-require_relative 'support/test_helpers'
+require_relative 'support/adapters/selenium_chrome_headless' # TODO: review
 require_relative 'support/webpack_test_helper'
+
+require_relative 'support/test_helper' # TODO: remove
+
+require_relative 'support/test_helpers'
+require_relative 'support/sign_in_helper'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -39,6 +43,7 @@ WebMock.disable_net_connect!(allow_localhost: true)
 
 Capybara.javascript_driver = :selenium_chrome_headless
 
+ # TODO: review
 ShowMeTheCookies.register_adapter(:selenium_chrome_headless, ShowMeTheCookies::SeleniumChromeHeadless)
 
 RSpec.configure do |config|

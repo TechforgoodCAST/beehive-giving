@@ -1,0 +1,12 @@
+= content_for :title, 'Sign in'
+
+%div{ style: 'max-width: 690px; margin: 40px auto;' }
+  -# TODO: refactor
+  - flash.each do |key, value|
+    = key
+    |
+    = value
+
+  = simple_form_for @form, url: sign_in_lookup_path do |f|
+    = f.input :email, autofocus: true, input_html: { value: params[:email] }
+    = f.submit 'Next', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Finding...' }
