@@ -39,10 +39,7 @@ module Progress
     private
 
       def suitability
-        return unless @proposal&.suitability.try(:[], @fund.slug)
-        @proposal.suitability[@fund.slug]
-                 .all_values_for('score')
-                 .count { |s| s > 0.2 }
+        1 unless @proposal&.suitability.try(:[], @fund.slug)
       end
   end
 end
