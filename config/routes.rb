@@ -57,9 +57,6 @@ Rails.application.routes.draw do
   get '/tour',    to: redirect('/')
   get '/welcome', to: redirect('/')
   get '/files/Data&ResearchLead.pdf', to: redirect('410')
-  get '/preview/:tag', to: redirect { |params, _request|
-    "/#{params[:tag]}/funds"
-  }
 
   # Pages
   get '/faq',          to: 'pages#faq',     as: 'faq'
