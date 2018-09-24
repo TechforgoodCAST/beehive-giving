@@ -9,7 +9,6 @@ class TestHelper # TODO: refactor
 
   def seed_test_db
     @age_groups      = AgeGroup.any? ? AgeGroup.all : seed_db
-    @beneficiaries   = create_list(:beneficiary, Beneficiary::BENEFICIARIES.count)
     @all_ages        = @age_groups.first
     @countries       = create_list(:country, 2)
     @uk              = @countries.first
@@ -149,7 +148,6 @@ class TestHelper # TODO: refactor
   def instances
     instances = {
       age_groups: @age_groups,
-      beneficiaries: @beneficiaries,
       all_ages: @all_ages,
       countries: @countries,
       uk: @uk,
