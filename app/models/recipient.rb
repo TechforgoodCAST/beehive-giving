@@ -85,10 +85,6 @@ class Recipient < ApplicationRecord
     income || INCOME_BANDS[income_band][2]
   end
 
-  def send_authorisation_email(user_to_authorise) # TODO: review
-    UserMailer.request_access(self, user_to_authorise).deliver_now
-  end
-
   private
 
     def incorporated?

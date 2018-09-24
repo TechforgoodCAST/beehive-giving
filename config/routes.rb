@@ -68,13 +68,8 @@ Rails.application.routes.draw do
   get '/for-funders',  to: 'pages#forfunders', as: 'for_funders'
 
   # Account
-  post  '/agree/:id',                to: 'users#agree', as: 'agree'
   get   '/account',                  to: 'users#edit', as: 'account'
   patch '/account',                  to: 'users#update'
-  get   '/account/:id',              to: 'recipients#edit', as: 'account_organisation'
-  patch '/account/:id',              to: 'recipients#update'
-
-  get '/proposals/:id', to: 'proposals#edit'
 
   # Funds
   get '/funds/(:proposal_id)',        to: 'funds#index',  as: 'funds'
@@ -83,5 +78,6 @@ Rails.application.routes.draw do
   get '/:theme/funds/(:proposal_id)', to: 'funds#themed', as: 'theme'
 
   # Misc.
-  get '/cookies/update', to: 'cookies#update', as: 'update_cookies'
+  post '/agree/:id', to: 'users#agree', as: 'agree'
+  get  '/cookies/update', to: 'cookies#update', as: 'update_cookies'
 end
