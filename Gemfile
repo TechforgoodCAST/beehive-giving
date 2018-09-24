@@ -71,7 +71,6 @@ group :development, :test do
   gem 'rspec-cells'
   gem 'rspec-rails', '3.5.2'
   gem 'selenium-webdriver'
-  gem 'show_me_the_cookies'
   gem 'stripe-ruby-mock', require: 'stripe_mock'
   gem 'webmock'
 end

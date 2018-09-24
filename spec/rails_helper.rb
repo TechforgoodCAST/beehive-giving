@@ -12,7 +12,6 @@ require 'capybara/rspec'
 require 'webmock/rspec'
 
 require_relative 'support/database_cleaner'
-require_relative 'support/adapters/selenium_chrome_headless' # TODO: review
 require_relative 'support/webpack_test_helper'
 
 require_relative 'support/test_helper' # TODO: remove
@@ -42,9 +41,6 @@ ActiveRecord::Migration.maintain_test_schema!
 WebMock.disable_net_connect!(allow_localhost: true)
 
 Capybara.javascript_driver = :selenium_chrome_headless
-
- # TODO: review
-ShowMeTheCookies.register_adapter(:selenium_chrome_headless, ShowMeTheCookies::SeleniumChromeHeadless)
 
 RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your

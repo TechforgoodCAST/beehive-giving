@@ -7,8 +7,6 @@ feature 'Sidebar' do
     expect(page).to have_current_path(/\?#{query_string}/)
   end
 
-  scenario { expect_query('Revealed', 'revealed=true') }
-
   scenario { expect_query('Incomplete', 'eligibility=to-check') }
 
   scenario { expect_query('Eligible', 'eligibility=eligible') }

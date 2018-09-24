@@ -324,8 +324,6 @@ GEM
     selenium-webdriver (3.14.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.2)
-    show_me_the_cookies (4.0.0)
-      capybara (>= 2, < 4)
     simple_form (3.5.0)
       actionpack (> 4, < 5.2)
       activemodel (> 4, < 5.2)
@@ -442,7 +440,6 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   scout_apm
   selenium-webdriver
-  show_me_the_cookies
   simple_form
   sitemap_generator
   spring

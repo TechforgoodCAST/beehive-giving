@@ -43,13 +43,12 @@ feature 'SignIn::Auth' do
     end
 
     context do
-      include ShowMeTheCookies
-
       scenario 'can sign out' do
         sign_in(user)
         visit sign_out_path
         expect(current_path).to eq(root_path)
-        expect(get_me_the_cookie('auth_token')[:value]).to eq('')
+
+        expect(page.driver.request.cookies).not_to have_key('auth_token')
       end
     end
 

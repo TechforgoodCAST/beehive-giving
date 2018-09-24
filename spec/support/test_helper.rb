@@ -1,6 +1,5 @@
 class TestHelper # TODO: refactor
   include FactoryBot::Syntax::Methods
-  include ShowMeTheCookies
   include WebMock::API
 
   def seed_db; end
@@ -94,21 +93,6 @@ class TestHelper # TODO: refactor
 
   def with_user(opts = { organisation_id: @recipient&.id })
     @user = create(:user, opts)
-    self
-  end
-
-  def sign_in2(user)
-    create_cookie(:auth_token, user.auth_token)
-    self
-  end
-
-  def sign_in
-    create_cookie(:auth_token, @user.auth_token)
-    self
-  end
-
-  def sign_out
-    expire_cookies
     self
   end
 
