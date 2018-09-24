@@ -16,6 +16,7 @@ class Answer < ApplicationRecord
 
     def ensure_criterion_category_match
       return if category_type == criterion.category
+
       errors.add(:eligible, "Category must be #{criterion.category}")
     end
 end
