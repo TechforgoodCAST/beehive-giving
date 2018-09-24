@@ -1,14 +1,6 @@
 = content_for :title, @fund.title
 
--# TODO: refactor
-- if @proposal && allow_performance_cookies?
-  :javascript
-    mixpanel.track('View Fund Page', { "Fund": "#{@fund.name}" });
-    mixpanel.identify("#{@current_user.id}");
-
-
 %header
-  = cell :navbar, @current_user
   = cell :breadcrumb, (@proposal ? 'Current proposal' : nil) => nil, 'Funds' => funds_path(@proposal), @fund.funder.name => nil, @fund.name => fund_path(@fund, @proposal)
 
 %main
@@ -23,11 +15,7 @@
 
         .mb30.fs18.night.lh25= raw strip_tags @fund.description_html.truncate_words(30)
 
-        %hr
-        %h6.my20.slate= cell(:fund_insight, @fund, proposal: @proposal).call(:summary)
         %hr.mb30
-
-        = cell(:fund_insight, @fund, proposal: @proposal).call(:themes)
 
       %section.perc50.md
         Removed
@@ -40,8 +28,6 @@
 
       - if @fund.period_end.present? && @fund.period_end > 3.years.ago
         .mt30.night
-          .fs14.mb10
-            = cell(:fund_insight, @fund).call(:data_source)
           .mb20
             %strong= period(@fund)
 
@@ -49,14 +35,5 @@
         .bg-ice.rounded.shadow.fs18.lh22.p10.mb20
           .bold.caps.mb10.fs15 Unsolicited applications
           Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
-
-      %ul.list.pl30
-        = cell(:fund_insight, @fund).call(:amount)
-        = cell(:fund_insight, @fund).call(:costs)
-        = cell(:fund_insight, @fund).call(:countries)
-        = cell(:fund_insight, @fund).call(:duration)
-        = cell(:fund_insight, @fund).call(:grant_count)
-        = cell(:fund_insight, @fund).call(:award_months)
-        = cell(:fund_insight, @fund).call(:grant_examples)
 
     = render partial: 'checks'

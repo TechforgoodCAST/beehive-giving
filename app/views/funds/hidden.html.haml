@@ -1,14 +1,6 @@
 = content_for :title, "#{@fund.pretty_name} [#{@fund.hashid}]"
 
--# TODO: refactor
-- if @proposal && allow_performance_cookies?
-  :javascript
-    mixpanel.track('View Fund Page', { "Fund": "#{@fund.hashid}" });
-    mixpanel.identify("#{@current_user.id}");
-
-
 %header
-  = cell :navbar, @current_user
   = cell(:breadcrumb, (@proposal ? 'Current proposal' : nil) => nil, 'Funds' => funds_path, 'Hidden funder' => nil, 'Hidden fund' => fund_path(@fund))
 
 %main
@@ -24,11 +16,7 @@
 
         .mb30.fs18.night.lh25= raw redact(@fund, :description_plain, trim: 30)
 
-        %hr
-        %h6.my20.slate= cell(:fund_insight, @fund, proposal: @proposal).call(:summary)
         %hr.mb30
-
-        = cell(:fund_insight, @fund, proposal: @proposal).call(:themes)
 
       %section.perc50.md
         Removed
@@ -52,13 +40,5 @@
         .bg-ice.rounded.shadow.fs18.lh22.p10.mb20
           .bold.caps.mb10.fs15 Unsolicited applications
           Please note this fund does not accept unsolicited applications. Please read the fund guidance for more information.
-
-      %ul.list.pl30
-        = cell(:fund_insight, @fund).call(:amount)
-        = cell(:fund_insight, @fund).call(:costs)
-        = cell(:fund_insight, @fund).call(:countries)
-        = cell(:fund_insight, @fund).call(:duration)
-        = cell(:fund_insight, @fund).call(:grant_count)
-        = cell(:fund_insight, @fund).call(:award_months)
 
     = render partial: 'checks'

@@ -13,8 +13,4 @@
       = fund.funder.name
 
   .p20.border-top.border-silver
-    %h6.bold.mb10= cell(:fund_insight, fund, proposal: @proposal).call(:summary)
-
     .night= raw strip_tags(fund.description_html).truncate_words(30, omission: "... #{link_to 'more', fund_path(fund, @proposal), class: 'bold'}")
-
-    .truncate.mt12= cell(:fund_insight, fund, proposal: @proposal).call(:themes)

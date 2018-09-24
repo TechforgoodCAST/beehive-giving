@@ -2,10 +2,6 @@
 
 -# TODO: refactor
 - if @proposal && allow_performance_cookies?
-  :javascript
-    mixpanel.track('View Funds Page');
-    mixpanel.identify("#{@current_user.id}");
-
   / Google Code for View recommended funds
   :javascript
     /* <![CDATA[ */
@@ -23,7 +19,6 @@
 
 
 %header
-  = cell :navbar, @current_user
   = cell :breadcrumb, (@proposal ? 'Current proposal' : nil) => nil, 'Funds' => funds_path(@proposal)
 
   .maxw1080.mx-auto.px20

@@ -1,14 +1,6 @@
 = content_for :title, @fund.title
 
--# TODO: refactor
-- if @proposal && allow_performance_cookies?
-  :javascript
-    mixpanel.track('View Fund Page', { "Fund": "#{@fund.name}" });
-    mixpanel.identify("#{@current_user.id}");
-
-
 %header
-  = cell :navbar, @current_user
   = cell :breadcrumb, (@proposal ? 'Current proposal' : nil) => nil, 'Funds' => funds_path(@proposal), @fund.funder.name => fund_path(@fund, @proposal)
 
 %main
@@ -20,11 +12,7 @@
 
         .mb30.fs18.night.lh25= raw @fund.description_html
 
-        %hr
-        %h6.my20.slate= cell(:fund_insight, @fund, proposal: @proposal).call(:summary)
         %hr.mb30
-
-        = cell(:fund_insight, @fund, proposal: @proposal).call(:themes)
 
       %section.perc50.md
         Removed

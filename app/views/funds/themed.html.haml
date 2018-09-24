@@ -1,7 +1,6 @@
 = content_for :title, "#{@theme.name} funds"
 
 %header
-  = cell :navbar, @current_user
   = cell :breadcrumb, (@proposal ? 'Current proposal' : nil) => nil, 'Funds' => funds_path(@proposal), @theme.name => theme_path(@theme, @proposal)
 
   .maxw1080.mx-auto.px20

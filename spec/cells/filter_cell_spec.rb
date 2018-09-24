@@ -49,9 +49,9 @@ describe FilterCell do
     end
 
     it 'has country filter' do
-      create(:country)
+      country = create(:country)
       expect(filter).to have_text('Country')
-      expect(filter).to have_text('United Kingdom')
+      expect(filter).to have_text(country.name)
     end
 
     it 'has eligibility filter' do
