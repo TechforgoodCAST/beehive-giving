@@ -2,8 +2,6 @@
   %h4.bold.mb15 Shortcuts
 
   = link_to 'All funds', funds_path(@proposal)
-  - unless @current_user&.subscription_active?
-    .mb15= link_to 'Revealed', funds_path(@proposal, revealed: true)
 
   %h6.bold.slate.mb10 Eligibility
 

@@ -73,7 +73,6 @@ Rails.application.routes.draw do
   patch '/account',                  to: 'users#update'
   get   '/account/:id',              to: 'recipients#edit', as: 'account_organisation'
   patch '/account/:id',              to: 'recipients#update'
-  get   '/account/:id/subscription', to: 'accounts#subscription', as: 'account_subscription'
 
   get '/proposals/:id', to: 'proposals#edit'
 

@@ -91,12 +91,6 @@ class TestHelper # TODO: refactor
     self
   end
 
-  def create_recipient_with_subscription_v1! # TODO: deprecated
-    create_recipient
-    @recipient.subscription.update(version: 1)
-    self
-  end
-
   def subscribe_recipient
     @recipient.subscribe!
     self
