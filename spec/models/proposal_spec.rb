@@ -9,8 +9,6 @@ describe Proposal do
 
   it('has many Assessments') { assoc(:assessments, :has_many) }
 
-  it('has many Enquiries') { assoc(:enquiries, :has_many, dependent: :destroy) }
-
   it 'has many ProposalThemes' do
     assoc(:proposal_themes, :has_many, dependent: :destroy)
   end

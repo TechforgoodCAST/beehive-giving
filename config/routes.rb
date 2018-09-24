@@ -92,10 +92,6 @@ Rails.application.routes.draw do
   # Eligibilities
   patch '/fund/:id/:proposal_id/eligibility', to: 'eligibilities#create', as: 'eligibility'
 
-  # Enquiries
-  get  '/fund/:id/:proposal_id/apply', to: 'enquiries#new', as: 'apply'
-  post '/fund/:id/:proposal_id/apply', to: 'enquiries#create'
-
   # Misc.
   get '/cookies/update', to: 'cookies#update', as: 'update_cookies'
 end
