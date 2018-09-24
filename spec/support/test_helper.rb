@@ -3,13 +3,9 @@ class TestHelper # TODO: refactor
   include ShowMeTheCookies
   include WebMock::API
 
-  def seed_db
-    create_list(:age_group, AgeGroup::AGE_GROUPS.count)
-  end
+  def seed_db; end
 
   def seed_test_db
-    @age_groups      = AgeGroup.any? ? AgeGroup.all : seed_db
-    @all_ages        = @age_groups.first
     @countries       = create_list(:country, 2)
     @uk              = @countries.first
     @kenya           = @countries.last
@@ -140,7 +136,6 @@ class TestHelper # TODO: refactor
 
   def instances
     instances = {
-      age_groups: @age_groups,
       all_ages: @all_ages,
       countries: @countries,
       uk: @uk,

@@ -99,7 +99,6 @@ class MatchHelper
     # Beneficiaries
     choose :proposal_affect_people_true
     select 'All genders'
-    check "proposal_age_group_ids_#{AgeGroup.first.id}"
 
     # Location
     choose 'An entire country'

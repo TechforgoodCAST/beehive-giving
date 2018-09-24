@@ -67,10 +67,6 @@ Rails.application.routes.draw do
   get '/terms',        to: 'pages#terms',   as: 'terms'
   get '/for-funders',  to: 'pages#forfunders', as: 'for_funders'
 
-  # Account
-  get   '/account',                  to: 'users#edit', as: 'account'
-  patch '/account',                  to: 'users#update'
-
   # Funds
   get '/funds/(:proposal_id)',        to: 'funds#index',  as: 'funds'
   get '/fund/:id/(:proposal_id)',     to: 'funds#show',   as: 'fund'
