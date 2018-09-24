@@ -53,8 +53,7 @@ gem 'activeadmin'
 gem 'devise'
 
 # Monitoring & metrics
-gem 'intercom-rails'
-gem 'mixpanel-ruby'
+gem 'intercom-rails' # TODO: review
 gem 'rollbar'
 group :production do
   gem 'rails_12factor'

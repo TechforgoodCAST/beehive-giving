@@ -14,8 +14,6 @@ require 'webmock/rspec'
 require_relative 'support/database_cleaner'
 require_relative 'support/webpack_test_helper'
 
-require_relative 'support/test_helper' # TODO: remove
-
 require_relative 'support/test_helpers'
 require_relative 'support/sign_in_helper'
 
@@ -73,11 +71,5 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     WebpackTestHelper.compile_webpack_assets
-  end
-
-  # TODO: review
-  config.before(:each) do
-    @app = TestHelper.new
-    @app.stub_mixpanel
   end
 end
