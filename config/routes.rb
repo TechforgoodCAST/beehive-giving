@@ -1,7 +1,6 @@
 # TODO: refactor
 Rails.application.routes.draw do
   resources :articles, only: %i[index show]
-  resources :requests, only: :create # TODO: remove
 
   ## v3 start ##
 
