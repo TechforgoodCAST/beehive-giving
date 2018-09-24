@@ -57,9 +57,6 @@ Rails.application.routes.draw do
   get '/tour',    to: redirect('/')
   get '/welcome', to: redirect('/')
   get '/files/Data&ResearchLead.pdf', to: redirect('410')
-  get '/account-suspended',    to: 'legacy#funder',     as: 'legacy_funder'
-  get '/account-outdated',     to: 'legacy#fundraiser', as: 'legacy_fundraiser'
-  get '/account-outdated/:id', to: 'legacy#reset',      as: 'legacy_reset'
   get '/preview/:tag', to: redirect { |params, _request|
     "/#{params[:tag]}/funds"
   }

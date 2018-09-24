@@ -50,8 +50,6 @@ class ApplicationController < ActionController::Base
       return redirect_to sign_in_path, alert: 'Please sign in'
     end
 
-    # TODO: def legacy_fundraiser
-
     def redirect(path, opts = {})
       return unless path
       redirect_to path, opts unless request.path == path
