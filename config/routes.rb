@@ -7,11 +7,7 @@ Rails.application.routes.draw do
 
   ## v3 start ##
 
-  namespace :api do
-    namespace :v1 do
-      get '/districts/:country_id', to: 'districts#index', as: 'districts'
-    end
-  end
+  root 'pages#home'
 
   get  '/check/:slug', to: 'recipients#new', as: 'new_recipient'
   post '/check/:slug', to: 'recipients#create'
@@ -42,6 +38,12 @@ Rails.application.routes.draw do
 
   get '/sign-out',  to: 'sign_in/auth#destroy', as: 'sign_out'
 
+  namespace :api do
+    namespace :v1 do
+      get '/districts/:country_id', to: 'districts#index', as: 'districts'
+    end
+  end
+
   ## v3 end ##
 
   # Errors
@@ -70,23 +72,6 @@ Rails.application.routes.draw do
   get '/privacy',      to: 'pages#privacy', as: 'privacy'
   get '/terms',        to: 'pages#terms',   as: 'terms'
   get '/for-funders',  to: 'pages#forfunders', as: 'for_funders'
-
-  # Sign up
-  root 'signup/basics#new'
-  post '/', to: 'signup/basics#create'
-
-  namespace :signup do
-    # get  '/basics', to: 'basics#new', as: 'basics'
-    # post '/basics', to: 'basics#create'
-
-    get  '/suitability', to: 'suitability#new', as: 'suitability'
-    post '/suitability', to: 'suitability#create'
-  end
-
-  # User authorisation for organisational access
-  match '/unauthorised', to: 'signup#unauthorised', via: :get, as: 'unauthorised'
-  match '/grant_access/(:unlock_token)', to: 'signup#grant_access', via: :get, as: 'grant_access'
-  match '/granted_access/(:unlock_token)', to: 'signup#granted_access', via: :get, as: 'granted_access'
 
   # Account
   post  '/agree/:id',                to: 'users#agree', as: 'agree'
