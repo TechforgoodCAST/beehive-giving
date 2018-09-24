@@ -18,5 +18,3 @@
     .night= raw strip_tags(fund.description_html).truncate_words(30, omission: "... #{link_to 'more', fund_path(fund, @proposal), class: 'bold'}")
 
     .truncate.mt12= cell(:fund_insight, fund, proposal: @proposal).call(:themes)
-
-  = render(partial: 'status', locals: { fund: fund })

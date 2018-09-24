@@ -13,10 +13,6 @@
 
   .mb40= cell(:results, @assessment).call(:eligibility)
 
-  -# TODO: refactor
-  - if @fund.restrictions.exists?
-    #eligibility-quiz= cell(:eligibility, @proposal, fund: @fund).call(:quiz)
-
 %section.px20.mb80.md#suitability
   %h2.mb30 Suitability
 
@@ -26,7 +22,3 @@
       %h5.bold.pl20.dark-yellow Review
 
   .mb40= cell(:suitability, @proposal, fund: @fund).call(:analysis)
-
-  -# TODO: refactor
-  - if @fund.priorities.exists?
-    #suitability-quiz= cell(:suitability, @proposal, fund: @fund).call(:quiz)

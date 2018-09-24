@@ -21,7 +21,7 @@
       - @proposals.each do |proposal|
         .mb20.md
           .border.rounded.border-silver.proposal
-            = render partial: 'card', locals: { proposal: proposal, context: 'proposal' }
+            = proposal.id
 
       .mb20.md
         = link_to 'New proposal', new_proposal_path, class: 'btn-wide bg-green white'

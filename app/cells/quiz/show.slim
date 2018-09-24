@@ -1,9 +1,0 @@
-- @groups.each do |g, title|
-  - if @questions[g].present?
-    h5.mb20 =title
-    - @questions[g].each do |q|
-      .question class=("#{q.class.name.underscore}_question #{q.class.name.underscore}_#{g.underscore}_question")
-        = render view: :question, locals: {q: q, f: f, e: q.answer(@proposal)}
-
-.my40
-  = f.button :button, options[:quiz_type] == 'Restriction' ? 'Check eligibility' : 'Check suitability', class: 'btn white bg-blue shadow'

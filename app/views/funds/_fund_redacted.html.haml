@@ -12,5 +12,3 @@
     .night= raw redact(fund, :description_plain, trim: 30, omission: "... #{link_to 'more', fund_path(fund, @proposal), class: 'bold'}")
 
     .truncate.mt12= cell(:fund_insight, fund, proposal: @proposal).call(:themes)
-
-  = render(partial: 'status', locals: { fund: fund })

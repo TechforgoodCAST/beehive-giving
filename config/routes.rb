@@ -83,9 +83,6 @@ Rails.application.routes.draw do
   get '/h/fund/:id/(:proposal_id)',   to: 'funds#hidden', as: 'hidden'
   get '/:theme/funds/(:proposal_id)', to: 'funds#themed', as: 'theme'
 
-  # Eligibilities
-  patch '/fund/:id/:proposal_id/eligibility', to: 'eligibilities#create', as: 'eligibility'
-
   # Misc.
   get '/cookies/update', to: 'cookies#update', as: 'update_cookies'
 end
