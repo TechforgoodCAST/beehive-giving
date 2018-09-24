@@ -3,8 +3,6 @@ require 'rails_helper'
 describe Funder do
   subject { build(:funder, name: 'Funder Name') }
 
-  it('has many Attempts') { assoc(:attempts, :has_many) }
-
   it('has many Funds') { assoc(:funds, :has_many) }
 
   it('has many Restrictions') { assoc(:restrictions, :has_many) }

@@ -1,5 +1,4 @@
 class Funder < ApplicationRecord
-  has_many :attempts
   has_many :funds
   has_many :proposals, as: :collection # TODO: test
 
