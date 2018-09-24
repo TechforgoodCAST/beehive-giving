@@ -28,12 +28,6 @@ ActiveAdmin.register_page 'Dashboard' do
           h5 'Quiz answers'
           h1 number_with_delimiter Answer.all.count
         end
-
-        span class: 'blank_slate' do
-          h3 'Other'
-          h5 'Feedback'
-          h1 Feedback.all.count
-        end
       end
 
       div style: 'float:left; width: 40%;' do
@@ -99,14 +93,6 @@ ActiveAdmin.register_page 'Dashboard' do
 
     def proposal_count_by_month
       Proposal.group_by_month(:created_at, last: 12, format: '%b %Y').count
-    end
-
-    def feedback_count
-      Feedback.group_by_week(:created_at, week_start: :mon, last: 12).count
-    end
-
-    def feedback_count_by_month
-      Feedback.group_by_month(:created_at, last: 12).count
     end
 
     def iter(hash)
@@ -202,10 +188,6 @@ ActiveAdmin.register_page 'Dashboard' do
           tr do
             td 'Recipient creating at least one complete Assessment'
             complete_by_month.each { |i| td i[1] }
-          end
-          tr do
-            td 'Feedback'
-            feedback_count_by_month.each { |i| td i[1] }
           end
         end
       end

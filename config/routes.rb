@@ -1,7 +1,6 @@
 # TODO: refactor
 Rails.application.routes.draw do
   resources :articles, only: %i[index show]
-  resources :feedback, except: %i[show index destroy] # TODO: remove
   resources :reveals, only: :create # TODO: remove
   resources :requests, only: :create # TODO: remove
 
