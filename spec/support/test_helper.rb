@@ -16,7 +16,6 @@ class TestHelper # TODO: refactor
     @uk_districts    = create_list(:district, 3, country: @uk)
     @kenya_districts = create_list(:kenya_district, 3, country: @kenya)
     @districts       = @uk_districts + @kenya_districts
-    @implementations = create_list(:implementation, Implementation::IMPLEMENTATIONS.count)
     @themes          = create_list(:theme, 3)
     self
   end
@@ -155,7 +154,6 @@ class TestHelper # TODO: refactor
       uk_districts: @uk_districts,
       kenya_districts: @kenya_districts,
       districts: @districts,
-      implementations: @implementations,
       recipient: @recipient,
       user: @user,
       proposal: @proposal,
