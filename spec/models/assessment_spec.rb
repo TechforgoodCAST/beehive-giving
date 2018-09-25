@@ -49,12 +49,13 @@ describe Assessment do
     let(:proposal) { create(:proposal) }
 
     before do
+      area = build(:geo_area, countries: proposal.countries, children: false)
       create(
         :fund,
         restrictions_known: false,
         priorities_known: false,
         themes: [build(:theme)],
-        geo_area: create(:geo_area, countries: proposal.countries)
+        geo_area: area
       )
     end
 

@@ -72,6 +72,10 @@ feature 'Recipients' do
     end
 
     scenario 'eligible labels inverted' do
+      collection.restrictions.where(category: 'Recipient')
+                .last.update(invert: true)
+      visit new_recipient_path(collection)
+
       eligible_labels = (0..1).map do |i|
         find("label[for=recipient_answers_attributes_#{i}_eligible_true]").text
       end
