@@ -42,11 +42,4 @@ FactoryBot.define do
       end
     end
   end
-
-  factory :fundstub, class: Fund do
-    funder
-    sequence(:name) { |n| "Foundation Main Fund Stub #{n}" }
-    description 'Some description of the fund stub.'
-    state 'stub'
-  end
 end

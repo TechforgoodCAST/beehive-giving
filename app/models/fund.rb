@@ -6,10 +6,9 @@ class Fund < ApplicationRecord
   include Funds::ArraySetters
 
   scope :active, -> { where(state: 'active') }
-  scope :stubs, -> { where(state: 'stub') }
   scope :recent, -> { order updated_at: :desc }
 
-  STATES = %w[active inactive draft stub].freeze
+  STATES = %w[active inactive draft].freeze
 
   belongs_to :funder
 
@@ -143,21 +142,8 @@ class Fund < ApplicationRecord
     end
   end
 
-  def save(*args)
-    if state =~ /draft|stub/ && FundStub.new(fund: self).valid?
-      set_slug unless slug
-      super(validate: false)
-    else
-      super
-    end
-  end
-
   def short_name
     name.sub(' Fund', '')
-  end
-
-  def stub?
-    %w[stub draft].include? state
   end
 
   def subtitle

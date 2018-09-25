@@ -6,14 +6,12 @@ class FundsController < ApplicationController
   def show
     authorize FundContext.new(@fund, @proposal)
     @assessment = Assessment.find_by(fund: @fund, proposal: @proposal)
-    render :stub if @fund.stub?
   end
 
   def index
     query = Fund.filter_sort(@proposal, params)
     @funds = query.page(params[:page])
     update_analysis(query) if @proposal
-    load_stubs(@funds)
   end
 
   def themed
@@ -24,7 +22,6 @@ class FundsController < ApplicationController
                 .left_joins(:themes).where(themes: { id: @theme })
 
     @funds = query.page(params[:page])
-    load_stubs(@funds)
   end
 
   def hidden
@@ -56,11 +53,6 @@ class FundsController < ApplicationController
       @fund = Fund.includes(:funder)
                   .where("state = 'active' OR state = 'stub'")
                   .find_by_hashid(params[:id])
-    end
-
-    def load_stubs(funds)
-      @fund_stubs = Fund.stubs.includes(:funder).order('RANDOM()').limit(5) if
-        funds.empty?
     end
 
     def stub_assessment

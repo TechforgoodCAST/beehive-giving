@@ -33,7 +33,6 @@ ActiveAdmin.register Fund do
   end
 
   scope("Full funds", default: true) { |scope| scope.where(state: ["inactive", "active"]) }
-  scope("Stubs") { |scope| scope.where(state: ["draft", "stub"]) }
 
   index do
     selectable_column
