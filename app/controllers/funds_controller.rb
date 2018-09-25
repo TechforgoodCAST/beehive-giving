@@ -4,7 +4,6 @@ class FundsController < ApplicationController
   before_action :stub_assessment, only: %i[hidden show]
 
   def show
-    authorize FundContext.new(@fund, @proposal)
     @assessment = Assessment.find_by(fund: @fund, proposal: @proposal)
   end
 
