@@ -2,10 +2,6 @@
 .mb40.border.border-silver.rounded.shadow
   .p20.bg-ice
     .flex.items-center.mb5
-      - if fund.featured
-        .mr10
-          .btn-sm.fs15.slate.border-silver.disabled Featured
-
       %h3= link_to fund.name, fund_path(fund, @proposal)
 
     .fs15.night

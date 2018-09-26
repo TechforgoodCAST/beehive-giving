@@ -1,4 +1,4 @@
-= content_for :title, @fund.title
+= content_for :title, @fund.name
 
 %header
   = cell :breadcrumb, (@proposal ? 'Current proposal' : nil) => nil, 'Funds' => funds_path(@proposal), @fund.funder.name => nil, @fund.name => fund_path(@fund, @proposal)

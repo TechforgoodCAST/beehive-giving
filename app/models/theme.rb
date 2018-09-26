@@ -16,6 +16,8 @@ class Theme < ApplicationRecord
 
   validates :name, :slug, uniqueness: true
   validates :classes, presence: true
+
+  # TODO: drop column?
   # See app/validators/hash_validator.rb
   validates :related, hash: { key_in: pluck(:name), value_in: :number }
 

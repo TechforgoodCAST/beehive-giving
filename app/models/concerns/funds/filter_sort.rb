@@ -41,7 +41,6 @@ module Funds
 
     def order_by(col = nil)
       order = [
-        'funds.featured DESC',
         'assessments.revealed',
         ('assessments.eligibility_status DESC' unless col == 'name'),
         'funds.name'

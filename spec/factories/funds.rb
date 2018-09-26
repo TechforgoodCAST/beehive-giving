@@ -1,43 +1,50 @@
-# TODO: refactor
 FactoryBot.define do
   factory :fund do
-    association :geo_area, strategy: :build, children: false
-
     funder
+
     sequence(:name) { |n| "Awards for All #{n}" }
     description 'Some description of the fund.'
-    open_call true
-    state 'active'
-    currency 'GBP'
-    key_criteria '<p>E.g. Local charitable organisations are viewed more favourably than large national organisations.</p><p>Grants can be used for:</p><ul><li>Projects that meet the needs of communities experiencing high levels of deprivation.</li></ul>'
-    application_link 'http://www.example.org/'
+    website 'http://opportunity.link'
 
-    geographic_scale_limited false
+    links { { 'Recent grants' => 'http://grantnav.link' } }
 
-    restrictions_known true
-    priorities_known true
+    after(:build) do |fund, _evaluator|
+      fund.themes = build_list(:theme, 1) unless fund.themes.any?
+    end
 
-    permitted_org_types [1, 2, 3] # A registered charity, A registered company
-    permitted_costs [1, 2] # Capital funding, Revenue funding
+    factory :fund_with_rules, class: Fund do
+      # Check::Eligibility::Amount
+      proposal_min_amount 300
+      proposal_max_amount 10_000
 
-    min_amount_awarded_limited true
-    min_amount_awarded 5_000
-    max_amount_awarded_limited true
-    max_amount_awarded 10_000
+      # Check::Eligibility::Duration
+      proposal_min_duration 9
+      proposal_max_duration 12
 
-    min_org_income_limited true
-    min_org_income 10_000
-    max_org_income_limited true
-    max_org_income 250_000
+      # Check::Eligibility::Income
+      recipient_min_income 50_000
+      recipient_max_income nil
 
-    # TODO: refactor
-    factory :fund_simple, class: Fund do
-      restrictions_known false
-      priorities_known false
+      # Check::Eligibility::Location
+      proposal_permitted_geographic_scales ['local', 'regional']
+      proposal_area_limited true
+      proposal_all_in_area true
+      association :geo_area, strategy: :build, children: false
+
+      # Check::Eligibility::ProposalCategories
+      proposal_categories [202, 203] # Revenue - Core, Revenue - Project
+
+      # Check::Eligibility::RecipientCategories
+      recipient_categories [301] # A charitable organisation
+
+      # Check::Eligibility::Quiz
       after(:build) do |fund, _evaluator|
-        fund.themes = build_list(:theme, 1) unless fund.themes.any?
         fund.restrictions << build_list(:restriction, 2, category: 'Recipient')
         fund.restrictions << build_list(:restriction, 2)
+      end
+
+      # Check::Suitability::Quiz
+      after(:build) do |fund, _evaluator|
         fund.priorities = build_list(:priority, 2)
       end
     end

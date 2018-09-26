@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 feature 'Reports' do
+  scenario 'reports produced for active opportunities in collection'
+
   context 'signed out' do
     scenario 'can view public report' do
       expect(current_path).to eq(report_path(proposal))

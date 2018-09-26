@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180918094537) do
+ActiveRecord::Schema.define(version: 20180925125853) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -258,53 +258,25 @@ ActiveRecord::Schema.define(version: 20180918094537) do
     t.integer "funder_id"
     t.string "name"
     t.text "description"
-    t.string "slug"
-    t.boolean "open_call"
-    t.text "key_criteria"
-    t.string "currency"
-    t.string "application_link"
-    t.boolean "geographic_scale_limited"
-    t.boolean "restrictions_known"
+    t.string "website"
+    t.boolean "proposal_area_limited"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "open_data", default: false
-    t.date "period_start"
-    t.date "period_end"
-    t.integer "grant_count"
-    t.jsonb "amount_awarded_distribution", default: {}, null: false
-    t.jsonb "award_month_distribution", default: {}, null: false
-    t.jsonb "org_type_distribution", default: {}, null: false
-    t.jsonb "income_distribution", default: {}, null: false
-    t.jsonb "country_distribution", default: {}, null: false
-    t.jsonb "tags", default: [], null: false
-    t.jsonb "sources", default: {}, null: false
-    t.boolean "national", default: false, null: false
-    t.decimal "amount_awarded_sum"
-    t.jsonb "beneficiary_distribution", default: {}, null: false
-    t.jsonb "grant_examples", default: [], null: false
-    t.boolean "min_amount_awarded_limited", default: false
-    t.integer "min_amount_awarded"
-    t.boolean "max_amount_awarded_limited", default: false
-    t.integer "max_amount_awarded"
-    t.boolean "min_duration_awarded_limited", default: false
-    t.integer "min_duration_awarded"
-    t.boolean "max_duration_awarded_limited", default: false
-    t.integer "max_duration_awarded"
-    t.jsonb "permitted_costs", default: [], null: false
-    t.jsonb "permitted_org_types", default: [], null: false
-    t.boolean "min_org_income_limited", default: false
-    t.integer "min_org_income"
-    t.boolean "max_org_income_limited", default: false
-    t.integer "max_org_income"
-    t.boolean "priorities_known"
-    t.string "geo_description"
+    t.jsonb "links", default: {}, null: false
+    t.integer "proposal_min_amount"
+    t.integer "proposal_max_amount"
+    t.integer "proposal_min_duration"
+    t.integer "proposal_max_duration"
+    t.jsonb "proposal_categories", default: [], null: false
+    t.jsonb "recipient_categories", default: [], null: false
+    t.integer "recipient_min_income"
+    t.integer "recipient_max_income"
     t.integer "geo_area_id"
     t.string "state", default: "draft", null: false
-    t.boolean "featured", default: false
-    t.string "pretty_name"
+    t.jsonb "proposal_permitted_geographic_scales", default: [], null: false
+    t.boolean "proposal_all_in_area"
     t.index ["funder_id"], name: "index_funds_on_funder_id"
-    t.index ["slug"], name: "index_funds_on_slug"
-    t.index ["tags"], name: "index_funds_on_tags", using: :gin
+    t.index ["geo_area_id"], name: "index_funds_on_geo_area_id"
   end
 
   create_table "geo_areas", force: :cascade do |t|
