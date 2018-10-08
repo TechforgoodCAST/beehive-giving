@@ -1,2 +1,10 @@
 -# TODO: implement
 %h1 Report for...
+
+- @proposal.assessments.each do |a|
+  = a.fund.id
+  = a.fund.name
+  - if a.reasons['Check::Eligibility::Amount']['rating'] == 'avoid'
+    %li= a.reasons['Check::Eligibility::Amount']['reasons'].join(' ')
+  %li= raw Rating::Eligibility::Quiz.new(assessment: a).message
+  %hr.my10

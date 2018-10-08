@@ -39,6 +39,7 @@ describe Assessment do
         eligibility_quiz_failing
         eligibility_status
         fund_version
+        reasons
       ]
       permitted = eligibility + misc
       expect(Assessment::PERMITTED_COLUMNS).to match_array(permitted)
@@ -46,40 +47,17 @@ describe Assessment do
   end
 
   context do
+    let(:collection) { create(:funder_with_funds) }
     let(:proposal) { create(:proposal) }
 
-    before do
-      area = build(:geo_area, countries: proposal.countries, children: false)
-      create(
-        :fund,
-        restrictions_known: false,
-        priorities_known: false,
-        themes: [build(:theme)],
-        geo_area: area
-      )
-    end
-
     it 'self.analyse' do
-      assessment = Assessment.analyse(Fund.active, proposal)[0]
+      Assessment.analyse(collection.funds, proposal)
       expect(Assessment.count).to eq(0)
-
-      %i[
-        eligibility_amount
-        eligibility_funding_type
-        eligibility_location
-        eligibility_org_income
-        eligibility_org_type
-        eligibility_quiz
-      ].each do |column|
-        expect(assessment.send(column)).to eq(ELIGIBLE)
-      end
-      expect(assessment.eligibility_quiz_failing).to eq(0)
-      expect(assessment.eligibility_status).to eq(ELIGIBLE)
     end
 
     it 'self.analyse_and_update!' do
-      Assessment.analyse_and_update!(Fund.active, proposal)
-      expect(Assessment.count).to eq(1)
+      Assessment.analyse_and_update!(collection.funds, proposal)
+      expect(Assessment.count).to eq(2)
     end
 
     it 'self.analyse_and_update! duplicate keys'

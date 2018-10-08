@@ -25,5 +25,13 @@ FactoryBot.define do
         build(:answer, category: proposal, criterion: priority)
       ]
     end
+
+    factory :proposal_no_funding, class: Proposal do
+      category_code 101 # Other
+      max_amount nil
+      max_duration nil
+      min_amount nil
+      min_duration nil
+    end
   end
 end

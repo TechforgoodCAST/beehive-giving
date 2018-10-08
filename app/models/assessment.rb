@@ -1,21 +1,22 @@
 class Assessment < ApplicationRecord
   CHECKS = [
-    Check::Eligibility::Amount.new,
-    Check::Eligibility::FundingType.new,
-    Check::Eligibility::Location.new,
-    Check::Eligibility::OrgIncome.new,
-    Check::Eligibility::OrgType.new,
-    Check::Eligibility::Quiz.new
+    Check::Eligibility::Amount,
+    # Check::Eligibility::FundingType.new,
+    # Check::Eligibility::Location.new,
+    # Check::Eligibility::OrgIncome.new,
+    # Check::Eligibility::OrgType.new,
+    Check::Eligibility::Quiz
   ].freeze
 
   ELIGIBILITY_STATUS_COLUMNS = CHECKS.map do |check|
-    "eligibility_#{check.class.name.demodulize.underscore}".to_sym
+    "eligibility_#{check.name.demodulize.underscore}".to_sym
   end.freeze
 
   PERMITTED_COLUMNS = (ELIGIBILITY_STATUS_COLUMNS + %i[
     eligibility_quiz_failing
     eligibility_status
     fund_version
+    reasons
   ]).freeze
 
   belongs_to :fund

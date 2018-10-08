@@ -1,3 +1,4 @@
+# TODO: refactor
 include ActionView::Helpers::SanitizeHelper
 
 module FundsHelper

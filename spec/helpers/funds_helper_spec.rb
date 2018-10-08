@@ -1,3 +1,4 @@
+# TODO: refactor
 require 'rails_helper'
 
 describe FundsHelper do

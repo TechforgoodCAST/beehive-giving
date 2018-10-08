@@ -17,6 +17,7 @@ class ProposalsController < ApplicationController
     @proposal.collection = @collection
 
     if @proposal.save
+      Assessment.analyse_and_update!(@collection.funds, @proposal)
       ReportMailer.notify(@proposal).deliver_now
       redirect_to new_charge_path(@proposal)
     else

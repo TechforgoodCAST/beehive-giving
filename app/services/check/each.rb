@@ -16,36 +16,12 @@ module Check
 
       preload_funds(funds).each do |fund|
         assessment = assessments[fund.id] || build(fund, proposal, recipient)
-        @criteria.each { |check| check.call(assessment) }
+        @criteria.each { |check| check.new.call(assessment) }
         assessment.fund_version = fund_version
         updates << assessment if assessment.valid?
       end
 
       updates.select(&:changed?)
-    end
-
-    def call_each_deprecated(proposal, funds) # TODO: deprecated
-      validate_call_each(proposal, funds)
-      updates = {}
-      remove_funds_not_passed_in!(funds, updates)
-      preload_associations(funds).each do |fund|
-        @criteria.each do |check|
-          updates[fund.slug] = {} unless updates.key? fund.slug
-          updates[fund.slug][key_name(check)] = check.call(proposal, fund)
-          updates[fund.slug].compact!
-        end
-      end
-      updates
-    end
-
-    def call_each_with_total(proposal, funds) # TODO: deprecated
-      updates = call_each_deprecated(proposal, funds)
-      return {} if updates.empty?
-      topsis = Topsis.new(updates).rank
-
-      updates.each do |k, _|
-        updates[k]['total'] = topsis[k]
-      end
     end
 
     private

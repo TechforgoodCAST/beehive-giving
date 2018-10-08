@@ -25,7 +25,7 @@ class Proposal < ApplicationRecord
   belongs_to :recipient
   belongs_to :user
 
-  has_many :assessments
+  has_many :assessments, dependent: :destroy
 
   has_many :proposal_themes, dependent: :destroy
   has_many :themes, through: :proposal_themes

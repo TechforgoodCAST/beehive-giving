@@ -1,22 +1,36 @@
 module Check
   module Base
     attr_reader :assessment
+    attr_accessor :reasons
+
+    def initialize
+      @reasons = Set.new
+    end
 
     def call(assessment)
       @assessment = assessment
       validate(@assessment)
     end
 
-    def eligible(bool) # TODO: deprecated
-      { 'eligible' => bool }
-    end
-
-    def validate_call(proposal, fund) # TODO: deprecated
-      raise 'Invalid Proposal' unless proposal.is_a? Proposal
-      raise 'Invalid Fund' unless fund.is_a? Fund
-    end
-
     private
+
+      def build_reason(status, reasons)
+        rating = {
+          ELIGIBLE   => 'approach',
+          INCOMPLETE => 'unclear',
+          INELIGIBLE => 'avoid'
+        }[status]
+
+        raise('Invalid rating') if rating.nil?
+
+        { reasons: reasons, rating: rating }
+      end
+
+      def check_limit(amount, operator, limit)
+        return unless assessment.fund[limit]
+
+        assessment.proposal[amount].send(operator, assessment.fund[limit])
+      end
 
       def validate(assessment)
         raise ArgumentError, 'Invalid Assessment' unless

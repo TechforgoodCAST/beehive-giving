@@ -16,7 +16,7 @@ FactoryBot.define do
       eligibility_org_type     ELIGIBLE
       eligibility_quiz         ELIGIBLE
       factory :ineligible do
-        eligibility_location INELIGIBLE
+        eligibility_amount INELIGIBLE
       end
     end
   end

@@ -13,6 +13,9 @@ feature 'Proposals' do
 
   let(:collection) { @funder }
 
+  scenario 'email already registered should assign and continue'
+  scenario 'reports produced for active opportunities in collection'
+
   scenario 'create other support proposal', js: true do
     visit new_proposal_path(collection, @recipient)
 
@@ -36,6 +39,7 @@ feature 'Proposals' do
     valid_funding_request
 
     expect(current_path).to eq(new_charge_path(Proposal.last))
+    expect(Proposal.last.assessments.size).to eq(2)
   end
 
   scenario 'create local proposal', js: true do

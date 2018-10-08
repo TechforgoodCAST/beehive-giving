@@ -18,6 +18,9 @@
           = link_to 'Change settings', privacy_path(anchor: 'cookies', read_cookies_notice: true), class: 'btn-sm white'
           = link_to 'Continue', update_cookies_path(functional_cookies: true, performance_cookies: true, read_cookies_notice: true), class: 'btn-sm bg-blue white shadow'
 
+    -# TODO: review
+    = cell(:terms_notice, @current_user)
+
     = yield
 
     %footer.bg-ice.border-top.border-silver

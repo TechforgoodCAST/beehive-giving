@@ -7,7 +7,9 @@ describe Proposal do
 
   it('belongs to User') { assoc(:user, :belongs_to) }
 
-  it('has many Assessments') { assoc(:assessments, :has_many) }
+  it('has many Assessments') do
+    assoc(:assessments, :has_many, dependent: :destroy)
+  end
 
   it 'has many ProposalThemes' do
     assoc(:proposal_themes, :has_many, dependent: :destroy)

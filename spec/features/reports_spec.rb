@@ -1,11 +1,19 @@
 require 'rails_helper'
 
 feature 'Reports' do
-  scenario 'reports produced for active opportunities in collection'
+  include SignInHelper
+
+  let(:collection) { create(:funder_with_funds) }
+  let(:proposal) { create(:proposal) }
+  let(:user) { create(:user_with_password) }
+
+  before { Assessment.analyse_and_update!(collection.funds, proposal) }
 
   context 'signed out' do
     scenario 'can view public report' do
+      visit report_path(proposal)
       expect(current_path).to eq(report_path(proposal))
+      collection.funds.each { |fund| expect(page).to have_text(fund.name) }
     end
 
     scenario 'cannot view own private report' do
@@ -19,8 +27,12 @@ feature 'Reports' do
   end
 
   context 'signed in' do
+    before { sign_in(user) }
+
     scenario 'can view public report' do
+      visit report_path(proposal)
       expect(current_path).to eq(report_path(proposal))
+      collection.funds.each { |fund| expect(page).to have_text(fund.name) }
     end
 
     scenario 'can view own private report' do
