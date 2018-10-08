@@ -1,7 +1,7 @@
 class Assessment < ApplicationRecord
   CHECKS = [
     Check::Eligibility::Amount,
-    # Check::Eligibility::FundingType.new,
+    Check::Eligibility::ProposalCategories,
     # Check::Eligibility::Location.new,
     # Check::Eligibility::OrgIncome.new,
     # Check::Eligibility::OrgType.new,

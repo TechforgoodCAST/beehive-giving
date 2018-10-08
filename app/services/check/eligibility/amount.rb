@@ -9,13 +9,14 @@ module Check
 
         if seeking_funding?
           assessment.eligibility_amount = check_eligibility!
-
-          assessment.reasons[self.class.to_s] = build_reason(
-            assessment.eligibility_amount, reasons
-          )
         else
-          assessment.eligibility_amount = INELIGIBLE
+          assessment.eligibility_amount = INCOMPLETE
+          reasons << 'Amount sought not provided'
         end
+
+        assessment.reasons[self.class.to_s] = build_reason(
+          assessment.eligibility_amount, reasons
+        )
 
         assessment
       end

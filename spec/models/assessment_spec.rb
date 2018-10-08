@@ -22,7 +22,7 @@ describe Assessment do
     let(:eligibility) do
       %i[
         eligibility_amount
-        eligibility_funding_type
+        eligibility_proposal_categories
         eligibility_location
         eligibility_org_income
         eligibility_org_type

@@ -9,12 +9,12 @@ FactoryBot.define do
     end
 
     factory :eligible do
-      eligibility_amount       ELIGIBLE
-      eligibility_funding_type ELIGIBLE
-      eligibility_location     ELIGIBLE
-      eligibility_org_income   ELIGIBLE
-      eligibility_org_type     ELIGIBLE
-      eligibility_quiz         ELIGIBLE
+      eligibility_amount              ELIGIBLE
+      eligibility_proposal_categories ELIGIBLE
+      eligibility_location            ELIGIBLE
+      eligibility_org_income          ELIGIBLE
+      eligibility_org_type            ELIGIBLE
+      eligibility_quiz                ELIGIBLE
       factory :ineligible do
         eligibility_amount INELIGIBLE
       end
