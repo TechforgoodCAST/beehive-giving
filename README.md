@@ -18,9 +18,6 @@ Prerequisites: [Ruby](https://www.ruby-lang.org), [Bundler](https://bundler.io/)
    ```
 5. `rails s` and `bin/webpack-dev-server` to start local development servers
 
-## Importing data
-`pg_restore -c -O -d beehive_development <path_to_local_dump_file>`
-
 ## Running tests
 - `rspec` to run Ruby unit and feature tests.
 - `yarn test` to run JavaScript unit tests.
