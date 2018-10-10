@@ -13,7 +13,7 @@ describe Check::Eligibility::ProposalCategories do
   before { subject.call(assessment) }
 
   context 'permitted proposal category' do
-    let(:category_code) { 202 }
+    let(:category_code) { 202 } # Revenue - Core
 
     it('eligible') { expect(eligibility).to eq(ELIGIBLE) }
 
@@ -28,7 +28,7 @@ describe Check::Eligibility::ProposalCategories do
   end
 
   context 'unpermitted proposal category' do
-    let(:category_code) { 201 }
+    let(:category_code) { 201 } # Capital
 
     it('ineligible') { expect(eligibility).to eq(INELIGIBLE) }
 

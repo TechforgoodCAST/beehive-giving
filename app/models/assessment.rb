@@ -2,9 +2,9 @@ class Assessment < ApplicationRecord
   CHECKS = [
     Check::Eligibility::Amount,
     Check::Eligibility::ProposalCategories,
+    Check::Eligibility::RecipientCategories,
     # Check::Eligibility::Location.new,
     # Check::Eligibility::OrgIncome.new,
-    # Check::Eligibility::OrgType.new,
     Check::Eligibility::Quiz
   ].freeze
 

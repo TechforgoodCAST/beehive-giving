@@ -35,7 +35,7 @@ FactoryBot.define do
       proposal_categories [202, 203] # Revenue - Core, Revenue - Project
 
       # Check::Eligibility::RecipientCategories
-      recipient_categories [301] # A charitable organisation
+      recipient_categories [203, 301] # An unregistered charity, A charitable organisation
 
       # Check::Eligibility::Quiz
       after(:build) do |fund, _evaluator|
