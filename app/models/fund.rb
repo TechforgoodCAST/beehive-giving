@@ -51,6 +51,8 @@ class Fund < ApplicationRecord
     in: [true, false]
   }, if: :proposal_area_limited
 
+  validates :proposal_all_in_area, absence: true, unless: :proposal_area_limited
+
   validates :geo_area, presence: true, if: :proposal_area_limited
 
   validate :validate_integer_rules, :validate_links

@@ -26,7 +26,7 @@ FactoryBot.define do
       recipient_max_income nil
 
       # Check::Eligibility::Location
-      proposal_permitted_geographic_scales ['local', 'regional']
+      proposal_permitted_geographic_scales %w[local regional]
       proposal_area_limited true
       proposal_all_in_area true
       association :geo_area, strategy: :build, children: false

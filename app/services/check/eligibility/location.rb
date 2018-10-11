@@ -6,54 +6,80 @@ module Check
       def call(assessment)
         super
         assessment.eligibility_location = eligibility
+        build_reason(assessment.eligibility_location, reasons)
         assessment
       end
 
       private
 
+        def countries_ineligible
+          reasons << "Does not support work in the countries you're seeking"
+          INELIGIBLE
+        end
+
+        def districts_ineligible
+          reasons << "Does not support work in the areas you're seeking"
+          INELIGIBLE
+        end
+
         def eligibility
-          return INELIGIBLE if countries_ineligible?
-          return INELIGIBLE if national_ineligible?
-          return INELIGIBLE if local_ineligible?
-          ELIGIBLE
-        end
+          if permitted_geographic_scales.include?(geographic_scale)
 
-        def geographic_scale_limited?
-          assessment.fund.geographic_scale_limited?
-        end
+            if proposal_area_limited?
+              return countries_ineligible if ineligible?('country')
 
-        def national?
-          assessment.fund.national?
-        end
+              if local_or_regional?
+                return districts_ineligible if ineligible?('district')
+              end
+            end
 
-        def proposal_national?
-          assessment.proposal.affect_geo == 2
+            ELIGIBLE
+          else
+            reasons << "Only supports #{permitted_geographic_scales.to_sentence} work"
+            INELIGIBLE
+          end
         end
 
         def fund_geo_ids(geo)
           assessment.fund.geo_area.send(geo.pluralize).pluck(:id)
         end
 
-        def proposal_geo_ids(geo)
-          assessment.proposal.send("#{geo}_ids")
+        def geographic_scale
+          assessment.proposal.geographic_scale
         end
 
         def ineligible?(geo)
-          (proposal_geo_ids(geo) & fund_geo_ids(geo)).empty?
+          overlap = (proposal_geo_ids(geo) & fund_geo_ids(geo))
+          if proposal_all_in_area?
+            if proposal_geo_ids(geo).size > overlap.size
+              reasons << 'Some of your work takes place outside of the permitted areas'
+              true
+            else
+              false
+            end
+          else
+            overlap.empty?
+          end
         end
 
-        def countries_ineligible?
-          ineligible?('country')
+        def local_or_regional?
+          %w[local regional].include?(assessment.proposal.geographic_scale)
         end
 
-        def national_ineligible?
-          return false if proposal_national?
-          geographic_scale_limited? && national?
+        def permitted_geographic_scales
+          assessment.fund.proposal_permitted_geographic_scales
         end
 
-        def local_ineligible?
-          return false unless geographic_scale_limited? && !national?
-          ineligible?('district')
+        def proposal_all_in_area?
+          assessment.fund.proposal_all_in_area?
+        end
+
+        def proposal_area_limited?
+          assessment.fund.proposal_area_limited?
+        end
+
+        def proposal_geo_ids(geo)
+          assessment.proposal.send("#{geo}_ids")
         end
     end
   end

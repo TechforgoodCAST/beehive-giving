@@ -13,17 +13,23 @@ FactoryBot.define do
     public_consent true
     title 'Community space'
 
-    after(:build) do |proposal, _evaluator|
-      proposal.themes = build_list(:theme, 1)
-      country = build(:country)
-      proposal.countries = [country]
-      proposal.districts = build_list(:district, 1, country: country)
-      restriction = build(:restriction, category: 'Proposal')
-      priority = build(:priority, category: 'Proposal')
-      proposal.answers = [
-        build(:answer, category: proposal, criterion: restriction),
-        build(:answer, category: proposal, criterion: priority)
-      ]
+    transient do
+      children true
+    end
+
+    after(:build) do |proposal, opts|
+      if opts.children
+        proposal.themes = build_list(:theme, 1)
+        country = build(:country)
+        proposal.countries = [country]
+        proposal.districts = build_list(:district, 1, country: country)
+        restriction = build(:restriction, category: 'Proposal')
+        priority = build(:priority, category: 'Proposal')
+        proposal.answers = [
+          build(:answer, category: proposal, criterion: restriction),
+          build(:answer, category: proposal, criterion: priority)
+        ]
+      end
     end
 
     factory :proposal_no_funding, class: Proposal do

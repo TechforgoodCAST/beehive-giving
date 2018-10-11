@@ -155,6 +155,13 @@ describe Fund do
         subject.valid?
         expect_error(:proposal_all_in_area, 'is not included in the list')
       end
+
+      it 'must be blank unless #proposal_area_limited' do
+        subject.proposal_area_limited = nil
+        subject.proposal_all_in_area = true
+        subject.valid?
+        expect_error(:proposal_all_in_area, 'must be blank')
+      end
     end
 
     context '#geo_area' do
