@@ -38,7 +38,10 @@ describe Check::Eligibility::Quiz do
     it 'unclear' do
       reasons = {
         'Check::Eligibility::Quiz' => {
-          reasons: ['incomplete'].to_set,
+          reasons: [
+            'The restrictions for the opportunity have changed, and your ' \
+            'answers are incomplete'
+          ].to_set,
           rating: 'unclear'
         }
       }
@@ -69,7 +72,9 @@ describe Check::Eligibility::Quiz do
     it 'avoid' do
       reasons = {
         'Check::Eligibility::Quiz' => {
-          reasons: ['1 failing'].to_set,
+          reasons: [
+            'You do not meet 1 of the restrictions for this opportunity'
+          ].to_set,
           rating: 'avoid'
         }
       }

@@ -1,6 +1,6 @@
 module Rating
   module Eligibility
-    class Location
+    class RecipientCategories
       include Rating::Base
     end
   end

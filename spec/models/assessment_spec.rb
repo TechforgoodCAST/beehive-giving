@@ -22,11 +22,10 @@ describe Assessment do
     let(:eligibility) do
       %i[
         eligibility_amount
-        eligibility_proposal_categories
         eligibility_location
-        eligibility_org_income
-        eligibility_org_type
+        eligibility_proposal_categories
         eligibility_quiz
+        eligibility_recipient_categories
       ]
     end
 
@@ -87,4 +86,6 @@ describe Assessment do
   it '#attributes keys symbolized' do
     subject.attributes.keys.each { |k| expect(k).to be_a(Symbol) }
   end
+
+  it '#ratings'
 end

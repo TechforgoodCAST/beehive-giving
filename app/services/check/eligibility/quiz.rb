@@ -23,16 +23,16 @@ module Check
 
         def eligibility
           if incomplete?
-            # TODO: update message
-            reasons << 'incomplete'
+            reasons << 'The restrictions for the opportunity have changed, ' \
+                       'and your answers are incomplete'
             return UNASSESSED
           end
 
           if !answers.slice(*comparison).values.uniq.include?(false)
             ELIGIBLE
           else
-            # TODO: update message
-            reasons << "#{failing} failing"
+            reasons << "You do not meet #{failing} of the restrictions for " \
+                       'this opportunity'
             INELIGIBLE
           end
         end

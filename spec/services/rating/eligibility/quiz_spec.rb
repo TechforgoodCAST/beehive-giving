@@ -1,37 +1,9 @@
 require 'rails_helper'
-require 'services/rating/shared'
 
 describe Rating::Eligibility::Quiz do
-  subject { Rating::Eligibility::Quiz.new(assessment: assessment) }
-  let(:assessment) { nil }
+  subject { Rating::Eligibility::Quiz.new(1234, {}) }
 
-  it('#title') { expect(subject.title).to eq('Quiz') }
-
-  context 'incomplete' do
-    it('#colour') { expect(subject.colour).to eq('blue') }
-    it('#message') { expect(subject.message).to eq('-') }
-    it('#status') { expect(subject.status).to eq('Incomplete') }
-  end
-
-  context 'ineligible' do
-    let(:assessment) do
-      build(:assessment, eligibility_quiz: INELIGIBLE, eligibility_quiz_failing: 1)
-    end
-
-    it_behaves_like 'ineligible'
-
-    it '#message' do
-      msg = 'You are ineligible, and do not meet <strong>1</strong> of ' \
-            'the criteria below.'
-      expect(subject.message).to eq(msg)
-    end
-  end
-
-  context 'eligible' do
-    let(:assessment) { build(:assessment, eligibility_quiz: ELIGIBLE) }
-
-    it_behaves_like 'eligible'
-
-    it('#message') { expect(subject.message).to eq('-') }
+  it '#link' do
+    expect(subject.link).to eq("<a href='#1234'>Your answers</a>")
   end
 end

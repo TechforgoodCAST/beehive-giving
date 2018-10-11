@@ -1,8 +1,14 @@
 -# TODO: implement
 %h1 Report for...
 
-- @proposal.assessments.each do |a|
+- @proposal.assessments.includes(:fund).each do |a|
   = a.fund.id
   = a.fund.name
-  = a.reasons
+
+  - a.ratings.each do |rating|
+    %li
+      = rating.indicator
+      = rating.message
+      = rating.link
+
   %hr.my10

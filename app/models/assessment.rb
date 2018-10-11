@@ -1,7 +1,7 @@
 class Assessment < ApplicationRecord
   CHECKS = [
     Check::Eligibility::Amount,
-    # Check::Eligibility::Location,
+    Check::Eligibility::Location,
     Check::Eligibility::ProposalCategories,
     Check::Eligibility::Quiz,
     Check::Eligibility::RecipientCategories
@@ -39,6 +39,10 @@ class Assessment < ApplicationRecord
 
   def attributes
     super.symbolize_keys
+  end
+
+  def ratings
+    Rating::Each.new(self).ratings
   end
 
   private
