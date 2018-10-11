@@ -3,8 +3,10 @@ FactoryBot.define do
     category_code 101 # An individual
 
     after(:build) do |recipient, _evaluator|
-      country = build(:country)
-      recipient.country = country
+      unless recipient.country
+        country = build(:country)
+        recipient.country = country
+      end
       recipient.district = build(:district, country: country)
     end
 

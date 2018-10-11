@@ -5,10 +5,10 @@ feature 'Proposals' do
     @funder = create(:funder_with_funds)
     @theme = Theme.first
 
-    @recipient = create(:recipient)
-    @country = @recipient.country
+    @country = Country.first
+    @recipient = create(:recipient, country: @country)
     create(:district, country: @country)
-    @districts = @country.districts.order(:id)
+    @districts = @country.districts
   end
 
   let(:collection) { @funder }
