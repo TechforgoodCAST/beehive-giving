@@ -14,9 +14,7 @@ module Check
           reasons << 'Amount sought not provided'
         end
 
-        assessment.reasons[self.class.to_s] = build_reason(
-          assessment.eligibility_amount, reasons
-        )
+        build_reason(assessment.eligibility_amount, reasons)
 
         assessment
       end

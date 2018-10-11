@@ -35,15 +35,6 @@ OPERATING_FOR = [
   ['4 years or more', 3]
 ].freeze
 
-# TODO: review/move
-INCOME_BANDS = [
-  ['Less than £10k', 0, 0, 9_999],
-  ['£10k - £99k', 1, 10_000, 99_999],
-  ['£100k - £999k', 2, 100_000, 999_999],
-  ['£1m - £10m', 3, 1_000_000, 10_000_000],
-  ['More than £10m', 4, 10_000_001, Float::INFINITY]
-].freeze
-
 # TODO: remove
 EMPLOYEES = [
   ['None', 0, 0, 0],

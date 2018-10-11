@@ -13,7 +13,7 @@ FactoryBot.define do
       charity_number '098765'
       company_number '012345'
       description    'Charity registered in England & Wales'
-      income_band    INCOME_BANDS[1][1] # 10k - 100k
+      income_band    Recipient::INCOME_BANDS[1][:label] # 10k - 100k
       name           'Charity projects'
       operating_for  OPERATING_FOR[1][1] # Less than 12 months
       website        'http://example.com'

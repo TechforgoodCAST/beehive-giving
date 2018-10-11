@@ -13,7 +13,7 @@
       .mb10= f.input :description, required: true
       .mb10= f.input :name, required: true
       .flex.flex-wrap.justify-between
-        .perc48.mb10= f.input :income_band, required: true, collection: INCOME_BANDS
+        .perc48.mb10= f.input :income_band, required: true, collection: Recipient::INCOME_BANDS, label_method: ->(a) { a.last[:label] }, value_method: :first
         .perc48.mb10= f.input :operating_for, required: true, collection: OPERATING_FOR
       .flex.flex-wrap.justify-between
         .perc48.mb10= f.input :charity_number

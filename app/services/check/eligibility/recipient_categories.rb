@@ -6,9 +6,7 @@ module Check
       def call(assessment)
         super
         assessment.eligibility_recipient_categories = eligibility
-        assessment.reasons[self.class.to_s] = build_reason(
-          assessment.eligibility_recipient_categories, reasons
-        )
+        build_reason(assessment.eligibility_recipient_categories, reasons)
         assessment
       end
 

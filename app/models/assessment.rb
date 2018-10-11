@@ -1,11 +1,10 @@
 class Assessment < ApplicationRecord
   CHECKS = [
     Check::Eligibility::Amount,
+    # Check::Eligibility::Location,
     Check::Eligibility::ProposalCategories,
-    Check::Eligibility::RecipientCategories,
-    # Check::Eligibility::Location.new,
-    # Check::Eligibility::OrgIncome.new,
-    Check::Eligibility::Quiz
+    Check::Eligibility::Quiz,
+    Check::Eligibility::RecipientCategories
   ].freeze
 
   ELIGIBILITY_STATUS_COLUMNS = CHECKS.map do |check|

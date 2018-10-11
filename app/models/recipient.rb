@@ -16,6 +16,14 @@ class Recipient < ApplicationRecord
     }
   }.freeze
 
+  INCOME_BANDS = {
+    0 => { label: 'Less than £10k', min: 0,          max: 9_999 },
+    1 => { label: '£10k - £99k',    min: 10_000,     max: 99_999 },
+    2 => { label: '£100k - £999k',  min: 100_000,    max: 999_999 },
+    3 => { label: '£1m - £10m',     min: 1_000_000,  max: 10_000_000 },
+    4 => { label: 'More than £10m', min: 10_000_001, max: Float::INFINITY }
+  }.freeze
+
   belongs_to :country
   belongs_to :district
   belongs_to :user, optional: true
@@ -45,7 +53,7 @@ class Recipient < ApplicationRecord
 
     validates :operating_for, inclusion: { in: OPERATING_FOR.pluck(1) }
 
-    validates :income_band, inclusion: { in: INCOME_BANDS.pluck(1) }
+    validates :income_band, inclusion: { in: INCOME_BANDS.keys }
   end
 
   validates :website, format: {
@@ -75,14 +83,6 @@ class Recipient < ApplicationRecord
   # @return [String] the name of the category.
   def category_name
     CATEGORIES.values.reduce({}, :merge)[category_code]
-  end
-
-  def max_income # TODO: review
-    income || INCOME_BANDS[income_band][3]
-  end
-
-  def min_income # TODO: review
-    income || INCOME_BANDS[income_band][2]
   end
 
   private

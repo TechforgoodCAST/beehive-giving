@@ -7,15 +7,15 @@ describe Check::Eligibility::Quiz do
       fund: build(
         :fund,
         themes: build_list(:theme, 1),
-        restrictions: restrictions,
-        priorities_known: false
+        restrictions: restrictions
       ),
       recipient: create(
         :recipient,
         answers: [build(
-          :recipient_eligibility,
+          :answer,
           criterion: restrictions.first,
-          eligible: eligible
+          eligible: eligible,
+          category_type: 'Recipient'
         )]
       )
     )
@@ -30,18 +30,50 @@ describe Check::Eligibility::Quiz do
 
   context 'with incomplete answers' do
     let(:num) { 2 }
+
     it('is nil') { expect(eligibility).to eq(UNASSESSED) }
+
     it('failing count') { expect(incomplete).to eq(nil) }
+
+    it 'unclear' do
+      reasons = {
+        'Check::Eligibility::Quiz' => {
+          reasons: ['incomplete'].to_set,
+          rating: 'unclear'
+        }
+      }
+      expect(assessment.reasons).to eq(reasons)
+    end
   end
 
   context 'with correct answers' do
     it('is eligible') { expect(eligibility).to eq(ELIGIBLE) }
+
     it('none failing') { expect(incomplete).to eq(0) }
+
+    it 'approach' do
+      reasons = {
+        'Check::Eligibility::Quiz' => { reasons: [], rating: 'approach' }
+      }
+      expect(assessment.reasons).to include(reasons)
+    end
   end
 
   context 'with incorrect answers' do
     let(:eligible) { false }
+
     it('is ineligible') { expect(eligibility).to eq(INELIGIBLE) }
+
     it('some failing') { expect(incomplete).to eq(1) }
+
+    it 'avoid' do
+      reasons = {
+        'Check::Eligibility::Quiz' => {
+          reasons: ['1 failing'].to_set,
+          rating: 'avoid'
+        }
+      }
+      expect(assessment.reasons).to include(reasons)
+    end
   end
 end

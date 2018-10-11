@@ -14,8 +14,9 @@ module Check
 
     private
 
-      def build_reason(status, reasons)
+      def build_reason(status, reasons, assessment: @assessment)
         rating = {
+          nil        => 'unclear',
           ELIGIBLE   => 'approach',
           INCOMPLETE => 'unclear',
           INELIGIBLE => 'avoid'
@@ -23,7 +24,9 @@ module Check
 
         raise('Invalid rating') if rating.nil?
 
-        { reasons: reasons, rating: rating }
+        assessment.reasons[self.class.to_s] = {
+          reasons: reasons, rating: rating
+        }
       end
 
       def check_limit(amount, operator, limit)

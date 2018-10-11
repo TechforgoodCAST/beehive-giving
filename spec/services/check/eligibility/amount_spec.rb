@@ -108,7 +108,7 @@ describe Check::Eligibility::Amount do
 
     it('incomplete') { expect(eligibility).to eq(INCOMPLETE) }
 
-    it('unclear') do
+    it 'unclear' do
       reasons = {
         'Check::Eligibility::Amount' => {
           reasons: ['Amount sought not provided'].to_set,
