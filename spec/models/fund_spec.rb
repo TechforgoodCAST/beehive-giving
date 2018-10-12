@@ -189,25 +189,4 @@ describe Fund do
     subject.update_column(:updated_at, DateTime.new(2018, 1, 1).in_time_zone)
     expect(Fund.version).to eq(46947589)
   end
-
-  # TODO: review
-  context '#assessment' do
-    it 'missing' do
-      expect(subject.assessment).to eq(nil)
-    end
-
-    it 'returns OpenStruct for view' do
-      assessment = create(:assessment, fund: create(:fund))
-      funds = Fund.join(assessment.proposal).select_view_columns
-      result = OpenStruct.new(
-        id: assessment.id,
-        fund_id: assessment.fund.hashid,
-        proposal_id: assessment.proposal_id,
-        eligibility_status: assessment.eligibility_status,
-        revealed: nil
-      )
-
-      expect(funds.first.assessment).to eq(result)
-    end
-  end
 end

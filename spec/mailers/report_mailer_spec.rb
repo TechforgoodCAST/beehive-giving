@@ -6,7 +6,8 @@ describe ReportMailer do
     let(:proposal) { create(:proposal) }
 
     it 'renders headers' do
-      expect(mail.subject).to eq('Funder report #1 for Funder [Beehive]')
+      subject = "Funder report ##{proposal.id} for Funder [Beehive]"
+      expect(mail.subject).to eq(subject)
       expect(mail.to).to eq([proposal.user.email])
       expect(mail.from).to eq(['support@beehivegiving.org'])
     end

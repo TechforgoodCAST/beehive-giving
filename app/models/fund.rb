@@ -1,6 +1,4 @@
 class Fund < ApplicationRecord
-  extend Funds::FilterSort # TODO: review
-
   scope :active, -> { where(state: 'active') }
   scope :recent, -> { order updated_at: :desc } # TODO: review
 
@@ -62,34 +60,6 @@ class Fund < ApplicationRecord
     XXhash.xxh32(active.order(:updated_at).pluck(:updated_at).join)
   end
 
-  # TODO: refactor & test
-  def amount_desc
-    return 'of any size' unless min_amount_awarded_limited ||
-                                max_amount_awarded_limited
-
-    opts = { precision: 0, unit: '£' }
-    if !min_amount_awarded_limited || min_amount_awarded.zero?
-      "up to #{number_to_currency(max_amount_awarded, opts)}"
-    elsif !max_amount_awarded_limited
-      "more than #{number_to_currency(min_amount_awarded, opts)}"
-    else
-      "between #{number_to_currency(min_amount_awarded, opts)} and " \
-      "#{number_to_currency(max_amount_awarded, opts)}"
-    end
-  end
-
-  def assessment
-    return unless respond_to?(:assessment_id)
-
-    OpenStruct.new(
-      id: assessment_id,
-      fund_id: hashid,
-      proposal_id: proposal_id,
-      eligibility_status: eligibility_status,
-      revealed: revealed
-    )
-  end
-
   def description_html
     markdown(description)
   end
@@ -97,21 +67,6 @@ class Fund < ApplicationRecord
   # TODO: remove
   def description_plain
     markdown(description, plain: true)
-  end
-
-  # TODO: refactor & test
-  def org_income_desc
-    return 'any' unless min_org_income_limited || max_org_income_limited
-
-    opts = { precision: 0, unit: '£' }
-    if !min_org_income_limited || min_org_income.zero?
-      "up to #{number_to_currency(max_org_income, opts)}"
-    elsif !max_org_income_limited
-      "more than #{number_to_currency(min_org_income, opts)}"
-    else
-      "between #{number_to_currency(min_org_income, opts)} and " \
-      "#{number_to_currency(max_org_income, opts)}"
-    end
   end
 
   def to_param
