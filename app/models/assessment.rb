@@ -4,16 +4,26 @@ class Assessment < ApplicationRecord
     Check::Eligibility::Location,
     Check::Eligibility::ProposalCategories,
     Check::Eligibility::Quiz,
-    Check::Eligibility::RecipientCategories
+    Check::Eligibility::RecipientCategories,
+    Check::Suitability::Quiz
   ].freeze
 
-  ELIGIBILITY_STATUS_COLUMNS = CHECKS.map do |check|
-    "eligibility_#{check.name.demodulize.underscore}".to_sym
-  end.freeze
+  ELIGIBILITY_COLUMNS = %i[
+    eligibility_amount
+    eligibility_location
+    eligibility_proposal_categories
+    eligibility_quiz
+    eligibility_recipient_categories
+  ].freeze
 
-  PERMITTED_COLUMNS = (ELIGIBILITY_STATUS_COLUMNS + %i[
+  SUITABILITY_COLUMNS = %i[
+    suitability_quiz
+  ].freeze
+
+  PERMITTED_COLUMNS = (ELIGIBILITY_COLUMNS + SUITABILITY_COLUMNS + %i[
     eligibility_quiz_failing
     eligibility_status
+    suitability_quiz_failing
     fund_version
     reasons
   ]).freeze
@@ -52,9 +62,10 @@ class Assessment < ApplicationRecord
     end
 
     def eligible_status
-      columns = attributes.slice(*ELIGIBILITY_STATUS_COLUMNS).values
+      columns = attributes.slice(*ELIGIBILITY_COLUMNS).values
       return INELIGIBLE if columns.any? { |c| c == INELIGIBLE }
       return ELIGIBLE if columns.all? { |c| c == ELIGIBLE }
+
       INCOMPLETE
     end
 end

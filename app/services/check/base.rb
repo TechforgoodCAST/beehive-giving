@@ -14,6 +14,10 @@ module Check
 
     private
 
+      def answers
+        (pluck(:recipient) + pluck(:proposal)).to_h
+      end
+
       def build_reason(status, reasons, assessment: @assessment)
         rating = {
           nil        => 'unclear',
@@ -33,6 +37,25 @@ module Check
         return unless assessment.fund[limit]
 
         assessment.proposal[amount].send(operator, assessment.fund[limit])
+      end
+
+      def comparison(questions)
+        answers.keys & questions
+      end
+
+      def failing(questions)
+        return if incomplete?(questions)
+
+        answers.slice(*comparison(questions)).values
+               .select { |i| i == false }.size
+      end
+
+      def incomplete?(questions)
+        comparison(questions).size != questions.size
+      end
+
+      def pluck(relation)
+        assessment.send(relation).answers.pluck(:criterion_id, :eligible)
       end
 
       def validate(assessment)

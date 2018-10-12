@@ -4,11 +4,7 @@ describe Check::Eligibility::Quiz do
   let(:assessment) do
     build(
       :assessment,
-      fund: build(
-        :fund,
-        themes: build_list(:theme, 1),
-        restrictions: restrictions
-      ),
+      fund: build(:fund, restrictions: restrictions),
       recipient: create(
         :recipient,
         answers: [build(
@@ -39,7 +35,7 @@ describe Check::Eligibility::Quiz do
       reasons = {
         'Check::Eligibility::Quiz' => {
           reasons: [
-            'The restrictions for the opportunity have changed, and your ' \
+            'The restrictions for this opportunity have changed, and your ' \
             'answers are incomplete'
           ].to_set,
           rating: 'unclear'

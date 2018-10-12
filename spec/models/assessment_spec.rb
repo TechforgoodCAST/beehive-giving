@@ -29,18 +29,29 @@ describe Assessment do
       ]
     end
 
-    it 'ELIGIBILITY_STATUS_COLUMNS correct' do
-      expect(Assessment::ELIGIBILITY_STATUS_COLUMNS).to match_array(eligibility)
+    let(:suitability) do
+      %i[
+        suitability_quiz
+      ]
+    end
+
+    it 'ELIGIBILITY_COLUMNS correct' do
+      expect(Assessment::ELIGIBILITY_COLUMNS).to match_array(eligibility)
+    end
+
+    it 'SUITABILITY_COLUMNS correct' do
+      expect(Assessment::SUITABILITY_COLUMNS).to match_array(suitability)
     end
 
     it 'PERMITTED_COLUMNS correct' do
       misc = %i[
         eligibility_quiz_failing
         eligibility_status
+        suitability_quiz_failing
         fund_version
         reasons
       ]
-      permitted = eligibility + misc
+      permitted = eligibility + suitability + misc
       expect(Assessment::PERMITTED_COLUMNS).to match_array(permitted)
     end
   end
