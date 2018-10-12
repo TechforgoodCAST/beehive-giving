@@ -26,6 +26,10 @@ module Check
 
     private
 
+      def build(fund, proposal, recipient)
+        Assessment.new(fund: fund, proposal: proposal, recipient: recipient)
+      end
+
       def persisted_assessments(funds, proposal) # TODO: avoid duplicate call
         Assessment.includes(
           fund: %i[geo_area countries districts restrictions],
@@ -35,40 +39,16 @@ module Check
          .map { |a| [a.fund_id, a] }.to_h
       end
 
-      def preload_recipient(proposal)
-        Recipient.includes(:answers).find(proposal.recipient_id)
+      def preload_funds(funds)
+        funds.includes(:geo_area, :countries, :districts, :restrictions)
       end
 
       def preload_proposal(proposal)
         Proposal.includes(:answers, :countries, :districts).find(proposal.id)
       end
 
-      def preload_funds(funds)
-        funds.includes(:geo_area, :countries, :districts, :restrictions)
-      end
-
-      def build(fund, proposal, recipient)
-        Assessment.new(fund: fund, proposal: proposal, recipient: recipient)
-      end
-
-      def validate_call_each(proposal, funds) # TODO: deprecated
-        raise 'Invalid Proposal' unless proposal.is_a? Proposal
-        raise 'Invalid collection of Funds' unless
-          funds.respond_to?(:each) && funds.try(:klass) == Fund
-      end
-
-      def remove_funds_not_passed_in!(funds, updates) # TODO: deprecated
-        (updates.keys - funds.pluck('slug')).each do |inactive|
-          updates.delete inactive
-        end
-      end
-
-      def preload_associations(funds) # TODO: deprecated
-        funds.includes(:countries, :districts, :themes)
-      end
-
-      def key_name(obj) # TODO: deprecated
-        obj.class.name.demodulize.underscore
+      def preload_recipient(proposal)
+        Recipient.includes(:answers).find(proposal.recipient_id)
       end
   end
 end

@@ -25,7 +25,7 @@ module Check
         raise('Invalid rating') if rating.nil?
 
         assessment.reasons[self.class.to_s] = {
-          reasons: reasons, rating: rating
+          rating: rating, reasons: reasons
         }
       end
 

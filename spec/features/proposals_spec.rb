@@ -8,7 +8,7 @@ feature 'Proposals' do
     @country = Country.first
     @recipient = create(:recipient, country: @country)
     create(:district, country: @country)
-    @districts = @country.districts
+    @districts = @country.districts.order(:id)
   end
 
   let(:collection) { @funder }
