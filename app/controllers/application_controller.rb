@@ -5,9 +5,6 @@ class ApplicationController < ActionController::Base
 
   helper_method :logged_in?
 
-  before_action :registration_incomplete, if: :logged_in?
-  before_action :registration_invalid, if: :logged_in?
-
   skip_after_action :intercom_rails_auto_include
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :bad_token
@@ -22,12 +19,22 @@ class ApplicationController < ActionController::Base
 
   private
 
+    def authenticate_user(proposal = nil)
+      session[:original_url] = request.original_url
+      return redirect_to(sign_in_lookup_path) unless logged_in?
+
+      if proposal && (current_user != proposal.user)
+        render('errors/forbidden', status: 403)
+      end
+    end
+
     def bad_token
       redirect_to '/logout', warning: 'Please sign in'
     end
 
     def current_user
       return unless cookies[:auth_token]
+
       @current_user ||= User.find_by(auth_token: cookies.encrypted[:auth_token])
       session[:user_id] = @current_user.id
       @current_user
@@ -42,25 +49,6 @@ class ApplicationController < ActionController::Base
 
     def redirect_if_logged_in
       redirect_to reports_path if logged_in?
-    end
-
-    def ensure_logged_in
-      return if logged_in?
-      session[:original_url] = request.original_url
-      return redirect_to sign_in_path, alert: 'Please sign in'
-    end
-
-    def redirect(path, opts = {})
-      return unless path
-      redirect_to path, opts unless request.path == path
-    end
-
-    def registration_incomplete
-      redirect(edit_proposal_path(@proposal)) if @proposal&.incomplete?
-    end
-
-    def registration_invalid
-      redirect(edit_proposal_path(@proposal)) if @proposal&.invalid?
     end
 
     def user_not_authorised

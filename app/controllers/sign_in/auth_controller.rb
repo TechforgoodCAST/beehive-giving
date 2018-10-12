@@ -22,10 +22,11 @@ module SignIn
       @form = SignIn::Auth.new(form_params)
 
       if @form.authenticate(@user)
+        original_url = session[:original_url]
         reset_session
         sign_in
         update_sign_in_metrics
-        redirect_to reports_path
+        redirect_to(original_url || reports_path) # TODO: test
       else
         render :new
       end

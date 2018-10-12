@@ -7,7 +7,7 @@ feature 'Charges' do
   scenario 'report already private' do
     proposal.update_column(:private, Time.zone.now)
     visit new_charge_path(proposal)
-    expect(current_path).to eq(report_path(proposal))
+    expect(current_path).to eq(sign_in_lookup_path)
   end
 
   scenario 'proposal missing' do

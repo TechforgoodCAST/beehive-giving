@@ -1,5 +1,18 @@
 class ReportsController < ApplicationController
   def show
     @proposal = Proposal.find_by(id: params[:proposal_id])
+
+    if @proposal
+      if @proposal.private? && params[:t] != @proposal.access_token
+        authenticate_user(@proposal)
+      end
+    else
+      render 'errors/not_found', status: 404
+      # TODO: , layout: 'fullscreen'
+    end
+  end
+
+  def index
+    authenticate_user
   end
 end
