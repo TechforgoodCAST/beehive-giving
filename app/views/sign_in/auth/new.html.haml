@@ -1,13 +1,21 @@
-= content_for :title, 'Sign in'
 
-%div{ style: 'max-width: 690px; margin: 40px auto;' }
-  %h4
-    Hi
-    = @user.first_name
-
-  = simple_form_for @form, url: sign_in_auth_path do |f|
-    = f.input :password, autofocus: true
-    = f.input :remember_me, as: :boolean
-    = f.submit 'Sign in', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Signing in...' }
-
-  = link_to 'Forgot password?', sign_in_reset_path
+.bg-rich-blue.page_no_scroll
+  .maxw1050.mx-auto.flex.justify-center.items-center.vh100.flex-column
+    .p20
+      =image_tag('logo',height:18, width:102)
+    .bg-white.rounded.shadow
+      .bg-ice.p20.border-bottom.border-mist
+        %h1.h4.bold
+          Hi
+          = @user.first_name
+      .p20
+        = simple_form_for @form, url: sign_in_lookup_path do |f|
+          .mb20
+            = f.input :password, autofocus: true
+          .mb20
+            = f.input :remember_me, as: :boolean, label: false, inline_label: 'Remember me'
+          = f.submit 'Next', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Finding...' }
+    .p20
+      = link_to 'Forgot password?', sign_in_reset_path , class:'white'
+  .maxw1050.mx-auto.mb40
+    = render 'shared/footer'
