@@ -3,13 +3,18 @@
   %hr.my30
 
   .flex.justify-between
-
     %div
-      = link_to('About', about_path)
-      %a Pricing
+      = link_to('About', about_path, class: 'pr20')
+      %a.pr20{:href => "#"} Pricing
+      %a.pr20{:href => "#"} Blog
+      %a.pr20{:href => "#"} API
+      %a.pr20{:href => "#"} Contact
 
     = link_to(root_path) do
       = image_tag('logo-hex.svg', width: 27)
 
     %div
-      %a FAQ
+      %a.pl20{:href => "#"} FAQ
+      %a.pl20{:href => "#"} Privacy
+      %a.pl20{:href => "#"} Terms
+      %a.pl20{:href => "#"} © 2018 CAST
