@@ -1,0 +1,15 @@
+%footer.fs14
+
+  %hr.my30
+
+  .flex.justify-between
+
+    %div
+      = link_to('About', about_path)
+      %a Pricing
+
+    = link_to(root_path) do
+      = image_tag('logo-hex.svg', width: 27)
+
+    %div
+      %a FAQ
