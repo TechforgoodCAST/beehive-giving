@@ -371,3 +371,29 @@ dialog
 .js-open-modal
   height: 100vh
   overflow: hidden
+
+// Footer
+// =========================================================================
+
+footer.slate .footer-links a
+  color: map-get($colors, 'slate')
+
+footer.white .footer-links a
+  color: map-get($colors, 'white')
+
+.footer-logo
+  @media screen and (max-width: 40rem)
+    margin: 30px auto
+
+.footer-links
+  min-width: 290px
+
+  @media screen and (max-width: 40rem)
+    width: 100%
+    display: flex
+    align-items: center
+    flex-direction: column
+    *
+      margin: 0 0 20px 0
+    *:last-child
+      margin: 0
