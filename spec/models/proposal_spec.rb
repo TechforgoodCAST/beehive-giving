@@ -188,6 +188,42 @@ describe Proposal do
     expect(subject.category_name).to eq('Revenue - Core')
   end
 
+  it '#identifier' do
+    subject.id = '123'
+    expect(subject.identifier).to eq('#123')
+  end
+
+  it '#name' do
+    name = "#{subject.collection_type} report for #{subject.collection.name}"
+    expect(subject.name).to eq(name)
+  end
+
+  it '#status public' do
+    expect(subject.status).to eq('public')
+  end
+
+  it '#status private' do
+    subject.private = Time.zone.now
+    expect(subject.status).to eq('private')
+  end
+
+  context 'legacy proposal' do
+    before { subject.collection_type = nil }
+
+    it '#identifier' do
+      expect(subject.identifier).to eq(nil)
+    end
+
+    it '#name' do
+      subject.id = '123'
+      expect(subject.name).to eq('Proposal #123')
+    end
+
+    it '#status' do
+      expect(subject.status).to eq('legacy')
+    end
+  end
+
   scenario '#country set'
 
   scenario 'countries & districts properly cleared & last selection takes precedence'

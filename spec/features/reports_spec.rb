@@ -28,6 +28,11 @@ feature 'Reports' do
 
       scenario { can_view_any_private_report_with_token(proposal) }
     end
+
+    scenario 'cannot pick a report to view from reports list' do
+      visit reports_path
+      expect(current_path).to eq(sign_in_lookup_path)
+    end
   end
 
   context 'signed in' do
@@ -50,6 +55,13 @@ feature 'Reports' do
         visit report_path(unowned)
         expect(page.status_code).to eq(403)
         expect(page).to have_text('Forbidden')
+      end
+
+      scenario 'can pick a report to view from reports list' do
+        visit reports_path
+        expect(current_path).to eq(reports_path)
+        click_link('View full report')
+        expect(current_path).to eq(report_path(proposal))
       end
     end
   end

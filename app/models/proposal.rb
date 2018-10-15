@@ -120,6 +120,26 @@ class Proposal < ApplicationRecord
     CATEGORIES.values.reduce({}, :merge)[category_code]
   end
 
+  def identifier
+    "##{id}" if collection_type
+  end
+
+  def name
+    if collection_type
+      "#{collection_type} report for #{collection.name}"
+    else
+      "Proposal ##{id}"
+    end
+  end
+
+  def status
+    if collection_type
+      private? ? 'private' : 'public'
+    else
+      'legacy'
+    end
+  end
+
   private
 
     def clear_districts_if_country_wide

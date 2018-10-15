@@ -1,7 +1,18 @@
--# TODO: refactor
-- flash.each do |key, value|
-  = key
-  |
-  = value
+.bg-rich-blue
+  .maxw1050.mx-auto.px15
+    %h1 My reports
 
-%h1 My reports
+.bg-ice
+  .maxw1050.mx-auto.px15
+    %section
+      - @reports.each do |report|
+        %li
+          = report.status
+          = report.name
+          = report.identifier
+          = link_to 'View full report', report_path(report), class: 'btn'
+
+    -# TODO: pagination
+
+    = render 'shared/footer'
+
