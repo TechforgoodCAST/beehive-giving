@@ -6,6 +6,8 @@ en:
       default_message: 'Please review the problems below:'
 
     labels:
+      sign_in_auth:
+          password: 'Enter your password'
       proposal:
         category_code: 'What type of funding or support are you seeking?'
         country_id: 'In which country?'

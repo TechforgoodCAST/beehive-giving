@@ -1,7 +1,5 @@
 module SignIn
   class LookupController < ApplicationController
-    layout 'fullscreen' # TODO: refactor
-
     before_action :redirect_if_logged_in
 
     def new

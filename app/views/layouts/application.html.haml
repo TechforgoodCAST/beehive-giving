@@ -21,4 +21,10 @@
     -# TODO: review
     = cell(:terms_notice, @current_user)
 
+    -# TODO: refactor
+    - flash.each do |key, value|
+      = key
+      |
+      = value
+
     = yield

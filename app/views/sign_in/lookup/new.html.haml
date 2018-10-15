@@ -1,12 +1,21 @@
 = content_for :title, 'Sign in'
 
-%div{ style: 'max-width: 690px; margin: 40px auto;' }
-  -# TODO: refactor
-  - flash.each do |key, value|
-    = key
-    |
-    = value
+.bg-rich-blue
+  .maxw1050.mx-auto.px15.vh100.flex.flex-column
+    .f1.flex.justify-center.items-center.my40
 
-  = simple_form_for @form, url: sign_in_lookup_path do |f|
-    = f.input :email, autofocus: true, input_html: { value: params[:email] }
-    = f.submit 'Next', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Finding...' }
+      %section.col1
+        .center.mb20
+          = link_to(root_path) do
+            = image_tag('logo.svg', width: 102)
+
+        .bg-white.rounded.shadow
+          .bg-ice.p20.border-bottom.border-mist.rounded-top
+            %h1.h4.bold Sign in
+          .p20
+            = simple_form_for @form, url: sign_in_lookup_path do |f|
+              .mb20
+                = f.input :email, autofocus: true, input_html: { value: params[:email] }
+              = f.submit 'Next', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Finding...' }
+
+    = render partial: 'shared/footer', locals: { color: @color = 'white' }

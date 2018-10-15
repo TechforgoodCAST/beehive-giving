@@ -42,6 +42,11 @@
 .right
   float: right
 
+.col1
+  min-width: 320px
+  @media screen and (max-width: 350px)
+    min-width: 100%
+
 @each $var, $val in $widths
   .maxw#{$var}
     max-width: $val
