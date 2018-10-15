@@ -2,8 +2,7 @@
 
 %div{ style: 'max-width: 690px; margin: 40px auto;' }
   Please follow the instructions we’ve sent to
-  -# TODO: helper?
-  = @user.email.gsub(/(?<=.{2})(.*)@/, '...@')
+  = obscure_email(@user.email)
   and set a new password.
 
   = link_to 'Home', root_path

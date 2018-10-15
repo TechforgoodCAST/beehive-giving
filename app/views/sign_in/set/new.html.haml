@@ -2,8 +2,7 @@
 
 %div{ style: 'max-width: 690px; margin: 40px auto;' }
   = simple_form_for @form, url: sign_in_set_path do |f|
-    -# TODO: helper
-    = @user.email.gsub(/(?<=.{2})(.*)@/, '...@')
+    = obscure_email(@user.email)
 
     = f.input :password, autofocus: true
     = f.input :password_confirmation

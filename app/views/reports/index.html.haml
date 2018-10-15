@@ -1,16 +1,47 @@
 .bg-rich-blue
+  .mb30
+    -# TODO: add nav
+    = cell :breadcrumb, 'My reports' => reports_path
+
   .maxw1050.mx-auto.px15
-    %h1 My reports
+    %h1.h2.white.mb10 My reports
+    .white.mb40
+      Reports for
+      = obscure_email(@current_user.email)
 
 .bg-ice
   .maxw1050.mx-auto.px15
-    %section
+    %section.grid.py40
       - @reports.each do |report|
-        %li
-          = report.status
-          = report.name
-          = report.identifier
-          = link_to 'View full report', report_path(report), class: 'btn'
+        -# TODO: progress bars
+        .bg-white.rounded.shadow.flex.flex-column
+
+          .p20.border-bottom.border-mist
+
+            .caps.grey.mb5= report.status
+
+            %h4.mb10
+              = report.name
+              %span.h4.grey= report.identifier
+
+            .fs15.night
+              Created
+              = time_ago_in_words(report.created_at)
+              ago
+              -# •
+              -# TODO: opportunities count
+
+          .p20.flex.flex-column.f1
+            .f1
+              .night.h6.bold.mb5 Proposal
+              .mb15= report.title
+
+              .night.h6.bold.mb5 Recipient
+              -# TODO: hide name for indiviual and default text if missing
+              .mb20= report.recipient.name
+
+            %div
+              = link_to 'View full report', report_path(report), class: 'btn btn-wide blue bg-light-blue border-pale-blue'
 
     -# TODO: pagination
 

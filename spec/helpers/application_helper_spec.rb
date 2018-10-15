@@ -45,4 +45,8 @@ describe ApplicationHelper do
       end
     end
   end
+
+  it '#obscure_email' do
+    expect(subject.obscure_email('email@email.com')).to eq('em...@email.com')
+  end
 end

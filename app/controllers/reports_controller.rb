@@ -13,7 +13,10 @@ class ReportsController < ApplicationController
   end
 
   def index
-    authenticate_user; return if performed?
-    @reports = current_user.proposals.includes(:collection)
+    authenticate_user
+    return if performed?
+
+    @reports = @current_user.proposals.includes(:collection, :recipient)
+                            .order(created_at: :desc)
   end
 end
