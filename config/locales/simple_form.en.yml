@@ -27,6 +27,8 @@ en:
         district: 'In which area?'
 
     hints:
+      sign_in_set:
+         password: 'At least 6 characters long with 1 number.'
       proposal:
         country_id: 'Type the name of the country (e.g. United Kingdom) to get started.'
         countries: 'Type the name of the country (e.g. United Kingdom) to get started.'
