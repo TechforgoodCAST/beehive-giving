@@ -1,0 +1,12 @@
+.maxw1050.mx-auto.px15
+  %nav.pt20.mb7.heading.bold.flex.justify-between.items-center
+    = link_to 'Beehive', root_path, id: 'navbar-logo', alt: 'Beehive logo', class: color
+
+    %div
+      = link_to('Opportunities', '#todo', class: color)
+      %span.grey.mx20 •
+      = link_to('My reports', reports_path, class: color)
+      - if logged_in?
+        = link_to('Sign out', sign_out_path, class: "ml20 #{color}")
+      - else
+        = link_to('Sign in', sign_in_lookup_path, class: "ml20 #{color}")
