@@ -1,17 +1,20 @@
-.bg-rich-blue
-  .mb30
-    -# TODO: add nav
-    = cell :breadcrumb, 'My reports' => reports_path
+= content_for :title, 'My reports'
 
-  .maxw1050.mx-auto.px15
-    %h1.h2.white.mb10 My reports
-    .white.mb40
-      Reports for
-      = obscure_email(@current_user.email)
+%main.bg-ice
 
-.bg-ice
-  .maxw1050.mx-auto.px15
-    %section.grid.py40
+  .bg-rich-blue
+    .mb30
+      -# TODO: add nav
+      = cell :breadcrumb, 'My reports' => reports_path
+
+    .maxw1050.mx-auto.px15
+      %h1.h2.white.mb10 My reports
+      .white.pb40
+        Reports for
+        = obscure_email(@current_user.email)
+
+  .maxw1050.mx-auto.px15.flex.flex-column
+    %section.grid.py40.f1
       - @reports.each do |report|
         -# TODO: progress bars
         .bg-white.rounded.shadow.flex.flex-column
@@ -45,5 +48,5 @@
 
     -# TODO: pagination
 
-    = render partial: 'shared/footer'
-
+.bg-ice
+  = render partial: 'shared/footer'
