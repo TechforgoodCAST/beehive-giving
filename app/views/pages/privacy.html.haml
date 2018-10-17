@@ -1,125 +1,67 @@
 = content_for :title, 'Privacy'
 
-%header
-  = cell :breadcrumb, 'Privacy' => privacy_path
+%main.bg-ice.flex.justify-center.items-center.py40.px15
+  %section.perc50
+    .bg-white.rounded.shadow.mb20
+      .bg-ice.p20.border-bottom.border-mist.rounded-top
+        %h1.mb20 Privacy
+      .p20.mb20
 
-%main
-  %section.maxw790.mx-auto
-    .mx40
-      = cell(:terms_notice, @current_user)
+        = link_to('#general-information', data: { turbolinks: false }) do
+          %h3.py20#general-information General Information
 
-      %h1.center.mb20 Privacy
-
-      = link_to('#general-information', data: { turbolinks: false }) do
-        %h3.py20#general-information General Information
-
-      %p
-        This Privacy Policy applies to the Beehive service
-        = surround '(', ')' do
-          %span.bold "Beehive"
-        provided by the Centre For The Acceleration Of Social Technology
-        = precede '(' do
-          %span.bold "CAST", "we"
-        or
-        = succeed ').' do
-          %span.bold "us"
-
-      = link_to('#information-gathering-and-usage', data: { turbolinks: false }) do
-        %h3.py20#information-gathering-and-usage Information Gathering and Usage
-
-      %p.mb20
-        We collect the following types of information from users of our website
-        = succeed ':' do
+        %p
+          This Privacy Policy applies to the Beehive service
           = surround '(', ')' do
-            %span.bold "Users"
+            %span.bold "Beehive"
+          provided by the Centre For The Acceleration Of Social Technology
+          = precede '(' do
+            %span.bold "CAST", "we"
+          or
+          = succeed ').' do
+            %span.bold "us"
 
-      %ul.list.pl30
-        %li.mb5 Information input by Users as part of the process of registration to use our website;
-        %li.mb5 E-mail addresses of Users who communicate with us via e-mail;
-        %li.mb5 Information volunteered by Users in the course of use of our website (such as, for example their profile, information about their organisation, survey responses); and
-        %li.mb20 Analytics and tracking data about Users site usage.
+        = link_to('#information-gathering-and-usage', data: { turbolinks: false }) do
+          %h3.py20#information-gathering-and-usage Information Gathering and Usage
 
-      %p.mb20 When you register for Beehive we ask for information including your name, email address, organisation name, billing address, and payment information (Members who sign up for the free account are not required to enter any payment details). Once you have registered for Beehive you may also submit additional information relating to your funding activities or requirements, your other activities or objectives, or those of your organisation, and other relevant information.
+        %p.mb20
+          We collect the following types of information from users of our website
+          = succeed ':' do
+            = surround '(', ')' do
+              %span.bold "Users"
 
-      %p.mb20 Unless we obtain your permission, information that is identifiable as relating to you (i.e. it has not been edited to make it anonymous) is not shared with or sold to other organizations for commercial purposes, except in connection with the operation of the Beehive service (including matching users with other users, providing insights into the activities of Users and related research and publications), or under the following circumstances:
+        %ul.list.pl30
+          %li.mb5 Information input by Users as part of the process of registration to use our website;
+          %li.mb5 E-mail addresses of Users who communicate with us via e-mail;
+          %li.mb5 Information volunteered by Users in the course of use of our website (such as, for example their profile, information about their organisation, survey responses); and
+          %li.mb20 Analytics and tracking data about Users site usage.
 
-      %ul.list.pl30
-        %li.mb5 If it is necessary to share information in order to investigate, prevent, or take action regarding illegal activities, suspected fraud, situations involving potential threats to the physical safety of any person, violations of Terms of Service, or as otherwise required by law.
-        %li If we transfer information about you if Beehive is acquired by or merged with another organisation, other than an organisation established by us and controlled by us. In this event, Beehive will notify you before information about you is transferred and becomes subject to a different privacy policy.
+        %p.mb20 When you register for Beehive we ask for information including your name, email address, organisation name, billing address, and payment information (Members who sign up for the free account are not required to enter any payment details). Once you have registered for Beehive you may also submit additional information relating to your funding activities or requirements, your other activities or objectives, or those of your organisation, and other relevant information.
 
-      = link_to('#your-rights', data: { turbolinks: false }) do
-        %h3.py20#your-rights Your rights
+        %p.mb20 Unless we obtain your permission, information that is identifiable as relating to you (i.e. it has not been edited to make it anonymous) is not shared with or sold to other organizations for commercial purposes, except in connection with the operation of the Beehive service (including matching users with other users, providing insights into the activities of Users and related research and publications), or under the following circumstances:
 
-      %p.mb20
-        You have the right to delete your account (unless we need to keep details for auditing purposes). You also have the right to access the information we hold on you - this can be done by emailing
-        = succeed '.' do
-          = mail_to('support@beehivegiving.org')
+        %ul.list.pl30
+          %li.mb5 If it is necessary to share information in order to investigate, prevent, or take action regarding illegal activities, suspected fraud, situations involving potential threats to the physical safety of any person, violations of Terms of Service, or as otherwise required by law.
+          %li If we transfer information about you if Beehive is acquired by or merged with another organisation, other than an organisation established by us and controlled by us. In this event, Beehive will notify you before information about you is transferred and becomes subject to a different privacy policy.
 
-      %p.mb20 The data we hold on you will be removed from our systems after a reasonable period following from your last interaction with the service, unless we need to keep the information for legal or auditing purposes.
+        = link_to('#your-rights', data: { turbolinks: false }) do
+          %h3.py20#your-rights Your rights
 
-      %p Beehive uses automated decision making to determine your eligibility and suitability for the funds we hold information on, but the ultimate decision on whether you receive funding continues to be made by the grant-makers themselves through their own processes.
+        %p.mb20
+          You have the right to delete your account (unless we need to keep details for auditing purposes). You also have the right to access the information we hold on you - this can be done by emailing
+          = succeed '.' do
+            = mail_to('support@beehivegiving.org')
 
-      = link_to('#cookies', data: { turbolinks: false }) do
-        %h3.py20#cookies Cookies
+        %p.mb20 The data we hold on you will be removed from our systems after a reasonable period following from your last interaction with the service, unless we need to keep the information for legal or auditing purposes.
 
-      %p.mb20
-        We use cookies to give you the best experience on our website. In addition to strictly neccesary cookies, third party cookies may track your use of Beehive. If you continue without changing your settings (below), we'll assume that you are happy to receive all cookies.
-        = link_to 'More about cookies', 'https://cookiesandyou.com/', target: '_blank'
+        %p Beehive uses automated decision making to determine your eligibility and suitability for the funds we hold information on, but the ultimate decision on whether you receive funding continues to be made by the grant-makers themselves through their own processes.
 
-      %h4 Strictly Necessary Cookies
-      .my15
-        .dot.bg-green
-        On (Required)
-      %p.mb20 These cookies are essential in order to enable you to move around the website and use its features. Without these cookies services you have asked for cannot be provided.
+        = link_to('#cookies', data: { turbolinks: false }) do
+          %h3.py20#cookies Cookies
 
-      %h4 Functional Cookies
-      .my15
-        - if allow_functional_cookies?
-          .dot.bg-green
-          On
-          = surround '(', ')' do
-            = link_to 'Turn Off', update_cookies_path(functional_cookies: false)
-        - else
-          .dot.bg-red
-          Off
-          = surround '(', ')' do
-            = link_to 'Turn On', update_cookies_path(functional_cookies: true)
-      %p.mb20 These cookies allow the website to remember choices you make and provide enhanced functionality and personal features. Without these cookies some parts of the site may not work correctly.
+        %p.mb20
+          We use cookies to give you the best experience on our website. In addition to strictly neccesary cookies, third party cookies may track your use of Beehive. If you continue without changing your settings (below), we'll assume that you are happy to receive all cookies.
+          = link_to 'More about cookies', 'https://cookiesandyou.com/', target: '_blank'
 
-      %h4 Performance Cookies
-      .my15
-        - if allow_performance_cookies?
-          .dot.bg-green
-          On
-          = surround '(', ')' do
-            = link_to 'Turn Off', update_cookies_path(performance_cookies: false)
-        - else
-          .dot.bg-red
-          Off
-          = surround '(', ')' do
-            = link_to 'Turn On', update_cookies_path(performance_cookies: true)
-      %p These cookies help to improve the performance of Beehive. For example, they collect information about which pages visitors go to most often and help us to provide a better user experience.
-
-      = link_to('#data-storage', data: { turbolinks: false }) do
-        %h3.py20#data-storage Data Storage
-
-      %p.mb20 Beehive uses third-party vendors and hosting partners to provide the Beehive service. Data relating to Users and their organisations is transferred to or mirrored on servers within the European Union. Beehive reserves the right to transfer or mirror data to servers outside the European Union.
-
-      %p.mb20 Beehive will apply all reasonable measures to ensure that data held on Beehive servers is secure but cannot guarantee that security measures will not be breached.
-
-      %p Beehive will, when applicable, use secure third-party payment service providers and so will not have access to any User’s bank account or payment card information.
-
-      = link_to('#changes', data: { turbolinks: false }) do
-        %h3.py20#changes Changes
-
-      %p Beehive may periodically update this policy. We will notify you about significant changes in the way we treat personal information by sending a notice to the primary email address specified in your Beehive primary account holder account or by placing a prominent notice on our site.
-
-      = link_to('#questions', data: { turbolinks: false }) do
-        %h3.py20#questions Questions
-
-      %p
-        Any questions about this Privacy Policy should be sent to
-        = succeed '.' do
-          = link_to 'support@beehivegiving.org', 'mailto:support@beehivegiving.org', class: 'blue'
-
-  = render partial: 'layouts/sign_up_cta'
+.bg-ice
+  = render partial: 'shared/footer', locals: { color: 'rich-blue' }
