@@ -4,7 +4,7 @@
 %main.bg-ice
   %header
     = render partial: 'shared/nav', locals: { color: 'blue' }
-    = cell(:breadcrumb, { 'Privacy' => privacy_path }, color: 'blue')
+    = cell(:breadcrumb, { 'Terms' => terms_path }, color: 'blue')
 
   %section.col2.mx-auto.mb40.px15
     .bg-white.rounded.shadow
@@ -132,4 +132,4 @@
               = link_to 'support@beehivegiving.org', 'mailto:support@beehivegiving.org', class: 'blue'
 
 .bg-ice
-  = render partial: 'shared/footer', locals: { color: 'rich-blue' }
+  = render partial: 'shared/footer', locals: { color: 'slate' }
