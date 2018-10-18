@@ -1,14 +1,18 @@
 = content_for :title, 'Privacy'
 
-%main.bg-ice.flex.justify-center.items-center.py40.px15
-  %section.perc50
-    .bg-white.rounded.shadow.mb20
-      .bg-ice.p20.border-bottom.border-mist.rounded-top
-        %h1.mb20 Privacy
-      .p20.mb20
+%main.bg-ice
+  %header
+    = render partial: 'shared/nav', locals: { color: 'blue' }
+    = cell(:breadcrumb, { 'Privacy' => privacy_path }, color: 'blue')
+
+  %section.col2.mx-auto.mb40.px15
+    .bg-white.rounded.shadow
+      .p20.border-bottom.border-mist.rounded-top
+        %h1.h3 Privacy
+      .p20
 
         = link_to('#general-information', data: { turbolinks: false }) do
-          %h3.py20#general-information General Information
+          %h4.py20#general-information General Information
 
         %p
           This Privacy Policy applies to the Beehive service
@@ -45,7 +49,7 @@
           %li If we transfer information about you if Beehive is acquired by or merged with another organisation, other than an organisation established by us and controlled by us. In this event, Beehive will notify you before information about you is transferred and becomes subject to a different privacy policy.
 
         = link_to('#your-rights', data: { turbolinks: false }) do
-          %h3.py20#your-rights Your rights
+          %h4.py20#your-rights Your rights
 
         %p.mb20
           You have the right to delete your account (unless we need to keep details for auditing purposes). You also have the right to access the information we hold on you - this can be done by emailing
@@ -57,11 +61,11 @@
         %p Beehive uses automated decision making to determine your eligibility and suitability for the funds we hold information on, but the ultimate decision on whether you receive funding continues to be made by the grant-makers themselves through their own processes.
 
         = link_to('#cookies', data: { turbolinks: false }) do
-          %h3.py20#cookies Cookies
+          %h4.py20#cookies Cookies
 
-        %p.mb20
+        %p
           We use cookies to give you the best experience on our website. In addition to strictly neccesary cookies, third party cookies may track your use of Beehive. If you continue without changing your settings (below), we'll assume that you are happy to receive all cookies.
           = link_to 'More about cookies', 'https://cookiesandyou.com/', target: '_blank'
 
 .bg-ice
-  = render partial: 'shared/footer', locals: { color: 'rich-blue' }
+  = render partial: 'shared/footer', locals: { color: 'slate' }
