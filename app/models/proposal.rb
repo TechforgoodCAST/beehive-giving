@@ -132,6 +132,15 @@ class Proposal < ApplicationRecord
     end
   end
 
+  def save(*args)
+    existing_user = User.find_by(email: user.email) if user&.email
+    if existing_user
+      self.user = existing_user
+      user.skip_validations = true
+    end
+    super
+  end
+
   def status
     if collection_type
       private? ? 'private' : 'public'

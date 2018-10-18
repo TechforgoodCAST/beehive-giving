@@ -110,4 +110,9 @@ describe User do
       expect_error(:password, 'is too short (minimum is 6 characters)')
     end
   end
+
+  it '#skip_validations' do
+    subject = User.new(skip_validations: true, email: 'email@ngo.org')
+    expect(subject).to be_valid
+  end
 end

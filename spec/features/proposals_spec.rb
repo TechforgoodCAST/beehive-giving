@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 feature 'Proposals' do
+  include SignInHelper
+
   before do
     @funder = create(:funder_with_funds)
     @theme = Theme.first
@@ -12,9 +14,6 @@ feature 'Proposals' do
   end
 
   let(:collection) { @funder }
-
-  scenario 'email already registered should assign and continue'
-  scenario 'reports produced for active opportunities in collection'
 
   scenario 'create other support proposal', js: true do
     visit new_proposal_path(collection, @recipient)
@@ -159,9 +158,56 @@ feature 'Proposals' do
     expect(User.count).to eq(1)
   end
 
-  scenario 'assignes to existing user'
+  scenario 'assigns to existing user', js: true do
+    user = create(:user_with_password)
 
-  scenario 'user details hidden when signed in'
+    expect(user.proposals.size).to eq(0)
+
+    visit new_proposal_path(collection, @recipient)
+
+    fill_in_summary
+    fill_in_funding_details
+    select('An entire country')
+    select_country
+    choose_answers(from: 0, to: 7)
+    fill_in(:proposal_user_attributes_email, with: user.email)
+    check(:proposal_public_consent)
+    click_button('Get suitability report')
+
+    expect(current_path).to eq(new_charge_path(@recipient.proposal))
+    expect(user.proposals.count).to eq(1)
+  end
+
+  scenario 'assigns to existing user and fields hidden when signed in', js: true do
+    user = create(:user_with_password)
+    sign_in(user)
+    visit new_proposal_path(collection, @recipient)
+
+    %w[
+      first_name
+      last_name
+      email
+      email_confirmation
+      terms_agreed
+      marketing_consent
+    ].each do |field|
+      selector = ".proposal_user_#{field}"
+      expect(page).not_to have_css(selector)
+    end
+
+    fill_in_summary
+    fill_in_funding_details
+    select('An entire country')
+    select_country
+    choose_answers(from: 0, to: 7)
+    check(:proposal_public_consent)
+    click_button('Get suitability report')
+
+    expect(current_path).to eq(new_charge_path(@recipient.proposal))
+    expect(user.proposals.count).to eq(1)
+  end
+
+  scenario 'reports produced for active opportunities in collection'
 
   scenario 'restriction labels inverted'
 

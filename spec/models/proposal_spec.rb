@@ -224,6 +224,15 @@ describe Proposal do
     end
   end
 
+  it '#save assigns user' do
+    user = create(:user)
+    subject.user.email = user.email
+    expect(subject.user).not_to eq(user)
+
+    subject.save
+    expect(subject.user).to eq(user)
+  end
+
   scenario '#country set'
 
   scenario 'countries & districts properly cleared & last selection takes precedence'

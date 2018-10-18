@@ -15,6 +15,7 @@ class ProposalsController < ApplicationController
   def create
     @proposal = @recipient.build_proposal(form_params)
     @proposal.collection = @collection
+    @proposal.user = current_user if logged_in?
 
     if @proposal.save
       Assessment.analyse_and_update!(@collection.funds, @proposal)

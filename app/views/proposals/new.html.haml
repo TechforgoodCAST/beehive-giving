@@ -66,13 +66,14 @@
             %li
               %label.mx20= raw(a.object.criterion.details)
 
-    = f.simple_fields_for :user do |u|
-      = u.input :first_name
-      = u.input :last_name
-      = u.input :email
-      = u.input :email_confirmation
-      = u.input :terms_agreed, as: :boolean, label: false, inline_label: "I accept the #{link_to('terms of service', terms_path, target: '_blank')} and #{link_to('privacy policy', privacy_path, target: '_blank')}".html_safe
-      = u.input :marketing_consent, as: :radio_buttons
+    - if !logged_in?
+      = f.simple_fields_for :user do |u|
+        = u.input :first_name
+        = u.input :last_name
+        = u.input :email
+        = u.input :email_confirmation
+        = u.input :terms_agreed, as: :boolean, label: false, inline_label: "I accept the #{link_to('terms of service', terms_path, target: '_blank')} and #{link_to('privacy policy', privacy_path, target: '_blank')}".html_safe
+        = u.input :marketing_consent, as: :radio_buttons
 
     = f.label :public_consent
     = f.hint :public_consent
