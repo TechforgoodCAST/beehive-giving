@@ -63,6 +63,7 @@ Rails.application.routes.draw do
   get '/privacy',      to: 'pages#privacy', as: 'privacy'
   get '/terms',        to: 'pages#terms',   as: 'terms'
   get '/for-funders',  to: 'pages#forfunders', as: 'for_funders'
+  get '/pricing',      to: 'pages#pricing', as: 'pricing'
 
   # Funds
   get '/funds/(:proposal_id)',        to: 'funds#index',  as: 'funds'
