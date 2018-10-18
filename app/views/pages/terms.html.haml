@@ -1,14 +1,16 @@
 = content_for :title, 'Terms of Service'
 
-%header
-  = cell :breadcrumb, 'Terms' => terms_path
 
-%main.bg-ice.flex.justify-center.items-center.py40.px15
-  %section.perc50
-    .bg-white.rounded.shadow.mb20
-      .bg-ice.p20.border-bottom.border-mist.rounded-top
-        %h1.mb20 Terms of Service
-      .p20.mb20
+%main.bg-ice
+  %header
+    = render partial: 'shared/nav', locals: { color: 'blue' }
+    = cell(:breadcrumb, { 'Privacy' => privacy_path }, color: 'blue')
+
+  %section.col2.mx-auto.mb40.px15
+    .bg-white.rounded.shadow
+      .p20.border-bottom.border-mist.rounded-top
+        %h1.h3 Terms of Service
+      .p20
         %p
           These Terms of Service apply to the Beehive service
           = surround '(', ')' do
@@ -37,7 +39,7 @@
             = link_to "www.beehivegiving.org/terms", terms_path, class: 'blue'
 
         %a.blue{ href: '#account-terms' }
-          %h3.py20#account-terms A. Account Terms
+          %h4.py20#account-terms A. Account Terms
 
         %ol.pl20
           %li.mb5 You must be 13 years or older to use this Service.
@@ -51,7 +53,7 @@
           %li You may not upload or post any Content that is unlawful, offensive, threatening, libellous, defamatory, pornographic, obscene or otherwise objectionable or violates any party's intellectual property or these Terms of Service.
 
         %a.blue{ href: '#payment-for-services' }
-          %h3.py20#payment-for-services B. Payment for Services
+          %h4.py20#payment-for-services B. Payment for Services
 
         %ol.pl20
           %li.mb5
@@ -73,7 +75,7 @@
             eligibility checks.
 
         %a.blue{ href: '#cancellation-and-termination' }
-          %h3.py20#cancellation-and-termination C. Cancellation and Termination
+          %h4.py20#cancellation-and-termination C. Cancellation and Termination
 
         %ol.pl20
           %li.mb5
@@ -82,7 +84,7 @@
             Beehive, in its sole discretion, has the right to suspend or terminate your account and refuse any and all current or future use of the Service, or any other Beehive service, for any reason at any time. Such termination of the Service will result in the deactivation or deletion of your Account or your access to your Account, and the forfeiture and relinquishment of all Content in your Account. Beehive reserves the right to refuse service to anyone for any reason at any time.
 
         %a.blue{ href: '#modifications-to-the-service-and-prices' }
-          %h3.py20#modifications-to-the-service-and-prices D. Modifications to the Service and Prices
+          %h4.py20#modifications-to-the-service-and-prices D. Modifications to the Service and Prices
 
         %ol.pl20
           %li.mb5
@@ -91,7 +93,7 @@
             Beehive shall not be liable to you or to any third-party for any modification, price change, suspension or discontinuance of the Service.
 
         %a.blue{ href: '#copyright-and-content-ownership' }
-          %h3.py20#copyright-and-content-ownership E. Copyright and Content Ownership
+          %h4.py20#copyright-and-content-ownership E. Copyright and Content Ownership
 
         %ol.pl20
           %li.mb5
@@ -107,7 +109,7 @@
             Centre For The Acceleration Of Social Technology. All rights reserved. You may not duplicate, copy, or reuse any portion of the HTML/CSS, Javascript, or visual design elements or concepts without express written permission from Beehive.
 
         %a.blue{ href: '#general-condition' }
-          %h3.py20#general-condition F. General Conditions
+          %h4.py20#general-condition F. General Conditions
 
         %ol.pl20
           %li.mb5 Your use of the Service is at your sole risk. The service is provided on an "as is" and "as available" basis.
