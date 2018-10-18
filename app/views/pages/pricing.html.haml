@@ -1,0 +1,30 @@
+= content_for :title, 'Pricing'
+
+
+%main.bg-ice
+  %header
+    = render partial: 'shared/nav', locals: { color: 'blue' }
+    = cell(:breadcrumb, { 'Pricing' => pricing_path }, color: 'blue')
+
+  %section.col2.mx-auto.mb40
+    .center
+      %h1.m10 Pricing
+      %p Free suitability reports for a more efficient social sector
+    .flex.content-center.justify-center
+      .flex1.m20.bg-white.py25.px20.shadow.rounded
+        %h6.mb15.slate Public
+        %h3.bold.mb15 Free
+        %h6.mb15.slate Default
+        %p.mb15 By default, every report you make is added to a publicly viewable directory that others can browse.
+      .flex1.m20.bg-white.py25.px20.shadow.rounded
+        %h6.mb15.slate Private
+        %div
+          %h3.bold.mb15.inline-block £19.99
+          %p.inline-block.slate + card fees
+        %h6.mb15.slate Per report
+        %p.mb15 You can remove one of your reports from the public directory at any time by making it private for a small fee.
+    .center.mb20
+      Support to offer? See our pricing for opportunity provider
+
+.bg-ice
+  = render partial: 'shared/footer', locals: { color: 'rich-blue' }
