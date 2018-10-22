@@ -1,0 +1,32 @@
+= content_for :title, 'Add an opportunity'
+
+%main.bg-ice
+  %header
+    = render partial: 'shared/nav', locals: { color: 'blue' }
+    = cell(:breadcrumb, { 'Add an opportunity' => provider_pricing_path }, color: 'blue')
+
+  %section.col2.mx-auto
+    .center
+      %h2.h1.mb15 Add an opportunity
+      %h5.night.mb40 Building an open record of smart guidelines
+
+    .grid.mb40
+      .px20.py25.bg-white.shadow.rounded
+        .fs18.mb15.slate Verified
+        %h1.bold.mb5 £50
+        .fs14.mb25.slate Per opportunity
+        .mb20 You submit details about an opportunity and we’ll work with you to make sure it’s added quickly and correctly.
+        -# TODO: link
+        %a.btn.btn-wide.blue.bg-light-blue.border-pale-blue Add verified opportunity
+
+      .px20.py25.bg-white.shadow.rounded.flex.flex-column.justify-between
+        %div
+          .fs18.mb15.slate Managed
+          %h1.bold.mb5 £199
+          .fs14.mb25.slate Per opportunity per year
+          .mb20 We gather all the details needed to add an opportunity, then add and manage it for you.
+        -# TODO: link
+        %a.btn.btn-wide.blue.bg-light-blue.border-pale-blue Add managed opportunity
+
+.bg-ice
+  = render partial: 'shared/footer', locals: { color: 'slate' }
