@@ -2,11 +2,10 @@
 
 %main.bg-ice
 
-  -# TODO: colour from collection
-  %header.bg-rich-blue
+  %header.bg-primary
     = render partial: 'shared/nav', locals: { color: 'white' }
     -# TODO: links
-    = cell(:breadcrumb, 'Opportunities' => nil, @proposal.collection.name => nil, @proposal.identifier => report_path(@proposal))
+    = cell(:breadcrumb, 'Opportunities' => nil, @collection.name => nil, @proposal.identifier => report_path(@proposal))
 
     .maxw1050.mx-auto.px15.pb40
       .flex.justify-between.white
@@ -24,8 +23,7 @@
           ago
 
         %div
-          -# TODO: colour from collection
-          = link_to('New report', new_recipient_path(@proposal.collection), class: 'btn bg-dark-blue')
+          = link_to('New report', new_recipient_path(@collection), class: 'btn bg-secondary')
 
   .maxw1050.mx-auto
 
@@ -48,14 +46,12 @@
               %span.grey= "##{a.id}"
 
             .p20
-              -# TODO: summary
-              .mb10.heading.bold summary
               -# TODO: truncate
               .mb15= raw(a.fund.description_html)
               -# TODO: size
-              .btn.blue.border-mist Website
+              = link_to 'Website', a.fund.website, target: '_blank', class: 'btn blue border-mist'
               - a.fund.links.each do |text, href|
-                .btn.blue.border-mist= text
+                = link_to text, href, target: '_blank', class: 'btn blue border-mist'
 
             .p20.border-top-thick.border-bottom-thick{ class: a.banner.background }
               .flex.items-center

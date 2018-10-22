@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181022101357) do
+ActiveRecord::Schema.define(version: 20181022115042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -252,9 +252,8 @@ ActiveRecord::Schema.define(version: 20181022101357) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "microsite", default: false, null: false
-    t.string "primary_colour"
-    t.string "headline_colour"
-    t.string "subtitle_colour"
+    t.string "primary_color"
+    t.string "secondary_color"
     t.index ["slug"], name: "index_funders_on_slug", unique: true
   end
 

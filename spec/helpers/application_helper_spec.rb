@@ -49,4 +49,26 @@ describe ApplicationHelper do
   it '#obscure_email' do
     expect(subject.obscure_email('email@email.com')).to eq('em...@email.com')
   end
+
+  context '#primary_color' do
+    it 'default' do
+      expect(subject.primary_color(nil)).to eq('#3B88F5')
+    end
+
+    it 'from collection' do
+      collection = OpenStruct.new(primary_color: '#000')
+      expect(subject.primary_color(collection)).to eq('#000')
+    end
+  end
+
+  context '#secondary_color' do
+    it 'default' do
+      expect(subject.secondary_color(nil)).to eq('#1C4073')
+    end
+
+    it 'from collection' do
+      collection = OpenStruct.new(secondary_color: '#FFF')
+      expect(subject.secondary_color(collection)).to eq('#FFF')
+    end
+  end
 end

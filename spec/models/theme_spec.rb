@@ -59,4 +59,7 @@ describe Theme do
       expect(subject).to be_valid
     end
   end
+
+  it('#primary_color') { expect(subject.primary_color).to eq(nil) }
+  it('#secondary_color') { expect(subject.primary_color).to eq(nil) }
 end

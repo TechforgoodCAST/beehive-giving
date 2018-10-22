@@ -23,6 +23,14 @@ class Theme < ApplicationRecord
 
   before_validation :set_slug
 
+  def primary_color
+    nil
+  end
+
+  def secondary_color
+    nil
+  end
+
   def to_param
     slug
   end

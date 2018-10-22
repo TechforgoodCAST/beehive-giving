@@ -10,4 +10,12 @@ module ApplicationHelper
   def obscure_email(email)
     email.gsub(/(?<=.{2})(.*)@/, '...@')
   end
+
+  def primary_color(collection)
+    collection&.primary_color || '#3B88F5' # rich-blue
+  end
+
+  def secondary_color(collection)
+    collection&.secondary_color || '#1C4073' # dark-blue
+  end
 end
