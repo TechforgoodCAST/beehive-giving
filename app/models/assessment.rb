@@ -24,6 +24,7 @@ class Assessment < ApplicationRecord
     eligibility_quiz_failing
     eligibility_status
     suitability_quiz_failing
+    suitability_status
     fund_version
     reasons
   ]).freeze
@@ -36,7 +37,7 @@ class Assessment < ApplicationRecord
     in: [INELIGIBLE, INCOMPLETE, ELIGIBLE]
   }
 
-  before_validation :set_eligibility_status
+  before_validation :set_eligibility_status, :set_suitability_status
 
   def self.analyse(funds, proposal)
     Check::Each.new(CHECKS).call_each(funds, proposal)
@@ -49,6 +50,10 @@ class Assessment < ApplicationRecord
 
   def attributes
     super.symbolize_keys
+  end
+
+  def banner
+    @banner ||= Banner.new(self)
   end
 
   def ratings
@@ -67,5 +72,20 @@ class Assessment < ApplicationRecord
       return ELIGIBLE if columns.all? { |c| c == ELIGIBLE }
 
       INCOMPLETE
+    end
+
+    def set_suitability_status
+      self[:suitability_status] = suitable_status
+    end
+
+    def suitable_status
+      columns = ELIGIBILITY_COLUMNS + SUITABILITY_COLUMNS
+      values = attributes.slice(*columns).values
+
+      return 'avoid' if values.any? { |v| v == INELIGIBLE }
+      return 'unclear' if values.any? { |v| v == INCOMPLETE }
+      return 'approach' if values.all? { |v| v == ELIGIBLE }
+
+      'unclear'
     end
 end

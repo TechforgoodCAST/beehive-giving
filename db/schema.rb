@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181012115724) do
+ActiveRecord::Schema.define(version: 20181022101357) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -100,6 +100,7 @@ ActiveRecord::Schema.define(version: 20181012115724) do
     t.jsonb "reasons", default: {}, null: false
     t.integer "suitability_quiz"
     t.integer "suitability_quiz_failing"
+    t.string "suitability_status"
     t.index ["fund_id"], name: "index_assessments_on_fund_id"
     t.index ["proposal_id"], name: "index_assessments_on_proposal_id"
     t.index ["recipient_id"], name: "index_assessments_on_recipient_id"

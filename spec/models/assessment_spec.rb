@@ -48,6 +48,7 @@ describe Assessment do
         eligibility_quiz_failing
         eligibility_status
         suitability_quiz_failing
+        suitability_status
         fund_version
         reasons
       ]
@@ -73,6 +74,14 @@ describe Assessment do
     it 'self.analyse_and_update! duplicate keys'
   end
 
+  it '#attributes keys symbolized' do
+    subject.attributes.keys.each { |k| expect(k).to be_a(Symbol) }
+  end
+
+  it '#banner' do
+    expect(subject.banner).to be_a(Banner)
+  end
+
   it '#eligibility_status unset before_validation' do
     assessment = Assessment.new
     expect(assessment.eligibility_status).to eq(nil)
@@ -94,9 +103,23 @@ describe Assessment do
     end
   end
 
-  it '#attributes keys symbolized' do
-    subject.attributes.keys.each { |k| expect(k).to be_a(Symbol) }
+  context '#suitability_status' do
+    context 'incomplete' do
+      it { expect(subject.suitability_status).to eq('unclear') }
+    end
+
+    context 'ineligible' do
+      subject { build(:ineligible) }
+      it { expect(subject.suitability_status).to eq('avoid') }
+    end
+
+    context 'eligible' do
+      subject { build(:eligible) }
+      it { expect(subject.suitability_status).to eq('approach') }
+    end
   end
 
-  it '#ratings'
+  it '#ratings' do
+    expect(subject.ratings).to all(be_a(Rating))
+  end
 end

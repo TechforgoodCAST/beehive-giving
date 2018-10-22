@@ -32,14 +32,14 @@
     .mt40.flex.flex-wrap
       .col2.px15
         %h3.bold.night.mb40
+          -# TODO: opportunities count
           = @proposal.assessments.size
           opportunities checked
 
         - @proposal.assessments.includes(fund: [:funder]).each do |a|
 
           .bg-white.rounded.shadow.mb40
-            -# TODO: dynamic colour
-            .pb5.bg-red.rounded-top
+            .pb5.rounded-top{ class: a.banner.indicator }
 
             %h4.p20.border-bottom.border-mist
               = a.fund.name
@@ -57,11 +57,10 @@
               - a.fund.links.each do |text, href|
                 .btn.blue.border-mist= text
 
-            -# TODO: banner
-            .p20.bg-light-red.border-top-thick.border-bottom-thick.border-pale-red
+            .p20.border-top-thick.border-bottom-thick{ class: a.banner.background }
               .flex.items-center
-                .dot.ml5.mr15.bg-red
-                .heading.red.bold Avoid this opportunity
+                .dot.ml5.mr15{ class: a.banner.indicator }
+                .heading.bold{ class: a.banner.color }= a.banner.text
 
             %h5.p20 Rating details
 
