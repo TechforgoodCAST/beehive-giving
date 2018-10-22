@@ -21,6 +21,8 @@ class Proposal < ApplicationRecord
     international: 'Across many countries'
   }.with_indifferent_access.freeze
 
+  scope :recent_public, -> { where('private IS NULL').last(5).reverse }
+
   belongs_to :collection, polymorphic: true
   belongs_to :recipient
   belongs_to :user

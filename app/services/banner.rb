@@ -22,6 +22,7 @@ class Banner
 
   def text
     {
+      nil        => 'Unclear if you should apply',
       'approach' => 'Minimum standard of application met',
       'unclear'  => 'Unclear if you should apply',
       'avoid'    => 'Avoid this opportunity'

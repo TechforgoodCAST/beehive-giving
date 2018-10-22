@@ -95,7 +95,7 @@ describe Banner do
 
     context 'missing' do
       let(:status) { nil }
-      it { expect(subject).to eq(nil) }
+      it { expect(subject).to eq('Unclear if you should apply') }
     end
   end
 end
