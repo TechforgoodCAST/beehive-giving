@@ -24,6 +24,13 @@ class Recipient < ApplicationRecord
     4 => { label: 'More than £10m', min: 10_000_001, max: Float::INFINITY }
   }.freeze
 
+  OPERATING_FOR = {
+    0 => 'Yet to start',
+    1 => 'Less than 12 months',
+    2 => 'Less than 3 years',
+    3 => '4 years or more'
+  }.freeze
+
   belongs_to :country
   belongs_to :district
   belongs_to :user, optional: true
@@ -51,7 +58,7 @@ class Recipient < ApplicationRecord
   with_options unless: :individual? do
     validates :name, presence: true
 
-    validates :operating_for, inclusion: { in: OPERATING_FOR.pluck(1) }
+    validates :operating_for, inclusion: { in: OPERATING_FOR.keys }
 
     validates :income_band, inclusion: { in: INCOME_BANDS.keys }
   end
@@ -85,13 +92,21 @@ class Recipient < ApplicationRecord
     CATEGORIES.values.reduce({}, :merge)[category_code]
   end
 
+  def income_band_name
+    INCOME_BANDS[income_band].try(:[], :label)
+  end
+
+  def individual?
+    category_code == 101
+  end
+
+  def operating_for_name
+    OPERATING_FOR[operating_for]
+  end
+
   private
 
     def incorporated?
       category_code&.between?(301, 399)
-    end
-
-    def individual?
-      category_code == 101
     end
 end

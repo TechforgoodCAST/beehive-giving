@@ -76,9 +76,42 @@ describe Recipient do
     expect(subject.category_name).to eq('A charitable organisation')
   end
 
+  context '#income_band_name' do
+    it 'found' do
+      expect(subject.income_band_name).to eq('Less than £10k')
+    end
+
+    it 'not found' do
+      subject.income_band = nil
+      expect(subject.income_band_name).to eq(nil)
+    end
+  end
+
+  context '#individual?' do
+    it 'false' do
+      expect(subject.individual?).to eq(false)
+    end
+
+    it 'true' do
+      subject.category_code = 101
+      expect(subject.individual?).to eq(true)
+    end
+  end
+
   it 'invalid #website' do
     subject.website = 'www.example.com'
     expect(subject).not_to be_valid
+  end
+
+  context '#operating_for_name' do
+    it 'found' do
+      expect(subject.operating_for_name).to eq('Yet to start')
+    end
+
+    it 'not found' do
+      subject.operating_for = nil
+      expect(subject.operating_for_name).to eq(nil)
+    end
   end
 
   it 'strips whitespace' do

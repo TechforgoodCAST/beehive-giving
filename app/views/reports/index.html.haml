@@ -12,8 +12,8 @@
         Reports for
         = obscure_email(@current_user.email)
 
-  .maxw1050.mx-auto.px15.flex.flex-column
-    %section.grid.py40.f1
+  .maxw1050.mx-auto.px15
+    %section.grid.py40
       - @reports.each do |report|
         -# TODO: progress bars
         .bg-white.rounded.shadow.flex.flex-column

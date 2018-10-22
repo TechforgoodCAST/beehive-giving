@@ -33,7 +33,7 @@ Rails.application.routes.draw do
     post '/set/:token', to: 'set#create'
   end
 
-  get '/sign-out',  to: 'sign_in/auth#destroy', as: 'sign_out'
+  get '/sign-out', to: 'sign_in/auth#destroy', as: 'sign_out'
 
   namespace :api do
     namespace :v1 do

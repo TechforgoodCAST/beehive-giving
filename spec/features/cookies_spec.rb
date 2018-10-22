@@ -4,6 +4,8 @@ feature 'Cookies' do
   context 'banner' do
     before { visit root_path }
 
+    scenario 'reset_session makes banner appear after sign out'
+
     scenario('visible') { expect(page).to have_text('Change settings') }
 
     scenario 'continuing hides' do

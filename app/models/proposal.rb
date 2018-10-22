@@ -141,6 +141,10 @@ class Proposal < ApplicationRecord
     super
   end
 
+  def seeking_funding?
+    category_code&.between?(201, 299)
+  end
+
   def status
     if collection_type
       private? ? 'private' : 'public'
@@ -175,9 +179,5 @@ class Proposal < ApplicationRecord
 
     def other_support?
       category_code&.between?(101, 199)
-    end
-
-    def seeking_funding?
-      category_code&.between?(201, 299)
     end
 end

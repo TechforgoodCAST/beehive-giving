@@ -17,7 +17,7 @@ FactoryBot.define do
       description    'Charity registered in England & Wales'
       income_band    Recipient::INCOME_BANDS[1][:label] # 10k - 100k
       name           'Charity projects'
-      operating_for  OPERATING_FOR[1][1] # Less than 12 months
+      operating_for  Recipient::OPERATING_FOR[1] # Less than 12 months
       website        'http://example.com'
     end
   end

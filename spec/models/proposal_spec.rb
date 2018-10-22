@@ -233,6 +233,22 @@ describe Proposal do
     expect(subject.user).to eq(user)
   end
 
+  context '#seeking_funding?' do
+    it '#category_code missing' do
+      subject.category_code = nil
+      expect(subject.seeking_funding?).to eq(nil)
+    end
+
+    it 'out of range' do
+      subject.category_code = 100
+      expect(subject.seeking_funding?).to eq(false)
+    end
+    it 'within range' do
+      subject.category_code = 250
+      expect(subject.seeking_funding?).to eq(true)
+    end
+  end
+
   scenario '#country set'
 
   scenario 'countries & districts properly cleared & last selection takes precedence'

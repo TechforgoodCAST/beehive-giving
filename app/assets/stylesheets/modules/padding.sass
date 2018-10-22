@@ -2,21 +2,21 @@
 
 @each $var, $val in $scales
   .p#{$var}
-    +responsive(padding, $val, .6, .8)
+    padding: $val
   .pt#{$var}
-    +responsive(padding-top, $val, .6, .8)
+    padding-top: $val
   .pr#{$var}
-    +responsive(padding-right, $val, .6, .8)
+    padding-right: $val
   .pb#{$var}
-    +responsive(padding-bottom, $val, .6, .8)
+    padding-bottom: $val
   .pl#{$var}
-    +responsive(padding-left, $val, .6, .8)
+    padding-left: $val
   .px#{$var}
-    +responsive(padding-left, $val, .6, .8)
-    +responsive(padding-right, $val, .6, .8)
+    padding-left: $val
+    padding-right: $val
   .py#{$var}
-    +responsive(padding-top, $val, .6, .8)
-    +responsive(padding-bottom, $val, .6, .8)
+    padding-top: $val
+    padding-bottom: $val
 
 .px-auto
   padding-left: auto
