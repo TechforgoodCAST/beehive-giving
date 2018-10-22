@@ -64,6 +64,7 @@ Rails.application.routes.draw do
   get '/terms',        to: 'pages#terms',   as: 'terms'
   get '/for-funders',  to: 'pages#forfunders', as: 'for_funders'
   get '/pricing',      to: 'pages#pricing', as: 'pricing'
+  get '/provider-pricing',  to: 'pages#provider_pricing', as: 'provider_pricing'
 
   # Funds
   get '/funds/(:proposal_id)',        to: 'funds#index',  as: 'funds'
