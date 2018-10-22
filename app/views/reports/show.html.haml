@@ -31,8 +31,8 @@
       .col2.px15
         %h3.bold.night.mb40
           -# TODO: opportunities count
-          = @proposal.assessments.size
-          opportunities checked
+          = pluralize(@proposal.assessments.size, 'opportunity')
+          checked
 
         - @proposal.assessments.includes(fund: [:funder]).each do |a|
 

@@ -4,7 +4,7 @@
     = link_to 'Beehive', root_path, id: 'navbar-logo', alt: 'Beehive logo', class: color
 
     %div
-      = link_to('Opportunities', '#todo', class: color)
+      = link_to('Opportunities', opportunities_path, class: color)
       %span.grey.mx20 •
       = link_to('My reports', reports_path, class: color)
       - if logged_in?

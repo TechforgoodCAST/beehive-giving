@@ -19,6 +19,8 @@ Rails.application.routes.draw do
   get '/reports/:proposal_id', to: 'reports#show', as: 'report'
   get '/reports', to: 'reports#index', as: 'reports'
 
+  get 'opportunities', to: 'opportunities#index', as: 'opportunities'
+
   namespace :sign_in, path: 'sign-in' do
     get  '/', to: 'lookup#new', as: 'lookup'
     post '/', to: 'lookup#create'

@@ -23,20 +23,20 @@
           Karen,
           = link_to "Erb's Palsy Group", 'http://www.erbspalsygroup.co.uk/', target: '_blank'
 
-    .col2.px15.mb40
-      .col1.bg-white.rounded.shadow
-        .bg-ice.border-bottom.border-mist.p20.h5.bold
-          Recent reports
-        .p20.heading
-          - @proposals.each do |proposal|
-            -# TODO: style
-            %p
-              = link_to proposal.identifier, report_path(proposal), class: 'bold'
-              = proposal.name
+    .col2.mb40
+      .col1.md.px15
+        .bg-white.rounded.shadow
+          .bg-ice.border-bottom.border-mist.p20.h5.bold
+            Recent reports
+          .p20.heading
+            - @proposals.each do |proposal|
+              -# TODO: style
+              .mb10
+                = link_to proposal.identifier, report_path(proposal), class: 'bold'
+                = proposal.name
 
-          -# TODO: link
-          = link_to 'More...', '#todo', class: 'bold'
+            -# TODO: link
+            = link_to 'More...', '#todo', class: 'bold'
 
 .bg-ice
-  -# TODO: update responsive breakpoint
   = render partial: 'shared/footer', locals: { color: 'slate' }
