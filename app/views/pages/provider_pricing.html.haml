@@ -1,0 +1,33 @@
+= content_for :title, 'Pricing Providers'
+
+
+
+%main.bg-ice
+  %header
+    = render partial: 'shared/nav', locals: { color: 'blue' }
+    = cell(:breadcrumb, { 'Pricing Provider' => provider_pricing_path }, color: 'blue')
+
+  %section.col2.mx-auto.mb40
+    .center
+      %h1.m10 Add an opportunity
+      .flex.justify-around
+        .flex-column
+          %h6.night TODO:
+          %h6.night Drop
+          %h6.night Free
+        .content-center.justify-center.pt10 Free suitability reports for a more efficient social sector
+    .flex.content-center.justify-center
+      .m15.bg-white.py25.px20.shadow.rounded
+        %h6.mb15.slate Verified
+        %h3.bold.mb15.inline-block £50
+        %h6.mb15.slate Per opportunity
+        %div You submit details about an opportunity and we’ll work with you to make sure it’s added quickly and correctly.
+        .nowrap= link_to 'Add verified opportunity', root_path, class: 'btn-wide bg-light-blue blue shadow mt20'
+      .m15.bg-white.py25.px20.shadow.rounded
+        %h6.mb15.slate Managed
+        %h3.bold.mb15.inline-block £199
+        %h6.mb15.slate Per opportunity per year
+        %div We gather all the details needed to add an opportunity, then add and manage it for you.
+        .nowrap= link_to 'Add managed opportunity', root_path, class: 'btn-wide bg-light-blue blue shadow mt20'
+.bg-ice
+  = render partial: 'shared/footer', locals: { color: 'rich-blue' }
