@@ -1,8 +1,0 @@
-.flex.justify-between.mb40
-  .night.truncate.pr30= page_entries_info @funds
-
-  %form#sort-form.flex
-    Sort:
-    %select#sort
-      %option{ value: 'eligibility' } Eligibility
-      %option{ value: 'name', selected: (params[:sort] == 'name') } Name

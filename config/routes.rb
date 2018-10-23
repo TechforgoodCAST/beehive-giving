@@ -67,13 +67,7 @@ Rails.application.routes.draw do
   get '/terms',        to: 'pages#terms',   as: 'terms'
   get '/for-funders',  to: 'pages#forfunders', as: 'for_funders'
   get '/pricing',      to: 'pages#pricing', as: 'pricing'
-  get '/provider-pricing',  to: 'pages#provider_pricing', as: 'provider_pricing'
-
-  # Funds
-  get '/funds/(:proposal_id)',        to: 'funds#index',  as: 'funds'
-  get '/fund/:id/(:proposal_id)',     to: 'funds#show',   as: 'fund'
-  get '/h/fund/:id/(:proposal_id)',   to: 'funds#hidden', as: 'hidden'
-  get '/:theme/funds/(:proposal_id)', to: 'funds#themed', as: 'theme'
+  get '/provider-pricing', to: 'pages#provider_pricing', as: 'provider_pricing'
 
   # Misc.
   post '/agree/:id', to: 'users#agree', as: 'agree'
