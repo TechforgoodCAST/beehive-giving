@@ -19,6 +19,24 @@ module ReportsHelper
     end
   end
 
+  def recipient_name(recipient = @proposal.recipient)
+    if recipient.individual?
+      recipient_type(recipient)
+    else
+      recipient.name
+    end
+  end
+
+  def report_button(report)
+    if report.private?
+      classes = 'disabled btn btn-wide grey bg-ice border-mist'
+      tag.a('View full report', disabled: true, class: classes)
+    else
+      classes = 'btn btn-wide blue bg-light-blue border-pale-blue'
+      link_to('View full report', report_path(report), class: classes)
+    end
+  end
+
   def support_type(proposal = @proposal)
     if proposal.support_details.present?
       "#{proposal.category_name} - #{proposal.support_details}"

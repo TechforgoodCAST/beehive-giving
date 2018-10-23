@@ -4,8 +4,7 @@
 
   %header.bg-primary
     = render partial: 'shared/nav', locals: { color: 'white' }
-    -# TODO: links
-    = cell(:breadcrumb, 'Opportunities' => nil, @collection.name => nil, @proposal.identifier => report_path(@proposal))
+    = cell(:breadcrumb, 'Opportunities' => opportunities_path, @collection.name => opportunity_path(@collection), @proposal.identifier => report_path(@proposal))
 
     .maxw1050.mx-auto.px15.pb40
       .flex.justify-between.white

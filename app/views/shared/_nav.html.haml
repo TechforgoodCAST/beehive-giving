@@ -5,7 +5,7 @@
 
     %div
       = link_to('Opportunities', opportunities_path, class: color)
-      %span.grey.mx20 •
+      %span.translucent.mx20{ class: color} •
       = link_to('My reports', reports_path, class: color)
       - if logged_in?
         = link_to('Sign out', sign_out_path, class: "ml20 #{color}")

@@ -39,8 +39,7 @@
               .mb15= report.title
 
               .night.h6.bold.mb5 Recipient
-              -# TODO: hide name for indiviual and default text if missing
-              .mb20= report.recipient.name
+              .mb20= recipient_name(report.recipient)
 
             %div
               = link_to 'View full report', report_path(report), class: 'btn btn-wide blue bg-light-blue border-pale-blue'

@@ -3,6 +3,14 @@
   = render 'shared/head'
 
   %body#top
+    :css
+      .bg-primary {
+        background: #{primary_color(@collection)} !important;
+      }
+      .bg-secondary {
+        background: #{secondary_color(@collection)} !important;
+      }
+
     - if allow_functional_cookies?
       / Google Tag Manager (noscript)
       %noscript

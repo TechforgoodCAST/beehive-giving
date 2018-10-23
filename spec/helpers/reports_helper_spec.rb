@@ -2,7 +2,8 @@ require 'rails_helper'
 
 describe ReportsHelper do
   class ReportsHelperClass
-    include ActionView::Helpers::NumberHelper
+    include ActionView::Helpers
+    include Rails.application.routes.url_helpers
     include ReportsHelper
   end
 
@@ -30,6 +31,30 @@ describe ReportsHelper do
     it 'organisation' do
       msg = 'A charitable organisation - Charity registered in England & Wales'
       expect(subject.recipient_type(proposal.recipient)).to eq(msg)
+    end
+  end
+
+  context '#recipient_name' do
+    it 'individual' do
+      proposal.recipient.category_code = 101
+      proposal.recipient.description = nil
+      expect(subject.recipient_name(proposal.recipient)).to eq('An individual')
+    end
+
+    it 'organisation' do
+      msg = 'Charity projects'
+      expect(subject.recipient_name(proposal.recipient)).to eq(msg)
+    end
+  end
+
+  context '#report_button' do
+    it 'public' do
+      expect(subject.report_button(proposal)).to have_css('.blue')
+    end
+
+    it 'private' do
+      proposal.private = Time.zone.now
+      expect(subject.report_button(proposal)).to have_css('.disabled')
     end
   end
 

@@ -13,7 +13,7 @@ feature 'Opportunities' do
   scenario 'see recent reports' do
     visit opportunities_path
     click_link('Recent reports', match: :first)
-    expect(current_path).to eq(opportunities_reports_path(@collection))
+    expect(current_path).to eq(opportunity_path(@collection))
   end
 
   scenario 'add opportunity' do
@@ -24,5 +24,26 @@ feature 'Opportunities' do
   scenario 'request custom report' do
     visit opportunities_path
     expect(page).to have_link('Request custom report')
+  end
+
+  context 'private report' do
+    before do
+      create(:proposal, collection: @collection, private: Time.zone.now)
+      visit opportunity_path(@collection)
+    end
+
+    scenario('name') { expect(page).to have_text('Private report') }
+
+    scenario 'private proposal name' do
+      within('.p20.flex.flex-column.f1') do
+        opts = { text: 'Proposal', class: 'night h6 bold mb5' }
+        expect(page).not_to have_selector('div', opts)
+      end
+    end
+
+    scenario 'private recipient name' do
+      msg = 'A charitable organisation - Charity registered in England & Wales'
+      expect(page).to have_text(msg)
+    end
   end
 end

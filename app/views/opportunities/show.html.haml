@@ -1,0 +1,58 @@
+= content_for :title, @collection.name
+
+%main.bg-ice
+
+  %header.bg-primary
+    = render partial: 'shared/nav', locals: { color: 'white' }
+    = cell(:breadcrumb, 'Opportunities' => opportunities_path, @collection.name => opportunity_path(@collection))
+
+    .maxw1050.mx-auto.pb20
+      .flex.flex-wrap.white
+        .col2.px15.mb20
+          %h1.h2.mb5= @collection.name
+          = @collection.class
+          -# TODO: breakdown
+        .col1.md.px15
+          -# TODO: responsive
+          = link_to('New report', new_recipient_path(@collection), class: 'btn bg-secondary')
+
+  .maxw1050.mx-auto
+    %section.mx15
+      %h3.bold.night.my40 Recent reports
+
+      .grid.mb40
+        - @reports.each do | report|
+          -# TODO: progress bars
+          .bg-white.rounded.shadow.flex.flex-column
+
+            .p20.border-bottom.border-mist
+              %h4.mb10
+                - if report.private?
+                  Private report
+                - else
+                  = report.name
+                %span.h4.grey= report.identifier
+              .fs15.night
+                Created
+                = time_ago_in_words(report.created_at)
+                ago
+
+            .p20.flex.flex-column.f1
+              .f1
+                - unless report.private?
+                  .night.h6.bold.mb5 Proposal
+                  .mb15= report.title
+
+                .night.h6.bold.mb5 Recipient
+                .mb20
+                  - if report.private?
+                    = recipient_type(report.recipient)
+                  - else
+                    = recipient_name(report.recipient)
+
+              %div= report_button(report)
+
+    -# TODO: pagination
+
+.bg-ice
+  = render partial: 'shared/footer', locals: { color: 'slate' }
