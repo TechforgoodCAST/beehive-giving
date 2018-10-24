@@ -1,32 +1,53 @@
-%div{ style: 'max-width: 690px; margin: 40px auto;' }
 
-  %h1.mb40
-    New
-    = @collection.class.to_s.downcase
-    report for
-    = @collection.name
+%main.bg-dark-blue
+  %section.col2.mx-auto.mb40
+    .center.m40
+      .fs32.px5.white
+        New theme report for Children and young people
+      .fs16.py15.white Avoid wasted effort with a suitability report that helps you decide where to apply
+      .fs15.white 3 funds • 9 mins
+    .bg-ice.p20.border-bottom.border-mist.rounded-top
+      .fs20.bold
+        1 of 2:Recipient
+      .right.mb20
+        %h6.inline-block
+          *Required
+        %h6.inline-block
+          = image_tag('eye.svg', width: 12)
+          Public
+        %h6.inline-block
+          = image_tag('eye-cross.svg', width: 12)
+          Private
+    .bg-white.rounded.shadow.px20
 
-  = simple_form_for @recipient, url: new_recipient_path do |f|
-    .mb15= f.input :category_code, as: :grouped_select, collection: Recipient::CATEGORIES, group_method: :last, label_method: :last, value_method: :first
+      %h5.py20
+        Basics
 
-    .mb30
-      .mb10= f.input :description, required: true
-      .mb10= f.input :name, required: true
-      .flex.flex-wrap.justify-between
-        .perc48.mb10= f.input :income_band, required: true, collection: Recipient::INCOME_BANDS, label_method: ->(a) { a.last[:label] }, value_method: :first
-        .perc48.mb10= f.input :operating_for, required: true, collection: Recipient::OPERATING_FOR, label_method: :last, value_method: :first
-      .flex.flex-wrap.justify-between
-        .perc48.mb10= f.input :charity_number
-        .perc48.mb10= f.input :company_number
-      = f.input :website
+      = simple_form_for @recipient, url: new_recipient_path do |f|
+        .mb15= f.input :category_code, as: :grouped_select, collection: Recipient::CATEGORIES, group_method: :last, label_method: :last, value_method: :first
+        .mb30
+          %blockquote.border-mist.mb10= f.input :description, required: true
+          %blockquote.border-mist.mb10= f.input :name, required: true
+          %blockquote.border-mist.mb10= f.input :charity_number
+          %blockquote.border-mist.mb10= f.input :company_number
+          .flex.flex-wrap.justify-between
+            .perc48.mb10= f.input :income_band, required: true, collection: Recipient::INCOME_BANDS, label_method: ->(a) { a.last[:label] }, value_method: :first
+            .perc48.mb10= f.input :operating_for, required: true, collection: Recipient::OPERATING_FOR, label_method: :last, value_method: :first
 
-    .mb30
-      .mb10= f.association :country, include_blank: true, input_html: { class: 'choices-select' }
-      %blockquote.border-mist.mb15.hide= f.association :district, collection: [[@district&.name, @district&.id]]
+        .mb30
+          .mb10= f.association :country, include_blank: true, input_html: { class: 'choices-select' }
+          %blockquote.border-mist.mb15.hide= f.association :district, collection: [[@district&.name, @district&.id]]
+          = f.input :website
+        %h5.bold Is your proposal for… *
+        %h6 The following questions have been set by the opportunities you’ve requested a report against, please answer them honestly and to the best of your knowledge to ensure accurate results.
 
-    = f.simple_fields_for :answers do |a|
-      = a.hidden_field :criterion_id, value: a.object.criterion.id
-      = a.input :eligible, as: :radio_buttons, label: false, collection: a.object.criterion.radio_button_values
-      %label.mx20= raw(a.object.criterion.details)
 
-    = f.submit 'Next', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Finding...' }
+        = f.simple_fields_for :answers do |a|
+          = a.hidden_field :criterion_id, value: a.object.criterion.id
+          = a.input :eligible, as: :radio_buttons, label: false, collection: a.object.criterion.radio_button_values
+          %label.mx20= raw(a.object.criterion.details)
+
+        .py20= f.submit 'Next', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Finding...' }
+
+.bg-dark-blue
+  = render partial: 'shared/footer', locals: { color: 'white' }
