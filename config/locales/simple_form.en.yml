@@ -22,9 +22,12 @@ en:
         title: 'Proposal title'
       recipient:
         category_code: 'Who will be receiving the funding or support?'
-        description: 'Type of incorporation'
-        name: 'Organisation name'
+        description: 'Please specify type of organisation '
+        name: 'Name of recipient '
         district: 'In which area?'
+        country: 'In which country is the recipient based?'
+        income_band: 'Annual income '
+
 
     hints:
       sign_in_set:
@@ -40,8 +43,8 @@ en:
       recipient:
         charity_number: 'If applicable'
         company_number: 'If applicable'
-        description: 'Please be as specific as possible, for example: Charity registered in England & Wales; Charitable Incorportated Organisation (CIO); Community Interest Company (CIC); Company Limited by Guarantee (CLG); Co-operative; etc.'
-
+        description: 'E.g. Unregistered charity, Exempt charity, Charity registered in England & Wales, etc.'
+        name: 'This could be the name of your organisation or project.'
     placeholders:
       proposal:
         min_amount: 'From'
