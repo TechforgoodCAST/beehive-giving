@@ -15,7 +15,6 @@ class UpdateFundsBeehiveV3 < ActiveRecord::Migration[5.1]
     remove_column :funds, :income_distribution, :jsonb
     remove_column :funds, :country_distribution, :jsonb
     remove_column :funds, :tags, :jsonb
-    remove_column :funds, :national, :boolean
     remove_column :funds, :amount_awarded_sum, :decimal
     remove_column :funds, :beneficiary_distribution, :jsonb
     remove_column :funds, :grant_examples, :jsonb
@@ -28,7 +27,6 @@ class UpdateFundsBeehiveV3 < ActiveRecord::Migration[5.1]
     remove_column :funds, :geo_description, :string
     remove_column :funds, :featured, :boolean
     remove_column :funds, :pretty_name, :string
-    remove_column :funds, :slug, :string
 
     rename_column :funds, :application_link, :website
     rename_column :funds, :geographic_scale_limited, :proposal_area_limited

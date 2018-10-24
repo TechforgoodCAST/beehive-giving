@@ -123,14 +123,14 @@ class Proposal < ApplicationRecord
   end
 
   def identifier
-    "##{id}" if collection_type
+    "##{id}"
   end
 
   def name
     if collection_type
       "#{collection_type} report for #{collection.name}"
     else
-      "Proposal ##{id}"
+      'Report'
     end
   end
 

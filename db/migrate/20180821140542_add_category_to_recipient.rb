@@ -11,8 +11,24 @@ class AddCategoryToRecipient < ActiveRecord::Migration[5.1]
 
     reversible do |dir|
       dir.up do
+        new_recipient_categories = {
+          -1 => 101,
+          0  => 202,
+          1  => 301,
+          2  => 302,
+          3  => 301,
+          4  => 102,
+          5  => 302
+        }
+
         Recipient.find_each do |r|
-          r.update_attribute(:country, Country.find_by(alpha2: r.country_alpha2))
+          country = Country.find_by(alpha2: r.country_alpha2)
+          next if country.nil?
+
+          r.update_columns(
+            country_id: country.id,
+            category_code: new_recipient_categories[r.org_type]
+          )
           print '.'
         end
       end

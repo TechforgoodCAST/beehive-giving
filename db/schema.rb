@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181022115042) do
+ActiveRecord::Schema.define(version: 20181023151814) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -261,11 +261,13 @@ ActiveRecord::Schema.define(version: 20181022115042) do
     t.integer "funder_id"
     t.string "name"
     t.text "description"
+    t.string "slug"
     t.string "website"
     t.boolean "proposal_area_limited"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.jsonb "links", default: {}, null: false
+    t.boolean "national", default: false, null: false
     t.integer "proposal_min_amount"
     t.integer "proposal_max_amount"
     t.integer "proposal_min_duration"
@@ -280,6 +282,7 @@ ActiveRecord::Schema.define(version: 20181022115042) do
     t.boolean "proposal_all_in_area"
     t.index ["funder_id"], name: "index_funds_on_funder_id"
     t.index ["geo_area_id"], name: "index_funds_on_geo_area_id"
+    t.index ["slug"], name: "index_funds_on_slug"
   end
 
   create_table "geo_areas", force: :cascade do |t|
@@ -344,7 +347,7 @@ ActiveRecord::Schema.define(version: 20181022115042) do
     t.boolean "affect_other"
     t.integer "affect_geo"
     t.boolean "total_costs_estimated", default: false
-    t.boolean "permit_funder_verification"
+    t.boolean "prevent_funder_verification"
     t.boolean "implementations_other_required"
     t.string "implementations_other"
     t.jsonb "recommended_funds", default: []

@@ -3,6 +3,10 @@ require 'rails_helper'
 feature 'SignIn::Set' do
   include SignInHelper
 
+  scenario 'users without terms agreed or selected marketing preferences must do so when setting password' do
+    raise('to implement')
+  end
+
   scenario 'redirects if User not found' do
     visit sign_in_set_path('old-token')
     expect(current_path).to eq(sign_in_lookup_path)

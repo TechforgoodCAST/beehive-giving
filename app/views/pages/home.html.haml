@@ -30,7 +30,7 @@
             Recent reports
           .p20.heading
             - @proposals.each do |proposal|
-              -# TODO: style
+              -# TODO: style and printing legacy names
               .mb10
                 = link_to proposal.identifier, report_path(proposal), class: 'bold'
                 = proposal.name

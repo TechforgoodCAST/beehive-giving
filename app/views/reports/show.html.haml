@@ -4,7 +4,11 @@
 
   %header.bg-primary
     = render partial: 'shared/nav', locals: { color: 'white' }
-    = cell(:breadcrumb, 'Opportunities' => opportunities_path, @collection.name => opportunity_path(@collection), @proposal.identifier => report_path(@proposal))
+    -# TODO: spec
+    - if @collection
+      = cell(:breadcrumb, 'Opportunities' => opportunities_path, @collection.name => opportunity_path(@collection), @proposal.identifier => report_path(@proposal))
+    - else
+      = cell(:breadcrumb, 'Opportunities' => opportunities_path, "Report #{@proposal.identifier}" => report_path(@proposal))
 
     .maxw1050.mx-auto.px15.pb40
       .flex.justify-between.white
@@ -22,7 +26,9 @@
           ago
 
         %div
-          = link_to('New report', new_recipient_path(@collection), class: 'btn bg-secondary')
+          -# TODO: spec
+          - if @collection
+            = link_to('New report', new_recipient_path(@collection), class: 'btn bg-secondary')
 
   .maxw1050.mx-auto
 
@@ -73,9 +79,11 @@
             %h6.bold.slate Proposal
           .m20
             .fs14.heading.bold.night.mb5 Title
+            -# TODO: default text for missing title from legacy record
             .fs14.lh18.slate= @proposal.title
           .m20
             .fs14.heading.bold.night.mb5 Description
+            -# TODO: default text for missing description from legacy record
             .fs14.lh18.slate= @proposal.description
           .m20
             .fs14.heading.bold.night.mb5 Support type

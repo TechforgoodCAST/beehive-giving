@@ -4,7 +4,8 @@ module Rating
       include Rating::Base
 
       def link
-        "<a href='##{@assessment_id}'>Your answers</a>".html_safe
+        # TODO: removed for v3 deplpy
+        "<a href='##{@assessment_id}'>Answers</a>".html_safe
       end
     end
   end

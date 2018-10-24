@@ -39,10 +39,11 @@ class RenameTaglineToDescription < ActiveRecord::Migration[5.1]
           old_code = proposal.category_code
           new_code = support_types[old_code]
 
-          proposal.update_attributes(
+          proposal.update_columns(
             category_code: new_code,
             support_details: ('No description given' if new_code == 101),
-            geographic_scale: geographic_scales[proposal.affect_geo]
+            geographic_scale: geographic_scales[proposal.affect_geo],
+            public_consent: proposal.private?
           )
 
           print '.'

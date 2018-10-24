@@ -211,12 +211,13 @@ describe Proposal do
     before { subject.collection_type = nil }
 
     it '#identifier' do
-      expect(subject.identifier).to eq(nil)
+      subject.id = '123'
+      expect(subject.identifier).to eq('#123')
     end
 
     it '#name' do
       subject.id = '123'
-      expect(subject.name).to eq('Proposal #123')
+      expect(subject.name).to eq('Report')
     end
 
     it '#status' do
