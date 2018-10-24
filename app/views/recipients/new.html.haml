@@ -2,31 +2,36 @@
 %main.bg-dark-blue
   %section.col2.mx-auto.mb40
     .center.m40
-      .fs32.px5.white
+      .fs32.px5.white.heading.mt50
         New theme report for Children and young people
       .fs16.py15.white Avoid wasted effort with a suitability report that helps you decide where to apply
-      .fs15.white 3 funds • 9 mins
+      .fs15.white.italic 3 funds • 9 mins
     .bg-ice.p20.border-bottom.border-mist.rounded-top
-      .fs20.bold
-        1 of 2:Recipient
-      .right.mb20
-        %h6.inline-block
-          *Required
-        %h6.inline-block
-          = image_tag('eye.svg', width: 12)
-          Public
-        %h6.inline-block
-          = image_tag('eye-cross.svg', width: 12)
-          Private
+      .fs20.bold.inline-block
+        1 of 2: Recipient
+      .right.inline-block
+        %div.mx5.inline-block
+          %h6.inline-block
+            *Required
+        %div.mx5.inline-block
+          %h6.inline-block.center
+            = image_tag('eye.svg', width: 12)
+            Public
+        %div.mx5.inline-block
+          %h6.inline-block
+            = image_tag('eye-cross.svg', width: 12)
+            Private
     .bg-white.rounded.shadow.px20
 
-      %h5.py20
+      .py20.bold.fs18.night
         Basics
 
       = simple_form_for @recipient, url: new_recipient_path do |f|
         .mb15= f.input :category_code, as: :grouped_select, collection: Recipient::CATEGORIES, group_method: :last, label_method: :last, value_method: :first
         .mb30
-          %blockquote.border-mist.mb10= f.input :description, required: true
+          %blockquote.border-mist.mb10.inline-block
+            .inline-block= f.input :description, required: true
+
           %blockquote.border-mist.mb10= f.input :name, required: true
           %blockquote.border-mist.mb10= f.input :charity_number
           %blockquote.border-mist.mb10= f.input :company_number
@@ -38,16 +43,25 @@
           .mb10= f.association :country, include_blank: true, input_html: { class: 'choices-select' }
           %blockquote.border-mist.mb15.hide= f.association :district, collection: [[@district&.name, @district&.id]]
           = f.input :website
-        %h5.bold Is your proposal for… *
-        %h6 The following questions have been set by the opportunities you’ve requested a report against, please answer them honestly and to the best of your knowledge to ensure accurate results.
+        .fs18.bold.night.pb5 Is your proposal for… *
+        .fs14.night.pb5 The following questions have been set by the opportunities you’ve requested a report against, please answer them honestly and to the best of your knowledge to ensure accurate results.
 
 
         = f.simple_fields_for :answers do |a|
-          = a.hidden_field :criterion_id, value: a.object.criterion.id
-          = a.input :eligible, as: :radio_buttons, label: false, collection: a.object.criterion.radio_button_values
-          %label.mx20= raw(a.object.criterion.details)
+          -# = a.hidden_field :criterion_id, value: a.object.criterion.id
+          -# = a.input :eligible, as: :radio_buttons, label: false, collection: a.object.criterion.radio_button_values
+          -# %label.mx20= raw(a.object.criterion.details)
 
+          .flex.items-center.quiz.mb20
+            = a.input :eligible, label: false do |r|
+              %fieldset
+                = a.radio_button :eligible, :true
+                = a.label :eligible_true, 'Yes'
+                = a.radio_button :eligible, :false
+                = a.label :eligible_false, 'No'
+            %label.mx20= raw(a.object.criterion.details)
         .py20= f.submit 'Next', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Finding...' }
 
 .bg-dark-blue
   = render partial: 'shared/footer', locals: { color: 'white' }
+
