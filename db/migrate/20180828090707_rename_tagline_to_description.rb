@@ -43,7 +43,7 @@ class RenameTaglineToDescription < ActiveRecord::Migration[5.1]
             category_code: new_code,
             support_details: ('No description given' if new_code == 101),
             geographic_scale: geographic_scales[proposal.affect_geo],
-            public_consent: proposal.private?
+            public_consent: proposal.private? ? true : nil
           )
 
           print '.'

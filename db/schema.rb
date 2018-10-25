@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181023151814) do
+ActiveRecord::Schema.define(version: 20181024205520) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -365,6 +365,8 @@ ActiveRecord::Schema.define(version: 20181023151814) do
     t.datetime "private"
     t.bigint "collection_id"
     t.string "collection_type"
+    t.bigint "duplicate_of"
+    t.datetime "migrated_on"
     t.index ["collection_id"], name: "index_proposals_on_collection_id"
     t.index ["collection_type"], name: "index_proposals_on_collection_type"
     t.index ["recipient_id"], name: "index_proposals_on_recipient_id"
@@ -442,6 +444,8 @@ ActiveRecord::Schema.define(version: 20181023151814) do
     t.bigint "user_id"
     t.bigint "district_id"
     t.bigint "country_id"
+    t.bigint "duplicate_of"
+    t.datetime "migrated_on"
     t.index ["country_id"], name: "index_recipients_on_country_id"
     t.index ["district_id"], name: "index_recipients_on_district_id"
     t.index ["slug"], name: "index_recipients_on_slug", unique: true

@@ -2,7 +2,7 @@ namespace :migrate do
   # usage: rake migrate:recipient RECIPIENT=<id>
   desc 'Migrate legacy recipient and associations'
   task recipient: :environment do
-    migrate(ENV['ORG'])
+    migrate(ENV['RECIPIENT'])
   end
 
   # usage: rake migrate:recipients RECIPIENTS=<id>..<id>
@@ -31,13 +31,15 @@ namespace :migrate do
 
     users.each_with_index do |user, index|
       if index > 0
-        # TODO: avoid uncessesary dups
-        print "[Duplicating] Recipient #{id}"
+        return puts "└─ [Skip]: User #{user.id}" if user.recipients.any?
+
+        print "└─ [Duplicating] Recipient #{id}"
 
         new_recipient = recipient.dup
         new_recipient.slug = new_recipient.generate_slug(
           new_recipient, new_recipient.slug
         )
+        new_recipient.duplicate_of = recipient.id
         new_recipient.save(validate: false)
 
         print "->#{new_recipient.id}"
@@ -45,8 +47,12 @@ namespace :migrate do
         new_proposals = proposals.map do |proposal|
           new_proposal = proposal.dup
           new_proposal.recipient = new_recipient
+          new_proposal.countries = proposal.countries
+          new_proposal.districts = proposal.districts
+          new_proposal.themes = proposal.themes
+          new_proposal.duplicate_of = proposal.id
           new_proposal.save(validate: false)
-          proposal
+          new_proposal
         end
 
         updates(user, new_recipient, new_proposals, funds)
@@ -57,7 +63,7 @@ namespace :migrate do
   end
 
   def updates(user, recipient, proposals, funds)
-    recipient.update_column(:user_id, user.id)
+    recipient.update_columns(user_id: user.id, migrated_on: Time.zone.now)
 
     return puts ': no Proposals' unless proposals.any?
 
@@ -68,6 +74,7 @@ namespace :migrate do
 
       proposal.user_id = user.id
       proposal.generate_token(:access_token)
+      proposal.migrated_on = Time.zone.now
       proposal.save(validate: false)
 
       if proposal.prevent_funder_verification?
