@@ -27,28 +27,30 @@
         Basics
 
       = simple_form_for @recipient, url: new_recipient_path do |f|
-        .mb15= f.input :category_code, as: :grouped_select, collection: Recipient::CATEGORIES, group_method: :last, label_method: :last, value_method: :first
+        .mb15= f.input :category_code, as: :grouped_select, collection: Recipient::CATEGORIES, group_method: :last, label_method: :last, value_method: :first, label_html: { class: 'public' }
         .mb30
           %blockquote.border-mist.mb10.inline-block
-            .inline-block= f.input :description, required: true
+            .inline-block= f.input :description, required: true, label_html: { class: 'public' }
 
-          %blockquote.border-mist.mb10= f.input :name, required: true
-          %blockquote.border-mist.mb10= f.input :charity_number
-          %blockquote.border-mist.mb10= f.input :company_number
+          %blockquote.border-mist.mb10= f.input :name, required: true, label_html: { class: 'public' }
+          %blockquote.border-mist.mb10= f.input :charity_number, label_html: { class: 'private' }
+          %blockquote.border-mist.mb10= f.input :company_number, label_html: { class: 'private' }
           .flex.flex-wrap.justify-between
-            .perc48.mb10= f.input :income_band, required: true, collection: Recipient::INCOME_BANDS, label_method: ->(a) { a.last[:label] }, value_method: :first
-            .perc48.mb10= f.input :operating_for, required: true, collection: Recipient::OPERATING_FOR, label_method: :last, value_method: :first
+            .perc48.mb10= f.input :income_band, required: true, collection: Recipient::INCOME_BANDS, label_method: ->(a) { a.last[:label] }, value_method: :first, label_html: { class: 'public' }
+            .perc48.mb10= f.input :operating_for, required: true, collection: Recipient::OPERATING_FOR, label_method: :last, value_method: :first, label_html: { class: 'public' }
 
         .mb30
-          .mb10= f.association :country, include_blank: true, input_html: { class: 'choices-select' }
-          %blockquote.border-mist.mb15.hide= f.association :district, collection: [[@district&.name, @district&.id]]
-          = f.input :website
-        .fs18.bold.night.pb5 Is your proposal for… *
+          .mb10= f.association :country, include_blank: true, input_html: { class: 'choices-select' }, label_html: { class: 'public' }
+          %blockquote.border-mist.mb15.hide= f.association :district, collection: [[@district&.name, @district&.id]], label_html: { class: 'public' }
+          = f.input :website, label_html: { class: 'public' }
+        .fs18.bold.night.pb5.inline-block
+          Is your proposal for… *
+          = image_tag('eye.svg', width: 12)
         .fs14.night.pb5 The following questions have been set by the opportunities you’ve requested a report against, please answer them honestly and to the best of your knowledge to ensure accurate results.
 
 
         = f.simple_fields_for :answers do |a|
-          -# = a.hidden_field :criterion_id, value: a.object.criterion.id
+          = a.hidden_field :criterion_id, value: a.object.criterion.id
           -# = a.input :eligible, as: :radio_buttons, label: false, collection: a.object.criterion.radio_button_values
           -# %label.mx20= raw(a.object.criterion.details)
 
