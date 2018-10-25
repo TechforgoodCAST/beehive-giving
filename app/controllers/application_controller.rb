@@ -5,6 +5,8 @@ class ApplicationController < ActionController::Base
 
   helper_method :logged_in?
 
+  before_action :current_user
+
   skip_after_action :intercom_rails_auto_include
 
   rescue_from ActionController::InvalidAuthenticityToken, with: :bad_token

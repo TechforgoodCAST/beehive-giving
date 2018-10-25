@@ -26,13 +26,17 @@
           = link_to 'Change settings', privacy_path(anchor: 'cookies', read_cookies_notice: true), class: 'btn-sm white'
           = link_to 'Continue', update_cookies_path(functional_cookies: true, performance_cookies: true, read_cookies_notice: true), class: 'btn-sm bg-blue white shadow'
 
-    -# TODO: review
-    = cell(:terms_notice, @current_user)
+    - if logged_in? && (@current_user&.terms_version != TERMS_VERSION)
+      .bg-night.border-bottom.border-slate.fs15.white
+        .maxw1050.mx-auto.px15.py7.flex.items-center.justify-between
+          We've updated our privacy policy.
+          .flex
+            = link_to 'Agree', agree_path(@current_user), method: :post, class: 'btn white'
+            = link_to 'Review', privacy_path, class: 'btn border-grey silver'
 
-    -# TODO: refactor
-    - flash.each do |key, value|
-      = key
-      |
-      = value
+    - flash.each do |key, msg|
+      .bg-night.border-bottom.border-slate.fs15.white
+        .maxw1050.mx-auto.px15.py10
+          = msg
 
     = yield

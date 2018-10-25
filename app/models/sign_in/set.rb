@@ -3,7 +3,7 @@ module SignIn
     include ActiveModel::Model
     include ActiveModel::SecurePassword
 
-    attr_accessor :password_digest, :user
+    attr_accessor :password_digest, :user, :marketing_consent, :terms_agreed
 
     has_secure_password
 
@@ -19,11 +19,16 @@ module SignIn
 
     private
 
-      def update_user
-        @user&.update(
+    def update_user
+        updates = {
           password: password,
-          password_confirmation: password_confirmation
-        )
+          password_confirmation: password_confirmation,
+          marketing_consent: marketing_consent,
+          terms_agreed: terms_agreed,
+          terms_version: (TERMS_VERSION if terms_agreed)
+        }.compact
+
+        @user&.update(updates)
       end
   end
 end

@@ -6,6 +6,8 @@ en:
       default_message: 'Please review the problems below:'
 
     labels:
+      defaults:
+        marketing_consent: 'Email me with occasional updates when new opportunities or features are added'
       sign_in_auth:
           password: 'Enter your password'
       proposal:
@@ -27,6 +29,8 @@ en:
         district: 'In which area?'
 
     hints:
+      defaults:
+        marketing_consent: 'You can opt out at any time.'
       sign_in_set:
          password: 'At least 6 characters long with 1 number.'
       proposal:

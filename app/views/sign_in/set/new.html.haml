@@ -6,7 +6,7 @@
       = link_to(root_path) do
         = image_tag('logo.svg', width: 102)
 
-    .bg-white.rounded.shadow.mb20
+    .bg-white.rounded.shadow
       .bg-ice.p20.border-bottom.border-mist.rounded-top
         %h1.h4.bold Set a password
       .p20
@@ -17,6 +17,17 @@
           .mb20
             = f.input :password, autofocus: true, required: true
           .mb20= f.input :password_confirmation
+
+          - if @user.marketing_consent.nil?
+            .mb20.field_with_errors
+              = f.input :marketing_consent, as: :radio_buttons
+              .error= @user.errors[:marketing_consent][0]
+
+          - if @user.terms_agreed != true
+            .mb20.field_with_errors
+              = f.input :terms_agreed, as: :boolean, label: false, inline_label: "I accept the #{link_to('terms of service', terms_path, target: '_blank')} and #{link_to('privacy policy', privacy_path, target: '_blank')}".html_safe
+              .error= @user.errors[:terms_agreed][0]
+
           = f.submit 'Continue', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Setting...' }
 
 .bg-rich-blue

@@ -33,7 +33,7 @@ module SignIn
     def destroy
       reset_session
       cookies.delete(:auth_token)
-      redirect_to root_path, notice: 'Signed out!' # TODO: flash not showing
+      redirect_to root_path, notice: 'Signed out!'
     end
 
     private

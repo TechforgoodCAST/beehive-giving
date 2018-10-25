@@ -29,7 +29,9 @@ module SignIn
     private
 
       def form_params
-        params.require(:sign_in_set).permit(:password, :password_confirmation)
+        params.require(:sign_in_set).permit(
+          :password, :password_confirmation, :marketing_consent, :terms_agreed
+        )
       end
 
       def load_user

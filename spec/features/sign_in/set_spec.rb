@@ -3,10 +3,6 @@ require 'rails_helper'
 feature 'SignIn::Set' do
   include SignInHelper
 
-  scenario 'users without terms agreed or selected marketing preferences must do so when setting password' do
-    raise('to implement')
-  end
-
   scenario 'redirects if User not found' do
     visit sign_in_set_path('old-token')
     expect(current_path).to eq(sign_in_lookup_path)
@@ -50,6 +46,46 @@ feature 'SignIn::Set' do
     scenario 'can sign in' do
       complete_sign_in_lookup(user.email)
       expect(current_path).to eq(sign_in_auth_path)
+    end
+  end
+
+  context 'legacy support' do
+    before do
+      complete_sign_in_lookup(user.email)
+      visit_sign_in_reset_path_from_email
+      password = '123123a'
+      fill_in(:sign_in_set_password, with: password)
+      fill_in(:sign_in_set_password_confirmation, with: password)
+    end
+
+    context 'user without terms agreed' do
+      let(:user) do
+        user = create(:user)
+        user.update_column(:terms_agreed, nil)
+        user
+      end
+
+      scenario 'can agree to terms' do
+        expect(page).to have_text('I accept the terms of service')
+        check(:sign_in_set_terms_agreed)
+        click_button('Continue')
+        expect(current_path).to eq(reports_path)
+      end
+    end
+
+    context 'user without marketing consent' do
+      let(:user) do
+        user = create(:user)
+        user.update_column(:marketing_consent, nil)
+        user
+      end
+
+      scenario 'can set preferences' do
+        expect(page).to have_text('Email me with occasional updates')
+        choose('Yes')
+        click_button('Continue')
+        expect(current_path).to eq(reports_path)
+      end
     end
   end
 
