@@ -13,11 +13,13 @@ module Check
       private
 
         def countries_ineligible
+          # TODO: more descriptive message
           reasons << "Does not support work in the countries you're seeking"
           INELIGIBLE
         end
 
         def districts_ineligible
+          # TODO: more descriptive message
           reasons << "Does not support work in the areas you're seeking"
           INELIGIBLE
         end

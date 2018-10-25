@@ -31,7 +31,7 @@ namespace :migrate do
 
     users.each_with_index do |user, index|
       if index > 0
-        return puts "└─ [Skip]: User #{user.id}" if user.recipients.any?
+        next puts "└─ [Skip]: User #{user.id}" if user.recipients.any?
 
         print "└─ [Duplicating] Recipient #{id}"
 
