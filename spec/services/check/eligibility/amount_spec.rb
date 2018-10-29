@@ -111,7 +111,7 @@ describe Check::Eligibility::Amount do
     it 'unclear' do
       reasons = {
         'Check::Eligibility::Amount' => {
-          reasons: ['Amount sought not provided'].to_set,
+          reasons: ['Not seeking funding'].to_set,
           rating: 'unclear'
         }
       }

@@ -11,7 +11,7 @@ module Check
           assessment.eligibility_amount = check_eligibility!
         else
           assessment.eligibility_amount = INCOMPLETE
-          reasons << 'Amount sought not provided'
+          reasons << 'Not seeking funding'
         end
 
         build_reason(assessment.eligibility_amount, reasons)

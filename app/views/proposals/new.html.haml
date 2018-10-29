@@ -7,7 +7,7 @@
       .fs32.px5.white.heading.mt50= collection_title(@collection)
       .fs16.py15.white Avoid wasted effort with a suitability report that helps you decide where to apply
       -# TODO: opportunities count
-      .fs15.white.italic= pluralize(@collection.funds.size, 'opportunity')
+      .fs15.white.italic= pluralize(@collection.funds.active.size, 'opportunity')
 
     .bg-white.rounded.shadow
 
@@ -18,10 +18,10 @@
           .flex.fs14.mb10
             * Required
             .ml20
-              = image_tag('eye.svg', width: 18)
+              = image_tag('eye.svg', width: 16)
               Public
             .ml20
-              = image_tag('eye-cross.svg', width: 18)
+              = image_tag('eye-cross.svg', width: 16)
               Private
 
       = simple_form_for @proposal, url: new_proposal_path(@collection, @recipient) do |f|
@@ -64,7 +64,7 @@
           %blockquote.border-mist= f.association :countries, include_blank: true, input_html: { class: 'choices-select' }, label_html: { class: 'public' }
 
         -# TODO: spec & responsive
-        - if @collection.restrictions.any?
+        - if @collection.restrictions.where(category: 'Proposal').any?
           .border-top.border-mist.px20.pb10.pt30
             .heading.fs18.bold.night.pb5
               Is your proposal for… *
@@ -101,28 +101,30 @@
                         = a.radio_button :eligible, value
                         = a.label "eligible_#{value}", label
 
-          - if !logged_in?
+        - if !logged_in?
+          = f.simple_fields_for :user do |u|
             .border-top.border-mist.pb10.pt30
-              = f.simple_fields_for :user do |u|
-                .flex.flex-wrap.px10
-                  .col1.md.px10
-                    .mb20= u.input :first_name, required: true, label_html: { class: 'private' }
-                    .mb20= u.input :last_name, required: true, label_html: { class: 'private' }
-                  .col1.md.px10
-                    .mb20= u.input :email, required: true, label_html: { class: 'private' }
-                    .mb20= u.input :email_confirmation, required: true, label_html: { class: 'private' }
-                .px20
-                  .mb20= u.input :terms_agreed, as: :boolean, label: false, inline_label: "<span class='private'>I accept the #{link_to('terms of service', terms_path, target: '_blank')} and #{link_to('privacy policy', privacy_path, target: '_blank')} * <i class='icon'></i></span>".html_safe
-                  .mb20= u.input :marketing_consent, as: :radio_buttons, required: true, label_html: { class: 'private' }
+              .heading.fs18.bold.night.px20.mb20 Delivery details
+              .flex.flex-wrap.px10
+                .col1.md.px10
+                  .mb20= u.input :first_name, required: true, label_html: { class: 'private' }
+                  .mb20= u.input :last_name, required: true, label_html: { class: 'private' }
+                .col1.md.px10
+                  .mb20= u.input :email, required: true, label_html: { class: 'private' }
+                  .mb20= u.input :email_confirmation, required: true, label_html: { class: 'private' }
+            .border-top.border-mist.pb10.pt30
+              .px20
+                .heading.fs18.bold.night.mb20 Consent
+                .mb20= u.input :terms_agreed, as: :boolean, label: false, inline_label: "<span class='private'>I accept the #{link_to('terms of service', terms_path, target: '_blank')} and #{link_to('privacy policy', privacy_path, target: '_blank')} * <i class='icon'></i></span>".html_safe
+                .mb20= u.input :marketing_consent, as: :radio_buttons, required: true, label_html: { class: 'private' }
 
         .border-top.border-mist.p20
-          = simple_form_for @proposal, url: new_proposal_path(@collection, @recipient) do |f|
-            = f.label :public_consent, class: 'private'
-            = f.hint :public_consent
+          = f.label :public_consent, class: 'private'
+          = f.hint :public_consent
 
-            .mt10.mb20= f.input :public_consent, as: :boolean, label: false, inline_label: 'I understand', hint: false
+          .mt10.mb20= f.input :public_consent, as: :boolean, label: false, inline_label: 'I understand', hint: false
 
-            = f.submit 'Get suitability report', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Checking...' }
+          = f.submit 'Get suitability report', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Checking...' }
 
   .bg-dark-blue
     = render partial: 'shared/footer', locals: { color: 'white' }

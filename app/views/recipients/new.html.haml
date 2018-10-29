@@ -7,7 +7,7 @@
       .fs32.px5.white.heading.mt50= collection_title(@collection)
       .fs16.py15.white Avoid wasted effort with a suitability report that helps you decide where to apply
       -# TODO: opportunities count
-      .fs15.white.italic= pluralize(@collection.funds.size, 'opportunity')
+      .fs15.white.italic= pluralize(@collection.funds.active.size, 'opportunity')
 
     .bg-white.rounded.shadow
 
@@ -18,10 +18,10 @@
           .flex.fs14.mb10
             * Required
             .ml20
-              = image_tag('eye.svg', width: 18)
+              = image_tag('eye.svg', width: 16)
               Public
             .ml20
-              = image_tag('eye-cross.svg', width: 18)
+              = image_tag('eye-cross.svg', width: 16)
               Private
 
       = simple_form_for @recipient, url: new_recipient_path do |f|
@@ -63,7 +63,7 @@
               %label.mx20.fs15= raw('... ' + a.object.criterion.details)
 
         .border-top.border-mist.p20
-          = f.submit 'Next', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Finding...' }
+          = f.submit 'Next', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Checking...' }
 
 .bg-dark-blue
   = render partial: 'shared/footer', locals: { color: 'white' }
