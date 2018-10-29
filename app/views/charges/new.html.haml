@@ -17,72 +17,79 @@
     %div{ style: 'display:inline;' }
       %img{ alt: '', height: '1', src: '//www.googleadservices.com/pagead/conversion/937505505/?label=JjT_CMfMg3AQ4eWEvwM&guid=ON&script=0', style: 'border-style:none;', width: '1' }
 
-%div{ style: 'max-width: 690px; margin: 40px auto;' }
-  .center
-    %h1 Upgrade to keep your report private
-    %p Details about your support request such as the amount, description and eligibility reasons will be included in a publicly viewable directory that others can browse unless you opt for a ‘Private’ report.
 
-  %hr.my20
 
-  %h4 Your order
+%main.bg-dark-blue
+  %section.col2.mx-auto.my40
+    .center.px15.mb30
+      %h1.white Upgrade to keep your report private
+      %p.white Details about your support request such as the amount, description and eligibility reasons will be included in a publicly viewable directory that others can browse unless you opt for a ‘Private’ report.
+    .flex.flex-wrap
+      .col1.md.px15.mb30
+        .bg-white.shadow.rounded
+          .bg-ice.border-bottom.border-mist.p20
+            .ft24.bold Your order
+          .px20.flex.flex-column
+            .heading.bold.py20
+              %span Private report
+              %span.right= @order.amount_to_currency
+            .pb20.slate
+              %span Hides report
+              %span.right= "#{@proposal.id}"
+              in public directory
 
-  .heading.bold
-    Private report
-    = @order.amount_to_currency
-  .fs15
-    Hides report
-    = "#{@proposal.id}"
-    in public directory
+            .heading.bold.pb20.slate
+              %span Card fees
+              %span.right= @order.fee_to_currency
 
-  .heading.bold
-    Card fees
-    = @order.fee_to_currency
+            .heading.bold.pb20
+              %span Total
+              %span.right= @order.total_to_currency
 
-  .heading.bold
-    Total
-    = @order.total_to_currency
+      .col1.md.px15.mb30
+        .bg-white.shadow.rounded
+          .bg-ice.border-bottom.border-mist.p20
 
-  %hr.my20
+            .ft24.bold.inline-block Payment details
+            .ft18.right.inline-block * Required
+          .px20
+            = form_tag new_charge_path(@proposal), id: 'payment-form', class: 'form' do
+              %noscript
+                .p20.red.border-red
+                  %strong You have JavaScript disabled
+                  and this page will not work. Please use a device that supports JavaScript.
 
-  %h4 Payment details
+              %input#stripeToken{ name: 'stripeToken', type: 'hidden' }
 
-  = form_tag new_charge_path(@proposal), id: 'payment-form', class: 'form' do
-    %noscript
-      .p20.red.border-red
-        %strong You have JavaScript disabled
-        and this page will not work. Please use a device that supports JavaScript.
+              .payment-errors.hide.mb20.p20.bold.heading.red.rounded.border.border-pale-red.bg-light-red
 
-    %input#stripeToken{ name: 'stripeToken', type: 'hidden' }
+              - if params[:card_errors]
+                .mb20.p20.bold.heading.red.rounded.border.border-pale-red.bg-light-red= params[:card_errors]
 
-    .payment-errors.hide.mb20.p20.bold.heading.red.rounded.border.border-pale-red.bg-light-red
+              .my20
+                .label Card number
+                %input.input#card-number{ 'data-stripe': 'number', size: '24', type: 'text', placeholder: '4242 4242 4242 4242' }
 
-    - if params[:card_errors]
-      .mb20.p20.bold.heading.red.rounded.border.border-pale-red.bg-light-red= params[:card_errors]
+              .mb20.perc48.inline-block
+                .label Expiration
+                .flex
+                  .col.maxw200.mr10
+                    %input.input#expiry-month{ 'data-stripe': 'exp_month', size: '10', type: 'text', placeholder: 'MM' }
+                  .col.maxw200
+                    %input.input#expiry-year{ 'data-stripe': 'exp_year', size: '10', type: 'text', placeholder: 'YY' }
 
-    .mb20
-      .label Card number
-      %input.input#card-number{ 'data-stripe': 'number', size: '24', type: 'text', placeholder: '4242 4242 4242 4242' }
+              .mb20.perc48.inline-block
+                .label CVC
+                %input.input.maxw200#cvc{ 'data-stripe': 'cvc', size: '10', type: 'text', placeholder: '123' }
 
-    .mb20
-      .label Expiration
-      .flex
-        .col.maxw200.mr10
-          %input.input#expiry-month{ 'data-stripe': 'exp_month', size: '10', type: 'text', placeholder: 'MM' }
-        .col.maxw200
-          %input.input#expiry-year{ 'data-stripe': 'exp_year', size: '10', type: 'text', placeholder: 'YY' }
+              .py20
+                %button.btn-wide.bg-cobalt-blue.white.shadow{ type: 'submit' } Purchase private report
 
-    .mb20
-      .label CVC
-      %input.input.maxw200#cvc{ 'data-stripe': 'cvc', size: '10', type: 'text', placeholder: '123' }
+              :javascript
+                Stripe.setPublishableKey('#{Rails.configuration.stripe[:publishable_key]}');
 
-    .mb15
-      %button.btn.bg-green.white.shadow{ type: 'submit' } Purchase private report
-
-    :javascript
-      Stripe.setPublishableKey('#{Rails.configuration.stripe[:publishable_key]}');
-
-    %hr.my20
-
-    .fs15.bold
-      Or, continue with a
-      = link_to 'free public report', report_path(@proposal)
+        .center.my20.px15.white
+          Or, continue with a
+          = link_to 'free public report', report_path(@proposal) , class: 'white underline'
+  .bg-dark-blue
+    = render partial: 'shared/footer', locals: { color: 'white' }
