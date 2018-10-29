@@ -217,7 +217,7 @@ feature 'Proposals' do
 
   def choose_answers(from: 0, to: 0)
     (from..to).each do |i|
-      choose("proposal_answers_attributes_#{i}_eligible_true")
+      find("label[for='proposal_answers_attributes_#{i}_eligible_true']").click
     end
   end
 

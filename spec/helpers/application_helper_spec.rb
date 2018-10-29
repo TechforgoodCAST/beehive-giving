@@ -46,6 +46,12 @@ describe ApplicationHelper do
     end
   end
 
+  it '#collection_title' do
+    collection = build(:funder)
+    msg = "New funder report for #{collection.name}"
+    expect(subject.collection_title(collection)).to eq(msg)
+  end
+
   it '#obscure_email' do
     expect(subject.obscure_email('email@email.com')).to eq('em...@email.com')
   end

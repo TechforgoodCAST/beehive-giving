@@ -7,6 +7,10 @@ module ApplicationHelper
     session[:performance_cookies].to_s != 'false'
   end
 
+  def collection_title(collection)
+    "New #{collection.class.to_s.downcase} report for #{collection.name}"
+  end
+
   def obscure_email(email)
     email.gsub(/(?<=.{2})(.*)@/, '...@')
   end

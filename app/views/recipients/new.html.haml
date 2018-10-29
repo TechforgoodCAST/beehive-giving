@@ -1,32 +1,70 @@
-%div{ style: 'max-width: 690px; margin: 40px auto;' }
+= content_for :title, collection_title(@collection)
 
-  %h1.mb40
-    New
-    = @collection.class.to_s.downcase
-    report for
-    = @collection.name
+-# TODO: dynamic color
+%main.bg-dark-blue
+  %section.col2.mx-auto.my40.px15
+    .center.mb40
+      .fs32.px5.white.heading.mt50= collection_title(@collection)
+      .fs16.py15.white Avoid wasted effort with a suitability report that helps you decide where to apply
+      -# TODO: opportunities count
+      .fs15.white.italic= pluralize(@collection.funds.size, 'opportunity')
 
-  = simple_form_for @recipient, url: new_recipient_path do |f|
-    .mb15= f.input :category_code, as: :grouped_select, collection: Recipient::CATEGORIES, group_method: :last, label_method: :last, value_method: :first
+    .bg-white.rounded.shadow
 
-    .mb30
-      .mb10= f.input :description, required: true
-      .mb10= f.input :name, required: true
-      .flex.flex-wrap.justify-between
-        .perc48.mb10= f.input :income_band, required: true, collection: Recipient::INCOME_BANDS, label_method: ->(a) { a.last[:label] }, value_method: :first
-        .perc48.mb10= f.input :operating_for, required: true, collection: Recipient::OPERATING_FOR, label_method: :last, value_method: :first
-      .flex.flex-wrap.justify-between
-        .perc48.mb10= f.input :charity_number
-        .perc48.mb10= f.input :company_number
-      = f.input :website
+      .bg-ice.px20.pb10.pt20.border-bottom.border-mist.rounded-top
+        .flex.flex-wrap.justify-between.items-center
+          %h5.bold.mb10
+            1 of 2: Recipient
+          .flex.fs14.mb10
+            * Required
+            .ml20
+              = image_tag('eye.svg', width: 18)
+              Public
+            .ml20
+              = image_tag('eye-cross.svg', width: 18)
+              Private
 
-    .mb30
-      .mb10= f.association :country, include_blank: true, input_html: { class: 'choices-select' }
-      %blockquote.border-mist.mb15.hide= f.association :district, collection: [[@district&.name, @district&.id]]
+      = simple_form_for @recipient, url: new_recipient_path do |f|
+        .p20
+          .heading.fs18.bold.night.mt10.mb20 Basics
 
-    = f.simple_fields_for :answers do |a|
-      = a.hidden_field :criterion_id, value: a.object.criterion.id
-      = a.input :eligible, as: :radio_buttons, label: false, collection: a.object.criterion.radio_button_values
-      %label.mx20= raw(a.object.criterion.details)
+          .mb15= f.input :category_code, as: :grouped_select, collection: Recipient::CATEGORIES, group_method: :last, label_method: :last, value_method: :first, label_html: { class: 'public' }
 
-    = f.submit 'Next', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Finding...' }
+          %blockquote.border-mist.mb10= f.input :description, required: true, label_html: { class: 'public' }
+
+          %blockquote.border-mist.mb10= f.input :name, required: true, label_html: { class: 'public' }
+          %blockquote.border-mist.mb10= f.input :charity_number, label_html: { class: 'private' }
+          %blockquote.border-mist.mb10= f.input :company_number, label_html: { class: 'private' }
+
+          %blockquote.border-mist.flex.flex-wrap.justify-between.mb15.truncate
+            .perc48= f.input :income_band, required: true, collection: Recipient::INCOME_BANDS, label_method: ->(a) { a.last[:label] }, value_method: :first, label_html: { class: 'public' }
+            .perc48= f.input :operating_for, required: true, collection: Recipient::OPERATING_FOR, label_method: :last, value_method: :first, label_html: { class: 'public' }
+
+          -# TODO: spacing inconsistent
+          .mb10.mt15= f.association :country, include_blank: true, input_html: { class: 'choices-select' }, label_html: { class: 'public' }
+          %blockquote.border-mist.hide= f.association :district, collection: [[@district&.name, @district&.id]], label_html: { class: 'public' }, wrapper_html: { class: 'mb20' }
+
+          = f.input :website, label_html: { class: 'public' }, wrapper_html: { class: 'mb10' }
+
+        .border-top.border-mist.px20.pb10.pt30
+          .heading.fs18.bold.night.pb5
+            Is your proposal for… *
+            = image_tag('eye.svg', width: 12)
+          .fs14.lh18.night.pb5.mb20 The following questions have been set by the opportunities you’ve requested a report against, please answer them honestly and to the best of your knowledge to ensure accurate results.
+
+          = f.simple_fields_for :answers do |a|
+            = a.hidden_field :criterion_id, value: a.object.criterion.id
+            .flex.items-center.quiz.mb20
+              = a.input :eligible, label: false do |r|
+                - a.object.criterion.radio_button_values.each do |label, value|
+                  = a.radio_button :eligible, value
+                  = a.label "eligible_#{value}", label
+
+              %label.mx20.fs15= raw('... ' + a.object.criterion.details)
+
+        .border-top.border-mist.p20
+          = f.submit 'Next', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Finding...' }
+
+.bg-dark-blue
+  = render partial: 'shared/footer', locals: { color: 'white' }
+
