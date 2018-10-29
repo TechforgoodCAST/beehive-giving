@@ -87,7 +87,7 @@ feature 'Recipients' do
 
   def choose_answers(from: 0, to: 0)
     (from..to).each do |i|
-      choose("recipient_answers_attributes_#{i}_eligible_true")
+      find("label[for='recipient_answers_attributes_#{i}_eligible_true']").click
     end
   end
 

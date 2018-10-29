@@ -43,7 +43,8 @@
 .col1, .col2
   min-width: 320px
   &.md
-    @media screen and (max-width: 640px)
+    @media screen and (max-width: 655px)
+      min-width: auto
       max-width: 100%
 
 @each $var, $val in $widths

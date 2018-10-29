@@ -6,6 +6,8 @@ en:
       default_message: 'Please review the problems below:'
 
     labels:
+      defaults:
+        marketing_consent: 'Email me with occasional updates when new opportunities or features are added'
       sign_in_auth:
           password: 'Enter your password'
       proposal:
@@ -22,14 +24,13 @@ en:
         title: 'Proposal title'
       recipient:
         category_code: 'Who will be receiving the funding or support?'
-        description: 'Please specify type of organisation '
-        name: 'Name of recipient '
+        description: 'Type of incorporation'
+        name: 'Organisation name'
         district: 'In which area?'
-        country: 'In which country is the recipient based?'
-        income_band: 'Annual income '
-
 
     hints:
+      defaults:
+        marketing_consent: 'You can opt out at any time.'
       sign_in_set:
          password: 'At least 6 characters long with 1 number.'
       proposal:
@@ -43,8 +44,8 @@ en:
       recipient:
         charity_number: 'If applicable'
         company_number: 'If applicable'
-        description: 'E.g. Unregistered charity, Exempt charity, Charity registered in England & Wales, etc.'
-        name: 'This could be the name of your organisation or project.'
+        description: 'Please be as specific as possible, for example: Charity registered in England & Wales; Charitable Incorportated Organisation (CIO); Community Interest Company (CIC); Company Limited by Guarantee (CLG); Co-operative; etc.'
+
     placeholders:
       proposal:
         min_amount: 'From'

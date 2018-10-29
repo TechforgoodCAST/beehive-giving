@@ -242,10 +242,12 @@ article.featured
     border-radius: $base-radius
     cursor: pointer
     text-align: center
+    border: $base-border-width solid map-get($colors, 'mist')
 
   input[type='radio']:checked + label
     color: map-get($colors, 'white')
     background: map-get($colors, 'blue')
+    border: $base-border-width solid transparent
 
   input[type=radio]:not(:checked) + label
     color: map-get($colors, 'blue')
@@ -295,15 +297,14 @@ footer.white .footer-links a
     *:last-child
       margin: 0
 
-
 .icon
   display: inline-block
   width: 12px
 .private > .icon
-  height: 8px
-  margin-bottom: 5px
-  background: url(eye-cross.svg) no-repeat
-.public > .icon
   height: 10px
   margin-bottom: 4px
+  background: url(eye-cross.svg) no-repeat
+.public > .icon
+  height: 8px
+  margin-bottom: 5px
   background: url(eye.svg) no-repeat

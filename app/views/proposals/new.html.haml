@@ -1,129 +1,128 @@
--# TODO: name page
--# = content_for :title, 'New Proposal'
+= content_for :title, collection_title(@collection)
 
+-# TODO: dynamic color
 %main.bg-dark-blue
-  %section.col2.mx-auto.mb40
-    .center.m40
-      .fs32.px5.white.heading.mt50
-        New theme report for Children and young people
+  %section.col2.mx-auto.my40.px15
+    .center.mb40
+      .fs32.px5.white.heading.mt50= collection_title(@collection)
       .fs16.py15.white Avoid wasted effort with a suitability report that helps you decide where to apply
-      .fs15.white.italic 3 funds • 9 mins
-    .bg-ice.p20.border-bottom.border-mist.rounded-top
-      .fs20.bold.inline-block
-        2 of 2: Proposal
-      .right.inline-block
-        %div.mx5.inline-block
-          %h6.inline-block
-            *Required
-        %div.mx5.inline-block
-          %h6.inline-block.center
-            = image_tag('eye.svg', width: 12)
-            Public
-        %div.mx5.inline-block
-          %h6.inline-block
-            = image_tag('eye-cross.svg', width: 12)
-            Private
-    .bg-white.shadow.px20.pb20
+      -# TODO: opportunities count
+      .fs15.white.italic= pluralize(@collection.funds.size, 'opportunity')
 
-      .py20.bold.fs18.night
-        Basics
+    .bg-white.rounded.shadow
+
+      .bg-ice.px20.pb10.pt20.border-bottom.border-mist.rounded-top
+        .flex.flex-wrap.justify-between.items-center
+          %h5.bold.mb10
+            2 of 2: Proposal
+          .flex.fs14.mb10
+            * Required
+            .ml20
+              = image_tag('eye.svg', width: 18)
+              Public
+            .ml20
+              = image_tag('eye-cross.svg', width: 18)
+              Private
 
       = simple_form_for @proposal, url: new_proposal_path(@collection, @recipient) do |f|
-        .mb20= f.input :title, label_html: { class: 'public' }
+        .p20
+          .heading.fs18.bold.night.mt10.mb20 Basics
 
-        .mb20= f.input :description, as: :text, input_html: { rows: 2 }, label_html: { class: 'public' }
+          .mb20= f.input :title, label_html: { class: 'public' }
 
-        .mb20= f.association :themes, required: true, collection: Theme.all, input_html: { multiple: true, class: 'choices-select' }, label_html: { class: 'public' }
+          .mb20= f.input :description, as: :text, input_html: { rows: 2 }, label_html: { class: 'public' }
 
-        .mb15= f.input :category_code, as: :grouped_select, collection: Proposal::CATEGORIES, group_method: :last, label_method: :last, value_method: :first, label_html: { class: 'public' }
+          .mb20= f.association :themes, required: true, collection: Theme.all, input_html: { multiple: true, class: 'choices-select' }, label_html: { class: 'public' }
 
-        .seeking-funding
-          %blockquote.border-mist.mb15
-            = f.label :min_amount, required: true, label_html: { class: 'public' }
-            = f.hint :min_amount
-            .flex.flex-wrap.justify-between.items-center
-              .perc48= f.input :min_amount, as: :currency, label: false, hint: false
-              %span -
-              .perc48= f.input :max_amount, label: false, hint: false
+          .mb15= f.input :category_code, as: :grouped_select, collection: Proposal::CATEGORIES, group_method: :last, label_method: :last, value_method: :first, label_html: { class: 'public' }
 
-          %blockquote.border-mist.mb15
-            = f.label :min_duration, required: true, label_html: { class: 'public' }
-            = f.hint :min_duration
-            .flex.flex-wrap.justify-between.items-center
-              .perc48= f.input :min_duration, label: false, hint: false
-              %span -
-              .perc48= f.input :max_duration, label: false, hint: false
+          .seeking-funding
+            %blockquote.border-mist.mb15
+              = f.label :min_amount, required: true, class: 'label public'
+              = f.hint :min_amount
+              .flex.flex-wrap.justify-between.items-center
+                .perc48= f.input :min_amount, as: :currency, label: false, hint: false
+                %span -
+                .perc48= f.input :max_amount, label: false, hint: false
 
-        -# TODO: change label
-        %blockquote.border-mist.mb20= f.input :support_details, label_html: { class: 'public' }
+            %blockquote.border-mist.mb15
+              = f.label :min_duration, required: true, class: 'label public'
+              = f.hint :min_duration
+              .flex.flex-wrap.justify-between.items-center
+                .perc48= f.input :min_duration, label: false, hint: false
+                %span -
+                .perc48= f.input :max_duration, label: false, hint: false
 
-        .mb15= f.input :geographic_scale, required: true, collection: Proposal::GEOGRAPHIC_SCALES, label_method: :last, value_method: :first , label_html: { class: 'public' }
+          %blockquote.border-mist.mb20= f.input :support_details, required: true, label_html: { class: 'public' }
 
-        %blockquote.border-mist.mb15= f.input :country_id, required: true, collection: Country.all, input_html: { class: 'choices-select' }, label_html: { class: 'public' }
+          .mb15= f.input :geographic_scale, required: true, collection: Proposal::GEOGRAPHIC_SCALES, label_method: :last, value_method: :first , label_html: { class: 'public' }
 
-        %blockquote.border-mist.mb15= f.association :districts, collection: @districts, input_html: { multiple: true }, label_html: { class: 'public' }
+          %blockquote.border-mist.mb15= f.input :country_id, required: true, collection: Country.all, input_html: { class: 'choices-select' }, label_html: { class: 'public' }
 
-        %blockquote.border-mist= f.association :countries, include_blank: true, input_html: { class: 'choices-select' }, label_html: { class: 'public' }
-    .bg-white.shadow.px20.border-top.border-mist.py20
-      = simple_form_for @proposal, url: new_proposal_path(@collection, @recipient) do |f|
-        .fs18.bold.night.pb5.inline-block
-          Is your proposal for… *
-          = image_tag('eye.svg', width: 12)
-        .fs14.night.pb5 The following questions have been set by the opportunities you’ve requested a report against, please answer them honestly and to the best of your knowledge to ensure accurate results.
+          %blockquote.border-mist.mb10= f.association :districts, collection: @districts, input_html: { multiple: true }, label_html: { class: 'public' }
 
-        %ol
-          - @proposal.answers.each do |answer|
-            - if answer.criterion.type == 'Restriction'
-              = f.simple_fields_for :answers do |a|
-                = a.hidden_field :criterion_id, value: a.object.criterion.id
-                .flex.items-center.quiz.mb20
-                  = a.input :eligible, label: false do |r|
-                    %fieldset
-                      = a.radio_button :eligible, :true
-                      = a.label :eligible_true, 'Yes'
-                      = a.radio_button :eligible, :false
-                      = a.label :eligible_false, 'No'
-                      %li.inline-block
-                        %label.mx20= raw(a.object.criterion.details)
-    .bg-white.shadow.px20.border-top.border-mist.pt20
-      = simple_form_for @proposal, url: new_proposal_path(@collection, @recipient) do |f|
-        .fs18.bold.night.pb5.inline-block
-          Does your proposal confidently meet the following priorities? *
-          = image_tag('eye.svg', width: 12)
-        .fs14.night.py5 The following priorities have been set by the opportunities you’ve requested a report against, please answer them honestly and to the best of your knowledge to ensure accurate results.
-        %ol
-          - @proposal.answers.each do |answer|
-            - if answer.criterion.type == 'Priority'
-              = f.simple_fields_for :answers, answer do |a|
-                = a.hidden_field :criterion_id, value: a.object.criterion.id
-                .flex.items-center.quiz.mb20
-                  = a.input :eligible, label: false do |r|
-                    %fieldset
-                      = a.radio_button :eligible, :true
-                      = a.label :eligible_true, 'Yes'
-                      = a.radio_button :eligible, :false
-                      = a.label :eligible_false, 'No'
-                      %li.inline-block
-                        %label.mx20= raw(a.object.criterion.details)
+          %blockquote.border-mist= f.association :countries, include_blank: true, input_html: { class: 'choices-select' }, label_html: { class: 'public' }
 
-        - if !logged_in?
+        -# TODO: spec & responsive
+        - if @collection.restrictions.any?
+          .border-top.border-mist.px20.pb10.pt30
+            .heading.fs18.bold.night.pb5
+              Is your proposal for… *
+              = image_tag('eye.svg', width: 12)
+            .fs14.lh18.night.pb5.mb20 The following questions have been set by the opportunities you’ve requested a report against, please answer them honestly and to the best of your knowledge to ensure accurate results.
 
-          = f.simple_fields_for :user do |u|
-            %div
-              .perc48.pb20.inline-block= u.input :first_name, label_html: { class: 'private' }
-              .perc48.pb20.inline-block= u.input :last_name, label_html: { class: 'private' }
-            %div
-              .perc48.pb20.inline-block= u.input :email, label_html: { class: 'private' }
-              .perc48.pb20.inline-block= u.input :email_confirmation, label_html: { class: 'private' }
-            .py20= u.input :terms_agreed, as: :boolean, label: false, inline_label: "I accept the #{link_to('terms of service', terms_path, target: '_blank')} and #{link_to('privacy policy', privacy_path, target: '_blank')}".html_safe, label_html: { class: 'private' }
-            .pb20= u.input :marketing_consent, as: :radio_buttons
-    .bg-white.shadow.px20.border-top.border-mist.py20
-      = simple_form_for @proposal, url: new_proposal_path(@collection, @recipient) do |f|
-        = f.label :public_consent
-        = f.hint :public_consent
+            - @proposal.answers.each do |answer|
+              - if answer.criterion.type == 'Restriction'
+                = f.simple_fields_for :answers, answer do |a|
+                  = a.hidden_field :criterion_id, value: a.object.criterion.id
+                  .flex.items-center.quiz.mb20
+                    = a.input :eligible, label: false do |r|
+                      - a.object.criterion.radio_button_values.each do |label, value|
+                        = a.radio_button :eligible, value
+                        = a.label "eligible_#{value}", label
 
-        .pt20= f.input :public_consent, as: :boolean, label: false, inline_label: 'I understand', hint: false
+                    %label.mx20.py10.fs15= raw('... ' + a.object.criterion.details)
 
-        .py20= f.submit 'Get suitability report', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Checking...' }
-.bg-dark-blue
-  = render partial: 'shared/footer', locals: { color: 'white' }
+        -# TODO: spec & responsive
+        - if @collection.priorities.any?
+          .border-top.border-mist.px20.pb10.pt30
+            .heading.fs18.bold.night.pb5
+              Does your proposal confidently meet the following priorities? *
+              = image_tag('eye.svg', width: 12)
+            .fs14.lh18.night.pb5.mb20 The following priorities have been set by the opportunities you’ve requested a report against, please answer them honestly and to the best of your knowledge to ensure accurate results.
+
+            - @proposal.answers.each do |answer|
+              - if answer.criterion.type == 'Priority'
+                = f.simple_fields_for :answers, answer do |a|
+                  = a.hidden_field :criterion_id, value: a.object.criterion.id
+                  .flex.items-center.quiz.mb20
+                    = a.input :eligible, label: false do |r|
+                      - a.object.criterion.radio_button_values.each do |label, value|
+                        = a.radio_button :eligible, value
+                        = a.label "eligible_#{value}", label
+
+          - if !logged_in?
+            .border-top.border-mist.pb10.pt30
+              = f.simple_fields_for :user do |u|
+                .flex.flex-wrap.px10
+                  .col1.md.px10
+                    .mb20= u.input :first_name, required: true, label_html: { class: 'private' }
+                    .mb20= u.input :last_name, required: true, label_html: { class: 'private' }
+                  .col1.md.px10
+                    .mb20= u.input :email, required: true, label_html: { class: 'private' }
+                    .mb20= u.input :email_confirmation, required: true, label_html: { class: 'private' }
+                .px20
+                  .mb20= u.input :terms_agreed, as: :boolean, label: false, inline_label: "<span class='private'>I accept the #{link_to('terms of service', terms_path, target: '_blank')} and #{link_to('privacy policy', privacy_path, target: '_blank')} * <i class='icon'></i></span>".html_safe
+                  .mb20= u.input :marketing_consent, as: :radio_buttons, required: true, label_html: { class: 'private' }
+
+        .border-top.border-mist.p20
+          = simple_form_for @proposal, url: new_proposal_path(@collection, @recipient) do |f|
+            = f.label :public_consent, class: 'private'
+            = f.hint :public_consent
+
+            .mt10.mb20= f.input :public_consent, as: :boolean, label: false, inline_label: 'I understand', hint: false
+
+            = f.submit 'Get suitability report', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Checking...' }
+
+  .bg-dark-blue
+    = render partial: 'shared/footer', locals: { color: 'white' }
