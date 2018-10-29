@@ -144,8 +144,6 @@ GEM
     hashids (1.0.4)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
-    httparty (0.15.5)
-      multi_xml (>= 0.5.2)
     i18n (0.9.5)
       concurrent-ruby (~> 1.0)
     inherited_resources (1.8.0)
@@ -195,7 +193,6 @@ GEM
     mini_portile2 (2.3.0)
     minitest (5.11.3)
     multi_json (1.13.1)
-    multi_xml (0.6.0)
     netrc (0.11.0)
     nio4r (2.1.0)
     nokogiri (1.8.4)
@@ -388,7 +385,6 @@ GEM
     websocket-driver (0.6.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.2)
-    workflow (1.2.0)
     xpath (3.1.0)
       nokogiri (~> 1.8)
     xxhash (0.4.0)
@@ -415,13 +411,11 @@ DEPENDENCIES
   groupdate
   hamlit
   hashids
-  httparty
   intercom-rails
   jbuilder (~> 2.5)
   kaminari
   listen (>= 3.0.5, < 3.2)
   meta_request
-  nokogiri
   pg (~> 0.18)
   pry
   pry-rails
@@ -452,7 +446,6 @@ DEPENDENCIES
   web-console (>= 3.3.0)
   webmock
   webpacker
-  workflow
   xxhash
   yard
 

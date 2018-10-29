@@ -1,9 +1,14 @@
 = content_for :title, @article.title
 
 %header
-  = cell :breadcrumb, 'Research' => articles_path, @article.title => article_path(@article)
+  = cell :breadcrumb, { 'Blog' => articles_path, @article.title => article_path(@article) }, color: 'blue'
 
 %main
-  = cell(:article, @article).call(:show)
+  %section.maxw790.mx-auto.mt40
 
-  = render partial: 'layouts/sign_up_cta'
+    .mb40.mx40
+      %h1.center= @article.title
+
+  .maxw790.mx-auto
+    .px40
+      .markdown= raw(@article.body_html)

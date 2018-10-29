@@ -1,7 +1,0 @@
-hr.maxw1000.mx40
-
-section.p40
-  .mb20
-    h3
-      a= link_to title, article_path(model), class: 'blue'
-  .markdown= strip_tags(body_html).truncate_words(50, omission: "... #{link_to 'more', article_path(model), class: 'blue bold'}")

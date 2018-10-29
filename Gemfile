@@ -30,22 +30,19 @@ gem 'bcrypt', '~> 3.1.7'
 # gem 'capistrano-rails', group: :development
 
 gem 'activerecord-import'
-gem 'cells-rails'
+gem 'cells-rails' # TODO: remove
 gem 'cells-slim' # TODO: remove
 gem 'chartkick'
 gem 'groupdate'
 gem 'hamlit'
 gem 'hashids'
-gem 'httparty'
 gem 'kaminari'
-gem 'nokogiri'
 gem 'pundit'
 gem 'rack-tracker'
 gem 'redcarpet'
 gem 'simple_form'
 gem 'sitemap_generator'
 gem 'stripe'
-gem 'workflow'
 gem 'xxhash'
 
 # Admin
@@ -67,7 +64,7 @@ group :development, :test do
   gem 'capybara'
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
-  gem 'rspec-cells'
+  gem 'rspec-cells' # TODO: remove
   gem 'rspec-rails', '3.5.2'
   gem 'selenium-webdriver'
   gem 'stripe-ruby-mock', require: 'stripe_mock'

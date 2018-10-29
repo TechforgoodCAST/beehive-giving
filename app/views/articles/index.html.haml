@@ -1,20 +1,19 @@
-= content_for :title, 'Articles'
+= content_for :title, 'Blog'
 
 %header
-  = cell :breadcrumb, 'Research' => articles_path
+  = cell :breadcrumb, { 'Blog' => articles_path }, color: 'blue'
 
 %main
   %section.maxw1080.mx-auto
     .mb40.mx40
-      %h1.center Research
-
-    .flex.mx40.mb40
-      %a.mx-auto.fs14.white.bg-darken-blue.circle.shadow.inline-block.py5.pr14.pl5.truncate{ href: 'mailto:support@beehivegiving.org' }
-        .fs12.bg-green.caps.bold.circle.inline-block.py3.px5 WANT ANSWERS?
-        Get in touch if you’d like us to analyse your funding data
+      %h1.center Blog
 
   .maxw790.mx-auto
 
-    = cell(:article, collection: @articles).call(:index)
+    - @articles.each do |article|
+      %hr.maxw1000.mx40
 
-  = render partial: 'layouts/sign_up_cta'
+      %section.p40
+        .mb20
+          %h3= link_to(article.title, article_path(article), class: 'blue')
+        .markdown= strip_tags(article.body_html).truncate_words(50, omission: "... #{link_to('more', article_path(article), class: 'bold')}").html_safe
