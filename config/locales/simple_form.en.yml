@@ -43,7 +43,7 @@ en:
       recipient:
         charity_number: 'If applicable'
         company_number: 'If applicable'
-        description: 'Please be as specific as possible, for example: Charity registered in England & Wales; Charitable Incorportated Organisation (CIO); Community Interest Company (CIC); Company Limited by Guarantee (CLG); Co-operative; etc.'
+        description: 'Please be as specific as possible, for example: Charity registered in England & Wales; Charitable Incorporated Organisation (CIO); Community Interest Company (CIC); Company Limited by Guarantee (CLG); Co-operative; etc.'
       sign_in_set:
         password: 'At least 6 characters long with 1 number.'
 

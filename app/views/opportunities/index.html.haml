@@ -19,16 +19,14 @@
             %h5.bold.slate Funding or support to offer?
           .p20.night
             .mb20 Do you provide grants or offer non- financial support to social sector organisations? Add your latest opportunities here, and we’ll get them listed on the website.
-            -# TODO: link
-            %a.btn.btn-wide.blue.bg-light-blue.border-pale-blue{ target: '_blank'} Add opportunity
+            = link_to('Add opportunity', add_opportunity_form_url('opportunities'), class: 'btn btn-wide blue bg-light-blue border-pale-blue', target: '_blank')
 
         .border.border-mist.rounded.mb30
           .p20.border-bottom.border-mist
             %h5.bold.slate Don’t see the opportunities you’d like a report for?
           .p20.night
             .mb20 Let us know which opportunity you’d like to check and we’ll create you a custom report for a small fee.
-            -# TODO: link
-            %a.btn.btn-wide.blue.bg-light-blue.border-pale-blue{ target: '_blank'} Request custom report
+            = link_to('Request custom report', add_opportunity_form_url('custom'), class: 'btn btn-wide blue bg-light-blue border-pale-blue', target: '_blank')
 
       .col2.px15.grid
         - @opportunities.each do |opp|
