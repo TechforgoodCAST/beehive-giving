@@ -29,13 +29,12 @@
             Recent reports
           .p20.heading
             - @proposals.each do |proposal|
-              -# TODO: style and printing legacy names
+              -# TODO: style and links to opportunity_path
               .mb10
                 = link_to proposal.identifier, report_path(proposal), class: 'bold'
                 = proposal.name
 
-            -# TODO: link
-            = link_to 'More...', '#todo', class: 'bold'
+            = link_to 'More...', opportunities_path, class: 'bold'
 
 .bg-ice
   = render partial: 'shared/footer', locals: { color: 'slate' }
