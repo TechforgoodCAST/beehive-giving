@@ -4,7 +4,7 @@
 %main.bg-dark-blue
   %section.col2.mx-auto.my40.px15
     .center.mb40
-      .fs32.px5.white.heading.mt50= collection_title(@collection)
+      .fs32.px5.white.heading= collection_title(@collection)
       .fs16.py15.white Avoid wasted effort with a suitability report that helps you decide where to apply
       -# TODO: opportunities count
       .fs15.white.italic= pluralize(@collection.funds.active.size, 'opportunity')

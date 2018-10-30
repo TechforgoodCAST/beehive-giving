@@ -276,9 +276,16 @@ dialog
 footer.slate .footer-links a
   color: map-get($colors, 'slate')
 
-footer.white .footer-links a
+footer.slate hr
+  color: map-get($colors, 'mist')
+  background-color: map-get($colors, 'mist')
+
+footer.white .footer-links a, footer.white hr
   color: map-get($colors, 'white')
   opacity: .6
+
+footer.white hr
+  background-color: map-get($colors, 'white')
 
 .footer-logo
   @media screen and (max-width: 40rem)
