@@ -20,15 +20,15 @@ module SignIn
     private
 
     def update_user
-        updates = {
-          password: password,
-          password_confirmation: password_confirmation,
-          marketing_consent: marketing_consent,
-          terms_agreed: terms_agreed,
-          terms_version: (TERMS_VERSION if terms_agreed)
-        }.compact
+      updates = {
+        password: password,
+        password_confirmation: password_confirmation,
+        marketing_consent: marketing_consent,
+        terms_agreed: terms_agreed,
+        terms_version: (TERMS_VERSION if terms_agreed)
+      }.compact
 
-        @user&.update(updates)
-      end
+      @user&.update(updates)
+    end
   end
 end

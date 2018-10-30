@@ -1,6 +1,7 @@
 HASHID = Hashids.new(ENV['HASHIDS_SALT'] || 'salt', 8, Hashids::DEFAULT_ALPHABET + '-')
 MAX_FREE_LIMIT = 3 # TODO: refactor
 TERMS_VERSION = Date.new(2018, 2, 13)
+UPDATE_VERSION = ENV['UPDATE_VERSION'] || Date.today
 
 UNASSESSED = nil
 ELIGIBLE   = 1

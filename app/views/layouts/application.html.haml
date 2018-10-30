@@ -26,12 +26,23 @@
           = link_to 'Change settings', privacy_path(anchor: 'cookies', read_cookies_notice: true), class: 'btn-sm white'
           = link_to 'Continue', update_cookies_path(functional_cookies: true, performance_cookies: true, read_cookies_notice: true), class: 'btn-sm bg-blue white shadow'
 
+    -# TODO: spec
+    - if logged_in? && (@current_user&.update_version != UPDATE_VERSION)
+      .bg-night.border-bottom.border-slate.fs14.lh18.white
+        .maxw1050.mx-auto.px15.py10.flex.items-center.justify-between
+          %p
+            With our last major release we’ve introduced some of the biggest changes to Beehive yet. These changes have been made to make Beehive free to access, easier to use and sustainable to maintain. If you had an existing account then all of your data will have been migrated during the update and will be available in
+            = succeed '.' do
+              = link_to('My Reports', reports_path)
+          .ml20
+            = link_to 'Got it', update_version_path(@current_user), method: :post, class: 'btn border-grey silver nowrap'
+
     - if logged_in? && (@current_user&.terms_version != TERMS_VERSION)
       .bg-night.border-bottom.border-slate.fs15.white
         .maxw1050.mx-auto.px15.py7.flex.items-center.justify-between
           We've updated our privacy policy.
           .flex
-            = link_to 'Agree', agree_path(@current_user), method: :post, class: 'btn white'
+            = link_to 'Agree', terms_version_path(@current_user), method: :post, class: 'btn white'
             = link_to 'Review', privacy_path, class: 'btn border-grey silver'
 
     - flash.each do |key, msg|

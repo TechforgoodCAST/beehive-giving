@@ -8,34 +8,33 @@ en:
     labels:
       defaults:
         marketing_consent: 'Email me with occasional updates when new opportunities or features are added'
-      sign_in_auth:
-          password: 'Enter your password'
       proposal:
         category_code: 'What type of funding or support are you seeking?'
-        country_id: 'In which country?'
         countries: 'In which countries? *'
-        districts: 'And, in which areas? *'
+        country_id: 'In which country?'
         description: 'Describe your proposed work in a sentence or two'
+        districts: 'And, in which areas? *'
         geographic_scale: 'Where will your proposed work affect?'
         min_amount: 'How much funding are you seeking?'
         min_duration: 'How many months do you require funding for?'
         public_consent: 'Confirmation'
+        support_details: 'Please describe'
         themes: 'Select up to 5 themes which best describe your proposed work'
         title: 'Proposal title'
       recipient:
         category_code: 'Who will be receiving the funding or support?'
         description: 'Type of incorporation'
-        name: 'Organisation name'
         district: 'In which area?'
+        name: 'Organisation name'
+      sign_in_auth:
+          password: 'Enter your password'
 
     hints:
       defaults:
         marketing_consent: 'You can opt out at any time.'
-      sign_in_set:
-         password: 'At least 6 characters long with 1 number.'
       proposal:
-        country_id: 'Type the name of the country (e.g. United Kingdom) to get started.'
         countries: 'Type the name of the country (e.g. United Kingdom) to get started.'
+        country_id: 'Type the name of the country (e.g. United Kingdom) to get started.'
         districts: 'Type the name of the place (e.g. Birmingham) to get started.'
         min_amount: 'If you have an exact amount in mind then use the same figure in both boxes.'
         min_duration: 'If you have an exact duration in mind then use the same figure in both boxes.'
@@ -45,9 +44,11 @@ en:
         charity_number: 'If applicable'
         company_number: 'If applicable'
         description: 'Please be as specific as possible, for example: Charity registered in England & Wales; Charitable Incorportated Organisation (CIO); Community Interest Company (CIC); Company Limited by Guarantee (CLG); Co-operative; etc.'
+      sign_in_set:
+        password: 'At least 6 characters long with 1 number.'
 
     placeholders:
       proposal:
-        min_amount: 'From'
         max_amount: 'To'
+        min_amount: 'From'
         title: "e.g. 'Improving careers for disabled workers'"

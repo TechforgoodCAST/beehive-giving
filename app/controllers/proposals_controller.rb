@@ -16,9 +16,12 @@ class ProposalsController < ApplicationController
     @proposal = @recipient.build_proposal(form_params)
     @proposal.collection = @collection
     @proposal.user = current_user if logged_in?
+    @proposal.user.terms_version = TERMS_VERSION #TODO: spec
+    @proposal.user.update_version = UPDATE_VERSION #TODO: spec
 
     if @proposal.save
-      Assessment.analyse_and_update!(@collection.funds, @proposal)
+      #TODO: spec active funds only
+      Assessment.analyse_and_update!(@collection.funds.active, @proposal)
       ReportMailer.notify(@proposal).deliver_now
       redirect_to new_charge_path(@proposal)
     else

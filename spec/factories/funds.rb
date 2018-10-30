@@ -13,6 +13,8 @@ FactoryBot.define do
     end
 
     factory :fund_with_rules, class: Fund do
+      state 'active'
+
       # Check::Eligibility::Amount
       proposal_min_amount 300
       proposal_max_amount 10_000

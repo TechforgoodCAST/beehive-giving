@@ -70,6 +70,7 @@ Rails.application.routes.draw do
   get '/provider-pricing', to: 'pages#provider_pricing', as: 'provider_pricing'
 
   # Misc.
-  post '/agree/:id', to: 'users#agree', as: 'agree'
+  post '/agree-to-terms/:id', to: 'users#terms_version', as: 'terms_version'
+  post '/acknowledge-update/:id', to: 'users#update_version', as: 'update_version'
   get  '/cookies/update', to: 'cookies#update', as: 'update_cookies'
 end
