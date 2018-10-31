@@ -21,8 +21,14 @@ describe Check::Suitability::Quiz do
   let(:eligible) { true }
   let(:suitability) { assessment.suitability_quiz }
   let(:incomplete) { assessment.suitability_quiz_failing }
+  let(:priority_id) { priorities.first.id }
 
   before { subject.call(assessment) }
+
+  it 'not triggered if Fund missing priorities' do
+    assessment.fund.priorities = []
+    expect(subject.call(assessment)).to eq(nil)
+  end
 
   context 'with incomplete answers' do
     let(:num) { 2 }
@@ -34,10 +40,11 @@ describe Check::Suitability::Quiz do
     it 'unclear' do
       reasons = {
         'Check::Suitability::Quiz' => {
-          reasons: [
-            'The priorities for this opportunity have changed, and your ' \
-            'answers are incomplete'
-          ].to_set,
+          reasons: [{
+            id: 'incomplete',
+            fund_value: [priority_id, nil],
+            proposal_value: { priority_id => true }
+          }].to_set,
           rating: 'unclear'
         }
       }
@@ -52,7 +59,14 @@ describe Check::Suitability::Quiz do
 
     it 'approach' do
       reasons = {
-        'Check::Suitability::Quiz' => { reasons: [], rating: 'approach' }
+        'Check::Suitability::Quiz' => {
+          reasons: [{
+            id: 'eligible',
+            fund_value: [priority_id],
+            proposal_value: { priority_id => true }
+          }].to_set,
+          rating: 'approach'
+        }
       }
       expect(assessment.reasons).to include(reasons)
     end
@@ -68,9 +82,11 @@ describe Check::Suitability::Quiz do
     it 'avoid' do
       reasons = {
         'Check::Suitability::Quiz' => {
-          reasons: [
-            'You do not meet 1 of the priorities for this opportunity'
-          ].to_set,
+          reasons: [{
+            id: 'ineligible',
+            fund_value: [priority_id],
+            proposal_value: { priority_id => false }
+          }].to_set,
           rating: 'avoid'
         }
       }

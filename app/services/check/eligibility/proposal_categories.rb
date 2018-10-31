@@ -5,6 +5,8 @@ module Check
 
       def call(assessment)
         super
+        return unless proposal_categories.any?
+
         assessment.eligibility_proposal_categories = eligibility
         build_reason(assessment.eligibility_proposal_categories, reasons)
         assessment
@@ -22,19 +24,28 @@ module Check
 
         def eligibility
           if proposal_categories.include?(category)
+            reasons << if Proposal::CATEGORIES['Grant funding'][category]
+                         reason('grant_funding_eligible')
+                       else
+                         reason('other_eligible')
+                       end
             ELIGIBLE
           else
-            if Proposal::CATEGORIES['Grant funding'][category]
-              reasons << "Does not provide #{category_name} grants"
-            else
-              reasons << "Does not provide the type of support you're seeking"
-            end
+            reasons << if Proposal::CATEGORIES['Grant funding'][category]
+                         reason('grant_funding_ineligible')
+                       else
+                         reason('other_ineligible')
+                       end
             INELIGIBLE
           end
         end
 
         def proposal_categories
           assessment.fund.proposal_categories
+        end
+
+        def reason(id)
+          { id: id, fund_value: proposal_categories, proposal_value: category }
         end
     end
   end

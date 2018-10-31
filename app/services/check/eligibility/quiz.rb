@@ -5,6 +5,8 @@ module Check
 
       def call(assessment)
         super
+        return unless restrictions.any?
+
         assessment.eligibility_quiz = eligibility
         assessment.eligibility_quiz_failing = failing(restrictions)
         build_reason(assessment.eligibility_quiz, reasons)
@@ -15,18 +17,21 @@ module Check
 
         def eligibility
           if incomplete?(restrictions)
-            reasons << 'The restrictions for this opportunity have changed, ' \
-                       'and your answers are incomplete'
+            reasons << reason('incomplete')
             return UNASSESSED
           end
 
           if !answers.slice(*comparison(restrictions)).values.uniq.include?(false)
+            reasons << reason('eligible')
             ELIGIBLE
           else
-            reasons << "You do not meet #{failing(restrictions)} of the " \
-                       'restrictions for this opportunity'
+            reasons << reason('ineligible')
             INELIGIBLE
           end
+        end
+
+        def reason(id)
+          { id: id, fund_value: restrictions, proposal_value: answers }
         end
 
         def restrictions

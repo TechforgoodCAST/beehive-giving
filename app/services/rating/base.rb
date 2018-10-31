@@ -15,8 +15,10 @@ module Rating
 
     def link; end
 
-    def message
-      @reason['reasons']&.join(' • ')
+    def messages
+      @reason['reasons']&.map do |r|
+        send(r['id'], r['fund_value'], r['proposal_value'])
+      end&.join(' • ')
     end
   end
 end

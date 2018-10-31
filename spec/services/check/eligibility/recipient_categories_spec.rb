@@ -15,12 +15,20 @@ describe Check::Eligibility::RecipientCategories do
   context 'permitted recipient category' do
     let(:category_code) { 301 } # A charitable organisation
 
+    it 'not triggered if Fund missing recipient_categories' do
+      assessment.fund.recipient_categories = []
+      expect(subject.call(assessment)).to eq(nil)
+    end
+
     it('eligible') { expect(eligibility).to eq(ELIGIBLE) }
 
     it 'approach' do
       reasons = {
         'Check::Eligibility::RecipientCategories' => {
-          reasons: [], rating: 'approach'
+          rating: 'approach',
+          reasons: [{
+            id: 'eligible', fund_value: [203, 301], proposal_value: 301
+          }]
         }
       }
       expect(assessment.reasons).to include(reasons)
@@ -30,21 +38,25 @@ describe Check::Eligibility::RecipientCategories do
   context 'unpermitted recipient category' do
     let(:category_code) { 302 } # A company
     it('ineligible') { expect(eligibility).to eq(INELIGIBLE) }
-    it('avoid') { expect(assessment.reasons).to include(avoid) }
+    it 'avoid' do
+      reason = { id: 'ineligible', fund_value: [203, 301], proposal_value: 302 }
+      expect(assessment.reasons).to include(avoid(reason))
+    end
   end
 
   context 'unknown proposal category' do
     let(:category_code) { 0 }
     it('ineligible') { expect(eligibility).to eq(INELIGIBLE) }
-    it('avoid') { expect(assessment.reasons).to include(avoid) }
+    it 'avoid' do
+      reason = { id: 'ineligible', fund_value: [203, 301], proposal_value: 0 }
+      expect(assessment.reasons).to include(avoid(reason))
+    end
   end
 
-  def avoid
+  def avoid(msg)
     {
       'Check::Eligibility::RecipientCategories' => {
-        reasons: ['Only supports the following types of recipient: An ' \
-                  'unregistered charity and A charitable organisation'].to_set,
-        rating: 'avoid'
+        reasons: [msg].to_set, rating: 'avoid'
       }
     }
   end

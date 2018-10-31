@@ -6,16 +6,10 @@ module Check
 
       def call(assessment)
         super
+        return unless seeking_funding?
 
-        if seeking_funding?
-          assessment.eligibility_amount = check_eligibility!
-        else
-          assessment.eligibility_amount = INCOMPLETE
-          reasons << 'Not seeking funding'
-        end
-
+        assessment.eligibility_amount = check_eligibility!
         build_reason(assessment.eligibility_amount, reasons)
-
         assessment
       end
 
@@ -28,14 +22,18 @@ module Check
           if less_than_min_amount || more_than_max_amount
             INELIGIBLE
           else
+            reasons << { id: 'eligible' }
             ELIGIBLE
           end
         end
 
         def check_min_amount
           if check_limit(:min_amount, :<, :proposal_min_amount)
-            reasons << "The minimum amount you're seeking (#{min_amount}) is " \
-                       "less than the minimum awarded (#{proposal_min_amount})"
+            reasons << {
+              id: 'below_min',
+              fund_value: min_amount,
+              proposal_value: proposal_min_amount
+            }
             true
           else
             false
@@ -44,8 +42,11 @@ module Check
 
         def check_max_amount
           if check_limit(:max_amount, :>, :proposal_max_amount)
-            reasons << "The maximum amount you're seeking (#{max_amount}) is " \
-                       "more than the maximum awarded (#{proposal_max_amount})"
+            reasons << {
+              id: 'above_max',
+              fund_value: max_amount,
+              proposal_value: proposal_max_amount
+            }
             true
           else
             false

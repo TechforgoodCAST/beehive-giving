@@ -58,9 +58,12 @@ describe Check::Eligibility::Location do
           it { expect(eligibility).to eq(INELIGIBLE) }
 
           it 'avoid' do
-            expect(assessment.reasons).to include(
-              avoid("Does not support work in the countries you're seeking")
-            )
+            reason = {
+              id: 'countries_ineligible',
+              fund_value: assessment.fund.country_ids,
+              proposal_value: assessment.proposal.country_ids
+            }
+            expect(assessment.reasons).to include(avoid(reason))
           end
         end
 
@@ -70,9 +73,12 @@ describe Check::Eligibility::Location do
           it { expect(eligibility).to eq(INELIGIBLE) }
 
           it 'avoid' do
-            expect(assessment.reasons).to include(
-              avoid("Does not support work in the areas you're seeking")
-            )
+            reason = {
+              id: 'districts_ineligible',
+              fund_value: assessment.fund.district_ids,
+              proposal_value: assessment.proposal.district_ids
+            }
+            expect(assessment.reasons).to include(avoid(reason))
           end
         end
 
@@ -87,11 +93,19 @@ describe Check::Eligibility::Location do
             it { expect(eligibility).to eq(INELIGIBLE) }
 
             it 'avoid' do
-              msgs = [
-                'Some of your work takes place outside of the permitted areas',
-                "Does not support work in the countries you're seeking"
+              reasons = [
+                {
+                  id: 'country_outside_area',
+                  fund_value: assessment.fund.country_ids,
+                  proposal_value: assessment.proposal.country_ids
+                },
+                {
+                  id: 'countries_ineligible',
+                  fund_value: assessment.fund.country_ids,
+                  proposal_value: assessment.proposal.country_ids
+                }
               ]
-              expect(assessment.reasons).to include(avoid(*msgs))
+              expect(assessment.reasons).to include(avoid(*reasons))
             end
           end
 
@@ -100,11 +114,19 @@ describe Check::Eligibility::Location do
             it { expect(eligibility).to eq(INELIGIBLE) }
 
             it 'avoid' do
-              msgs = [
-                'Some of your work takes place outside of the permitted areas',
-                "Does not support work in the areas you're seeking"
+              reasons = [
+                {
+                  id: 'district_outside_area',
+                  fund_value: assessment.fund.district_ids,
+                  proposal_value: assessment.proposal.district_ids
+                },
+                {
+                  id: 'districts_ineligible',
+                  fund_value: assessment.fund.district_ids,
+                  proposal_value: assessment.proposal.district_ids
+                }
               ]
-              expect(assessment.reasons).to include(avoid(*msgs))
+              expect(assessment.reasons).to include(avoid(*reasons))
             end
           end
         end
@@ -124,9 +146,12 @@ describe Check::Eligibility::Location do
           it { expect(eligibility).to eq(INELIGIBLE) }
 
           it 'avoid' do
-            expect(assessment.reasons).to include(
-              avoid("Does not support work in the countries you're seeking")
-            )
+            reason = {
+              id: 'countries_ineligible',
+              fund_value: assessment.fund.country_ids,
+              proposal_value: assessment.proposal.country_ids
+            }
+            expect(assessment.reasons).to include(avoid(reason))
           end
         end
 
@@ -141,11 +166,19 @@ describe Check::Eligibility::Location do
             it { expect(eligibility).to eq(INELIGIBLE) }
 
             it 'avoid' do
-              msgs = [
-                'Some of your work takes place outside of the permitted areas',
-                "Does not support work in the countries you're seeking"
+              reasons = [
+                {
+                  id: 'country_outside_area',
+                  fund_value: assessment.fund.country_ids,
+                  proposal_value: assessment.proposal.country_ids
+                },
+                {
+                  id: 'countries_ineligible',
+                  fund_value: assessment.fund.country_ids,
+                  proposal_value: assessment.proposal.country_ids
+                }
               ]
-              expect(assessment.reasons).to include(avoid(*msgs))
+              expect(assessment.reasons).to include(avoid(*reasons))
             end
           end
         end
@@ -159,14 +192,19 @@ describe Check::Eligibility::Location do
     it { expect(eligibility).to eq(INELIGIBLE) }
 
     it 'avoid' do
-      expect(assessment.reasons).to include(
-        avoid('Only supports local and regional work')
-      )
+      reason = {
+        id: 'geographic_scale_ineligible',
+        fund_value: %w[local regional],
+        proposal_value: 'national'
+      }
+      expect(assessment.reasons).to include(avoid(reason))
     end
   end
 
   def approach
-    { 'Check::Eligibility::Location' => { reasons: [], rating: 'approach' } }
+    { 'Check::Eligibility::Location' => {
+      rating: 'approach', reasons: [{ id: 'location_eligible'}]
+    } }
   end
 
   def avoid(*msgs)

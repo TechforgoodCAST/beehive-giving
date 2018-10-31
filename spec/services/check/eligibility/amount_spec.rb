@@ -34,10 +34,16 @@ describe Check::Eligibility::Amount do
       reasons = {
         'Check::Eligibility::Amount' => {
           reasons: [
-            "The minimum amount you're seeking (£10,000) is less than the " \
-            'minimum awarded (£10,001)',
-            "The maximum amount you're seeking (£250,000) is more than the " \
-            'maximum awarded (£249,999)'
+            {
+              id: 'below_min',
+              fund_value: '£10,000',
+              proposal_value: '£10,001'
+            },
+            {
+              id: 'above_max',
+              fund_value: '£250,000',
+              proposal_value: '£249,999'
+            }
           ].to_set,
           rating: 'avoid'
         }
@@ -54,10 +60,9 @@ describe Check::Eligibility::Amount do
     it 'avoid' do
       reasons = {
         'Check::Eligibility::Amount' => {
-          reasons: [
-            "The minimum amount you're seeking (£10,000) is less than the " \
-            'minimum awarded (£10,001)'
-          ].to_set,
+          reasons: [{
+            id: 'below_min', fund_value: '£10,000', proposal_value: '£10,001'
+          }].to_set,
           rating: 'avoid'
         }
       }
@@ -79,10 +84,9 @@ describe Check::Eligibility::Amount do
     it 'avoid' do
       reasons = {
         'Check::Eligibility::Amount' => {
-          reasons: [
-            "The maximum amount you're seeking (£250,000) is more than the " \
-            'maximum awarded (£249,999)'
-          ].to_set,
+          reasons: [{
+            id: 'above_max', fund_value: '£250,000', proposal_value: '£249,999'
+          }].to_set,
           rating: 'avoid'
         }
       }
@@ -106,20 +110,15 @@ describe Check::Eligibility::Amount do
   context 'Proposal seeking other type of support' do
     let(:proposal) { build(:proposal_no_funding) }
 
-    it('incomplete') { expect(eligibility).to eq(INCOMPLETE) }
-
-    it 'unclear' do
-      reasons = {
-        'Check::Eligibility::Amount' => {
-          reasons: ['Not seeking funding'].to_set,
-          rating: 'unclear'
-        }
-      }
-      expect(assessment.reasons).to eq(reasons)
+    it 'not triggered' do
+      expect(subject.call(assessment)).to eq(nil)
+      expect(eligibility).to eq(nil)
     end
   end
 
   def approach
-    { 'Check::Eligibility::Amount' => { reasons: [], rating: 'approach' } }
+    { 'Check::Eligibility::Amount' => {
+      rating: 'approach', reasons: [{ id: 'eligible' }]
+    } }
   end
 end

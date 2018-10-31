@@ -15,12 +15,22 @@ describe Check::Eligibility::ProposalCategories do
   context 'permitted proposal category' do
     let(:category_code) { 202 } # Revenue - Core
 
+    it 'not triggered if Fund missing proposal_categories' do
+      assessment.fund.proposal_categories = []
+      expect(subject.call(assessment)).to eq(nil)
+    end
+
     it('eligible') { expect(eligibility).to eq(ELIGIBLE) }
 
     it 'approach' do
       reasons = {
         'Check::Eligibility::ProposalCategories' => {
-          reasons: [], rating: 'approach'
+          rating: 'approach',
+          reasons: [{
+            id: 'grant_funding_eligible',
+            fund_value: [202, 203],
+            proposal_value: 202
+          }]
         }
       }
       expect(assessment.reasons).to include(reasons)
@@ -33,9 +43,12 @@ describe Check::Eligibility::ProposalCategories do
     it('ineligible') { expect(eligibility).to eq(INELIGIBLE) }
 
     it 'avoid' do
-      expect(assessment.reasons).to include(
-        avoid('Does not provide Capital grants')
-      )
+      reason = {
+        id: 'grant_funding_ineligible',
+        fund_value: [202, 203],
+        proposal_value: 201
+      }
+      expect(assessment.reasons).to include(avoid(reason))
     end
   end
 
@@ -45,9 +58,12 @@ describe Check::Eligibility::ProposalCategories do
     it('ineligible') { expect(eligibility).to eq(INELIGIBLE) }
 
     it 'avoid' do
-      expect(assessment.reasons).to include(
-        avoid("Does not provide the type of support you're seeking")
-      )
+      reason = {
+        id: 'other_ineligible',
+        fund_value: [202, 203],
+        proposal_value: 200
+      }
+      expect(assessment.reasons).to include(avoid(reason))
     end
   end
 

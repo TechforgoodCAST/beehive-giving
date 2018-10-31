@@ -5,6 +5,9 @@ module Check
 
       def call(assessment)
         super
+
+        # TODO: return if not needed
+
         assessment.eligibility_location = eligibility
         build_reason(assessment.eligibility_location, reasons)
         assessment
@@ -13,14 +16,20 @@ module Check
       private
 
         def countries_ineligible
-          # TODO: more descriptive message
-          reasons << "Does not support work in the countries you're seeking"
+          reasons << {
+            id: 'countries_ineligible',
+            fund_value: fund_geo_ids('country'),
+            proposal_value: proposal_geo_ids('country')
+          }
           INELIGIBLE
         end
 
         def districts_ineligible
-          # TODO: more descriptive message
-          reasons << "Does not support work in the areas you're seeking"
+          reasons << {
+            id: 'districts_ineligible',
+            fund_value: fund_geo_ids('district'),
+            proposal_value: proposal_geo_ids('district')
+          }
           INELIGIBLE
         end
 
@@ -35,9 +44,14 @@ module Check
               end
             end
 
+            reasons << { id: 'location_eligible' }
             ELIGIBLE
           else
-            reasons << "Only supports #{permitted_geographic_scales.to_sentence} work"
+            reasons << {
+              id: 'geographic_scale_ineligible',
+              fund_value: permitted_geographic_scales,
+              proposal_value: geographic_scale
+            }
             INELIGIBLE
           end
         end
@@ -54,7 +68,11 @@ module Check
           overlap = (proposal_geo_ids(geo) & fund_geo_ids(geo))
           if proposal_all_in_area?
             if proposal_geo_ids(geo).size > overlap.size
-              reasons << 'Some of your work takes place outside of the permitted areas'
+              reasons << {
+                id: "#{geo}_outside_area",
+                fund_value: overlap,
+                proposal_value: proposal_geo_ids(geo)
+              }
               true
             else
               false

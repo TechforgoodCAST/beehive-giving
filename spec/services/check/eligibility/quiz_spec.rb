@@ -21,8 +21,14 @@ describe Check::Eligibility::Quiz do
   let(:eligible) { true }
   let(:eligibility) { assessment.eligibility_quiz }
   let(:incomplete) { assessment.eligibility_quiz_failing }
+  let(:restriction_id) { restrictions.first.id }
 
   before { subject.call(assessment) }
+
+  it 'not triggered if Fund missing restrictions' do
+    assessment.fund.restrictions = []
+    expect(subject.call(assessment)).to eq(nil)
+  end
 
   context 'with incomplete answers' do
     let(:num) { 2 }
@@ -34,10 +40,11 @@ describe Check::Eligibility::Quiz do
     it 'unclear' do
       reasons = {
         'Check::Eligibility::Quiz' => {
-          reasons: [
-            'The restrictions for this opportunity have changed, and your ' \
-            'answers are incomplete'
-          ].to_set,
+          reasons: [{
+            id: 'incomplete',
+            fund_value: [restriction_id, nil],
+            proposal_value: { restriction_id => true }
+          }].to_set,
           rating: 'unclear'
         }
       }
@@ -52,7 +59,14 @@ describe Check::Eligibility::Quiz do
 
     it 'approach' do
       reasons = {
-        'Check::Eligibility::Quiz' => { reasons: [], rating: 'approach' }
+        'Check::Eligibility::Quiz' => {
+          rating: 'approach',
+          reasons: [{
+            id: 'eligible',
+            fund_value: [restriction_id],
+            proposal_value: { restriction_id => true }
+          }]
+        }
       }
       expect(assessment.reasons).to include(reasons)
     end
@@ -68,9 +82,11 @@ describe Check::Eligibility::Quiz do
     it 'avoid' do
       reasons = {
         'Check::Eligibility::Quiz' => {
-          reasons: [
-            'You do not meet 1 of the restrictions for this opportunity'
-          ].to_set,
+          reasons: [{
+            id: 'ineligible',
+            fund_value: [restriction_id],
+            proposal_value: { restriction_id => false }
+          }].to_set,
           rating: 'avoid'
         }
       }

@@ -1,24 +1,24 @@
 require 'rails_helper'
 
 describe Rating::Base do
-  let(:reason) { {} }
-  subject { Class.new.include(Rating::Base).new(1, reason) }
+  let(:reasons) { {} }
+  subject { Class.new.include(Rating::Base).new(1, reasons) }
 
   context '#indicator' do
     it('default') { expect(subject.indicator).to eq('grey') }
 
     context 'avoid' do
-      let(:reason) { { 'rating' => 'avoid' } }
+      let(:reasons) { { 'rating' => 'avoid' } }
       it { expect(subject.indicator).to eq('red') }
     end
 
     context 'unclear' do
-      let(:reason) { { 'rating' => 'unclear' } }
+      let(:reasons) { { 'rating' => 'unclear' } }
       it { expect(subject.indicator).to eq('yellow') }
     end
 
     context 'approach' do
-      let(:reason) { { 'rating' => 'approach' } }
+      let(:reasons) { { 'rating' => 'approach' } }
       it { expect(subject.indicator).to eq('green') }
     end
   end
@@ -27,12 +27,7 @@ describe Rating::Base do
     it('default') { expect(subject.link).to eq(nil) }
   end
 
-  context '#message' do
-    it('default') { expect(subject.message).to eq(nil) }
-
-    context 'multiple reasons' do
-      let(:reason) { { 'reasons' => %w[one two] } }
-      it { expect(subject.message).to eq('one • two') }
-    end
+  context '#messages' do
+    it('default') { expect(subject.messages).to eq(nil) }
   end
 end

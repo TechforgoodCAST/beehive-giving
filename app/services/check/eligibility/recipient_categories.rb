@@ -5,6 +5,8 @@ module Check
 
       def call(assessment)
         super
+        return unless recipient_categories.any?
+
         assessment.eligibility_recipient_categories = eligibility
         build_reason(assessment.eligibility_recipient_categories, reasons)
         assessment
@@ -18,21 +20,20 @@ module Check
 
         def eligibility
           if recipient_categories.include?(category)
+            reasons << reason('eligible')
             ELIGIBLE
           else
-            reasons << 'Only supports the following types of recipient: ' +
-                       supported_categories
+            reasons << reason('ineligible')
             INELIGIBLE
           end
         end
 
-        def recipient_categories
-          assessment.fund.recipient_categories
+        def reason(id)
+          { id: id, fund_value: recipient_categories, proposal_value: category }
         end
 
-        def supported_categories
-          categories = Recipient::CATEGORIES.values.reduce({}, :merge)
-          recipient_categories.map { |code| categories[code] }.to_sentence
+        def recipient_categories
+          assessment.fund.recipient_categories
         end
     end
   end
