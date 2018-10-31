@@ -17,13 +17,6 @@ class UpdateFundCategoryColumns < ActiveRecord::Migration[5.1]
       3 => 101
     }
 
-    new_geo_scale = {
-      0 => 'local',
-      1 => 'regional',
-      2 => 'national',
-      3 => 'international'
-    }
-
     Fund.active.each do |fund|
       updated_recipient_categories = fund.recipient_categories.map do |old|
         new_recipient_categories[old]
