@@ -47,7 +47,7 @@ gem 'xxhash'
 
 # Admin
 gem 'activeadmin'
-gem 'devise'
+gem 'devise', '~> 4.4.0'
 
 # Monitoring & metrics
 gem 'intercom-rails' # TODO: review
