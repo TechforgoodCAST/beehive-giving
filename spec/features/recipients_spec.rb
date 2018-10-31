@@ -108,7 +108,7 @@ feature 'Recipients' do
     end
 
     # Ensure CI passes consistently
-    sleep(1)
+    sleep(5)
 
     within('.recipient_district') do
       find('.choices').click
