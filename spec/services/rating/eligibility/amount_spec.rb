@@ -15,6 +15,9 @@ describe Rating::Eligibility::Amount do
           'id' => 'below_min',
           'fund_value' => '£50,000',
           'proposal_value' => '£30,000'
+        },
+        {
+          'id' => 'eligible'
         }
       ]
     }
@@ -30,6 +33,11 @@ describe Rating::Eligibility::Amount do
     it 'below_min' do
       message = "The minimum amount you're seeking (£30,000) is less than " \
                 'the minimum awarded (£50,000)'
+      expect(subject.messages).to include(message)
+    end
+
+    it 'eligible' do
+      message = "The amount sought is within the range of this opportunity"
       expect(subject.messages).to include(message)
     end
   end

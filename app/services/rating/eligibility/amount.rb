@@ -14,6 +14,10 @@ module Rating
           "The minimum amount you're seeking (#{proposal_value}) "\
           "is less than the minimum awarded (#{fund_value})"
         end
+
+        def eligible(_fund_value, _proposal_value)
+          "The amount sought is within the range of this opportunity"
+        end
     end
   end
 end
