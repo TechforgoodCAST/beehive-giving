@@ -8,10 +8,12 @@
 
     .maxw1050.mx-auto.px15
       %h1.h2.white.mb10 My reports
-      .white.pb40
-        Reports for
-        = obscure_email(@current_user.email)
-
+      %div
+        .white.pb40.inline-block
+          Reports for
+          = obscure_email(@current_user.email)
+        .bg-rich-blue.border.border-white.rounded.white.fs15.px12.py6.inline-block Private
+        .right.bg-dark-blue.border-dark-blue.rounded.white.maxw100.fs12.bold.py10.px14.inline-block.center New report
   .maxw1050.mx-auto.px15
     %section.grid.py40
       - @reports.each do |report|
