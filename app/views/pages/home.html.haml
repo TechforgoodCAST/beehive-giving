@@ -3,7 +3,7 @@
 %header.bg-ice
   = render partial: 'shared/nav', locals: { color: 'blue' }
 
-%main.bg-ice.flex
+%main.bg-ice.flex.flex-wrap
   .maxw1050.mx-auto.mt40.flex.flex-wrap.items-center
     .col2.px15.mb40
       %h1.bold.mb20 Save time and avoid wasted effort
@@ -22,8 +22,9 @@
           Karen,
           = link_to "Erb's Palsy Group", 'http://www.erbspalsygroup.co.uk/', target: '_blank'
 
-    .col2.mb40
-      .col1.md.px15
+    .col2.mb40.flex.fex-wrap
+      = image_tag('bg-hex.svg', class: 'hex-bg-image')
+      .infront-report.col1.md.px15
         .bg-white.rounded.shadow
           .bg-ice.border-bottom.border-mist.p20.h5.bold
             Recent reports
@@ -35,6 +36,8 @@
                 = proposal.name
 
             = link_to 'More...', opportunities_path, class: 'bold'
+
+
 
 .bg-ice
   = render partial: 'shared/footer', locals: { color: 'slate' }
