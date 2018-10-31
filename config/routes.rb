@@ -55,19 +55,14 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
 
-  # Legacy support
-  get '/about',   to: 'pages#about', as: 'about'
-  get '/tour',    to: redirect('/')
-  get '/welcome', to: redirect('/')
-  get '/files/Data&ResearchLead.pdf', to: redirect('410')
-
   # Pages
-  get '/faq',          to: 'pages#faq',     as: 'faq'
-  get '/privacy',      to: 'pages#privacy', as: 'privacy'
-  get '/terms',        to: 'pages#terms',   as: 'terms'
-  get '/for-funders',  to: 'pages#forfunders', as: 'for_funders'
-  get '/pricing',      to: 'pages#pricing', as: 'pricing'
-  get '/add-an-opportunity', to: 'pages#provider_pricing', as: 'provider_pricing'
+  get '/about', to: redirect('/articles/about'), as: 'about'
+  get '/add-an-opportunity', to: 'pages#add_opportunity', as: 'add_opportunity'
+  get '/faq', to: redirect('/articles/faq'), as: 'faq'
+  get '/opportunity-providers', to: redirect('/articles/opportunity-providers'), as: 'opportunity_providers'
+  get '/pricing', to: 'pages#pricing', as: 'pricing'
+  get '/privacy', to: 'pages#privacy', as: 'privacy'
+  get '/terms', to: 'pages#terms', as: 'terms'
 
   # Misc.
   post '/agree-to-terms/:id', to: 'users#terms_version', as: 'terms_version'
