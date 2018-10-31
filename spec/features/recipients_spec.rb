@@ -107,11 +107,9 @@ feature 'Recipients' do
       find('#choices-recipient_country_id-item-choice-2').click
     end
 
-    # Ensure CI passes consistently
-    sleep(5)
-
     within('.recipient_district') do
       find('.choices').click
+      sleep(5) # Ensure CI passes consistently
       find('#choices-recipient_district_id-item-choice-1').click
     end
   end
