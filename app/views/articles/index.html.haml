@@ -1,19 +1,81 @@
+///////////////////////////////////////////////////////////////////////////////////////////////
+//Below should work when the articles are dynamically coming from db, commented out for now
+//because its not return the values
+
+
+-# = content_for :title, 'Blog'
+
+-# %main.bg-ice
+-#   %header
+-#     = render partial: 'shared/nav', locals: { color: 'blue' }
+-#     = cell(:breadcrumb, { 'Blog' =>  articles_path }, color: 'blue')
+
+-#   %section.col2.mx-auto.mb40
+-#     .center.px15
+-#       %h1.h2.m10 Blog
+
+-#     - @articles.each do |article|
+
+-#       .bg-white.rounded.shadow.my40
+-#         .bg-white.p20.border-bottom.border-mist.blue
+-#           .fs25= link_to(article.title, article_path(article), class: 'blue')
+
+-#         .p20.fs16.lh20
+-#           .markdown= strip_tags(article.body_html).truncate_words(50, omission: "... #{link_to('more', article_path(article), class: 'bold')}").html_safe
+
+-#     -# TODO : Pagination -- only for display view is written below
+-# .bg-ice
+-#   = render partial: 'shared/footer', locals: { color: 'slate' }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 = content_for :title, 'Blog'
 
-%header
-  = cell :breadcrumb, { 'Blog' => articles_path }, color: 'blue'
+%main.bg-ice
+  %header
+    = render partial: 'shared/nav', locals: { color: 'blue' }
+    = cell(:breadcrumb, { 'Blog' =>  articles_path }, color: 'blue')
 
-%main
-  %section.maxw1080.mx-auto
-    .mb40.mx40
-      %h1.center Blog
+  %section.col2.mx-auto.mb40
+    .center.px15
+      %h1.h2.m10 Blog
+    .bg-white.rounded.shadow.my40
+      .bg-white.p20.border-bottom.border-mist.blue
+        .fs25 Finding Funding: How Much Should I Apply For?
+      .p20.fs16.lh20
+        At Beehive we have data at our fingertips which can help you get the most out of a funding application. Something we’ve noticed small charities can struggle with is the amount of funding they should ask for. Usually when looking for funding, you’ll have an amount in mind for how… more
 
-  .maxw790.mx-auto
+    .bg-white.rounded.shadow.my40
+      .bg-white.p20.border-bottom.border-mist.blue
+        .fs25 Our Test Driven Approach
+      .p20.fs16.lh20
+        Knowing you’re focusing on the right things is hard when developing a product or service - we share a process that makes it easier for us. Suraj Vadgama, Creator of www.beehivegiving.org & Associate @ CAST I spend most of my time working on Beehive. And being part of a… more
 
-    - @articles.each do |article|
-      %hr.maxw1000.mx40
+    .bg-white.rounded.shadow.my40
+      .bg-white.p20.border-bottom.border-mist.blue
+        .fs25 What Funders Struggle With
+      .p20.fs16.lh20
+        David and Suraj the team behind www.beehivegiving.org share findings from their recent user research with charitable funders. Beehive was set up by a charitable foundation that understood the challenges of distributing grants, as well the difficulties faced by applicants seeking their support. Since it’s inception, Beehive - a web based… more
 
-      %section.p40
-        .mb20
-          %h3= link_to(article.title, article_path(article), class: 'blue')
-        .markdown= strip_tags(article.body_html).truncate_words(50, omission: "... #{link_to('more', article_path(article), class: 'bold')}").html_safe
+    .center
+      .pagination
+        %a.blue{ href: '#' }
+          &laquo;
+        %a.blue{ href: '#' }
+          1
+        %a.blue{ href: '#' }
+          2
+        %a.blue{ href: '#' }
+          3
+        %a.blue{ href: '#' }
+          4
+        %a.blue{ href: '#' }
+          5
+        %a.blue{ href: '#' }
+          Next
+        %a.blue{ href: '#' }
+          &raquo;
+
+.bg-ice
+  = render partial: 'shared/footer', locals: { color: 'slate' }
