@@ -1,0 +1,19 @@
+= content_for :title, 'Instructions sent'
+
+%main.bg-rich-blue.flex.justify-center.items-center.py40
+  %section.col1.px15
+    .center.mb20
+      = link_to(root_path) do
+        = image_tag('logo.svg', width: 102)
+
+    .bg-white.rounded.shadow.mb20
+      .bg-ice.p20.border-bottom.border-mist.rounded-top
+        %h1.h4.bold Instructions sent
+      .p20
+        Please follow the instructions we’ve sent to
+        %strong= obscure_email(@user.email)
+        and set a new password.
+        = link_to 'Continue', root_path, class: 'btn-wide bg-rich-blue white shadow mt20'
+
+.bg-rich-blue
+  = render partial: 'shared/footer', locals: { color: 'white' }

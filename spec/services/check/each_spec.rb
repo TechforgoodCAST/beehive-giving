@@ -1,18 +1,12 @@
 require 'rails_helper'
 
 describe Check::Each do
-  let(:criteria) { [Check::Eligibility::OrgType.new] }
+  let(:criteria) { [Check::Eligibility::Amount] }
   let(:funds)    { Fund.active }
-  let(:themes)   { build_list(:theme, 1) }
   let(:assessment) do
     create(
       :assessment,
-      fund: create_list(
-        :fund, 2,
-        themes: themes,
-        restrictions_known: false,
-        priorities_known: false
-      )[0],
+      fund: create_list(:fund_with_rules, 2, state: 'active')[0],
       fund_version: Fund.version
     )
   end
@@ -20,6 +14,8 @@ describe Check::Each do
   before { assessment }
 
   subject { Check::Each.new(criteria).call_each(funds, assessment.proposal) }
+
+  it 'opportunity with no priorities should not include reasons'
 
   context 'missing criteria' do
     let(:criteria) { nil }
@@ -46,7 +42,8 @@ describe Check::Each do
   end
 
   it 'returns changed Assessments only' do
-    assessment.update(eligibility_org_type: 1)
-    expect(subject.size).to eq(1)
+    subject[0].save
+    check = Check::Each.new(criteria).call_each(funds, assessment.proposal)
+    expect(check.size).to eq(1)
   end
 end

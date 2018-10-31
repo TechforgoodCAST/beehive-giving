@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180712122951) do
+ActiveRecord::Schema.define(version: 20181029162141) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,10 +86,10 @@ ActiveRecord::Schema.define(version: 20180712122951) do
     t.bigint "proposal_id"
     t.bigint "recipient_id"
     t.integer "eligibility_amount"
-    t.integer "eligibility_funding_type"
+    t.integer "eligibility_proposal_categories"
     t.integer "eligibility_location"
     t.integer "eligibility_org_income"
-    t.integer "eligibility_org_type"
+    t.integer "eligibility_recipient_categories"
     t.integer "eligibility_quiz"
     t.integer "eligibility_quiz_failing"
     t.integer "eligibility_status", null: false
@@ -97,6 +97,10 @@ ActiveRecord::Schema.define(version: 20180712122951) do
     t.datetime "updated_at", null: false
     t.bigint "fund_version"
     t.boolean "revealed"
+    t.jsonb "reasons", default: {}, null: false
+    t.integer "suitability_quiz"
+    t.integer "suitability_quiz_failing"
+    t.string "suitability_status"
     t.index ["fund_id"], name: "index_assessments_on_fund_id"
     t.index ["proposal_id"], name: "index_assessments_on_proposal_id"
     t.index ["recipient_id"], name: "index_assessments_on_recipient_id"
@@ -248,9 +252,8 @@ ActiveRecord::Schema.define(version: 20180712122951) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "microsite", default: false, null: false
-    t.string "primary_colour"
-    t.string "headline_colour"
-    t.string "subtitle_colour"
+    t.string "primary_color"
+    t.string "secondary_color"
     t.index ["slug"], name: "index_funders_on_slug", unique: true
   end
 
@@ -259,52 +262,27 @@ ActiveRecord::Schema.define(version: 20180712122951) do
     t.string "name"
     t.text "description"
     t.string "slug"
-    t.boolean "open_call"
-    t.text "key_criteria"
-    t.string "currency"
-    t.string "application_link"
-    t.boolean "geographic_scale_limited"
-    t.boolean "restrictions_known"
+    t.string "website"
+    t.boolean "proposal_area_limited"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "open_data", default: false
-    t.date "period_start"
-    t.date "period_end"
-    t.integer "grant_count"
-    t.jsonb "amount_awarded_distribution", default: {}, null: false
-    t.jsonb "award_month_distribution", default: {}, null: false
-    t.jsonb "org_type_distribution", default: {}, null: false
-    t.jsonb "income_distribution", default: {}, null: false
-    t.jsonb "country_distribution", default: {}, null: false
-    t.jsonb "tags", default: [], null: false
-    t.jsonb "sources", default: {}, null: false
+    t.jsonb "links", default: {}, null: false
     t.boolean "national", default: false, null: false
-    t.decimal "amount_awarded_sum"
-    t.jsonb "beneficiary_distribution", default: {}, null: false
-    t.jsonb "grant_examples", default: [], null: false
-    t.boolean "min_amount_awarded_limited", default: false
-    t.integer "min_amount_awarded"
-    t.boolean "max_amount_awarded_limited", default: false
-    t.integer "max_amount_awarded"
-    t.boolean "min_duration_awarded_limited", default: false
-    t.integer "min_duration_awarded"
-    t.boolean "max_duration_awarded_limited", default: false
-    t.integer "max_duration_awarded"
-    t.jsonb "permitted_costs", default: [], null: false
-    t.jsonb "permitted_org_types", default: [], null: false
-    t.boolean "min_org_income_limited", default: false
-    t.integer "min_org_income"
-    t.boolean "max_org_income_limited", default: false
-    t.integer "max_org_income"
-    t.boolean "priorities_known"
-    t.string "geo_description"
+    t.integer "proposal_min_amount"
+    t.integer "proposal_max_amount"
+    t.integer "proposal_min_duration"
+    t.integer "proposal_max_duration"
+    t.jsonb "proposal_categories", default: [], null: false
+    t.jsonb "recipient_categories", default: [], null: false
+    t.integer "recipient_min_income"
+    t.integer "recipient_max_income"
     t.integer "geo_area_id"
     t.string "state", default: "draft", null: false
-    t.boolean "featured", default: false
-    t.string "pretty_name"
+    t.jsonb "proposal_permitted_geographic_scales", default: [], null: false
+    t.boolean "proposal_all_in_area"
     t.index ["funder_id"], name: "index_funds_on_funder_id"
+    t.index ["geo_area_id"], name: "index_funds_on_geo_area_id"
     t.index ["slug"], name: "index_funds_on_slug"
-    t.index ["tags"], name: "index_funds_on_tags", using: :gin
   end
 
   create_table "geo_areas", force: :cascade do |t|
@@ -338,7 +316,7 @@ ActiveRecord::Schema.define(version: 20180712122951) do
   create_table "proposals", id: :serial, force: :cascade do |t|
     t.integer "recipient_id"
     t.string "title"
-    t.string "tagline"
+    t.string "description"
     t.string "gender"
     t.string "outcome1"
     t.string "outcome2"
@@ -349,12 +327,12 @@ ActiveRecord::Schema.define(version: 20180712122951) do
     t.integer "min_age"
     t.integer "max_age"
     t.integer "beneficiaries_count"
-    t.integer "funding_duration"
+    t.integer "min_duration"
     t.float "activity_costs"
     t.float "people_costs"
     t.float "capital_costs"
     t.float "other_costs"
-    t.float "total_costs"
+    t.integer "min_amount"
     t.boolean "activity_costs_estimated", default: false
     t.boolean "people_costs_estimated", default: false
     t.boolean "capital_costs_estimated", default: false
@@ -369,16 +347,31 @@ ActiveRecord::Schema.define(version: 20180712122951) do
     t.boolean "affect_other"
     t.integer "affect_geo"
     t.boolean "total_costs_estimated", default: false
-    t.boolean "private"
+    t.boolean "prevent_funder_verification"
     t.boolean "implementations_other_required"
     t.string "implementations_other"
     t.jsonb "recommended_funds", default: []
     t.jsonb "eligibility", default: {}, null: false
     t.jsonb "suitability", default: {}, null: false
-    t.integer "funding_type"
+    t.integer "category_code"
     t.boolean "public_consent"
+    t.string "support_details"
+    t.integer "max_amount"
+    t.integer "max_duration"
+    t.string "geographic_scale"
+    t.bigint "user_id"
+    t.string "access_token"
+    t.boolean "legacy"
+    t.datetime "private"
+    t.bigint "collection_id"
+    t.string "collection_type"
+    t.bigint "duplicate_of"
+    t.datetime "migrated_on"
+    t.index ["collection_id"], name: "index_proposals_on_collection_id"
+    t.index ["collection_type"], name: "index_proposals_on_collection_type"
     t.index ["recipient_id"], name: "index_proposals_on_recipient_id"
     t.index ["state"], name: "index_proposals_on_state"
+    t.index ["user_id"], name: "index_proposals_on_user_id"
   end
 
   create_table "questions", id: :serial, force: :cascade do |t|
@@ -400,7 +393,7 @@ ActiveRecord::Schema.define(version: 20180712122951) do
     t.string "city", limit: 255
     t.string "region", limit: 255
     t.string "postal_code", limit: 255
-    t.string "country", limit: 255
+    t.string "country_alpha2", limit: 255
     t.string "charity_number", limit: 255
     t.string "company_number", limit: 255
     t.string "slug", limit: 255
@@ -446,7 +439,17 @@ ActiveRecord::Schema.define(version: 20180712122951) do
     t.integer "funds_checked", default: 0, null: false
     t.integer "income"
     t.jsonb "reveals", default: [], null: false
+    t.integer "category_code"
+    t.string "description"
+    t.bigint "user_id"
+    t.bigint "district_id"
+    t.bigint "country_id"
+    t.bigint "duplicate_of"
+    t.datetime "migrated_on"
+    t.index ["country_id"], name: "index_recipients_on_country_id"
+    t.index ["district_id"], name: "index_recipients_on_district_id"
     t.index ["slug"], name: "index_recipients_on_slug", unique: true
+    t.index ["user_id"], name: "index_recipients_on_user_id"
   end
 
   create_table "requests", force: :cascade do |t|
@@ -504,6 +507,9 @@ ActiveRecord::Schema.define(version: 20180712122951) do
     t.string "unlock_token"
     t.date "terms_version"
     t.boolean "marketing_consent"
+    t.datetime "terms_agreed"
+    t.string "stripe_user_id"
+    t.datetime "update_version"
     t.index ["organisation_id"], name: "index_users_on_organisation_id"
     t.index ["organisation_type"], name: "index_users_on_organisation_type"
   end
@@ -521,4 +527,5 @@ ActiveRecord::Schema.define(version: 20180712122951) do
   add_foreign_key "funds", "geo_areas"
   add_foreign_key "proposal_themes", "proposals"
   add_foreign_key "proposal_themes", "themes"
+  add_foreign_key "proposals", "users"
 end

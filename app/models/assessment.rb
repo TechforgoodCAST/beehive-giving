@@ -1,21 +1,32 @@
 class Assessment < ApplicationRecord
   CHECKS = [
-    Check::Eligibility::Amount.new,
-    Check::Eligibility::FundingType.new,
-    Check::Eligibility::Location.new,
-    Check::Eligibility::OrgIncome.new,
-    Check::Eligibility::OrgType.new,
-    Check::Eligibility::Quiz.new
+    Check::Eligibility::Amount,
+    Check::Eligibility::Location,
+    Check::Eligibility::ProposalCategories,
+    Check::Eligibility::Quiz,
+    Check::Eligibility::RecipientCategories,
+    Check::Suitability::Quiz
   ].freeze
 
-  ELIGIBILITY_STATUS_COLUMNS = CHECKS.map do |check|
-    "eligibility_#{check.class.name.demodulize.underscore}".to_sym
-  end.freeze
+  ELIGIBILITY_COLUMNS = %i[
+    eligibility_amount
+    eligibility_location
+    eligibility_proposal_categories
+    eligibility_quiz
+    eligibility_recipient_categories
+  ].freeze
 
-  PERMITTED_COLUMNS = (ELIGIBILITY_STATUS_COLUMNS + %i[
+  SUITABILITY_COLUMNS = %i[
+    suitability_quiz
+  ].freeze
+
+  PERMITTED_COLUMNS = (ELIGIBILITY_COLUMNS + SUITABILITY_COLUMNS + %i[
     eligibility_quiz_failing
     eligibility_status
+    suitability_quiz_failing
+    suitability_status
     fund_version
+    reasons
   ]).freeze
 
   belongs_to :fund
@@ -26,7 +37,7 @@ class Assessment < ApplicationRecord
     in: [INELIGIBLE, INCOMPLETE, ELIGIBLE]
   }
 
-  before_validation :set_eligibility_status
+  before_validation :set_eligibility_status, :set_suitability_status
 
   def self.analyse(funds, proposal)
     Check::Each.new(CHECKS).call_each(funds, proposal)
@@ -41,6 +52,14 @@ class Assessment < ApplicationRecord
     super.symbolize_keys
   end
 
+  def banner
+    @banner ||= Banner.new(self)
+  end
+
+  def ratings
+    Rating::Each.new(self).ratings
+  end
+
   private
 
     def set_eligibility_status
@@ -48,9 +67,25 @@ class Assessment < ApplicationRecord
     end
 
     def eligible_status
-      columns = attributes.slice(*ELIGIBILITY_STATUS_COLUMNS).values
+      columns = attributes.slice(*ELIGIBILITY_COLUMNS).values
       return INELIGIBLE if columns.any? { |c| c == INELIGIBLE }
       return ELIGIBLE if columns.all? { |c| c == ELIGIBLE }
+
       INCOMPLETE
+    end
+
+    def set_suitability_status
+      self[:suitability_status] = suitable_status
+    end
+
+    def suitable_status
+      columns = ELIGIBILITY_COLUMNS + SUITABILITY_COLUMNS
+      values = attributes.slice(*columns).values
+
+      return 'avoid' if values.any? { |v| v == INELIGIBLE }
+      return 'unclear' if values.any? { |v| v == INCOMPLETE }
+      return 'approach' if values.all? { |v| v == ELIGIBLE }
+
+      'unclear'
     end
 end

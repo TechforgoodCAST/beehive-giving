@@ -3,6 +3,14 @@
   = render 'shared/head'
 
   %body#top
+    :css
+      .bg-primary {
+        background: #{primary_color(@collection)} !important;
+      }
+      .bg-secondary {
+        background: #{secondary_color(@collection)} !important;
+      }
+
     - if allow_functional_cookies?
       / Google Tag Manager (noscript)
       %noscript
@@ -18,57 +26,28 @@
           = link_to 'Change settings', privacy_path(anchor: 'cookies', read_cookies_notice: true), class: 'btn-sm white'
           = link_to 'Continue', update_cookies_path(functional_cookies: true, performance_cookies: true, read_cookies_notice: true), class: 'btn-sm bg-blue white shadow'
 
+    -# TODO: spec
+    - if logged_in? && (@current_user&.update_version != UPDATE_VERSION)
+      .bg-night.border-bottom.border-slate.fs14.lh18.white
+        .maxw1050.mx-auto.px15.py10.flex.items-center.justify-between
+          %p
+            With our last major release we’ve introduced some of the biggest changes to Beehive yet. These changes have been made to make Beehive free to access, easier to use and sustainable to maintain. If you had an existing account then all of your data will have been migrated during the update and will be available in
+            = succeed '.' do
+              = link_to('My Reports', reports_path)
+          .ml20
+            = link_to 'Got it', update_version_path(@current_user), method: :post, class: 'btn border-grey silver nowrap'
+
+    - if logged_in? && (@current_user&.terms_version != TERMS_VERSION)
+      .bg-night.border-bottom.border-slate.fs15.white
+        .maxw1050.mx-auto.px15.py7.flex.items-center.justify-between
+          We've updated our privacy policy.
+          .flex
+            = link_to 'Agree', terms_version_path(@current_user), method: :post, class: 'btn white'
+            = link_to 'Review', privacy_path, class: 'btn border-grey silver'
+
+    - flash.each do |key, msg|
+      .bg-night.border-bottom.border-slate.fs15.white
+        .maxw1050.mx-auto.px15.py10
+          = msg
+
     = yield
-
-    %footer.bg-ice.border-top.border-silver
-
-      .maxw1080.mx-auto
-        .flex.flex-wrap.items-center.slate
-          .f1.minw250.mx40.py40
-            .flex.items-center
-              %a{ href: root_path }
-                #logo-hex{ alt: 'Beehive logo' }
-              .fs12.ml5 Intelligently connecting non-profits with funders
-          .f1.minw250.mx40.pt40
-            .flex.fs14.flex-wrap
-              .f1.minw150.pb40
-                .bold.mb14 BEEHIVE
-                %ul
-                  %li.mb10
-                    = link_to 'About', about_path, class: 'slate'
-                  %li.mb10
-                    = link_to 'FAQ', faq_path, class: 'slate'
-                  -# %li.mb10 Pricing
-                  %li.mb10
-                    = link_to 'Research', articles_path, class: 'slate'
-                  %li.mb10
-                    = link_to 'Beehive for Funders', for_funders_path, class: 'slate'
-
-              .f1.minw150.pb40
-                .bold.mb14 FUNDING
-                = cell(:footer_themes, @current_user, proposal: @proposal)
-
-              .f1.minw150.pb40
-                .bold.mb14 RESOURCES
-                %ul
-                  %li.mb10
-                    = link_to 'Privacy', privacy_path, class: 'slate'
-                  %li.mb10
-                    = link_to 'Terms', terms_path, class: 'slate'
-                  -# %li.mb10 Developers
-                  %li.mb10
-                    = mail_to 'support@beehivegiving.org', 'Contact', class: 'slate'
-
-        .mx40.pb40.fs12.grey.lh16
-          &copy;
-          = Time.zone.today.year
-          = succeed ';' do
-            = link_to 'BeehiveGiving.org', root_path, class: 'grey'
-          Incubated by
-          = succeed ',' do
-            = link_to 'CAST', 'http://www.wearecast.org.uk/', target: '_blank', class: 'grey'
-          Registered Charity No:
-          = succeed ',' do
-            = link_to '1161998', 'http://beta.charitycommission.gov.uk/charity-details/?regid=1161998&subid=0', target: '_blank', class: 'grey'
-          Company No:
-          = link_to '09544506', 'https://beta.companieshouse.gov.uk/company/09544506', target: '_blank', class: 'grey'

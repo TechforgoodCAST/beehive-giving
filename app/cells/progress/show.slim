@@ -1,9 +1,0 @@
-.mx-auto.shadow.border.rounded.border-silver.maxw420
-  = cell(:current_proposal, model&.proposal)
-
-  - steps.each_with_index do |s, i|
-    .border-top.border-silver class=s.highlight
-      .flex.items-center.px20.py16.progress-item
-        .indicator.mr20 class=(s.indicator + position(i))
-        h5.mr-auto = s.label
-        h6.bold = s.message

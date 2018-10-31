@@ -17,9 +17,12 @@ class GeoArea < ApplicationRecord
 
     def validate_districts
       return if districts.empty?
+
       districts.each do |district|
-        errors.add(:districts, "Country '#{district.country.name}' for #{district.name} not selected") if
-          country_ids.exclude?(district.country_id)
+        msg = "Country '#{district.country.name}' " \
+              "for #{district.name} not selected"
+
+        errors.add(:districts, msg) if country_ids.exclude?(district.country_id)
       end
     end
 end

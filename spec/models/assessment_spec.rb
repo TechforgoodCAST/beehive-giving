@@ -22,66 +22,64 @@ describe Assessment do
     let(:eligibility) do
       %i[
         eligibility_amount
-        eligibility_funding_type
         eligibility_location
-        eligibility_org_income
-        eligibility_org_type
+        eligibility_proposal_categories
         eligibility_quiz
+        eligibility_recipient_categories
       ]
     end
 
-    it 'ELIGIBILITY_STATUS_COLUMNS correct' do
-      expect(Assessment::ELIGIBILITY_STATUS_COLUMNS).to match_array(eligibility)
+    let(:suitability) do
+      %i[
+        suitability_quiz
+      ]
+    end
+
+    it 'ELIGIBILITY_COLUMNS correct' do
+      expect(Assessment::ELIGIBILITY_COLUMNS).to match_array(eligibility)
+    end
+
+    it 'SUITABILITY_COLUMNS correct' do
+      expect(Assessment::SUITABILITY_COLUMNS).to match_array(suitability)
     end
 
     it 'PERMITTED_COLUMNS correct' do
       misc = %i[
         eligibility_quiz_failing
         eligibility_status
+        suitability_quiz_failing
+        suitability_status
         fund_version
+        reasons
       ]
-      permitted = eligibility + misc
+      permitted = eligibility + suitability + misc
       expect(Assessment::PERMITTED_COLUMNS).to match_array(permitted)
     end
   end
 
   context do
+    let(:collection) { create(:funder_with_funds) }
     let(:proposal) { create(:proposal) }
 
-    before do
-      create(
-        :fund,
-        restrictions_known: false,
-        priorities_known: false,
-        themes: [build(:theme)],
-        geo_area: create(:geo_area, countries: proposal.countries)
-      )
-    end
-
     it 'self.analyse' do
-      assessment = Assessment.analyse(Fund.active, proposal)[0]
+      Assessment.analyse(collection.funds, proposal)
       expect(Assessment.count).to eq(0)
-
-      %i[
-        eligibility_amount
-        eligibility_funding_type
-        eligibility_location
-        eligibility_org_income
-        eligibility_org_type
-        eligibility_quiz
-      ].each do |column|
-        expect(assessment.send(column)).to eq(ELIGIBLE)
-      end
-      expect(assessment.eligibility_quiz_failing).to eq(0)
-      expect(assessment.eligibility_status).to eq(ELIGIBLE)
     end
 
     it 'self.analyse_and_update!' do
-      Assessment.analyse_and_update!(Fund.active, proposal)
-      expect(Assessment.count).to eq(1)
+      Assessment.analyse_and_update!(collection.funds, proposal)
+      expect(Assessment.count).to eq(2)
     end
 
     it 'self.analyse_and_update! duplicate keys'
+  end
+
+  it '#attributes keys symbolized' do
+    subject.attributes.keys.each { |k| expect(k).to be_a(Symbol) }
+  end
+
+  it '#banner' do
+    expect(subject.banner).to be_a(Banner)
   end
 
   it '#eligibility_status unset before_validation' do
@@ -105,7 +103,23 @@ describe Assessment do
     end
   end
 
-  it '#attributes keys symbolized' do
-    subject.attributes.keys.each { |k| expect(k).to be_a(Symbol) }
+  context '#suitability_status' do
+    context 'incomplete' do
+      it { expect(subject.suitability_status).to eq('unclear') }
+    end
+
+    context 'ineligible' do
+      subject { build(:ineligible) }
+      it { expect(subject.suitability_status).to eq('avoid') }
+    end
+
+    context 'eligible' do
+      subject { build(:eligible) }
+      it { expect(subject.suitability_status).to eq('approach') }
+    end
+  end
+
+  it '#ratings' do
+    expect(subject.ratings).to all(be_a(Rating))
   end
 end

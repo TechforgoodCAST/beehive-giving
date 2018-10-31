@@ -5,11 +5,11 @@ describe Proposal do
 
   it('belongs to Recipient') { assoc(:recipient, :belongs_to) }
 
-  it('has many Answers') { assoc(:answers, :has_many, dependent: :destroy) }
+  it('belongs to User') { assoc(:user, :belongs_to) }
 
-  it('has many Assessments') { assoc(:assessments, :has_many) }
-
-  it('has many Enquiries') { assoc(:enquiries, :has_many, dependent: :destroy) }
+  it('has many Assessments') do
+    assoc(:assessments, :has_many, dependent: :destroy)
+  end
 
   it 'has many ProposalThemes' do
     assoc(:proposal_themes, :has_many, dependent: :destroy)
@@ -17,142 +17,242 @@ describe Proposal do
 
   it('has many Themes') { assoc(:themes, :has_many, through: :proposal_themes) }
 
-  it('HABTM AgeGroups') { assoc(:age_groups, :has_and_belongs_to_many) } # TODO: deprecated
-
-  it('HABTM Beneficiaries') { assoc(:beneficiaries, :has_and_belongs_to_many) } # TODO: deprecated
-
   it('HABTM Countries') { assoc(:countries, :has_and_belongs_to_many) }
 
   it('HABTM Districts') { assoc(:districts, :has_and_belongs_to_many) }
 
-  it('HABTM Implementations') { assoc(:implementations, :has_and_belongs_to_many) } # TODO: deprecated
+  it('has many Answers') { assoc(:answers, :has_many, dependent: :destroy) }
 
   it { is_expected.to be_valid }
 
-  it '#funding_duration must at least 1' do
-    subject.funding_duration = 0
-    subject.valid?
-    expect_error(:funding_duration, 'must be greater than or equal to 1')
-  end
-
-  it '#funding_duration must be less than 120' do
-    subject.funding_duration = 121
-    subject.valid?
-    expect_error(:funding_duration, 'must be less than or equal to 120')
-  end
-
-  context '#state' do
-    it 'defaults to initial' do
-      expect(subject.state).to eq('complete')
+  it 'required attributes' do
+    %i[
+      description
+      category_code
+      geographic_scale
+      title
+    ].each do |attribute|
+      invalid_attribute(:proposal, attribute)
     end
+  end
 
-    it 'transitions' do
-      subject.save!
-      {
-        'basics'     => 'complete',
-        'invalid'    => 'complete',
-        'incomplete' => 'complete',
-      }.each do |from, to|
-        subject.state = from
-        subject.complete!
-        expect(subject.state).to eq(to)
+  it '#category_code in list' do
+    subject.category_code = -1
+    subject.valid?
+    expect_error(:category_code, 'please select an option')
+  end
+
+  it '#geographic_scale in list' do
+    subject.geographic_scale = -1
+    subject.valid?
+    expect_error(:geographic_scale, 'please select an option')
+  end
+
+  it 'has 1 or more themes' do
+    subject.themes = []
+    subject.valid?
+    expect_error(:themes, 'please select 1 - 5 themes')
+  end
+
+  it 'has 5 themes or less' do
+    subject.themes << build_list(:theme, 5)
+    subject.valid?
+    expect_error(:themes, 'please select 1 - 5 themes')
+  end
+
+  context 'other support' do
+    before { subject.category_code = 101 }
+
+    it '#support_details required' do
+      subject.valid?
+      expect_error(:support_details, "can't be blank")
+    end
+  end
+
+  context 'seeking funding' do
+    it 'required attributes' do
+      %i[
+        min_amount
+        max_amount
+        min_duration
+        max_duration
+      ].each do |attribute|
+        invalid_attribute(:proposal, attribute)
       end
     end
+
+    it '#max_amount greater than or equal to #min_amount' do
+      subject.max_amount = subject.min_amount - 1
+      subject.valid?
+      expect_error(:max_amount, 'must be greater than or equal to 10000')
+    end
+
+    it '#max_duration greater than or equal to #min_duration' do
+      subject.max_duration = subject.min_duration - 1
+      subject.valid?
+      expect_error(:max_duration, 'must be greater than or equal to 3')
+    end
+
+    it '#max_duration limited to 120' do
+      subject.max_duration = 121
+      subject.valid?
+      expect_error(:max_duration, 'must be less than or equal to 120')
+    end
   end
 
-  it 'does not require districts if affect_geo at country level' do
-    Proposal::AFFECT_GEO.each do |i|
-      subject.affect_geo = i[1]
+  context 'local' do
+    it 'min one country' do
+      subject.countries = []
+      subject.valid?
+      expect_error(:countries, 'please select a country')
+    end
+
+    it 'max one country' do
+      subject.countries << build(:country)
+      subject.valid?
+      expect_error(:countries, 'please select a country')
+    end
+
+    it 'min one district' do
       subject.districts = []
-      if i[1] < 2
-        expect(subject).not_to be_valid
-      else
-        expect(subject).to be_valid
-      end
+      subject.valid?
+      expect_error(:districts, 'please select districts')
     end
   end
 
-  it '#clear_districts_if_country_wide' do
-    subject.save!
-    expect(subject.district_ids.size).to eq(1)
-    expect(subject.affect_geo).to eq(1)
-
-    subject.affect_geo = 2
-    subject.save!
-    expect(subject.district_ids.size).to eq(0)
-  end
-
-  it '#recipient_country_unless_multinational' do
-    subject.save!
-    original_countries = [subject.countries[0]]
-    subject.countries << build(:country)
-    expect(subject.country_ids.size).to eq(2)
-    expect(subject.countries).not_to eq(original_countries)
-
-    subject.affect_geo = 2
-    subject.save!
-    expect(subject.country_ids.size).to eq(1)
-    expect(subject.countries).to eq(original_countries)
-  end
-
-  context 'methods' do
+  context 'national' do
     before do
-      subject.eligibility = {
-        'fund1' => { 'quiz' => { 'eligible' => false } },
-        'fund2' => { 'quiz' => { 'eligible' => true }, 'other' => { 'eligible' => true } },
-        'fund3' => { 'quiz' => { 'eligible' => true }, 'other' => { 'eligible' => false } },
-        'fund4' => { 'other' => { 'eligible' => false } },
-        'fund5' => { 'other' => { 'eligible' => true } }
-      }
+      subject.geographic_scale = 'national'
     end
 
-    it '#eligible_funds' do # TODO: deprecated
-      expect(subject.eligible_funds).to eq 'fund2' => { 'quiz' => { 'eligible' => true }, 'other' => { 'eligible' => true } }
+    it 'min one country' do
+      subject.countries = []
+      subject.valid?
+      expect_error(:countries, 'please select a country')
     end
 
-    it '#ineligible_funds' do # TODO: deprecated
-      expect(subject.ineligible_funds).to eq 'fund1' => {"quiz"=>{"eligible"=>false}}, 'fund3' => {"quiz"=>{"eligible"=>true}, "other"=>{"eligible"=>false}}, 'fund4' => {"other"=>{"eligible"=>false}}
+    it 'max one country' do
+      subject.countries << build(:country)
+      subject.valid?
+      expect_error(:countries, 'please select a country')
     end
 
-    it '#eligible? unchecked' do # TODO: deprecated
-      expect(subject.eligible?('fund4')).to eq nil
-    end
-
-    it '#eligible? eligible' do # TODO: deprecated
-      expect(subject.eligible?('fund2')).to eq true
-    end
-
-    it '#eligible? ineligible' do # TODO: deprecated
-      expect(subject.eligible?('fund1')).to eq false
-      expect(subject.eligible?('fund3')).to eq false
-    end
-
-    it '#eligible_status unchecked' do # TODO: deprecated
-      expect(subject.eligible_status('fund5')).to eq(-1)
-    end
-
-    it '#eligible_status eligible' do # TODO: deprecated
-      expect(subject.eligible_status('fund2')).to eq 1
-    end
-
-    it '#eligible_status ineligible' do # TODO: deprecated
-      expect(subject.eligible_status('fund1')).to eq 0
-      expect(subject.eligible_status('fund3')).to eq 0
-      expect(subject.eligible_status('fund4')).to eq 0
-    end
-
-    it '#eligibility_as_text check' do # TODO: deprecated
-      expect(subject.eligibility_as_text('fund5')).to eq 'Check'
-    end
-
-    it '#eligibility_as_text eligible' do # TODO: deprecated
-      expect(subject.eligibility_as_text('fund2')).to eq 'Eligible'
-    end
-
-    it '#eligibility_as_text ineligible' do # TODO: deprecated
-      expect(subject.eligibility_as_text('fund1')).to eq 'Ineligible'
-      expect(subject.eligibility_as_text('fund3')).to eq 'Ineligible'
-      expect(subject.eligibility_as_text('fund4')).to eq 'Ineligible'
+    it 'clears districts' do
+      subject.valid?
+      expect(subject.districts.size).to eq(0)
     end
   end
+
+  context 'international' do
+    before do
+      subject.geographic_scale = 'international'
+      subject.countries << build(:country)
+    end
+
+    it 'more than one country and no districts' do
+      subject.districts = []
+      expect(subject).to be_valid
+    end
+
+    it 'min one country' do
+      subject.countries = []
+      subject.valid?
+      expect_error(:countries, 'please select countries')
+    end
+
+    it 'clears districts' do
+      subject.valid?
+      expect(subject.districts.size).to eq(0)
+    end
+  end
+
+  it 'validates answers' do
+    subject.answers.first.eligible = nil
+    subject.valid?
+    expect_error(:answers, 'is invalid')
+  end
+
+  it 'validates user' do
+    subject.user.email = nil
+    subject.valid?
+    expect_error(:user, 'is invalid')
+  end
+
+  it '#access_token set before create' do
+    subject.save
+    expect(subject.access_token).not_to eq(nil)
+    expect(subject.access_token.size).to eq(22)
+  end
+
+  it '#category_name' do
+    expect(subject.category_name).to eq('Revenue - Core')
+  end
+
+  it '#identifier' do
+    subject.id = '123'
+    expect(subject.identifier).to eq('#123')
+  end
+
+  it '#name' do
+    name = "#{subject.collection_type} report for #{subject.collection.name}"
+    expect(subject.name).to eq(name)
+  end
+
+  it '#status public' do
+    expect(subject.status).to eq('public')
+  end
+
+  it '#status private' do
+    subject.private = Time.zone.now
+    expect(subject.status).to eq('private')
+  end
+
+  context 'legacy proposal' do
+    before { subject.collection_type = nil }
+
+    it '#identifier' do
+      subject.id = '123'
+      expect(subject.identifier).to eq('#123')
+    end
+
+    it '#name' do
+      subject.id = '123'
+      expect(subject.name).to eq('Report')
+    end
+
+    it '#status' do
+      expect(subject.status).to eq('legacy')
+    end
+  end
+
+  it '#save assigns user' do
+    user = create(:user)
+    subject.user.email = user.email
+    expect(subject.user).not_to eq(user)
+
+    subject.save
+    expect(subject.user).to eq(user)
+  end
+
+  context '#seeking_funding?' do
+    it '#category_code missing' do
+      subject.category_code = nil
+      expect(subject.seeking_funding?).to eq(nil)
+    end
+
+    it 'out of range' do
+      subject.category_code = 100
+      expect(subject.seeking_funding?).to eq(false)
+    end
+    it 'within range' do
+      subject.category_code = 250
+      expect(subject.seeking_funding?).to eq(true)
+    end
+  end
+
+  scenario '#country set'
+
+  scenario 'countries & districts properly cleared & last selection takes precedence'
+
+  scenario 'districts only for country allowed'
 end

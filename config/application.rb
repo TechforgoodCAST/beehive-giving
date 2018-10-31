@@ -16,8 +16,5 @@ module Beehive
     # -- all .rb files in that directory are automatically loaded.
 
     config.exceptions_app = routes
-
-    # TODO: remove
-    config.autoload_paths += Dir[Rails.root.join('lib', 'core_ext', '*.rb')].each { |l| require l }
   end
 end

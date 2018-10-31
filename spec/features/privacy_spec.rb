@@ -1,15 +1,20 @@
 require 'rails_helper'
 
 feature 'Privacy' do
-  include ShowMeTheCookies
+  include SignInHelper
 
-  let(:user) { create(:registered_user) }
+  let(:user) { create(:user_with_password) }
 
-  before { create_cookie(:auth_token, user.auth_token) }
-
-  it 'can agree to new terms' do
-    visit funds_path
+  scenario 'can agree to new terms' do
+    sign_in(user)
+    visit reports_path
     click_link('Agree')
-    expect(page).not_to have_text('Your rights')
+    expect(page).not_to have_text("We've updated our privacy policy.")
+  end
+
+  scenario 'terms agreement up to date' do
+    user.update!(terms_version: TERMS_VERSION)
+    visit reports_path
+    expect(page).not_to have_text("We've updated our privacy policy.")
   end
 end

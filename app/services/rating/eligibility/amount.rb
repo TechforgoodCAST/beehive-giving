@@ -3,26 +3,16 @@ module Rating
     class Amount
       include Rating::Base
 
-      def title
-        'Amount'
-      end
-
-      protected
-
-        def state
-          assessment&.eligibility_amount
-        end
-
       private
 
-        def eligible_message
-          return unless assessment
-          "Awards grants <strong>#{assessment.fund.amount_desc}</strong>."
+        def above_max(fund_value, proposal_value)
+          "The maximum amount you're seeking (#{proposal_value}) "\
+          "is more than the maximum awarded (#{fund_value})"
         end
 
-        def ineligible_message
-          'You are ineligible due to the <strong>amount</strong> your are ' \
-          'seeking.'
+        def below_min(fund_value, proposal_value)
+          "The minimum amount you're seeking (#{proposal_value}) "\
+          "is less than the minimum awarded (#{fund_value})"
         end
     end
   end

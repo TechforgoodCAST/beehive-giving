@@ -1,74 +1,74 @@
 class ProposalsController < ApplicationController
-  before_action :registration_incomplete, except: %i[edit update]
-  before_action :registration_invalid, except: %i[edit update]
-  before_action :registration_microsite, except: %i[edit update]
+  layout 'fullscreen'
 
-  before_action :ensure_logged_in
-  before_action :load_country, except: :index
-  before_action :load_proposal, only: %i[edit update]
+  before_action :load_collection, :load_recipient, :authenticate
 
   def new
-    authorize Proposal
-    @proposal = @recipient.proposals.new(countries: [@country])
-  end
+    @proposal = @recipient.build_proposal
+    @proposal.user = current_user || User.new
 
-  def create
-    authorize Proposal
-    @proposal = @recipient.proposals.new(proposal_params)
-
-    if @proposal.save
-      Assessment.analyse_and_update!(Fund.active, @proposal)
-      redirect_to funds_path(@proposal)
-    else
-      render :new
+    @proposal.answers = criteria.map do |c|
+      Answer.new(category: @proposal, criterion: c)
     end
   end
 
-  def index
-    @proposals = @recipient.proposals.where.not(state: 'basics')
-  end
+  def create
+    @proposal = @recipient.build_proposal(form_params)
+    @proposal.collection = @collection
+    @proposal.user = current_user if logged_in?
+    @proposal.user.terms_version = TERMS_VERSION #TODO: spec
+    @proposal.user.update_version = UPDATE_VERSION #TODO: spec
 
-  def edit
-    return unless request.referer
-    session.delete(:return_to) if request.referer.ends_with?('/proposals')
-  end
-
-  def update
-    if @proposal.update(proposal_params)
-      Assessment.analyse_and_update!(Fund.active, @proposal)
-      @proposal.complete!
-
-      if session[:return_to]
-        fund = Fund.find_by_hashid(session.delete(:return_to))
-        redirect_to fund_path(fund, @proposal)
-      else
-        redirect_to proposals_path
-      end
+    if @proposal.save
+      #TODO: spec active funds only
+      Assessment.analyse_and_update!(@collection.funds.active, @proposal)
+      ReportMailer.notify(@proposal).deliver_now
+      redirect_to new_charge_path(@proposal)
     else
-      render :edit
+      @districts = District.where(country_id: form_params[:country])
+      render :new
     end
   end
 
   private
 
-    def load_country
-      @country = Country.find_by(alpha2: @recipient.country)
+    def authenticate
+      authorize @recipient, policy_class: ProposalPolicy
     end
 
-    def load_proposal
-      @proposal = @recipient.proposals.find_by(id: params[:id])
-      redirect_to proposals_path unless @proposal
+    def criteria
+      @collection.criteria.where(category: 'Proposal')
+                 .where('type = ? OR type = ?', 'Restriction', 'Priority')
     end
 
-    def proposal_params
+    def form_params
       params.require(:proposal).permit(
-        :affect_geo, :all_funding_required, :funding_duration, :funding_type,
-        :private, :public_consent, :tagline, :title, :total_costs,
-        district_ids: [], country_ids: [], theme_ids: []
+        :category_code, :country_id, :description, :geographic_scale,
+        :max_amount, :max_duration, :min_amount, :min_duration, :public_consent,
+        :support_details, :title, nested_attributes,
+        country_ids: [], district_ids: [], theme_ids: []
       )
     end
 
+    def nested_attributes
+      {
+        answers_attributes: %i[eligible criterion_id],
+        user_attributes: %i[
+          email email_confirmation first_name last_name marketing_consent
+          terms_agreed
+        ]
+      }
+    end
+
+    def load_recipient
+      @recipient = Recipient.find_by_hashid(params[:hashid])
+    end
+
     def user_not_authorised
-      redirect_to account_upgrade_path(@recipient)
+      if @recipient&.proposal
+        redirect_to report_path(@recipient.proposal)
+      else
+        render 'errors/not_found', status: 404
+      end
     end
 end

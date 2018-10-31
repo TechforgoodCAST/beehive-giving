@@ -1,4 +1,8 @@
 class ErrorsController < ApplicationController
+  def forbidden
+    render_template(403)
+  end
+
   def not_found
     render_template(404)
   end

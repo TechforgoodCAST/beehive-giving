@@ -148,9 +148,9 @@ article.featured
   overflow: hidden
   &.blue
     background: image-url('blue-logo.svg') no-repeat
-    @media screen and (max-width: 25rem)
+    @media screen and (max-width: 30rem)
       background: image-url('blue-logo-hex.svg') no-repeat
-  @media screen and (max-width: 25rem)
+  @media screen and (max-width: 30rem)
     width: 24px
     height: 20px
     background: image-url('logo-hex.svg') no-repeat
@@ -242,117 +242,15 @@ article.featured
     border-radius: $base-radius
     cursor: pointer
     text-align: center
+    border: $base-border-width solid map-get($colors, 'mist')
 
   input[type='radio']:checked + label
     color: map-get($colors, 'white')
     background: map-get($colors, 'blue')
+    border: $base-border-width solid transparent
 
   input[type=radio]:not(:checked) + label
     color: map-get($colors, 'blue')
-
-// Progress
-// =========================================================================
-
-.progress-item
-  overflow: hidden
-  +responsive(min-height, 3.938rem, .85, .9)
-
-.indicator
-  position: relative
-  background: map-get($colors, 'grey')
-  width: 16px
-  height: 16px
-  border-radius: 9999px
-  &.top:before, &.bot:after
-    content: ''
-    position: absolute
-    background: map-get($colors, 'silver')
-    width: 6px
-    height: 100vh
-    left: 5px
-  &.top:before
-    bottom: 16px
-  &.bot:after
-    top: 16px
-
-// Sidebar
-// =========================================================================
-
-.pills > h4, .pills > h6
-  padding: 0 map-get($scales, 5)
-.pills a, .pills label
-  display: block
-  width: 100%
-  padding: map-get($scales, 3) map-get($scales, 5)
-  margin-bottom: map-get($scales, 5)
-  color: map-get($colors, night)
-  border: 1px solid rgba(0, 0, 0, 0)
-  border-radius: $base-radius
-  font-size: map-get($scales, 15)
-  &:hover
-    background: map-get($colors, light-blue)
-    border-color: map-get($colors, pale-blue)
-    opacity: 1
-  &.selected
-    background: map-get($colors, 'blue')
-    color: map-get($colors, 'white')
-    font-weight: bold
-    &:hover
-      border-color: map-get($colors, 'blue')
-
-// Accordion
-// =========================================================================
-
-.accordion
-  position: relative
-  margin-bottom: map-get($scales, 5)
-  width: 100%
-  overflow: hidden
-
-  input
-    position: absolute
-    visibility: hidden
-    z-index: -1
-
-    &:checked + label, &:checked + label:hover
-      background: map-get($colors, 'blue')
-      color: map-get($colors, 'white') !important
-      border-color: map-get($colors, 'blue')
-
-    &:checked ~ .accordion-content
-      max-height: 30em
-
-    &[type=checkbox] + label::after
-      content: '›'
-      transform: rotate(90deg)
-    &[type=checkbox]:checked + label::after
-      transform-origin: 1px
-      transform: rotate(270deg)
-
-  label
-    position: relative
-    display: block
-    padding: map-get($scales, 3) map-get($scales, 5)
-    padding-right: 19px !important
-    color: map-get($colors, slate) !important
-    cursor: pointer
-    font-size: map-get($scales, 15)
-    border-radius: $base-radius
-    line-height: 20px
-
-    &:after
-      position: absolute
-      right: 0
-      top: 50%
-      display: block
-      margin: 1px 7px
-      line-height: 0
-      +prefix(transition, all .40s, webkit o)
-
-  .accordion-content
-    max-height: 0
-    overflow: hidden
-    +prefix(transition, max-height .40s, webkit o)
 
 // Dialog
 // =========================================================================
@@ -371,3 +269,49 @@ dialog
 .js-open-modal
   height: 100vh
   overflow: hidden
+
+// Footer
+// =========================================================================
+
+footer.slate .footer-links a
+  color: map-get($colors, 'slate')
+
+footer.slate hr
+  color: map-get($colors, 'mist')
+  background-color: map-get($colors, 'mist')
+
+footer.white .footer-links a, footer.white hr
+  color: map-get($colors, 'white')
+  opacity: .6
+
+footer.white hr
+  background-color: map-get($colors, 'white')
+
+.footer-logo
+  @media screen and (max-width: 40rem)
+    margin: 30px auto
+
+.footer-links
+  min-width: 290px
+
+  @media screen and (max-width: 40rem)
+    width: 100%
+    display: flex
+    align-items: center
+    flex-direction: column
+    *
+      margin: 0 0 20px 0
+    *:last-child
+      margin: 0
+
+.icon
+  display: inline-block
+  width: 12px
+.private > .icon
+  height: 10px
+  margin-bottom: 4px
+  background: url(eye-cross.svg) no-repeat
+.public > .icon
+  height: 8px
+  margin-bottom: 5px
+  background: url(eye.svg) no-repeat

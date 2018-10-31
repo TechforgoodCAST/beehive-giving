@@ -1,25 +1,12 @@
+# TODO: refactor
 class UsersController < ApplicationController
-  before_action :ensure_logged_in
-
-  def update
-    if @current_user.update(user_params)
-      redirect_to account_path, notice: 'Updated'
-    else
-      render :edit
-    end
+  def terms_version
+    current_user.update_column(:terms_version, TERMS_VERSION)
+    redirect_back(fallback_location: root_path)
   end
 
-  def agree
-    @current_user.update_column(:terms_version, TERMS_VERSION)
-    redirect_back(fallback_location: funds_path(@proposal))
+  def update_version
+    current_user.update_column(:update_version, UPDATE_VERSION)
+    redirect_back(fallback_location: root_path)
   end
-
-  private
-
-    def user_params
-      params.require(:user).permit(
-        :agree_to_terms, :email, :first_name, :last_name, :password,
-        :password_confirmation
-      )
-    end
 end

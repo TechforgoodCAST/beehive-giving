@@ -22,17 +22,17 @@ textarea
 // Type scale
 // =========================================================================
 
-h1
+h1, .h1
   font-size: map-get($scales, 35)
-h2
-  font-size: map-get($scales, 30)
-h3
+h2, .h2
+  font-size: map-get($scales, 32)
+h3, .h3
   font-size: map-get($scales, 25)
-h4
+h4, .h4
+  font-size: map-get($scales, 22)
+h5, .h5
   font-size: map-get($scales, 20)
-h5
-  font-size: map-get($scales, 18)
-h6
+h6, .h6
   font-size: map-get($scales, 16)
 
 @each $var, $val in $scales
@@ -45,15 +45,15 @@ h6
 // Font
 // =========================================================================
 
-h1, h2, h3, h4, h5, h6, .heading
+h1, h2, h3, h4, h5, h6, .heading, .h1, .h2, .h3, .h4, .h5, .h6
   font-family: $heading-family
 
 // Emphasis
 // =========================================================================
 
 blockquote
-  border-left: 3px solid white
-  padding-left: .625rem
+  border-left: 4px solid map-get($colors, 'mist')
+  padding-left: 15px
 .regular
   font-weight: $regular-weight
 .bold

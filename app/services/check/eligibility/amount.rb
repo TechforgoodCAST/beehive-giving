@@ -1,50 +1,80 @@
 module Check
   module Eligibility
     class Amount
+      include ActionView::Helpers::NumberHelper
       include Check::Base
 
       def call(assessment)
         super
-        assessment.eligibility_amount = eligibility
+        return unless seeking_funding?
+
+        assessment.eligibility_amount = check_eligibility!
+        build_reason(assessment.eligibility_amount, reasons)
         assessment
       end
 
       private
 
-        def eligibility
-          if less_than_min_amount_awarded? || more_than_max_amount_awarded?
+        def check_eligibility!
+          less_than_min_amount = check_min_amount
+          more_than_max_amount = check_max_amount
+
+          if less_than_min_amount || more_than_max_amount
             INELIGIBLE
           else
+            reasons << { id: 'eligible' }
             ELIGIBLE
           end
         end
 
-        def min_amount_awarded_limited?
-          assessment.fund&.min_amount_awarded_limited?
+        def check_min_amount
+          if check_limit(:min_amount, :<, :proposal_min_amount)
+            reasons << {
+              id: 'below_min',
+              fund_value: min_amount,
+              proposal_value: proposal_min_amount
+            }
+            true
+          else
+            false
+          end
         end
 
-        def min_amount_awarded
-          assessment.fund&.min_amount_awarded
+        def check_max_amount
+          if check_limit(:max_amount, :>, :proposal_max_amount)
+            reasons << {
+              id: 'above_max',
+              fund_value: max_amount,
+              proposal_value: proposal_max_amount
+            }
+            true
+          else
+            false
+          end
         end
 
-        def max_amount_awarded_limited?
-          assessment.fund&.max_amount_awarded_limited?
+        def min_amount
+          to_currency(assessment.proposal.min_amount)
         end
 
-        def max_amount_awarded
-          assessment.fund&.max_amount_awarded
+        def max_amount
+          to_currency(assessment.proposal.max_amount)
         end
 
-        def total_costs
-          assessment.proposal&.total_costs
+        def proposal_min_amount
+          to_currency(assessment.fund.proposal_min_amount)
         end
 
-        def less_than_min_amount_awarded?
-          min_amount_awarded_limited? && (total_costs < min_amount_awarded)
+        def proposal_max_amount
+          to_currency(assessment.fund.proposal_max_amount)
         end
 
-        def more_than_max_amount_awarded?
-          max_amount_awarded_limited? && (total_costs > max_amount_awarded)
+        def seeking_funding?
+          assessment.proposal.min_amount && assessment.proposal.max_amount
+        end
+
+        def to_currency(number)
+          number_to_currency(number, unit: '£', precision: 0)
         end
     end
   end

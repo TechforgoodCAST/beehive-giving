@@ -1,34 +1,36 @@
 require 'rails_helper'
-require 'services/rating/shared'
 
 describe Rating::Eligibility::Amount do
-  subject { Rating::Eligibility::Amount.new(assessment: assessment) }
-  let(:assessment) { nil }
+  subject { Rating::Eligibility::Amount.new(1234, reasons) }
 
-  it('#title') { expect(subject.title).to eq('Amount') }
-
-  it_behaves_like 'incomplete'
-
-  context 'ineligible' do
-    let(:assessment) { build(:assessment, eligibility_amount: INELIGIBLE) }
-
-    it_behaves_like 'ineligible'
-
-    it '#message' do
-      msg = 'You are ineligible due to the <strong>amount</strong> your are ' \
-            'seeking.'
-      expect(subject.message).to eq(msg)
-    end
+  let(:reasons) do
+    {
+      'reasons' => [
+        {
+          'id' => 'above_max',
+          'fund_value' => '£150,000',
+          'proposal_value' => '£180,000'
+        },
+        {
+          'id' => 'below_min',
+          'fund_value' => '£50,000',
+          'proposal_value' => '£30,000'
+        }
+      ]
+    }
   end
 
-  context 'eligible' do
-    let(:assessment) { build(:assessment, eligibility_amount: ELIGIBLE) }
+  context '#messages' do
+    it 'above_max' do
+      message = "The maximum amount you're seeking (£180,000) is more than " \
+                'the maximum awarded (£150,000)'
+      expect(subject.messages).to include(message)
+    end
 
-    it_behaves_like 'eligible'
-
-    it '#message' do
-      msg = 'Awards grants <strong>between £5,000 and £10,000</strong>.'
-      expect(subject.message).to eq(msg)
+    it 'below_min' do
+      message = "The minimum amount you're seeking (£30,000) is less than " \
+                'the minimum awarded (£50,000)'
+      expect(subject.messages).to include(message)
     end
   end
 end

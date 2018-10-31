@@ -3,27 +3,33 @@ module Rating
     class Location
       include Rating::Base
 
-      def title
-        'Location'
-      end
-
-      protected
-
-        def state
-          assessment&.eligibility_location
-        end
-
       private
 
-        def eligible_message
-          return unless assessment
-          "Awards funds in <strong>#{assessment.fund.geo_area.name}</strong>."
+        def countries_ineligible(fund_value, proposal_value)
+          "Only supports work in #{fund_value&.to_sentence}, " \
+          "and you are seeking work in #{proposal_value.to_sentence}"
         end
 
-        def ineligible_message
-          return unless assessment
-          'You are ineligible because of the ' \
-          "#{assessment.fund.geo_area.name} of your proposal."
+        def country_outside_area(fund_value, proposal_value)
+          out_of_area = (proposal_value - fund_value).to_sentence
+          "Work in #{out_of_area} is not supported"
+        end
+
+        def district_outside_area(fund_value, proposal_value)
+          country_outside_area(fund_value, proposal_value)
+        end
+
+        def districts_ineligible(fund_value, proposal_value)
+          countries_ineligible(fund_value, proposal_value)
+        end
+
+        def geographic_scale_ineligible(fund_value, proposal_value)
+          "Only supports #{fund_value&.to_sentence} work, " \
+          "and you are seeking #{proposal_value} work"
+        end
+
+        def location_eligible(fund_value, proposal_value)
+          "Provides support in the area you're looking for"
         end
     end
   end

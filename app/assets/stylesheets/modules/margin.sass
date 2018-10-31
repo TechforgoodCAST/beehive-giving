@@ -2,21 +2,21 @@
 
 @each $var, $val in $scales
   .m#{$var}
-    +responsive(margin, $val, .6, .8)
+    margin: $val
   .mt#{$var}
-    +responsive(margin-top, $val, .6, .8)
+    margin-top: $val
   .mr#{$var}
-    +responsive(margin-right, $val, .6, .8)
+    margin-right: $val
   .mb#{$var}
-    +responsive(margin-bottom, $val, .6, .8)
+    margin-bottom: $val
   .ml#{$var}
-    +responsive(margin-left, $val, .6, .8)
+    margin-left: $val
   .mx#{$var}
-    +responsive(margin-left, $val, .6, .8)
-    +responsive(margin-right, $val, .6, .8)
+    margin-left: $val
+    margin-right: $val
   .my#{$var}
-    +responsive(margin-top, $val, .6, .8)
-    +responsive(margin-bottom, $val, .6, .8)
+    margin-top: $val
+    margin-bottom: $val
 
 .mx-auto
   margin-left: auto

@@ -25,18 +25,12 @@ SitemapGenerator::Sitemap.create do
   #     add article_path(article), :lastmod => article.updated_at
   #   end
 
+  # TODO: refactor
   # Pages
   add about_path
   add faq_path
-  add for_funders_path
   add privacy_path
   add terms_path
-
-  # Funds
-  add public_funds_path, changefreq: 'daily'
-  Fund.active.recent.limit(3).each do |fund|
-    add public_fund_path(fund), lastmod: fund.updated_at
-  end
 
   # Articles
   add articles_path

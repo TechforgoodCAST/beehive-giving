@@ -1,7 +1,9 @@
 require 'rails_helper'
 
 describe Answer do
-  subject { build(:answer) }
+  subject do
+    build(:answer, criterion: build(:restriction), category: build(:proposal))
+  end
 
   it('belongs to category') { assoc(:category, :belongs_to, polymorphic: true) }
 

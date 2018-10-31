@@ -1,30 +1,43 @@
 FactoryBot.define do
   factory :proposal do
-    affect_geo  1 # One or more regions
-    all_funding_required true
-    funding_duration 12
-    funding_type 1 # Capital
-    private false
-    recipient
-    tagline 'Description'
-    title 'Title'
-    total_costs 10_000
+    association :collection, factory: :funder, strategy: :build
+    association :recipient, factory: :recipient, strategy: :build
+    association :user, factory: :user, strategy: :build
+    category_code 202 # Revenue - Core
+    description 'A new roof for our community centre.'
+    geographic_scale 'local'
+    max_amount 250_000
+    max_duration 36
+    min_amount 10_000
+    min_duration 3
     public_consent true
+    title 'Community space'
 
-    after(:build) do |proposal, _evaluator|
-      proposal.themes = build_list(:theme, 1) unless proposal.themes.any?
+    transient do
+      children true
+    end
 
-      unless proposal.countries.any? || proposal.districts.any?
+    after(:build) do |proposal, opts|
+      if opts.children
+        proposal.themes = build_list(:theme, 1)
         country = build(:country)
         proposal.countries = [country]
-        proposal.districts = [build(:district, country: country)]
+        proposal.districts = build_list(:district, 1, country: country)
+        restriction = build(:restriction, category: 'Proposal')
+        priority = build(:priority, category: 'Proposal')
+        proposal.answers = [
+          build(:answer, category: proposal, criterion: restriction),
+          build(:answer, category: proposal, criterion: priority)
+        ]
       end
     end
 
-    factory :incomplete_proposal, class: Proposal do
-      state 'incomplete'
-      tagline nil
-      title nil
+    factory :proposal_no_funding, class: Proposal do
+      category_code 101 # Other
+      max_amount nil
+      max_duration nil
+      min_amount nil
+      min_duration nil
     end
   end
 end

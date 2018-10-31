@@ -1,25 +1,42 @@
 class RecipientsController < ApplicationController
-  before_action :ensure_logged_in
+  layout 'fullscreen'
 
-  def edit
-    @recipient = Recipient.find_by(slug: params[:id])
-    redirect_to root_path unless @recipient
+  before_action :load_collection
+
+  def new
+    if @collection
+      @recipient = Recipient.new
+      @recipient.answers = criteria.map do |c|
+        Answer.new(category: @recipient, criterion: c)
+      end
+    else
+      redirect_back(fallback_location: root_path)
+    end
   end
 
-  def update
-    if @recipient.update(recipient_params)
-      redirect_to account_organisation_path(@recipient), notice: 'Updated'
+  def create
+    @recipient = Recipient.new(form_params)
+    @recipient.user = current_user
+
+    if @recipient.save
+      redirect_to new_proposal_path(@collection, @recipient)
     else
-      render :edit
+      @district = District.find_by(id: form_params[:district_id])
+      render :new
     end
   end
 
   private
 
-    def recipient_params
+    def criteria
+      @collection.restrictions.where(category: 'Recipient')
+    end
+
+    def form_params
       params.require(:recipient).permit(
-        :charity_number, :company_number, :country, :employees, :income_band,
-        :name, :operating_for, :org_type, :street_address, :volunteers, :website
+        :category_code, :country_id, :description, :district_id, :name,
+        :income_band, :operating_for, :charity_number, :company_number,
+        :website, answers_attributes: %i[eligible criterion_id]
       )
     end
 end

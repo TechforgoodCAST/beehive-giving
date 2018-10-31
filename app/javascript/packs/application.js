@@ -7,65 +7,67 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-import 'babel-polyfill'
-import Dialog from '../modules/dialog'
-import Select from '../modules/select'
-import Sort from '../modules/sort'
+import "babel-polyfill";
+import Dialog from "../modules/dialog";
+import Select from "../modules/select";
+import Sort from "../modules/sort";
 
-const dialog = new Dialog()
-const select = new Select()
-const sort = new Sort()
+const dialog = new Dialog();
+const select = new Select();
+const sort = new Sort();
 
-document.addEventListener('turbolinks:load', () => {
-  dialog.init()
-  sort.init('sort-form')
+document.addEventListener("turbolinks:load", function () {
+    dialog.init();
+    sort.init("sort-form");
 
-  select.orgType(['signup_basics', 'basics_step', 'eligibility_step'])
+    const unincorporatedFields = [
+        "recipient_name",
+        "recipient_income_band",
+        "recipient_operating_for",
+        "recipient_website"
+    ];
 
-  const eligibilityStepOpts = {
-    '0': ['districts'],
-    '1': ['districts'],
-    '2': ['recipient_country'],
-    '3': ['eligibility_step_country_ids']
-  }
-  select.init('eligibility_step_affect_geo', eligibilityStepOpts)
+    const incorporatedFields = [
+        "recipient_description",
+        "recipient_name",
+        "recipient_charity_number",
+        "recipient_company_number",
+        "recipient_income_band",
+        "recipient_operating_for",
+        "recipient_website"
+    ];
 
-  // TODO: refactor
-  const affectGeoOpts = {
-    '0': ['signup_suitability_proposal_districts'],
-    '1': ['signup_suitability_proposal_districts'],
-    '2': ['signup_suitability_recipient_country'],
-    '3': ['signup_suitability_proposal_countries']
-  }
-  select.init('signup_suitability_proposal_affect_geo', affectGeoOpts)
+    select.init("recipient_category_code", {
+        "102": incorporatedFields,
+        "201": unincorporatedFields,
+        "202": unincorporatedFields,
+        "203": unincorporatedFields,
+        "301": incorporatedFields,
+        "302": incorporatedFields,
+        "303": incorporatedFields
+    });
 
-  // TODO: refactor
-  const proposalOpts = {
-    '0': ['proposal_districts'],
-    '1': ['proposal_districts'],
-    '2': ['recipient_country'],
-    '3': ['proposal_countries']
-  }
-  select.init('proposal_affect_geo', proposalOpts)
-})
+    select.init("proposal_category_code", {
+        "101": ["proposal_support_details"],
+        "201": ["seeking-funding"],
+        "202": ["seeking-funding"],
+        "203": ["seeking-funding"]
+    });
 
-// TODO: remove
-document.addEventListener('ajax:success', () => {
-  select.orgType('user')
-})
-
-// Prevent turbolinks on funds#show and funds#hidden for Google Optimize
-document.addEventListener('turbolinks:before-visit', (e) => {
-  if (/\/proposals\/[0-9]+\/funds\/[^theme]|\/hidden/.test(e.data.url)) {
-    e.preventDefault()
-    window.location = e.data.url
-  }
-})
+    select.init("proposal_geographic_scale", {
+        "local": ["proposal_country_id", "proposal_districts"],
+        "regional": ["proposal_country_id", "proposal_districts"],
+        "national": ["proposal_country_id"],
+        "international": ["proposal_countries"]
+    });
+}, false);
 
 // Utility
-window.trackOutboundLink = (url) => {
-  window.ga('send', 'event', 'outbound', 'click', url, {
-    'transport': 'beacon',
-    'hitCallback': () => { window.open(url) }
-  })
-}
+window.trackOutboundLink = function (url) {
+    window.ga("send", "event", "outbound", "click", url, {
+        "transport": "beacon",
+        "hitCallback": function () {
+          window.open(url);
+        }
+    });
+};

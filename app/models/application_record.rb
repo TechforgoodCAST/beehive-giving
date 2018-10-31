@@ -3,6 +3,7 @@ class ApplicationRecord < ActiveRecord::Base
 
   self.abstract_class = true
 
+  # TODO: review
   def markdown(str, plain: false)
     return "" if str.blank?
     options = { hard_wrap: true,
@@ -22,6 +23,7 @@ class ApplicationRecord < ActiveRecord::Base
     markdown.render(str)
   end
 
+  # TODO: refactor
   def generate_slug(obj, col, n = 1)
     return nil unless col
     slug = col.parameterize

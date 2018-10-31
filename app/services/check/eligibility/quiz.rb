@@ -5,45 +5,37 @@ module Check
 
       def call(assessment)
         super
+        return unless restrictions.any?
+
         assessment.eligibility_quiz = eligibility
-        assessment.eligibility_quiz_failing = failing
+        assessment.eligibility_quiz_failing = failing(restrictions)
+        build_reason(assessment.eligibility_quiz, reasons)
         assessment
       end
 
       private
 
         def eligibility
-          return unless complete?
-          if !answers.slice(*comparison).values.uniq.include?(false)
+          if incomplete?(restrictions)
+            reasons << reason('incomplete')
+            return UNASSESSED
+          end
+
+          if !answers.slice(*comparison(restrictions)).values.uniq.include?(false)
+            reasons << reason('eligible')
             ELIGIBLE
           else
+            reasons << reason('ineligible')
             INELIGIBLE
           end
         end
 
-        def failing
-          return unless complete?
-          answers.slice(*comparison).values.select { |i| i == false }.size
+        def reason(id)
+          { id: id, fund_value: restrictions, proposal_value: answers }
         end
 
         def restrictions
           assessment.fund.restriction_ids
-        end
-
-        def answers
-          (pluck(:recipient) + pluck(:proposal)).to_h
-        end
-
-        def pluck(relation)
-          assessment.send(relation).answers.pluck(:criterion_id, :eligible)
-        end
-
-        def comparison
-          answers.keys & restrictions
-        end
-
-        def complete?
-          comparison.size == restrictions.size
         end
     end
   end

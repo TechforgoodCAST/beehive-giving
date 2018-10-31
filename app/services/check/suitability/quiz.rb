@@ -1,29 +1,41 @@
 module Check
   module Suitability
     class Quiz
-      include Check::Helpers
+      include Check::Base
 
-      def initialize(proposal, funds)
-        @answers = lookup_answers(proposal)
-        @priorities = lookup_questions(funds, 'Priority')
-      end
+      def call(assessment)
+        super
+        return unless priorities.any?
 
-      def call(_proposal, fund)
-        raise 'Invalid Fund' unless fund.is_a? Fund
-        return unless @priorities[fund.slug].present?
-        comparison = (@answers.keys & @priorities[fund.slug])
-        return unless comparison.count == @priorities[fund.slug].count
-        {
-          'score' => score(comparison, fund)
-        }
+        assessment.suitability_quiz = suitability
+        assessment.suitability_quiz_failing = failing(priorities)
+        build_reason(assessment.suitability_quiz, reasons)
+        assessment
       end
 
       private
 
-        def score(comparison, fund)
-          @answers.slice(*comparison).values
-                  .select { |i| i == true }
-                  .count / @priorities[fund.slug].to_a.size.to_f
+        def priorities
+          assessment.fund.priority_ids
+        end
+
+        def suitability
+          if incomplete?(priorities)
+            reasons << reason('incomplete')
+            return UNASSESSED
+          end
+
+          if !answers.slice(*comparison(priorities)).values.uniq.include?(false)
+            reasons << reason('eligible')
+            ELIGIBLE
+          else
+            reasons << reason('ineligible')
+            INELIGIBLE
+          end
+        end
+
+        def reason(id)
+          { id: id, fund_value: priorities, proposal_value: answers }
         end
     end
   end

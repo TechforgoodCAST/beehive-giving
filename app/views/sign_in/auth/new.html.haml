@@ -1,0 +1,24 @@
+= content_for :title, 'Sign in'
+
+%main.bg-rich-blue.flex.justify-center.items-center.py40
+  %section.col1.px15
+    .center.mb20
+      = link_to(root_path) do
+        = image_tag('logo.svg', width: 102)
+
+    .bg-white.rounded.shadow.mb20
+      .bg-ice.p20.border-bottom.border-mist.rounded-top
+        %h1.h4.bold
+          Hi
+          = @user.first_name
+      .p20
+        = simple_form_for @form, url: sign_in_auth_path do |f|
+          .mb20= f.input :password, autofocus: true
+          .mb20= f.input :remember_me, as: :boolean, label: false, inline_label: true
+          = f.submit 'Sign in', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Signing in...' }
+
+    .center
+      = link_to 'Forgot password?', sign_in_reset_path, class:'white bold fs15'
+
+.bg-rich-blue
+  = render partial: 'shared/footer', locals: { color: 'white' }

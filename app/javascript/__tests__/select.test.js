@@ -30,24 +30,3 @@ test('#init, selected is visible', () => {
 
   expect(document.querySelector('.field').classList.length).toEqual(1)
 })
-
-test('#orgType, requires Array as argument', () => {
-  expect(() => select.orgType('prefix')).toThrow()
-})
-
-test('#orgType, unselected hides all specified', () => {
-  document.body.innerHTML = body('prefix_org_type', '', 'prefix_charity_number')
-
-  expect(document.querySelector('.prefix_charity_number').classList.length).toEqual(1)
-
-  select.orgType(['prefix'])
-
-  expect(document.querySelector('.prefix_charity_number').classList[1]).toEqual('hide')
-})
-
-test('#orgType, selected is visible', () => {
-  document.body.innerHTML = body('prefix_org_type', 'selected', 'prefix_charity_number')
-  select.orgType(['prefix'])
-
-  expect(document.querySelector('.prefix_charity_number').classList.length).toEqual(1)
-})

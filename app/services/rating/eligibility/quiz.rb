@@ -3,49 +3,25 @@ module Rating
     class Quiz
       include Rating::Base
 
-      def colour
-        {
-          UNASSESSED => 'blue', INELIGIBLE => 'red', ELIGIBLE   => 'green'
-        }[state]
+      def link
+        # TODO: removed for v3 deplpy
+        # "<a href='##{@assessment_id}'>View answers</a>".html_safe
       end
-
-      def message
-        {
-          UNASSESSED => '-',
-          INELIGIBLE => ineligible_message,
-          ELIGIBLE   => eligible_message
-        }[state]
-      end
-
-      def status
-        {
-          UNASSESSED => 'Incomplete',
-          INELIGIBLE => 'Ineligible',
-          ELIGIBLE   => 'Eligible'
-        }[state]
-      end
-
-      def title
-        'Quiz'
-      end
-
-      protected
-
-        def state
-          assessment&.eligibility_quiz
-        end
 
       private
 
-        def eligible_message
-          '-'
+        def eligible(fund_value, proposal_value)
+          'You meet all of the restrictions set by this opportunity'
         end
 
-        def ineligible_message
-          return unless assessment
-          'You are ineligible, and do not meet ' \
-          "<strong>#{assessment.eligibility_quiz_failing}</strong> " \
-          'of the criteria below.'
+        def incomplete(fund_value, proposal_value)
+          'The restrictions for this opportunity have changed, ' \
+          'and your answers are incomplete'
+        end
+
+        def ineligible(fund_value, proposal_value)
+          failing = proposal_value.count { |_k, v| v == false }
+          "You do not meet #{failing} of the restrictions for this opportunity"
         end
     end
   end

@@ -6,13 +6,16 @@ abort('The Rails environment is running in production mode!') if
   Rails.env.production?
 require 'spec_helper'
 require 'rspec/rails'
-require 'webmock/rspec'
-require 'capybara/rspec'
-require 'capybara/poltergeist'
-require_relative './support/database_cleaner'
-require_relative './support/test_helper'
-require_relative './support/test_helpers'
+
 # Add additional requires below this line. Rails is not loaded until this point!
+require 'capybara/rspec'
+require 'webmock/rspec'
+
+require_relative 'support/database_cleaner'
+require_relative 'support/webpack_test_helper'
+
+require_relative 'support/test_helpers'
+require_relative 'support/sign_in_helper'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -34,7 +37,8 @@ require_relative './support/test_helpers'
 ActiveRecord::Migration.maintain_test_schema!
 
 WebMock.disable_net_connect!(allow_localhost: true)
-Capybara.javascript_driver = :poltergeist
+
+Capybara.javascript_driver = :selenium_chrome_headless
 
 RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
@@ -65,17 +69,7 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include TestHelpers
 
-  config.before(:suite) { TestHelper.new.seed_db }
-
-  config.before(:each) do
-    Geocoder.configure(lookup: :test)
-    Geocoder::Lookup::Test.add_stub(
-      'POSTCODE, GB', [{ latitude: 0, longitude: 0 }]
-    )
-    Geocoder::Lookup::Test.add_stub(
-      'London Road, GB', [{ latitude: 1, longitude: 1 }]
-    )
-    @app = TestHelper.new
-    @app.stub_mixpanel
+  config.before(:suite) do
+    WebpackTestHelper.compile_webpack_assets
   end
 end

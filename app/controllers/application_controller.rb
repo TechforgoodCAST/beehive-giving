@@ -5,14 +5,7 @@ class ApplicationController < ActionController::Base
 
   helper_method :logged_in?
 
-  before_action :load_recipient, :load_last_proposal, unless: :error?
-
-  before_action :catch_unauthorised, if: :logged_in?
-  before_action :legacy_funder, if: :logged_in?
-  before_action :legacy_fundraiser, if: :logged_in?
-  before_action :registration_incomplete, if: :logged_in?
-  before_action :registration_invalid, if: :logged_in?
-  before_action :registration_microsite, if: :logged_in?
+  before_action :current_user
 
   skip_after_action :intercom_rails_auto_include
 
@@ -28,75 +21,36 @@ class ApplicationController < ActionController::Base
 
   private
 
+    def authenticate_user(proposal = nil)
+      session[:original_url] = request.original_url
+      return redirect_to(sign_in_lookup_path) unless logged_in?
+
+      if proposal && (current_user != proposal.user)
+        render('errors/forbidden', status: 403)
+      end
+    end
+
     def bad_token
       redirect_to '/logout', warning: 'Please sign in'
     end
 
-    def catch_unauthorised
-      redirect_to unauthorised_path unless current_user.authorised?
-    end
-
     def current_user
       return unless cookies[:auth_token]
-      @current_user ||= User.includes(:organisation)
-                            .find_by(auth_token: cookies[:auth_token])
+
+      @current_user ||= User.find_by(auth_token: cookies.encrypted[:auth_token])
       session[:user_id] = @current_user.id
       @current_user
     end
 
-    def ensure_logged_in
-      return if logged_in?
-      session[:original_url] = request.original_url
-      return redirect_to sign_in_path, alert: 'Please sign in'
+    def load_collection
+      @collection = Funder.find_by(slug: params[:slug]) ||
+                    Theme.find_by(slug: params[:slug])
+
+      render('errors/not_found', status: 404) if @collection.nil?
     end
 
-    def error?
-      params[:controller] == 'errors'
-    end
-
-    def legacy_funder
-      redirect_to legacy_funder_path if current_user.funder?
-    end
-
-    def legacy_fundraiser
-      redirect_to legacy_fundraiser_path if current_user.legacy?
-    end
-
-    def load_last_proposal
-      return unless @recipient
-      @proposal = if params[:proposal_id]
-                    @recipient.proposals.find_by(id: params[:proposal_id])
-                  else
-                     # TODO: remove/refactor
-                    if current_user.first_name.nil?
-                      @recipient.proposals.last
-                    else
-                      @recipient.proposals.where.not(state: 'basics').last
-                    end
-                  end
-    end
-
-    def load_recipient
-      return unless logged_in? && current_user.organisation.is_a?(Recipient)
-      @recipient = current_user.organisation
-    end
-
-    def redirect(path, opts = {})
-      return unless path
-      redirect_to path, opts unless request.path == path
-    end
-
-    def registration_incomplete
-      redirect(edit_proposal_path(@proposal)) if @proposal&.incomplete?
-    end
-
-    def registration_invalid
-      redirect(edit_proposal_path(@proposal)) if @proposal&.invalid?
-    end
-
-    def registration_microsite
-      redirect(edit_proposal_path(@proposal)) if
-        current_user&.first_name.nil? && @proposal&.basics?
+    def redirect_if_logged_in
+      redirect_to reports_path if logged_in?
     end
 
     def user_not_authorised

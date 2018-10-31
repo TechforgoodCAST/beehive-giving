@@ -1,30 +1,33 @@
 require 'rails_helper'
 
 describe Rating::Base do
-  subject { Class.new.include(Rating::Base).new(assessment: Assessment.new) }
+  let(:reasons) { {} }
+  subject { Class.new.include(Rating::Base).new(1, reasons) }
 
-  it '#assessment' do
-    expect(subject.assessment).to be_an(Assessment)
+  context '#indicator' do
+    it('default') { expect(subject.indicator).to eq('grey') }
+
+    context 'avoid' do
+      let(:reasons) { { 'rating' => 'avoid' } }
+      it { expect(subject.indicator).to eq('red') }
+    end
+
+    context 'unclear' do
+      let(:reasons) { { 'rating' => 'unclear' } }
+      it { expect(subject.indicator).to eq('yellow') }
+    end
+
+    context 'approach' do
+      let(:reasons) { { 'rating' => 'approach' } }
+      it { expect(subject.indicator).to eq('green') }
+    end
   end
 
-  it '#assessment is optional' do
-    subject = Class.new.include(Rating::Base).new
-    expect(subject.assessment).to eq(nil)
+  context '#link' do
+    it('default') { expect(subject.link).to eq(nil) }
   end
 
-  it '#colour' do
-    expect { subject.colour }.to raise_error(NotImplementedError)
-  end
-
-  it '#message' do
-    expect { subject.message }.to raise_error(NotImplementedError)
-  end
-
-  it '#status' do
-    expect { subject.status }.to raise_error(NotImplementedError)
-  end
-
-  it '#title' do
-    expect { subject.title }.to raise_error(NotImplementedError)
+  context '#messages' do
+    it('default') { expect(subject.messages).to eq(nil) }
   end
 end

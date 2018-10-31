@@ -4,29 +4,19 @@ require 'pundit/rspec'
 describe ChargePolicy do
   subject { described_class }
 
-  before(:each) do
-    @user = instance_double(User, subscription_active?: false)
-  end
-
   permissions :new?, :create? do
-    it 'grants access if user unsubscribed' do
-      is_expected.to permit(@user, :charge)
+    it 'grants access if `record` public' do
+      record = build(:proposal)
+      is_expected.to permit(nil, record)
     end
 
-    it 'denies access if user subscribed' do
-      allow(@user).to receive(:subscription_active?).and_return(true)
-      is_expected.not_to permit(@user, :charge)
-    end
-  end
-
-  permissions :thank_you? do
-    it 'denies access if user unsubscribed' do
-      is_expected.not_to permit(@user, :charge)
+    it 'denies access if `record` missing' do
+      is_expected.not_to permit(nil, nil)
     end
 
-    it 'grants access if user subscribed' do
-      allow(@user).to receive(:subscription_active?).and_return(true)
-      is_expected.to permit(@user, :charge)
+    it 'denies access `record` private' do
+      record = build(:proposal, private: Time.zone.now)
+      is_expected.not_to permit(nil, record)
     end
   end
 end

@@ -15,16 +15,16 @@
   display: block
   font-size: map-get($scales, 14)
   color: map-get($colors, night)
-  +responsive(margin-top, map-get($scales, 3))
+  margin-top: map-get($scales, 3)
 
 .input
-  +responsive(margin-top, map-get($scales, 7))
+  margin-top: map-get($scales, 7)
   font-family: inherit
   font-size: inherit
   display: block
   width: 100%
-  +responsive(height, map-get($scales, 40))
-  +responsive(padding-left, map-get($scales, 10), .6, .8)
+  height: map-get($scales, 40)
+  padding-left: map-get($scales, 10)
   border: 2px solid map-get($colors, mist)
   border-radius: 3px
   box-sizing: border-box
@@ -80,9 +80,9 @@ input[type='radio']
   border-color: map-get($colors, 'red')
 
 .field_with_errors > .error
-  display: inline-block
+  display: block
   color: map-get($colors, 'red')
-  +responsive(font-size, map-get($scales, 14))
-  +responsive(margin-top, map-get($scales, 5))
+  font-size: map-get($scales, 14)
+  margin-top: map-get($scales, 5)
   &:first-letter
     text-transform: capitalize

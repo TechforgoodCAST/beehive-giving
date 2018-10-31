@@ -1,106 +1,132 @@
 require 'rails_helper'
-require 'support/match_helper'
-require 'shared/recipient_validations'
-require 'shared/reg_no_validations'
-require 'shared/org_type_validations'
 
 describe Recipient do
   subject { build(:recipient) }
 
-  include_examples 'recipient validations'
-  include_examples 'reg no validations'
-  include_examples 'org_type validations'
+  it('belongs to Country') { assoc(:country, :belongs_to) }
+
+  it('belongs to District') { assoc(:district, :belongs_to) }
+
+  it('belongs to User') { assoc(:user, :belongs_to, optional: true) }
+
+  it('has one Proposals') { assoc(:proposal, :has_one) }
 
   it('has many Answers') { assoc(:answers, :has_many, dependent: :destroy) }
 
-  it('has many Attempts') { assoc(:attempts, :has_many) }
-
   it('has many Assessments') { assoc(:assessments, :has_many) }
 
-  it('has many Countries') { assoc(:countries, :has_many, through: :proposals) }
+  context 'individual' do
+    subject { build(:individual) }
 
-  it('has many Districts') { assoc(:districts, :has_many, through: :proposals) }
+    it { is_expected.to be_valid }
 
-  it('has many Proposals') { assoc(:proposals, :has_many) }
-
-  it 'has one Subscription' do
-    assoc(:subscription, :has_one, dependent: :destroy)
+    it 'required attributes' do
+      %i[
+        category_code
+        country
+        district
+      ].each do |attribute|
+        invalid_attribute(:recipient, attribute)
+      end
+    end
   end
 
-  it('has many Requests') { assoc(:requests, :has_many) }
+  context 'unincorporated organisation' do
+    it 'description not required' do
+      subject.category_code = 201
+      subject.description = nil
+      expect(subject).to be_valid
+    end
+  end
 
-  it('has many Users') { assoc(:users, :has_many, dependent: :destroy) }
+  context 'organisation' do
+    it { is_expected.to be_valid }
 
-  it { is_expected.to be_valid }
+    it 'required attributes' do
+      %i[
+        category_code
+        country
+        district
+        description
+        income_band
+        name
+        operating_for
+      ].each do |attribute|
+        invalid_attribute(:recipient, attribute)
+      end
+    end
 
-  it 'website invalid' do
+    it 'in list' do
+      %i[
+        operating_for
+        income_band
+      ].each do |attribute|
+        invalid_attribute(:recipient, attribute, -100)
+      end
+    end
+  end
+
+  it '#category_code in list' do
+    subject.category_code = -1
+    subject.valid?
+    expect_error(:category_code, 'please select an option')
+  end
+
+  it '#category_name' do
+    expect(subject.category_name).to eq('A charitable organisation')
+  end
+
+  context '#income_band_name' do
+    it 'found' do
+      expect(subject.income_band_name).to eq('Less than £10k')
+    end
+
+    it 'not found' do
+      subject.income_band = nil
+      expect(subject.income_band_name).to eq(nil)
+    end
+  end
+
+  context '#individual?' do
+    it 'false' do
+      expect(subject.individual?).to eq(false)
+    end
+
+    it 'true' do
+      subject.category_code = 101
+      expect(subject.individual?).to eq(true)
+    end
+  end
+
+  it 'invalid #website' do
     subject.website = 'www.example.com'
     expect(subject).not_to be_valid
   end
 
-  it 'website valid' do
-    subject.website = 'https://www.example.com'
-    expect(subject).to be_valid
-  end
+  context '#operating_for_name' do
+    it 'found' do
+      expect(subject.operating_for_name).to eq('Yet to start')
+    end
 
-  it 'reveals has unique fund slugs' do
-    subject.update(reveals: %w[fund-slug-1 fund-slug-1])
-    expect(subject.reveals).to eq ['fund-slug-1']
+    it 'not found' do
+      subject.operating_for = nil
+      expect(subject.operating_for_name).to eq(nil)
+    end
   end
 
   it 'strips whitespace' do
-    %i[charity_number company_number].each do |field|
-      subject.update("#{field}": ' with whitespace ')
-      expect(subject[field]).to eq 'with whitespace'
+    %i[
+      charity_number
+      company_number
+    ].each do |attribute|
+      subject.send("#{attribute}=", ' with whitespace ')
+      expect(subject[attribute]).to eq('with whitespace')
     end
   end
 
-  it 'geocoded by street address and country if no postal code' do
-    subject.update(street_address: 'London Road')
-    expect(subject.postal_code).to be_nil
-    expect(subject.latitude).to eq 1.0
-    expect(subject.longitude).to eq 1.0
+  it 'validates answers' do
+    subject.answers << build(:answer)
+    subject.valid?
+    expect_error(:answers, 'is invalid')
   end
-
-  it 'only geocode for GB' do
-    subject.update(street_address: 'London Road', country: 'KE')
-    expect(subject.latitude).to be_nil
-    expect(subject.longitude).to be_nil
-  end
-
-  it 'geocoded by postal code' do
-    subject.update(postal_code: 'POSTCODE')
-    expect(subject.latitude).to eq 0.0
-    expect(subject.longitude).to eq 0.0
-  end
-
-  it 'reg nos cleared if unregistered' do
-    subject.update(org_type: 0)
-    expect(subject.charity_number).to be_nil
-    expect(subject.company_number).to be_nil
-  end
-
-  it 'updates slug if name changed' do
-    subject.update(name: 'New Name!')
-    expect(subject.slug).to eq 'new-name'
-  end
-
-  context 'persisted' do
-    before { subject.save }
-
-    it 'has slug' do
-      expect(subject.slug).to eq 'acme'
-    end
-
-    it 'slug is unique' do
-      expect(create(:recipient, name: 'ACME').slug).to eq 'acme-2'
-    end
-
-    it 'updates slug if name present' do
-      subject.update(name: '')
-      expect(subject.slug).to eq 'acme'
-    end
-  end
-
-  it 'methods e.g. #scrape_org, #find_with_reg_nos, etc.'
 end

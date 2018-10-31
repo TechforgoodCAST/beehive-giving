@@ -1,4 +1,4 @@
-= content_for :title, 'Upgrade'
+= content_for :title, "Make report ##{@proposal.id} private"
 
 -# TODO: refactor
 - if allow_performance_cookies?
@@ -6,121 +6,89 @@
   :javascript
     /* <![CDATA[ */
     var google_conversion_id = 937505505;
-    var google_conversion_language = "en";
-    var google_conversion_format = "3";
-    var google_conversion_color = "ffffff";
-    var google_conversion_label = "JjT_CMfMg3AQ4eWEvwM";
+    var google_conversion_language = 'en';
+    var google_conversion_format = '3';
+    var google_conversion_color = 'ffffff';
+    var google_conversion_label = 'JjT_CMfMg3AQ4eWEvwM';
     var google_remarketing_only = false;
     /* ]]> */
-  %script{ src: "//www.googleadservices.com/pagead/conversion.js", type: "text/javascript" }
+  %script{ src: '//www.googleadservices.com/pagead/conversion.js', type: 'text/javascript' }
   %noscript
-    %div{ style: "display:inline;" }
-      %img{ alt: "", height: "1", src: "//www.googleadservices.com/pagead/conversion/937505505/?label=JjT_CMfMg3AQ4eWEvwM&guid=ON&script=0", style: "border-style:none;", width: "1" }
+    %div{ style: 'display:inline;' }
+      %img{ alt: '', height: '1', src: '//www.googleadservices.com/pagead/conversion/937505505/?label=JjT_CMfMg3AQ4eWEvwM&guid=ON&script=0', style: 'border-style:none;', width: '1' }
 
-  :javascript
-    mixpanel.track("View Upgrade Page");
-    mixpanel.identify("#{@current_user.id}");
+-# TODO: dynamic colors
+%main.bg-dark-blue
+  %section.maxw810.mx-auto.mt40.pt10
+    .center.px15.mb40
+      %h1.h2.white.mb15 Upgrade to keep your report private
+      %p.white Details about your support request such as the amount, description and eligibility reasons will be included in a publicly viewable directory that others can browse unless you opt for a ‘Private’ report.
+    .flex.flex-wrap
+      .col1.md.px15.mb30.maxw270.minw270
+        .bg-white.shadow.rounded
+          .bg-ice.rounded-top.border-bottom.border-mist.p20
+            %h5.bold Your order
+          .p20
+            .flex.items-center.justify-between.bold.mb7
+              .heading Private report
+              = @order.amount_to_currency
+            .pb20.slate.fs15.lh18.border-bottom.border-silver.mb20
+              Hides report
+              %strong= "##{@proposal.id}"
+              in public directory
 
-    if (window.ga) {
-      ga("send", "event", "charges#new", "view", "Plan Cost: #{@payment.plan_cost}");
-    }
+            .flex.items-center.justify-between.bold.mb20.slate
+              .heading Card fees
+              = @order.fee_to_currency
 
+            .flex.items-center.justify-between.bold
+              .heading Total
+              = @order.total_to_currency
 
-%header
-  = cell :navbar, @current_user
-  = cell :breadcrumb, 'Subscription' => account_subscription_path(@recipient)
+      .col2.px15.mb30
+        .bg-white.shadow.rounded
+          .bg-ice.rounded-top.border-bottom.border-mist.p20.flex.justify-between.items-center
+            %h5.bold Payment details
+            .fs14.night * Required
+          .p20
+            = form_tag new_charge_path(@proposal), id: 'payment-form', class: 'form' do
+              %noscript
+                .p20.red.border-red
+                  %strong You have JavaScript disabled
+                  and this page will not work. Please use a device that supports JavaScript.
 
-%main
-  .maxw1080.mx-auto.px20
+              %input#stripeToken{ name: 'stripeToken', type: 'hidden' }
 
-    %section.md.mb20.px20
-      %h1.mb20 Dashboard
+              .payment-errors.hide.mb20.p20.bold.heading.red.rounded.border.border-pale-red.bg-light-red
 
-    = render partial: 'accounts/subnav'
+              - if params[:card_errors]
+                .mb20.p20.bold.heading.red.rounded.border.border-pale-red.bg-light-red= params[:card_errors]
 
-  .maxw1080.mx-auto.px20.flex.flex-wrap
-    %aside.perc33.md.px20.mb40
+              .mb20
+                .label Card number
+                %input.input#card-number{ 'data-stripe': 'number', size: '24', type: 'text', placeholder: '4242 4242 4242 4242' }
 
-      .p20.border.border-green.rounded
-        %h3.mb20 Order summary
+              .mb20.flex
+                .mr20.f1
+                  .label Expiration
+                  .flex
+                    .mr5
+                      %input.input#expiry-month{ 'data-stripe': 'exp_month', size: '10', type: 'text', placeholder: 'MM' }
+                    .ml5
+                      %input.input#expiry-year{ 'data-stripe': 'exp_year', size: '10', type: 'text', placeholder: 'YY' }
 
-        .mb30
-          .label.mb10.bold Plan
-          Pro
+                .f1
+                  .label CVC
+                  %input.input#cvc{ 'data-stripe': 'cvc', size: '10', type: 'text', placeholder: '123' }
 
-        .mb30
-          .label.mb10.bold Period
-          1 year
-          %small= 1.year.from_now.strftime("(expires %d %B %Y)")
+              %button.btn-wide.bg-rich-blue.white.shadow{ type: 'submit' } Purchase private report
 
-        .mb30
-          .label.mb10.bold Price
-          = number_to_currency(@payment.plan_cost, unit: '£')
-          - if @payment.discount
-            %small
-              = surround '(', ')' do
-                = @payment.discount
-                discount
+              :javascript
+                Stripe.setPublishableKey('#{Rails.configuration.stripe[:publishable_key]}');
 
-        %div
-          .label.mb10.bold Features
-          = render 'accounts/premium_features'
+        .center.my20.px15.bold.white
+          Or, continue with a
+          = link_to 'free public report', report_path(@proposal) , class: 'white underline'
 
-    %section.perc66.md.mb80.px20
-
-      -# TODO: hide when visiting via account page
-      .mb20.p20.heading.blue.bg-light-blue.border.border-pale-blue.rounded
-        %strong PRO FEATURE:
-        Please
-        %strong reveal
-        the fund or upgrade to access this feature.
-
-      %h2.mb15 Upgrade
-      %p.mb30
-        By completing the form you will be charged
-        %strong= number_to_currency(@payment.plan_cost, unit: '£', precision: 0)
-        for one years access to a
-        %strong Pro
-        plan.
-
-      %h4.bold.mb20 Payment details
-      = form_tag account_upgrade_path(@recipient), id: 'payment-form', class: 'form' do
-        %noscript
-          .p20.red.border-red
-            %strong You have JavaScript disabled
-            and this page will not work. Please use a device that supports JavaScript.
-
-        %input#stripeToken{ name: "stripeToken", type: "hidden" }
-
-        .payment-errors.hide.mb20.p20.bold.heading.red.rounded.border.border-pale-red.bg-light-red
-
-        - if params[:card_errors]
-          .mb20.p20.bold.heading.red.rounded.border.border-pale-red.bg-light-red= params[:card_errors]
-
-        .mb20
-          .label Card number
-          %input.input#card-number{ "data-stripe": "number", size: "24", type: "text", placeholder: '4242 4242 4242 4242' }
-
-        .mb20
-          .label Expiration
-          .flex
-            .col.maxw200.mr10
-              %input.input#expiry-month{ "data-stripe": "exp_month", size: "10", type: "text", placeholder: 'MM' }
-            .col.maxw200
-              %input.input#expiry-year{ "data-stripe": "exp_year", size: "10", type: "text", placeholder: 'YY' }
-
-        .mb20
-          .label CVC
-          %input.input.maxw200#cvc{ "data-stripe": "cvc", size: "10", type: "text", placeholder: '123' }
-
-        .mb20
-          .label Discount coupon
-          %input.input#coupon{ name: "coupon", size: "24", type: "text", placeholder: 'Optional' }
-
-        .mb15
-          %button.btn.bg-green.white.shadow{ type: "submit" } Pay securely
-
-        = link_to image_tag('powered-by-stripe.svg', width: 120, alt: 'Powered by Stripe'), 'https://stripe.com/', target: '_blank'
-
-        :javascript
-          Stripe.setPublishableKey("#{Rails.configuration.stripe[:publishable_key]}");
+.bg-dark-blue
+  = render partial: 'shared/footer', locals: { color: 'white' }

@@ -5,6 +5,7 @@
 
 // =========================================================================
 
+// TODO: review
 .divider
   border-left: 2px solid map-get($colors, 'silver')
 
@@ -20,18 +21,7 @@
   width: 66%
 .perc75
   width: 75%
-.sm
-  @media screen and (max-width: 25rem)
-    width: 100%
-    border-left-color: transparent !important
-    padding-left: 0px !important
-    padding-right: 0px !important
-.md
-  @media screen and (max-width: 46.875rem)
-    width: 100%
-    border-left-color: transparent !important
-    padding-left: 0px !important
-    padding-right: 0px !important
+// TODO: end review
 
 .fit
   max-width: 100%
@@ -41,6 +31,21 @@
   display: inline-block
 .right
   float: right
+
+.col1
+  max-width: 350px
+  flex-basis: 320px
+  flex-grow: 1
+.col2
+  max-width: 720px
+  flex-basis: 320px
+  flex-grow: 1
+.col1, .col2
+  min-width: 320px
+  &.md
+    @media screen and (max-width: 655px)
+      min-width: auto
+      max-width: 100%
 
 @each $var, $val in $widths
   .maxw#{$var}

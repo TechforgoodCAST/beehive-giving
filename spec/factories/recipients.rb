@@ -1,20 +1,24 @@
 FactoryBot.define do
-  factory :legacy_recipient, class: Recipient do
-    transient do
-      n { rand(9999) }
+  factory :individual, class: Recipient do
+    category_code 101 # An individual
+
+    after(:build) do |recipient, _evaluator|
+      unless recipient.country
+        country = build(:country)
+        recipient.country = country
+      end
+      recipient.district = build(:district, country: country)
     end
-    org_type        ORG_TYPES[2][1] # A registered charity
-    charity_number  { "1AB1C#{n}" }
-    company_number  { "1AB1C#{n}" }
-    name            'ACME'
-    country         'GB'
-    operating_for   OPERATING_FOR[1][1] # Less than 12 months
-    website         'http://www.acme.com'
 
     factory :recipient do
-      income_band   INCOME_BANDS[1][1] # 10k - 100k
-      employees     EMPLOYEES[1][1] # 1 - 5
-      volunteers    EMPLOYEES[1][1] # 1 - 5
+      category_code  301 # A charitable organisation
+      charity_number '098765'
+      company_number '012345'
+      description    'Charity registered in England & Wales'
+      income_band    Recipient::INCOME_BANDS[1][:label] # 10k - 100k
+      name           'Charity projects'
+      operating_for  Recipient::OPERATING_FOR[1] # Less than 12 months
+      website        'http://example.com'
     end
   end
 end

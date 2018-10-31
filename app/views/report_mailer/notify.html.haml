@@ -1,0 +1,25 @@
+%h1
+  Funder report for
+  = @collection.name
+
+%p
+  Hi
+  = @user.first_name
+
+%p
+  Your funder report
+  = "##{@proposal.id}"
+  for
+  = @collection.name
+  is ready.
+
+%p
+  = link_to('View full report', report_url(@proposal, t: @proposal.access_token), target: '_blank')
+  = link_to('All my reports', sign_in_lookup_url(email: @user.email), target: '_blank')
+
+%p Please note
+%p
+  Unless you opt to
+  = succeed ',' do
+    = link_to('keep the report Private', new_charge_url(@proposal), target: '_blank')
+  it will be added to a publically viewable directory that others can browse.

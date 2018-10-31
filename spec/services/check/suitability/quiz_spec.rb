@@ -1,44 +1,96 @@
 require 'rails_helper'
 
 describe Check::Suitability::Quiz do
-  before(:each) do
-    @app.seed_test_db.setup_funds.create_recipient.create_proposal
-    @proposal = Proposal.last
-    @fund = Fund.last
-    @fund.priorities.each do |p|
-      category = p.category == 'Proposal' ? @proposal : @proposal.recipient
-      create(:proposal_suitability, category: category, criterion: p)
+  let(:assessment) do
+    build(
+      :assessment,
+      fund: build(:fund, priorities: priorities),
+      recipient: create(
+        :recipient,
+        answers: [build(
+          :answer,
+          criterion: priorities.first,
+          eligible: eligible,
+          category_type: 'Proposal'
+        )]
+      )
+    )
+  end
+  let(:priorities) { build_list(:priority, num, category: 'Proposal') }
+  let(:num) { 1 }
+  let(:eligible) { true }
+  let(:suitability) { assessment.suitability_quiz }
+  let(:incomplete) { assessment.suitability_quiz_failing }
+  let(:priority_id) { priorities.first.id }
+
+  before { subject.call(assessment) }
+
+  it 'not triggered if Fund missing priorities' do
+    assessment.fund.priorities = []
+    expect(subject.call(assessment)).to eq(nil)
+  end
+
+  context 'with incomplete answers' do
+    let(:num) { 2 }
+
+    it('is nil') { expect(suitability).to eq(UNASSESSED) }
+
+    it('failing count') { expect(incomplete).to eq(nil) }
+
+    it 'unclear' do
+      reasons = {
+        'Check::Suitability::Quiz' => {
+          reasons: [{
+            id: 'incomplete',
+            fund_value: [priority_id, nil],
+            proposal_value: { priority_id => true }
+          }].to_set,
+          rating: 'unclear'
+        }
+      }
+      expect(assessment.reasons).to eq(reasons)
     end
-    @fund.save
   end
 
-  subject do
-    Check::Suitability::Quiz.new(@proposal, Fund.active)
-  end
+  context 'with correct answers' do
+    it('is eligible') { expect(suitability).to eq(ELIGIBLE) }
 
-  it '#call 100% match' do
-    expect(subject.call(@proposal, @fund))
-      .to eq 'score' => 1
-  end
+    it('none failing') { expect(incomplete).to eq(0) }
 
-  it '#call 0% match' do
-    Answer.update_all eligible: false
-    expect(subject.call(@proposal, @fund))
-      .to eq 'score' => 0
-  end
-
-  it '#call partial match' do
-    Answer.last.update eligible: false
-    expect(subject.call(@proposal, @fund))
-      .to eq 'score' => 0.8
-  end
-
-  it 'no conflict with eligibility quiz' do
-    @fund.restrictions.each_with_index do |r, i|
-      category = r.category == 'Proposal' ? @proposal : @proposal.recipient
-      create(:proposal_eligibility, category: category, criterion: r, eligible: i.odd?)
+    it 'approach' do
+      reasons = {
+        'Check::Suitability::Quiz' => {
+          reasons: [{
+            id: 'eligible',
+            fund_value: [priority_id],
+            proposal_value: { priority_id => true }
+          }].to_set,
+          rating: 'approach'
+        }
+      }
+      expect(assessment.reasons).to include(reasons)
     end
-    expect(subject.call(@proposal, @fund))
-      .to eq 'score' => 1
+  end
+
+  context 'with incorrect answers' do
+    let(:eligible) { false }
+
+    it('is ineligible') { expect(suitability).to eq(INELIGIBLE) }
+
+    it('some failing') { expect(incomplete).to eq(1) }
+
+    it 'avoid' do
+      reasons = {
+        'Check::Suitability::Quiz' => {
+          reasons: [{
+            id: 'ineligible',
+            fund_value: [priority_id],
+            proposal_value: { priority_id => false }
+          }].to_set,
+          rating: 'avoid'
+        }
+      }
+      expect(assessment.reasons).to include(reasons)
+    end
   end
 end

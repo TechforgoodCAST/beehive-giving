@@ -1,70 +1,38 @@
 require 'rails_helper'
-require_relative '../support/subscriptions_helper'
 
 describe Payment do
-  let(:helper) { SubscriptionsHelper.new }
+  subject { Payment.new(amount: 1999) }
+
   let(:stripe) { StripeMock.create_test_helper }
+  let(:user) { create(:user) }
+
   before { StripeMock.start }
   after { StripeMock.stop }
 
-  it 'requires Recipient to initialize' do
-    expect { Payment.new }.to raise_error(ArgumentError)
+  it 'requires `amount` to initialize' do
+    expect { Payment.new }.to raise_error('amount required')
   end
 
-  it '#plan_cost' do
-    @app.create_recipient
-    recipient = Recipient.last
-    [24, 48, 96, 192, 384].each_with_index do |price, i|
-      recipient.income_band = i
-      payment = Payment.new(recipient)
-      expect(payment.plan_cost).to eq price
-    end
+  it 'multiple Charges added to same Stripe::Customer' do
+    2.times { subject.process!(user, stripe.generate_card_token) }
+    customer = user.stripe_user_id
+    expect(Stripe::Charge.list(customer: customer).data.size).to eq(2)
   end
 
-  context 'with recipient' do
-    before(:each) do
-      @app.seed_test_db.create_recipient.with_user
-      @db = @app.instances
-      @recipient = @db[:recipient]
-      @user = @db[:user]
-      @payment = Payment.new(@recipient)
-      helper.send(:create_stripe_plans, stripe)
-      helper.send(:create_stripe_coupons, stripe)
-    end
+  it 'persisted User creates Stripe::Customer' do
+    expect(Stripe::Customer.list.data.size).to eq(0)
+    subject.process!(user, stripe.generate_card_token)
+    expect(Stripe::Customer.list.data.size).to eq(1)
+  end
 
-    it '#plan_cost with discount' do
-      @payment.process!(stripe.generate_card_token, @user, 'test10')
-      expect(@payment.plan_cost).to eq 43.2
-    end
+  context 'unpersisted User' do
+    let(:user) { OpenStruct.new(email: 'email@example.com') }
 
-    it '#process! with empty coupon' do
-      expect(@payment.process!(stripe.generate_card_token, @user, ''))
-        .to eq true
-      expect(@recipient.subscription.active?).to eq true
-    end
-
-    it '#process! with invalid coupon' do
-      expect(@payment.process!('token', @user, 'invalid')).to eq false
-      expect(@recipient.subscription.active?).to eq false
-    end
-
-    it '#process! updates Subscription.expiry_date' do
-      @payment.process!(stripe.generate_card_token, @user, '')
-      expect(@recipient.subscription.expiry_date).to eq 1.year.from_now.to_date
-    end
-
-    it '#process! updates Subscription.percent_off' do
-      @payment.process!(stripe.generate_card_token, @user, 'test10')
-      expect(@recipient.subscription.percent_off).to eq 10
-    end
-
-    it '#discount returns percentage' do
-      @payment.process!(stripe.generate_card_token, @user, 'test10')
-      expect(@payment.discount).to eq '10%'
-    end
-
-    it '#discount not positive' do
-      expect(@payment.discount).to eq false
+    it 'creates Stripe::Customer' do
+      expect(Stripe::Customer.list.data.size).to eq(0)
+      subject.process!(user, stripe.generate_card_token)
+      expect(User.count).to eq(0)
+      expect(Stripe::Customer.list.data.size).to eq(1)
     end
   end
 end

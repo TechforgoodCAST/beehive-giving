@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.4.4'
+ruby '2.5.3'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.2'
@@ -30,33 +30,27 @@ gem 'bcrypt', '~> 3.1.7'
 # gem 'capistrano-rails', group: :development
 
 gem 'activerecord-import'
-gem 'cells-rails'
+gem 'cells-rails' # TODO: remove
 gem 'cells-slim' # TODO: remove
 gem 'chartkick'
-gem 'country_select'
-gem 'geocoder'
 gem 'groupdate'
 gem 'hamlit'
 gem 'hashids'
-gem 'httparty'
 gem 'kaminari'
-gem 'nokogiri'
 gem 'pundit'
 gem 'rack-tracker'
 gem 'redcarpet'
 gem 'simple_form'
 gem 'sitemap_generator'
 gem 'stripe'
-gem 'workflow'
 gem 'xxhash'
 
 # Admin
 gem 'activeadmin'
-gem 'devise'
+gem 'devise', '~> 4.4.0'
 
 # Monitoring & metrics
-gem 'intercom-rails'
-gem 'mixpanel-ruby'
+gem 'intercom-rails' # TODO: review
 gem 'rollbar'
 group :production do
   gem 'rails_12factor'
@@ -67,13 +61,12 @@ end
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'capybara', '2.12.1'
+  gem 'capybara'
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
-  gem 'rspec-cells'
+  gem 'rspec-cells' # TODO: remove
   gem 'rspec-rails', '3.5.2'
   gem 'selenium-webdriver'
-  gem 'show_me_the_cookies'
   gem 'stripe-ruby-mock', require: 'stripe_mock'
   gem 'webmock'
 end
@@ -92,12 +85,12 @@ group :development do
   gem 'pry'
   gem 'pry-rails'
   gem 'rubocop', require: false
+  gem 'yard'
 end
 
 group :test do
   gem 'climate_control'
   gem 'database_cleaner'
-  gem 'poltergeist'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
