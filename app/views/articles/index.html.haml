@@ -1,19 +1,20 @@
 = content_for :title, 'Blog'
 
-%header
-  = cell :breadcrumb, { 'Blog' => articles_path }, color: 'blue'
+%main.bg-ice
+  %header
+    = render partial: 'shared/nav', locals: { color: 'blue' }
+    = cell(:breadcrumb, { 'Blog' =>  articles_path }, color: 'blue')
 
-%main
-  %section.maxw1080.mx-auto
-    .mb40.mx40
-      %h1.center Blog
-
-  .maxw790.mx-auto
+  %section.col2.mx-auto.mb40.px15
+    %h1.h2.center Blog
 
     - @articles.each do |article|
-      %hr.maxw1000.mx40
+      .bg-white.rounded.shadow.my40
+        .p20.border-bottom.border-mist
+          %h3= link_to(article.title, article_path(article))
+        .p20.markdown= strip_tags(article.body_html).truncate_words(50, omission: "... #{link_to('more', article_path(article))}").html_safe
 
-      %section.p40
-        .mb20
-          %h3= link_to(article.title, article_path(article), class: 'blue')
-        .markdown= strip_tags(article.body_html).truncate_words(50, omission: "... #{link_to('more', article_path(article), class: 'bold')}").html_safe
+    -# TODO: pagination
+
+.bg-ice
+  = render partial: 'shared/footer', locals: { color: 'slate' }

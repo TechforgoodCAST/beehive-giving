@@ -4,7 +4,6 @@
 
   .flex.flex-wrap.justify-between.items-center.mb40
     .footer-links
-      -# TODO: to /articles/about
       = link_to('About', about_path, class: 'mr10')
       = link_to('Pricing', pricing_path, class: 'mx10')
       = link_to('Blog', articles_path, class: 'mx10')
@@ -19,4 +18,4 @@
       = link_to('Privacy', privacy_path, class: 'mx10')
       = link_to('Terms', terms_path, class: 'mx10')
 
-      = link_to("© #{Date.today.year} CAST", 'http://www.wearecast.org.uk', class: 'ml10', target: '_blank')
+      = link_to("© #{Date.today.year} CAST", 'http://www.wearecast.org.uk', class: 'ml10', target: '_blank', onclick: "trackOutboundLink('http://www.wearecast.org.uk');")
