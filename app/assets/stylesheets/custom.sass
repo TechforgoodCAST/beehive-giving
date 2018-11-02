@@ -114,14 +114,23 @@ article.featured
   min-height: 43.75rem
 
 #hex
-  width: 100%
-  height: 838px
-  background: image-url('hex-bg.svg') no-repeat
-  background-size: 2438px 838px
-  background-position: calc(50% + 240px)
-  position: absolute
-  top: 0
-  z-index: -1
+  position: relative
+  z-index: 0
+  &:after
+    content: ''
+    display: block
+    position: absolute
+    z-index: -1
+    background: image-url('bg-hex.svg') no-repeat
+    width: 600px
+    height: 553px
+    top: -100px
+    left: -45px
+    @media screen and (max-width: 639px)
+      top: -40px
+      left: -25px
+      width: 450px
+      height: 415px
 
 #hex-footer
   width: 100%
