@@ -23,9 +23,9 @@
           = link_to "Erb's Palsy Group", 'http://www.erbspalsygroup.co.uk/', target: '_blank'
 
     .col2.mb40
-      .col1.md.px15
+      .col1.md.px15#hex
         .bg-white.rounded.shadow
-          .bg-ice.border-bottom.border-mist.p20.h5.bold
+          .bg-ice.rounded-top.border-bottom.border-mist.p20.h5.bold
             Recent reports
           .p20.heading
             - @proposals.each do |proposal|
@@ -36,5 +36,5 @@
 
             = link_to 'More...', opportunities_path, class: 'bold'
 
-.bg-ice
+.bg-ice{ style: 'z-index: 1' }
   = render partial: 'shared/footer', locals: { color: 'slate' }
