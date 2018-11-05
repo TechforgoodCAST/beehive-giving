@@ -68,4 +68,13 @@ Rails.application.routes.draw do
   post '/agree-to-terms/:id', to: 'users#terms_version', as: 'terms_version'
   post '/acknowledge-update/:id', to: 'users#update_version', as: 'update_version'
   get  '/cookies/update', to: 'cookies#update', as: 'update_cookies'
+
+  # Legacy
+  get '/:slug/funds', to: redirect('/opportunities')
+  get '/for-funders', to: redirect('/faq')
+  get '/fund/:slug', to: redirect('/opportunities')
+  get '/funds', to: redirect('/opportunities')
+  get '/funds/:slug', to: redirect('/opportunities')
+  get '/password_resets/new', to: redirect('/sign-in')
+  get '/welcome', to: redirect('/')
 end
