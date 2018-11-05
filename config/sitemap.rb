@@ -25,10 +25,12 @@ SitemapGenerator::Sitemap.create do
   #     add article_path(article), :lastmod => article.updated_at
   #   end
 
-  # TODO: refactor
   # Pages
   add about_path
+  add add_opportunity_path
   add faq_path
+  add opportunities_path
+  add pricing_path
   add privacy_path
   add terms_path
 
@@ -38,6 +40,6 @@ SitemapGenerator::Sitemap.create do
     add article_path(article), lastmod: article.updated_at
   end
 
-  # Sessions
+  # Sign In
   add sign_in_path
 end
