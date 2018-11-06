@@ -25,7 +25,7 @@ class ProposalsController < ApplicationController
       ReportMailer.notify(@proposal).deliver_now
       redirect_to new_charge_path(@proposal)
     else
-      @districts = District.where(country_id: form_params[:country])
+      @districts = District.where(country_id: form_params[:country_id])
       render :new
     end
   end
