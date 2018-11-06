@@ -1,4 +1,3 @@
-# TODO: refactor
 class UserMailer < ApplicationMailer
   def password_reset(user)
     @user = user
