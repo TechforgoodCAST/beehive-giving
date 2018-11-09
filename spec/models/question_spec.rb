@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe Question do
   subject(:question) { build(:question, criterion: criterion, fund: fund, group: group) }
+
   let(:criterion) { create(:criterion) }
   let(:fund) { create(:fund) }
   let(:group) { nil }
@@ -14,7 +15,7 @@ describe Question do
     assoc(:fund, :belongs_to, touch: true)
   end
 
-  it 'has_many answers' do
+  it 'has many answers' do
     assoc(:answers, :has_many, through: :criterion)
   end
 
@@ -29,15 +30,15 @@ describe Question do
     let(:criterion) { nil }
     it_behaves_like 'raises RecordInvalid when has invalid values'
   end
-  context ' when fund is nil' do
+  context 'when fund is nil' do
     let(:fund) { nil }
     it_behaves_like 'raises RecordInvalid when has invalid values'
   end
 
   context 'grouped scope' do
     subject { described_class.grouped(*scope_params) }
-    before { question.save }
 
+    before { question.save }
     let(:group) { 'test_group' }
     let(:scope_params) { [nil, nil] }
     context 'when matches' do
