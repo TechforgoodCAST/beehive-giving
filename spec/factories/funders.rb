@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :funder do
-    name 'Funder'
+    sequence(:name) { |n| "Funder #{n}" }
     website 'http://www.funder.org'
     active true
 

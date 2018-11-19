@@ -31,8 +31,8 @@ module Check
           if check_limit(:min_amount, :<, :proposal_min_amount)
             reasons << {
               id: 'below_min',
-              fund_value: min_amount,
-              proposal_value: proposal_min_amount
+              fund_value: proposal_min_amount,
+              proposal_value: min_amount
             }
             true
           else
@@ -44,8 +44,8 @@ module Check
           if check_limit(:max_amount, :>, :proposal_max_amount)
             reasons << {
               id: 'above_max',
-              fund_value: max_amount,
-              proposal_value: proposal_max_amount
+              fund_value: proposal_max_amount,
+              proposal_value: max_amount
             }
             true
           else

@@ -15,6 +15,16 @@ feature 'Reports' do
     expect(page).to have_text('Not found')
   end
 
+  scenario 'updates when changes made to opportunities' do
+    opp_update_date = proposal.collection.opportunities_last_updated_at
+    proposal.update_column(:updated_at, opp_update_date - 1.day)
+    expect(proposal.updated_at).to be < opp_update_date
+
+    visit report_path(proposal)
+    proposal.reload
+    expect(proposal.updated_at).to be > opp_update_date
+  end
+
   context 'signed out' do
     scenario { can_view_public_report }
 

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181029162141) do
+ActiveRecord::Schema.define(version: 20181119141709) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -95,7 +95,6 @@ ActiveRecord::Schema.define(version: 20181029162141) do
     t.integer "eligibility_status", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "fund_version"
     t.boolean "revealed"
     t.jsonb "reasons", default: {}, null: false
     t.integer "suitability_quiz"
@@ -254,6 +253,7 @@ ActiveRecord::Schema.define(version: 20181029162141) do
     t.boolean "microsite", default: false, null: false
     t.string "primary_color"
     t.string "secondary_color"
+    t.datetime "opportunities_last_updated_at", default: "2018-10-31 00:00:00", null: false
     t.index ["slug"], name: "index_funders_on_slug", unique: true
   end
 
@@ -483,6 +483,7 @@ ActiveRecord::Schema.define(version: 20181029162141) do
     t.datetime "updated_at", null: false
     t.string "slug"
     t.string "classes"
+    t.datetime "opportunities_last_updated_at", default: "2018-10-31 00:00:00", null: false
     t.index ["name"], name: "index_themes_on_name", unique: true
     t.index ["parent_id"], name: "index_themes_on_parent_id"
     t.index ["slug"], name: "index_themes_on_slug", unique: true

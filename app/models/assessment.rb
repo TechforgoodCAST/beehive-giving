@@ -25,7 +25,6 @@ class Assessment < ApplicationRecord
     eligibility_status
     suitability_quiz_failing
     suitability_status
-    fund_version
     reasons
   ]).freeze
 
@@ -80,7 +79,7 @@ class Assessment < ApplicationRecord
 
     def suitable_status
       columns = ELIGIBILITY_COLUMNS + SUITABILITY_COLUMNS
-      values = attributes.slice(*columns).values
+      values = attributes.slice(*columns).values.compact
 
       return 'avoid' if values.any? { |v| v == INELIGIBLE }
       return 'unclear' if values.any? { |v| v == INCOMPLETE }

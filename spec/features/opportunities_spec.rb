@@ -12,7 +12,7 @@ feature 'Opportunities' do
 
   scenario 'see recent reports' do
     visit opportunities_path
-    click_link('Recent reports', match: :first)
+    find("a[href='#{opportunity_path(@collection)}']").click
     expect(current_path).to eq(opportunity_path(@collection))
   end
 

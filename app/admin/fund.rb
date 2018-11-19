@@ -178,18 +178,18 @@ ActiveAdmin.register Fund do
       end
 
       inputs 'Location' do
-        input :proposal_permitted_geographic_scales
+        input :proposal_permitted_geographic_scales, as: :select, collection: Proposal::GEOGRAPHIC_SCALES.invert, input_html: { multiple: true, class: 'choices-select' }
         input :proposal_area_limited
         input :proposal_all_in_area
         input :geo_area, input_html: { class: 'choices-select' }
       end
 
       inputs 'Proposal Categories' do
-        input :proposal_categories
+        input :proposal_categories, as: :select, collection: Proposal::CATEGORIES.values.inject(:merge).invert, input_html: { multiple: true, class: 'choices-select' }
       end
 
       inputs 'Recipient Categories' do
-        input :recipient_categories
+        input :recipient_categories, as: :select, collection: Recipient::CATEGORIES.values.inject(:merge).invert, input_html: { multiple: true, class: 'choices-select' }
       end
 
       inputs 'Questions' do
