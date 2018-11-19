@@ -31,11 +31,11 @@ class ApplicationController < ActionController::Base
     end
 
     def bad_token
-      redirect_to '/logout', warning: 'Please sign in'
+      redirect_to '/sign-out', alert: 'Please sign in'
     end
 
     def current_user
-      return unless cookies[:auth_token]
+      return unless cookies.encrypted[:auth_token]
 
       @current_user ||= User.find_by(auth_token: cookies.encrypted[:auth_token])
       session[:user_id] = @current_user.id
