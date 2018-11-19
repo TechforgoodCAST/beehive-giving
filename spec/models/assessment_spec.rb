@@ -105,7 +105,7 @@ describe Assessment do
 
   context '#suitability_status' do
     context 'incomplete' do
-      it { expect(subject.suitability_status).to eq('unclear') }
+      it { expect(subject.suitability_status).to eq('approach') }
     end
 
     context 'ineligible' do

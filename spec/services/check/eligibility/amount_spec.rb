@@ -36,13 +36,13 @@ describe Check::Eligibility::Amount do
           reasons: [
             {
               id: 'below_min',
-              fund_value: '£10,000',
-              proposal_value: '£10,001'
+              fund_value: '£10,001',
+              proposal_value: '£10,000'
             },
             {
               id: 'above_max',
-              fund_value: '£250,000',
-              proposal_value: '£249,999'
+              fund_value: '£249,999',
+              proposal_value: '£250,000'
             }
           ].to_set,
           rating: 'avoid'
@@ -61,7 +61,7 @@ describe Check::Eligibility::Amount do
       reasons = {
         'Check::Eligibility::Amount' => {
           reasons: [{
-            id: 'below_min', fund_value: '£10,000', proposal_value: '£10,001'
+            id: 'below_min', fund_value: '£10,001', proposal_value: '£10,000'
           }].to_set,
           rating: 'avoid'
         }
@@ -85,7 +85,7 @@ describe Check::Eligibility::Amount do
       reasons = {
         'Check::Eligibility::Amount' => {
           reasons: [{
-            id: 'above_max', fund_value: '£250,000', proposal_value: '£249,999'
+            id: 'above_max', fund_value: '£249,999', proposal_value: '£250,000'
           }].to_set,
           rating: 'avoid'
         }

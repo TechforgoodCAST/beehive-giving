@@ -11,9 +11,9 @@ $colors: (
   'white':        $base-bg-color,
 
   // Primary
-  'red':        #FF7269,
-  'green':      #2AD18B,
   'blue':       #5AA0FF,
+  'green':      #2AD18B,
+  'red':        #FF7269,
   'yellow':     #FFCC1C,
 
   // Dark
@@ -24,22 +24,16 @@ $colors: (
 
   // Soft
   soft-blue:    #94BEF7,
-  soft-yellow:  #FFE3A6,
 
   // Pale
-  pale-red :    #FCE6E7,
   pale-blue:    #D7EAFC,
+  pale-green:   #E6FAF2,
+  pale-red:     #FCE6E7,
   pale-yellow:  #FAF3E6,
 
   // Light
-  light-red:    #FFFAFA,
   light-blue:   #F2F9FF,
-  light-yellow: #FFFDF9,
-
-  // Dark
-  dark-yellow:  #F4B000,
-
-  // Misc.
-  'olive':      #00B57C,
-  mint:         #41D3AE
+  light-green:  #FAFFFD,
+  light-red:    #FFFAFA,
+  light-yellow: #FFFDF9
 )

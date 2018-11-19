@@ -69,6 +69,12 @@ class Fund < ApplicationRecord
     markdown(description, plain: true)
   end
 
+  def links=(json)
+    self[:links] = JSON.parse(json)
+  rescue TypeError
+    self[:links] = JSON.parse(json.to_json)
+  end
+
   def to_param
     hashid
   end
