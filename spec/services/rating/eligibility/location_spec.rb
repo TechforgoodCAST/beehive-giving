@@ -3,28 +3,31 @@ require 'rails_helper'
 describe Rating::Eligibility::Location do
   subject { Rating::Eligibility::Location.new(1234, reasons) }
 
+  let(:countries) { create_list(:country, 2) }
+  let(:districts) { create_list(:district, 2) }
+
   let(:reasons) do
     {
       'reasons' => [
         {
           'id' => 'countries_ineligible',
-          'fund_value' => ['United Kingdom'],
-          'proposal_value' => ['Kenya']
+          'fund_value' => [countries[0].id],
+          'proposal_value' => [countries[1].id]
         },
         {
           'id' => 'country_outside_area',
-          'fund_value' => ['United Kingdom'],
-          'proposal_value' => ['United Kingdom', 'Kenya']
+          'fund_value' => [countries[0].id],
+          'proposal_value' => countries.pluck(:id)
         },
         {
           'id' => 'district_outside_area',
-          'fund_value' => ['London'],
-          'proposal_value' => %w[London Nairobi]
+          'fund_value' => [districts[0].id],
+          'proposal_value' => districts.pluck(:id)
         },
         {
           'id' => 'districts_ineligible',
-          'fund_value' => ['London'],
-          'proposal_value' => ['Nairobi']
+          'fund_value' => [districts[0].id],
+          'proposal_value' => [districts[1].id]
         },
         {
           'id' => 'geographic_scale_ineligible',
@@ -40,22 +43,22 @@ describe Rating::Eligibility::Location do
 
   context '#messages' do
     it 'countries_ineligible' do
-      message = 'Only supports work in United Kingdom, ' \
-                'and you are seeking work in Kenya'
+      message = "Does not support work in #{countries[1].name}"
       expect(subject.messages).to include(message)
     end
 
     it 'country_outside_area' do
-      expect(subject.messages).to include('Work in Kenya is not supported')
+      message = "Work in #{countries[1].name} is not supported"
+      expect(subject.messages).to include(message)
     end
 
     it 'district_outside_area' do
-      expect(subject.messages).to include('Work in Nairobi is not supported')
+      message = "Work in #{districts[1].name} is not supported"
+      expect(subject.messages).to include(message)
     end
 
     it 'districts_ineligible' do
-      message = 'Only supports work in London, ' \
-                'and you are seeking work in Nairobi'
+      message = "Does not support work in #{districts[1].name}"
       expect(subject.messages).to include(message)
     end
 
