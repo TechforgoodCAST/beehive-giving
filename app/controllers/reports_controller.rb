@@ -3,6 +3,8 @@ class ReportsController < ApplicationController
     @proposal = Proposal.find_by(id: params[:proposal_id])
     @collection = @proposal&.collection
 
+    update_report_if_opportunities_changed!
+
     if @proposal
       if @proposal.private? && params[:t] != @proposal.access_token
         authenticate_user(@proposal)
@@ -20,4 +22,14 @@ class ReportsController < ApplicationController
     @reports = @current_user.proposals.includes(:collection, :recipient)
                             .order(created_at: :desc)
   end
+
+  private
+
+    def update_report_if_opportunities_changed!
+      return if @proposal.nil?
+      return if @proposal.updated_at > @collection.opportunities_last_updated_at
+
+      Assessment.analyse_and_update!(@collection.funds.active, @proposal)
+      @proposal.touch
+    end
 end

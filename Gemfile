@@ -43,7 +43,6 @@ gem 'redcarpet'
 gem 'simple_form'
 gem 'sitemap_generator'
 gem 'stripe'
-gem 'xxhash'
 
 # Admin
 gem 'activeadmin'

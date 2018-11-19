@@ -25,7 +25,6 @@ class Assessment < ApplicationRecord
     eligibility_status
     suitability_quiz_failing
     suitability_status
-    fund_version
     reasons
   ]).freeze
 

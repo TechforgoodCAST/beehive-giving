@@ -55,9 +55,9 @@ class Fund < ApplicationRecord
 
   validate :validate_integer_rules, :validate_links
 
-  # TODO: review
-  def self.version
-    XXhash.xxh32(active.order(:updated_at).pluck(:updated_at).join)
+  after_save do
+    funder.touch(:opportunities_last_updated_at)
+    themes.each { |t| t.touch(:opportunities_last_updated_at) }
   end
 
   def description_html

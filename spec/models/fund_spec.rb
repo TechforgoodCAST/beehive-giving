@@ -182,11 +182,4 @@ describe Fund do
     subject.save!
     expect(Fund.active.count).to eq(1)
   end
-
-  # TODO: review
-  it '#version' do
-    subject.save!
-    subject.update_column(:updated_at, DateTime.new(2018, 1, 1).in_time_zone)
-    expect(Fund.version).to eq(46947589)
-  end
 end

@@ -6,8 +6,7 @@ describe Check::Each do
   let(:assessment) do
     create(
       :assessment,
-      fund: create_list(:fund_with_rules, 2, state: 'active')[0],
-      fund_version: Fund.version
+      fund: create_list(:fund_with_rules, 2, state: 'active')[0]
     )
   end
 

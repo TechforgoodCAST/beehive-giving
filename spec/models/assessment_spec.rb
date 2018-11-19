@@ -49,7 +49,6 @@ describe Assessment do
         eligibility_status
         suitability_quiz_failing
         suitability_status
-        fund_version
         reasons
       ]
       permitted = eligibility + suitability + misc
