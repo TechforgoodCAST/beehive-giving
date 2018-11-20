@@ -1,11 +1,10 @@
 require 'rails_helper'
 
 describe Question do
-  subject(:question) { build(:question, criterion: criterion, fund: fund, group: group) }
+  subject(:question) { build(:question, criterion: criterion, fund: fund) }
 
   let(:criterion) { create(:criterion) }
   let(:fund) { create(:fund) }
-  let(:group) { nil }
 
   it 'belongs to criterion' do
     assoc(:criterion, :belongs_to, polymorphic: true)
@@ -33,20 +32,5 @@ describe Question do
   context 'when fund is nil' do
     let(:fund) { nil }
     it_behaves_like 'raises RecordInvalid when has invalid values'
-  end
-
-  context 'grouped scope' do
-    subject { described_class.grouped(*scope_params) }
-
-    before { question.save }
-    let(:group) { 'test_group' }
-    let(:scope_params) { [nil, nil] }
-    context 'when matches' do
-      let(:scope_params) { [question.criterion_type, group] }
-      it { expect(subject.size).to eq(1) }
-    end
-    context 'when does not match' do
-      it { expect(subject.size).to eq(0) }
-    end
   end
 end

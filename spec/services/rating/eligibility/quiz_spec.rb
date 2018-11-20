@@ -9,17 +9,17 @@ describe Rating::Eligibility::Quiz do
         {
           'id' => 'eligible',
           'fund_value' => [1],
-          'proposal_value' => { 1 => true }
+          'proposal_value' => { '1' => true }
         },
         {
           'id' => 'incomplete',
           'fund_value' => [1, 2],
-          'proposal_value' => { 1 => true }
+          'proposal_value' => { '1' => true }
         },
         {
           'id' => 'ineligible',
           'fund_value' => [1],
-          'proposal_value' => { 1 => false }
+          'proposal_value' => { '1' => false }
         }
       ]
     }
