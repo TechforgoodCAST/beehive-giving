@@ -187,7 +187,7 @@ ActiveAdmin.register Fund do
       end
 
       inputs 'Proposal Categories' do
-        input :proposal_categories, as: :select, include_blank: false, collection: Proposal::CATEGORIES.values.inject(:merge).invert, input_html: { multiple: true, class: 'choices-select' }
+        input :proposal_categories, as: :select, collection: Proposal::CATEGORIES.values.inject(:merge).invert, input_html: { multiple: true, class: 'choices-select' }
       end
 
       inputs 'Recipient Categories' do
