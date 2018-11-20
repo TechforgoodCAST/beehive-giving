@@ -75,6 +75,18 @@ class Fund < ApplicationRecord
     self[:links] = JSON.parse(json.to_json)
   end
 
+  def proposal_categories=(arr)
+    super(arr.reject(&:blank?).map(&:to_i))
+  end
+
+  def proposal_permitted_geographic_scales=(arr)
+    super(arr.reject(&:blank?))
+  end
+
+  def recipient_categories=(arr)
+    super(arr.reject(&:blank?).map(&:to_i))
+  end
+
   def to_param
     hashid
   end
