@@ -3,11 +3,13 @@ ActiveAdmin.register Fund do
 
   permit_params :description, :funder_id, :geo_area_id, :links, :name,
                 :proposal_all_in_area, :proposal_area_limited,
-                :proposal_categories, :proposal_max_amount,
-                :proposal_max_duration, :proposal_min_amount,
-                :proposal_min_duration, :proposal_permitted_geographic_scales,
-                :recipient_categories, :recipient_max_income,
-                :recipient_min_income, :state, :state, :website,
+                :proposal_max_amount, :proposal_max_duration,
+                :proposal_min_amount, :proposal_min_duration,
+                :recipient_max_income, :recipient_min_income, :state, :state,
+                :website,
+                proposal_categories: [],
+                proposal_permitted_geographic_scales: [],
+                recipient_categories: [],
                 theme_ids: [],
                 questions_attributes: [
                   :id, :criterion_id, :criterion_type, :criterion, :group,
@@ -185,7 +187,7 @@ ActiveAdmin.register Fund do
       end
 
       inputs 'Proposal Categories' do
-        input :proposal_categories, as: :select, collection: Proposal::CATEGORIES.values.inject(:merge).invert, input_html: { multiple: true, class: 'choices-select' }
+        input :proposal_categories, as: :select, include_blank: false, collection: Proposal::CATEGORIES.values.inject(:merge).invert, input_html: { multiple: true, class: 'choices-select' }
       end
 
       inputs 'Recipient Categories' do

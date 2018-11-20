@@ -33,6 +33,32 @@ describe Fund do
 
   it { is_expected.to be_valid }
 
+  context '#description' do
+    it 'presence' do
+      subject.update(description: nil)
+      expect_error(:description, "can't be blank")
+    end
+  end
+
+  context '#links' do
+    it 'format' do
+      subject.update(links: { 'Name' => 'www.bad.link' })
+      expect_error(:links, 'www.bad.link must begin with http:// or https://')
+    end
+  end
+
+  context '#links=' do
+    it 'parse' do
+      subject.links = "{\"valid\":\"json\"}"
+      expect(subject.links).to eq({ 'valid' => 'json' })
+    end
+
+    it 'rescue' do
+      subject.links = 1
+      expect(subject.links).to eq(1)
+    end
+  end
+
   context '#name' do
     it 'presence' do
       subject.update(name: nil)
@@ -52,19 +78,19 @@ describe Fund do
     end
   end
 
-  context '#description' do
-    it 'presence' do
-      subject.update(description: nil)
-      expect_error(:description, "can't be blank")
-    end
+  it '#proposal_categories=' do
+    subject.proposal_categories = ['', '1']
+    expect(subject.proposal_categories).to eq([1])
   end
 
-  context '#website' do
-    it 'format' do
-      subject.update(website: nil)
-      msg = 'enter a valid website address e.g. http://www.example.com'
-      expect_error(:website, msg)
-    end
+  it '#proposal_permitted_geographic_scales=' do
+    subject.proposal_permitted_geographic_scales = ['', '1']
+    expect(subject.proposal_permitted_geographic_scales).to eq(['1'])
+  end
+
+  it '#recipient_categories=' do
+    subject.recipient_categories = ['', '1']
+    expect(subject.recipient_categories).to eq([1])
   end
 
   context '#state' do
@@ -85,10 +111,11 @@ describe Fund do
     end
   end
 
-  context '#links' do
+  context '#website' do
     it 'format' do
-      subject.update(links: { 'Name' => 'www.bad.link' })
-      expect_error(:links, 'www.bad.link must begin with http:// or https://')
+      subject.update(website: nil)
+      msg = 'enter a valid website address e.g. http://www.example.com'
+      expect_error(:website, msg)
     end
   end
 
