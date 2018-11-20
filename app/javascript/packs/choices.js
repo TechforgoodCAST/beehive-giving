@@ -12,6 +12,20 @@ document.addEventListener("turbolinks:load", function () {
         new Choices(selector, opts);
     }
 
+    const questions = document.querySelector(".has_many_container.questions");
+
+    const observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            new Choices(mutation.addedNodes[0].elements[1], opts);
+        });
+    });
+
+    if (questions) {
+        observer.observe(questions, { childList: true });
+    } else {
+        observer.disconnect();
+    }
+
     if (document.getElementById("recipient_district_id")) {
         const select = document.getElementById("recipient_country_id");
         const choices = new Choices("#recipient_district_id", opts);

@@ -196,7 +196,6 @@ ActiveAdmin.register Fund do
 
       inputs 'Questions' do
         has_many :questions, heading: false, allow_destroy: true do |q|
-          q.input :group
           q.input :criterion_type, as: :select, collection: %w[Restriction Priority]
           q.input :criterion, collection: Criterion.pluck(:details, :invert, :id, :type).map { |r| ["#{r[3]}: #{r[0]}#{(" [INVERT]" if r[1])}", r[2]] },
                               input_html: { class: 'choices-select' }
