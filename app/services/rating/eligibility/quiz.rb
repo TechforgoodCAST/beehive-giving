@@ -20,7 +20,8 @@ module Rating
         end
 
         def ineligible(fund_value, proposal_value)
-          failing = proposal_value.count { |_k, v| v == false }
+          failing = proposal_value.slice(*fund_value.map(&:to_s))
+                                  .count { |_k, v| v == false }
           "You do not meet #{failing} of the restrictions for this opportunity"
         end
     end
