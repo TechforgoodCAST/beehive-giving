@@ -1,9 +1,6 @@
 ActiveAdmin.register Funder do
-  config.sort_order = 'created_at_asc'
-
-  permit_params :name, :slug, :website, :charity_number, :company_number,
-                :active, :microsite, :primary_colour, :headline_colour,
-                :subtitle_colour
+  permit_params :active, :microsite, :name, :primary_color, :secondary_color,
+                :slug, :website
 
   controller do
     def find_resource
@@ -12,7 +9,6 @@ ActiveAdmin.register Funder do
   end
 
   filter :name
-  config.sort_order = 'name_asc'
 
   index do
     selectable_column
@@ -21,9 +17,6 @@ ActiveAdmin.register Funder do
     end
     column :active
     column :microsite
-    column :has_funds do |funder|
-      funder.funds.count.positive?
-    end
     column :funds do |funder|
       funder.funds.size
     end
@@ -40,9 +33,9 @@ ActiveAdmin.register Funder do
       row :company_number
       row :active
       row :microsite
-      row :primary_colour
-      row :headline_colour
-      row :subtitle_colour
+      row :primary_color
+      row :secondary_color
+      row :opportunities_last_updated_at
     end
 
     panel 'Funds' do
@@ -56,5 +49,17 @@ ActiveAdmin.register Funder do
         end
       end
     end
+  end
+
+  form do |f|
+    f.inputs do
+      f.input :slug
+      f.input :name
+      f.input :active
+      f.input :microsite
+      f.input :primary_color, as: :string
+      f.input :secondary_color, as: :string
+    end
+    f.actions
   end
 end
