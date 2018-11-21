@@ -52,7 +52,7 @@
 
             .p20
               -# TODO: truncate
-              .mb15= raw(a.fund.description_html)
+              .mb15.markdown= raw(a.fund.description_html)
               -# TODO: size
               = link_to 'Website', a.fund.website, target: '_blank', class: 'btn blue border-mist', onclick: "trackOutboundLink('#{a.fund.website}');"
               - a.fund.links.each do |text, href|
