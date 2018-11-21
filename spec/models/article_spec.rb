@@ -10,11 +10,6 @@ describe Article do
     expect(subject).not_to be_valid
   end
 
-  it 'titleize title' do
-    subject.title = 'titleize'
-    expect(subject.title).to eq('Titleize')
-  end
-
   it 'requires slug' do
     subject.slug = ''
     expect(subject).not_to be_valid

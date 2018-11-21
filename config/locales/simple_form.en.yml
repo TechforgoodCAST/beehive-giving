@@ -38,7 +38,7 @@ en:
         districts: 'Type the name of the place (e.g. Birmingham) to get started.'
         min_amount: 'If you have an exact amount in mind then use the same figure in both boxes.'
         min_duration: 'If you have an exact duration in mind then use the same figure in both boxes.'
-        public_consent: 'By clicking ‘Get suitability report’ non-personal details about my request will be added to a publically viewable directory that anyone can browse, comment on and download under a Creative Commons Attribution 4.0 International (CC BY 4.0) license. I can opt to remove my report from the public directory at any time by making it private for a small fee (details to follow).'
+        public_consent: "By clicking 'Get suitability report' non-personal details about my request will be added to a publicly viewable directory that anyone can browse, comment on and download under a Creative Commons Attribution 4.0 International (CC BY 4.0) license. I can opt to remove my report from the public directory at any time by making it private for a small fee (details to follow)."
         title: 'This could be the name of your project, or a few words describing your proposal.'
       recipient:
         charity_number: 'If applicable'
