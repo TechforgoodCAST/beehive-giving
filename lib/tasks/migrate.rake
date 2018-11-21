@@ -68,7 +68,7 @@ namespace :migrate do
     return puts ': no Proposals' unless proposals.any?
 
     proposals.each do |proposal|
-      if funds.nil?
+      if funds.blank?
         funds = Fund.joins(:themes).active.merge(proposal.themes).distinct
       end
 
