@@ -26,7 +26,7 @@ class ReportsController < ApplicationController
   private
 
     def update_report_if_opportunities_changed!
-      return if @proposal.nil?
+      return if @proposal.nil? || @collection&.opportunities_last_updated_at.nil?
       return if @proposal.updated_at > @collection.opportunities_last_updated_at
 
       Assessment.analyse_and_update!(@collection.funds.active, @proposal)
