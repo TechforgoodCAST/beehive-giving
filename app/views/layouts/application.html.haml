@@ -40,10 +40,10 @@
     - if logged_in? && (@current_user&.terms_version != TERMS_VERSION)
       .bg-night.border-bottom.border-slate.fs15.white
         .maxw1050.mx-auto.px15.py7.flex.items-center.justify-between
-          We've updated our privacy policy.
+          We've updated our terms of service.
           .flex
             = link_to 'Agree', terms_version_path(@current_user), method: :post, class: 'btn white'
-            = link_to 'Review', privacy_path, class: 'btn border-grey silver'
+            = link_to 'Review', terms_path, class: 'btn border-grey silver'
 
     - flash.each do |key, msg|
       .bg-night.border-bottom.border-slate.fs15.white
