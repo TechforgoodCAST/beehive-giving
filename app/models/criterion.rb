@@ -1,7 +1,7 @@
 class Criterion < ApplicationRecord
   has_many :answers
-  has_many :funds, through: :questions
   has_many :questions
+  has_many :funds, through: :questions
 
   validates :category, inclusion: { in: %w[Proposal Recipient] }
   validates :details, presence: true, uniqueness: true
