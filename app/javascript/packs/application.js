@@ -65,9 +65,6 @@ document.addEventListener("turbolinks:load", function () {
 // Utility
 window.trackOutboundLink = function (url) {
     window.ga("send", "event", "outbound", "click", url, {
-        "transport": "beacon",
-        "hitCallback": function () {
-          window.open(url);
-        }
+        "transport": "beacon"
     });
 };
