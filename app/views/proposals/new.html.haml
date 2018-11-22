@@ -84,7 +84,7 @@
                     %label.mx20.py10.fs15= raw('... ' + a.object.criterion.details)
 
         -# TODO: spec & responsive
-        - if @collection.priorities.any?
+        - if @collection.priorities.where(category: 'Proposal').any?
           .border-top.border-mist.px20.pb10.pt30
             .heading.fs18.bold.night.pb5
               Does your proposal confidently meet the following priorities? *
@@ -100,6 +100,8 @@
                       - a.object.criterion.radio_button_values.each do |label, value|
                         = a.radio_button :eligible, value
                         = a.label "eligible_#{value}", label
+
+                    %label.mx20.py10.fs15= raw(a.object.criterion.details)
 
         - if !logged_in?
           = f.simple_fields_for :user do |u|

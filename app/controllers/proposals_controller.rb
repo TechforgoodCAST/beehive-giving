@@ -38,7 +38,6 @@ class ProposalsController < ApplicationController
 
     def criteria
       @collection.criteria.where(category: 'Proposal')
-                 .where('type = ? OR type = ?', 'Restriction', 'Priority')
     end
 
     def form_params
