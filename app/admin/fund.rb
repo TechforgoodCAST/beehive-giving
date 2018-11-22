@@ -126,17 +126,12 @@ ActiveAdmin.register Fund do
 
       attributes_table title: 'Quiz' do
         row :restrictions do
-          labels = {
-            'Recipient' => 'Is your organisation...',
-            'Proposal' => 'Is your funding proposal for...'
-          }
           invert = { true => 'Must', false => 'Must not' }
-
           fund.restrictions.group_by { |r| [r.category, r.invert] }.map do |k, v|
             li = v.map { |r| "<li>#{r.details}</li>" }.join
             "
-              <i>#{invert[k[1]]}</i><br/>
-              <strong>#{labels[k[0]]}</strong>
+              <i>#{invert[k[1]]}</i><br>
+              <strong>[#{k[0]}] Is your proposal for...</strong>
               <ul>#{li}</ul>
             "
           end.join.html_safe
@@ -146,7 +141,23 @@ ActiveAdmin.register Fund do
 
     attributes_table title: 'Suitability' do
       attributes_table title: 'Quiz' do
-        row :priorities
+        row :priorities do
+          invert = { true => 'Desired', false => 'Undesired' }
+
+          labels = {
+            'Recipient' => 'Is your proposal for...',
+            'Proposal' => 'Does your proposal confidently meet the following priorities?'
+          }
+
+          fund.priorities.group_by { |r| [r.category, r.invert] }.map do |k, v|
+            li = v.map { |r| "<li>#{r.details}</li>" }.join
+            "
+              <i>#{invert[k[1]]}</i><br>
+              <strong>#{labels[k[0]]}</strong>
+              <ul>#{li}</ul>
+            "
+          end.join.html_safe
+        end
       end
     end
   end

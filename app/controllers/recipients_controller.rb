@@ -29,7 +29,7 @@ class RecipientsController < ApplicationController
   private
 
     def criteria
-      @collection.restrictions.where(category: 'Recipient')
+      @collection.criteria.where(category: 'Recipient')
     end
 
     def form_params
