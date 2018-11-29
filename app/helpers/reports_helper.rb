@@ -6,6 +6,10 @@ module ReportsHelper
     "Between #{min} and #{max}"
   end
 
+  def created_by(recipient = @proposal.recipient)
+    recipient.individual? ? 'an individual' : recipient.name
+  end
+
   def location_description(proposal = @proposal)
     "#{proposal.geographic_scale.capitalize} - " \
     "#{proposal.countries.pluck(:name).to_sentence}"
