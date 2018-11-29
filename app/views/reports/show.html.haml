@@ -5,7 +5,7 @@
   %header.bg-primary
     = render partial: 'shared/nav', locals: { color: 'white' }
     -# TODO: spec
-    - if @collection
+        - if @collection
       = cell(:breadcrumb, 'Opportunities' => opportunities_path, @collection.name => opportunity_path(@collection), @proposal.identifier => report_path(@proposal))
     - else
       = cell(:breadcrumb, 'Opportunities' => opportunities_path, "Report #{@proposal.identifier}" => report_path(@proposal))
@@ -78,12 +78,10 @@
             %h6.bold.slate Proposal
           .m20
             .fs14.heading.bold.night.mb5 Title
-            -# TODO: default text for missing title from legacy record
-            .fs14.lh18.slate= @proposal.title
+            .fs14.lh18.slate= @proposal.title_with_default
           .m20
             .fs14.heading.bold.night.mb5 Description
-            -# TODO: default text for missing description from legacy record
-            .fs14.lh18.slate= @proposal.description
+            .fs14.lh18.slate= @proposal.description_with_default
           .m20
             .fs14.heading.bold.night.mb5 Support type
             .fs14.lh18.slate= support_type

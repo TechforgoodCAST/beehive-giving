@@ -36,8 +36,7 @@
           .p20.flex.flex-column.f1
             .f1
               .night.h6.bold.mb5 Proposal
-              -# TODO: default text for missing title from legacy record
-              .mb15= report.title
+              .mb15= report.title_with_default
 
               .night.h6.bold.mb5 Recipient
               .mb20= recipient_name(report.recipient)
