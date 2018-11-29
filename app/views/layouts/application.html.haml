@@ -17,14 +17,16 @@
         %iframe{:height => "0", :src => "https://www.googletagmanager.com/ns.html?id=GTM-W3BQHWD", :style => "display:none;visibility:hidden", :width => "0"}
 
     - if !session[:read_cookies_notice]
-      .fs14.lh18.white.bg-night.pt20.px20.flex.items-center.justify-between.flex-wrap{ style: 'position: fixed; bottom: 0; z-index: 9999;' }
-        .mb20.md.f1
-          We use cookies to give you the best experience on our website. In addition to strictly neccesary cookies, third party cookies may track your use of Beehive. If you continue without changing your settings, we'll assume that you are happy to receive all cookies.
-          = link_to 'More about cookies', 'https://cookiesandyou.com/', class: 'white bold underline', target: '_blank', rel: 'noopener'
+      .bg-night.fs14.lh18.white.pt15.px15
+        .maxw1050.mx-auto
+          .flex.flex-wrap
+            .mb15.md.col2
+              We use cookies to give you the best experience on our website. In addition to strictly neccesary cookies, third party cookies may track your use of Beehive. If you continue without changing your settings, we'll assume that you are happy to receive all cookies.
+              = link_to 'More about cookies', 'https://cookiesandyou.com/', class: 'white bold underline', target: '_blank', rel: 'noopener'
 
-        .mb20.md.flex.justify-center
-          = link_to 'Change settings', privacy_path(anchor: 'cookies', read_cookies_notice: true), class: 'btn-sm white'
-          = link_to 'Continue', update_cookies_path(functional_cookies: true, performance_cookies: true, read_cookies_notice: true), class: 'btn-sm bg-blue white shadow'
+            .mb15.md.col1.flex.justify-center.items-center
+              = link_to 'Change settings', privacy_path(anchor: 'cookies', read_cookies_notice: true), class: 'btn-sm white'
+              = link_to 'Continue', update_cookies_path(functional_cookies: true, performance_cookies: true, read_cookies_notice: true), class: 'btn-sm bg-blue white shadow'
 
     -# TODO: spec
     - if logged_in? && (@current_user&.update_version != UPDATE_VERSION)
