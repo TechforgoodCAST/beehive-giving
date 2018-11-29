@@ -16,7 +16,7 @@
         %h1.bold.mb5 £50
         .fs14.mb25.slate Per opportunity
         .mb20 You submit details about an opportunity and we’ll work with you to make sure it’s added quickly and correctly.
-        = link_to('Add verified opportunity', add_opportunity_form_url('verified'), class: 'btn btn-wide blue bg-light-blue border-pale-blue', target: '_blank')
+        = link_to('Add verified opportunity', add_opportunity_form_url('verified'), class: 'btn btn-wide blue bg-light-blue border-pale-blue', target: '_blank', rel: 'noopener')
 
       .px20.py25.bg-white.shadow.rounded.flex.flex-column.justify-between
         %div
@@ -24,7 +24,7 @@
           %h1.bold.mb5 £199
           .fs14.mb25.slate Per opportunity per year
           .mb20 We gather all the details needed to add an opportunity, then add and manage it for you.
-        = link_to('Add managed opportunity', add_opportunity_form_url('managed'), class: 'btn btn-wide blue bg-light-blue border-pale-blue', target: '_blank')
+        = link_to('Add managed opportunity', add_opportunity_form_url('managed'), class: 'btn btn-wide blue bg-light-blue border-pale-blue', target: '_blank', rel: 'noopener')
 
 .bg-ice
   = render partial: 'shared/footer', locals: { color: 'slate' }

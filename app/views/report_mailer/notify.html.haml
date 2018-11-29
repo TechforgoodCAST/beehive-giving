@@ -14,12 +14,12 @@
   is ready.
 
 %p
-  = link_to('View full report', report_url(@proposal, t: @proposal.access_token), target: '_blank')
-  = link_to('All my reports', sign_in_lookup_url(email: @user.email), target: '_blank')
+  = link_to('View full report', report_url(@proposal, t: @proposal.access_token), target: '_blank', rel: 'noopener')
+  = link_to('All my reports', sign_in_lookup_url(email: @user.email), target: '_blank', rel: 'noopener')
 
 %p Please note
 %p
   Unless you opt to
   = succeed ',' do
-    = link_to('keep the report Private', new_charge_url(@proposal), target: '_blank')
+    = link_to('keep the report Private', new_charge_url(@proposal), target: '_blank', rel: 'noopener')
   it will be added to a publically viewable directory that others can browse.

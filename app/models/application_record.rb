@@ -9,7 +9,7 @@ class ApplicationRecord < ActiveRecord::Base
     options = { hard_wrap: true,
                 space_after_headers: true, fenced_code_blocks: true,
                 tables: true, footnotes: true,
-                link_attributes: { target: '_blank' } }
+                link_attributes: { target: '_blank', rel: 'noopener' } }
 
     extensions = { autolink: true, disable_indented_code_blocks: true }
 

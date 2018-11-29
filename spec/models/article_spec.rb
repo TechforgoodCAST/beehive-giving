@@ -28,7 +28,8 @@ describe Article do
 
   it '#body_html returns html' do
     html = '<h2><strong><a href="http://www.beehivegiving.org" ' \
-           "target=\"_blank\">www.beehivegiving.org</a></strong></h2>\n"
+           "target=\"_blank\" rel=\"noopener\">www.beehivegiving.org</a>" \
+           "</strong></h2>\n"
     expect(subject.body_html).to eq(html)
   end
 end

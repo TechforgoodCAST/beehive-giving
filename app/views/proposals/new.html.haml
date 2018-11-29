@@ -119,7 +119,7 @@
             .border-top.border-mist.pb10.pt30
               .px20
                 .heading.fs18.bold.night.mb20 Consent
-                .mb20= u.input :terms_agreed, as: :boolean, label: false, inline_label: "<span class='private'>I accept the #{link_to('terms of service', terms_path, target: '_blank')} and #{link_to('privacy policy', privacy_path, target: '_blank')} * <i class='icon'></i></span>".html_safe
+                .mb20= u.input :terms_agreed, as: :boolean, label: false, inline_label: "<span class='private'>I accept the #{link_to('terms of service', terms_path, target: '_blank', rel: 'noopener')} and #{link_to('privacy policy', privacy_path, target: '_blank', rel: 'noopener')} * <i class='icon'></i></span>".html_safe
                 .mb20= u.input :marketing_consent, as: :radio_buttons, required: true, label_html: { class: 'private' }
 
         .border-top.border-mist.p20
@@ -128,7 +128,7 @@
 
           .mt10.mb20= f.input :public_consent, as: :boolean, label: false, inline_label: 'I understand', hint: false
 
-          = f.submit 'Get suitability report', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Checking...' }
+          = f.submit 'Get suitability report', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Creating report...' }
 
   .bg-dark-blue
     = render partial: 'shared/footer', locals: { color: 'white' }
