@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181130114527) do
+ActiveRecord::Schema.define(version: 20181130143755) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,20 +44,6 @@ ActiveRecord::Schema.define(version: 20181130114527) do
     t.datetime "updated_at"
     t.index ["email"], name: "index_admin_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
-  end
-
-  create_table "age_groups", id: :serial, force: :cascade do |t|
-    t.string "label"
-    t.integer "age_from"
-    t.integer "age_to"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "age_groups_proposals", id: :serial, force: :cascade do |t|
-    t.integer "age_group_id"
-    t.integer "proposal_id"
-    t.index ["age_group_id", "proposal_id"], name: "index_age_groups_proposals_on_age_group_id_and_proposal_id"
   end
 
   create_table "answers", id: :serial, force: :cascade do |t|
@@ -116,21 +102,6 @@ ActiveRecord::Schema.define(version: 20181130114527) do
     t.index ["funder_id"], name: "index_attempts_on_funder_id"
     t.index ["proposal_id"], name: "index_attempts_on_proposal_id"
     t.index ["recipient_id"], name: "index_attempts_on_recipient_id"
-  end
-
-  create_table "beneficiaries", id: :serial, force: :cascade do |t|
-    t.string "label", limit: 255
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "category"
-    t.string "sort"
-  end
-
-  create_table "beneficiaries_proposals", id: :serial, force: :cascade do |t|
-    t.integer "beneficiary_id"
-    t.integer "proposal_id"
-    t.index ["beneficiary_id"], name: "index_beneficiaries_proposals_on_beneficiary_id"
-    t.index ["proposal_id"], name: "index_beneficiaries_proposals_on_proposal_id"
   end
 
   create_table "countries", id: :serial, force: :cascade do |t|
@@ -292,18 +263,6 @@ ActiveRecord::Schema.define(version: 20181130114527) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "implementations", id: :serial, force: :cascade do |t|
-    t.string "label", limit: 255
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "implementations_proposals", id: :serial, force: :cascade do |t|
-    t.integer "implementation_id"
-    t.integer "proposal_id"
-    t.index ["implementation_id", "proposal_id"], name: "index_implementations_proposals"
-  end
-
   create_table "proposal_themes", force: :cascade do |t|
     t.bigint "proposal_id"
     t.bigint "theme_id"
@@ -317,42 +276,12 @@ ActiveRecord::Schema.define(version: 20181130114527) do
     t.integer "recipient_id"
     t.string "title"
     t.string "description"
-    t.string "gender"
-    t.string "outcome1"
-    t.string "outcome2"
-    t.string "outcome3"
-    t.string "outcome4"
-    t.string "outcome5"
-    t.string "beneficiaries_other"
-    t.integer "min_age"
-    t.integer "max_age"
-    t.integer "beneficiaries_count"
     t.integer "min_duration"
-    t.float "activity_costs"
-    t.float "people_costs"
-    t.float "capital_costs"
-    t.float "other_costs"
     t.integer "min_amount"
-    t.boolean "activity_costs_estimated", default: false
-    t.boolean "people_costs_estimated", default: false
-    t.boolean "capital_costs_estimated", default: false
-    t.boolean "other_costs_estimated", default: false
-    t.boolean "all_funding_required"
-    t.boolean "beneficiaries_other_required"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "type_of_support"
     t.string "state", default: "complete"
-    t.boolean "affect_people"
-    t.boolean "affect_other"
-    t.integer "affect_geo"
-    t.boolean "total_costs_estimated", default: false
     t.boolean "prevent_funder_verification"
-    t.boolean "implementations_other_required"
-    t.string "implementations_other"
-    t.jsonb "recommended_funds", default: []
-    t.jsonb "eligibility", default: {}, null: false
-    t.jsonb "suitability", default: {}, null: false
     t.integer "category_code"
     t.boolean "public_consent"
     t.string "support_details"
@@ -361,7 +290,6 @@ ActiveRecord::Schema.define(version: 20181130114527) do
     t.string "geographic_scale"
     t.bigint "user_id"
     t.string "access_token"
-    t.boolean "legacy"
     t.datetime "private"
     t.bigint "collection_id"
     t.string "collection_type"
