@@ -1,5 +1,5 @@
 ActiveAdmin.register Funder do
-  permit_params :active, :microsite, :name, :primary_color, :secondary_color,
+  permit_params :active, :name, :primary_color, :secondary_color,
                 :slug, :website
 
   controller do
@@ -16,7 +16,6 @@ ActiveAdmin.register Funder do
       link_to funder.name, [:admin, funder]
     end
     column :active
-    column :microsite
     column :funds do |funder|
       funder.funds.size
     end
@@ -32,7 +31,6 @@ ActiveAdmin.register Funder do
       row :charity_number
       row :company_number
       row :active
-      row :microsite
       row :primary_color
       row :secondary_color
       row :opportunities_last_updated_at
@@ -42,7 +40,6 @@ ActiveAdmin.register Funder do
       table_for funder.funds do
         column :slug
         column :active
-        column :microsite
         column :actions do |fund|
           link_to 'View', [:admin, fund]
           link_to 'Edit', [:edit_admin, fund]
@@ -56,7 +53,6 @@ ActiveAdmin.register Funder do
       f.input :slug
       f.input :name
       f.input :active
-      f.input :microsite
       f.input :primary_color, as: :string
       f.input :secondary_color, as: :string
     end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181130111331) do
+ActiveRecord::Schema.define(version: 20181130112454) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -250,7 +250,6 @@ ActiveRecord::Schema.define(version: 20181130111331) do
     t.boolean "active", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "microsite", default: false, null: false
     t.string "primary_color"
     t.string "secondary_color"
     t.datetime "opportunities_last_updated_at", default: "2018-10-31 00:00:00", null: false
