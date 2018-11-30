@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181130112454) do
+ActiveRecord::Schema.define(version: 20181130114527) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -253,6 +253,7 @@ ActiveRecord::Schema.define(version: 20181130112454) do
     t.string "primary_color"
     t.string "secondary_color"
     t.datetime "opportunities_last_updated_at", default: "2018-10-31 00:00:00", null: false
+    t.integer "active_opportunities_count", default: 0, null: false
     t.index ["slug"], name: "index_funders_on_slug", unique: true
   end
 
@@ -366,6 +367,7 @@ ActiveRecord::Schema.define(version: 20181130112454) do
     t.string "collection_type"
     t.bigint "duplicate_of"
     t.datetime "migrated_on"
+    t.integer "assessments_count", default: 0, null: false
     t.index ["collection_id"], name: "index_proposals_on_collection_id"
     t.index ["collection_type"], name: "index_proposals_on_collection_type"
     t.index ["recipient_id"], name: "index_proposals_on_recipient_id"
@@ -468,6 +470,7 @@ ActiveRecord::Schema.define(version: 20181130112454) do
     t.string "slug"
     t.string "classes"
     t.datetime "opportunities_last_updated_at", default: "2018-10-31 00:00:00", null: false
+    t.integer "active_opportunities_count", default: 0, null: false
     t.index ["name"], name: "index_themes_on_name", unique: true
     t.index ["parent_id"], name: "index_themes_on_parent_id"
     t.index ["slug"], name: "index_themes_on_slug", unique: true

@@ -37,8 +37,7 @@
                 .caps.grey.mb5= opp.class
 
                 %h3.mb10= opp.name
-                -# TODO: opportunities count
-                %p= pluralize(opp.funds.active.size, 'opportunity')
+                %p= pluralize(opp.active_opportunities_count, 'opportunity')
 
             .px20.pb20.flex
               = link_to 'Get report', new_recipient_path(opp), class: 'btn btn-wide white bg-blue'

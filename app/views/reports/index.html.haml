@@ -30,8 +30,8 @@
               Created
               = time_ago_in_words(report.created_at)
               ago
-              -# •
-              -# TODO: opportunities count
+              •
+              = pluralize(report.assessments_count, 'opportunity')
 
           .p20.flex.flex-column.f1
             .f1

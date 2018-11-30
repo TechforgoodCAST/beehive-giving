@@ -34,8 +34,7 @@
     .mt40.flex.flex-wrap
       .col2.px15
         %h3.bold.night.mb40
-          -# TODO: opportunities count
-          = pluralize(@proposal.assessments.size, 'opportunity')
+          = pluralize(@proposal.assessments_count, 'opportunity')
           checked
 
         - @proposal.assessments.includes(fund: [:funder]).each do |a|

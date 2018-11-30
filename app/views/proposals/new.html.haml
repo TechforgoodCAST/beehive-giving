@@ -6,8 +6,7 @@
     .center.mb40
       .fs32.px5.white.heading= collection_title(@collection)
       .fs16.py15.white Avoid wasted effort with a suitability report that helps you decide where to apply
-      -# TODO: opportunities count
-      .fs15.white.italic= pluralize(@collection.funds.active.size, 'opportunity')
+      .fs15.white.italic= pluralize(@collection.active_opportunities_count, 'opportunity')
 
     .bg-white.rounded.shadow
 

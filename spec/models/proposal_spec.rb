@@ -274,6 +274,24 @@ describe Proposal do
     end
   end
 
+  context '#assessments_count' do
+    it 'updated when assessment added' do
+      expect(subject.assessments_count).to eq(0)
+    end
+
+    it 'updated when assessment destroyed' do
+      expect_assessment_added
+      @assessment.destroy
+      expect(subject.assessments_count).to eq(0)
+    end
+  end
+
+  def expect_assessment_added
+    @assessment = build(:assessment)
+    subject.update!(assessments: [@assessment])
+    expect(subject.assessments_count).to eq(1)
+  end
+
   scenario '#country set'
 
   scenario 'countries & districts properly cleared & last selection takes precedence'

@@ -62,4 +62,28 @@ describe Theme do
 
   it('#primary_color') { expect(subject.primary_color).to eq(nil) }
   it('#secondary_color') { expect(subject.primary_color).to eq(nil) }
+
+  context '#active_opportunities_count' do
+    it 'updated when active opportunity added' do
+      expect(subject.active_opportunities_count).to eq(0)
+      expect_opportunity_added
+    end
+
+    it 'updated when opportunity no longer active' do
+      expect_opportunity_added
+      @opportunity.update!(state: 'inactive')
+      expect(subject.active_opportunities_count).to eq(0)
+    end
+
+    it 'updated when opportunity destroyed' do
+      expect_opportunity_added
+      @opportunity.destroy
+      expect(subject.active_opportunities_count).to eq(0)
+    end
+  end
+
+  def expect_opportunity_added
+    @opportunity = create(:fund, state: 'active', themes: [subject])
+    expect(subject.active_opportunities_count).to eq(1)
+  end
 end
