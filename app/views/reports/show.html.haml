@@ -5,10 +5,10 @@
   %header.bg-primary
     = render partial: 'shared/nav', locals: { color: 'white' }
     -# TODO: spec
-        - if @collection
-      = cell(:breadcrumb, 'Opportunities' => opportunities_path, @collection.name => opportunity_path(@collection), @proposal.identifier => report_path(@proposal))
+    - if @collection
+      = breadcrumbs('Opportunities' => opportunities_path, @collection.name => opportunity_path(@collection), @proposal.identifier => report_path(@proposal))
     - else
-      = cell(:breadcrumb, 'Opportunities' => opportunities_path, "Report #{@proposal.identifier}" => report_path(@proposal))
+      = breadcrumbs('Opportunities' => opportunities_path, "Report #{@proposal.identifier}" => report_path(@proposal))
 
     .maxw1050.mx-auto.px15.pb40
       .flex.justify-between.white

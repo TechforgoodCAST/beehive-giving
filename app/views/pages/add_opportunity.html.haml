@@ -3,7 +3,7 @@
 %main.bg-ice
   %header
     = render partial: 'shared/nav', locals: { color: 'blue' }
-    = cell(:breadcrumb, { 'Add an opportunity' => add_opportunity_path }, color: 'blue')
+    = breadcrumbs({ 'Add an opportunity' => add_opportunity_path }, color: 'blue')
 
   %section.col2.mx-auto
     .center

@@ -3,7 +3,7 @@
 %main.bg-ice
   %header
     = render partial: 'shared/nav', locals: { color: 'blue' }
-    = cell(:breadcrumb, { 'Pricing' => pricing_path }, color: 'blue')
+    = breadcrumbs({ 'Pricing' => pricing_path }, color: 'blue')
 
   %section.col2.mx-auto.mb40
     .center.px15

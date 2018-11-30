@@ -1,10 +1,9 @@
 = content_for :title, 'Terms of Service'
 
-
 %main.bg-ice
   %header
     = render partial: 'shared/nav', locals: { color: 'blue' }
-    = cell(:breadcrumb, { 'Terms' => terms_path }, color: 'blue')
+    = breadcrumbs({ 'Terms' => terms_path }, color: 'blue')
 
   %section.col2.mx-auto.mb40.px15
     .bg-white.rounded.shadow

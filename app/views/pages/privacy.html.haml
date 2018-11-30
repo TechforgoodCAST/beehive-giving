@@ -3,7 +3,7 @@
 %main.bg-ice
   %header
     = render partial: 'shared/nav', locals: { color: 'blue' }
-    = cell(:breadcrumb, { 'Privacy' => privacy_path }, color: 'blue')
+    = breadcrumbs({ 'Privacy' => privacy_path }, color: 'blue')
 
   %section.col2.mx-auto.mb40.px15
     .bg-white.rounded.shadow

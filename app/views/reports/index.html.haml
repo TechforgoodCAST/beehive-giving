@@ -4,7 +4,7 @@
 
   %header.bg-rich-blue
     = render partial: 'shared/nav', locals: { color: 'white' }
-    = cell(:breadcrumb, 'My reports' => reports_path)
+    = breadcrumbs('My reports' => reports_path)
 
     .maxw1050.mx-auto.px15
       %h1.h2.white.mb10 My reports

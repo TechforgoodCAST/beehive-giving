@@ -4,7 +4,7 @@
 
   %header.bg-primary
     = render partial: 'shared/nav', locals: { color: 'white' }
-    = cell(:breadcrumb, 'Opportunities' => opportunities_path, @collection.name => opportunity_path(@collection))
+    = breadcrumbs('Opportunities' => opportunities_path, @collection.name => opportunity_path(@collection))
 
     .maxw1050.mx-auto.pb20
       .flex.flex-wrap.white
