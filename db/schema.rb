@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181130143755) do
+ActiveRecord::Schema.define(version: 20181130152131) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -91,19 +91,6 @@ ActiveRecord::Schema.define(version: 20181130143755) do
     t.index ["recipient_id"], name: "index_assessments_on_recipient_id"
   end
 
-  create_table "attempts", force: :cascade do |t|
-    t.bigint "funder_id"
-    t.bigint "recipient_id"
-    t.bigint "proposal_id"
-    t.string "state", default: "basics", null: false
-    t.string "access_token"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["funder_id"], name: "index_attempts_on_funder_id"
-    t.index ["proposal_id"], name: "index_attempts_on_proposal_id"
-    t.index ["recipient_id"], name: "index_attempts_on_recipient_id"
-  end
-
   create_table "countries", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
     t.string "alpha2", limit: 255
@@ -174,33 +161,6 @@ ActiveRecord::Schema.define(version: 20181130143755) do
     t.integer "proposal_id"
     t.index ["district_id"], name: "index_districts_proposals_on_district_id"
     t.index ["proposal_id"], name: "index_districts_proposals_on_proposal_id"
-  end
-
-  create_table "enquiries", id: :serial, force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "approach_funder_count", default: 0
-    t.integer "fund_id"
-    t.integer "proposal_id"
-    t.index ["fund_id"], name: "index_enquiries_on_fund_id"
-    t.index ["proposal_id"], name: "index_enquiries_on_proposal_id"
-  end
-
-  create_table "feedbacks", id: :serial, force: :cascade do |t|
-    t.integer "user_id"
-    t.integer "nps"
-    t.integer "taken_away"
-    t.integer "informs_decision"
-    t.text "other"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "application_frequency"
-    t.string "grant_frequency"
-    t.string "marketing_frequency"
-    t.integer "price"
-    t.string "most_useful"
-    t.integer "suitable"
-    t.index ["user_id"], name: "index_feedbacks_on_user_id"
   end
 
   create_table "fund_themes", force: :cascade do |t|
@@ -315,56 +275,14 @@ ActiveRecord::Schema.define(version: 20181130143755) do
 
   create_table "recipients", id: :serial, force: :cascade do |t|
     t.string "name", limit: 255
-    t.string "contact_number", limit: 255
     t.string "website", limit: 255
-    t.string "street_address", limit: 255
-    t.string "city", limit: 255
-    t.string "region", limit: 255
-    t.string "postal_code", limit: 255
-    t.string "country_alpha2", limit: 255
     t.string "charity_number", limit: 255
     t.string "company_number", limit: 255
     t.string "slug", limit: 255
-    t.text "mission"
-    t.date "founded_on"
-    t.date "registered_on"
-    t.boolean "registered"
-    t.boolean "active_on_beehive"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "org_type"
-    t.float "latitude"
-    t.float "longitude"
-    t.string "contact_email"
-    t.string "charity_name"
-    t.string "charity_status"
-    t.float "charity_income"
-    t.float "charity_spending"
-    t.string "charity_recent_accounts_link"
-    t.string "charity_trustees"
-    t.string "charity_employees"
-    t.string "charity_volunteers"
-    t.string "charity_year_ending"
-    t.string "charity_days_overdue"
-    t.string "charity_registered_date"
-    t.string "company_name"
-    t.string "company_type"
-    t.string "company_status"
-    t.date "company_incorporated_date"
-    t.date "company_last_accounts_date"
-    t.date "company_next_accounts_date"
-    t.date "company_next_returns_date"
-    t.date "company_last_returns_date"
-    t.text "company_sic", array: true
-    t.string "company_recent_accounts_link"
-    t.integer "grants_count", default: 0
     t.integer "operating_for"
-    t.boolean "multi_national"
     t.integer "income_band"
-    t.integer "employees"
-    t.integer "volunteers"
-    t.integer "funds_checked", default: 0, null: false
-    t.integer "income"
     t.jsonb "reveals", default: [], null: false
     t.integer "category_code"
     t.string "description"
@@ -377,16 +295,6 @@ ActiveRecord::Schema.define(version: 20181130143755) do
     t.index ["district_id"], name: "index_recipients_on_district_id"
     t.index ["slug"], name: "index_recipients_on_slug", unique: true
     t.index ["user_id"], name: "index_recipients_on_user_id"
-  end
-
-  create_table "requests", force: :cascade do |t|
-    t.bigint "fund_id"
-    t.bigint "recipient_id"
-    t.string "message"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["fund_id"], name: "index_requests_on_fund_id"
-    t.index ["recipient_id"], name: "index_requests_on_recipient_id"
   end
 
   create_table "themes", force: :cascade do |t|
@@ -433,11 +341,6 @@ ActiveRecord::Schema.define(version: 20181130143755) do
   add_foreign_key "assessments", "funds"
   add_foreign_key "assessments", "proposals"
   add_foreign_key "assessments", "recipients"
-  add_foreign_key "attempts", "funders"
-  add_foreign_key "attempts", "proposals"
-  add_foreign_key "attempts", "recipients"
-  add_foreign_key "enquiries", "funds"
-  add_foreign_key "enquiries", "proposals"
   add_foreign_key "fund_themes", "funds"
   add_foreign_key "fund_themes", "themes"
   add_foreign_key "funds", "geo_areas"
