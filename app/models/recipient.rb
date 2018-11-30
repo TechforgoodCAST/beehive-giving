@@ -35,7 +35,6 @@ class Recipient < ApplicationRecord
   belongs_to :district
   belongs_to :user, optional: true
 
-  has_one :subscription # TODO: remove after v3
   has_one :proposal
 
   has_many :assessments

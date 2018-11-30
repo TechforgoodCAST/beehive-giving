@@ -21,11 +21,7 @@ namespace :migrate do
     proposals = Proposal.where(recipient_id: recipient.id)
     users = User.where(organisation_id: recipient.id)
 
-    funds = if recipient&.subscription.try(:active)
-              Fund.active
-            elsif recipient.reveals.any?
-              Fund.where(slug: recipient.reveals).active
-            end
+    funds = Fund.where(slug: recipient.reveals).active if recipient.reveals.any?
 
     return puts ': no Users' unless users.any?
 

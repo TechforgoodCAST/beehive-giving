@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181129165600) do
+ActiveRecord::Schema.define(version: 20181130111331) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -458,19 +458,6 @@ ActiveRecord::Schema.define(version: 20181129165600) do
     t.datetime "updated_at", null: false
     t.index ["fund_id"], name: "index_requests_on_fund_id"
     t.index ["recipient_id"], name: "index_requests_on_recipient_id"
-  end
-
-  create_table "subscriptions", id: :serial, force: :cascade do |t|
-    t.integer "recipient_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "stripe_user_id"
-    t.boolean "active", default: false, null: false
-    t.date "expiry_date"
-    t.integer "percent_off", default: 0, null: false
-    t.integer "version", default: 1, null: false
-    t.index ["recipient_id"], name: "index_subscriptions_on_recipient_id"
-    t.index ["stripe_user_id"], name: "index_subscriptions_on_stripe_user_id", unique: true
   end
 
   create_table "themes", force: :cascade do |t|
