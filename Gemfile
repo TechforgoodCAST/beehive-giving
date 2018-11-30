@@ -49,7 +49,6 @@ gem 'activeadmin'
 gem 'devise', '~> 4.4.0'
 
 # Monitoring & metrics
-gem 'intercom-rails' # TODO: review
 gem 'rollbar'
 group :production do
   gem 'rails_12factor'
