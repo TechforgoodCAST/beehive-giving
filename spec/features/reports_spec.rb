@@ -79,11 +79,11 @@ feature 'Reports' do
   context 'with collection' do
     before { visit report_path(proposal) }
 
-    it 'breadcrumbs' do
+    scenario 'breadcrumbs' do
       expect(page).to have_link(proposal.collection.name)
     end
 
-    it 'new report link' do
+    scenario 'new report link' do
       expect(page).to have_link('New report')
     end
   end
@@ -94,22 +94,22 @@ feature 'Reports' do
       visit report_path(proposal)
     end
 
-    it 'breadcrumbs' do
+    scenario 'breadcrumbs' do
       expect(page).to have_link("Report #{proposal.identifier}")
     end
 
-    it 'new report link' do
+    scenario 'new report link' do
       expect(page).not_to have_link('New report')
     end
   end
 
   context 'amount shown if' do
-    it 'seeking funding' do
+    scenario 'seeking funding' do
       visit report_path(proposal)
       expect(page).to have_text('Amount sought')
     end
 
-    it 'seeking other' do
+    scenario 'seeking other' do
       proposal.update_column(:category_code, 101)
       visit report_path(proposal)
       expect(page).not_to have_text('Amount sought')
@@ -117,25 +117,25 @@ feature 'Reports' do
   end
 
   context 'recipient name if' do
-    it 'individual' do
+    scenario 'individual' do
       proposal.recipient.update_column(:category_code, 101)
       visit report_path(proposal)
       expect(page).not_to have_text('Name')
     end
 
-    it 'organistion' do
+    scenario 'organistion' do
       visit report_path(proposal)
       expect(page).to have_text('Name', count: 1)
     end
   end
 
   context 'recipient district if' do
-    it 'present' do
+    scenario 'present' do
       visit report_path(proposal)
       expect(page).to have_text('Area')
     end
 
-    it 'missing' do
+    scenario 'missing' do
       proposal.recipient.update_column(:district_id, nil)
       visit report_path(proposal)
       expect(page).to have_text('Area')
@@ -143,25 +143,25 @@ feature 'Reports' do
   end
 
   context 'recipient income band if' do
-    it 'individual' do
+    scenario 'individual' do
       proposal.recipient.update_column(:category_code, 101)
       visit report_path(proposal)
       expect(page).not_to have_text('Annual income')
     end
 
-    it 'organisation' do
+    scenario 'organisation' do
       visit report_path(proposal)
       expect(page).to have_text('Annual income')
     end
   end
 
   context 'recipient website if' do
-    it 'present' do
+    scenario 'present' do
       visit report_path(proposal)
       expect(page).to have_text('Website')
     end
 
-    it 'missing' do
+    scenario 'missing' do
       proposal.recipient.update_column(:website, nil)
       visit report_path(proposal)
       expect(page).to have_text('Website')

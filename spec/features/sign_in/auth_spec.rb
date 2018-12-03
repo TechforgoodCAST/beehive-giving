@@ -58,5 +58,14 @@ feature 'SignIn::Auth' do
       user.reload
       expect(user.sign_in_count).to eq(1)
     end
+
+    scenario 'returned to original url after signing in' do
+      proposal = create(:proposal, private: Time.zone.now)
+      visit report_path(proposal)
+      expect(current_path).to eq(sign_in_lookup_path)
+
+      sign_in(user)
+      expect(current_path).to eq(report_path(proposal))
+    end
   end
 end
