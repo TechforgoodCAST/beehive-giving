@@ -28,7 +28,6 @@
               = link_to 'Change settings', privacy_path(anchor: 'cookies', read_cookies_notice: true), class: 'btn-sm white'
               = link_to 'Continue', update_cookies_path(functional_cookies: true, performance_cookies: true, read_cookies_notice: true), class: 'btn-sm bg-blue white shadow'
 
-    -# TODO: spec
     - if logged_in? && (@current_user&.update_version != UPDATE_VERSION)
       .bg-night.border-bottom.border-slate.fs14.lh18.white
         .maxw1050.mx-auto.px15.py10.flex.items-center.justify-between
