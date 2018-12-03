@@ -7,8 +7,6 @@ class ApplicationController < ActionController::Base
 
   before_action :current_user
 
-  skip_after_action :intercom_rails_auto_include
-
   rescue_from ActionController::InvalidAuthenticityToken, with: :bad_token
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorised
   rescue_from ActionController::UnknownFormat do

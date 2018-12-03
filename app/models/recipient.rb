@@ -35,7 +35,6 @@ class Recipient < ApplicationRecord
   belongs_to :district
   belongs_to :user, optional: true
 
-  has_one :subscription # TODO: remove after v3
   has_one :proposal
 
   has_many :assessments
@@ -68,10 +67,6 @@ class Recipient < ApplicationRecord
     with: URI.regexp(%w[http https]),
     message: 'enter a valid website address e.g. http://www.example.com'
   }, if: :website?
-
-  def name=(s)
-    self[:name] = s&.capitalize
-  end
 
   def charity_number=(s)
     self[:charity_number] = s&.strip

@@ -30,8 +30,6 @@ gem 'bcrypt', '~> 3.1.7'
 # gem 'capistrano-rails', group: :development
 
 gem 'activerecord-import'
-gem 'cells-rails' # TODO: remove
-gem 'cells-slim' # TODO: remove
 gem 'chartkick'
 gem 'groupdate'
 gem 'hamlit'
@@ -49,7 +47,6 @@ gem 'activeadmin'
 gem 'devise', '~> 4.4.0'
 
 # Monitoring & metrics
-gem 'intercom-rails' # TODO: review
 gem 'rollbar'
 group :production do
   gem 'rails_12factor'
@@ -63,7 +60,6 @@ group :development, :test do
   gem 'capybara'
   gem 'dotenv-rails'
   gem 'factory_bot_rails'
-  gem 'rspec-cells' # TODO: remove
   gem 'rspec-rails', '3.5.2'
   gem 'selenium-webdriver'
   gem 'stripe-ruby-mock', require: 'stripe_mock'

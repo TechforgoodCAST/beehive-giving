@@ -1,9 +1,7 @@
-= content_for :title, 'My reports'
-
 %header.bg-ice
   = render partial: 'shared/nav', locals: { color: 'blue' }
 
-%main.bg-ice.flex
+%main.bg-ice.flex{ style: 'overflow-x: hidden;' }
   .maxw1050.mx-auto.mt40.flex.flex-wrap.items-center
     .col2.px15.mb40
       %h1.bold.mb20 Save time and avoid wasted effort
@@ -20,7 +18,7 @@
         The option to click on a few additional questions to rule [funders] in or out was a HUGE bonus for me – it saved me trawling through myriad websites to ascertain whether or not our project was eligible for funding.
         .mt10.fs16.heading.bold.night
           Karen,
-          = link_to "Erb's Palsy Group", 'http://www.erbspalsygroup.co.uk/', target: '_blank'
+          = link_to "Erb's Palsy Group", 'http://www.erbspalsygroup.co.uk/', target: '_blank', rel: 'noopener'
 
     .col2.mb40
       .col1.md.px15#hex

@@ -3,7 +3,7 @@
 %main.bg-ice
   %header
     = render partial: 'shared/nav', locals: { color: 'blue' }
-    = cell :breadcrumb, { 'Blog' => articles_path, @article.title => article_path(@article) }, color: 'blue'
+    = breadcrumbs({ 'Blog' => articles_path, @article.title => article_path(@article) }, color: 'blue')
 
   %section.col2.mx-auto.my40.px15
     .bg-white.rounded.shadow

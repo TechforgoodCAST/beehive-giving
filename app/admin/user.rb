@@ -17,7 +17,7 @@ ActiveAdmin.register User do
     column :last_seen
     actions
     column 'Action' do |user|
-      link_to 'Impersonate', impersonate_admin_user_path(user), target: '_blank'
+      link_to 'Impersonate', impersonate_admin_user_path(user), target: '_blank', rel: 'noopener'
     end
   end
 

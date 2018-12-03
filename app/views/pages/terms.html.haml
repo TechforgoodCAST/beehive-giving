@@ -1,10 +1,9 @@
 = content_for :title, 'Terms of Service'
 
-
 %main.bg-ice
   %header
     = render partial: 'shared/nav', locals: { color: 'blue' }
-    = cell(:breadcrumb, { 'Terms' => terms_path }, color: 'blue')
+    = breadcrumbs({ 'Terms' => terms_path }, color: 'blue')
 
   %section.col2.mx-auto.mb40.px15
     .bg-white.rounded.shadow
@@ -76,10 +75,10 @@
             Purchasing a 'Private' report is non-refundable.
           %li.mb5
             All payments made through Beehive are processed by Stripe. Beehive does not store any of the information you submit while making a purchase. Should you choose to purchase a 'Private' report on Beehive, you understand and acknowledge that the purchase transaction and the collection of your information is governed by the
-            = link_to 'Stripe Terms of Service', 'https://stripe.com/gb/legal', target: '_blank', class: 'blue'
+            = link_to 'Stripe Terms of Service', 'https://stripe.com/gb/legal', target: '_blank', rel: 'noopener', class: 'blue'
             and the
             = succeed '.' do
-              = link_to 'Stripe Privacy Policy', 'https://stripe.com/gb/privacy', target: '_blank', class: 'blue'
+              = link_to 'Stripe Privacy Policy', 'https://stripe.com/gb/privacy', target: '_blank', rel: 'noopener', class: 'blue'
           %li.mb5
             When making a payment you represent and warrant that: (i) you have the legal right to use any credit card(s) or other payment method(s) in connection with any purchase; and that (ii) the information you supply to us is true, correct and complete.
           %li

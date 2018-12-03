@@ -6,9 +6,9 @@
     = render partial: 'shared/nav', locals: { color: 'white' }
     -# TODO: spec
     - if @collection
-      = cell(:breadcrumb, 'Opportunities' => opportunities_path, @collection.name => opportunity_path(@collection), @proposal.identifier => report_path(@proposal))
+      = breadcrumbs('Opportunities' => opportunities_path, @collection.name => opportunity_path(@collection), @proposal.identifier => report_path(@proposal))
     - else
-      = cell(:breadcrumb, 'Opportunities' => opportunities_path, "Report #{@proposal.identifier}" => report_path(@proposal))
+      = breadcrumbs('Opportunities' => opportunities_path, "Report #{@proposal.identifier}" => report_path(@proposal))
 
     .maxw1050.mx-auto.px15.pb40
       .flex.justify-between.white
@@ -20,8 +20,7 @@
             -# TODO: status
             -# .btn.border-white= @proposal.status.capitalize
           Created for
-          -# TODO: when individual?
-          = @proposal.recipient.name
+          = created_by
           = time_ago_in_words(@proposal.created_at)
           ago
 
@@ -35,8 +34,7 @@
     .mt40.flex.flex-wrap
       .col2.px15
         %h3.bold.night.mb40
-          -# TODO: opportunities count
-          = pluralize(@proposal.assessments.size, 'opportunity')
+          = pluralize(@proposal.assessments_count, 'opportunity')
           checked
 
         - @proposal.assessments.includes(fund: [:funder]).each do |a|
@@ -54,9 +52,9 @@
               -# TODO: truncate
               .mb15.markdown= raw(a.fund.description_html)
               -# TODO: size
-              = link_to 'Website', a.fund.website, target: '_blank', class: 'btn blue border-mist', onclick: "trackOutboundLink('#{a.fund.website}');"
+              = link_to 'Website', a.fund.website, target: '_blank', rel: 'noopener', class: 'btn blue border-mist', onclick: "trackOutboundLink('#{a.fund.website}');"
               - a.fund.links.each do |text, href|
-                = link_to text, href, target: '_blank', class: 'btn blue border-mist', onclick: "trackOutboundLink('#{href}');"
+                = link_to text, href, target: '_blank', rel: 'noopener', class: 'btn blue border-mist', onclick: "trackOutboundLink('#{href}');"
 
             .p20.border-top-thick.border-bottom-thick{ class: a.banner.background }
               .flex.items-center
@@ -79,12 +77,10 @@
             %h6.bold.slate Proposal
           .m20
             .fs14.heading.bold.night.mb5 Title
-            -# TODO: default text for missing title from legacy record
-            .fs14.lh18.slate= @proposal.title
+            .fs14.lh18.slate= @proposal.title_with_default
           .m20
             .fs14.heading.bold.night.mb5 Description
-            -# TODO: default text for missing description from legacy record
-            .fs14.lh18.slate= @proposal.description
+            .fs14.lh18.slate= @proposal.description_with_default
           .m20
             .fs14.heading.bold.night.mb5 Support type
             .fs14.lh18.slate= support_type
@@ -131,7 +127,7 @@
           - if @proposal.recipient.website.present?
             .m20
               .fs14.heading.bold.night.mb5 Website
-              = link_to(@proposal.recipient.website, @proposal.recipient.website, target: '_blank', class: 'fs14 slate', onclick: "trackOutboundLink('#{@proposal.recipient.website}');")
+              = link_to(@proposal.recipient.website, @proposal.recipient.website, target: '_blank', rel: 'noopener', class: 'fs14 slate', onclick: "trackOutboundLink('#{@proposal.recipient.website}');")
 
 .bg-ice
   = render partial: 'shared/footer', locals: { color: 'slate' }

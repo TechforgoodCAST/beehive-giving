@@ -122,6 +122,10 @@ class Proposal < ApplicationRecord
     CATEGORIES.values.reduce({}, :merge)[category_code]
   end
 
+  def description_with_default
+    description || '<em>No description provided</em>'.html_safe
+  end
+
   def identifier
     "##{id}"
   end
@@ -153,6 +157,10 @@ class Proposal < ApplicationRecord
     else
       'legacy'
     end
+  end
+
+  def title_with_default
+    title || '<em>No title provided</em>'.html_safe
   end
 
   private

@@ -18,4 +18,4 @@
       = link_to('Privacy', privacy_path, class: 'mx10')
       = link_to('Terms', terms_path, class: 'mx10')
 
-      = link_to("© #{Date.today.year} CAST", 'http://www.wearecast.org.uk', class: 'ml10', target: '_blank', onclick: "trackOutboundLink('http://www.wearecast.org.uk');")
+      = link_to("© #{Date.today.year} CAST", 'http://www.wearecast.org.uk', class: 'ml10', target: '_blank', rel: 'noopener', onclick: "trackOutboundLink('http://www.wearecast.org.uk');")

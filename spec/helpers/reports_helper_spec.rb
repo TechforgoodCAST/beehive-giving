@@ -10,10 +10,22 @@ describe ReportsHelper do
   subject { ReportsHelperClass.new }
 
   let(:proposal) { create(:proposal) }
+  let(:recipient) { proposal.recipient }
 
   it '#amount_sought' do
     msg = 'Between £10,000 and £250,000'
     expect(subject.amount_sought(proposal)).to eq(msg)
+  end
+
+  context '#created_by' do
+    it 'individual' do
+      recipient.category_code = 101
+      expect(subject.created_by(recipient)).to eq('an individual')
+    end
+
+    it 'organisation' do
+      expect(subject.created_by(recipient)).to eq(recipient.name)
+    end
   end
 
   it '#location_description' do
@@ -23,22 +35,22 @@ describe ReportsHelper do
 
   context '#recipient_type' do
     it 'individual' do
-      proposal.recipient.category_code = 101
-      proposal.recipient.description = nil
-      expect(subject.recipient_type(proposal.recipient)).to eq('An individual')
+      recipient.category_code = 101
+      recipient.description = nil
+      expect(subject.recipient_type(recipient)).to eq('An individual')
     end
 
     it 'organisation' do
       msg = 'A charitable organisation - Charity registered in England & Wales'
-      expect(subject.recipient_type(proposal.recipient)).to eq(msg)
+      expect(subject.recipient_type(recipient)).to eq(msg)
     end
   end
 
   context '#recipient_name' do
     it 'individual' do
-      proposal.recipient.category_code = 101
-      proposal.recipient.description = nil
-      expect(subject.recipient_name(proposal.recipient)).to eq('An individual')
+      recipient.category_code = 101
+      recipient.description = nil
+      expect(subject.recipient_name(recipient)).to eq('An individual')
     end
 
     it 'organisation' do

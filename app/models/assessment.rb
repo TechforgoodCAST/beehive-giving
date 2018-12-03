@@ -29,7 +29,7 @@ class Assessment < ApplicationRecord
   ]).freeze
 
   belongs_to :fund
-  belongs_to :proposal
+  belongs_to :proposal, counter_cache: true
   belongs_to :recipient
 
   validates :eligibility_status, inclusion: {
@@ -45,6 +45,9 @@ class Assessment < ApplicationRecord
   def self.analyse_and_update!(funds, proposal)
     updates = analyse(funds, proposal)
     Assessment.import!(updates, on_duplicate_key_update: PERMITTED_COLUMNS)
+    Proposal.update_counters(
+      proposal.id, assessments_count: proposal.assessments.count
+    )
   end
 
   def attributes

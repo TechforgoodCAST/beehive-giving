@@ -58,7 +58,10 @@ class Fund < ApplicationRecord
   after_save do
     funder.touch(:opportunities_last_updated_at)
     themes.each { |t| t.touch(:opportunities_last_updated_at) }
+    update_counter_caches
   end
+
+  after_destroy :update_counter_caches
 
   def description_html
     markdown(description)
@@ -92,6 +95,16 @@ class Fund < ApplicationRecord
   end
 
   private
+
+    def update_counter_caches
+      funder.active_opportunities_count = funder.funds.active.size
+      funder.save
+
+      themes.each do |t|
+        t.active_opportunities_count = t.funds.active.size
+        t.save
+      end
+    end
 
     def validate_integer_rules
       %i[

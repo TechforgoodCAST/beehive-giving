@@ -1,6 +1,0 @@
-.maxw1050.mx-auto.px15.fs14.mb30
-  a.lh18.bread href= root_path class=@color Home
-  - model.each_with_index do |(k, v), i|
-    .crumb<> class=@color  &rsaquo;
-    a.bread class=[disabled(v), bold(i), @color] href= v title=k
-      .lh18.truncate= k

@@ -4,7 +4,7 @@
 
   %header.bg-primary
     = render partial: 'shared/nav', locals: { color: 'white' }
-    = cell(:breadcrumb, 'Opportunities' => opportunities_path, @collection.name => opportunity_path(@collection))
+    = breadcrumbs('Opportunities' => opportunities_path, @collection.name => opportunity_path(@collection))
 
     .maxw1050.mx-auto.pb20
       .flex.flex-wrap.white
@@ -41,8 +41,7 @@
               .f1
                 - unless report.private?
                   .night.h6.bold.mb5 Proposal
-                  -# TODO: default text for missing title from legacy record
-                  .mb15= report.title
+                  .mb15= report.title_with_default
 
                 .night.h6.bold.mb5 Recipient
                 .mb20

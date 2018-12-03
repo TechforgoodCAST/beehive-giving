@@ -250,6 +250,48 @@ describe Proposal do
     end
   end
 
+  context '#description_with_default' do
+    it 'missing' do
+      subject.description = nil
+      msg = '<em>No description provided</em>'
+      expect(subject.description_with_default).to eq(msg)
+    end
+
+    it 'present' do
+      expect(subject.description_with_default).to eq(subject.description)
+    end
+  end
+
+  context '#title_with_default' do
+    it 'missing' do
+      subject.title = nil
+      msg = '<em>No title provided</em>'
+      expect(subject.title_with_default).to eq(msg)
+    end
+
+    it 'present' do
+      expect(subject.title_with_default).to eq(subject.title)
+    end
+  end
+
+  context '#assessments_count' do
+    it 'updated when assessment added' do
+      expect(subject.assessments_count).to eq(0)
+    end
+
+    it 'updated when assessment destroyed' do
+      expect_assessment_added
+      @assessment.destroy
+      expect(subject.assessments_count).to eq(0)
+    end
+  end
+
+  def expect_assessment_added
+    @assessment = build(:assessment)
+    subject.update!(assessments: [@assessment])
+    expect(subject.assessments_count).to eq(1)
+  end
+
   scenario '#country set'
 
   scenario 'countries & districts properly cleared & last selection takes precedence'

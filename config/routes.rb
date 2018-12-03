@@ -75,6 +75,7 @@ Rails.application.routes.draw do
   get '/fund/:slug', to: redirect('/opportunities')
   get '/funds', to: redirect('/opportunities')
   get '/funds/:slug', to: redirect('/opportunities')
+  get '/funds/theme/:slug', to: redirect('/opportunities')
   get '/password_resets/new', to: redirect('/sign-in')
   get '/welcome', to: redirect('/')
 end

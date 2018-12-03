@@ -4,7 +4,7 @@
 
   %header.bg-rich-blue
     = render partial: 'shared/nav', locals: { color: 'white' }
-    = cell(:breadcrumb, 'My reports' => reports_path)
+    = breadcrumbs('My reports' => reports_path)
 
     .maxw1050.mx-auto.px15
       %h1.h2.white.mb10 My reports
@@ -30,14 +30,13 @@
               Created
               = time_ago_in_words(report.created_at)
               ago
-              -# •
-              -# TODO: opportunities count
+              •
+              = pluralize(report.assessments_count, 'opportunity')
 
           .p20.flex.flex-column.f1
             .f1
               .night.h6.bold.mb5 Proposal
-              -# TODO: default text for missing title from legacy record
-              .mb15= report.title
+              .mb15= report.title_with_default
 
               .night.h6.bold.mb5 Recipient
               .mb20= recipient_name(report.recipient)
