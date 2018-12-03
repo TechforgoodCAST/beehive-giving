@@ -7,11 +7,21 @@ describe Theme do
 
   it('has many to parent Themes') { assoc(:themes, :has_many) }
 
+  it('has many Criteria') { assoc(:criteria, :has_many, through: :funds) }
+
   it 'has many FundThemes' do
     assoc(:fund_themes, :has_many, dependent: :destroy)
   end
 
   it('has many Funds') { assoc(:funds, :has_many, through: :fund_themes) }
+
+  it('has many Priorities') { assoc(:priorities, :has_many, through: :funds) }
+
+  it('has many Proposals') { assoc(:proposals, :has_many, as: :collection) }
+
+  it 'has many Restrictions' do
+    assoc(:restrictions, :has_many, through: :funds)
+  end
 
   it { is_expected.to be_valid }
 

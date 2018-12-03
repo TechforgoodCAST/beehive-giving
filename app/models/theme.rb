@@ -3,13 +3,12 @@ class Theme < ApplicationRecord
 
   belongs_to :parent, class_name: 'Theme', optional: true
 
-  has_many :proposals, as: :collection # TODO: test
+  has_many :proposals, as: :collection
 
   has_many :themes, foreign_key: 'parent_id'
   has_many :fund_themes, dependent: :destroy
   has_many :funds, through: :fund_themes
 
-  # TODO: test
   has_many :criteria, -> { distinct }, through: :funds
   has_many :priorities, -> { distinct }, through: :funds
   has_many :restrictions, -> { distinct }, through: :funds
@@ -17,7 +16,7 @@ class Theme < ApplicationRecord
   validates :name, :slug, uniqueness: true
   validates :classes, presence: true
 
-  # TODO: drop column?
+  # TODO: drop column and review parent?
   # See app/validators/hash_validator.rb
   validates :related, hash: { key_in: pluck(:name), value_in: :number }
 
