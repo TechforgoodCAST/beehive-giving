@@ -68,10 +68,6 @@ class Recipient < ApplicationRecord
     message: 'enter a valid website address e.g. http://www.example.com'
   }, if: :website?
 
-  def name=(s)
-    self[:name] = s&.capitalize
-  end
-
   def charity_number=(s)
     self[:charity_number] = s&.strip
   end
