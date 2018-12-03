@@ -4,7 +4,6 @@
 
   %header.bg-primary
     = render partial: 'shared/nav', locals: { color: 'white' }
-    -# TODO: spec
     - if @collection
       = breadcrumbs('Opportunities' => opportunities_path, @collection.name => opportunity_path(@collection), @proposal.identifier => report_path(@proposal))
     - else
@@ -25,7 +24,6 @@
           ago
 
         %div
-          -# TODO: spec
           - if @collection
             = link_to('New report', new_recipient_path(@collection), class: 'btn bg-secondary')
 
@@ -84,7 +82,6 @@
           .m20
             .fs14.heading.bold.night.mb5 Support type
             .fs14.lh18.slate= support_type
-          -# TODO: spec
           - if @proposal.seeking_funding?
             .m20
               .fs14.heading.bold.night.mb5 Amount sought
@@ -99,7 +96,6 @@
         .border.border-mist.rounded
           .p20.border-bottom.border-mist
             %h6.bold.slate Recipient
-          -# TODO: spec
           - unless @proposal.recipient.individual?
             .m20
               .fs14.heading.bold.night.mb5 Name
@@ -110,12 +106,10 @@
           .m20
             .fs14.heading.bold.night.mb5 Country
             .fs14.slate= @proposal.recipient.country.name
-          -# TODO: spec
           - if @proposal.recipient.district
             .m20
               .fs14.heading.bold.night.mb5 Area
               .fs14.slate= @proposal.recipient.district.name
-          -# TODO: spec
           - unless @proposal.recipient.individual?
             .m20
               .fs14.heading.bold.night.mb5 Annual income
@@ -123,7 +117,6 @@
             .m20
               .fs14.heading.bold.night.mb5 Operating for
               .fs14.slate= @proposal.recipient.operating_for_name
-          -# TODO: spec
           - if @proposal.recipient.website.present?
             .m20
               .fs14.heading.bold.night.mb5 Website
