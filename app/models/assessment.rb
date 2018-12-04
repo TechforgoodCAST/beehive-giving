@@ -32,6 +32,8 @@ class Assessment < ApplicationRecord
   belongs_to :proposal, counter_cache: true
   belongs_to :recipient
 
+  has_many :votes, dependent: :destroy
+
   validates :eligibility_status, inclusion: {
     in: [INELIGIBLE, INCOMPLETE, ELIGIBLE]
   }

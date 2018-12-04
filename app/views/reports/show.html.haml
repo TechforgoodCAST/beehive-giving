@@ -37,7 +37,7 @@
 
         - @proposal.assessments.includes(fund: [:funder]).each do |a|
 
-          .bg-white.rounded.shadow.mb40
+          .bg-white.rounded.shadow.mb40{ id: "assessment-#{a.id}" }
             .pb5.rounded-top{ class: a.banner.indicator }
 
             %h4.p20.border-bottom.border-mist
@@ -54,10 +54,21 @@
               - a.fund.links.each do |text, href|
                 = link_to text, href, target: '_blank', rel: 'noopener', class: 'btn blue border-mist', onclick: "trackOutboundLink('#{href}');"
 
-            .p20.border-top-thick.border-bottom-thick{ class: a.banner.background }
-              .flex.items-center
-                .dot.ml5.mr15{ class: a.banner.indicator }
-                .heading.bold{ class: a.banner.color }= a.banner.text
+            .px20.pt20.border-top-thick.border-bottom-thick{ class: a.banner.background }
+              .flex.flex-wrap.justify-between
+
+                .flex.items-center.mb20
+                  .dot.ml5.mr15{ class: a.banner.indicator }
+                  .heading.bold{ class: a.banner.color }= a.banner.text
+
+                .mb20
+                  %span.fs14.night.mr10
+                    = a.agree_count
+                    agree
+                    •
+                    = a.disagree_count
+                    disagree
+                  = link_to 'Vote', new_assessment_vote_path(a), class: 'btn btn-sm white bg-blue'
 
             %h5.p20 Rating details
 

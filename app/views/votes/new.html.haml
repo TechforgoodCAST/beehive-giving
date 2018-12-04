@@ -1,0 +1,50 @@
+= content_for :title, "Vote on assessment ##{@assessment.id}"
+
+%main.bg-ice
+  %header
+    = render partial: 'shared/nav', locals: { color: 'blue' }
+    = breadcrumbs({ 'Opportunities' => opportunities_path, @assessment.proposal.collection.name => opportunity_path(@assessment.proposal.collection), @assessment.proposal.identifier => report_path(@assessment.proposal), "Vote on ##{@assessment.id}" => new_assessment_vote_path(@assessment) }, color: 'blue')
+
+    %h1.h2.center
+      Vote on assessment
+      = precede '#' do
+        = @assessment.id
+
+  %section.col2.mx-auto.my40.px15
+    .bg-white.rounded.shadow
+
+      .px20.pb10.pt20.border-bottom.border-mist.rounded-top
+        .flex.flex-wrap.justify-between.items-center
+          %h5.bold.mb10 Your vote
+          .flex.fs14.mb10
+            * Required
+            .ml20
+              = image_tag('eye.svg', width: 16)
+              Public
+            .ml20
+              = image_tag('eye-cross.svg', width: 16)
+              Private
+
+      = simple_form_for(@vote, url: new_assessment_vote_path(@assessment)) do |f|
+        .p20
+          .mb20
+            .label.mb7 Rating given
+            %blockquote.border-mist.heading.bold{ class: @assessment.banner.color }
+              = @assessment.banner.text
+
+          .mb20= f.input :relationship_to_assessment, collection: Vote::ROLES, label_html: { class: 'public' }
+
+          %blockquote.border-mist.mb20
+            = f.input :relationship_details, required: true, label_html: { class: 'private' }
+
+          .mb20= f.input :agree_with_rating, as: :select, required: true, label_html: { class: 'public' }
+
+          %blockquote.border-mist.mb20
+            = f.input :reason, required: true, label_html: { class: 'private' }
+
+          .flex
+            = f.submit 'Vote', class: 'btn-wide bg-blue white mr5', data: { disable_with: 'Voting...' }
+            = link_to 'Cancel', :back, class: 'btn btn-wide blue bg-light-blue border-pale-blue ml5'
+
+.bg-ice
+  = render partial: 'shared/footer', locals: { color: 'slate' }

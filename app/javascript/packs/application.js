@@ -60,6 +60,14 @@ document.addEventListener("turbolinks:load", function () {
         "national": ["proposal_country_id"],
         "international": ["proposal_countries"]
     });
+
+    select.init("vote_relationship_to_assessment", {
+        "Another role": ["vote_relationship_details"]
+    });
+
+    select.init("vote_agree_with_rating", {
+        "false": ["vote_reason"]
+    });
 }, false);
 
 // Utility
