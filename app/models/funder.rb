@@ -1,8 +1,7 @@
 class Funder < ApplicationRecord
   has_many :funds
-  has_many :proposals, as: :collection # TODO: test
+  has_many :proposals, as: :collection
 
-  # TODO: test
   has_many :criteria, -> { distinct }, through: :funds
   has_many :priorities, -> { distinct }, through: :funds
   has_many :restrictions, -> { distinct }, through: :funds

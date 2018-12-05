@@ -27,7 +27,12 @@ en:
         district: 'In which area?'
         name: 'Organisation name'
       sign_in_auth:
-          password: 'Enter your password'
+        password: 'Enter your password'
+      vote:
+        relationship_to_assessment: "What's your relationship to this assessment?"
+        relationship_details: 'Please specify'
+        agree_with_rating: 'Do you agree with the rating?'
+        reason: 'Please explain why you disagree'
 
     hints:
       defaults:

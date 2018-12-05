@@ -4,8 +4,8 @@ module Rating
       include Rating::Base
 
       def link
-        # TODO: removed for v3 deplpy
-        # "<a href='##{@assessment_id}'>View answers</a>".html_safe
+        "<a data-remote='true' href='/assessments/#{@assessment_id}/answers" \
+        "?criteria_type=priorities'>View answers</a>".html_safe
       end
 
       private

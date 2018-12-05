@@ -9,6 +9,8 @@ describe Assessment do
 
   it('belongs to Recipient') { assoc(:recipient, :belongs_to) }
 
+  it('has many Votes') { assoc(:votes, :has_many, dependent: :destroy) }
+
   it { is_expected.to be_valid }
 
   it 'requires associations' do

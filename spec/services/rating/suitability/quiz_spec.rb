@@ -43,7 +43,9 @@ describe Rating::Suitability::Quiz do
     end
   end
 
-  it '#link'
-  #   expect(subject.link).to eq("<a href='#1234'>View answers</a>")
-  # end
+  it '#link' do
+    link = "<a data-remote='true' href='/assessments/1234/answers" \
+           "?criteria_type=priorities'>View answers</a>"
+    expect(subject.link).to eq(link)
+  end
 end

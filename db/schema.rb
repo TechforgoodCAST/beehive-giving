@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20181130152131) do
+ActiveRecord::Schema.define(version: 20181204124914) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -86,6 +86,8 @@ ActiveRecord::Schema.define(version: 20181130152131) do
     t.integer "suitability_quiz"
     t.integer "suitability_quiz_failing"
     t.string "suitability_status"
+    t.integer "agree_count", default: 0, null: false
+    t.integer "disagree_count", default: 0, null: false
     t.index ["fund_id"], name: "index_assessments_on_fund_id"
     t.index ["proposal_id"], name: "index_assessments_on_proposal_id"
     t.index ["recipient_id"], name: "index_assessments_on_recipient_id"
@@ -338,6 +340,17 @@ ActiveRecord::Schema.define(version: 20181130152131) do
     t.index ["organisation_type"], name: "index_users_on_organisation_type"
   end
 
+  create_table "votes", force: :cascade do |t|
+    t.bigint "assessment_id"
+    t.string "relationship_to_assessment"
+    t.string "relationship_details"
+    t.boolean "agree_with_rating"
+    t.text "reason"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assessment_id"], name: "index_votes_on_assessment_id"
+  end
+
   add_foreign_key "assessments", "funds"
   add_foreign_key "assessments", "proposals"
   add_foreign_key "assessments", "recipients"
@@ -347,4 +360,5 @@ ActiveRecord::Schema.define(version: 20181130152131) do
   add_foreign_key "proposal_themes", "proposals"
   add_foreign_key "proposal_themes", "themes"
   add_foreign_key "proposals", "users"
+  add_foreign_key "votes", "assessments"
 end

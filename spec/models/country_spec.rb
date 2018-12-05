@@ -13,6 +13,8 @@ describe Country do
 
   it('HABTM Proposals') { assoc(:proposals, :has_and_belongs_to_many) }
 
+  it('has many Recipients') { assoc(:recipients, :has_many) }
+
   it { is_expected.to be_valid }
 
   context 'unique' do

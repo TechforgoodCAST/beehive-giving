@@ -22,6 +22,11 @@ Rails.application.routes.draw do
   get '/opportunities', to: 'opportunities#index', as: 'opportunities'
   get '/opportunities/:slug/reports', to: 'opportunities#show', as: 'opportunity'
 
+  get  '/assessments/:id/vote', to: 'votes#new', as: 'new_assessment_vote'
+  post '/assessments/:id/vote', to: 'votes#create'
+
+  get '/assessments/:id/answers', to: 'answers#show', as: 'answers'
+
   namespace :sign_in, path: 'sign-in' do
     get  '/', to: 'lookup#new', as: 'lookup'
     post '/', to: 'lookup#create'

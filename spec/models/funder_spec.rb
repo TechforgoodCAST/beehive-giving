@@ -3,9 +3,17 @@ require 'rails_helper'
 describe Funder do
   subject { build(:funder, name: 'Funder Name') }
 
+  it('has many Criteria') { assoc(:criteria, :has_many, through: :funds) }
+
   it('has many Funds') { assoc(:funds, :has_many) }
 
-  it('has many Restrictions') { assoc(:restrictions, :has_many) }
+  it('has many Priorities') { assoc(:priorities, :has_many, through: :funds) }
+
+  it('has many Proposals') { assoc(:proposals, :has_many, as: :collection) }
+
+  it 'has many Restrictions' do
+    assoc(:restrictions, :has_many, through: :funds)
+  end
 
   it('has many Users') { assoc(:users, :has_many, dependent: :destroy) }
 

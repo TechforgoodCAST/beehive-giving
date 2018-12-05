@@ -1,10 +1,14 @@
 = content_for :title, "#{@proposal.name} #{@proposal.identifier}"
 
+%dialog.rounded.shadow.border.border-silver.col2.my40.px15
+  #answers
+  .px20.pb20
+    %a.btn.btn-wide.bg-blue.white.js-close-modal Close
+
 %main.bg-ice
 
   %header.bg-primary
     = render partial: 'shared/nav', locals: { color: 'white' }
-    -# TODO: spec
     - if @collection
       = breadcrumbs('Opportunities' => opportunities_path, @collection.name => opportunity_path(@collection), @proposal.identifier => report_path(@proposal))
     - else
@@ -25,7 +29,6 @@
           ago
 
         %div
-          -# TODO: spec
           - if @collection
             = link_to('New report', new_recipient_path(@collection), class: 'btn bg-secondary')
 
@@ -39,7 +42,7 @@
 
         - @proposal.assessments.includes(fund: [:funder]).each do |a|
 
-          .bg-white.rounded.shadow.mb40
+          .bg-white.rounded.shadow.mb40{ id: "assessment-#{a.id}" }
             .pb5.rounded-top{ class: a.banner.indicator }
 
             %h4.p20.border-bottom.border-mist
@@ -56,10 +59,21 @@
               - a.fund.links.each do |text, href|
                 = link_to text, href, target: '_blank', rel: 'noopener', class: 'btn blue border-mist', onclick: "trackOutboundLink('#{href}');"
 
-            .p20.border-top-thick.border-bottom-thick{ class: a.banner.background }
-              .flex.items-center
-                .dot.ml5.mr15{ class: a.banner.indicator }
-                .heading.bold{ class: a.banner.color }= a.banner.text
+            .px20.pt10.border-top-thick.border-bottom-thick{ class: a.banner.background }
+              .flex.flex-wrap.justify-between
+
+                .flex.items-center.mb10
+                  .dot.ml5.mr15{ class: a.banner.indicator }
+                  .heading.bold{ class: a.banner.color }= a.banner.text
+
+                .mb10
+                  %span.fs14.night.mr10
+                    = a.agree_count
+                    agree
+                    •
+                    = a.disagree_count
+                    disagree
+                  = link_to 'Vote', new_assessment_vote_path(a), class: 'btn btn-sm white bg-blue'
 
             %h5.p20 Rating details
 
@@ -84,7 +98,6 @@
           .m20
             .fs14.heading.bold.night.mb5 Support type
             .fs14.lh18.slate= support_type
-          -# TODO: spec
           - if @proposal.seeking_funding?
             .m20
               .fs14.heading.bold.night.mb5 Amount sought
@@ -99,7 +112,6 @@
         .border.border-mist.rounded
           .p20.border-bottom.border-mist
             %h6.bold.slate Recipient
-          -# TODO: spec
           - unless @proposal.recipient.individual?
             .m20
               .fs14.heading.bold.night.mb5 Name
@@ -110,12 +122,10 @@
           .m20
             .fs14.heading.bold.night.mb5 Country
             .fs14.slate= @proposal.recipient.country.name
-          -# TODO: spec
           - if @proposal.recipient.district
             .m20
               .fs14.heading.bold.night.mb5 Area
               .fs14.slate= @proposal.recipient.district.name
-          -# TODO: spec
           - unless @proposal.recipient.individual?
             .m20
               .fs14.heading.bold.night.mb5 Annual income
@@ -123,7 +133,6 @@
             .m20
               .fs14.heading.bold.night.mb5 Operating for
               .fs14.slate= @proposal.recipient.operating_for_name
-          -# TODO: spec
           - if @proposal.recipient.website.present?
             .m20
               .fs14.heading.bold.night.mb5 Website
