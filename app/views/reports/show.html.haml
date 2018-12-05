@@ -1,5 +1,10 @@
 = content_for :title, "#{@proposal.name} #{@proposal.identifier}"
 
+%dialog.rounded.shadow.border.border-silver.col2.my40.px15
+  #answers
+  .px20.pb20
+    %a.btn.btn-wide.bg-blue.white.js-close-modal Close
+
 %main.bg-ice
 
   %header.bg-primary
@@ -54,14 +59,14 @@
               - a.fund.links.each do |text, href|
                 = link_to text, href, target: '_blank', rel: 'noopener', class: 'btn blue border-mist', onclick: "trackOutboundLink('#{href}');"
 
-            .px20.pt20.border-top-thick.border-bottom-thick{ class: a.banner.background }
+            .px20.pt10.border-top-thick.border-bottom-thick{ class: a.banner.background }
               .flex.flex-wrap.justify-between
 
-                .flex.items-center.mb20
+                .flex.items-center.mb10
                   .dot.ml5.mr15{ class: a.banner.indicator }
                   .heading.bold{ class: a.banner.color }= a.banner.text
 
-                .mb20
+                .mb10
                   %span.fs14.night.mr10
                     = a.agree_count
                     agree

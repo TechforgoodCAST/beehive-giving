@@ -6,11 +6,6 @@ export default class Dialog {
     if (!$modal) return
     dialogPolyfill.registerDialog($modal)
 
-    document.querySelector('.js-show-modal').onclick = () => {
-      $body.classList.add('js-open-modal')
-      $modal.showModal()
-    }
-
     document.querySelector('.js-close-modal').onclick = () => {
       $body.classList.remove('js-open-modal')
       $modal.close()

@@ -44,7 +44,7 @@
 
           .flex
             = f.submit 'Vote', class: 'btn-wide bg-blue white mr5', data: { disable_with: 'Voting...' }
-            = link_to 'Cancel', :back, class: 'btn btn-wide blue bg-light-blue border-pale-blue ml5'
+            = link_to 'Cancel', report_path(@assessment.proposal, anchor: "assessment-#{@assessment.id}"), class: 'btn btn-wide blue bg-light-blue border-pale-blue ml5'
 
 .bg-ice
   = render partial: 'shared/footer', locals: { color: 'slate' }
