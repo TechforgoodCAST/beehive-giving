@@ -30,7 +30,7 @@ These instructions will get a copy of the project up and running on your local m
     <!-- Optional -->
     HASHIDS_SALT=<a secret key for encoding Hashids>
     ```
-7. `rails s` to start local development server alongside `bin/webpack-dev-server` for JavaScript assets
+7. `rails s` to start local development server
 
 ### Running tests
 

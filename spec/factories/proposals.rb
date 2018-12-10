@@ -3,18 +3,18 @@ FactoryBot.define do
     association :collection, factory: :funder, strategy: :build
     association :recipient, factory: :recipient, strategy: :build
     association :user, factory: :user, strategy: :build
-    category_code 202 # Revenue - Core
-    description 'A new roof for our community centre.'
-    geographic_scale 'local'
-    max_amount 250_000
-    max_duration 36
-    min_amount 10_000
-    min_duration 3
-    public_consent true
-    title 'Community space'
+    category_code { 202 } # Revenue - Core
+    description { 'A new roof for our community centre.' }
+    geographic_scale { 'local' }
+    max_amount { 250_000 }
+    max_duration { 36 }
+    min_amount { 10_000 }
+    min_duration { 3 }
+    public_consent { true }
+    title { 'Community space' }
 
     transient do
-      children true
+      children { true }
     end
 
     after(:build) do |proposal, opts|
@@ -33,11 +33,11 @@ FactoryBot.define do
     end
 
     factory :proposal_no_funding, class: Proposal do
-      category_code 101 # Other
-      max_amount nil
-      max_duration nil
-      min_amount nil
-      min_duration nil
+      category_code { 101 } # Other
+      max_amount { nil }
+      max_duration { nil }
+      min_amount { nil }
+      min_duration { nil }
     end
   end
 end

@@ -1,5 +1,5 @@
 FactoryBot.define do
   factory :answer do
-    eligible true
+    eligible { true }
   end
 end
