@@ -4,7 +4,8 @@ module Rating
       include Rating::Base
 
       def link
-        "<a data-remote='true' href='/assessments/#{@assessment_id}/answers" \
+        "<a data-remote='true' rel='nofollow' " \
+        "href='/assessments/#{@assessment_id}/answers" \
         "?criteria_type=priorities'>View answers</a>".html_safe
       end
 

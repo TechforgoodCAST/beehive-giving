@@ -3,7 +3,7 @@
 %main.bg-ice
   %header
     = render partial: 'shared/nav', locals: { color: 'blue' }
-    = breadcrumbs({ 'Opportunities' => opportunities_path, @assessment.proposal.collection.name => opportunity_path(@assessment.proposal.collection), @assessment.proposal.identifier => report_path(@assessment.proposal), "Vote on ##{@assessment.id}" => new_assessment_vote_path(@assessment) }, color: 'blue')
+    = breadcrumbs({ "Report #{@assessment.proposal.identifier}" => report_path(@assessment.proposal), "Vote on ##{@assessment.id}" => new_assessment_vote_path(@assessment) }, color: 'blue')
 
     %h1.h2.center
       Vote on assessment

@@ -3,8 +3,8 @@ FactoryBot.define do
     funder
 
     sequence(:name) { |n| "Awards for All #{n}" }
-    description 'Some description of the fund.'
-    website 'http://opportunity.link'
+    description { 'Some description of the fund.' }
+    website { 'http://opportunity.link' }
 
     links { { 'Recent grants' => 'http://grantnav.link' } }
 
@@ -13,31 +13,31 @@ FactoryBot.define do
     end
 
     factory :fund_with_rules, class: Fund do
-      state 'active'
+      state { 'active' }
 
       # Check::Eligibility::Amount
-      proposal_min_amount 300
-      proposal_max_amount 10_000
+      proposal_min_amount { 300 }
+      proposal_max_amount { 10_000 }
 
       # Check::Eligibility::Duration
-      proposal_min_duration 9
-      proposal_max_duration 12
+      proposal_min_duration { 9 }
+      proposal_max_duration { 12 }
 
       # Check::Eligibility::Income
-      recipient_min_income 50_000
-      recipient_max_income nil
+      recipient_min_income { 50_000 }
+      recipient_max_income { nil }
 
       # Check::Eligibility::Location
-      proposal_permitted_geographic_scales %w[local regional]
-      proposal_area_limited true
-      proposal_all_in_area true
+      proposal_permitted_geographic_scales { %w[local regional] }
+      proposal_area_limited { true }
+      proposal_all_in_area { true }
       association :geo_area, strategy: :build
 
       # Check::Eligibility::ProposalCategories
-      proposal_categories [202, 203] # Revenue - Core, Revenue - Project
+      proposal_categories { [202, 203] } # Revenue - Core, Revenue - Project
 
       # Check::Eligibility::RecipientCategories
-      recipient_categories [203, 301] # An unregistered charity, A charitable organisation
+      recipient_categories { [203, 301] } # An unregistered charity, A charitable organisation
 
       # Check::Eligibility::Quiz
       after(:build) do |fund, _evaluator|

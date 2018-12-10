@@ -2,17 +2,22 @@ require 'rails_helper'
 
 describe Check::Suitability::Quiz do
   let(:assessment) do
+    country = build(:country)
     build(
       :assessment,
       fund: build(:fund, priorities: priorities),
-      recipient: create(
-        :recipient,
+      proposal: create(
+        :proposal,
         answers: [build(
           :answer,
           criterion: priorities.first,
           eligible: eligible,
           category_type: 'Proposal'
-        )]
+        )],
+        children: false,
+        countries: [country],
+        districts: [build(:district, country: country)],
+        themes: [build(:theme)]
       )
     )
   end

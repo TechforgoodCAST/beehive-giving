@@ -9,15 +9,15 @@ FactoryBot.define do
     end
 
     factory :eligible do
-      eligibility_amount               ELIGIBLE
-      eligibility_location             ELIGIBLE
-      eligibility_proposal_categories  ELIGIBLE
-      eligibility_quiz                 ELIGIBLE
-      eligibility_recipient_categories ELIGIBLE
+      eligibility_amount               { ELIGIBLE }
+      eligibility_location             { ELIGIBLE }
+      eligibility_proposal_categories  { ELIGIBLE }
+      eligibility_quiz                 { ELIGIBLE }
+      eligibility_recipient_categories { ELIGIBLE }
 
-      suitability_quiz                 ELIGIBLE
+      suitability_quiz                 { ELIGIBLE }
       factory :ineligible do
-        eligibility_amount INELIGIBLE
+        eligibility_amount { INELIGIBLE }
       end
     end
   end
