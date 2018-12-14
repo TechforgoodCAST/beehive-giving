@@ -43,7 +43,7 @@ gem 'sitemap_generator'
 gem 'stripe'
 
 # Admin
-gem 'activeadmin'
+gem 'activeadmin', '~> 1.3.0'
 gem 'devise', '~> 4.4.0'
 
 # Monitoring & metrics
