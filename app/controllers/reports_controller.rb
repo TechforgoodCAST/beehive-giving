@@ -20,6 +20,7 @@ class ReportsController < ApplicationController
 
     @reports = @current_user.proposals.includes(:collection, :recipient)
                             .order(created_at: :desc)
+                            .page(params[:page])
   end
 
   private

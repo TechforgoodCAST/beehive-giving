@@ -52,7 +52,8 @@
 
               %div= report_button(report)
 
-    -# TODO: pagination
+    .mx15.mb40.pb10.center
+      = paginate @reports
 
 .bg-ice
   = render partial: 'shared/footer', locals: { color: 'slate' }
