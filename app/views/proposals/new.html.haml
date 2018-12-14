@@ -1,7 +1,6 @@
 = content_for :title, collection_title(@collection)
 
--# TODO: dynamic color
-%main.bg-dark-blue
+%main.bg-secondary
   %section.col2.mx-auto.my40.px15
     .center.mb40
       .fs32.px5.white.heading= collection_title(@collection)
@@ -127,7 +126,7 @@
 
           .mt10.mb20= f.input :public_consent, as: :boolean, label: false, inline_label: 'I understand', hint: false
 
-          = f.submit 'Get suitability report', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Creating report...' }
+          = f.submit 'Get suitability report', class: 'btn-wide bg-primary white shadow', data: { disable_with: 'Creating report...' }
 
-  .bg-dark-blue
+  .bg-secondary
     = render partial: 'shared/footer', locals: { color: 'white' }

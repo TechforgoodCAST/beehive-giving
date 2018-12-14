@@ -1,7 +1,6 @@
 = content_for :title, collection_title(@collection)
 
--# TODO: dynamic color
-%main.bg-dark-blue
+%main.bg-secondary
   %section.col2.mx-auto.my40.px15
     .center.mb40
       .fs32.px5.white.heading= collection_title(@collection)
@@ -64,8 +63,8 @@
                 %label.mx20.fs15= raw('... ' + a.object.criterion.details)
 
         .border-top.border-mist.p20
-          = f.submit 'Next', class: 'btn-wide bg-rich-blue white shadow', data: { disable_with: 'Checking...' }
+          = f.submit 'Next', class: 'btn-wide bg-primary white shadow', data: { disable_with: 'Checking...' }
 
-.bg-dark-blue
+.bg-secondary
   = render partial: 'shared/footer', locals: { color: 'white' }
 
