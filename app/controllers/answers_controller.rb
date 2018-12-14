@@ -14,5 +14,10 @@ class AnswersController < ApplicationController
         @assessment.proposal_id
       ).pluck(:criterion_id, :eligible).to_h
     end
+
+    respond_to do |format|
+      format.html { render 'errors/not_found', status: 404 }
+      format.js { render }
+    end
   end
 end
