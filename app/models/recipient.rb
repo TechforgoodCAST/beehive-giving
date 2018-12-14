@@ -1,4 +1,6 @@
 class Recipient < ApplicationRecord
+  include CategoryName
+
   CATEGORIES = {
     'Unincorporated' => {
       201 => 'A community or voluntary group',
@@ -78,14 +80,6 @@ class Recipient < ApplicationRecord
 
   def to_param
     hashid
-  end
-
-  # TODO: to concern
-  # Lookup category name from {CATEGORIES} using #category_code.
-  #
-  # @return [String] the name of the category.
-  def category_name
-    CATEGORIES.values.reduce({}, :merge)[category_code]
   end
 
   def income_band_name

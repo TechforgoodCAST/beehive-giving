@@ -1,4 +1,5 @@
 class Proposal < ApplicationRecord
+  include CategoryName
   include GenerateToken
 
   attr_accessor :country_id
@@ -113,14 +114,6 @@ class Proposal < ApplicationRecord
   before_validation :clear_districts_if_country_wide, :country_to_countries
 
   before_create { generate_token(:access_token) }
-
-  # TODO: to concern
-  # Lookup category name from {CATEGORIES} using #category_code.
-  #
-  # @return [String] the name of the category.
-  def category_name
-    CATEGORIES.values.reduce({}, :merge)[category_code]
-  end
 
   def description_with_default
     description || '<em>No description provided</em>'.html_safe
