@@ -1,6 +1,4 @@
 class ChargesController < ApplicationController
-  layout 'fullscreen' # TODO: refactor
-
   before_action :build_order, :load_proposal, :authenticate
   before_action :build_payment, only: :create
 

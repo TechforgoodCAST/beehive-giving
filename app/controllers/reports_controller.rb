@@ -11,7 +11,6 @@ class ReportsController < ApplicationController
       end
     else
       render 'errors/not_found', status: 404
-      # TODO: , layout: 'fullscreen'
     end
   end
 

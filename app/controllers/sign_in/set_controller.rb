@@ -1,7 +1,5 @@
 module SignIn
   class SetController < ApplicationController
-    layout 'fullscreen' # TODO: refactor
-
     before_action :redirect_if_logged_in, :load_user
 
     def new

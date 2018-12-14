@@ -1,6 +1,4 @@
 class ProposalsController < ApplicationController
-  layout 'fullscreen'
-
   before_action :load_collection, :load_recipient, :authenticate
 
   def new
