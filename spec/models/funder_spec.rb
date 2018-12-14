@@ -33,11 +33,11 @@ describe Funder do
     before { subject.save }
 
     it 'present' do
-      expect(subject.slug).to eq 'funder-name'
+      expect(subject.slug).to eq('funder-name')
     end
 
     it 'unique' do
-      expect(create(:funder, name: 'Funder Name').slug).to eq 'funder-name-2'
+      expect(create(:funder, name: 'Funder Name').slug).to eq('funder-name-2')
     end
   end
 

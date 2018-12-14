@@ -1,6 +1,7 @@
 class Fund < ApplicationRecord
+  include MarkdownMethod
+
   scope :active, -> { where(state: 'active') }
-  scope :recent, -> { order updated_at: :desc } # TODO: review
 
   STATES = %w[active draft inactive].freeze
 
@@ -65,11 +66,6 @@ class Fund < ApplicationRecord
 
   def description_html
     markdown(description)
-  end
-
-  # TODO: remove
-  def description_plain
-    markdown(description, plain: true)
   end
 
   def links=(json)
