@@ -71,8 +71,6 @@ describe Assessment do
       Assessment.analyse_and_update!(collection.funds, proposal)
       expect(Assessment.count).to eq(2)
     end
-
-    it 'self.analyse_and_update! duplicate keys'
   end
 
   it '#attributes keys symbolized' do

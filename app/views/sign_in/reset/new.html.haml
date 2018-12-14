@@ -13,7 +13,7 @@
         Please follow the instructions we’ve sent to
         %strong= obscure_email(@user.email)
         and set a new password.
-        = link_to 'Continue', root_path, class: 'btn-wide bg-rich-blue white shadow mt20'
+        = link_to 'Continue', sign_in_path, class: 'btn-wide bg-rich-blue white shadow mt20'
 
 .bg-rich-blue
   = render partial: 'shared/footer', locals: { color: 'white' }

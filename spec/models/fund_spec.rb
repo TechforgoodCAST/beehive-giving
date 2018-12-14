@@ -201,8 +201,6 @@ describe Fund do
     end
   end
 
-  it '#guidelines'
-
   it 'self.active' do
     expect(Fund.active.count).to eq(0)
     subject.state = 'active'

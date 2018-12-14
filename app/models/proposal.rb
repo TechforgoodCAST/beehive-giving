@@ -170,7 +170,7 @@ class Proposal < ApplicationRecord
     end
 
     def country_to_countries
-      return unless country_id
+      return if country_id.nil?
 
       self.country_ids = [country_id] unless international?
     end

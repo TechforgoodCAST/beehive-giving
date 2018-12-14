@@ -6,7 +6,7 @@ module SignIn
       @user = User.find_by(email: session[:email])
 
       if @user.nil?
-        reset_session
+        session.delete(:email)
         redirect_to sign_in_lookup_path
       elsif @user.password_digest.nil?
         redirect_to sign_in_reset_path
@@ -16,7 +16,7 @@ module SignIn
     end
 
     def create
-      @user = User.find_by(email: session[:email])
+      @user = User.find_by(email: session.delete(:email))
       @form = SignIn::Auth.new(form_params)
 
       if @form.authenticate(@user)
@@ -31,7 +31,11 @@ module SignIn
     end
 
     def destroy
+      cookie_preferences = session.to_h.slice(
+        'functional_cookies', 'performance_cookies', 'read_cookies_notice'
+      )
       reset_session
+      session.update(cookie_preferences)
       cookies.delete(:auth_token)
       redirect_to root_path, notice: 'Signed out!'
     end
