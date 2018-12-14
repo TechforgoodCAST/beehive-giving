@@ -22,8 +22,11 @@
         .px20.py25.bg-white.shadow.rounded
           .fs18.mb15.slate Private
           .mb5
-            %h1.bold.inline-block £19.99
-            .fs14.inline-block.slate + card fees
+            %h1.bold.inline-block= @order.amount_to_currency
+            .fs14.inline-block.slate
+              +
+              = @order.fee_to_currency
+              card fees
           .fs14.mb25.slate Per report
           %p You can remove one of your reports from the public directory at any time by making it private for a small fee.
 
