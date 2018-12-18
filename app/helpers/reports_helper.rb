@@ -41,6 +41,12 @@ module ReportsHelper
     end
   end
 
+  def spot_mistake_form_url(path)
+    'https://docs.google.com/forms/d/e/1FAIpQLSeOkkh1Ecb43lOQd2wDe_3ueLVpX46u' \
+    'NxjngJRIV2VpSUKMag/viewform?usp=pp_url&entry.1646333123=https://www.beeh' \
+    "ivegiving.org" + path
+  end
+
   def support_type(proposal = @proposal)
     if proposal.support_details.present?
       "#{proposal.category_name} - #{proposal.support_details}"

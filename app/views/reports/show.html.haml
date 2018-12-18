@@ -54,6 +54,9 @@
             .p20
               -# TODO: truncate
               .mb15.markdown= raw(a.fund.description_html)
+
+              .mb15.heading= link_to 'Spot a mistake?', spot_mistake_form_url(report_path(@proposal, assessment: a.id)), class: 'bold', target: '_blank', rel: 'noopener'
+
               -# TODO: size
               = link_to 'Website', a.fund.website, target: '_blank', rel: 'noopener', class: 'btn blue border-mist', onclick: "trackOutboundLink('#{a.fund.website}');"
               - a.fund.links.each do |text, href|
