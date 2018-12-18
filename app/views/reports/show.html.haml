@@ -52,15 +52,13 @@
               %span.grey= "##{a.id}"
 
             .p20
-              -# TODO: truncate
               .mb15.markdown= raw(a.fund.description_html)
 
               .mb15.heading= link_to 'Spot a mistake?', spot_mistake_form_url(report_path(@proposal, assessment: a.id)), class: 'bold', target: '_blank', rel: 'noopener'
 
-              -# TODO: size
-              = link_to 'Website', a.fund.website, target: '_blank', rel: 'noopener', class: 'btn blue border-mist', onclick: "trackOutboundLink('#{a.fund.website}');"
+              = link_to 'Website', a.fund.website, target: '_blank', rel: 'noopener', class: 'btn btn-sm blue border-mist', onclick: "trackOutboundLink('#{a.fund.website}');"
               - a.fund.links.each do |text, href|
-                = link_to text, href, target: '_blank', rel: 'noopener', class: 'btn blue border-mist', onclick: "trackOutboundLink('#{href}');"
+                = link_to text, href, target: '_blank', rel: 'noopener', class: 'btn btn-sm blue border-mist', onclick: "trackOutboundLink('#{href}');"
 
             .px20.pt10.border-top-thick.border-bottom-thick{ class: a.banner.background }
               .flex.flex-wrap.justify-between
