@@ -1,6 +1,7 @@
 class Funder < ApplicationRecord
   has_many :funds
   has_many :proposals, as: :collection
+  has_many :assessments, -> { distinct }, through: :proposals
 
   has_many :criteria, -> { distinct }, through: :funds
   has_many :priorities, -> { distinct }, through: :funds

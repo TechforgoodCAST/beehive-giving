@@ -12,5 +12,7 @@ class OpportunitiesController < ApplicationController
     @reports = @collection.proposals.includes(:recipient)
                           .order(created_at: :desc)
                           .page(params[:page])
+
+    @breakdown = @collection.assessments.group(:suitability_status).count
   end
 end

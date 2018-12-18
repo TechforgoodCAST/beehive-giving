@@ -11,6 +11,10 @@ describe Funder do
 
   it('has many Proposals') { assoc(:proposals, :has_many, as: :collection) }
 
+  it 'has many Assessments' do
+    assoc(:assessments, :has_many, through: :proposals)
+  end
+
   it 'has many Restrictions' do
     assoc(:restrictions, :has_many, through: :funds)
   end

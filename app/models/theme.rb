@@ -4,6 +4,7 @@ class Theme < ApplicationRecord
   belongs_to :parent, class_name: 'Theme', optional: true
 
   has_many :proposals, as: :collection
+  has_many :assessments, -> { distinct }, through: :proposals
 
   has_many :themes, foreign_key: 'parent_id'
   has_many :fund_themes, dependent: :destroy
