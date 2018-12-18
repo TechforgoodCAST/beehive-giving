@@ -109,8 +109,7 @@ feature 'Recipients' do
 
     within('.recipient_district') do
       find('.choices').click
-      assert_selector('#choices-recipient_district_id-item-choice-1')
-      find('#choices-recipient_district_id-item-choice-1').click
+      find('#choices-recipient_district_id-item-choice-1', wait: 5).click
     end
   end
 end
