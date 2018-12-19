@@ -1,5 +1,8 @@
 @import modules/base
 
+// Breadcrumbs
+// =========================================================================
+
 .bread, .crumb
   display: inline-block
   vertical-align: middle
@@ -46,74 +49,26 @@
   .crumb:nth-last-child(4)
     display: inline-block !important
 
-.dot, .dot-lg
-  padding: 0 5px
-  display: inline-block
+// Dot
+// =========================================================================
+
+.dot
   border-radius: 9999px
+  display: inline-block
+  height: 16px
+  line-height: 16px
+  max-width: 16px
+  min-width: 16px
   overflow: hidden
+  padding: 0 5px
+  text-indent: 16px
   transition: all .24s ease-in-out
   &:hover
     max-width: 150px
     opacity: 1
 
-.dot
-  height: 16px
-  line-height: 16px
-  max-width: 16px
-  min-width: 16px
-  text-indent: 16px
-
-.dot-lg
-  height: 22px
-  line-height: 22px
-  max-width: 22px
-  min-width: 22px
-  text-indent: 22px
-
-@each $var, $val in $scales
-  .dot-#{$var}
-    height: $val
-    line-height: $val
-    max-width: $val
-    min-width: $val
-    text-indent: $val
-
-.progress
-  height: 100%
-  overflow: hidden
-
-.progress .bar
-  height: 100%
-  display: inline-block
-
-article.featured
-  margin-left: -10px
-  margin-right: -10px
-
-.feature-card
-  display: inline-block
-  width: 270px
-  .image
-    background: image-url('feature-card.png') no-repeat
-    height: 200px
-  .copy
-    text-align: left
-
-#sort-form
-  select
-    +prefix(appearance, none, webkit moz)
-    border: none
-    outline: none
-    font-size: 15px
-    color: map-get($colors, 'blue')
-    background: none
-    max-width: 80px
-    margin: 0 5px
-    &:hover
-      cursor: pointer
-
-#header-offset
-  min-height: 43.75rem
+// Hex
+// =========================================================================
 
 #hex
   position: relative
@@ -134,19 +89,8 @@ article.featured
       width: 450px
       height: 415px
 
-#hex-footer
-  width: 100%
-  height: 375px
-  background: image-url('hex-footer.svg') no-repeat
-  background-size: 2438px 375px
-  background-position: center
-  position: absolute
-  z-index: -1
-
-#logo-hex
-  background: image-url('footer-hex.svg') no-repeat
-  width: 32px
-  height: 30px
+// Nav
+// =========================================================================
 
 nav
   @media screen and (max-width: 30rem)
@@ -179,52 +123,6 @@ nav
 
 .pagination a
   color: map-get($colors, 'blue')
-
-@font-face
-  font-family: 'Redacted'
-  src: font-url('redacted-script-bold.eot') format('eot'), font-url('redacted-script-bold.woff2') format('woff2'), font-url('redacted-script-bold.woff') format('woff'), font-url('redacted-script-bold.otf') format('opentype'), font-url('redacted-script-bold.svg#filename') format('svg')
-.redacted
-  font-family: 'Redacted' !important
-
-#supporter
-  background: image-url('supporters-logos-sprites.png') no-repeat
-  background-size: 200px 1500px
-  width: 200px
-  height: 120px
-  &.cast
-    background-position: center -15px
-  &.big-lottery-fund
-    background-position: center -165px
-  &.three-sixty-giving
-    background-position: center -315px
-  &.outlandish
-    background-position: center -465px
-  &.indigo-trust
-    background-position: center -615px
-  &.forward-foundation
-    background-position: center -765px
-  &.neon
-    background-position: center -915px
-  &.forward-partners
-    background-position: center -1065px
-  &.forward3d
-    background-position: center -1215px
-  &.datakind-uk
-    background-position: center -1365px
-
-=scale($w, $h, $scale: 1)
-  background-size: ($w * $scale) ($h * $scale)
-  min-width: ($w * $scale) / 2
-  height: ($h * $scale)
-
-@media screen and (min-width: 46.875rem)
-  .dashboard-columns > div
-    width: 24%
-    margin-right: 1%
-
-  .dashboard-columns > div:nth-of-type(4n)
-    margin-right: 0
-
 
 // Markdown
 // =========================================================================
@@ -326,6 +224,9 @@ footer.white hr
       margin: 0 0 20px 0
     *:last-child
       margin: 0
+
+// Icons
+// =========================================================================
 
 .icon
   display: inline-block
