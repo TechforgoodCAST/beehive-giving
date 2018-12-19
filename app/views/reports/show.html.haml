@@ -14,21 +14,19 @@
     - else
       = breadcrumbs('Opportunities' => opportunities_path, "Report #{@proposal.identifier}" => report_path(@proposal))
 
-    .maxw1050.mx-auto.px15.pb40
-      .flex.justify-between.white
-
-        %div
-          %h1.h2.mb5
+    .maxw1050.mx-auto.pb20
+      .flex.flex-wrap.white
+        .col-grow.px15.mb20
+          %h1.h2.mb15
             = @proposal.name
-            %span.muted= @proposal.identifier
-            -# TODO: status
-            -# .btn.border-white= @proposal.status.capitalize
+            %span.muted.inline-flex.items-center
+              = @proposal.identifier
+              %a.btn.btn-sm.disabled.border-white.ml10= @proposal.status.capitalize
           Created for
           = created_by
           = time_ago_in_words(@proposal.created_at)
           ago
-
-        %div
+        .px15
           - if @collection
             = link_to('New report', new_recipient_path(@collection), class: 'btn bg-secondary')
 
