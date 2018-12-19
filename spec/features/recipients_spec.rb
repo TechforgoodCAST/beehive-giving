@@ -109,8 +109,7 @@ feature 'Recipients' do
 
     within('.recipient_district') do
       find('.choices').click
-      puts page.body # TODO: Debug CI passes consistently
-      find('#choices-recipient_district_id-item-choice-1').click
+      find('#choices-recipient_district_id-item-choice-1', wait: 10).click
     end
   end
 end

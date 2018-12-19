@@ -1,8 +1,5 @@
-# TODO: refactor
 Rails.application.routes.draw do
   resources :articles, only: %i[index show]
-
-  ## v3 start ##
 
   root 'pages#home'
 
@@ -14,7 +11,6 @@ Rails.application.routes.draw do
 
   get  '/reports/:proposal_id/upgrade', to: 'charges#new', as: 'new_charge'
   post '/reports/:proposal_id/upgrade', to: 'charges#create'
-  # TODO: thank you page?
 
   get '/reports/:proposal_id', to: 'reports#show', as: 'report'
   get '/reports', to: 'reports#index', as: 'reports'
@@ -48,8 +44,6 @@ Rails.application.routes.draw do
       get '/districts/:country_id', to: 'districts#index', as: 'districts'
     end
   end
-
-  ## v3 end ##
 
   # Errors
   match '/404', to: 'errors#not_found', via: :all

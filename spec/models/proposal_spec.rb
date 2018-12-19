@@ -292,9 +292,53 @@ describe Proposal do
     expect(subject.assessments_count).to eq(1)
   end
 
-  scenario '#country set'
+  context 'assigns #countries' do
+    subject { build(:proposal, children: false) }
 
-  scenario 'countries & districts properly cleared & last selection takes precedence'
+    let(:country) { create(:country) }
 
-  scenario 'districts only for country allowed'
+    it '#country_id set' do
+      subject.country_id = country.id
+      subject.valid?
+      expect(subject.country_ids).to eq([country.id])
+    end
+
+    it '#country_id nil' do
+      subject.valid?
+      expect(subject.country_ids).to eq([])
+    end
+
+    it 'international' do
+      subject.geographic_scale = 'international'
+      subject.country_id = country.id
+      subject.valid?
+      expect(subject.country_ids).to eq([])
+    end
+  end
+
+  context 'clear districts if country wide' do
+    it 'international' do
+      subject.geographic_scale = 'international'
+      subject.valid?
+      expect(subject.districts).to be_empty
+    end
+
+    it 'local' do
+      subject.geographic_scale = 'local'
+      subject.valid?
+      expect(subject.districts).not_to be_empty
+    end
+
+    it 'national' do
+      subject.geographic_scale = 'national'
+      subject.valid?
+      expect(subject.districts).to be_empty
+    end
+
+    it 'regional' do
+      subject.geographic_scale = 'local'
+      subject.valid?
+      expect(subject.districts).not_to be_empty
+    end
+  end
 end

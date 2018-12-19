@@ -19,6 +19,10 @@ describe Theme do
 
   it('has many Proposals') { assoc(:proposals, :has_many, as: :collection) }
 
+  it 'has many Assessments' do
+    assoc(:assessments, :has_many, through: :proposals)
+  end
+
   it 'has many Restrictions' do
     assoc(:restrictions, :has_many, through: :funds)
   end
@@ -46,31 +50,8 @@ describe Theme do
     expect(subject.slug).to eq('new-name')
   end
 
-  it '#related must be Hash' do
-    subject.related = 'string'
-    expect(subject).not_to be_valid
-  end
-
-  it '#related must have valid keys' do
-    subject.related = { 'missing' => 1 }
-    expect(subject).not_to be_valid
-  end
-
-  it '#related value must be Float or Integer' do
-    subject.save!
-    ['', [], {}].each do |val|
-      subject.related = { subject.name => val }
-      expect(subject).not_to be_valid
-    end
-
-    [1, 1.0].each do |val|
-      subject.related = { subject.name => val }
-      subject.reload
-      expect(subject).to be_valid
-    end
-  end
-
   it('#primary_color') { expect(subject.primary_color).to eq(nil) }
+
   it('#secondary_color') { expect(subject.primary_color).to eq(nil) }
 
   context '#active_opportunities_count' do

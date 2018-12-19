@@ -1,4 +1,5 @@
 class Proposal < ApplicationRecord
+  include CategoryName
   include GenerateToken
 
   attr_accessor :country_id
@@ -114,14 +115,6 @@ class Proposal < ApplicationRecord
 
   before_create { generate_token(:access_token) }
 
-  # TODO: to concern
-  # Lookup category name from {CATEGORIES} using #category_code.
-  #
-  # @return [String] the name of the category.
-  def category_name
-    CATEGORIES.values.reduce({}, :merge)[category_code]
-  end
-
   def description_with_default
     description || '<em>No description provided</em>'.html_safe
   end
@@ -170,7 +163,7 @@ class Proposal < ApplicationRecord
     end
 
     def country_to_countries
-      return unless country_id
+      return if country_id.nil?
 
       self.country_ids = [country_id] unless international?
     end

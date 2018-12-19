@@ -1,6 +1,4 @@
 class RecipientsController < ApplicationController
-  layout 'fullscreen'
-
   before_action :load_collection
 
   def new

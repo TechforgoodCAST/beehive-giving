@@ -1,14 +1,11 @@
 module SignIn
   class SetController < ApplicationController
-    layout 'fullscreen' # TODO: refactor
-
     before_action :redirect_if_logged_in, :load_user
 
     def new
       if @user && @user.password_reset_sent_at > 1.hour.ago
         @form = SignIn::Set.new(user: @user)
       else
-        reset_session
         msg = 'Password reset expired, please request a new one.'
         redirect_to sign_in_lookup_path, alert: msg
       end

@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 feature 'Cookies' do
+  include SignInHelper
+
   context 'banner' do
     before { visit root_path }
-
-    scenario 'reset_session makes banner appear after sign out'
 
     scenario('visible') { expect(page).to have_text('Change settings') }
 
@@ -34,5 +34,17 @@ feature 'Cookies' do
     sleep(1)
     expect(browser.all_cookies.pluck(:name))
       .to contain_exactly('_beehive_session')
+  end
+
+  context do
+    let(:user) { create(:user_with_password) }
+    before { sign_in(user) }
+
+    scenario 'cookie preferences remembered when signing out' do
+      click_link 'Continue'
+      expect(page).not_to have_text('Change settings')
+      click_link 'Sign out'
+      expect(page).not_to have_text('Change settings')
+    end
   end
 end

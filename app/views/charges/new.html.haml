@@ -17,8 +17,7 @@
     %div{ style: 'display:inline;' }
       %img{ alt: '', height: '1', src: '//www.googleadservices.com/pagead/conversion/937505505/?label=JjT_CMfMg3AQ4eWEvwM&guid=ON&script=0', style: 'border-style:none;', width: '1' }
 
--# TODO: dynamic colors
-%main.bg-dark-blue
+%main.bg-secondary
   %section.maxw810.mx-auto.mt40.pt10
     .center.px15.mb40
       %h1.h2.white.mb15 Upgrade to keep your report private
@@ -65,12 +64,12 @@
                 .mb20.p20.bold.heading.red.rounded.border.border-pale-red.bg-light-red= params[:card_errors]
 
               .mb20
-                .label Card number
+                .label Card number *
                 %input.input#card-number{ 'data-stripe': 'number', size: '24', type: 'text', placeholder: '4242 4242 4242 4242' }
 
               .mb20.flex
                 .mr20.f1
-                  .label Expiration
+                  .label Expiration *
                   .flex
                     .mr5
                       %input.input#expiry-month{ 'data-stripe': 'exp_month', size: '10', type: 'text', placeholder: 'MM' }
@@ -78,10 +77,10 @@
                       %input.input#expiry-year{ 'data-stripe': 'exp_year', size: '10', type: 'text', placeholder: 'YY' }
 
                 .f1
-                  .label CVC
+                  .label CVC *
                   %input.input#cvc{ 'data-stripe': 'cvc', size: '10', type: 'text', placeholder: '123' }
 
-              %button.btn-wide.bg-rich-blue.white.shadow{ type: 'submit' } Purchase private report
+              %button.btn-wide.bg-primary.white.shadow{ type: 'submit' } Purchase private report
 
               :javascript
                 Stripe.setPublishableKey('#{Rails.configuration.stripe[:publishable_key]}');
@@ -90,5 +89,5 @@
           Or, continue with a
           = link_to 'free public report', report_path(@proposal) , class: 'white underline'
 
-.bg-dark-blue
+.bg-secondary
   = render partial: 'shared/footer', locals: { color: 'white' }

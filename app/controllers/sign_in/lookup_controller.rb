@@ -13,7 +13,6 @@ module SignIn
         session[:email] = form_params[:email]
         redirect_to_path
       else
-        reset_session
         render :new
       end
     end

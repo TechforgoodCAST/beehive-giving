@@ -11,6 +11,10 @@ describe Funder do
 
   it('has many Proposals') { assoc(:proposals, :has_many, as: :collection) }
 
+  it 'has many Assessments' do
+    assoc(:assessments, :has_many, through: :proposals)
+  end
+
   it 'has many Restrictions' do
     assoc(:restrictions, :has_many, through: :funds)
   end
@@ -33,11 +37,11 @@ describe Funder do
     before { subject.save }
 
     it 'present' do
-      expect(subject.slug).to eq 'funder-name'
+      expect(subject.slug).to eq('funder-name')
     end
 
     it 'unique' do
-      expect(create(:funder, name: 'Funder Name').slug).to eq 'funder-name-2'
+      expect(create(:funder, name: 'Funder Name').slug).to eq('funder-name-2')
     end
   end
 

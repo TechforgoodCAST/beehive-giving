@@ -14,8 +14,6 @@ describe Check::Each do
 
   subject { Check::Each.new(criteria).call_each(funds, assessment.proposal) }
 
-  it 'opportunity with no priorities should not include reasons'
-
   context 'missing criteria' do
     let(:criteria) { nil }
     it('raise error') { expect { subject }.to raise_error(ArgumentError) }

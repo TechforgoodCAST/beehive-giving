@@ -1,4 +1,6 @@
 class Article < ApplicationRecord
+  include MarkdownMethod
+
   validates :title, :slug, :body, presence: true
   validates :slug, uniqueness: true
 

@@ -4,12 +4,15 @@ class OpportunitiesController < ApplicationController
   def index
     funders = Funder.where(active: true)
     themes = Theme.joins(:funds).where('funds.state': 'active').distinct
-    @opportunities = funders + themes
-    @opportunities.sort_by!(&:name)
+    array = (funders + themes).sort_by!(&:name)
+    @opportunities = Kaminari.paginate_array(array).page(params[:page]).per(20)
   end
 
   def show
-    @reports = @collection.proposals.includes(:collection, :recipient)
+    @reports = @collection.proposals.includes(:recipient)
                           .order(created_at: :desc)
+                          .page(params[:page])
+
+    @breakdown = @collection.assessments.group(:suitability_status).count
   end
 end

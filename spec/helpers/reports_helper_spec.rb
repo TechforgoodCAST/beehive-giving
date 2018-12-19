@@ -70,6 +70,13 @@ describe ReportsHelper do
     end
   end
 
+  it '#spot_mistake_form_url' do
+    url = 'https://docs.google.com/forms/d/e/1FAIpQLSeOkkh1Ecb43lOQd2wDe_3ueL' \
+          'VpX46uNxjngJRIV2VpSUKMag/viewform?usp=pp_url&entry.1646333123=http' \
+          's://www.beehivegiving.org/path?param=1'
+    expect(subject.spot_mistake_form_url('/path?param=1')).to eq(url)
+  end
+
   context '#support_type' do
     it 'with details' do
       proposal.category_code = 101

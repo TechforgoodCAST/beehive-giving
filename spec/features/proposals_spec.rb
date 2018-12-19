@@ -207,18 +207,46 @@ feature 'Proposals' do
     expect(user.proposals.count).to eq(1)
   end
 
-  scenario 'reports produced for active opportunities in collection'
+  scenario 'terms and update version set', js: true do
+    visit new_proposal_path(collection, @recipient)
+    valid_funding_request
 
-  scenario 'restriction labels inverted'
+    expect(User.last.terms_version).to eq(TERMS_VERSION)
+    expect(User.last.update_version).to eq(UPDATE_VERSION)
+  end
 
-  scenario 'priority labels inverted'
+  scenario 'reports produced for active opportunities', js: true do
+    Fund.last.update!(state: 'inactive')
+    visit new_proposal_path(collection, @recipient)
+    valid_funding_request
+    expect(Proposal.last.assessments.size).to eq(1)
+  end
 
-  scenario 'creates assessments'
+  scenario 'restriction labels inverted' do
+    expert_labels_inverted(:restrictions, 0..3, no: 2, yes: 2)
+  end
+
+  scenario 'priority labels inverted' do
+    expert_labels_inverted(:priorities, 4..7, no: 2, yes: 2)
+  end
 
   def choose_answers(from: 0, to: 0)
     (from..to).each do |i|
       find("label[for='proposal_answers_attributes_#{i}_eligible_true']").click
     end
+  end
+
+  def expert_labels_inverted(criteria, range, no: 2, yes: 2)
+    collection.send(criteria).where(category: 'Proposal')
+              .limit(2).update_all(invert: true)
+    visit new_proposal_path(collection, @recipient)
+
+    eligible_labels = (range).map do |i|
+      find("label[for=proposal_answers_attributes_#{i}_eligible_true]").text
+    end
+
+    expect(eligible_labels.count('No')).to eq(no)
+    expect(eligible_labels.count('Yes')).to eq(yes)
   end
 
   def fill_in_funding_details

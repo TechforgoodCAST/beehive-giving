@@ -11,14 +11,17 @@
         .col2.px15.mb20
           %h1.h2.mb5= @collection.name
           = @collection.class
-          -# TODO: breakdown
-        .col1.md.px15
-          -# TODO: responsive
-          = link_to('New report', new_recipient_path(@collection), class: 'btn bg-secondary')
+        .col1.md.px15.flex.justify-center
+          - breakdown(@breakdown).each do |label, perc|
+            .center.mx10
+              .h2.mb5= perc
+              .fs14= label
 
   .maxw1050.mx-auto
     %section.mx15
-      %h3.bold.night.my40 Recent reports
+      .my40.flex.flex-wrap.justify-between.items-center
+        %h3.bold.night Recent reports
+        = link_to('New report', new_recipient_path(@collection), class: 'btn white bg-secondary')
 
       .grid.mb40
         - @reports.each do | report|
@@ -52,7 +55,8 @@
 
               %div= report_button(report)
 
-    -# TODO: pagination
+    .mx15.mb40.pb10.center
+      = paginate @reports
 
 .bg-ice
   = render partial: 'shared/footer', locals: { color: 'slate' }

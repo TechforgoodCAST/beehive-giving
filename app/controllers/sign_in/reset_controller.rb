@@ -1,12 +1,9 @@
 module SignIn
   class ResetController < ApplicationController
-    layout 'fullscreen' # TODO: refactor
-
     before_action :redirect_if_logged_in, except: :destroy
 
     def new
-      @user = User.find_by(email: session[:email])
-      reset_session
+      @user = User.find_by(email: session.delete(:email))
 
       if @user
         send_password_reset(@user)
