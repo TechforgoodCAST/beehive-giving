@@ -46,6 +46,12 @@
             = link_to 'Agree', terms_version_path(@current_user), method: :post, class: 'btn white'
             = link_to 'Review', terms_path, class: 'btn border-grey silver'
 
+    .bg-yellow.border-bottom.border-mist.fs14.lh18.black.bold
+      .maxw1050.mx-auto.pt15.px15
+        .flex.flex-wrap
+          .mb15.md.col2
+            Beehive is no longer being maintained, and the information presented here may be out of date.
+
     - flash.each do |key, msg|
       .bg-night.border-bottom.border-slate.fs15.white
         .maxw1050.mx-auto.px15.py10
