@@ -13,6 +13,12 @@ class ReportsController < ApplicationController
       render 'errors/not_found', status: 404
     end
   end
+  
+  def make_private
+      @proposal = Proposal.find_by(id: params[:proposal_id])
+      @proposal.update_column(:private, Time.zone.now)
+      redirect_to report_path(@proposal, t: @proposal.access_token)
+  end
 
   def index
     authenticate_user

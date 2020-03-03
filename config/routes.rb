@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   post '/reports/:proposal_id/upgrade', to: 'charges#create'
 
   get '/reports/:proposal_id', to: 'reports#show', as: 'report'
+  get '/reports/:proposal_id/make-private', to: 'reports#make_private', as: 'make_report_private'
   get '/reports', to: 'reports#index', as: 'reports'
 
   get '/opportunities', to: 'opportunities#index', as: 'opportunities'

@@ -18,76 +18,22 @@
       %img{ alt: '', height: '1', src: '//www.googleadservices.com/pagead/conversion/937505505/?label=JjT_CMfMg3AQ4eWEvwM&guid=ON&script=0', style: 'border-style:none;', width: '1' }
 
 %main.bg-secondary
-  %section.maxw810.mx-auto.mt40.pt10
-    .center.px15.mb40
-      %h1.h2.white.mb15 Upgrade to keep your report private
-      %p.white Details about your support request such as the amount, description and eligibility reasons will be included in a publicly viewable directory that others can browse unless you opt for a ‘Private’ report.
-    .flex.flex-wrap
-      .col1.md.px15.mb30.maxw270.minw270
-        .bg-white.shadow.rounded
-          .bg-ice.rounded-top.border-bottom.border-mist.p20
-            %h5.bold Your order
-          .p20
-            .flex.items-center.justify-between.bold.mb7
-              .heading Private report
-              = @order.amount_to_currency
-            .pb20.slate.fs15.lh18.border-bottom.border-silver.mb20
-              Hides report
-              %strong= "##{@proposal.id}"
-              in public directory
+  %section.maxw750.mx-auto.mt40.pt10
+    .center.px15.my40
+      %h1.h2.white.mb15 Your report's visibility
+      
+      .bg-white.shadow.rounded
+        .bg-ice.rounded-top.border-bottom.border-mist.p20
 
-            .flex.items-center.justify-between.bold.mb20.slate
-              .heading Card fees
-              = @order.fee_to_currency
+          %p.black Details about your support request such as the amount, description and eligibility reasons will be included in a publicly viewable directory that others can browse unless you opt for a ‘Private’ report.
 
-            .flex.items-center.justify-between.bold
-              .heading Total
-              = @order.total_to_currency
-
-      .col2.px15.mb30
-        .bg-white.shadow.rounded
-          .bg-ice.rounded-top.border-bottom.border-mist.p20.flex.justify-between.items-center
-            %h5.bold Payment details
-            .fs14.night * Required
-          .p20
-            = form_tag new_charge_path(@proposal), id: 'payment-form', class: 'form' do
-              %noscript
-                .p20.red.border-red
-                  %strong You have JavaScript disabled
-                  and this page will not work. Please use a device that supports JavaScript.
-
-              %input#stripeToken{ name: 'stripeToken', type: 'hidden' }
-
-              .payment-errors.hide.mb20.p20.bold.heading.red.rounded.border.border-pale-red.bg-light-red
-
-              - if params[:card_errors]
-                .mb20.p20.bold.heading.red.rounded.border.border-pale-red.bg-light-red= params[:card_errors]
-
-              .mb20
-                .label Card number *
-                %input.input#card-number{ 'data-stripe': 'number', size: '24', type: 'text', placeholder: '4242 4242 4242 4242' }
-
-              .mb20.flex
-                .mr20.f1
-                  .label Expiration *
-                  .flex
-                    .mr5
-                      %input.input#expiry-month{ 'data-stripe': 'exp_month', size: '10', type: 'text', placeholder: 'MM' }
-                    .ml5
-                      %input.input#expiry-year{ 'data-stripe': 'exp_year', size: '10', type: 'text', placeholder: 'YY' }
-
-                .f1
-                  .label CVC *
-                  %input.input#cvc{ 'data-stripe': 'cvc', size: '10', type: 'text', placeholder: '123' }
-
-              %button.btn-wide.bg-primary.white.shadow{ type: 'submit' } Purchase private report
-
-              :javascript
-                Stripe.setPublishableKey('#{Rails.configuration.stripe[:publishable_key]}');
-
-        .center.my20.px15.bold.white
-          Or, continue with a
-          = link_to 'free public report', report_path(@proposal) , class: 'white underline'
+          .flex.flex-wrap.justify-between
+            .col1.md.px15
+              .center.my20.px15
+                = link_to 'Keep my report public', report_path(@proposal) , class: 'white btn-wide bg-primary'
+            .col1.md.px15
+              .center.my20.px15
+                = link_to 'Make my report private', make_report_private_path(@proposal) , class: 'white btn-wide bg-primary'
 
 .bg-secondary
   = render partial: 'shared/footer', locals: { color: 'white' }
