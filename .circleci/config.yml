@@ -14,7 +14,7 @@ jobs:
         environment:
           POSTGRES_USER: beehive-giving
           POSTGRES_DB: beehive_giving_test
-          POSTGRES_PASSWORD: ""
+          POSTGRES_PASSWORD: password
 
     steps:
       - checkout
