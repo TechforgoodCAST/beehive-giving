@@ -262,7 +262,6 @@ feature 'Proposals' do
     fill_in(:proposal_description, with: 'A new roof for our community centre.')
 
     within('.proposal_themes') do
-      find('.choices').click
       find('#choices-proposal_theme_ids-item-choice-1').click
       find('#choices-proposal_theme_ids-item-choice-2').click
     end
@@ -279,14 +278,12 @@ feature 'Proposals' do
 
   def select_country
     within('.proposal_country_id') do
-      find('.choices').click
       find('#choices-proposal_country_id-item-choice-2').click
     end
   end
 
   def select_countries
     within('.proposal_countries') do
-      find('.choices').click
       find('#choices-proposal_country_ids-item-choice-2').click
       find('#choices-proposal_country_ids-item-choice-3').click
       find('.hint').click
@@ -295,7 +292,6 @@ feature 'Proposals' do
 
   def select_districts
     within('.proposal_districts') do
-      find('.choices').click
       find('#choices-proposal_district_ids-item-choice-1').click
       find('#choices-proposal_district_ids-item-choice-2').click
       find('.hint').click
