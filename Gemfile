@@ -44,7 +44,7 @@ gem 'stripe'
 
 # Admin
 gem 'activeadmin', '~> 1.3.0'
-gem 'devise', '~> 4.6.0'
+gem 'devise', '~> 4.7.1'
 
 # Monitoring & metrics
 gem 'rollbar'
