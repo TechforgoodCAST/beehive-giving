@@ -20,7 +20,7 @@ describe GeoArea do
   end
 
   it 'districts must be from countries' do
-    district = build(:district)
+    district = create(:district)
     subject.update(districts: [district])
     msg = "Country '#{district.country.name}' for #{district.name} not selected"
 
