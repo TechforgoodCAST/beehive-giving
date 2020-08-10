@@ -4,5 +4,5 @@ _site
 .jekyll-metadata
 vendor
 
-.vscode
+.vscode/
 .byebug_history
