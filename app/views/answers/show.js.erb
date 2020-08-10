@@ -1,8 +1,0 @@
-<%- if @assessment && @criteria_type %>
-  document.getElementById('answers').innerHTML = "<%= j render(partial: 'dialog') %>";
-<%- else %>
-  document.getElementById('answers').innerHTML = "<%= j render(template: 'errors/not_found') %>";
-<%- end %>
-
-document.body.classList.add('js-open-modal');
-document.querySelector('dialog').showModal();

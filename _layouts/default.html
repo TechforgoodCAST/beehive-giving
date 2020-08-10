@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang | default: "en" }}">
+
+  {%- include head.html -%}
+
+  <body id='top'>
+
+    {%- include header.html -%}
+
+    <main class="bg-ice flex" style="overflow: hidden;" aria-label="Content">
+      {{ content }}
+    </main>
+
+    {%- include footer.html -%}
+
+  </body>
+
+</html>

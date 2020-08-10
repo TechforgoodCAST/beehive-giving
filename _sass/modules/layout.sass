@@ -1,0 +1,42 @@
+// Config
+// =========================================================================
+
+@import widths
+
+// =========================================================================
+
+.perc48
+  width: 48%
+
+.inline-block
+  display: inline-block
+.inline-flex
+  display: inline-flex
+
+.w-full
+  width: 100%
+
+.col1
+  max-width: 350px
+.col2
+  max-width: 720px
+.col1, .col2
+  flex-basis: 320px
+  flex-grow: 1
+  min-width: 320px
+  &.md
+    @media screen and (max-width: 655px)
+      min-width: auto
+      max-width: 100%
+
+.col-grow
+  min-width: 320px
+  max-width: 100%
+  flex-basis: 499px
+  flex-grow: 1
+
+@each $var, $val in $widths
+  .maxw#{$var}
+    max-width: $val
+  .minw#{$var}
+    min-width: $val

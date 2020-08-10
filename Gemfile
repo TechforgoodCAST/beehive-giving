@@ -1,92 +1,30 @@
-source 'https://rubygems.org'
-
-ruby '2.5.5'
-
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 5.2.2.1'
-# Use postgresql as the database for Active Record
-gem 'pg', '>= 0.18', '< 2.0'
-# Use Puma as the app server
-gem 'puma', '~> 3.7'
-# Use SCSS for stylesheets
-gem 'sass-rails', '~> 5.0'
-# Use Uglifier as compressor for JavaScript assets
-gem 'uglifier', '>= 1.3.0'
-# Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
-gem 'webpacker'
-# See https://github.com/rails/execjs#readme for more supported runtimes
-# gem 'therubyracer', platforms: :ruby
-
-# Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
-gem 'turbolinks', '~> 5'
-# Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.5'
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 3.0'
-# Use ActiveModel has_secure_password
-gem 'bcrypt', '~> 3.1.7'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-gem 'activerecord-import'
-gem 'chartkick'
-gem 'groupdate'
-gem 'hamlit'
-gem 'hashids'
-gem 'kaminari'
-gem 'pundit'
-gem 'rack-tracker'
-gem 'redcarpet'
-gem 'simple_form'
-gem 'sitemap_generator'
-gem 'stripe'
-
-# Admin
-gem 'activeadmin', '~> 1.3.0'
-gem 'devise', '~> 4.7.1'
-
-# Monitoring & metrics
-gem 'rollbar'
-group :production do
-  gem 'rails_12factor'
-  gem 'scout_apm'
-  gem 'tunemygc'
+source "https://rubygems.org"
+# Hello! This is where you manage which Jekyll version is used to run.
+# When you want to use a different version, change it below, save the
+# file and run `bundle install`. Run Jekyll with `bundle exec`, like so:
+#
+#     bundle exec jekyll serve
+#
+# This will help ensure the proper Jekyll version is running.
+# Happy Jekylling!
+gem "jekyll", "~> 3.9.0"
+# If you want to use GitHub Pages, remove the "gem "jekyll"" above and
+# uncomment the line below. To upgrade, run `bundle update github-pages`.
+# gem "github-pages", group: :jekyll_plugins
+# If you have any plugins, put them here!
+group :jekyll_plugins do
+  gem "github-pages"
+  gem "jekyll-feed", "~> 0.12"
+  gem "jekyll-seo-tag", "~> 2.6.1"
 end
 
-group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platforms: %i[mri mingw x64_mingw]
-  gem 'capybara'
-  gem 'dotenv-rails'
-  gem 'factory_bot_rails'
-  gem 'rspec-rails', '3.5.2'
-  gem 'selenium-webdriver'
-  gem 'stripe-ruby-mock', require: 'stripe_mock'
-  gem 'webmock'
+# Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
+# and associated library.
+platforms :mingw, :x64_mingw, :mswin, :jruby do
+  gem "tzinfo", "~> 1.2"
+  gem "tzinfo-data"
 end
 
-group :development do
-  gem 'listen', '>= 3.0.5', '< 3.2'
-  # Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
-  gem 'web-console', '>= 3.3.0'
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
-  gem 'spring-commands-rspec'
-  gem 'spring-watcher-listen', '~> 2.0.0'
+# Performance-booster for watching directories on Windows
+gem "wdm", "~> 0.1.1", :platforms => [:mingw, :x64_mingw, :mswin]
 
-  gem 'bullet'
-  gem 'meta_request'
-  gem 'pry'
-  gem 'pry-rails'
-  gem 'rubocop', require: false
-  gem 'yard'
-end
-
-group :test do
-  gem 'climate_control'
-  gem 'database_cleaner'
-end
-
-# Windows does not include zoneinfo files, so bundle the tzinfo-data gem
-gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]

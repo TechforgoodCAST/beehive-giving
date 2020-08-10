@@ -1,0 +1,241 @@
+@import modules/base
+
+// Breadcrumbs
+// =========================================================================
+
+.bread, .crumb
+  display: inline-block
+  vertical-align: middle
+.bread
+  max-width: 140px
+  @media screen and (max-width: 46.875rem)
+    max-width: 125px
+  @media screen and (max-width: 25rem)
+    max-width: 120px
+.crumb
+  margin: 0 5px
+@media screen and (max-width: 46.875rem)
+  .bread, .crumb
+    display: none
+  .bread:nth-last-child(7)
+    visibility: hidden
+    position: relative
+    width: 10px
+    &:after
+      visibility: visible
+      position: absolute
+      top: 2px
+      content: '...'
+  .bread:nth-last-child(-n+5),
+  .crumb:nth-last-child(-n+5),
+  .bread:nth-last-child(7),
+  .crumb:nth-last-child(6)
+    display: inline-block
+@media screen and (max-width: 25rem)
+  .bread, .crumb
+    display: none !important
+  .bread:nth-last-child(5)
+    visibility: hidden
+    position: relative
+    width: 10px
+    &:after
+      visibility: visible
+      position: absolute
+      top: 2px
+      content: '...'
+  .bread:nth-last-child(-n+3),
+  .crumb:nth-last-child(-n+3),
+  .bread:nth-last-child(5),
+  .crumb:nth-last-child(4)
+    display: inline-block !important
+
+// Dot
+// =========================================================================
+
+.dot
+  border-radius: 9999px
+  display: inline-block
+  height: 16px
+  line-height: 16px
+  max-width: 16px
+  min-width: 16px
+  overflow: hidden
+  padding: 0 5px
+  text-indent: 16px
+  transition: all .24s ease-in-out
+  &:hover
+    max-width: 150px
+    opacity: 1
+
+// Hex
+// =========================================================================
+
+#hex
+  position: relative
+  z-index: 0
+  &:after
+    content: ''
+    display: block
+    position: absolute
+    z-index: -1
+    background: url('#{$baseurl}/assets/bg-hex.svg') no-repeat
+    width: 600px
+    height: 553px
+    top: -100px
+    left: -45px
+    @media screen and (max-width: 639px)
+      top: -40px
+      left: -25px
+      width: 450px
+      height: 415px
+
+// Nav
+// =========================================================================
+
+nav
+  @media screen and (max-width: 30rem)
+    a
+      font-size: 15px
+    .mx20
+      margin-left: 10px
+      margin-right: 10px
+    .ml20
+      margin-left: 10px
+
+#navbar-logo
+  width: 106px
+  height: 20px
+  background: url('#{$baseurl}/assets/logo.svg') no-repeat
+  background-size: 106px 20px
+  margin-right: auto
+  text-indent: 100%
+  white-space: nowrap
+  overflow: hidden
+  &.blue
+    background: url('#{$baseurl}/assets/blue-logo.svg') no-repeat
+    @media screen and (max-width: 30rem)
+      background: url('#{$baseurl}/assets/blue-logo-hex.svg') no-repeat
+  @media screen and (max-width: 30rem)
+    width: 24px
+    height: 20px
+    background: url('#{$baseurl}/assets/logo-hex.svg') no-repeat
+    background-size: 24px 20px
+
+.pagination a
+  color: map-get($colors, 'blue')
+
+// Markdown
+// =========================================================================
+
+.markdown
+  h1, h2, h3, h4, h5, h6, p, ul, ol
+    margin-bottom: 20px
+  h1, h2, h3, h4
+    font-weight: 300
+  a
+    color: map-get($colors, 'blue')
+  ul
+    list-style: disc
+  ul, ol
+    padding-left: 30px
+
+// Quiz
+// =========================================================================
+
+.quiz
+  .input_wrapper
+    white-space: nowrap
+
+  input[type='radio']
+    position: absolute !important
+    height: 1px
+    width: 1px
+    overflow: hidden
+    clip: rect(1px, 1px, 1px, 1px)
+
+  input[type='radio'] + label
+    display: inline-block
+    min-width: 52px
+    padding: 6px 12px
+    margin-right: 5px
+    border-radius: $base-radius
+    cursor: pointer
+    text-align: center
+    border: $base-border-width solid map-get($colors, 'mist')
+
+  input[type='radio']:checked + label
+    color: map-get($colors, 'white')
+    background: map-get($colors, 'blue')
+    border: $base-border-width solid transparent
+
+  input[type=radio]:not(:checked) + label
+    color: map-get($colors, 'blue')
+
+// Dialog
+// =========================================================================
+
+// native
+dialog::backdrop
+  background-color: rgba(0, 0, 0, 0.8) !important
+// polyfill
+dialog + .backdrop
+  background-color: rgba(0, 0, 0, 0.8) !important
+
+dialog
+  min-width: 320px
+  padding: 0 !important
+  label
+    cursor: default !important
+
+.js-open-modal
+  height: auto !important
+  overflow: inherit !important
+
+// Footer
+// =========================================================================
+
+footer.slate .footer-links a
+  color: map-get($colors, 'slate')
+
+footer.slate hr
+  color: map-get($colors, 'mist')
+  background-color: map-get($colors, 'mist')
+
+footer.white .footer-links a, footer.white hr
+  color: map-get($colors, 'white')
+  opacity: .6
+
+footer.white hr
+  background-color: map-get($colors, 'white')
+
+.footer-logo
+  @media screen and (max-width: 40rem)
+    margin: 30px auto
+
+.footer-links
+  min-width: 290px
+
+  @media screen and (max-width: 40rem)
+    width: 100%
+    display: flex
+    align-items: center
+    flex-direction: column
+    *
+      margin: 0 0 20px 0
+    *:last-child
+      margin: 0
+
+// Icons
+// =========================================================================
+
+.icon
+  display: inline-block
+  width: 12px
+.private > .icon
+  height: 10px
+  margin-bottom: 4px
+  background: url('eye-cross.svg') no-repeat
+.public > .icon
+  height: 8px
+  margin-bottom: 5px
+  background: url('eye.svg') no-repeat

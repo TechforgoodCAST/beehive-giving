@@ -1,8 +1,0 @@
-HASHID = Hashids.new(ENV['HASHIDS_SALT'] || 'salt', 8, Hashids::DEFAULT_ALPHABET + '-')
-TERMS_VERSION = Date.new(2018, 11, 21)
-UPDATE_VERSION = ENV['UPDATE_VERSION'] || Date.today
-
-UNASSESSED = nil
-ELIGIBLE   = 1
-INCOMPLETE = 0
-INELIGIBLE = -1
