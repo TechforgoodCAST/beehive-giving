@@ -108,7 +108,7 @@ var app = new Vue({
     },
   },
   mounted() {
-    fetch("/assets/results.json")
+    fetch("/beehive-giving/assets/results.json")
       .then((r) => r.json())
       .then((response) => (this.stats = response));
   },

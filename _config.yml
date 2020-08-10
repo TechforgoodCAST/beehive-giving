@@ -21,7 +21,7 @@
 title: Beehive
 description: >- # this means to ignore newlines until "baseurl:"
   Insights from using open data to provide a grant funding suitability checking tool
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/beehive-giving" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
 # Build settings
