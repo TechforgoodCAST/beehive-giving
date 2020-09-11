@@ -1,0 +1,224 @@
+---
+layout: default
+---
+
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+<script src="https://unpkg.com/vue-chartjs/dist/vue-chartjs.min.js"></script>
+
+<section class="maxw1050 mx-auto my40 px15 w-full" id="app">
+    <div class="maxw1050 mx-auto mt40 flex flex-wrap items-center">
+        <div class="col2 px15 mb40 markdown">
+            {{ content }}
+        </div>
+        <!-- <div class="col2 mb40">
+            <div class="col1 md px15" id="hex">
+            </div>
+        </div> -->
+    </div>
+    <div class="mt40 flex flex-wrap" v-if="currentStats">
+        <div class="col2 px15">
+            <h3 class="bold night mb20">A typical proposal...</h3>
+            <p class="mb10 pl20">
+                ...was for <strong>#{ biggestValue('amount_bins') }#</strong>
+                for <strong>#{ biggestValue('category').toLowerCase() }#</strong> funding
+                lasting <strong>#{ biggestValue('duration_bins').toLowerCase() }#</strong>
+                at a <strong>#{ biggestValue('geographic_scale').toLowerCase() }#</strong> level
+                working in <strong>#{ biggestValue('themes').toLowerCase() }#</strong>
+            </p>
+            <p class="mb10 pl20">
+                ...from <strong>#{ biggestValue('recipient_category').toLowerCase() }#</strong> with income 
+                <strong>#{ biggestValue('recipient_income_band').toLowerCase() }#</strong> which is
+                <strong>#{ biggestValue('recipient_operating_for').toLowerCase() }#</strong> old.
+            </p>
+            <div class="bg-white rounded shadow mb40">
+                <div class="bg-ice rounded-top border-bottom border-mist p20 h5 bold">
+                    ...uses key words:
+                </div>
+                <div class="p20 heading h5 markdown">
+                    <ul style="list-style: none; padding-left: 0px; margin-bottom: 0px;" class="pl0 mb0">
+                        <li v-for="count, word in this.currentStats.word_counts"
+                            :key="word"
+                            class="inline-block mr10 mb10"
+                            v-bind:style="{ fontSize: fontSize(count), color: '#5aa0ff' }">#{ word }#</li>
+                    </ul>
+                </div>
+            </div>
+            <h3 class="bold night mb40 mt40">About the proposals</h3>
+            <div class="bg-white rounded shadow mb40">
+                <div class="bg-ice rounded-top border-bottom border-mist p20 h5 bold">
+                    How much funding were the proposals for?
+                </div>
+                <div class="p20 heading h5 markdown">
+                    <p class="mb15">
+                        Users were asked the minimum and maximum funding they were looking for. These results are based on the minimum funding asked for.
+                        The results are compared to grants made by 360Giving publishers over the same time period.
+                    </p>
+                    <p class="mb15">
+                        The average amount of funding asked for was £#{ currentStats.amount_stats['50%'] | formatNumber }#.
+                        <span v-if="currentStats.amount_stats['50%'] < 5000">This is less than the average grant made by 360Giving publishers.</span>
+                        <span v-else-if="currentStats.amount_stats['50%'] > 10000">This is more than the average grant made by 360Giving publishers.</span>
+                        <span v-else>This is around the same as the average grant made by 360Giving publishers.</span>
+                    </p>
+                    <bar-chart :chart-data="chartData('amount_bins')" v-bind:height="300" v-bind:percentages="true" v-bind:hide-legend="show == 'all'"></bar-chart>
+                </div>
+            </div>
+            <div class="bg-white rounded shadow mb40">
+                <div class="bg-ice rounded-top border-bottom border-mist p20 h5 bold">
+                    What type of funding was the proposal for?
+                </div>
+                <div class="p20 heading h5 markdown">
+                    <p class="mb15">
+                        Proposals specified the type of funding. Core funding is funding towards the running costs of an organisation, while capital funding
+                        relates to the purchase of assets like buildings or equipment.
+                    </p>
+                    <bar-chart :chart-data="chartData('category')" v-bind:height="200" v-bind:percentages="true" v-bind:hide-legend="show == 'all'"></bar-chart>
+                </div>
+            </div>
+            <div class="bg-white rounded shadow mb40">
+                <div class="bg-ice rounded-top border-bottom border-mist p20 h5 bold">
+                    How long is the proposal for?
+                </div>
+                <div class="p20 heading h5 markdown">
+                    <p class="mb15">
+                        Proposals specified the length of funding they were looking for. This is most relevant for core or revenue funding.
+                        Users were asked for their minimum and maximum funding duration. These results are based on the minimum duration.
+                    </p>
+                    <bar-chart :chart-data="chartData('duration_bins')" v-bind:height="300" v-bind:percentages="true" v-bind:hide-legend="show == 'all'"></bar-chart>
+                </div>
+            </div>
+            <div class="bg-white rounded shadow mb40">
+                <div class="bg-ice rounded-top border-bottom border-mist p20 h5 bold">
+                    What scale will the project operate at?
+                </div>
+                <div class="p20 heading h5 markdown">
+                    <p class="mb15">
+                        Proposals included an assessment of the scale of the project. For some proposals this was not captured.
+                    </p>
+                    <bar-chart :chart-data="chartData('geographic_scale')" v-bind:height="300" v-bind:percentages="true" v-bind:hide-legend="show == 'all'"></bar-chart>
+                </div>
+            </div>
+            <div class="bg-white rounded shadow mb40">
+                <div class="bg-ice rounded-top border-bottom border-mist p20 h5 bold">
+                    Which regions will the project happen in?
+                </div>
+                <div class="p20 heading h5 markdown">
+                    <p class="mb15">
+                        Based on the geographic regions/countries specified in the proposal.
+                        Where a proposal specified more than one region it has been placed in the appropriate country group.
+                        Note that some proposals may be for a specific area even though the organisation works across a larger area.
+                    </p>
+                    <bar-chart :chart-data="chartData('area')" v-bind:height="400" v-bind:percentages="true" v-bind:hide-legend="show == 'all'"></bar-chart>
+                </div>
+            </div>
+            <div class="bg-white rounded shadow mb40">
+                <div class="bg-ice rounded-top border-bottom border-mist p20 h5 bold">
+                    What themes does the proposal cover?
+                </div>
+                <div class="p20 heading h5 markdown">
+                    <p class="mb15">
+                        These themes are chosen by the users from a list provided when they recorded their proposal.
+                    </p>
+                    <bar-chart :chart-data="chartData('themes')" v-bind:height="400" v-bind:percentages="true" v-bind:hide-legend="show == 'all'"></bar-chart>
+                </div>
+            </div>
+            <h3 class="bold night mb40">About the organisations</h3>
+            <div class="bg-white rounded shadow mb40">
+                <div class="bg-ice rounded-top border-bottom border-mist p20 h5 bold">
+                    What type of organisation?
+                </div>
+                <div class="p20 heading h5 markdown">
+                    <p class="mb15">
+                        Organisations chose the form that best represented their organisation from a list.
+                    </p>
+                    <bar-chart :chart-data="chartData('recipient_category')" v-bind:height="300" v-bind:percentages="true" v-bind:hide-legend="show == 'all'"></bar-chart>
+                </div>
+            </div>
+            <div class="bg-white rounded shadow mb40">
+                <div class="bg-ice rounded-top border-bottom border-mist p20 h5 bold">
+                    What size of organisation?
+                </div>
+                <div class="p20 heading h5 markdown">
+                    <p class="mb15">
+                        This was selected by the user when the proposal was created.
+                        The results have been compared to the breakdown for charities produced in the NCVO UK Civil Society Almanac.
+                        As not all proposals were from registered charities the figures may not be directly comparable.
+                    </p>
+                    <bar-chart :chart-data="chartData('recipient_income_band')" v-bind:height="250" v-bind:percentages="true" v-bind:hide-legend="false"></bar-chart>
+                    <p class="fs14 slate mt13">Figures for UK charities from <a href="https://data.ncvo.org.uk/profile/">NCVO UK Civil Society Almanac 2020</a>.</p>
+                </div>
+            </div>
+            <div class="bg-white rounded shadow mb40">
+                <div class="bg-ice rounded-top border-bottom border-mist p20 h5 bold">
+                    How old is the organisation?
+                </div>
+                <div class="p20 heading h5 markdown">
+                    <p class="mb15">
+                        This was selected by the user when the proposal was created.
+                    </p>
+                    <bar-chart :chart-data="chartData('recipient_operating_for')" v-bind:height="200" v-bind:percentages="true" v-bind:hide-legend="show == 'all'"></bar-chart>
+                </div>
+            </div>
+        </div>
+        <div class="col1 md px15" v-if="stats">
+            <div class="mb15">
+                <div class="input_wrapper grouped_select">
+                    <label class="label grouped_select" for="filter_results">Filter proposals</label>
+
+                    <select v-model="show" class="bg-white input grouped_select required mb15" id="filter_results">
+                        <option value="all">All proposals</option>
+                        <optgroup label="Themes" v-if="stats.theme">
+                            <option v-for="v, k in stats.theme" v-bind:value="'theme.' + k">#{ k }#</option>
+                        </optgroup>
+                        <optgroup label="Areas" v-if="allStats.area">
+                            <option v-for="v, k in allStats.area" v-bind:value="'area.' + k">#{ k }#</option>
+                        </optgroup>
+                    </select>
+                </div>
+            </div>
+            <p v-if="show == 'all'">
+                Showing <strong>#{ currentStats.amount_stats.count | formatNumber }#</strong> proposals
+            </p>
+            <p v-else>
+                <strong>#{ currentStats.amount_stats.count | formatNumber }#</strong> proposals
+                out of <strong>#{ allStats.amount_stats.count | formatNumber }#</strong> 
+                (#{ ((currentStats.amount_stats.count / allStats.amount_stats.count) * 100).toFixed(0) }#%)
+                were in <strong>#{ currentTitle }#</strong>.
+            </p>
+            <div v-if="show.startsWith('theme.')">
+                <bar-chart :chart-data="chartData('themes', 'all', false, show.replace('theme.', ''))" v-bind:height="450" v-bind:percentages="false" v-bind:hide-legend="true"></bar-chart>
+            </div>
+            <div v-if="show.startsWith('area.')">
+                <bar-chart :chart-data="chartData('area', 'all', false, show.replace('area.', ''))" v-bind:height="450" v-bind:percentages="false" v-bind:hide-legend="true"></bar-chart>
+            </div>
+            <div v-if="currentExample" class="mt20 border border-mist rounded mb20">
+                <div class="p20 border-bottom border-mist">
+                    <h6 class="bold slate">Example Proposal</h6>
+                    <div class="fs14 lh18 slate">from #{ currentExample.recipient_category.toLowerCase() }#</div>
+                </div>
+                <div class="m20">
+                    <div class="fs14 heading bold night mb5">Title</div>
+                    <div class="fs14 lh18 slate">#{ currentExample.title }#</div>
+                </div>
+                <div class="m20">
+                    <div class="fs14 heading bold night mb5">Description</div>
+                    <div class="fs14 lh18 slate">#{ currentExample.description }#</div>
+                </div>
+                <div class="m20">
+                    <div class="fs14 heading bold night mb5">Support type</div>
+                    <div class="fs14 lh18 slate">#{ currentExample.category }#</div>
+                </div>
+                <div class="m20">
+                    <div class="fs14 heading bold night mb5">Amount sought</div>
+                    <div class="fs14 lh18 slate">#{ currentExample.amount_bins }#</div>
+                </div>
+                <div class="m20" v-if="currentExample.area">
+                    <div class="fs14 heading bold night mb5">Area of benefit</div>
+                    <div class="fs14 lh18 slate">#{ currentExample.area }#</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="{{ 'assets/app.js' | relative_url }}"></script>

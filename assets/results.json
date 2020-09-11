@@ -227,7 +227,39 @@
                     "amount_bins": "Under \u00a3500",
                     "duration_bins": "Under 12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 169.0,
+                "community": 131.0,
+                "support": 103.0,
+                "children": 94.0,
+                "young": 90.0,
+                "local": 61.0,
+                "new": 60.0,
+                "building": 51.0,
+                "provide": 51.0,
+                "work": 46.0,
+                "health": 43.0,
+                "providing": 43.0,
+                "school": 43.0,
+                "help": 42.0,
+                "project": 42.0,
+                "mental": 41.0,
+                "funding": 40.0,
+                "improving": 40.0,
+                "services": 38.0,
+                "skills": 36.0,
+                "equipment": 32.0,
+                "improve": 32.0,
+                "training": 32.0,
+                "need": 31.0,
+                "learning": 29.0,
+                "social": 28.0,
+                "area": 27.0,
+                "disabled": 27.0,
+                "life": 27.0,
+                "programme": 27.0
+            }
         },
         "Scotland": {
             "recipient_category": {
@@ -396,7 +428,39 @@
                     "amount_bins": "\u00a35k - \u00a310k",
                     "duration_bins": "3 years"
                 }
-            ]
+            ],
+            "word_counts": {
+                "community": 182.0,
+                "people": 182.0,
+                "support": 112.0,
+                "children": 109.0,
+                "funding": 104.0,
+                "young": 102.0,
+                "local": 89.0,
+                "health": 88.0,
+                "improving": 77.0,
+                "provide": 77.0,
+                "project": 76.0,
+                "new": 70.0,
+                "work": 67.0,
+                "area": 57.0,
+                "learning": 55.0,
+                "mental": 55.0,
+                "training": 49.0,
+                "help": 48.0,
+                "providing": 47.0,
+                "school": 47.0,
+                "social": 47.0,
+                "women": 47.0,
+                "club": 41.0,
+                "improve": 41.0,
+                "skills": 40.0,
+                "centre": 37.0,
+                "activities": 35.0,
+                "building": 35.0,
+                "development": 35.0,
+                "families": 34.0
+            }
         },
         "South West": {
             "recipient_category": {
@@ -590,7 +654,39 @@
                     "amount_bins": "\u00a3500 - \u00a31k",
                     "duration_bins": "12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "community": 201.0,
+                "people": 186.0,
+                "support": 113.0,
+                "children": 92.0,
+                "young": 78.0,
+                "local": 76.0,
+                "health": 73.0,
+                "centre": 72.0,
+                "provide": 70.0,
+                "new": 69.0,
+                "funding": 67.0,
+                "improving": 66.0,
+                "providing": 66.0,
+                "activities": 61.0,
+                "work": 60.0,
+                "project": 58.0,
+                "help": 57.0,
+                "social": 57.0,
+                "area": 54.0,
+                "families": 53.0,
+                "mental": 51.0,
+                "building": 48.0,
+                "access": 46.0,
+                "training": 44.0,
+                "youth": 44.0,
+                "disabled": 43.0,
+                "education": 38.0,
+                "school": 38.0,
+                "advice": 37.0,
+                "skills": 37.0
+            }
         },
         "West Midlands": {
             "recipient_category": {
@@ -855,7 +951,39 @@
                     "amount_bins": "\u00a35k - \u00a310k",
                     "duration_bins": "12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 142.0,
+                "community": 136.0,
+                "support": 105.0,
+                "young": 104.0,
+                "children": 86.0,
+                "local": 67.0,
+                "provide": 66.0,
+                "funding": 64.0,
+                "improving": 60.0,
+                "new": 55.0,
+                "providing": 55.0,
+                "building": 52.0,
+                "health": 51.0,
+                "help": 46.0,
+                "project": 46.0,
+                "training": 42.0,
+                "work": 41.0,
+                "access": 40.0,
+                "activities": 38.0,
+                "mental": 35.0,
+                "social": 34.0,
+                "equipment": 33.0,
+                "disabled": 30.0,
+                "families": 30.0,
+                "group": 30.0,
+                "facilities": 28.0,
+                "skills": 28.0,
+                "employment": 26.0,
+                "youth": 26.0,
+                "development": 25.0
+            }
         },
         "North West": {
             "recipient_category": {
@@ -1097,7 +1225,39 @@
                     "amount_bins": "\u00a32k - \u00a35k",
                     "duration_bins": "Under 12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 227.0,
+                "community": 204.0,
+                "young": 144.0,
+                "support": 136.0,
+                "children": 105.0,
+                "health": 97.0,
+                "new": 96.0,
+                "improving": 92.0,
+                "funding": 91.0,
+                "provide": 89.0,
+                "work": 83.0,
+                "mental": 71.0,
+                "social": 69.0,
+                "building": 65.0,
+                "help": 64.0,
+                "skills": 64.0,
+                "providing": 62.0,
+                "local": 58.0,
+                "activities": 57.0,
+                "area": 56.0,
+                "centre": 55.0,
+                "training": 54.0,
+                "project": 51.0,
+                "arts": 47.0,
+                "life": 45.0,
+                "learning": 44.0,
+                "families": 43.0,
+                "wellbeing": 42.0,
+                "homeless": 40.0,
+                "access": 39.0
+            }
         },
         "Overseas": {
             "recipient_category": {
@@ -1352,7 +1512,39 @@
                     "amount_bins": "\u00a310k - \u00a3100k",
                     "duration_bins": "2 years"
                 }
-            ]
+            ],
+            "word_counts": {
+                "children": 503.0,
+                "people": 454.0,
+                "community": 399.0,
+                "support": 358.0,
+                "education": 299.0,
+                "young": 297.0,
+                "school": 257.0,
+                "improving": 241.0,
+                "project": 241.0,
+                "provide": 234.0,
+                "health": 227.0,
+                "training": 208.0,
+                "providing": 189.0,
+                "funding": 173.0,
+                "women": 173.0,
+                "help": 170.0,
+                "building": 155.0,
+                "local": 151.0,
+                "skills": 151.0,
+                "access": 148.0,
+                "work": 147.0,
+                "youth": 145.0,
+                "families": 141.0,
+                "improve": 129.0,
+                "development": 125.0,
+                "services": 122.0,
+                "care": 121.0,
+                "new": 115.0,
+                "communities": 109.0,
+                "life": 108.0
+            }
         },
         "North East": {
             "recipient_category": {
@@ -1444,8 +1636,8 @@
                 "Community improvement and capacity building": 116,
                 "Crime and justice": 70,
                 "Arts and recreation": 69,
-                "International and foreign affairs": 20,
                 "Climate and the environment": 20,
+                "International and foreign affairs": 20,
                 "Science and technology": 12
             },
             "examples": [
@@ -1581,7 +1773,39 @@
                     "amount_bins": "\u00a310k - \u00a3100k",
                     "duration_bins": "2 years"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 74.0,
+                "support": 54.0,
+                "community": 46.0,
+                "young": 46.0,
+                "funding": 44.0,
+                "children": 36.0,
+                "improving": 31.0,
+                "local": 31.0,
+                "provide": 27.0,
+                "work": 25.0,
+                "project": 24.0,
+                "help": 23.0,
+                "skills": 22.0,
+                "social": 22.0,
+                "building": 21.0,
+                "access": 20.0,
+                "area": 20.0,
+                "new": 20.0,
+                "training": 19.0,
+                "health": 18.0,
+                "providing": 18.0,
+                "centre": 16.0,
+                "equipment": 15.0,
+                "group": 15.0,
+                "learning": 15.0,
+                "school": 15.0,
+                "disadvantaged": 14.0,
+                "north": 14.0,
+                "supporting": 14.0,
+                "youth": 14.0
+            }
         },
         "England": {
             "recipient_category": {
@@ -1740,7 +1964,39 @@
                     "amount_bins": "\u00a310k - \u00a3100k",
                     "duration_bins": "12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 508.0,
+                "funding": 426.0,
+                "community": 361.0,
+                "young": 294.0,
+                "children": 249.0,
+                "support": 249.0,
+                "provide": 227.0,
+                "improving": 224.0,
+                "health": 222.0,
+                "project": 181.0,
+                "help": 176.0,
+                "mental": 167.0,
+                "work": 163.0,
+                "training": 156.0,
+                "local": 149.0,
+                "providing": 145.0,
+                "skills": 135.0,
+                "new": 129.0,
+                "school": 128.0,
+                "social": 128.0,
+                "improve": 121.0,
+                "life": 116.0,
+                "education": 115.0,
+                "access": 109.0,
+                "activities": 109.0,
+                "salary": 105.0,
+                "centre": 99.0,
+                "learning": 96.0,
+                "building": 95.0,
+                "families": 87.0
+            }
         },
         "South East": {
             "recipient_category": {
@@ -1993,7 +2249,39 @@
                     "amount_bins": "\u00a310k - \u00a3100k",
                     "duration_bins": "3 years"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 239.0,
+                "community": 172.0,
+                "young": 146.0,
+                "support": 144.0,
+                "children": 120.0,
+                "work": 95.0,
+                "new": 90.0,
+                "local": 88.0,
+                "improving": 85.0,
+                "funding": 82.0,
+                "provide": 82.0,
+                "centre": 70.0,
+                "health": 69.0,
+                "building": 67.0,
+                "providing": 67.0,
+                "help": 66.0,
+                "project": 66.0,
+                "social": 62.0,
+                "school": 60.0,
+                "mental": 55.0,
+                "skills": 55.0,
+                "training": 53.0,
+                "group": 49.0,
+                "improve": 47.0,
+                "need": 47.0,
+                "facilities": 45.0,
+                "space": 45.0,
+                "care": 44.0,
+                "families": 43.0,
+                "activities": 41.0
+            }
         },
         "UK and overseas": {
             "recipient_category": {
@@ -2234,7 +2522,39 @@
                     "amount_bins": "\u00a35k - \u00a310k",
                     "duration_bins": "Under 12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 222.0,
+                "community": 132.0,
+                "young": 131.0,
+                "support": 106.0,
+                "children": 98.0,
+                "health": 88.0,
+                "provide": 70.0,
+                "new": 61.0,
+                "work": 61.0,
+                "mental": 59.0,
+                "project": 58.0,
+                "training": 55.0,
+                "social": 53.0,
+                "help": 51.0,
+                "arts": 49.0,
+                "improving": 49.0,
+                "life": 46.0,
+                "providing": 45.0,
+                "building": 44.0,
+                "local": 44.0,
+                "workshops": 43.0,
+                "education": 40.0,
+                "women": 40.0,
+                "communities": 39.0,
+                "opportunities": 38.0,
+                "school": 36.0,
+                "skills": 36.0,
+                "create": 35.0,
+                "working": 35.0,
+                "disabled": 34.0
+            }
         },
         "East Midlands": {
             "recipient_category": {
@@ -2439,7 +2759,39 @@
                     "amount_bins": "\u00a310k - \u00a3100k",
                     "duration_bins": "12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 124.0,
+                "community": 118.0,
+                "young": 80.0,
+                "support": 68.0,
+                "children": 67.0,
+                "improving": 57.0,
+                "provide": 53.0,
+                "building": 52.0,
+                "health": 51.0,
+                "work": 48.0,
+                "local": 47.0,
+                "new": 42.0,
+                "help": 38.0,
+                "social": 38.0,
+                "funding": 37.0,
+                "providing": 36.0,
+                "improve": 33.0,
+                "mental": 31.0,
+                "project": 30.0,
+                "families": 29.0,
+                "training": 29.0,
+                "area": 27.0,
+                "equipment": 27.0,
+                "services": 26.0,
+                "activities": 25.0,
+                "life": 24.0,
+                "skills": 24.0,
+                "create": 23.0,
+                "school": 23.0,
+                "learning": 22.0
+            }
         },
         "Wales": {
             "recipient_category": {
@@ -2656,7 +3008,39 @@
                     "amount_bins": "\u00a35k - \u00a310k",
                     "duration_bins": "Under 12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "community": 120.0,
+                "people": 92.0,
+                "support": 71.0,
+                "funding": 68.0,
+                "young": 61.0,
+                "children": 56.0,
+                "local": 48.0,
+                "improving": 46.0,
+                "building": 36.0,
+                "help": 36.0,
+                "project": 35.0,
+                "social": 35.0,
+                "training": 35.0,
+                "wales": 35.0,
+                "providing": 33.0,
+                "new": 32.0,
+                "health": 31.0,
+                "improve": 29.0,
+                "provide": 29.0,
+                "skills": 29.0,
+                "activities": 28.0,
+                "area": 28.0,
+                "opportunities": 28.0,
+                "develop": 27.0,
+                "access": 26.0,
+                "arts": 23.0,
+                "centre": 23.0,
+                "life": 23.0,
+                "mental": 23.0,
+                "work": 23.0
+            }
         },
         "Yorkshire and The Humber": {
             "recipient_category": {
@@ -2873,7 +3257,39 @@
                     "amount_bins": "\u00a3500 - \u00a31k",
                     "duration_bins": "Under 12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 125.0,
+                "community": 118.0,
+                "children": 86.0,
+                "young": 73.0,
+                "support": 69.0,
+                "improving": 60.0,
+                "local": 53.0,
+                "new": 48.0,
+                "funding": 46.0,
+                "provide": 45.0,
+                "providing": 45.0,
+                "activities": 39.0,
+                "help": 38.0,
+                "social": 38.0,
+                "families": 37.0,
+                "arts": 35.0,
+                "health": 35.0,
+                "building": 34.0,
+                "centre": 34.0,
+                "project": 34.0,
+                "area": 32.0,
+                "fitness": 32.0,
+                "skills": 32.0,
+                "school": 31.0,
+                "work": 31.0,
+                "groups": 29.0,
+                "space": 27.0,
+                "training": 27.0,
+                "access": 26.0,
+                "disabled": 26.0
+            }
         },
         "London": {
             "recipient_category": {
@@ -3054,7 +3470,39 @@
                     "amount_bins": "\u00a35k - \u00a310k",
                     "duration_bins": "12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 262.0,
+                "young": 168.0,
+                "community": 144.0,
+                "support": 121.0,
+                "funding": 120.0,
+                "children": 104.0,
+                "help": 86.0,
+                "project": 81.0,
+                "work": 78.0,
+                "provide": 76.0,
+                "improving": 71.0,
+                "providing": 68.0,
+                "social": 61.0,
+                "local": 60.0,
+                "activities": 58.0,
+                "skills": 58.0,
+                "health": 56.0,
+                "new": 52.0,
+                "london": 50.0,
+                "mental": 47.0,
+                "school": 45.0,
+                "life": 43.0,
+                "employment": 42.0,
+                "programme": 41.0,
+                "advice": 40.0,
+                "building": 39.0,
+                "improve": 39.0,
+                "access": 38.0,
+                "arts": 36.0,
+                "women": 36.0
+            }
         },
         "UK wide": {
             "recipient_category": {
@@ -3213,7 +3661,39 @@
                     "amount_bins": "\u00a310k - \u00a3100k",
                     "duration_bins": "2 years"
                 }
-            ]
+            ],
+            "word_counts": {
+                "funding": 110.0,
+                "people": 105.0,
+                "children": 70.0,
+                "young": 62.0,
+                "improving": 56.0,
+                "help": 48.0,
+                "support": 48.0,
+                "health": 40.0,
+                "project": 40.0,
+                "work": 39.0,
+                "education": 37.0,
+                "uk": 37.0,
+                "provide": 35.0,
+                "providing": 32.0,
+                "schools": 31.0,
+                "research": 30.0,
+                "development": 27.0,
+                "skills": 27.0,
+                "social": 26.0,
+                "women": 25.0,
+                "life": 24.0,
+                "care": 22.0,
+                "charity": 22.0,
+                "community": 22.0,
+                "lives": 22.0,
+                "training": 22.0,
+                "access": 21.0,
+                "awareness": 21.0,
+                "improve": 21.0,
+                "opportunities": 20.0
+            }
         },
         "Northern Ireland": {
             "recipient_category": {
@@ -3394,7 +3874,39 @@
                     "amount_bins": "Under \u00a3500",
                     "duration_bins": "Under 12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 48.0,
+                "community": 40.0,
+                "young": 29.0,
+                "local": 25.0,
+                "support": 21.0,
+                "health": 19.0,
+                "funding": 18.0,
+                "improving": 17.0,
+                "training": 16.0,
+                "children": 15.0,
+                "project": 15.0,
+                "provide": 15.0,
+                "ireland": 14.0,
+                "building": 13.0,
+                "northern": 13.0,
+                "youth": 13.0,
+                "group": 11.0,
+                "social": 11.0,
+                "families": 9.0,
+                "work": 9.0,
+                "centre": 8.0,
+                "charity": 8.0,
+                "enable": 8.0,
+                "mental": 8.0,
+                "needs": 8.0,
+                "opportunities": 8.0,
+                "supporting": 8.0,
+                "activities": 7.0,
+                "education": 7.0,
+                "help": 7.0
+            }
         }
     },
     "theme": {
@@ -3615,7 +4127,39 @@
                     "amount_bins": "\u00a310k - \u00a3100k",
                     "duration_bins": "12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 1737.0,
+                "young": 1349.0,
+                "children": 1307.0,
+                "community": 1210.0,
+                "funding": 933.0,
+                "support": 905.0,
+                "education": 784.0,
+                "improving": 754.0,
+                "training": 737.0,
+                "school": 736.0,
+                "health": 627.0,
+                "project": 626.0,
+                "skills": 611.0,
+                "provide": 608.0,
+                "help": 580.0,
+                "work": 572.0,
+                "local": 529.0,
+                "providing": 511.0,
+                "new": 455.0,
+                "building": 443.0,
+                "mental": 429.0,
+                "learning": 391.0,
+                "social": 384.0,
+                "development": 373.0,
+                "life": 367.0,
+                "schools": 365.0,
+                "youth": 354.0,
+                "improve": 349.0,
+                "opportunities": 349.0,
+                "access": 340.0
+            }
         },
         "Public and societal benefit": {
             "recipient_category": {
@@ -3774,7 +4318,39 @@
                     "amount_bins": "\u00a3100k - \u00a31m",
                     "duration_bins": "4 years +"
                 }
-            ]
+            ],
+            "word_counts": {
+                "community": 1204.0,
+                "people": 1164.0,
+                "funding": 907.0,
+                "support": 651.0,
+                "young": 611.0,
+                "children": 580.0,
+                "local": 532.0,
+                "improving": 522.0,
+                "provide": 487.0,
+                "project": 480.0,
+                "health": 472.0,
+                "work": 449.0,
+                "help": 429.0,
+                "new": 390.0,
+                "providing": 373.0,
+                "training": 371.0,
+                "social": 349.0,
+                "building": 333.0,
+                "education": 324.0,
+                "food": 313.0,
+                "improve": 311.0,
+                "school": 293.0,
+                "access": 276.0,
+                "skills": 269.0,
+                "development": 254.0,
+                "centre": 250.0,
+                "mental": 244.0,
+                "life": 243.0,
+                "area": 236.0,
+                "women": 221.0
+            }
         },
         "Health and medicine": {
             "recipient_category": {
@@ -3957,7 +4533,39 @@
                     "amount_bins": "\u00a3100k - \u00a31m",
                     "duration_bins": "12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 2078.0,
+                "support": 1261.0,
+                "community": 1176.0,
+                "health": 1161.0,
+                "children": 1071.0,
+                "funding": 931.0,
+                "young": 910.0,
+                "mental": 890.0,
+                "improving": 788.0,
+                "provide": 731.0,
+                "help": 609.0,
+                "project": 579.0,
+                "work": 561.0,
+                "providing": 544.0,
+                "social": 492.0,
+                "disabled": 460.0,
+                "training": 443.0,
+                "access": 423.0,
+                "local": 417.0,
+                "life": 416.0,
+                "new": 411.0,
+                "families": 406.0,
+                "care": 381.0,
+                "improve": 373.0,
+                "services": 364.0,
+                "activities": 354.0,
+                "learning": 352.0,
+                "skills": 352.0,
+                "building": 347.0,
+                "education": 347.0
+            }
         },
         "Social welfare": {
             "recipient_category": {
@@ -4200,7 +4808,39 @@
                     "amount_bins": "\u00a3100k - \u00a31m",
                     "duration_bins": "12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 1984.0,
+                "support": 1455.0,
+                "community": 1433.0,
+                "children": 1208.0,
+                "young": 1014.0,
+                "funding": 971.0,
+                "provide": 878.0,
+                "health": 863.0,
+                "improving": 784.0,
+                "project": 663.0,
+                "providing": 659.0,
+                "work": 640.0,
+                "help": 631.0,
+                "mental": 618.0,
+                "social": 585.0,
+                "local": 581.0,
+                "families": 559.0,
+                "training": 514.0,
+                "education": 496.0,
+                "women": 449.0,
+                "skills": 442.0,
+                "life": 404.0,
+                "improve": 397.0,
+                "care": 395.0,
+                "new": 395.0,
+                "building": 388.0,
+                "access": 386.0,
+                "services": 386.0,
+                "activities": 378.0,
+                "centre": 360.0
+            }
         },
         "Crime and justice": {
             "recipient_category": {
@@ -4383,7 +5023,39 @@
                     "amount_bins": "\u00a310k - \u00a3100k",
                     "duration_bins": "12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 813.0,
+                "young": 512.0,
+                "funding": 481.0,
+                "support": 478.0,
+                "community": 467.0,
+                "children": 369.0,
+                "improving": 328.0,
+                "project": 323.0,
+                "work": 305.0,
+                "health": 295.0,
+                "help": 273.0,
+                "provide": 267.0,
+                "women": 261.0,
+                "providing": 231.0,
+                "training": 230.0,
+                "education": 229.0,
+                "social": 219.0,
+                "mental": 196.0,
+                "skills": 189.0,
+                "local": 188.0,
+                "improve": 174.0,
+                "youth": 173.0,
+                "life": 170.0,
+                "access": 167.0,
+                "services": 150.0,
+                "employment": 146.0,
+                "lives": 146.0,
+                "development": 136.0,
+                "service": 129.0,
+                "communities": 127.0
+            }
         },
         "Employment": {
             "recipient_category": {
@@ -4590,7 +5262,39 @@
                     "amount_bins": "\u00a35k - \u00a310k",
                     "duration_bins": "Under 12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 982.0,
+                "community": 601.0,
+                "funding": 551.0,
+                "young": 537.0,
+                "support": 498.0,
+                "training": 407.0,
+                "work": 400.0,
+                "improving": 382.0,
+                "employment": 359.0,
+                "skills": 339.0,
+                "provide": 338.0,
+                "help": 329.0,
+                "project": 316.0,
+                "health": 289.0,
+                "local": 262.0,
+                "providing": 238.0,
+                "education": 237.0,
+                "children": 227.0,
+                "social": 216.0,
+                "opportunities": 202.0,
+                "improve": 201.0,
+                "mental": 199.0,
+                "women": 192.0,
+                "youth": 188.0,
+                "development": 182.0,
+                "new": 178.0,
+                "access": 177.0,
+                "building": 177.0,
+                "life": 175.0,
+                "centre": 160.0
+            }
         },
         "Climate and the environment": {
             "recipient_category": {
@@ -4773,7 +5477,39 @@
                     "amount_bins": "\u00a310k - \u00a3100k",
                     "duration_bins": "4 years +"
                 }
-            ]
+            ],
+            "word_counts": {
+                "community": 318.0,
+                "people": 238.0,
+                "funding": 180.0,
+                "local": 165.0,
+                "project": 155.0,
+                "improving": 122.0,
+                "work": 118.0,
+                "education": 114.0,
+                "help": 112.0,
+                "young": 103.0,
+                "improve": 101.0,
+                "building": 100.0,
+                "support": 99.0,
+                "sustainable": 99.0,
+                "children": 97.0,
+                "new": 93.0,
+                "food": 92.0,
+                "environment": 87.0,
+                "environmental": 83.0,
+                "change": 82.0,
+                "provide": 82.0,
+                "health": 81.0,
+                "centre": 79.0,
+                "climate": 78.0,
+                "social": 78.0,
+                "access": 75.0,
+                "school": 74.0,
+                "create": 67.0,
+                "develop": 67.0,
+                "providing": 67.0
+            }
         },
         "Community improvement and capacity building": {
             "recipient_category": {
@@ -4980,7 +5716,39 @@
                     "amount_bins": "\u00a310k - \u00a3100k",
                     "duration_bins": "18 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "community": 1484.0,
+                "people": 1110.0,
+                "support": 706.0,
+                "young": 572.0,
+                "building": 554.0,
+                "funding": 533.0,
+                "local": 529.0,
+                "children": 503.0,
+                "improving": 501.0,
+                "project": 493.0,
+                "new": 468.0,
+                "provide": 435.0,
+                "health": 425.0,
+                "work": 416.0,
+                "social": 354.0,
+                "training": 351.0,
+                "help": 341.0,
+                "providing": 327.0,
+                "centre": 312.0,
+                "skills": 308.0,
+                "education": 294.0,
+                "improve": 293.0,
+                "access": 289.0,
+                "development": 287.0,
+                "school": 273.0,
+                "mental": 268.0,
+                "activities": 259.0,
+                "communities": 253.0,
+                "youth": 227.0,
+                "facilities": 224.0
+            }
         },
         "International and foreign affairs": {
             "recipient_category": {
@@ -5139,7 +5907,39 @@
                     "amount_bins": "\u00a310k - \u00a3100k",
                     "duration_bins": "12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 260.0,
+                "funding": 220.0,
+                "community": 192.0,
+                "support": 180.0,
+                "project": 141.0,
+                "young": 134.0,
+                "improving": 128.0,
+                "children": 126.0,
+                "provide": 126.0,
+                "refugees": 120.0,
+                "health": 113.0,
+                "help": 107.0,
+                "work": 105.0,
+                "women": 103.0,
+                "training": 97.0,
+                "providing": 96.0,
+                "education": 87.0,
+                "skills": 87.0,
+                "asylum": 86.0,
+                "communities": 84.0,
+                "local": 83.0,
+                "social": 79.0,
+                "seekers": 77.0,
+                "improve": 76.0,
+                "refugee": 74.0,
+                "mental": 70.0,
+                "life": 69.0,
+                "building": 63.0,
+                "development": 62.0,
+                "access": 61.0
+            }
         },
         "Arts and recreation": {
             "recipient_category": {
@@ -5370,7 +6170,39 @@
                     "amount_bins": "\u00a35k - \u00a310k",
                     "duration_bins": "Under 12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 779.0,
+                "community": 749.0,
+                "young": 551.0,
+                "children": 455.0,
+                "arts": 399.0,
+                "new": 350.0,
+                "health": 317.0,
+                "local": 303.0,
+                "funding": 294.0,
+                "improving": 284.0,
+                "project": 279.0,
+                "work": 277.0,
+                "art": 248.0,
+                "music": 247.0,
+                "support": 245.0,
+                "mental": 242.0,
+                "provide": 238.0,
+                "activities": 214.0,
+                "help": 209.0,
+                "theatre": 205.0,
+                "social": 196.0,
+                "providing": 193.0,
+                "building": 191.0,
+                "creative": 187.0,
+                "school": 178.0,
+                "workshops": 166.0,
+                "skills": 164.0,
+                "development": 163.0,
+                "play": 159.0,
+                "area": 155.0
+            }
         },
         "Science and technology": {
             "recipient_category": {
@@ -5577,7 +6409,39 @@
                     "amount_bins": "\u00a32k - \u00a35k",
                     "duration_bins": "12 months"
                 }
-            ]
+            ],
+            "word_counts": {
+                "people": 148.0,
+                "funding": 99.0,
+                "young": 96.0,
+                "community": 92.0,
+                "children": 82.0,
+                "support": 77.0,
+                "education": 66.0,
+                "improving": 65.0,
+                "skills": 65.0,
+                "training": 65.0,
+                "help": 64.0,
+                "new": 64.0,
+                "work": 63.0,
+                "digital": 62.0,
+                "access": 53.0,
+                "technology": 52.0,
+                "development": 51.0,
+                "school": 51.0,
+                "project": 49.0,
+                "health": 48.0,
+                "providing": 48.0,
+                "local": 47.0,
+                "uk": 46.0,
+                "improve": 44.0,
+                "provide": 43.0,
+                "research": 43.0,
+                "online": 39.0,
+                "use": 39.0,
+                "platform": 37.0,
+                "palabras": 36.0
+            }
         }
     },
     "all": {
@@ -5809,6 +6673,38 @@
                 "amount_bins": "\u00a35k - \u00a310k",
                 "duration_bins": "12 months"
             }
-        ]
+        ],
+        "word_counts": {
+            "people": 3656.0,
+            "community": 2743.0,
+            "support": 2225.0,
+            "children": 2224.0,
+            "young": 2156.0,
+            "funding": 1844.0,
+            "improving": 1499.0,
+            "health": 1448.0,
+            "provide": 1426.0,
+            "project": 1255.0,
+            "work": 1255.0,
+            "help": 1225.0,
+            "local": 1171.0,
+            "providing": 1131.0,
+            "new": 1121.0,
+            "training": 1055.0,
+            "mental": 978.0,
+            "education": 975.0,
+            "school": 941.0,
+            "social": 933.0,
+            "building": 928.0,
+            "skills": 869.0,
+            "access": 752.0,
+            "improve": 747.0,
+            "life": 719.0,
+            "families": 704.0,
+            "activities": 700.0,
+            "centre": 688.0,
+            "women": 686.0,
+            "development": 647.0
+        }
     }
 }

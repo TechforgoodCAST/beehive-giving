@@ -106,6 +106,14 @@ var app = new Vue({
         ];
       }
     },
+    wordCountStats: function () {
+      if (this.currentStats) {
+        return {
+          max: Math.max(...Object.values(this.currentStats['word_counts'])),
+          min: Math.min(...Object.values(this.currentStats['word_counts'])),
+        }
+      }
+    },
   },
   mounted() {
     fetch("/beehive-giving/assets/results.json")
@@ -164,6 +172,40 @@ var app = new Vue({
         });
       }
 
+      if (chart == "duration_bins") {
+        // from 360Giving colab notebook
+        // Under 12 months    17055
+        // 12 months          36665
+        // 18 months            858
+        // 2 years             3341
+        // 3 years             8979
+        // 4 years +           1539
+        ncvo_values = [17055, 36665, 858, 3341, 8979, 1539];
+        datasets.push({
+          label: "Grants on 360Giving",
+          backgroundColor: "#4f276d",
+          data: percentages ? arrayPercentages(ncvo_values) : ncvo_values,
+        });
+      }
+
+      if (chart == "amount_bins") {
+        // from 360Giving colab notebook
+        // Under £500       4089
+        // £500 - £1k       7305
+        // £1k - £2k       10799
+        // £2k - £5k       26644
+        // £5k - £10k      44389
+        // £10k - £100k    26007
+        // £100k - £1m      9387
+        // Over £1m          968
+        ncvo_values = [4089, 7305, 10799, 26644, 44389, 26007, 9387, 968];
+        datasets.push({
+          label: "Grants on 360Giving",
+          backgroundColor: "#4f276d",
+          data: percentages ? arrayPercentages(ncvo_values) : ncvo_values,
+        });
+      }
+
       return {
         labels: Object.keys(data),
         datasets: datasets,
@@ -176,6 +218,13 @@ var app = new Vue({
       var data = this.currentStats[chart];
       var sortedData = Object.entries(data).sort((a, b) => b[1] - a[1]);
       return sortedData[0][0];
+    },
+    fontSize: function (count) {
+      var scaling = 20;
+      if (this.wordCountStats.max > this.wordCountStats.min) {
+        scaling = 50;
+      }
+      return (((count / this.wordCountStats.max) * scaling) + 10) + "px";
     },
   },
 });
