@@ -1,0 +1,7 @@
+Beehive was created by Suraj Vadgama: https://www.suninthesky.co.uk/
+
+It features contributions by David Kane (https://dkane.net), Joseph Dudley (https://twitter.com/jdudley1123), and others
+
+Beehive used Ruby on Rails: https://rubyonrails.org/
+
+The source code can be found at: https://github.com/TechforgoodCAST/beehive-giving
