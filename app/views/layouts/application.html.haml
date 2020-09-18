@@ -16,41 +16,41 @@
       %noscript
         %iframe{:height => "0", :src => "https://www.googletagmanager.com/ns.html?id=GTM-W3BQHWD", :style => "display:none;visibility:hidden", :width => "0"}
 
-    - if !session[:read_cookies_notice]
-      .bg-night.border-bottom.border-slate.fs14.lh18.white
-        .maxw1050.mx-auto.pt15.px15
-          .flex.flex-wrap
-            .mb15.md.col2
-              We use cookies to give you the best experience on our website. In addition to strictly neccesary cookies, third party cookies may track your use of Beehive. If you continue without changing your settings, we'll assume that you are happy to receive all cookies.
-              = link_to 'More about cookies', 'https://cookiesandyou.com/', class: 'white bold underline', target: '_blank', rel: 'noopener'
+    -# - if !session[:read_cookies_notice]
+    -#   .bg-night.border-bottom.border-slate.fs14.lh18.white
+    -#     .maxw1050.mx-auto.pt15.px15
+    -#       .flex.flex-wrap
+    -#         .mb15.md.col2
+    -#           We use cookies to give you the best experience on our website. In addition to strictly neccesary cookies, third party cookies may track your use of Beehive. If you continue without changing your settings, we'll assume that you are happy to receive all cookies.
+    -#           = link_to 'More about cookies', 'https://cookiesandyou.com/', class: 'white bold underline', target: '_blank', rel: 'noopener'
 
-            .mb15.md.col1.flex.justify-center.items-center
-              = link_to 'Change settings', privacy_path(anchor: 'cookies', read_cookies_notice: true), class: 'btn-sm white'
-              = link_to 'Continue', update_cookies_path(functional_cookies: true, performance_cookies: true, read_cookies_notice: true), class: 'btn-sm bg-blue white shadow'
+    -#         .mb15.md.col1.flex.justify-center.items-center
+    -#           = link_to 'Change settings', privacy_path(anchor: 'cookies', read_cookies_notice: true), class: 'btn-sm white'
+    -#           = link_to 'Continue', update_cookies_path(functional_cookies: true, performance_cookies: true, read_cookies_notice: true), class: 'btn-sm bg-blue white shadow'
 
-    - if logged_in? && (@current_user&.update_version != UPDATE_VERSION)
-      .bg-night.border-bottom.border-slate.fs14.lh18.white
-        .maxw1050.mx-auto.px15.py10.flex.items-center.justify-between
-          %p
-            With our last major release we’ve introduced some of the biggest changes to Beehive yet. These changes have been made to make Beehive free to access, easier to use and sustainable to maintain. If you had an existing account then all of your data will have been migrated during the update and will be available in
-            = succeed '.' do
-              = link_to('My Reports', reports_path)
-          .ml20
-            = link_to 'Got it', update_version_path(@current_user), method: :post, class: 'btn border-grey silver nowrap'
+    -# - if logged_in? && (@current_user&.update_version != UPDATE_VERSION)
+    -#   .bg-night.border-bottom.border-slate.fs14.lh18.white
+    -#     .maxw1050.mx-auto.px15.py10.flex.items-center.justify-between
+    -#       %p
+    -#         With our last major release we’ve introduced some of the biggest changes to Beehive yet. These changes have been made to make Beehive free to access, easier to use and sustainable to maintain. If you had an existing account then all of your data will have been migrated during the update and will be available in
+    -#         = succeed '.' do
+    -#           = link_to('My Reports', reports_path)
+    -#       .ml20
+    -#         = link_to 'Got it', update_version_path(@current_user), method: :post, class: 'btn border-grey silver nowrap'
 
-    - if logged_in? && (@current_user&.terms_version != TERMS_VERSION)
-      .bg-night.border-bottom.border-slate.fs15.white
-        .maxw1050.mx-auto.px15.py7.flex.items-center.justify-between
-          We've updated our terms of service.
-          .flex
-            = link_to 'Agree', terms_version_path(@current_user), method: :post, class: 'btn white'
-            = link_to 'Review', terms_path, class: 'btn border-grey silver'
+    -# - if logged_in? && (@current_user&.terms_version != TERMS_VERSION)
+    -#   .bg-night.border-bottom.border-slate.fs15.white
+    -#     .maxw1050.mx-auto.px15.py7.flex.items-center.justify-between
+    -#       We've updated our terms of service.
+    -#       .flex
+    -#         = link_to 'Agree', terms_version_path(@current_user), method: :post, class: 'btn white'
+    -#         = link_to 'Review', terms_path, class: 'btn border-grey silver'
 
-    .bg-yellow.border-bottom.border-mist.fs14.lh18.black.bold
-      .maxw1050.mx-auto.pt15.px15
-        .flex.flex-wrap
-          .mb15.md.col2
-            Beehive is no longer being maintained, and the information presented here may be out of date.
+    -# .bg-yellow.border-bottom.border-mist.fs14.lh18.black.bold
+    -#   .maxw1050.mx-auto.pt15.px15
+    -#     .flex.flex-wrap
+    -#       .mb15.md.col2
+    -#         Beehive is no longer being maintained, and the information presented here may be out of date.
 
     - flash.each do |key, msg|
       .bg-night.border-bottom.border-slate.fs15.white

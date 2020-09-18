@@ -6,9 +6,9 @@ class ReportsController < ApplicationController
     update_report_if_opportunities_changed!
 
     if @proposal
-      if @proposal.private? && params[:t] != @proposal.access_token
-        authenticate_user(@proposal)
-      end
+      # if @proposal.private? && params[:t] != @proposal.access_token
+      #   authenticate_user(@proposal)
+      # end
     else
       render 'errors/not_found', status: 404
     end

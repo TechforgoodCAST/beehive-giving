@@ -1,39 +1,99 @@
 = content_for :title, "#{@proposal.name} #{@proposal.identifier}"
 
-%dialog.rounded.shadow.border.border-silver.col2.my40.px15
-  #answers
-  .px20.pb20
-    %a.btn.btn-wide.bg-blue.white.js-close-modal Close
+%main.bg-white
 
-%main.bg-ice
+  %header.bg-primary.px35
+    %nav.pt35.mb35.heading.bold.flex.justify-between.items-center
+      %span.maxw200
+        = image_tag("beehive-logo-white.png")
 
-  %header.bg-primary
-    = render partial: 'shared/nav', locals: { color: 'white' }
-    - if @collection
-      = breadcrumbs('Opportunities' => opportunities_path, @collection.name => opportunity_path(@collection), @proposal.identifier => report_path(@proposal))
-    - else
-      = breadcrumbs('Opportunities' => opportunities_path, "Report #{@proposal.identifier}" => report_path(@proposal))
 
-    .maxw1050.mx-auto.pb20
+    .mx-auto.pb20
       .flex.flex-wrap.white
-        .col-grow.px15.mb20
+        .col-grow.mb20
           %h1.h2.mb15
             = @proposal.name
             %span.muted.inline-flex.items-center
               = @proposal.identifier
-              %a.btn.btn-sm.disabled.border-white.ml10= @proposal.status.capitalize
           Created for
           = created_by
-          = time_ago_in_words(@proposal.created_at)
-          ago
-        .px15
-          - if @collection
-            = link_to('New report', new_recipient_path(@collection), class: 'btn bg-secondary')
+          on
+          = @proposal.created_at.strftime("%e %B %Y")
 
-  .maxw1050.mx-auto
+  .mx-auto.fs18.p20
+  
+    .mb20
+      .p20
+        %h3.bold.night About Beehive
+        %p.mt20
+          Beehive was a free funding suitability checking tool that used a funder’s guidelines, 
+          priorities and open data to produce a report that helped fund seekers decide where to apply.
+        %p.mt20
+          After checking well over 18,000 proposals from individuals and organisations 
+          seeking charitable funding Beehive was retired in September 2020. 
+        %p.mt20
+          This report is a copy of a proposal submitted by
+          = created_by
+          on #{@proposal.created_at.strftime("%e %B %Y")}, alongside the opportunities that Beehive checked it against.
+        %p.mt20
+          You can find out more about Beehive's legacy at
+          = succeed '.' do
+            = link_to 'www.beehivegiving.org', 'https://www.beehivegiving.org/'
+  
+    .mb20
+      .p20.border-bottom.border-mist
+        %h3.bold.night About this proposal
+      .m20
+        .heading.bold.night.mb5 Title
+        .lh18.slate= @proposal.title_with_default
+      .m20
+        .heading.bold.night.mb5 Description
+        .lh18.slate= @proposal.description_with_default
+      .m20
+        .heading.bold.night.mb5 Support type
+        .lh18.slate= support_type
+      - if @proposal.seeking_funding?
+        .m20
+          .heading.bold.night.mb5 Amount sought
+          .lh18.slate= amount_sought
+      .m20
+        .heading.bold.night.mb5 Area of benefit
+        .lh18.slate= location_description
+      .m20
+        .heading.bold.night.mb5 Themes
+        .lh18.slate= themes_description
+
+    %div
+      .p20.border-bottom.border-mist
+        %h3.bold.night About the recipient
+      - unless @proposal.recipient.individual?
+        .m20
+          .heading.bold.night.mb5 Name
+          .slate= @proposal.recipient.name
+      .m20
+        .heading.bold.night.mb5 Type
+        .slate= recipient_type
+      .m20
+        .heading.bold.night.mb5 Country
+        .slate= @proposal.recipient.country.name
+      - if @proposal.recipient.district
+        .m20
+          .heading.bold.night.mb5 Area
+          .slate= @proposal.recipient.district.name
+      - unless @proposal.recipient.individual?
+        .m20
+          .heading.bold.night.mb5 Annual income
+          .slate= @proposal.recipient.income_band_name
+        .m20
+          .heading.bold.night.mb5 Operating for
+          .slate= @proposal.recipient.operating_for_name
+      - if @proposal.recipient.website.present?
+        .m20
+          .heading.bold.night.mb5 Website
+          = link_to(@proposal.recipient.website, @proposal.recipient.website, target: '_blank', rel: 'noopener', class: 'fs14 slate', onclick: "trackOutboundLink('#{@proposal.recipient.website}');")
 
     .mt40.flex.flex-wrap
-      .col2.px15
+      .px15
         %h3.bold.night.mb40
           = pluralize(@proposal.assessments_count, 'opportunity')
           checked
@@ -52,21 +112,20 @@
             .p20
               .mb15.markdown= raw(a.fund.description_html)
 
-              .mb15.heading= link_to 'Spot a mistake?', spot_mistake_form_url(report_path(@proposal, assessment: a.id)), class: 'bold', target: '_blank', rel: 'noopener'
+              -#.mb15.heading= link_to 'Spot a mistake?', spot_mistake_form_url(report_path(@proposal, assessment: a.id)), class: 'bold', target: '_blank', rel: 'noopener'
 
               = link_to 'Website', a.fund.website, target: '_blank', rel: 'noopener', class: 'btn btn-sm blue border-mist', onclick: "trackOutboundLink('#{a.fund.website}');"
               - a.fund.links.each do |text, href|
                 = link_to text, href, target: '_blank', rel: 'noopener', class: 'btn btn-sm blue border-mist', onclick: "trackOutboundLink('#{href}');"
 
             .px20.pt10.border-top-thick.border-bottom-thick{ class: a.banner.background }
-              .flex.flex-wrap.justify-between
 
-                .flex.items-center.mb10
-                  .dot.ml5.mr15{ class: a.banner.indicator }
-                  .heading.bold{ class: a.banner.color }= a.banner.text
+              .mb10
+                .dot.ml5.mr15{ class: a.banner.indicator, style: 'float: left;' }
+                .heading.bold{ class: a.banner.color }= a.banner.text
 
-                .mb10
-                  %span.fs14.night.mr10
+                -# .mb10
+                  %span.night.mr10
                     = a.agree_count
                     agree
                     •
@@ -78,64 +137,12 @@
 
             -# TODO: sort
             - a.ratings.each do |rating|
-              .p20.border-top.border-silver.flex.items-center
-                .dot.ml5.mr15{ class: "bg-#{rating.indicator}" }
+              .p20.border-top.border-silver
+                .dot.ml5.mr15{ class: "bg-#{rating.indicator}", style: 'float: left;' }
                 .fs15
                   = rating.messages
-                  = rating.link
-
-      .col1.md.px15
-        .border.border-mist.rounded.mb20
-          .p20.border-bottom.border-mist
-            %h6.bold.slate Proposal
-          .m20
-            .fs14.heading.bold.night.mb5 Title
-            .fs14.lh18.slate= @proposal.title_with_default
-          .m20
-            .fs14.heading.bold.night.mb5 Description
-            .fs14.lh18.slate= @proposal.description_with_default
-          .m20
-            .fs14.heading.bold.night.mb5 Support type
-            .fs14.lh18.slate= support_type
-          - if @proposal.seeking_funding?
-            .m20
-              .fs14.heading.bold.night.mb5 Amount sought
-              .fs14.lh18.slate= amount_sought
-          .m20
-            .fs14.heading.bold.night.mb5 Area of benefit
-            .fs14.lh18.slate= location_description
-          .m20
-            .fs14.heading.bold.night.mb5 Themes
-            .fs14.lh18.slate= themes_description
-
-        .border.border-mist.rounded
-          .p20.border-bottom.border-mist
-            %h6.bold.slate Recipient
-          - unless @proposal.recipient.individual?
-            .m20
-              .fs14.heading.bold.night.mb5 Name
-              .fs14.slate= @proposal.recipient.name
-          .m20
-            .fs14.heading.bold.night.mb5 Type
-            .fs14.slate= recipient_type
-          .m20
-            .fs14.heading.bold.night.mb5 Country
-            .fs14.slate= @proposal.recipient.country.name
-          - if @proposal.recipient.district
-            .m20
-              .fs14.heading.bold.night.mb5 Area
-              .fs14.slate= @proposal.recipient.district.name
-          - unless @proposal.recipient.individual?
-            .m20
-              .fs14.heading.bold.night.mb5 Annual income
-              .fs14.slate= @proposal.recipient.income_band_name
-            .m20
-              .fs14.heading.bold.night.mb5 Operating for
-              .fs14.slate= @proposal.recipient.operating_for_name
-          - if @proposal.recipient.website.present?
-            .m20
-              .fs14.heading.bold.night.mb5 Website
-              = link_to(@proposal.recipient.website, @proposal.recipient.website, target: '_blank', rel: 'noopener', class: 'fs14 slate', onclick: "trackOutboundLink('#{@proposal.recipient.website}');")
+                  -#= rating.link
 
 .bg-ice
-  = render partial: 'shared/footer', locals: { color: 'slate' }
+  %footer.fs14.p35
+    = link_to("© #{Date.today.year} CAST", 'http://www.wearecast.org.uk', class: 'ml10')
