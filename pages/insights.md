@@ -6,7 +6,7 @@ permalink: /insights/
 
 # Insights from proposals
 
-## Explore proposals submitted to Beehive over five years
+### Explore proposals submitted to Beehive over five years
 
 The analysis below explores the proposals submitted to Beehive between 2016 and 2020.
 Results have been anonymised to avoid identifying specific organisations or projects.
