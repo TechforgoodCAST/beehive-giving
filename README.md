@@ -1,6 +1,6 @@
 # Beehive Giving
 
-> **PLEASE NOTE:** Beehive was retired in September 2020 and replaced by site showcasing an analysis of the proposals submitted to Beehive, as well as some background information about the project and key learnings. The source for this site can be found in the [gh_pages](https://github.com/TechforgoodCAST/beehive-giving/tree/gh-pages) branch and the [master](https://github.com/TechforgoodCAST/beehive-giving/tree/master/) branch contains the last version of the tool (before retirement) for archive purposes.
+> **PLEASE NOTE:** Beehive was retired in September 2020 and replaced by site ([https://techforgoodcast.github.io/beehive-giving/](https://techforgoodcast.github.io/beehive-giving/)) showcasing an analysis of the proposals submitted to Beehive, as well as some background information about the project and key learnings. The source for this site can be found in the [gh_pages](https://github.com/TechforgoodCAST/beehive-giving/tree/gh-pages) branch and the [master](https://github.com/TechforgoodCAST/beehive-giving/tree/master/) branch contains the last version of the tool (before retirement) for archive purposes.
 
 [Beehive](http://www.beehivegiving.org) is a free and open source funding suitability checking tool maintained by [CAST](http://wearecast.org.uk). It uses a funder’s guidelines, priorities and open data to produce a report that helps fund seekers decide where to apply.
 
