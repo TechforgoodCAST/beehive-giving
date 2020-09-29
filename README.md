@@ -1,6 +1,6 @@
 # Beehive Giving
 
-[![CircleCI](https://circleci.com/gh/TechforgoodCAST/beehive-giving.svg?style=svg&circle-token=9943df0487898ea0014071a42ee8da8b0d4b1d7e)](https://circleci.com/gh/TechforgoodCAST/beehive-giving)
+> **PLEASE NOTE:** Beehive was retired in September 2020 and replaced by site showcasing an analysis of the proposals submitted to Beehive, as well as some background information about the project and key learnings. The source for this site can be found in the [gh_pages](https://github.com/TechforgoodCAST/beehive-giving/tree/gh-pages) branch and the [master](https://github.com/TechforgoodCAST/beehive-giving/tree/master/) branch contains the last version of the tool (before retirement) for archive purposes.
 
 [Beehive](http://www.beehivegiving.org) is a free and open source funding suitability checking tool maintained by [CAST](http://wearecast.org.uk). It uses a funder’s guidelines, priorities and open data to produce a report that helps fund seekers decide where to apply.
 
@@ -22,14 +22,14 @@ These instructions will get a copy of the project up and running on your local m
 4. `yarn install`
 5. `rails db:setup`
 6. Create `.env` file with the appropriate configuration:
-    ```env
-    STRIPE_SECRET_KEY=<your test secret key from Stripe>
-    STRIPE_PUBLISHABLE_KEY=<your test publishable key from Stripe>
-    STRIPE_FEE_OPPORTUNITY_SEEKER=<card processing fee in pence e.g. 80>
-    STRIPE_AMOUNT_OPPORTUNITY_SEEKER=<private report cost in pence e.g. 1999>
-    <!-- Optional -->
-    HASHIDS_SALT=<a secret key for encoding Hashids>
-    ```
+   ```env
+   STRIPE_SECRET_KEY=<your test secret key from Stripe>
+   STRIPE_PUBLISHABLE_KEY=<your test publishable key from Stripe>
+   STRIPE_FEE_OPPORTUNITY_SEEKER=<card processing fee in pence e.g. 80>
+   STRIPE_AMOUNT_OPPORTUNITY_SEEKER=<private report cost in pence e.g. 1999>
+   <!-- Optional -->
+   HASHIDS_SALT=<a secret key for encoding Hashids>
+   ```
 7. `rails s` to start local development server
 
 ### Running tests
@@ -74,7 +74,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-- **Suraj Vadgama** - *Founder* - [suninthesky](https://github.com/suninthesky)
+- **Suraj Vadgama** - [suninthesky](https://github.com/suninthesky)
 
 See also the list of [contributors](https://github.com/TechforgoodCAST/beehive-giving/contributors) who participated in this project.
 
