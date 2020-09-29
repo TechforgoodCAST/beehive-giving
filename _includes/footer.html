@@ -36,9 +36,15 @@
           target="_blank"
           rel="noopener"
           href="http://www.wearecast.org.uk"
-          >© 2020 CAST</a
+          >©
+          <span id="year"></span>
+          CAST</a
         >
       </div>
     </div>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
   </footer>
 </div>
