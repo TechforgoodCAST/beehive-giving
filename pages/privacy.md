@@ -1,3 +1,9 @@
+---
+layout: page
+title: Archived copy of privacy policy
+permalink: /privacy/
+---
+
 # Privacy policy
 
 This is an archived copy of the privacy policy for beehivegiving.org as it existed in September 2020. The services described in it are no longer provided by Beehive. See [What has happened to my data?](about.md#whats-happened-to-my-data) for more details.

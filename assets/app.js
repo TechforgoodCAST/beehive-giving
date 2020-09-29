@@ -109,14 +109,14 @@ var app = new Vue({
     wordCountStats: function () {
       if (this.currentStats) {
         return {
-          max: Math.max(...Object.values(this.currentStats['word_counts'])),
-          min: Math.min(...Object.values(this.currentStats['word_counts'])),
-        }
+          max: Math.max(...Object.values(this.currentStats["word_counts"])),
+          min: Math.min(...Object.values(this.currentStats["word_counts"])),
+        };
       }
     },
   },
   mounted() {
-    fetch("/beehive-giving/assets/results.json")
+    fetch("/assets/results.json")
       .then((r) => r.json())
       .then((response) => (this.stats = response));
   },
@@ -224,7 +224,7 @@ var app = new Vue({
       if (this.wordCountStats.max > this.wordCountStats.min) {
         scaling = 50;
       }
-      return (((count / this.wordCountStats.max) * scaling) + 10) + "px";
+      return (count / this.wordCountStats.max) * scaling + 10 + "px";
     },
   },
 });
