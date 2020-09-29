@@ -1,1 +1,16 @@
-<!-- TODO: -->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script
+  async
+  src="https://www.googletagmanager.com/gtag/js?id=UA-30021098-2"
+></script>
+<script>
+  if (localStorage.getItem("cookie-permission") === "accept") {
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "UA-30021098-2");
+  }
+</script>

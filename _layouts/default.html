@@ -13,6 +13,32 @@
 
     {%- include footer.html -%}
 
+    <div id="cookie-banner" class="rounded shadow" style="display: none;">
+      <div class="p15">
+        <p class="fs14 lh18 mb15 white">This site tracks visits anonymously using cookies. <a href="https://cookiesandyou.com/" target="_blank">More about cookies</a></p>
+        <div class="flex">
+          <a id="accept-cookies" class="btn btn-sm btn-wide white bg-green shadow">Accept</a>
+          <span style="width: 30px;"></span>
+          <a id="reject-cookies" class="btn btn-sm btn-wide white bg-red shadow">Reject</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      'use strict';
+
+      if (localStorage.getItem('cookie-permission') === null) {
+        document.getElementById('cookie-banner').style.display = '';
+        ['accept-cookies', 'reject-cookies'].forEach(function(id) {
+          document.getElementById(id).addEventListener('click', function(e) {
+            e.preventDefault();
+            localStorage.setItem('cookie-permission', this.text.toLowerCase());
+            location.reload();
+          });
+        });
+      }
+    </script>
+
   </body>
 
 </html>

@@ -240,3 +240,17 @@ footer.white hr
   height: 8px
   margin-bottom: 5px
   background: url('eye.svg') no-repeat
+
+// Cookie banner
+// ===========================================================================
+#cookie-banner
+  position: fixed
+  display: block
+  max-width: 250px
+  bottom: 15px
+  right: 15px
+  z-index: 9999
+  font-size: 0.9rem
+  background: map-get($colors, 'dark-blue')
+  @media screen and (max-width: 480px)
+    right: calc(50% - 125px)

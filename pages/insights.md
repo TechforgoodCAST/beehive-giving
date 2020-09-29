@@ -1,6 +1,6 @@
 ---
 layout: insights
-title: Learning
+title: Insights from proposals
 permalink: /insights/
 ---
 
