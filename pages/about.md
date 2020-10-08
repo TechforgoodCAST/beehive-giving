@@ -16,7 +16,7 @@ Beehive was an open source tool developed and maintained by [CAST](https://weare
 
 ### Why was Beehive retired?
 
-Major [development](https://github.com/TechforgoodCAST/beehive-giving/releases) on Beehive and funds to support it ended in 2018. With this in mind it was open sourced, [made free to use](https://www.threesixtygiving.org/2018/12/16/like-bees-to-honey/) and set up to operate with minimal maintainance. After almost two years of operating with minimal maintainance we noticed that the data and guidelines which Beehive used to provide it's service were out of date, and as such the checks it performed were potentially no longer relevant. With no funding available to update this data the decision was taken to retire the service.
+Major [development](https://github.com/TechforgoodCAST/beehive-giving/releases) on Beehive and funds to support it ended in 2018. With this in mind it was open sourced, [made free to use](https://www.threesixtygiving.org/2018/12/16/like-bees-to-honey/) and set up to operate with minimal maintenance. After almost two years of operating with minimal maintenance we noticed that the data and guidelines which Beehive used to provide its service were out of date, and as such the checks it performed were potentially no longer relevant. With no funding available to update this data the decision was taken to retire the service.
 
 <!-- TODO: add some key learning -->
 <!-- ### A little more...
