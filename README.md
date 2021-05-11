@@ -16,7 +16,7 @@ These instructions will get a copy of the project up and running on your local m
 
 ### Local setup
 
-1. `git clone https://github.com/TechforgoodCAST/chc-referrals.git`
+1. `git clone https://github.com/TechforgoodCAST/beehive-giving.git`
 2. `cd beehive-giving`
 3. `bundle install`
 4. `yarn install`
